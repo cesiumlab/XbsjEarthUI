@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>数据双向绑定-理论模型2</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp ref="subComp"></earth-comp>
+    </div>
+
+    <div id="vueApp2" style="position: absolute; left: 10px; bottom: 10px; width: 100px; height: 50px; background: grey; text-align: center;">
+        <span style="font-size: 26px; line-height: 50px;">{{ app2Alpha }}</span>
+    </div>
+
+    <div id="vueApp3" style="position: absolute; left: 10px; bottom: 120px; width: 100px; height: 50px; background: grey">
+        <input type="text" v-model.number.lazy="app3Alpha" style="width: 100%;height: 100%;font-size: 26px;text-align: center;">
+    </div>
+
+    <script>
+        // 0 某个vue组件定义
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 5px;">
+                        <span><input type="checkbox" v-model="imageryShow">影像显隐</span><br/>
+                        <span>影像透明度：{{ imageryAlpha.toFixed(2) }}</span><br/>
+                        <span><input type="range" min="0.0" max="1.0" step="0.01" v-model.number="imageryAlpha"></span><br/>
+                    </div>
+                </div>
+            `,
+            data() { 
+                return {
+                    imageryShow: true,
+                    imageryAlpha: 1.0,
+                };
+            },
+        }
+
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            // 1 创建view
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+            var app1Sub = app.$refs.subComp;
+
+            var app2 = new Vue({
+                el: '#vueApp2',
+                data: {
+                    app2Alpha: 0.0,
+                }
+            });
+
+            var app3 = new Vue({
+                el: '#vueApp3',
+                data: {
+                    app3Alpha: 0.0,
+                },
+                watch: {
+                    app3Alpha(newVal) {
+                        if (newVal < 0) {
+                            this.app3Alpha = 0.0;
+                        } else if (newVal > 1) {
+                            this.app3Alpha = 1.0;
+                        }
+                    }
+                }
+            });
+
+            // 2 创建地球
+            var earth = new XE.Earth(app.$refs.subComp.$refs.earthContainer);
+            earth.xbsjFromJSON({
+                "sceneTree": {
+                    "root": {
+                        "expand": true,
+                        "title": "预览场景",
+                        "children": [{
+                            "czmObject": {
+                                "xbsjType": "Imagery",
+                                "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig
+                            },
+                            "enabled": true,
+                            "title": '默认影像'
+                        }],
+                    }
+                }
+            });
+            var imagery = earth.sceneTree.root.children[0].czmObject;
+            imagery.alpha = 1.0;
+
+            // app2.app2Alpha = 1.0;
+
+            // 3 双向数据绑定
+            var showUnbind = XE.MVVM.bind(app1Sub, 'imageryShow', imagery, 'show');
+            var alphaUnbind = XE.MVVM.bind(app1Sub, 'imageryAlpha', imagery, 'alpha');
+            var alphaUnbind2 = XE.MVVM.bind(app2, 'app2Alpha', imagery, 'alpha');
+            var alphaUnbind3 = XE.MVVM.bind(app3, 'app3Alpha', imagery, 'alpha');
+        });
+    </script>
+
+</body>
+</html>

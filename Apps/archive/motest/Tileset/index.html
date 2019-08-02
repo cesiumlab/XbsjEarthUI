@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>motest</title>
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+  <!-- <script src="https://cdn.bootcss.com/iview/3.4.2-rc.1/iview.js"></script> -->
+  <script src="../../../../XbsjEarth/XbsjEarth.js"></script>
+  <!-- <link href="https://cdn.bootcss.com/iview/3.4.2-rc.1/styles/iview.css" rel="stylesheet"> -->
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .motest {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    #app {
+      position: absolute;
+      width: 400px;
+      height: 100%;
+      left: 0;
+      top: 30px;
+      overflow: auto;
+    }
+
+    #earth {
+      position: absolute;
+      width: calc(100% - 400px);
+      height: 100%;
+      background: grey;
+      right: 0;
+      top: 0
+    }
+
+    #earthContainer {
+      width: 100%;
+      height: 100%;
+    }
+
+    .drop {
+      display: block;
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      right: 10px;
+      top: 2.5px;
+      background: url(./down.png) no-repeat;
+      background-size: contain;
+      transition: all 0.5s;
+    }
+
+    .dropclose {
+      transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+      /* Internet Explorer */
+      -moz-transform: rotate(90deg);
+      /* Firefox */
+      -webkit-transform: rotate(90deg);
+      /* Safari 和 Chrome */
+      -o-transform: rotate(90deg);
+      /* Opera */
+    }
+
+    .attribut-box input {
+      margin: 2px;
+    }
+
+    .attribut-element {
+      height: 24px;
+      /* width: 100%; */
+    }
+
+    .attribut-name,
+    .attribut-box {
+      width: 50%;
+      line-height: 24px;
+    }
+
+    .attribut-name {
+      border-right: 1px dashed #000;
+      border-left: 1px dashed #000;
+      word-wrap: break-word;
+    }
+
+    .group-list {
+      display: flex;
+      transition: all 0.5s;
+    }
+
+    .group-list-close {
+      display: none
+    }
+
+    .border {
+      border-bottom: 1px dashed #000;
+    }
+
+    .group-name {
+      width: 100%;
+      height: 25px;
+      text-align: left;
+      line-height: 25px;
+      background: #dddddd;
+      position: relative;
+      border-bottom: 1px solid #ebebebdd;
+    }
+
+    .attribut-group {
+      width: 100%;
+      height: auto;
+    }
+
+    .maincontainer {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .attribut {
+      position: absolute;
+      width: 400px;
+      height: 100%;
+      left: 0;
+      top: 0;
+      overflow: auto;
+      /* border: 1px solid red; */
+    }
+
+    .earth {
+      position: absolute;
+      width: calc(100% - 400px);
+      height: 100%;
+      background: grey;
+      right: 0;
+      top: 0;
+    }
+
+    .attribut-title h3 {
+      text-align: center;
+      background: #e3e3e5;
+    }
+
+    #flyToButton {
+      position: absolute;
+      left: 50px;
+      top: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="motest">
+    <div id="app">
+      <div class="attribut-title">
+        <h3>{{jsonSchema.title}}</h3>
+      </div>
+      <div class="attribut-group" v-for="(item,index) in attribute" :key="index">
+        <div class="group-name" @click=" item.close = !item.close;">
+          {{item.name.chinese}}
+          <i class="drop" :class="{'dropclose':item.close}" @click=" item.close = !item.close;"></i>
+        </div>
+        <div :class="{'group-list-close':item.close}">
+          <div class="group-list" v-for="(list,i) in item.properties" :key="i">
+            <div class="attribut-name border" :title="jsonSchema.properties[list].description">{{list}}</div>
+            <div class="attribut-box border">
+              <input class="attribut-element"
+                v-show="(jsonSchema.properties[list].type==='string'&& !jsonSchema.properties[list].enum)||jsonSchema.properties[list].type==='number'"
+                type="text" v-model="Tileset[list]" :title="jsonSchema.properties[list].description">
+              <input class="attribut-element" v-show="jsonSchema.properties[list].type==='boolean'"
+                v-model="Tileset[list]" type="checkbox" :title="jsonSchema.properties[list].description">
+              <!-- select下拉列表 -->
+              <select v-model="Tileset[list]" class="attribut-element"
+                v-show="jsonSchema.properties[list].type==='string' && jsonSchema.properties[list].enum">
+                <option v-for="(value,key) in jsonSchema.properties[list].enum" :value="value">{{ value }}</option>
+              </select>
+              <div class="attribut-element" v-show="jsonSchema.properties[list].type==='array'">
+                <input v-model="Tileset[list]" type="text" :title="jsonSchema.properties[list].description">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="earth">
+      <div id="earthContainer"></div>
+      <button id="flyToButton">flyTo</button>
+    </div>
+  </div>
+  <script>
+    function create() {
+      document.getElementById('flyToButton').onclick = () => motest.flyTo();
+      const xbsjEarth = new XE.Earth('earthContainer');
+      window.xbsjEarth = xbsjEarth;
+      const motest = new XE.Obj.Tileset(xbsjEarth);
+      window.motest = motest;
+      motest.url = "http://114.116.116.117/api/3dtiles/photo/5ce4ad5a053f8d1260ec5d0a/tileset.json";
+      motest.xbsjCriticalElevation = 1000;
+      var app = new Vue({
+        el: '#app',
+        data: {
+          Tileset: {},
+          jsonSchema: '',
+          attribute: []
+        },
+        created() {
+          this.jsonSchema = JSON.parse(JSON.stringify(motest._jsonSchema));
+          this.Tileset = motest.toJSON(false);
+          this.attribute = JSON.parse(JSON.stringify(motest._classification));
+          this.attribute.forEach(element => {
+            this.$set(element, 'close', false)
+          });
+
+        },
+        watch: {
+          // Tileset[list](){
+
+          // }
+        },
+        mounted() {
+          this.$nextTick(() => {
+            this._viewUnbinds = this._viewUnbinds || [];
+            this.attribute.forEach(element => {
+              element.properties.forEach(el => {
+                this._viewUnbinds.push(XbsjEarth.MVVM.bind(this, "Tileset." + el, motest, el));
+              })
+            });
+          });
+        },
+        methods: {
+          changeurl() {
+            motest.flyTo();
+          }
+        },
+        beforeDestroy() {
+          this._viewUnbinds.forEach(u => u());
+          this._viewUnbinds.length = 0;
+        }
+      })
+      window.app = app;
+    }
+
+    function destroy() {
+
+    }
+
+    XE.ready().then(() => {
+      create();
+    });
+  </script>
+</body>
+
+</html>

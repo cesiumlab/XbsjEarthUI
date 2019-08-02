@@ -1,0 +1,774 @@
+ .xbsj-viewer {
+   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+     "Microsoft YaHei", "\5FAE\8F6F\96C5\9ED1", Arial, sans-serif;
+   font-size: 12px;
+   line-height: 1.5;
+   color: #515a6e;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   margin: 0;
+   padding: 0;
+   overflow: hidden;
+   width: 100%;
+   height: 100%;
+   background: black;
+ }
+
+ .xbsj-viewer ul,
+ li {
+   margin: 0;
+   padding: 0;
+ }
+
+ .xbsj-template {
+   width: 100%;
+   height: 96px;
+   background: rgba(107, 107, 107, 1);
+ }
+
+ .xbsj-list {
+   width: 100%;
+   height: 96px;
+   display: flex;
+   overflow-x: visible;
+   overflow-y: hidden;
+   -moz-user-select: none;
+   -webkit-user-select: none;
+   user-select: none;
+ }
+
+ .xbsj-list-item {
+   width: auto;
+   height: 72px;
+   position: relative;
+   margin: 12px 5px;
+   border-right: 2px solid rgba(71, 71, 71, 1);
+   padding-right: 25px;
+   padding-left: 12px;
+   display: flex;
+ }
+
+ .xbsj-list-lastitem {
+   border: none;
+ }
+
+ .xbsj-list-name {
+   display: inline-block;
+   min-width: 57px;
+   /* padding:0 5px; */
+   height: 18px;
+   background: rgba(71, 71, 71, 1);
+   border-radius: 3px;
+   font-size: 12px;
+   /* font-weight: bold; */
+   color: rgba(221, 221, 221, 1);
+   text-align: center;
+   position: absolute;
+   left: 16px;
+   top: -2px;
+ }
+
+ .xbsj-item-btnbox {
+   height: 72px;
+   width: 50px;
+   /* border: 1px solid red; */
+   float: left;
+   margin-top: 5px;
+   margin-left: 5px;
+   position: relative;
+ }
+
+ .xbsj-item-name {
+   position: absolute;
+   bottom: 0;
+   display: inline-block;
+   width: 100%;
+   font-size: 12px;
+   /* font-weight: bold; */
+   /* color: rgba(221, 221, 221, 1); */
+   text-align: center;
+ }
+
+ .xbsj-item-btn {
+   width: 34px;
+   height: 34px;
+   margin: 5px auto;
+   margin-top: 20px;
+   background-position: center !important;
+   cursor: pointer;
+ }
+
+ .xbsj-slide-group {
+   margin-right: 4px;
+ }
+
+ .xbsj-slide-top {
+   width: 224px;
+   height: 30px;
+   border-right: 0px;
+   margin-top: 28px;
+   margin-left: 0px;
+ }
+
+ .xbsj-slide-bottom {
+   width: 224px;
+   height: 30px;
+   border-right: 0px;
+   margin-left: 0px;
+   margin-top: 0px;
+ }
+
+ .xbsj-slide-label {
+   display: inline-block;
+   width: 48px;
+   font-size: 12px;
+   /* font-weight: bold; */
+   color: rgba(221, 221, 221, 1);
+   text-align: right;
+   float: left;
+   line-height: 21px;
+   height: 21px;
+   cursor: pointer;
+ }
+
+ .xbsj-slide-div {
+   width: 120px;
+   position: relative;
+   left: 60px;
+   top: 8px;
+ }
+
+ .xbsj-slide-span {
+   position: relative;
+   left: 142px;
+   bottom: 3px;
+ }
+
+ .xbsj-icon-ios-arrow-forward {
+   color: #dddddd;
+ }
+
+ .xbsj-icon-ios-folder {
+   color: #dddddd;
+ }
+
+ .xbsj-icon-ios-image {
+   color: #dddddd;
+ }
+
+ .color-dddddd {
+   color: #dddddd;
+ }
+
+ .xbsj-mainbar-popup {
+   background: rgba(71, 71, 71, 0.8);
+   border: 2px solid rgba(138, 138, 138, 0.8);
+   border-radius: 3px;
+   position: absolute;
+   padding: 10px 10px;
+   border-top: none;
+   border-top-left-radius: 0;
+   border-top-right-radius: 0;
+   overflow: auto;
+ }
+
+ .popup button {
+   cursor: pointer;
+ }
+
+ .xbsj-checkbox-wrapper {
+   cursor: pointer;
+   font-size: 12px;
+   display: inline-block;
+   margin-right: 8px;
+ }
+
+ .xbsj-checkbox {
+   display: inline-block;
+   vertical-align: middle;
+   white-space: nowrap;
+   cursor: pointer;
+   line-height: 1;
+   position: relative;
+ }
+
+ .xbsj-checkbox-input {
+   width: 100%;
+   height: 100%;
+   position: absolute;
+   top: 0;
+   bottom: 0;
+   left: 0;
+   right: 0;
+   z-index: 1;
+   cursor: pointer;
+   opacity: 0;
+ }
+
+ .xbsj-checkbox-checked .xbsj-checkbox-inner:after {
+   content: "";
+   display: table;
+   width: 4px;
+   height: 8px;
+   position: absolute;
+   top: 1px;
+   left: 4px;
+   border: 2px solid #fff;
+   border-top: 0;
+   border-left: 0;
+   -webkit-transform: rotate(45deg) scale(1);
+   -ms-transform: rotate(45deg) scale(1);
+   transform: rotate(45deg) scale(1);
+   -webkit-transition: all 0.2s ease-in-out;
+   transition: all 0.2s ease-in-out;
+ }
+
+ .xbsj-checkbox-inner:after {
+   content: "";
+   display: table;
+   width: 4px;
+   height: 8px;
+   position: absolute;
+   top: 1px;
+   left: 4px;
+   border: 2px solid #fff;
+   border-top: 0;
+   border-left: 0;
+   -webkit-transform: rotate(45deg) scale(0);
+   -ms-transform: rotate(45deg) scale(0);
+   transform: rotate(45deg) scale(0);
+   -webkit-transition: all 0.2s ease-in-out;
+   transition: all 0.2s ease-in-out;
+ }
+
+ .xbsj-checkbox-inner {
+   display: inline-block;
+   width: 14px;
+   height: 14px;
+   position: relative;
+   top: 0;
+   left: 0;
+   border: 1px solid #ffffff;
+   border-radius: 2px;
+   background-color: #000;
+ }
+
+ .xbsj-checkbox-indeterminate .xbsj-checkbox-inner {
+   background-color: #000000;
+   border-color: #ffffff;
+ }
+
+ .xbsj-input-wrapper {
+   display: inline-block;
+   width: 100%;
+   position: relative;
+   vertical-align: middle;
+   line-height: normal;
+ }
+
+ .xbsj-input {
+   display: inline-block;
+   width: 100%;
+   /* height: 30px; */
+   margin: 0 !important;
+   line-height: 1.8;
+   padding: 4px 7px;
+   font-size: 12px;
+   border: none;
+   border-radius: 4px;
+   color: #fff;
+   background: rgba(0, 0, 0, 0.5);
+   background-image: none;
+   position: relative;
+   cursor: text;
+   -webkit-transition: border 0.2s ease-in-out, background 0.2s ease-in-out,
+     -webkit-box-shadow 0.2s ease-in-out;
+   transition: border 0.2s ease-in-out, background 0.2s ease-in-out,
+     -webkit-box-shadow 0.2s ease-in-out;
+   transition: border 0.2s ease-in-out, background 0.2s ease-in-out,
+     box-shadow 0.2s ease-in-out;
+   transition: border 0.2s ease-in-out, background 0.2s ease-in-out,
+     box-shadow 0.2s ease-in-out, -webkit-box-shadow 0.2s ease-in-out;
+ }
+
+ .xbsj-input-icon-validate {
+   display: none !important;
+ }
+
+ .xbsj-input-icon {
+   width: 30px;
+   height: 30px;
+   line-height: 30px;
+   font-size: 16px;
+   text-align: center;
+   color: #808695;
+   position: absolute;
+   right: 0;
+   z-index: 3;
+ }
+
+ .xbsj-load-loop {
+   -webkit-animation: ani-load-loop 1s linear infinite;
+   animation: ani-load-loop 1s linear infinite;
+ }
+
+ .xbsj-checkbox-indeterminate .xbsj-checkbox-inner:after {
+   content: "";
+   width: 8px;
+   height: 1px;
+   -webkit-transform: scale(1);
+   -ms-transform: scale(1);
+   transform: scale(1);
+   position: absolute;
+   left: 2px;
+   top: 5px;
+ }
+
+ /* 滚动条样式开始 */
+ /* ----chrome---- */
+ ::-webkit-scrollbar {
+   width: 4px;
+   height: 4px;
+ }
+
+ ::-webkit-scrollbar-thumb {
+   border-radius: 10px;
+   -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+   background: rgba(0, 0, 0, 0.2);
+ }
+
+ ::-webkit-scrollbar-track {
+   -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+   border-radius: 0;
+   background: rgba(0, 0, 0, 0.1);
+ }
+
+ /* ----chrome---- */
+ /* ----firefox---- */
+ * {
+   scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.1);
+   scrollbar-width: thin;
+ }
+
+ /* ----firefox---- */
+ /* edge、ie暂未找到解决方案，或者可以使用js库来进行优化 */
+ /* 滚动条样式结束 */
+
+ /* slider滑块 */
+ /* ----chrome---- */
+ input[type="range"] {
+   -webkit-appearance: none;
+   width: 139px;
+   -moz-appearance: none;
+   /* height: 4px; */
+   /* 这个属性设置使填充进度条时的图形为圆角 */
+   /* border-radius: 10px; */
+ }
+
+ input[type="range"]::-webkit-slider-runnable-track {
+   height: 4px;
+   background: rgba(71, 71, 71, 1);
+   /*将轨道设为圆角的*/
+   /* border-radius: 10px;  */
+   /*轨道内置阴影效果*/
+   /* box-shadow: 0 1px 1px #def3f8, inset 0 0.125em 0.125em #0d1112; */
+ }
+
+ input[type="range"]:focus {
+   outline: none;
+ }
+
+ input[type="range"]::-webkit-slider-thumb {
+   -webkit-appearance: none;
+   height: 14px;
+   width: 12px;
+   /*使滑块超出轨道部分的偏移量相等*/
+   margin-top: -5px;
+   background: url(../images/slider.png) no-repeat;
+   background-size: 100%;
+   border: none;
+   position: relative;
+   z-index: 2;
+   /* background: #ffffff; */
+   /*外观设置为圆形*/
+   /* border-radius: 50%;  */
+   /*设置边框*/
+   /* border: solid 0.125em rgba(205, 224, 230, 0.5);  */
+   /*添加底部阴影*/
+   /* box-shadow: 0 0.125em 0.125em #3b4547;  */
+ }
+
+ /* ----firefox---- */
+ input[type="range"]::-moz-range-track {
+   -moz-appearance: none;
+   height: 4px;
+   background: rgba(71, 71, 71, 1);
+ }
+
+ input[type="range"]::-moz-range-thumb {
+   -moz-appearance: none;
+   height: 14px;
+   width: 12px;
+   margin-top: -7px;
+   background: url(../images/slider.png) no-repeat;
+   background-size: 100%;
+   border: none;
+   position: relative;
+   z-index: 2;
+ }
+
+ input[type="range"]::-moz-range-progress {
+   background: rgba(31, 255, 255, 0.6);
+   height: 4px;
+ }
+
+ /* ----ie---- */
+ input[type="range"]::-ms-track {
+   height: 2px;
+   background: rgba(71, 71, 71, 1);
+   /* border-radius: 10px; */
+   /* box-shadow: 0 1px 1px #def3f8, inset 0 0.125em 0.125em #0d1112; */
+   border-color: transparent;
+   /*去除原有边框*/
+   color: transparent;
+   /*去除轨道内的竖线*/
+ }
+
+ input[type="range"]::-ms-thumb {
+   border: solid 0.125em rgba(205, 224, 230, 0.5);
+   height: 14px;
+   width: 12px;
+   /* border-radius: 50%;
+  background: #ffffff; */
+   margin-top: 0px;
+   background: url(../images/slider.png) no-repeat;
+   background-size: 100%;
+   border: none;
+   /* box-shadow: 0 0.125em 0.125em #3b4547; */
+ }
+
+ input[type="range"]::-ms-fill-lower {
+   /*进度条已填充的部分*/
+   height: 4px;
+   /* border-radius: 10px; */
+   background: rgba(31, 255, 255, 0.6);
+ }
+
+ input[type="range"]::-ms-fill-upper {
+   /*进度条未填充的部分*/
+   height: 4px;
+   /* border-radius: 10px; */
+   background: rgba(71, 71, 71, 1);
+ }
+
+ input[type="range"]:focus::-ms-fill-lower {
+   background: rgba(31, 255, 255, 0.6);
+ }
+
+ input[type="range"]:focus::-ms-fill-upper {
+   background: rgba(71, 71, 71, 1);
+ }
+
+ .xbsj-slider {
+   line-height: normal;
+ }
+
+ .xbsj-slider-wrap {
+   height: 4px;
+   /* background-color: #e8eaec; */
+   background-color: rgba(0, 0, 0, 0.4);
+   border-radius: 3px;
+   vertical-align: middle;
+   position: relative;
+   cursor: pointer;
+ }
+
+ .xbsj-slider-bar {
+   height: 4px;
+   background: rgba(31, 255, 255, 1);
+   border-radius: 3px;
+   position: absolute;
+   width: 30.003%;
+   /* left: 19.992%; */
+ }
+
+ .xbsj-slider-button-wrap {
+   width: 18px;
+   height: 18px;
+   text-align: center;
+   background-color: transparent;
+   position: absolute;
+   top: -4px;
+   transform: translateX(-50%);
+ }
+
+ .xbsj-slider-button-wrap .xbsj-tooltip {
+   display: block;
+   user-select: none;
+ }
+
+ .xbsj-tooltip-rel {
+   display: inline-block;
+   position: relative;
+   width: inherit;
+ }
+
+ .xbsj-slider-button {
+   width: 12px;
+   height: 12px;
+   /* border: 2px solid #57a3f3; */
+   border-radius: 50%;
+   background-color: #fff;
+   -webkit-transition: all 0.2s linear;
+   transition: all 0.2s linear;
+   outline: 0;
+ }
+
+ .xbsj-slider-disabled {
+   cursor: not-allowed;
+ }
+
+ .xbsj-slider-disabled .xbsj-slider-wrap {
+   /* background-color: #ccc; */
+   cursor: not-allowed;
+ }
+
+ .xbsj-slider-disabled .xbsj-slider-bar {
+   background-color: #8f8f8f;
+ }
+
+ .xbsj-switch-container {
+   height: 23px;
+   width: 48px;
+   display: inline-block;
+ }
+
+ .xbsj-switch-container input {
+   display: none;
+ }
+
+ .xbsj-switch-container label {
+   display: block;
+   width: 100%;
+   height: 100%;
+   background-color: rgba(0, 0, 0, 0.25);
+   cursor: pointer;
+   border-radius: 23px;
+   transition: all 0.4s ease;
+   border: 1px solid rgba(221, 221, 221, 0.9);
+ }
+
+ .xbsj-switch-container label:before {
+   content: "";
+   display: block;
+   border-radius: 25px;
+   height: 23px;
+   width: 23px;
+   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.08);
+   transition: all 0.4s ease;
+   background-color: #fff;
+   position: relative;
+   right: 0px;
+ }
+
+ .xbsj-switch-container input:checked~label:before {
+   right: -25px;
+   background: rgba(31, 255, 255, 1);
+ }
+
+ .xbsj-switch-container input:checked~label {
+   border: 1px solid rgba(31, 255, 255, 1);
+ }
+
+ .xbsj-input-number {
+   display: inline-block;
+   font-size: 12px;
+   color: #515a6e;
+   background-color: rgba(71, 71, 71, 1);
+   background-image: none;
+   position: relative;
+   margin: 0;
+   padding: 0;
+   width: 145px;
+   height: 34px;
+   line-height: 32px;
+   vertical-align: middle;
+   border: 1px solid #dcdee2;
+   /* border-radius: 4px; */
+   overflow: hidden;
+   cursor: default;
+   border-color: rgba(71, 71, 71, 1);
+   margin-top: 28px;
+ }
+
+ .xbsj-input-number-handler-wrap {
+   width: 22px;
+   height: 100%;
+   border-left: 1.5px solid #6b6b6b;
+   border-radius: 0 4px 4px 0;
+   background: #fff;
+   position: absolute;
+   top: 0;
+   right: 0;
+   /* opacity: 0;
+  transition: opacity 0.2s ease-in-out; */
+ }
+
+ .xbsj-input-number-handler {
+   display: block;
+   width: 100%;
+   height: 16px;
+   line-height: 0;
+   text-align: center;
+   overflow: hidden;
+   color: #999;
+   position: relative;
+   background-color: rgba(71, 71, 71, 1);
+ }
+
+ .xbsj-input-number-handler-up {
+   cursor: pointer;
+ }
+
+ a {
+   background: 0 0;
+   text-decoration: none;
+   outline: 0;
+   transition: color 0.2s ease;
+ }
+
+ .xbsj-input-number-handler-down-inner,
+ .xbsj-input-number-handler-up-inner {
+   width: 12px;
+   height: 12px;
+   line-height: 12px;
+   font-size: 14px;
+   color: #999;
+   user-select: none;
+   position: absolute;
+   right: 5px;
+   transition: all 0.2s linear;
+ }
+
+ .xbsj-input-number-handler-up-inner {
+   top: 1px;
+ }
+
+ .xbsj-icon {
+   display: inline-block;
+   font-family: Ionicons;
+   speak: none;
+   font-style: normal;
+   font-weight: 400;
+   font-variant: normal;
+   text-transform: none;
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+   vertical-align: middle;
+ }
+
+ .xbsj-icon-ios-arrow-up:before {
+   content: "\F124";
+ }
+
+ :after,
+ :before {
+   box-sizing: border-box;
+ }
+
+ .xbsj-input-number-handler-down {
+   /* border-top: 1px solid #dcdee2; */
+   /* top: -1px; */
+   cursor: pointer;
+ }
+
+ .xbsj-icon-ios-arrow-down:before {
+   content: "\F116";
+ }
+
+ .xbsj-input-number-input-wrap {
+   overflow: hidden;
+   height: 34px;
+ }
+
+ .xbsj-input-number-input {
+   width: 100%;
+   height: 32px;
+   line-height: 32px;
+   padding: 0 7px;
+   text-align: left;
+   outline: 0;
+   color: #666;
+   border: 0;
+   border-radius: 4px;
+   transition: all 0.2s linear;
+   background: rgba(71, 71, 71, 1);
+   color: #fff;
+ }
+
+ .xbsj-input-number-handler-up-disabled {
+   cursor: not-allowed;
+ }
+
+ .xbsj-input-number-handler-down-disabled {
+   cursor: not-allowed;
+ }
+
+ .xbsj-select {
+   display: inline-block;
+   width: 9px;
+   height: 8px;
+   background: url(../images/xiatankuang.png) no-repeat;
+   background-size: 100%;
+   cursor: pointer;
+   margin-top: 40px;
+ }
+
+ .xbsj-select.highlight,
+ .xbsj-select:hover {
+   background: url(../images/tree_arrow.png) no-repeat;
+   background-size: 100%;
+   cursor: pointer;
+ }
+
+ .xbsj-tooltip-inner {
+   margin-top: -20px;
+ }
+
+ .xbsj-tooltip-inner:hover {
+   margin-top: -20px;
+ }
+
+ /* 自定义窗口样式 */
+ .custom-item {
+   height: 35px;
+   line-height: 35px;
+   margin-top: 5px;
+ }
+
+ .custom-label {
+   width: 35%;
+   text-align: right;
+ }
+
+ .custom-item-box {
+   width: 55%;
+   padding-left: 15px;
+ }
+
+ .custom-item-box .xbsj-input {
+   padding-top: 0;
+   padding-bottom: 0;
+ }
+
+ .xbsj-button {
+   height: 28px;
+   border: 1px solid #666666;
+   background-color: rgba(0, 0, 0, 0.5);
+   color: #dddddd;
+   margin-bottom: 10px; 
+   border-radius: 5px;
+   cursor: pointer;
+ }
+
+ /* 自定义窗口样式 */

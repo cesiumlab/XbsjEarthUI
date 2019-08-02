@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>逐顶点着色效果示例</title>
+    <script src="./scripts/sceneTreeCreationExample.js"></script>
+    <script src="../../../XbsjEarthUI/xbsj.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="main">
+    </div>
+
+    <script>
+        XbsjEarthUI.create('main').then((earthUI) => {
+            window.uia = earthUI;
+
+
+            var myTool = {
+                props: {
+                    getBind: Function
+                },
+                template: `  <Window
+                :footervisible="true"
+               
+                :width="463"
+                :minWidth="202"
+                :height="500"
+                :left="5"
+                :top="138"
+                :title="'顶点着色示例'"  
+                >
+                <button class='xbsj-button' @click="test"> 创建示例 </button>
+ 
+                </Window>
+            `,
+                data() {
+                    return {
+
+                    }
+                },
+
+                methods: {
+                    test() {
+                        console.log('my tool tested');
+                    }
+                }
+
+            };
+            earthUI.tools.sceneTree.show = false;
+            //显示自定义对象的，自定义属性窗口
+            var obj1 = {
+                name: 'obj1'
+            };
+            earthUI.showPropertyWindow(obj1, {
+                component: myTool
+            });
+
+
+            const g0 = new XE.SceneTree.Group(earthUI.earth);
+            g0.title = '新建场景'
+            earthUI.earth.sceneTree.root.children.push(g0);
+            //添加一个谷歌在线影像
+            //添加谷歌在线底图
+            {
+                var googleImageryLayer = new XE.Obj.Imagery(earthUI.earth);
+                googleImageryLayer.xbsjImageryProvider.type = 'XbsjImageryProvider';
+                googleImageryLayer.xbsjImageryProvider['XbsjImageryProvider'] = {
+                    url: 'http://mt1.google.cn/vt/lyrs=s,h&gl=cn&x={x}&y={y}&z={z}&s=Gali',
+                    rectangle: [-Math.PI, -Math.PI * 0.5, Math.PI, Math.PI * 0.5],
+                    srcCoordType: 'GCJ02',
+                    dstCoordType: 'WGS84'
+                };
+
+
+                const so = new XE.SceneTree.Leaf(googleImageryLayer);
+                so.title = '谷歌影像';
+                g0.children.push(so);
+            }
+
+
+            //添加有数据的服务
+ 
+
+            const tileset = new XE.Obj.Tileset(earthUI.earth);
+            tileset.name = "地质模型";
+            tileset.url = 'http://localhost:9000/model/a703db00acfa11e995f61b10c246fc79/tileset.json';
+            g0.children.push(new XE.SceneTree.Leaf(tileset));
+
+            var unbind = XbsjEarth.MVVM.watch(() => {
+                var ready = tileset.ready;
+                if (ready) {
+                    tileset.flyTo();
+                    unbind();
+                }
+            });
+
+
+            var t = new Cesium.Texture({
+                context: earthUI.earth.czm.scene.context,
+                width: 512,
+                height: 256
+            });
+            var imgUrl = 'https://www.baidu.com/img/bd_logo1.png';
+            var img = new Image();
+            img.src = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCAABAGQDASIAAhEBAxEB/8QAGgABAQACAwAAAAAAAAAAAAAAAAYEBwUICf/EACEQAQAABQUAAwAAAAAAAAAAAAABAgUxcQMEBjJCNEGB/8QAGAEBAAMBAAAAAAAAAAAAAAAABwQGCAX/xAAkEQABAgQFBQAAAAAAAAAAAAAAAQYDBAUzMTJCcXI0NUGxwf/aAAwDAQACEQMRAD8A8x6NaVc0bzgF8bng5U2XdGvKuKV1gB0odtditRriblLsfpR7C8oKC69Q8sXScnP0hhha1wBVTxU0JL4IYU/eGV1xXxiADmsZVJMxbNx8V8Zg7BcF6aX4AMc/cZXn8DR1WDddJ+FIA0/TejhcU9APFuLuf//Z';
+            img.width = 512;
+            img.height = 256;
+            img.onload = function () {
+                t.copyFrom(img);
+            };
+
+            tileset._tileset._xbsjCustomTexture = t;
+
+            var cs = {
+                vsHeader: 'varying vec3 v_custom_1;',
+                vsBody: 'v_custom_1 = a_custom_1;',
+                fsHeader: 'varying vec3 v_custom_1;',
+                fsBody: 'gl_FragColor = vec4(v_custom_1.x*0.01,0,0,1.0);',
+            };
+            tileset._tileset.xbsjCustomShader = cs;
+
+
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CesiumLab2.0</title>
+    <script src="./scripts/sceneTreeCreationExample.js"></script>
+    <script src="../../../XbsjEarthUI/xbsj.js"></script>
+    <script src="./custom.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <button onclick="create()">创建</button>
+    <button onclick="destroy()">销毁</button> -->
+    <div id="main">
+    </div>
+
+    <script>
+        var xbsjEarthUI = undefined;
+
+        function initEarthWithTilesetUrl(earth, tilesetUrl, tilesetTitle) {
+            var earthJsonObject = {
+                "sceneTree": {
+                    "root": {
+                        "expand": true,
+                        "title": "预览场景",
+                        "children": [{
+                            "expand": true,
+                            "title": "三维瓦片组",
+                            "children": [{
+                                "czmObject": {
+                                    "xbsjType": "XbsjTileset",
+                                    // "guid": "c681a2cc-7f08-45a4-a8d3-2a03859b2c35",
+                                    "url": tilesetUrl
+                                },
+                                "enabled": true,
+                                "title": tilesetTitle
+                            }],
+                        }]
+                    }
+                }
+            };
+            earth.fromJson(earthJsonObject);
+        }
+
+        XbsjEarthUI.create('main').then((earthUI) => {
+            window.uia = earthUI;
+
+            //如果有url参数，那么只添加url参数数据
+            var urlOptions = Cesium.queryToObject(window.location.search.substring(1));
+            const tilesetUrl = urlOptions.tilesetUrl;
+            const tilesetTitle = urlOptions.tilesetTitle || '未命名三维瓦片';
+
+
+            //获取url参数，如果有场景地址，那么先获取场景信息 
+            if (urlOptions.scene) {
+                earthUI.labScene.loadScene(urlOptions.scene);
+            } else if (tilesetUrl) {
+                initEarthWithTilesetUrl(earthUI.earth, tilesetUrl, tilesetTitle);
+            }
+            //否则按照示例代码方法创建
+            else {
+                sceneTreeCreateExample1(earthUI.earth);
+            }
+
+            if (urlOptions.lang) {
+                earthUI.language = (urlOptions.lang == 'en-US' ? 'en' : 'zh');
+            }
+
+
+            // //显示自定义对象的，自定义属性窗口
+            // var obj1 = {
+            //     name: 'obj1'
+            // };
+            // earthUI.showPropertyWindow(obj1, {
+            //     component: myTool
+            // });
+
+            /*
+            //注意myTool只是个模板，还不是vue组件，对于两个不同的对象 我们使用同一个模板myTool 会创建两个 vue组件实例
+            var obj2 = {
+                name: 'obj2'
+            }
+            earthUI.showPropertyWindow(obj2, {
+                component: myTool
+            });
+            */
+        });
+    </script>
+</body>
+
+</html>

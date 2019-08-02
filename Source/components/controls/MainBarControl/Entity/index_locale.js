@@ -1,0 +1,53 @@
+const zh = {
+  routine: "常规",
+  spot: "点",
+  line: "线",
+  face: "面",
+  characters: "文字",
+  globe: "球",
+  Cylinder: "柱",
+  case: "盒子",
+  more: "更多",
+  model: "模型",
+  plane: "飞机",
+  character: "人物",
+  tree: "树",
+  car: "汽车",
+  senior: "高级",
+  od: "OD线",
+  water: "水面",
+  haplochromatization: "单体化",
+  particle: "粒子",
+  singlearrow: "单箭头",
+  doublearrow: "双箭头",
+  radar: "雷达",
+  ribbon: "飘带"
+};
+
+const en = {
+  routine: "routine",
+  spot: "spot",
+  line: "line",
+  face: "face",
+  characters: "characters",
+  globe: "globe",
+  Cylinder: "Cylinder",
+  case: "case",
+  more: "more",
+  model: "model",
+  plane: "plane",
+  character: "character",
+  tree: "tree",
+  car: "car",
+  senior: "senior",
+  od: "od line",
+  water: "water",
+  haplochromatization: "hm",
+  particle: "particle",
+  singlearrow: "sarrow",
+  doublearrow: "darrow",
+  radar: "radar",
+  ribbon: "ribbon"
+};
+
+export default { zh, en };

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>vtxftest</title>
+      <!--
+    <script src="http://api.map.baidu.com/api?v=1.5&ak=2b866a6daac9014292432d81fe9b47e3"></script>-->
+
+    <!-- <script src="https://cdn.bootcss.com/iview/3.4.2/iview.js"></script> -->
+    <!-- <script src="https://cdn.bootcss.com/mobx/5.8.0/mobx.umd.js"></script> -->
+
+    <!-- <script src="../../../XbsjCesium/Cesium.js"></script> -->
+    <script src="http://127.0.0.1:9529/XbsjCesium/Cesium.js"></script>
+    <!-- <script src="../../../XbsjEarth/XbsjEarth.js"></script> -->
+    <script src="http://127.0.0.1:9529/XbsjEarth/XbsjEarth.js"></script>
+    <script src="../../../XbsjEarthUI/XbsjEarthUI.js"></script>
+    <link rel="stylesheet" href="../../../XbsjCesium/Widgets/widgets.css" />
+  </head>
+
+  <body>
+    <div
+      id="main"
+      style="position: relative; width: 100%; height: 100%; background: #DDD"
+    ></div>
+
+    <script>
+      const ui = new XbsjEarthUI.MainUI("main");
+      window.ui = ui;
+
+      const xbsjEarth = ui.earth;
+      const xbsjSceneTree = xbsjEarth.sceneTree;
+      // 测试代码，以后删除
+      const g0 = new XE.SceneTree.Group(xbsjEarth);
+      g0.title = "项目1";
+
+      // 谷歌影像加载
+      var googleImageryLayer = new XE.Obj.Imagery(xbsjEarth);
+      googleImageryLayer.xbsjImageryProvider = {
+        type: "UrlTemplateImageryProvider",
+        url: "http://mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali",
+        rectangle: [-Math.PI, -Math.PI * 0.5, Math.PI, Math.PI * 0.5]
+      };
+
+      // 中国地形加载
+      const googleImageryLayerSO = new XE.SceneTree.Leaf(
+        googleImageryLayer
+      );
+      googleImageryLayerSO.title = "谷歌全球影像";
+      g0.children.push(googleImageryLayerSO);
+
+      xbsjSceneTree.root.children.push(g0);
+    </script>
+  </body>
+</html>
