@@ -17,7 +17,7 @@
         "sourceUrl": "#"
     },
     "opts": {
-        "destination": "dist/Documentation",
+        "destination": "dist/XbsjEarthUI/Documentation",
         "template": "./Tools/jsdoc/cesium_template",
         "recurse": true
     }

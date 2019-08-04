@@ -3,7 +3,14 @@
 ## 简介
 XbsjEarthUI是一套基于Cesium和XbsjEarth的三维GIS/BIM的应用框架，可以基于此定制自己的三维程序。
 
-视频：https://www.bilibili.com/video/av60366649?from=search&seid=3851172190041118781
+关于这个应用程序的操作，可以参考这个视频：  
+https://www.bilibili.com/video/av60366649?from=search&seid=3851172190041118781
+
+EarthSDK的API设计属于类似VUE的响应式属性设计，可以参考这篇文章来了解：  
+https://www.jianshu.com/p/a37cc18ca310
+
+CesiumLab2.0和EarthSDK的首次培训视频：  
+https://www.bilibili.com/video/av61977045/
 
 ![](./Tools/readme/start.png)
 ![](./Tools/readme/视频融合.png)
@@ -31,6 +38,12 @@ XbsjEarthUI是一套基于Cesium和XbsjEarth的三维GIS/BIM的应用框架，�
 
 ## 问题反馈
 
-问题反馈，技术交流请到这里(QQ群：830157717)：
+欢迎进行问题反馈和相关技术交流！
+有以下两种途径：  
+
+1 QQ群：830157717  
 ![](./Tools/readme/qq.png)
+
+2 提issue：  
+https://github.com/cesiumlab/XbsjEarthUI/issues
 
