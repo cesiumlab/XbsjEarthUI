@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>测试</title>
+    <script src="https://cdn.bootcss.com/react/16.8.6/umd/react.development.js"></script>
+    <script src="https://cdn.bootcss.com/react-dom/16.8.6/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/react-jsonschema-form/dist/react-jsonschema-form.js"></script>
+    <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="../../../XbsjEarth/XbsjEarth.js"></script>
+    <!-- <script src="http://127.0.0.1:9529/XbsjEarth/XbsjEarth.js"></script> -->
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #properyApp {
+            position: absolute; width: 400px; height: 100%; left: 0; top: 0; overflow: auto;
+        }
+
+        #xbsjEarthContainerWrap {
+            position: absolute; width: calc(100% - 400px); height: 100%; background: grey; right: 0; top: 0
+        }
+
+        #xbsjEarthContainer {
+            width: 100%; height: 100%;
+        }
+
+        #flyToButton {
+            position: absolute; left: 50px; top: 50px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div style="height: 100%; position: relative">
+        <div id="properyApp"></div>
+        <div id="xbsjEarthContainerWrap">
+            <div id="xbsjEarthContainer"></div>
+            <button id="flyToButton">flyTo</button>
+        </div>
+    </div>
+
+    <script type="text/babel">
+
+        const log = (type) => console.log.bind(console, type);
+        const Form = JSONSchemaForm.default;
+
+        XE.ready().then(() => {
+            const xbsjEarth = new XE.Earth('xbsjEarthContainer');
+            const tileset1 = new XE.Obj.Tileset(xbsjEarth);
+            window.tileset1 = tileset1;
+            tileset1.url = 'http://114.116.116.117/api/3dtiles/photo/5ce4ad5a053f8d1260ec5d0a/tileset.json';
+
+            setTimeout(() => tileset1.flyTo(), 1000);
+            document.getElementById('flyToButton').onclick = () => tileset1.flyTo();
+
+            const schema = tileset1._jsonSchema;
+            const formData = tileset1.toJSON(false);
+
+            const setJsonObject = submitData => {
+                tileset1.fromJson(submitData.formData);
+            }
+
+            ReactDOM.render((
+            <Form schema={schema}
+                    formData={formData}
+                    onChange={setJsonObject}
+                    onSubmit={setJsonObject}
+                    onError={log("errors")} />
+            ), document.getElementById("properyApp"));
+        });
+
+</script>
+
+</body>
+
+</html>

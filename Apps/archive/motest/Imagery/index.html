@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Imagery</title>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+    <script src="../../../../XbsjEarth/XbsjEarth.js"></script>
+    <!-- <script src="http://127.0.0.1:9529/XbsjEarth/XbsjEarth.js"></script> -->
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .imagery {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+
+      #app {
+        position: absolute;
+        width: 418px;
+        height: 100%;
+        left: 0;
+        /* top: 30px; */
+        overflow: auto;
+      }
+
+      #earth {
+        position: absolute;
+        width: calc(100% - 418px);
+        height: 100%;
+        background: grey;
+        right: 0;
+        top: 0;
+      }
+
+      #earthContainer {
+        width: 100%;
+        height: 100%;
+      }
+      #flyToButton {
+        position: absolute;
+        left: 50px;
+        top: 50px;
+      }
+      .imagery-title h3 {
+        text-align: center;
+        background: #e3e3e5;
+      }
+      table {
+        width: 400px;
+      }
+      table tbody th {
+        text-align: left;
+        background: #dddddd;
+      }
+      table tbody th div {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url(./down.png) no-repeat;
+        background-size: contain;
+        position: relative;
+        left: 320px;
+        top: 2px;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .dropclose {
+        transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        /* Internet Explorer */
+        -moz-transform: rotate(90deg);
+        /* Firefox */
+        -webkit-transform: rotate(90deg);
+        /* Safari 和 Chrome */
+        -o-transform: rotate(90deg);
+        /* Opera */
+      }
+      .group-list-close {
+        display: none;
+      }
+      table tbody tr td:nth-child(1) {
+        width: 100px;
+      }
+      table tbody tr td:nth-child(2) {
+        width: 200px;
+      }
+      td {
+        border: 1px dotted black;
+      }
+      table tbody tr td span {
+        display: inline-block;
+        width: 42px;
+        text-align: right;
+      }
+      .map-title {
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="imagery">
+      <!-- <button onclick="create()">创建</button>
+      <button onclick="destroy()">销毁</button> -->
+      <div id="app">
+        <div class="imagery-title">
+          <h3>{{ jsonSchema.title }}</h3>
+        </div>
+        <h4 class="map-title">谷歌影像地图</h4>
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tbody v-for="(item,index) in imageryArray">
+            <th colspan="2">
+              {{ item.name.chinese }}
+              <div
+                :class="{'dropclose':item.close}"
+                @click=" item.close = !item.close;"
+              ></div>
+            </th>
+            <tr
+              :class="{'group-list-close':item.close}"
+              v-for="(value,key) in item.properties"
+            >
+              <td :title="jsonSchema.properties[value].description">
+                {{ value }}
+              </td>
+              <td
+                :title="jsonSchema.properties[value].description"
+                v-show="jsonSchema.properties[value].type==='string' && !jsonSchema.properties[value].enum"
+              >
+                <input type="text" v-model="Imagery.value" />
+              </td>
+              <td
+                v-show="jsonSchema.properties[value].type==='boolean'"
+                :title="jsonSchema.properties[value].description"
+              >
+                <input type="checkbox" v-model="Imagery[value]" />
+              </td>
+              <td
+                :title="jsonSchema.properties[value].description"
+                v-show="jsonSchema.properties[value].type==='number' && jsonSchema.properties[value].default !== 1"
+              >
+                <input type="text" v-model="Imagery[value]" />
+              </td>
+              <td
+                :title="jsonSchema.properties[value].description"
+                v-show="jsonSchema.properties[value].type==='number' && jsonSchema.properties[value].default === 1"
+              >
+                <input
+                  type="range"
+                  :min="0"
+                  :max="1"
+                  step="0.1"
+                  v-model="Imagery[value]"
+                />
+              </td>
+              <td
+                :title="jsonSchema.properties[value].description"
+                v-show="jsonSchema.properties[value].type==='string' && jsonSchema.properties[value].enum"
+              >
+                <select v-model="Imagery[value]">
+                  <option
+                    v-for="(value,key) in jsonSchema.properties[value].enum"
+                    :value="value"
+                    >{{ value }}</option
+                  >
+                </select>
+              </td>
+              <td
+                v-if="jsonSchema.properties[value].type==='array'"
+                :title="jsonSchema.properties[value].description"
+              >
+                <span>west</span
+                ><input type="text" v-model="Imagery[value][0]" /><br />
+                <span>south</span
+                ><input type="text" v-model="Imagery[value][1]" /><br />
+                <span>east</span
+                ><input type="text" v-model="Imagery[value][2]" /><br />
+                <span>north</span
+                ><input type="text" v-model="Imagery[value][3]" /><br />
+              </td>
+            </tr>
+          </tbody>
+          <!-- <tfoot>
+            <tr>
+              <td>flyto</td>
+              <td>
+                <button @click="changeurl">flyTo</button>
+              </td>
+            </tr>
+          </tfoot> -->
+        </table>
+        <h4 class="map-title">高德在线地图</h4>
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tbody v-for="(item,index) in imageryArray2">
+            <th colspan="2">
+              {{ item.name.chinese }}
+              <div
+                :class="{'dropclose':item.close}"
+                @click=" item.close = !item.close;"
+              ></div>
+            </th>
+            <tr
+              :class="{'group-list-close':item.close}"
+              v-for="(value,key) in item.properties"
+            >
+              <td :title="jsonSchema.properties[value].description">
+                {{ value }}
+              </td>
+              <td
+                :title="jsonSchema.properties[value].description"
+                v-show="jsonSchema.properties[value].type==='string' && !jsonSchema.properties[value].enum"
+              >
+                <input type="text" v-model="Imagery2.value" />
+              </td>
+              <td
+                v-show="jsonSchema.properties[value].type==='boolean'"
+                :title="jsonSchema.properties[value].description"
+              >
+                <input type="checkbox" v-model="Imagery2[value]" />
+              </td>
+              <td
+                :title="jsonSchema.properties[value].description"
+                v-show="jsonSchema.properties[value].type==='number' && jsonSchema.properties[value].default !== 1"
+              >
+                <input type="text" v-model="Imagery2[value]" />
+              </td>
+              <td
+                :title="jsonSchema.properties[value].description"
+                v-show="jsonSchema.properties[value].type==='number' && jsonSchema.properties[value].default === 1"
+              >
+                <input
+                  type="range"
+                  :min="0"
+                  :max="1"
+                  step="0.1"
+                  v-model="Imagery2[value]"
+                />
+              </td>
+              <td
+                :title="jsonSchema.properties[value].description"
+                v-show="jsonSchema.properties[value].type==='string' && jsonSchema.properties[value].enum"
+              >
+                <select v-model="Imagery2[value]">
+                  <option
+                    v-for="(value,key) in jsonSchema.properties[value].enum"
+                    :value="value"
+                    >{{ value }}</option
+                  >
+                </select>
+              </td>
+              <td
+                v-if="jsonSchema.properties[value].type==='array'"
+                :title="jsonSchema.properties[value].description"
+              >
+                <span>west</span
+                ><input type="text" v-model="Imagery2[value][0]" /><br />
+                <span>south</span
+                ><input type="text" v-model="Imagery2[value][1]" /><br />
+                <span>east</span
+                ><input type="text" v-model="Imagery2[value][2]" /><br />
+                <span>north</span
+                ><input type="text" v-model="Imagery2[value][3]" /><br />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="earth">
+        <div id="earthContainer"></div>
+        <button id="flyToButton" @click="changeurl">flyTo</button>
+      </div>
+    </div>
+
+    <script>
+      XE.ready().then(() => {
+        const xbsjEarth = new XE.Earth("earthContainer");
+        const imageryLayer = new XE.Obj.Imagery(xbsjEarth);
+        window.imageryLayer = imageryLayer;
+        const imageryProvider = new XE.ImageryProvider.XbsjImageryProvider();
+        imageryProvider.url =
+          "http://mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali";
+        // imageryProvider.url =
+        //   "http://mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali";
+        // imageryProvider.rectangle = [
+        //   -Math.PI,
+        //   -Math.PI * 0.5,
+        //   Math.PI,
+        //   Math.PI * 0.5
+        // ];
+        // imageryLayer.xbsjImageryProvider = imageryProvider;
+        imageryLayer.xbsjImageryProvider.type = imageryProvider._type;
+        imageryLayer.xbsjImageryProvider[
+          imageryProvider._type
+        ] = imageryProvider;
+
+        const imageryLayer2 = new XE.Obj.Imagery(xbsjEarth);
+        window.imageryLayer2 = imageryLayer2;
+        const imageryProvider2 = new XE.ImageryProvider.XbsjImageryProvider();
+        imageryProvider2.url =
+          "http://webrd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}";
+        imageryLayer2.xbsjImageryProvider.type = imageryProvider2._type;
+        imageryLayer2.xbsjImageryProvider[
+          imageryProvider._type
+        ] = imageryProvider2;
+
+        // setTimeout(() => imageryLayer.flyTo(), 1000);
+        document.getElementById("flyToButton").onclick = () =>
+          imageryLayer.flyTo();
+        var app = new Vue({
+          el: "#app",
+          data: {
+            Imagery: {},
+            jsonSchema: "",
+            imageryArray: [],
+            Imagery2: {},
+            jsonSchema2: "",
+            imageryArray2: []
+          },
+          created() {
+            // 复制
+            this.jsonSchema = JSON.parse(
+              JSON.stringify(imageryLayer._jsonSchema)
+            );
+            this.jsonSchema.properties.url = {
+              type: "string",
+              title: "url",
+              default: true,
+              description: "url"
+            };
+
+            this.Imagery = imageryLayer.toJSON(false);
+            this.imageryArray = JSON.parse(
+              JSON.stringify(imageryLayer._classification)
+            );
+
+            this.imageryArray.forEach(element => {
+              this.$set(element, "close", false);
+            });
+
+            this.jsonSchema2 = JSON.parse(
+              JSON.stringify(imageryLayer2._jsonSchema)
+            );
+            this.jsonSchema2.properties.url = {
+              type: "string",
+              title: "url",
+              default: true,
+              description: "url"
+            };
+
+            this.Imagery2 = imageryLayer2.toJSON(false);
+            this.imageryArray2 = JSON.parse(
+              JSON.stringify(imageryLayer2._classification)
+            );
+
+            this.imageryArray2.forEach(element => {
+              this.$set(element, "close", false);
+            });
+          },
+          mounted() {
+            this.$nextTick(() => {
+              this._viewUnbinds = this._viewUnbinds || [];
+              this.imageryArray.forEach(element => {
+                element.properties.forEach(el => {
+                  this._viewUnbinds.push(
+                    XE.MVVM.bind(
+                      this,
+                      "Imagery." + el,
+                      imageryLayer,
+                      el
+                    )
+                  );
+                });
+              });
+              this._viewUnbinds2 = this._viewUnbinds2 || [];
+              this.imageryArray2.forEach(element => {
+                element.properties.forEach(el => {
+                  this._viewUnbinds2.push(
+                    XE.MVVM.bind(
+                      this,
+                      "Imagery2." + el,
+                      imageryLayer2,
+                      el
+                    )
+                  );
+                });
+              });
+            });
+          },
+          methods: {
+            changeurl() {
+              imageryLayer.flyTo();
+            }
+          },
+          beforeDestroy() {
+            this._viewUnbinds.forEach(u => u());
+            this._viewUnbinds.length = 0;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

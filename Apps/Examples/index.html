@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>示例集合</title>
+
+    <script src="../../XbsjEarth/thirdParty/rxjs/6.5.2/rxjs.umd.min.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+
+    <link href="./scripts/codemirror/codemirror.min.css" rel="stylesheet">
+    <link href="./scripts/codemirror/theme/base16-dark.css" rel="stylesheet">
+    <link href="./scripts/codemirror/theme/seti.min.css" rel="stylesheet">
+    <link href="./scripts/codemirror/theme/base16-light.min.css" rel="stylesheet">
+    <script src="./scripts/codemirror/codemirror.min.js"></script>
+    <script src="./scripts/codemirror/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="./scripts/codemirror/mode/xml/xml.min.js"></script>
+    <script src="./scripts/codemirror/mode/javascript/javascript.min.js"></script>
+    <script src="./scripts/codemirror/vue-codemirror.js"></script>
+
+    <script>
+        Vue.use(VueCodemirror, /* {
+        options: { theme: 'base16-dark', ... },
+        events: ['scroll', ...]
+        } */);
+    </script>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .CodeMirror {
+            border: 0px solid #000;
+            font-size: 11pt;
+            font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, monospace;
+            height: 100%;
+        }
+
+        a:link    {color: #CCC;}
+        a:visited {color: #CCC;}
+        a:hover   {color: #CCC;}
+        a:active  {color: #CCC;}
+
+        #exampleList {
+            position: absolute; left: 0px; top: 0px; width: 200px; height: 100%; white-space: nowrap; background: #151718; padding: 5px;
+        }
+
+        #codeEditor {
+            position: absolute; width: calc(50% - 100px); background: #151718; height: 100%; left: 200px; top: 0px;
+        }
+
+        #earthWin {
+            position: absolute; width: calc(50% - 100px); background: #151718; height: 100%; right: 0px; top: 0px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="position: relative; width: 100%; height: 100%; overflow: hidden; color: #CCC;">
+        <div id="exampleList">
+            <h2>EarthSDK示例集</h2>
+            <template v-for="group in examples">
+                <h3>{{ group.title }}</h3>
+                <template v-for="e in group.list">
+                    <a class="elink" :href="e.url" @click.prevent="setCode(e.url)" :title="e.title">{{ e.title }}</a><br />
+                </template>
+            </template>
+        </div>
+
+        <div id="codeEditor">
+            <div style="height: 30px; line-height: 30px; padding-left: 8px; background: #151718; color: #CCC; position: relative;">
+                <input type="checkbox" v-model="autoRefresh">自动运行</button>
+                <button @click="apply">手动运行</button> 
+                <div style="height: 30px; line-height: 30px; position: absolute; right: 0px; top: 0px; padding-right: 8px;">
+                    <span>{{ title }}</span>
+                </div>
+            </div>
+            <code-editor v-model="code" style="width: 100%; height: calc(100% - 30px);"></code-editor>
+        </div>
+    
+        <div id="earthWin">
+            <iframe ref="earthAppFrame" src="./startup/createEarth.html" frameborder="0"
+                style="width:100%; height: 100%; position: relative; background: grey"></iframe>
+        </div>
+    </div>
+
+    <script src="./scripts/codeEditor.js"></script>
+    <script>
+        vueApp.examples = [
+            {
+                title: 'Earth起步',
+                list: [
+                    {
+                        url: './startup-createEarth.html',
+                        title: '创建地球',
+                    },
+                    {
+                        url: './startup-createEarthWithVue.html',
+                        title: '使用vue创建地球',
+                    },
+                    {
+                        url: './startup-binds-classic.html',
+                        title: '数据双向绑定-理论模型',
+                    },
+                    {
+                        url: './startup-binds-classic2.html',
+                        title: '数据双向绑定-理论模型2',
+                    },
+                    {
+                        url: './startup-binds.html',
+                        title: '数据双向绑定',
+                    },
+                    {
+                        url: './startup-tileset.html',
+                        title: '3dtiles数据加载',
+                    },
+                ]
+            },
+            {
+                title: 'Earth示例',
+                list: [
+                    {
+                        url: './earth-destroyEarth.html',
+                        title: '销毁地球',
+                    },
+                    {
+                        url: './earth-destroyEarthWithVue.html',
+                        title: '销毁vue创建的地球',
+                    },
+                    {
+                        url: './earth-nativeCesium.html',
+                        title: '原生Cesium API的调用',
+                    },
+                    {
+                        url: './earth-subsurface.html',
+                        title: '地下模式和地表透明',
+                    },
+                    {
+                        url: './earth-imageries.html',
+                        title: '影像加载',
+                    },
+                    {
+                        url: './earth-editing.html',
+                        title: '编辑互斥',
+                    },
+                ],
+            },
+            {
+                title: 'EarthUI示例',
+                list: [
+                    {
+                        url: './earthui-basic.html',
+                        title: '创建',
+                    },
+                    {
+                        url: './earthui-fromJSON.html',
+                        title: '从JSON创建场景结构',
+                    },
+                    {
+                        url: './earthui-custom.html',
+                        title: '自定义属性窗口',
+                    },
+                    {
+                        url: './earthui-xbsjUI.html',
+                        title: '内置UI组件',
+                    },
+                ],
+            }
+        ];
+
+        vueApp.setCode('./startup-createEarth.html');
+    </script>
+</body>
+
+</html>
