@@ -1,0 +1,2059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LabServer - XbsjEarth Documentation</title>
+
+    <!--[if lt IE 9]>
+      <script src="javascript/html5.js"></script>
+    <![endif]-->
+    <link href="styles/jsdoc-default.css" rel="stylesheet">
+    <link href="styles/prism.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">
+        <!-- <a href="index.html"><img src="Images/CesiumLogo.png" class="cesiumLogo"></a> -->
+        <a href="index.html">EarthSDK</a>
+        LabServer
+        <div class="titleCenterer"></div>
+    </h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <div class="class-description">CesiumLab服务访问控制</div>
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+
+    
+        
+    <div class="nameContainer">
+    <h4 class="name" id="LabServer">
+        <a href="#LabServer" class="doc-link"></a>
+        new LabServer<span class="signature">()</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="server">
+    <a href="#server" class="doc-link"></a>
+    server<span class="type-signature"> : string</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    CesiumLab服务地址
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <span class="details-header">Default Value:</span>
+    <code class="language-javascript">'http://localhost:9000/'</code>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="serverOnline">
+    <a href="#serverOnline" class="doc-link"></a>
+    serverOnline<span class="type-signature"> : string</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    CesiumLab在线服务服务地址
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <span class="details-header">Default Value:</span>
+    <code class="language-javascript">'http://114.116.116.117/'</code>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="addScene">
+        <a href="#addScene" class="doc-link"></a>
+        addScene<span class="signature">(name, content)</span> &rarr; <span class="type-signature returnType">Promise</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    添加一个场景
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                场景名称</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>content</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                场景内容</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+    
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="deleteStyle">
+        <a href="#deleteStyle" class="doc-link"></a>
+        deleteStyle<span class="signature">(id)</span> &rarr; <span class="type-signature returnType">Promise</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    删除样式
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                样式id</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+    
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="geocoder">
+        <a href="#geocoder" class="doc-link"></a>
+        geocoder<span class="signature">(key)</span> &rarr; <span class="type-signature returnType">Promise</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    位置查询
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                查询关键字</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+    
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="imageLayers">
+        <a href="#imageLayers" class="doc-link"></a>
+        imageLayers<span class="signature">(key)</span> &rarr; <span class="type-signature returnType">Promise</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    查询列出影像服务
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                查询关键字</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+    
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="modelLayers">
+        <a href="#modelLayers" class="doc-link"></a>
+        modelLayers<span class="signature">(key)</span> &rarr; <span class="type-signature returnType">Promise</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    查询列出瓦片服务
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                查询关键字</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+    
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="newStyle">
+        <a href="#newStyle" class="doc-link"></a>
+        newStyle<span class="signature">(name, code, thumbnail)</span> &rarr; <span class="type-signature returnType">Promise</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    新建样式
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                样式名称</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>code</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                样式代码</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>thumbnail</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                样式缩略图</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+    
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="queryScene">
+        <a href="#queryScene" class="doc-link"></a>
+        queryScene<span class="signature">(id)</span> &rarr; <span class="type-signature returnType">Promise</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    获取一个场景的内容
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                场景id</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+    
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="rename">
+        <a href="#rename" class="doc-link"></a>
+        rename<span class="signature">(type, id, name)</span> &rarr; <span class="type-signature returnType">Promise</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    更新数据库对象的名称
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                服务类型 terrain,image,model,style,scene</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                对象id</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                对象新名称</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+    
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="styles">
+        <a href="#styles" class="doc-link"></a>
+        styles<span class="signature">(key)</span> &rarr; <span class="type-signature returnType">Promise</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    查询列出样式
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                查询关键字</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+    
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="terrainLayers">
+        <a href="#terrainLayers" class="doc-link"></a>
+        terrainLayers<span class="signature">(key)</span> &rarr; <span class="type-signature returnType">Promise</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    查询列出地形服务
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                查询关键字</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+    
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="updateLayerThumbnail">
+        <a href="#updateLayerThumbnail" class="doc-link"></a>
+        updateLayerThumbnail<span class="signature">(type, id, img)</span> &rarr; <span class="type-signature returnType">Promise</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    更新数据库对象的缩略图
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                服务类型 terrain,image,model,style,scene</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                对象id</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>img</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                缩略图地址</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+    
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="updateScene">
+        <a href="#updateScene" class="doc-link"></a>
+        updateScene<span class="signature">(id, content)</span> &rarr; <span class="type-signature returnType">Promise</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    更新场景内容
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                场景id</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>content</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                场景内容</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+    
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+    <footer>
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a>
+    </footer>
+</div>
+
+<div class="nav">
+    <div class="menu">
+        <input type="text" class="classFilter" id="ClassFilter" placeholder="Search">
+        <ul id="ClassList"><li data-name="CameraViewManager"><a href="CameraViewManager.html">CameraViewManager</a></li><li data-name="ColorPicker"><a href="ColorPicker.html">ColorPicker</a></li><li data-name="ContextMenu"><a href="ContextMenu.html">ContextMenu</a></li><li data-name="ControlsCollection"><a href="ControlsCollection.html">ControlsCollection</a></li><li data-name="CutFillComputing"><a href="CutFillComputing.html">CutFillComputing</a></li><li data-name="FeatureProperty"><a href="FeatureProperty.html">FeatureProperty</a></li><li data-name="ImageryLab"><a href="ImageryLab.html">ImageryLab</a></li><li data-name="ImageryOnline"><a href="ImageryOnline.html">ImageryOnline</a></li><li data-name="ImageryWMTS"><a href="ImageryWMTS.html">ImageryWMTS</a></li><li data-name="LabScene"><a href="LabScene.html">LabScene</a></li><li data-name="LabServer"><a href="LabServer.html">LabServer</a></li><li data-name="MainBar"><a href="MainBar.html">MainBar</a></li><li data-name="MainUI"><a href="MainUI.html">MainUI</a></li><li data-name="ModelLab"><a href="ModelLab.html">ModelLab</a></li><li data-name="ModelOnline"><a href="ModelOnline.html">ModelOnline</a></li><li data-name="ModelTree"><a href="ModelTree.html">ModelTree</a></li><li data-name="SceneTree"><a href="SceneTree.html">SceneTree</a></li><li data-name="StatusBar"><a href="StatusBar.html">StatusBar</a></li><li data-name="TerrainLab"><a href="TerrainLab.html">TerrainLab</a></li><li data-name="TerrainOnline"><a href="TerrainOnline.html">TerrainOnline</a></li><li data-name="TilesetPage"><a href="TilesetPage.html">TilesetPage</a></li><li data-name="ToolsCollection"><a href="ToolsCollection.html">ToolsCollection</a></li></ul>
+    </div>
+</div>
+
+<script>
+if (window.frameElement) {
+    document.body.className = 'embedded';
+
+    var ele = document.createElement('a');
+    ele.className = 'popout';
+    ele.target = '_blank';
+    ele.href = window.location.href;
+    ele.title = 'Pop out';
+    document.getElementById('main').appendChild(ele);
+}
+
+// Set targets on external links.  Sandcastle and GitHub shouldn't be embedded in any iframe.
+Array.prototype.forEach.call(document.getElementsByTagName('a'), function(a) {
+    if (/^https?:/i.test(a.getAttribute('href'))) {
+        a.target='_blank';
+    }
+});
+</script>
+
+<script src="javascript/prism.js"></script>
+<script src="javascript/cesiumDoc.js"></script>
+
+</body>
+</html>
