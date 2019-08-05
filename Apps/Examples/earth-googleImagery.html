@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>创建地球</title>
+    <title>谷歌影像</title>
     <!-- 0 引入js文件 -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <style>
@@ -32,20 +32,23 @@
             earth.sceneTree.root = {
                 "children": [
                     {
-                        "title": "默认离线影像",
+                        "title": "谷歌影像",
                         "czmObject": {
                             "xbsjType": "Imagery",
+                            "xbsjGuid": "fdcf9733-3e17-4d89-aaee-46a50ca834e9",
+                            "name": "谷歌影像",
+                            "show": false,
                             "xbsjImageryProvider": {
-                                "createTileMapServiceImageryProvider": {
-                                    url: XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
-                                    fileExtension: 'jpg',
+                                "XbsjImageryProvider": {
+                                    "url": "http://mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali"
                                 },
-                                "type": "createTileMapServiceImageryProvider"
+                                "UrlTemplateImageryProvider": {},
+                                "WebMapTileServiceImageryProvider": {}
                             }
                         }
-                    },
+                    }
                 ]
-            };
+            }
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
