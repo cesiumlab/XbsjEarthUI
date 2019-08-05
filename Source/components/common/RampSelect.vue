@@ -2,15 +2,15 @@
   <div class="container">
     <!-- <canvas class="srcimg" ref="srcimg"></canvas>-->
 
-    <img :src="srcimg" ref="srcimg" class="srcimg" @load="updateItems">
+    <img :src="srcimg" ref="srcimg" class="srcimg" @load="updateItems" />
 
     <div class="current" @click="showlist=!showlist">
-      <img v-if="selected" :src="selected.img">
+      <img v-if="selected" :src="selected.img" />
     </div>
 
     <div class="list" v-show="showlist">
       <div class="row" v-for="it in items" @click="select(it)">
-        <img :src="it.img">
+        <img :src="it.img" />
       </div>
     </div>
   </div>
@@ -18,7 +18,18 @@
 
 <script>
 export default {
-  props: [],
+  model: {
+    prop: "image",
+    event: "imageChanged"
+  },
+  props: {
+    image: {
+      type: String,
+      default() {
+        return "";
+      }
+    }
+  },
   data() {
     return {
       selected: null,
@@ -28,13 +39,9 @@ export default {
     };
   },
   created() {},
-  mounted() {
-
-   
- 
-  },
+  mounted() {},
   methods: {
-    updateItems(){
+    updateItems() {
       var src = this.$refs.srcimg;
       let height = 0;
       while (height + 10 < src.height) {
@@ -57,6 +64,7 @@ export default {
       this.selected = it;
       this.showlist = false;
       this.$emit("selected", it);
+      this.$emit('imageChanged',it.image);
     }
   }
 };

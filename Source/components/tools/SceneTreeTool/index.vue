@@ -140,8 +140,7 @@ export default {
           property: "属性",
           addFolder: "添加文件夹",
           style: "样式",
-          moving: "拖拽移动",
-          shader: "分层着色",
+          moving: "拖拽移动", 
           newFolder: "新建文件夹",
           title: "图层管理"
         },
@@ -155,8 +154,7 @@ export default {
           property: "property",
           addFolder: "add folder",
           style: "style",
-          moving: "drag",
-          shader: "layer shader",
+          moving: "drag", 
           newFolder: "new folder",
           title: "Layer Manager"
         }
@@ -341,18 +339,7 @@ export default {
                     item._inner.sn.czmObject.xbsjUseOriginTransform = false;
                   }
                 }
-              },
-              {
-                text: this.lang.shader,
-                func: () => {
-                  this.$root.$earthUI.showPropertyWindow(
-                    item._inner.sn.czmObject,
-                    {
-                      component: "GeologyWindow"
-                    }
-                  );
-                }
-              }
+              }  
             ]
           );
         }
