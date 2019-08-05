@@ -222,7 +222,7 @@ export default {
         if (!s) {
           this.shadeType = "";
         } else {
-          this.shadeType = s._type;
+          this.shadeType = s.xbsjType;
         }
         //console.log(this.shadeType);
         this.contourEnable = this.$root.$earth.terrainEffect.contour.enabled;

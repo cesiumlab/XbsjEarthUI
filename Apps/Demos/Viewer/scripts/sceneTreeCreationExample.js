@@ -77,61 +77,6 @@ function sceneTreeCreateExample1(xbsjEarth) {
             g00.children.push(imageryLayerSO);
         }
 
-        // // 谷歌影像加载
-        // for (let i=0; i<4; ++i) {
-        //     var googleImageryLayer = new XE.Obj.Imagery(xbsjEarth);
-        //     window.googleImageryLayer = googleImageryLayer;
-
-        //     const imageryProvider = new XE.ImageryProvider.XbsjImageryProvider();
-        //     imageryProvider.url = 'http://www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}';
-        //     imageryProvider.rectangle = [-Math.PI, -Math.PI * 0.5, Math.PI, Math.PI * 0.5];
-        //     imageryProvider.srcCoordType = 'GCJ02';
-        //     imageryProvider.dstCoordType = 'WGS84';
-        //     // googleImageryLayer.xbsjImageryProvider = imageryProvider;
-        //     googleImageryLayer.xbsjImageryProvider.type = imageryProvider._type;
-        //     googleImageryLayer.xbsjImageryProvider[imageryProvider._type] = imageryProvider;
-
-        //     const googleImageryLayerSO = new XE.SceneTree.Leaf(googleImageryLayer);
-        //     googleImageryLayerSO.title = '谷歌影像+标注';
-        //     g00.children.push(googleImageryLayerSO);
-        // }
-
-        // // 谷歌影像加载
-        // for (let i=0; i<5; ++i) {
-        //     var googleImageryLayer = new XE.Obj.Imagery(xbsjEarth);
-        //     window.googleImageryLayer = googleImageryLayer;
-
-        //     const imageryProvider = new XE.ImageryProvider.UrlTemplateImageryProvider();
-        //     imageryProvider.url = 'http://www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}';
-        //     imageryProvider.rectangle = [-Math.PI, -Math.PI * 0.5, Math.PI, Math.PI * 0.5];
-        //     // googleImageryLayer.xbsjImageryProvider = imageryProvider;
-        //     googleImageryLayer.xbsjImageryProvider.type = imageryProvider._type;
-        //     googleImageryLayer.xbsjImageryProvider[imageryProvider._type] = imageryProvider;
-
-        //     const googleImageryLayerSO = new XE.SceneTree.Leaf(googleImageryLayer);
-        //     googleImageryLayerSO.title = '谷歌影像+标注';
-        //     g00.children.push(googleImageryLayerSO);
-        // }
-
-        // 百度影像加载
-        // {
-        //     var imageryLayer = new XE.Obj.Imagery(xbsjEarth);
-        //     window.baiduImageryLayer = imageryLayer;
-
-        //     const imageryProvider = new XE.ImageryProvider.XbsjImageryProvider();
-        //     imageryProvider.url = 'http://online2.map.bdimg.com/onlinelabel/?qt=tile&styles=pl&x={x}&y={y}&z={z}';
-        //     imageryProvider.rectangle = [-Math.PI, -Math.PI * 0.5, Math.PI, Math.PI * 0.5];
-        //     imageryProvider.srcCoordType = 'BD09';
-        //     // googleImageryLayer.xbsjImageryProvider = imageryProvider;
-        //     imageryLayer.xbsjImageryProvider.type = imageryProvider._type;
-        //     imageryLayer.xbsjImageryProvider[imageryProvider._type] = imageryProvider;
-        //     imageryLayer.show = false;
-
-        //     const baiduImageryLayerSO = new XE.SceneTree.Leaf(imageryLayer);
-        //     baiduImageryLayerSO.title = '百度影像';
-        //     g00.children.push(baiduImageryLayerSO);
-        // }
-
         // 中国地形加载
         {
             var chinaTerrain = new XE.Obj.Terrain(xbsjEarth);

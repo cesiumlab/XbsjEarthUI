@@ -61,7 +61,7 @@ function createVueNode(xbsjSceneNode) {
   ivuNode.isSelected = xbsjSceneNode.isSelected;
   ivuNode.checkStatus = xbsjSceneNode.checkStatus;
   if(xbsjSceneNode.czmObject){ //判断是否有type属性，用于展示树状结构图标
-      ivuNode.type = xbsjSceneNode.czmObject._type;
+      ivuNode.type = xbsjSceneNode.czmObject.xbsjType;
   }else{
       ivuNode.type = 'ios-folder'
   }
@@ -312,7 +312,7 @@ export default {
         );
 
         //如果是tileset 那么增加几个属性   样式，移动，分层着色
-        if (item._inner.sn.czmObject._type == "Tileset") {
+        if (item._inner.sn.czmObject.xbsjType == "Tileset") {
           baseItems.push(
             ...[
               {
@@ -376,7 +376,7 @@ export default {
       if (czmObject) {
         czmObject.flyTo();
 
-        let t = czmObject._type;
+        let t = czmObject.xbsjType;
         //根据类型去显示界面
         if (t == "XbsjTileset")
           this.$root.$earthUI.controls.mainBar.showPage("model");

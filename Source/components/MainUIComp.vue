@@ -235,8 +235,8 @@ export default {
         component = options.component;
       }
       //如果有默认映射
-      else if (czmObject._type) {
-        var c = this.registerComponents[czmObject._type];
+      else if (czmObject.xbsjType) {
+        var c = this.registerComponents[czmObject.xbsjType];
         if (c) {
           component = c;
         }
