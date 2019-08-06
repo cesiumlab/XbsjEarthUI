@@ -51,7 +51,6 @@
                     positionEditing2: [0, 0, 0],
                     rotationEditing2: [0, 0, 0],
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
-                    _bgImagery: undefined,
                 };
             },
             // 1.1 资源创建
@@ -92,12 +91,6 @@
                 window.tileset1 = tileset1;
                 window.tileset2 = tileset2;
 
-                XE.MVVM.watch(tileset1, 'ready', ready => {
-                    if (ready) {
-                        tileset1.flyTo();
-                    }
-                });
-
                 // 1.1.5 数据绑定
                 {
                     this._disposers = [];
@@ -105,6 +98,12 @@
                     this._disposers.push(XE.MVVM.bind(this, 'rotationEditing1', tileset1, 'rotationEditing'));
                     this._disposers.push(XE.MVVM.bind(this, 'rotationEditing2', tileset2, 'rotationEditing'));
                     this._disposers.push(XE.MVVM.bind(this, 'positionEditing2', tileset2, 'positionEditing'));
+
+                    this._disposers.push(XE.MVVM.watch(tileset1, 'ready', ready => {
+                        if (ready) {
+                            tileset1.flyTo();
+                        }
+                    }));
                 }
 
                 this._earth = earth;
@@ -112,7 +111,6 @@
             // 1.2 资源销毁
             beforeDestroy() {
                 // vue程序销毁时，需要清理相关资源
-                this._bgImagery = this._bgImagery && this._bgImagery.destroy();
                 this._earth = this._earth && this._earth.destroy();
                 this._disposers.forEach(d => d());
                 this._disposers.length = 0;
