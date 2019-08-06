@@ -76,31 +76,51 @@ function createVertexShad() {
             czmObject.url = url;
 
             function customShader(tileset, attribNum = 3) {
-                if (attribNum > 8) {
+                if (attribNum > 32) {
                     throw new Error('attribNum不能大于8！');
                 }
 
                 //注意这个大小和下面必须一致
                 var t = new Cesium.Texture({ context: uia.earth.czm.scene.context, width: 282, height: 10 });
 
+                // var header = `varying vec${attribNum < 4 ? attribNum : 4} v_custom_1;` + 
+                //     (attribNum > 4 ? `varying vec${attribNum - 4} v_custom_2;` : '');
 
-                var header = `varying vec${attribNum < 4 ? attribNum : 4} v_custom_1;` + (attribNum > 4 ? `varying vec${attribNum - 4} v_custom_2;` : '');
+                var header = '';
+                var vsBody = '';
+                var fsComp = '';
+                const an = attribNum / 4;
+                const last = attribNum % 4;
+                for (let i=0; i<an; i+=1.0) {
+                    header += `varying vec4 v_custom_${i+1};`;
+                    vsBody += `v_custom_${i+1}=a_custom_${i+1};`;
+                    const sub = (i*4).toFixed(1);
+                    fsComp += `xbsjv += dot(step(vec4(0.0, 1.0, 2.0, 3.0), vec4(xbsji-${sub})) * step(vec4(xbsji-${sub}), vec4(1.0, 2.0, 3.0, 4.0)), vec4(v_custom_${i+1}));`;
+                }
+                if (last > 0) {
+                    const la = parseInt(an) + 1;
+                    header += `varying vec${last} v_custom_${la+1};`;
+                    vsBody += `v_custom_${la+1}=a_custom_${la+1};`;
+                    const sub = (la*4).toFixed(1);
+                    const patch = ', 0.0'.repeat(4 - last);
+                    fsComp += `xbsjv += dot(step(vec4(0.0, 1.0, 2.0, 3.0), vec4(xbsji-${sub})) * step(vec4(xbsji-${sub}), vec4(1.0, 2.0, 3.0, 4.0)), vec4(v_custom_${la+1}${patch}));`;
+                }
+
                 var cs = {
-                    //vsHeader: `varying vec3 v_custom_1;`,
                     vsHeader: header,
-                    vsBody: 'v_custom_1 = a_custom_1;' + (attribNum > 4 ? 'v_custom_2 = a_custom_2;' : ''),
+                    vsBody: vsBody,
                     fsHeader: header,
                     fsBody: '',
                 };
 
                 cs.fsBody = `
-        float xbsji = u_xbsjCustomParams.z; 
-        float xbsjv = dot(step(vec4(0.0, 1.0, 2.0, 3.0), vec4(xbsji)) * step(vec4(xbsji), vec4(1.0, 2.0, 3.0, 4.0)), vec4(v_custom_1${', 0.0'.repeat(attribNum < 4 ? (4 - attribNum) : 0)}));
-        ${attribNum > 4 ? `xbsjv += dot(step(vec4(4.0, 5.0, 6.0, 7.0), vec4(xbsji)) * step(vec4(xbsji), vec4(4.0, 5.0, 6.0, 7.0)), vec4(v_custom_2${', 0.0'.repeat(8 - attribNum)}));` : ''}
-        float xbsjvv = smoothstep(u_xbsjCustomParams.x, u_xbsjCustomParams.y, xbsjv);
-        vec4 color = texture2D(u_xbsjCustomTexture, vec2(xbsjvv, u_xbsjCustomParams.w)); 
-        gl_FragColor = vec4(color.xyz, 1.0); 
-    `;
+                    float xbsji = u_xbsjCustomParams.z; 
+                    float xbsjv = 0.0;
+                    ${fsComp}
+                    float xbsjvv = smoothstep(u_xbsjCustomParams.x, u_xbsjCustomParams.y, xbsjv);
+                    vec4 color = texture2D(u_xbsjCustomTexture, vec2(xbsjvv, u_xbsjCustomParams.w)); 
+                    gl_FragColor = vec4(color.xyz, 1.0); 
+                `;
 
                 tileset._xbsjCustomTexture = t;
                 tileset.xbsjCustomShader = cs;
