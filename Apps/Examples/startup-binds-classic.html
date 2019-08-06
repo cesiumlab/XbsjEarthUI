@@ -56,26 +56,29 @@
 
             // 2 创建地球
             var earth = new XE.Earth(app.$refs.subComp.$refs.earthContainer);
-            earth.xbsjFromJSON({
-                "sceneTree": {
-                    "root": {
-                        "expand": true,
-                        "title": "预览场景",
-                        "children": [{
-                            "czmObject": {
-                                "xbsjType": "Imagery",
-                                "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig
-                            },
-                            "enabled": true,
-                            "title": '默认影像'
-                        }],
-                    }
-                }
-            });
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "title": "默认离线影像",
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "createTileMapServiceImageryProvider": {
+                                    url: XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    fileExtension: 'jpg',
+                                },
+                                "type": "createTileMapServiceImageryProvider"
+                            }
+                        }
+                    },
+                ]
+            };
+
+            var bgImagery = earth.sceneTree.root.children[0].czmObject;
 
             // 3 双向数据绑定
-            var showUnbind = XE.MVVM.bind(app.$refs.subComp, 'imageryShow', earth.sceneTree.root.children[0].czmObject, 'show');
-            var alphaUnbind = XE.MVVM.bind(app.$refs.subComp, 'imageryAlpha', earth.sceneTree.root.children[0].czmObject, 'alpha');
+            var showUnbind = XE.MVVM.bind(app.$refs.subComp, 'imageryShow', bgImagery, 'show');
+            var alphaUnbind = XE.MVVM.bind(app.$refs.subComp, 'imageryAlpha', bgImagery, 'alpha');
         });
     </script>
 
