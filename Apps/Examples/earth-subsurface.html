@@ -52,27 +52,35 @@
                 // 1.1.1 创建地球
                 var earth = new XE.Earth(this.$refs.earthContainer);
 
-                // 1.1.2 添加谷歌影像
-                var googleImageryLayer = new XE.Obj.Imagery(earth);
-                googleImageryLayer.xbsjImageryProvider = {
-                    type: 'XbsjImageryProvider',
-                    XbsjImageryProvider: {
-                        url: 'http://mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali',
-                        rectangle: [-Math.PI, -Math.PI * 0.5, Math.PI, Math.PI * 0.5],
-                    },
-                };
-
-                // 1.1.3 添加地形
-                var chinaTerrain = new XE.Obj.Terrain(earth);
-                chinaTerrain.show = false;
-                chinaTerrain.xbsjTerrainProvider = {
-                    XbsjCesiumTerrainProvider: {
-                        url: 'http://114.116.116.117/api/wmts/terrain/5cbb024d053f8d0e8018cc0d',
-                    },
-                    type: 'XbsjCesiumTerrainProvider'
+                earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "title": "谷歌影像",
+                            "czmObject": {
+                                "xbsjType": "Imagery",
+                                "xbsjImageryProvider": {
+                                    "XbsjImageryProvider": {
+                                        "url": "http://mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali",
+                                    },
+                                }
+                            },
+                        },
+                        {
+                            "title": "地形",
+                            "czmObject": {
+                                "xbsjType": "Terrain",
+                                "xbsjTerrainProvider": {
+                                    "type": "XbsjCesiumTerrainProvider",
+                                    "XbsjCesiumTerrainProvider": {
+                                        "url": "http://lab2.cesiumlab.com:9000/terrain/577fd5b0ac1f11e99dbd8fd044883638",
+                                    }
+                                },
+                            }
+                        }
+                    ]
                 }
 
-                // 1.1.4 添加模型
+                // 1.1.2 使用Cesium原生API来添加模型
                 {
                     // 通过earth.czm.viewer获得viewer
                     var viewer = earth.czm.viewer;
@@ -92,7 +100,7 @@
                     viewer.trackedEntity = entity;
                 }
 
-                // 1.1.5 数据绑定
+                // 1.1.3 数据绑定
                 {
                     this._disposers = [];
                     this._disposers.push(XE.MVVM.bind(this, 'subSurfaceEnabled', earth.terrainEffect, 'subSurfaceEnabled'));
@@ -104,12 +112,10 @@
                 }
 
                 this._earth = earth;
-                this._bgImagery = bgImagery;
             },
             // 1.2 资源销毁
             beforeDestroy() {
                 // vue程序销毁时，需要清理相关资源
-                this._bgImagery = this._bgImagery && this._bgImagery.destroy();
                 this._earth = this._earth && this._earth.destroy();
                 this._disposers.forEach(d => d());
                 this._disposers.length = 0;

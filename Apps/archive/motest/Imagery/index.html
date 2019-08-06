@@ -296,9 +296,9 @@
         //   Math.PI * 0.5
         // ];
         // imageryLayer.xbsjImageryProvider = imageryProvider;
-        imageryLayer.xbsjImageryProvider.type = imageryProvider._type;
+        imageryLayer.xbsjImageryProvider.type = imageryProvider.xbsjType;
         imageryLayer.xbsjImageryProvider[
-          imageryProvider._type
+          imageryProvider.xbsjType
         ] = imageryProvider;
 
         const imageryLayer2 = new XE.Obj.Imagery(xbsjEarth);
@@ -306,9 +306,9 @@
         const imageryProvider2 = new XE.ImageryProvider.XbsjImageryProvider();
         imageryProvider2.url =
           "http://webrd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}";
-        imageryLayer2.xbsjImageryProvider.type = imageryProvider2._type;
+        imageryLayer2.xbsjImageryProvider.type = imageryProvider2.xbsjType;
         imageryLayer2.xbsjImageryProvider[
-          imageryProvider._type
+          imageryProvider.xbsjType
         ] = imageryProvider2;
 
         // setTimeout(() => imageryLayer.flyTo(), 1000);

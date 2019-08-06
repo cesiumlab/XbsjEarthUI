@@ -24,39 +24,35 @@
 
     <script>
         XbsjEarthUI.create('main').then(earthUI => {
-            earthUI.earth.xbsjFromJSON({
-                "sceneTree": {
-                    "root": {
-                        "expand": true,
-                        "title": "预览场景",
-                        "children": [{
-                            "expand": true,
-                            "title": "三维瓦片组",
-                            "children": [{
-                                "czmObject": {
-                                    "xbsjType": "Tileset",
-                                    "url": '../assets/dayanta/tileset.json'
+            earthUI.earth.sceneTree.root = {
+                "expand": true,
+                "title": "预览场景",
+                "children": [{
+                    "expand": true,
+                    "title": "三维瓦片组",
+                    "children": [{
+                        "czmObject": {
+                            "name": '大雁塔',
+                            "xbsjType": "Tileset",
+                            "url": '../assets/dayanta/tileset.json'
+                        },
+                        "enabled": true,
+                    }, {
+                        "czmObject": {
+                            "name": '默认影像',
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "createTileMapServiceImageryProvider": {
+                                    "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    "fileExtension": 'jpg',
                                 },
-                                "enabled": true,
-                                "title": '大雁塔'
-                            }, {
-                                "czmObject": {
-                                    "xbsjType": "Imagery",
-                                    "xbsjImageryProvider": {
-                                        createTileMapServiceImageryProvider: {
-                                            url: XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
-                                            fileExtension: 'jpg',
-                                        },
-                                        type: 'createTileMapServiceImageryProvider',
-                                    },
-                                },
-                                "enabled": true,
-                                "title": '默认影像'
-                            }],
-                        }]
-                    }
-                }
-            });
+                                "type": 'createTileMapServiceImageryProvider',
+                            },
+                        },
+                        "enabled": true,
+                    }],
+                }]
+            };
 
             // only for Debug
             window.uia = earthUI;

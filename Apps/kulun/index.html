@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>库伦数据演示</title>
+    <script src="../../XbsjEarthUI/xbsj.js"></script>
+    <script src="./LayerShad.js"></script>
+    <script src="./VertexShad.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .layerShad {
+            background: url(./open.png) no-repeat;
+            background-size: contain;
+            cursor: pointer;
+        }
+
+        .layerShad.highlight,
+        .layerShad:hover {
+            background: url(./open_on.png) no-repeat;
+            background-size: contain;
+            cursor: pointer;
+        }
+
+        .vertexShad {
+            background: url(./open.png) no-repeat;
+            background-size: contain;
+            cursor: pointer;
+        }
+
+        .vertexShad.highlight,
+        .vertexShad:hover {
+            background: url(./open_on.png) no-repeat;
+            background-size: contain;
+            cursor: pointer;
+        }
+
+
+
+        .layerShadWindow td {
+            border: #000 1px solid;
+            width: 30%;
+            padding-right: 20px;
+            text-align: center;
+        }
+
+        .layerShadWindow .geologydec {
+            height: 40px;
+            width: 100%;
+        }
+
+        .layerShadWindow .table {
+            border: 1px solid #000;
+        }
+
+        .layerShadWindow .table-head {
+            width: 100%;
+            height: 20px;
+            border-bottom: 1px solid #000;
+        }
+
+        .layerShadWindow .table-head-td {
+            border-right: 1px solid #000;
+            height: 20px;
+            display: inline-block;
+            line-height: 20px;
+            text-align: center;
+        }
+
+        .layerShlayerShadWindowad .table-head-td:last-child {
+            border-right: none;
+        }
+
+        .layerShadWindow .table-tr {
+            border-bottom: 1px solid #000;
+            height: 40px;
+        }
+
+        
+
+        .layerShadWindow .table-td {
+            width: 30%;
+            border-right: 1px solid #000;
+            display: inline-block;
+            line-height: 40px;
+            height: 40px;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin: 0 auto;
+        }
+
+        .layerShadWindow .table-td:last-child {
+            border-right: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="main">
+    </div>
+
+
+
+    <script>
+        XbsjEarthUI.create('main').then((earthUI) => {
+            window.uia = earthUI;
+            var earth = earthUI.earth;
+
+            var urlOptions = Cesium.queryToObject(window.location.search.substring(1));
+
+            //获取url参数，如果有场景地址，那么先获取场景信息 
+            if (urlOptions.scene) {
+                earthUI.labScene.loadScene(urlOptions.scene);
+            } else {
+                const g0 = new XE.SceneTree.Group(earth);
+                g0.title = '地质模型'
+                earth.sceneTree.root.children.push(g0);
+                //添加一个谷歌在线影像 
+                {
+                    var googleImageryLayer = new XE.Obj.Imagery(earth);
+                    googleImageryLayer.xbsjImageryProvider.type = 'XbsjImageryProvider';
+                    googleImageryLayer.xbsjImageryProvider['XbsjImageryProvider'] = {
+                        url: 'http://mt1.google.cn/vt/lyrs=s,h&gl=cn&x={x}&y={y}&z={z}&s=Gali',
+                        rectangle: [-Math.PI, -Math.PI * 0.5, Math.PI, Math.PI * 0.5],
+                        srcCoordType: 'GCJ02',
+                        dstCoordType: 'WGS84'
+                    };
+                    const so = new XE.SceneTree.Leaf(googleImageryLayer);
+                    so.title = '谷歌影像';
+                    g0.children.push(so);
+                }
+            }
+
+            var layerShad = createLayerShad();
+
+            //添加两个自定义按钮
+            //第一个分层着色
+            earthUI.controls.mainBar.tileset.addCustomButton({
+                cls: function () {
+                    return "layerShad";
+                },
+                title: function () {
+                    return "分层着色";
+                },
+                click: function () {
+
+                    //如果没有当前选中，那么提示
+                    let selected = earth.sceneTree.currentSelectedNode;
+                    if (selected && selected.czmObject && selected.czmObject instanceof XE.Obj
+                        .Tileset) {
+
+                        let tileset = selected.czmObject;
+                        if (!tileset._tileset) return;
+
+                        var properties = tileset._tileset._properties;
+
+                        if (properties.features && properties.layerNames) {
+                            earthUI.showPropertyWindow(tileset, {
+                                component: layerShad
+                            });
+                            return;
+                        }
+
+                    }
+                    earthUI.promptInfo("请选择一个地质数据层", "warning");
+
+                }
+            });
+
+            var vertexShad = createVertexShad();
+            //第二个顶点着色
+            earthUI.controls.mainBar.tileset.addCustomButton({
+                cls: function () {
+                    return "vertexShad";
+                },
+                title: function () {
+                    return "顶点着色";
+                },
+                click: function () {
+                    let selected = earth.sceneTree.currentSelectedNode;
+                    if (selected && selected.czmObject && selected.czmObject instanceof XE.Obj
+                        .Tileset) {
+                        let tileset = selected.czmObject;
+                        if (!tileset._tileset) return;
+
+                        var properties = tileset._tileset._properties;
+
+                        if (properties.nodeDatas) {
+                            earthUI.showPropertyWindow(tileset, {
+                                component: vertexShad
+                            });
+                            return;
+                        }
+
+                    }
+                    earthUI.promptInfo("请选择一个地质数据层", "warning");
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
