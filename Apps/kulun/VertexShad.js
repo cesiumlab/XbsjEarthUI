@@ -5,7 +5,7 @@ function createVertexShad() {
             getBind: Function
         },
         template: `
-   <Window :width="530" :height="400" title="地质分层着色" @cancel="close"   class="vertexShadWindow">
+   <Window :width="530" :height="400" title="地质顶点着色" @cancel="close"   class="vertexShadWindow">
 
  <div style="display:flex;" class="custom-item">
    <label class="custom-label">字段:</label> 
@@ -94,18 +94,12 @@ function createVertexShad() {
                 };
 
                 cs.fsBody = `
-        float xbsji = u_xbsjCustomParams.z;
-
-        //float xbsjv = dot(step(vec3(0.0, 1.0, 2.0), vec3(xbsji, xbsji, xbsji)) * step(vec3(xbsji, xbsji, xbsji), vec3(1.0, 2.0, 3.0)), v_custom_1);
-        
+        float xbsji = u_xbsjCustomParams.z; 
         float xbsjv = dot(step(vec4(0.0, 1.0, 2.0, 3.0), vec4(xbsji)) * step(vec4(xbsji), vec4(1.0, 2.0, 3.0, 4.0)), vec4(v_custom_1${', 0.0'.repeat(attribNum < 4 ? (4 - attribNum) : 0)}));
         ${attribNum > 4 ? `xbsjv += dot(step(vec4(4.0, 5.0, 6.0, 7.0), vec4(xbsji)) * step(vec4(xbsji), vec4(4.0, 5.0, 6.0, 7.0)), vec4(v_custom_2${', 0.0'.repeat(8 - attribNum)}));` : ''}
-
         float xbsjvv = smoothstep(u_xbsjCustomParams.x, u_xbsjCustomParams.y, xbsjv);
-
-        vec4 color = texture2D(u_xbsjCustomTexture, vec2(xbsjvv, u_xbsjCustomParams.w));
-        gl_FragColor *= vec4(color.rgb, 1.0);
-        //gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);
+        vec4 color = texture2D(u_xbsjCustomTexture, vec2(xbsjvv, u_xbsjCustomParams.w)); 
+        gl_FragColor = vec4(color.xyz, 1.0); 
     `;
 
                 tileset._xbsjCustomTexture = t;
