@@ -179,8 +179,8 @@
         ];
 
         var q={};location.search.replace(/([^?&=]+)=([^&]+)/g,(_,k,v)=>q[k]=v);
-        if (q.id) {
-            vueApp.setCode(`./${q.id}.html`);
+        if (q.url) {
+            vueApp.setCode(q.url);
         } else {
             vueApp.setCode('./startup-createEarth.html');
         }
