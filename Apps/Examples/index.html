@@ -178,7 +178,13 @@
             }
         ];
 
-        vueApp.setCode('./startup-createEarth.html');
+        var q={};location.search.replace(/([^?&=]+)=([^&]+)/g,(_,k,v)=>q[k]=v);
+        if (q.id) {
+            vueApp.setCode(`./${q.id}.html`);
+        } else {
+            vueApp.setCode('./startup-createEarth.html');
+        }
+
     </script>
 </body>
 
