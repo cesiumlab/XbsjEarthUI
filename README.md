@@ -8,9 +8,9 @@ XbsjEarthUI是一套基于Cesium和XbsjEarth的三维GIS/BIM的应用框架，�
 
 git地址：  
 https://github.com/cesiumlab/XbsjEarthUI   
-https://gitee.com/cesiumlab/XbsjEarthUI (github上下载缓慢的话，可以在gitee.com上下载)   
+https://gitee.com/cesiumlab/XbsjEarthUI (⭐github上下载缓慢的话，可以在gitee.com上下载)   
 
-API文档：  
+API文档和示例：  
 http://cesiumlab.gitee.io/xbsjearthui/  
 
 关于这个应用程序的操作，可以参考这个视频：  
