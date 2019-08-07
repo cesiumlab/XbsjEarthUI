@@ -23,7 +23,7 @@ filePaths.forEach(filePath => {
         labels = results2[1].split(',').map(e => e.trim());
     }
     if (labels.length === 0) {
-        labels.push('misc');
+        labels.push('杂项');
     }
 
     labels.forEach(label => {
