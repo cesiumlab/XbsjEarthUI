@@ -91,96 +91,97 @@
     </div>
 
     <script src="./scripts/codeEditor.js"></script>
+    <script src='./scripts/list.js'></script>
     <script>
-        vueApp.examples = [
-            {
-                title: 'Earth起步',
-                list: [
-                    {
-                        url: './startup-createEarth.html',
-                        title: '创建地球',
-                    },
-                    {
-                        url: './startup-createEarthWithVue.html',
-                        title: '使用vue创建地球',
-                    },
-                    {
-                        url: './startup-binds-classic.html',
-                        title: '数据双向绑定-理论模型',
-                    },
-                    {
-                        url: './startup-binds-classic2.html',
-                        title: '数据双向绑定-理论模型2',
-                    },
-                    {
-                        url: './startup-binds.html',
-                        title: '数据双向绑定',
-                    },
-                    {
-                        url: './startup-tileset.html',
-                        title: '3dtiles数据加载',
-                    },
-                ]
-            },
-            {
-                title: 'Earth示例',
-                list: [
-                    {
-                        url: './earth-destroyEarth.html',
-                        title: '销毁地球',
-                    },
-                    {
-                        url: './earth-destroyEarthWithVue.html',
-                        title: '销毁vue创建的地球',
-                    },
-                    {
-                        url: './earth-nativeCesium.html',
-                        title: '原生Cesium API的调用',
-                    },
-                    {
-                        url: './earth-subsurface.html',
-                        title: '地下模式和地表透明',
-                    },
-                    {
-                        url: './earth-imageries.html',
-                        title: '影像加载',
-                    },
-                    {
-                        url: './earth-editing.html',
-                        title: '编辑互斥',
-                    },
-                    {
-                        url: './earth-flattenning.html',
-                        title: '3dtiles压平',
-                    },
-                ],
-            },
-            {
-                title: 'EarthUI示例',
-                list: [
-                    {
-                        url: './earthui-basic.html',
-                        title: '创建',
-                    },
-                    {
-                        url: './earthui-fromJSON.html',
-                        title: '从JSON创建场景结构',
-                    },
-                    {
-                        url: './earthui-custom.html',
-                        title: '自定义属性窗口',
-                    },
-                    {
-                        url: './earthui-xbsjUI.html',
-                        title: '内置UI组件',
-                    },
-                    {
-                        url: './earthui-gaode.html',
-                        title: '高德地图纠偏',
-                    },
-                ],
-            }
-        ];
+        // vueApp.examples = [
+        //     {
+        //         title: 'Earth起步',
+        //         list: [
+        //             {
+        //                 url: './startup-createEarth.html',
+        //                 title: '创建地球',
+        //             },
+        //             {
+        //                 url: './startup-createEarthWithVue.html',
+        //                 title: '使用vue创建地球',
+        //             },
+        //             {
+        //                 url: './startup-binds-classic.html',
+        //                 title: '数据双向绑定-理论模型',
+        //             },
+        //             {
+        //                 url: './startup-binds-classic2.html',
+        //                 title: '数据双向绑定-理论模型2',
+        //             },
+        //             {
+        //                 url: './startup-binds.html',
+        //                 title: '数据双向绑定',
+        //             },
+        //             {
+        //                 url: './startup-tileset.html',
+        //                 title: '3dtiles数据加载',
+        //             },
+        //         ]
+        //     },
+        //     {
+        //         title: 'Earth示例',
+        //         list: [
+        //             {
+        //                 url: './earth-destroyEarth.html',
+        //                 title: '销毁地球',
+        //             },
+        //             {
+        //                 url: './earth-destroyEarthWithVue.html',
+        //                 title: '销毁vue创建的地球',
+        //             },
+        //             {
+        //                 url: './earth-nativeCesium.html',
+        //                 title: '原生Cesium API的调用',
+        //             },
+        //             {
+        //                 url: './earth-subsurface.html',
+        //                 title: '地下模式和地表透明',
+        //             },
+        //             {
+        //                 url: './earth-imageries.html',
+        //                 title: '影像加载',
+        //             },
+        //             {
+        //                 url: './earth-editing.html',
+        //                 title: '编辑互斥',
+        //             },
+        //             {
+        //                 url: './earth-flattenning.html',
+        //                 title: '3dtiles压平',
+        //             },
+        //         ],
+        //     },
+        //     {
+        //         title: 'EarthUI示例',
+        //         list: [
+        //             {
+        //                 url: './earthui-basic.html',
+        //                 title: '创建',
+        //             },
+        //             {
+        //                 url: './earthui-fromJSON.html',
+        //                 title: '从JSON创建场景结构',
+        //             },
+        //             {
+        //                 url: './earthui-custom.html',
+        //                 title: '自定义属性窗口',
+        //             },
+        //             {
+        //                 url: './earthui-xbsjUI.html',
+        //                 title: '内置UI组件',
+        //             },
+        //             {
+        //                 url: './earthui-gaode.html',
+        //                 title: '高德地图纠偏',
+        //             },
+        //         ],
+        //     }
+        // ];
 
         var q={};location.search.replace(/([^?&=]+)=([^&]+)/g,(_,k,v)=>q[k]=v);
         if (q.url) {
