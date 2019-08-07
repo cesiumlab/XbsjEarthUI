@@ -22,6 +22,7 @@ https://www.jianshu.com/p/a37cc18ca310
 CesiumLab2.0和EarthSDK的首次培训视频：  
 https://www.bilibili.com/video/av61977045/  
 
+![](./Tools/readme/example.jpg)
 ![](./Tools/readme/start.png)  
 ![](./Tools/readme/视频融合.png)  
 ![](./Tools/readme/视域分析.png)  
