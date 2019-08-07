@@ -50,8 +50,24 @@
                 var earth = new XE.Earth(this.$refs.earthContainer);
 
                 // 1.2.2 添加默认地球影像
-                var bgImagery = new XE.Obj.Imagery(earth);
-                bgImagery.xbsjImageryProvider = XE.Obj.Imagery.defaultImageryProviderConfig;
+                earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "czmObject": {
+                                "name": "默认离线影像",
+                                "xbsjType": "Imagery",
+                                "xbsjImageryProvider": {
+                                    "createTileMapServiceImageryProvider": {
+                                        "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                        "fileExtension": 'jpg',
+                                    },
+                                    "type": "createTileMapServiceImageryProvider"
+                                }
+                            }
+                        },
+                    ]
+                };
+                var bgImagery = earth.sceneTree.root.children[0].czmObject;
 
                 // 1.2.3 双向数据绑定!
                 this._showUnbind = XE.MVVM.bind(this, 'imageryShow', bgImagery, 'show');

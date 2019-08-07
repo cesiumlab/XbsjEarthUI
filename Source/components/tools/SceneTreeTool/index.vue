@@ -61,7 +61,7 @@ function createVueNode(xbsjSceneNode) {
   ivuNode.isSelected = xbsjSceneNode.isSelected;
   ivuNode.checkStatus = xbsjSceneNode.checkStatus;
   if(xbsjSceneNode.czmObject){ //判断是否有type属性，用于展示树状结构图标
-      ivuNode.type = xbsjSceneNode.czmObject._type;
+      ivuNode.type = xbsjSceneNode.czmObject.xbsjType;
   }else{
       ivuNode.type = 'ios-folder'
   }
@@ -140,8 +140,7 @@ export default {
           property: "属性",
           addFolder: "添加文件夹",
           style: "样式",
-          moving: "拖拽移动",
-          shader: "分层着色",
+          moving: "拖拽移动", 
           newFolder: "新建文件夹",
           title: "图层管理"
         },
@@ -155,8 +154,7 @@ export default {
           property: "property",
           addFolder: "add folder",
           style: "style",
-          moving: "drag",
-          shader: "layer shader",
+          moving: "drag", 
           newFolder: "new folder",
           title: "Layer Manager"
         }
@@ -314,7 +312,7 @@ export default {
         );
 
         //如果是tileset 那么增加几个属性   样式，移动，分层着色
-        if (item._inner.sn.czmObject._type == "Tileset") {
+        if (item._inner.sn.czmObject.xbsjType == "Tileset") {
           baseItems.push(
             ...[
               {
@@ -341,18 +339,7 @@ export default {
                     item._inner.sn.czmObject.xbsjUseOriginTransform = false;
                   }
                 }
-              },
-              {
-                text: this.lang.shader,
-                func: () => {
-                  this.$root.$earthUI.showPropertyWindow(
-                    item._inner.sn.czmObject,
-                    {
-                      component: "GeologyWindow"
-                    }
-                  );
-                }
-              }
+              }  
             ]
           );
         }
@@ -389,7 +376,7 @@ export default {
       if (czmObject) {
         czmObject.flyTo();
 
-        let t = czmObject._type;
+        let t = czmObject.xbsjType;
         //根据类型去显示界面
         if (t == "XbsjTileset")
           this.$root.$earthUI.controls.mainBar.showPage("model");

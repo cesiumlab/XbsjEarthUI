@@ -68,8 +68,7 @@ import ViewshedTool from "./viztools/ViewshedTool";
 import PropertyWindow from "./properties/PropertyWindow";
 import CameraViewPrp from "./properties/CameraViewPrp";
 import TilesetStyleEditor from "./properties/TilesetStyleEditor";
-
-import GeologyWindow from "./properties/GeologyWindow";
+ 
 
 import GlobalColorPicker from "./common/GlobalColorPicker";
 import InformationBox from "./utils/InformationBox";
@@ -102,8 +101,7 @@ export default {
     TerrainOnline,
     PropertyWindow,
     CameraViewPrp,
-    TilesetStyleEditor,
-    GeologyWindow,
+    TilesetStyleEditor, 
     GlobalColorPicker,
     InformationBox,
     ModelTreeTool
@@ -237,8 +235,8 @@ export default {
         component = options.component;
       }
       //如果有默认映射
-      else if (czmObject._type) {
-        var c = this.registerComponents[czmObject._type];
+      else if (czmObject.xbsjType) {
+        var c = this.registerComponents[czmObject.xbsjType];
         if (c) {
           component = c;
         }

@@ -127,11 +127,7 @@ export default {
     this._disposers.forEach(d => d());
   },
   methods: {
-    showgeology() {
-      this.$root.$earthUI.showPropertyWindow(tileset2, {
-        component: "GeologyWindow"
-      });
-    },
+    
     startCameraVideo() {
       var demoVideo =
         XE.HTML.getScriptBaseUrl("XbsjEarthUI") + "/assets/demo.mp4";

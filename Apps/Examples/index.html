@@ -85,7 +85,7 @@
         </div>
     
         <div id="earthWin">
-            <iframe ref="earthAppFrame" src="./startup/createEarth.html" frameborder="0"
+            <iframe ref="earthAppFrame" src="./startup-createEarth.html" frameborder="0"
                 style="width:100%; height: 100%; position: relative; background: grey"></iframe>
         </div>
     </div>
@@ -170,11 +170,21 @@
                         url: './earthui-xbsjUI.html',
                         title: '内置UI组件',
                     },
+                    {
+                        url: './earthui-gaode.html',
+                        title: '高德地图纠偏',
+                    },
                 ],
             }
         ];
 
-        vueApp.setCode('./startup-createEarth.html');
+        var q={};location.search.replace(/([^?&=]+)=([^&]+)/g,(_,k,v)=>q[k]=v);
+        if (q.id) {
+            vueApp.setCode(`./${q.id}.html`);
+        } else {
+            vueApp.setCode('./startup-createEarth.html');
+        }
+
     </script>
 </body>
 

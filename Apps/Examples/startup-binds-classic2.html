@@ -88,26 +88,26 @@
 
             // 2 创建地球
             var earth = new XE.Earth(app.$refs.subComp.$refs.earthContainer);
-            earth.xbsjFromJSON({
-                "sceneTree": {
-                    "root": {
-                        "expand": true,
-                        "title": "预览场景",
-                        "children": [{
-                            "czmObject": {
-                                "xbsjType": "Imagery",
-                                "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig
-                            },
-                            "enabled": true,
-                            "title": '默认影像'
-                        }],
-                    }
-                }
-            });
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "默认离线影像",
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "createTileMapServiceImageryProvider": {
+                                    "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    "fileExtension": 'jpg',
+                                },
+                                "type": "createTileMapServiceImageryProvider"
+                            }
+                        }
+                    },
+                ]
+            };
+
             var imagery = earth.sceneTree.root.children[0].czmObject;
             imagery.alpha = 1.0;
-
-            // app2.app2Alpha = 1.0;
 
             // 3 双向数据绑定
             var showUnbind = XE.MVVM.bind(app1Sub, 'imageryShow', imagery, 'show');

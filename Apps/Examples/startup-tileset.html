@@ -74,9 +74,40 @@
                 bgImagery.xbsjImageryProvider = XE.Obj.Imagery.defaultImageryProviderConfig;
 
                 // 1.2.3 创建Tileset
-                var tileset = new XE.Obj.Tileset(earth);
-                tileset.url = '../assets/dayanta/tileset.json';
-                tileset.xbsjUseOriginTransform = false;
+                earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "czmObject": {
+                                "name": "默认离线影像",
+                                "xbsjType": "Imagery",
+                                "xbsjImageryProvider": {
+                                    "createTileMapServiceImageryProvider": {
+                                        "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                        "fileExtension": 'jpg',
+                                    },
+                                    "type": "createTileMapServiceImageryProvider"
+                                }
+                            }
+                        },
+                        {
+                            "czmObject": {
+                                "name": "三维瓦片数据",
+                                "xbsjType": "Tileset",
+                                "xbsjGuid": "39327cac-cbcd-4ff9-80db-fcf3a521bb4f",
+                                "url": "../assets/dayanta/tileset.json",
+                                "xbsjPosition": [
+                                    1.9016974701882112,
+                                    0.5972325152147303,
+                                    425.8641913624607
+                                ],
+                                "xbsjUseOriginTransform": false,
+                            }
+                        },
+                    ]
+                };
+
+                // 路径和上述json配置保持一致
+                const tileset = earth.sceneTree.root.children[1].czmObject;
 
                 // 1.2.4 数据双向绑定
                 this._disposers = [];
@@ -93,11 +124,11 @@
 
                 // 1.2.5 变量记录
                 this._earth = earth;
-                this._bgImagery = bgImagery;
-                this._tileset = tileset;
 
                 // only for Debug
                 window.tileset = tileset;
+
+                this._tileset = tileset;
             },
             // 1.2 资源销毁
             beforeDestroy() {
@@ -105,7 +136,6 @@
                 this._disposers.forEach(d => d());
                 this._disposers.length = 0;
                 this._bgImagery = this._bgImagery && this._bgImagery.destroy();
-                this._tileset = this._tileset && this._tileset.destroy();
                 this._earth = this._earth && this._earth.destroy();
             },
         }

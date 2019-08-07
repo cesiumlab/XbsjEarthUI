@@ -47,7 +47,6 @@
                 return {
                     message: '页面加载于 ' + new Date().toLocaleString(),
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
-                    _bgImagery: undefined,
                 };
             },
             mounted() {
@@ -55,18 +54,32 @@
                 var earth = new XE.Earth(this.$refs.earthContainer);
 
                 // 1.2 添加默认地球影像
-                var bgImagery = new XE.Obj.Imagery(earth);
-                bgImagery.xbsjImageryProvider = XE.Obj.Imagery.defaultImageryProviderConfig;
+                earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "czmObject": {
+                                "name": "默认离线影像",
+                                "xbsjType": "Imagery",
+                                "xbsjImageryProvider": {
+                                    "createTileMapServiceImageryProvider": {
+                                        url: XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                        fileExtension: 'jpg',
+                                    },
+                                    "type": "createTileMapServiceImageryProvider"
+                                }
+                            }
+                        },
+                    ]
+                };
+                bgImagery = earth.sceneTree.root.children[0].czmObject;
 
                 this._earth = earth;
-                this._bgImagery = bgImagery;
             },
             // 1.3 资源销毁
             beforeDestroy() {
                 // vue程序销毁时，需要清理相关资源
                 this._showUnbind = this._showUnbind && this._showUnbind();
                 this._alphaUnbind = this._alphaUnbind && this._alphaUnbind();
-                this._bgImagery = this._bgImagery && this._bgImagery.destroy();
                 this._earth = this._earth && this._earth.destroy();
             }
         }

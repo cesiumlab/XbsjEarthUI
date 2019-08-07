@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,8 @@
     <!-- 0 引入js文件 -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <style>
-        html, body {
+        html,
+        body {
             width: 100%;
             height: 100%;
             margin: 0px;
@@ -16,6 +18,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
     </div>
@@ -23,15 +26,31 @@
         var earth;
         var bgImagery;
 
-        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
-        XE.ready().then(() => {
-            // 1.1 创建地球
+        function startup() {
             earth = new XE.Earth('earthContainer');
 
-            // 1.2 添加默认地球影像
-            bgImagery = new XE.Obj.Imagery(earth);
-            bgImagery.xbsjImageryProvider = XE.Obj.Imagery.defaultImageryProviderConfig;
-        });
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "默认离线影像",
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "createTileMapServiceImageryProvider": {
+                                    "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    "fileExtension": 'jpg',
+                                },
+                                "type": "createTileMapServiceImageryProvider"
+                            }
+                        }
+                    },
+                ]
+            };
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);            
     </script>
 </body>
+
 </html>

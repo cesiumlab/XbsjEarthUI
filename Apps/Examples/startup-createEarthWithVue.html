@@ -49,16 +49,29 @@
                 var earth = new XE.Earth(this.$refs.earthContainer);
 
                 // 1.1.2 添加默认地球影像
-                var bgImagery = new XE.Obj.Imagery(earth);
-                bgImagery.xbsjImageryProvider = XE.Obj.Imagery.defaultImageryProviderConfig;
+                earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "czmObject": {
+                                "name": "默认离线影像",
+                                "xbsjType": "Imagery",
+                                "xbsjImageryProvider": {
+                                    "createTileMapServiceImageryProvider": {
+                                        "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                        "fileExtension": 'jpg',
+                                    },
+                                    "type": "createTileMapServiceImageryProvider"
+                                }
+                            }
+                        },
+                    ]
+                };
 
                 this._earth = earth;
-                this._bgImagery = bgImagery;
             },
             // 1.2 资源销毁
             beforeDestroy() {
                 // vue程序销毁时，需要清理相关资源
-                this._bgImagery = this._bgImagery && this._bgImagery.destroy();
                 this._earth = this._earth && this._earth.destroy();
             },
         }

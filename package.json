@@ -14,6 +14,7 @@
     "xbsjDebug": "cross-env NODE_ENV=xbsjDebug webpack-dev-server",
     "xbsjDebug2": "cross-env NODE_ENV=xbsjDebug2 webpack-dev-server",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "postbuild": "npm run doc",
     "doc": "jsdoc --configure Tools/jsdoc/conf.json"
   },
   "dependencies": {
