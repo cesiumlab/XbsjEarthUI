@@ -53,7 +53,7 @@ export default {
   mounted() {
     //监控获取pick到的对象
     this.unAutorun = XE.MVVM.watch(() => {
-      var feature = this.$root.$earth.pickedObject.clicked;
+      var feature = this.$root.$earth.pickedObject.clicked && this.$root.$earth.pickedObject.clicked.rawObject;
       //如果有对象并且没有禁用弹出，那么弹出
       if (feature && !this.disabled) this.onPicked(feature);
       else this.show = false;
