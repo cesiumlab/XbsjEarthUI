@@ -1,25 +1,11 @@
 vueApp.examples = [
     {
-        "title": "Beginner",
+        "title": "Earth示例",
         "list": [
             {
                 "title": "销毁地球",
                 "url": "./earth-destroyEarth.html"
-            }
-        ]
-    },
-    {
-        "title": "Showcases",
-        "list": [
-            {
-                "title": "销毁地球",
-                "url": "./earth-destroyEarth.html"
-            }
-        ]
-    },
-    {
-        "title": "misc",
-        "list": [
+            },
             {
                 "title": "销毁Vue创建的地球",
                 "url": "./earth-destroyEarthWithVue.html"
@@ -51,7 +37,12 @@ vueApp.examples = [
             {
                 "title": "创建",
                 "url": "./earthui-basic.html"
-            },
+            }
+        ]
+    },
+    {
+        "title": "EarthUI示例",
+        "list": [
             {
                 "title": "自定义属性窗口",
                 "url": "./earthui-custom.html"
@@ -67,11 +58,12 @@ vueApp.examples = [
             {
                 "title": "内置UI组件",
                 "url": "./earthui-xbsjUI.html"
-            },
-            {
-                "title": "示例集合",
-                "url": "./index.html"
-            },
+            }
+        ]
+    },
+    {
+        "title": "Earth起步",
+        "list": [
             {
                 "title": "数据双向绑定-理论模型",
                 "url": "./startup-binds-classic.html"

@@ -4,7 +4,10 @@ var globby = require('globby');
 const exampleMap = {};
 
 var fileList = ['Apps/Examples/*.html'];
-globby.sync(fileList).forEach(filePath => {
+var filePaths = globby.sync(fileList);
+filePaths = filePaths.filter(e => e !=='Apps/Examples/index.html');
+
+filePaths.forEach(filePath => {
     var content = fs.readFileSync(filePath, 'utf-8');
 
     var results = /\<title\>([\s\S]*)\<\/title\>/mg.exec(content);
