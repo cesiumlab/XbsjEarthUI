@@ -2,7 +2,7 @@
   <div
     v-show="show"
     style="width: 100%; height: 30px;background: rgba(71, 71, 71, 0.8); position: absolute; bottom: 0; font-size: 14px;line-height:30px;z-index:9999;"
-  >{{ statusString }}</div>
+  >{{ statusString }} {{ velocityString }}</div>
 </template>
 
 <script>
@@ -12,6 +12,9 @@ export default {
       show: true,
       cameraString: "",
       fpsString: "",
+      baseVelocity: 0.0,
+      velocity: 0.0,
+      velocityRatio: 1.0,
       langs: {
         zh: {
           longitude: "经度",
@@ -21,7 +24,8 @@ export default {
           heading: "偏航角",
           pitch: "俯仰角",
           roll: "翻滚角",
-          meter:'米'
+          meter:'米',
+          velocity: '键盘运动速度',
         },
         en: {
           longitude: "LNG",
@@ -31,7 +35,8 @@ export default {
           heading: "HEADING",
           pitch: "PITCH",
           roll: "ROLL",
-          meter:' M'
+          meter:' M',
+          velocity: 'Keyboard Velocity',
         }
       },
       lang: undefined
@@ -59,9 +64,8 @@ export default {
       this.cameraString = `${this.lang.longitude}: ${l}° ${this.lang.latitude}: ${b}° ${this.lang.height}: ${h}${this.lang.meter} ${this.lang.heading}: ${y}° ${this.lang.pitch}: ${p}° ${this.lang.roll}: ${r}°`;
     };
 
-    this._cameraChangedListenerDisposer = this._camera.changed.addEventListener(
-      updateCameraString
-    );
+    this._disposers = [];
+    this._disposers.push(this._camera.changed.addEventListener(updateCameraString));
     updateCameraString();
 
     // 帧率的计算借助了Cesium中的东西，需要开启debugShowFramesPerSecond
@@ -71,7 +75,7 @@ export default {
       this._scene._performanceContainer.style.visibility = "hidden"; // 隐藏默认的帧率显示窗口
     });
 
-    this._scenePostRenderListenerDisposer = this._scene._postRender.addEventListener(
+    this._disposers.push(this._scene._postRender.addEventListener(
       () => {
         if (this._scene._performanceDisplay) {
           this.fpsString = `${this.lang.fps}: ${this._scene._performanceDisplay._fpsText.nodeValue} `;
@@ -79,21 +83,24 @@ export default {
           this.fpsString = "";
         }
       }
-    );
+    ));
+
+    this._disposers.push(XE.MVVM.track(this, 'baseVelocity', this.$root.$earth.camera.immersion, 'baseVelocity'));
+    this._disposers.push(XE.MVVM.track(this, 'velocity', this.$root.$earth.camera.immersion, 'velocity'));
+    this._disposers.push(XE.MVVM.bind(this, 'velocityRatio', this.$root.$earth.camera.immersion, 'velocityRatio'));
   },
   computed: {
     statusString() {
       return this.fpsString + this.cameraString;
+    },
+    velocityString() {
+      return ` ${this.lang.velocity}: ${this.velocity.toFixed(1)} km/h (${this.baseVelocity.toFixed(1)} × ${this.velocityRatio.toFixed(1)})`;
     }
   },
   beforeDestroy() {
-    this._cameraChangedListenerDisposer =
-      this._cameraChangedListenerDisposer &&
-      this._cameraChangedListenerDisposer();
-    this.this._scenePostRenderListenerDisposer =
-      this.this._scenePostRenderListenerDisposer &&
-      this.this._scenePostRenderListenerDisposer();
-  }
+    this._disposers.forEach(d => d());
+    this._disposers.length = 0;
+  },
 };
 </script>
 
