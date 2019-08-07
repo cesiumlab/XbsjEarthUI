@@ -1,32 +1,32 @@
 # XbsjEarthUI
 
-<span style="font-size: 100px">🌏</span>  
+#🌏
 *我愿与你同行，因你势不可挡！*
 
 ## 简介
 XbsjEarthUI是一套基于Cesium和XbsjEarth的三维GIS/BIM的应用框架，可以基于此定制自己的三维程序。
 
-git地址：
-https://github.com/cesiumlab/XbsjEarthUI  
-https://gitee.com/cesiumlab/XbsjEarthUI (github上下载缓慢的话，可以在gitee.com上下载)  
+git地址：  
+https://github.com/cesiumlab/XbsjEarthUI   
+https://gitee.com/cesiumlab/XbsjEarthUI (github上下载缓慢的话，可以在gitee.com上下载)   
 
-API文档：
-http://cesiumlab.gitee.io/xbsjearthui/
+API文档：  
+http://cesiumlab.gitee.io/xbsjearthui/  
 
 关于这个应用程序的操作，可以参考这个视频：  
-https://www.bilibili.com/video/av60366649?from=search&seid=3851172190041118781
+https://www.bilibili.com/video/av60366649?from=search&seid=3851172190041118781  
 
 EarthSDK的API设计属于类似VUE的响应式属性设计，可以参考这篇文章来了解：  
-https://www.jianshu.com/p/a37cc18ca310
+https://www.jianshu.com/p/a37cc18ca310  
 
 CesiumLab2.0和EarthSDK的首次培训视频：  
-https://www.bilibili.com/video/av61977045/
+https://www.bilibili.com/video/av61977045/  
 
-![](./Tools/readme/start.png)
-![](./Tools/readme/视频融合.png)
-![](./Tools/readme/视域分析.png)
-![](./Tools/readme/瓦片位置编辑.png)
-![](./Tools/readme/压平.png)
+![](./Tools/readme/start.png)  
+![](./Tools/readme/视频融合.png)  
+![](./Tools/readme/视域分析.png)  
+![](./Tools/readme/瓦片位置编辑.png)  
+![](./Tools/readme/压平.png)  
 
 ## 使用步骤
 
