@@ -148,6 +148,7 @@ var vueApp = new Vue({
     methods: {
         setCode(url) {
             setCodeFromUrl(url, this);
+            window.history.replaceState(null, null, `?url=${url}`);
         },
         apply() {
             this.$refs.earthAppFrame.srcdoc = this.code;
