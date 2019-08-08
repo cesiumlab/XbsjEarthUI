@@ -75,7 +75,8 @@ export default {
       }
       //直接取第一个
       else if (feature.tileset.properties) {
-        fileParams = feature.tileset.properties[0].params;
+        if(feature.tileset.properties.length>0)
+          fileParams = feature.tileset.properties[0].params;
       }
 
       //解析json属性，
