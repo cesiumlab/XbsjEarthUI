@@ -10,10 +10,10 @@
   ],
   "author": "xbsj",
   "scripts": {
-    "dev": "npm run gallery && cross-env NODE_ENV=development webpack-dev-server",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server",
     "xbsjDebug": "cross-env NODE_ENV=xbsjDebug webpack-dev-server",
     "xbsjDebug2": "cross-env NODE_ENV=xbsjDebug2 webpack-dev-server",
-    "build": "npm run gallery && cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "postbuild": "npm run doc",
     "doc": "jsdoc --configure Tools/jsdoc/conf.json",
     "gallery": "node Tools/examples/gallery.js"
