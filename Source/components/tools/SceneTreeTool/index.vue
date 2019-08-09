@@ -262,7 +262,7 @@ export default {
                   children: [jsonObject],
                 }
               },
-              // : this.$root.$earth.cam
+              cameraViewManager : this.$root.$earth.cameraViewManager.toJSON(),
             };
             const code = getCode(finalJsonObject);
             const url = getCodeUrl(code);

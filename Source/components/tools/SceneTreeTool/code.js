@@ -21,7 +21,7 @@ function getCodeUrl(code) {
 
     // return location.origin + location.pathname + `?code=${base64}`;
     // return 'http://cesiumlab.gitee.io/xbsjearthui/Apps/Examples/' + `?code=${base64}`;
-    const url = 'http://localhost:9530/Apps/Examples/' + `?code=${base64Encode}`;
+    const url = 'http://cesiumlab.gitee.io/xbsjearthui/Apps/Examples/' + `?code=${base64Encode}`;
     // console.log(url);
     return url;
 }
@@ -76,23 +76,10 @@ const code = `<!DOCTYPE html>
 
                 // 1.2.3 创建Tileset
                 earth.xbsjFromJSON(${jsonStr});
-
-                // 路径和上述json配置保持一致
-                const tileset = earth.sceneTree.root.children[0].czmObject;
-
-                // 1.2.4 数据双向绑定
-                this._disposers = [];
-
-                // 当url发生变动时，自动飞入3dtiles数据处
-                this._disposers.push(XE.MVVM.watch(tileset, 'ready', ready => (ready && tileset.flyTo())));
+                window.earth = earth; // only for Debug
 
                 // 1.2.5 变量记录
                 this._earth = earth;
-
-                // only for Debug
-                window.tileset = tileset;
-
-                this._tileset = tileset;
             },
             // 1.2 资源销毁
             beforeDestroy() {
