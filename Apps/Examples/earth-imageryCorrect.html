@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>影像纠偏</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .checkbox {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div style="line-height: 30px; padding: 5px; position: absolute; left: 10px; top: 10px; background: rgba(0, 0, 0, 0.5); color: white">
+                        <span @click="correct = !correct" class="checkbox"><input type="checkbox" v-model="correct">纠偏</span><br/>
+                        <button @click="goTo">定位</button><br/>
+                    </div>
+                </div>
+            `,
+
+            data() {
+                return {
+                    dstCoordType: 'WGS84',
+                    correct: true,
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "expand": true,
+                    "title": "预览场景",
+                    "children": [{
+                        "czmObject": {
+                            "name": '大雁塔',
+                            "xbsjType": "Tileset",
+                            "url": '../assets/dayanta/tileset.json',
+                            "xbsjPosition": [
+                                1.9016974701882112,
+                                0.5972325152147303,
+                                8.352576160356152
+                            ],                            
+                            "xbsjUseOriginTransform": false,
+                        },
+                    }, {
+                        "ref": "imagery",
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": "高德地图",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "http://webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
+                                    "srcCoordType": "GCJ02",
+                                    "dstCoordType": "WGS84",
+                                    "rectangle": [
+                                        -3.141592653589793,
+                                        -1.5707963267948966,
+                                        3.141592653589793,
+                                        1.5707963267948966
+                                    ]
+                                },
+                            }
+                        },
+                    }]
+                };
+
+                var imagery = earth.sceneTree.$refs.imagery.czmObject;
+                this._imagery = imagery;
+                var tileset1 = earth.sceneTree.root.children[0].czmObject;
+                window.tileset1 = tileset1;
+
+                this._earth = earth;
+
+                // 1.1.5 数据绑定
+                {
+                    this._disposers = [];
+                    this._disposers.push(XE.MVVM.bind(this, 'dstCoordType', imagery.xbsjImageryProvider.XbsjImageryProvider, 'dstCoordType'));
+
+                    this.goTo();
+                }
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._earth = this._earth && this._earth.destroy();
+                this._disposers.forEach(d => d());
+                this._disposers.length = 0;
+            },
+            methods: {
+                setPositionWithCurrentCamera() {
+                    this._viewshed && this._viewshed.setPositionWithCurrentCamera();
+                },
+                goTo() {
+                    this._earth.czm.viewer.camera.setView({
+                        destination: Cesium.Cartesian3.fromRadians(1.901700720490395, 0.5972088628888674, 479.1014955453072),
+                        orientation: {
+                            heading: 6.265266391676448,
+                            pitch: -1.4855510600618218,
+                            roll: 0.0,
+                        }
+                    });
+                }
+            },
+            watch: {
+                correct(newVal) {
+                    if (newVal) {
+                        this.dstCoordType = 'WGS84';
+                    } else {
+                        this.dstCoordType = 'GCJ02';
+                    }
+                }
+            }
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>
