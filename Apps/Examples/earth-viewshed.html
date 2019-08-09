@@ -37,11 +37,11 @@
                 <div style="width: 100%; height: 100%">
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
-                    <div style="height: 30px; line-height: 30px; padding-left: 5px; position: absolute; left: 10px; top: 10px;">
-                        <button @click="setPositionWithCurrentCamera">相机</button>
-                        <button @click="twoPostionsEditing = true">拾取</button>
-                        <button @click="positionEditing = true">平移</button>
-                        <button @click="rotationEditing = true">旋转</button>
+                    <div style="line-height: 30px; padding-left: 5px; position: absolute; left: 10px; top: 10px; background: rgba(0, 0, 0, 0.5); color: white">
+                        <button @click="setPositionWithCurrentCamera">设置为当前相机姿态</button><br/>
+                        <span @click="twoPostionsEditing = !twoPostionsEditing" class="checkbox"><input type="checkbox" v-model="twoPostionsEditing">拾取</span><br/>
+                        <span @click="positionEditing = !positionEditing" class="checkbox"><input type="checkbox" v-model="positionEditing">平移</span><br/>
+                        <span @click="rotationEditing = !rotationEditing" class="checkbox"><input type="checkbox" v-model="rotationEditing">旋转</span><br/>
                     </div>
                 </div>
             `,
