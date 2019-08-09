@@ -7,3 +7,13 @@ function stringToBase64(data) {
     var base64String = btoa(pako.deflate(data, { raw: true, to: 'string', level: 9 }));
     return base64String;
 }
+
+function getCodeUrl(code) {
+    const json = {
+        code,
+    }
+
+    const jsonStr = JSON.stringify(json);
+    const base64 = stringToBase64(jsonStr);
+    return location.origin + location.pathname + `?code=${base64}`;
+}

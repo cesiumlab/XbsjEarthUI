@@ -160,13 +160,11 @@ var vueApp = new Vue({
             this.title = title;
         },
         getCodeUrl() {
-            const json = {
-                code: this.code,
-            }
-
-            const jsonStr = JSON.stringify(json);
-            const base64 = stringToBase64(jsonStr);
-            return location.origin + location.pathname + `?code=${base64}`;
+            return getCodeUrl(this.code);
+        },
+        showCodeUrl() {
+            const codeUrl = this.getCodeUrl();
+            alert(codeUrl);
         }
     },
     watch: {

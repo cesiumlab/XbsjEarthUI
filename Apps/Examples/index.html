@@ -79,6 +79,7 @@
             <div style="height: 30px; line-height: 30px; padding-left: 8px; background: #151718; color: #CCC; position: relative;">
                 <input type="checkbox" v-model="autoRefresh">自动运行</button>
                 <button @click="apply">手动运行</button> 
+                <button @click="showCodeUrl" title="修改后的代码可以通过此链接分享，但是url会比较长！">获取代码url</button> 
                 <div style="height: 30px; line-height: 30px; position: absolute; right: 0px; top: 0px; padding-right: 8px;">
                     <span>{{ title }}</span>
                 </div>
