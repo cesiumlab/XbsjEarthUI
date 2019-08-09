@@ -27,6 +27,10 @@ vueApp.examples = [
                 "url": "./earth-imageries.html"
             },
             {
+                "title": "测量",
+                "url": "./earth-measurement.html"
+            },
+            {
                 "title": "原生Cesium API的调用",
                 "url": "./earth-nativeCesium.html"
             },
@@ -35,8 +39,21 @@ vueApp.examples = [
                 "url": "./earth-subsurface.html"
             },
             {
+                "title": "视域分析",
+                "url": "./earth-viewshed.html"
+            },
+            {
                 "title": "创建",
                 "url": "./earthui-basic.html"
+            }
+        ]
+    },
+    {
+        "title": "杂项",
+        "list": [
+            {
+                "title": "影像纠偏",
+                "url": "./earth-imageryCorrect.html"
             }
         ]
     },
