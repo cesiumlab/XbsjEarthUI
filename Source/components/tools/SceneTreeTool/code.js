@@ -1,4 +1,36 @@
-<!DOCTYPE html>
+import {deflate, inflate} from 'pako';
+
+function base64ToString(base64String) {
+    var jsonString = inflate(atob(base64String), { raw: true, to: 'string' });
+    return jsonString;
+};
+
+function stringToBase64(data) {
+    var base64String = btoa(deflate(data, { raw: true, to: 'string', level: 9 }));
+    return base64String;
+}
+
+function getCodeUrl(code) {
+    const json = {
+        code,
+    }
+
+    const jsonStr = JSON.stringify(json);
+    const base64 = stringToBase64(jsonStr);
+    const base64Encode = encodeURIComponent(base64);
+
+    // return location.origin + location.pathname + `?code=${base64}`;
+    // return 'http://cesiumlab.gitee.io/xbsjearthui/Apps/Examples/' + `?code=${base64}`;
+    const url = 'http://localhost:9530/Apps/Examples/' + `?code=${base64Encode}`;
+    // console.log(url);
+    return url;
+}
+
+function getCode(jsonObject) {
+
+const jsonStr = JSON.stringify(jsonObject, undefined, '    ');
+
+const code = `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -26,12 +58,12 @@
     <script>
         // 1 创建Earth的vue组件
         var EarthComp = {
-            template: `
+            template: \`
                 <div style="width: 100%; height: 100%">
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
                 </div>
-            `,
+            \`,
             data() { 
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
@@ -43,40 +75,10 @@
                 var earth = new XE.Earth(this.$refs.earthContainer);
 
                 // 1.2.3 创建Tileset
-                earth.sceneTree.root = {
-                    "children": [
-                        {
-                            "czmObject": {
-                                "name": "默认离线影像",
-                                "xbsjType": "Imagery",
-                                "xbsjImageryProvider": {
-                                    "createTileMapServiceImageryProvider": {
-                                        "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
-                                        "fileExtension": 'jpg',
-                                    },
-                                    "type": "createTileMapServiceImageryProvider"
-                                }
-                            }
-                        },
-                        {
-                            "czmObject": {
-                                "name": "三维瓦片数据",
-                                "xbsjType": "Tileset",
-                                "xbsjGuid": "39327cac-cbcd-4ff9-80db-fcf3a521bb4f",
-                                "url": "../assets/dayanta/tileset.json",
-                                "xbsjPosition": [
-                                    1.9016974701882112,
-                                    0.5972325152147303,
-                                    425.8641913624607
-                                ],
-                                "xbsjUseOriginTransform": false,
-                            }
-                        },
-                    ]
-                };
+                earth.xbsjFromJSON(${jsonStr});
 
                 // 路径和上述json配置保持一致
-                const tileset = earth.sceneTree.root.children[1].czmObject;
+                const tileset = earth.sceneTree.root.children[0].czmObject;
 
                 // 1.2.4 数据双向绑定
                 this._disposers = [];
@@ -119,3 +121,9 @@
 
 </body>
 </html>
+`;
+
+return code;
+}
+
+export { getCodeUrl, getCode };

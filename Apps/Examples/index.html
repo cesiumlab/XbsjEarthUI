@@ -100,7 +100,8 @@
         if (q.url) {
             vueApp.setCodeFromUrl(q.url);
         } else if (q.code){
-            const jsonStr = base64ToString(q.code);
+            const decode = decodeURIComponent(q.code);
+            const jsonStr = base64ToString(decode);
             const json = JSON.parse(jsonStr);
             vueApp.code = json.code;
         } else {
