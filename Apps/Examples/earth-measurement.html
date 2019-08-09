@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <title>测量</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .checkbox {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div style="height: 30px; line-height: 30px; padding-left: 5px; position: absolute; left: 10px; top: 10px;">
+                        <button @click="measureMentType = 'POINT'">位置测量</button>
+                        <button @click="measureMentType = 'SPACE_DISTANCE'">距离测量</button>
+                        <button @click="measureMentType = 'TRIANGLE_DISTANCE'">三角测量</button>
+                        <button @click="measureMentType = 'SPACE_AREA'">面积测量</button>
+                        <button @click="clearResults">清空测量结果</button>
+                    </div>
+                </div>
+            `,
+
+            data() {
+                return {
+                    measureMentType: 'NONE',
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "expand": true,
+                    "title": "预览场景",
+                    "children": [{
+                        "czmObject": {
+                            "name": '大雁塔',
+                            "xbsjType": "Tileset",
+                            "url": '../assets/dayanta/tileset.json',
+                            "xbsjUseOriginTransform": false,                    
+                        },
+                    }, {
+                        "czmObject": {
+                            "name": '默认影像',
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
+                        },
+                    }]
+                };
+
+                var tileset1 = earth.sceneTree.root.children[0].czmObject;
+                var tileset2 = earth.sceneTree.root.children[1].czmObject;
+                window.tileset1 = tileset1;
+                window.tileset2 = tileset2;
+
+                // 1.1.5 数据绑定
+                {
+                    this._disposers = [];
+                    this._disposers.push(XE.MVVM.bind(this, 'measureMentType', earth.analyzation.measurement, 'type'));
+
+                    this._disposers.push(XE.MVVM.watch(tileset1, 'ready', ready => {
+                        if (ready) {
+                            tileset1.flyTo();
+                        }
+                    }));
+                }
+
+                this._earth = earth;
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._earth = this._earth && this._earth.destroy();
+                this._disposers.forEach(d => d());
+                this._disposers.length = 0;
+            },
+            methods: {
+                clearResults() {
+                    this._earth && this._earth.analyzation.measurement.clearResults();
+                }
+            }
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>
