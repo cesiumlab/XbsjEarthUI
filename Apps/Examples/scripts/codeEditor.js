@@ -164,7 +164,7 @@ var vueApp = new Vue({
         },
         showCodeUrl() {
             const codeUrl = this.getCodeUrl();
-            alert(codeUrl);
+            window.prompt('url:', codeUrl);
         }
     },
     watch: {
