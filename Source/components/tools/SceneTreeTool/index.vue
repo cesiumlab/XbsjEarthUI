@@ -256,13 +256,18 @@ export default {
           border: true,
           func: () => {
             const jsonObject = item._inner.sn.toJSON();
+
+            const lastView = this.$root.$earth.cameraViewManager.lastView;
+            lastView.initWithCurrent();
             const finalJsonObject = {
               sceneTree: {
                 root: {
                   children: [jsonObject],
                 }
               },
-              cameraViewManager : this.$root.$earth.cameraViewManager.toJSON(),
+              cameraViewManager: {
+                lastView: lastView.toJSON(),
+              },
             };
             const code = getCode(finalJsonObject);
             const url = getCodeUrl(code);
