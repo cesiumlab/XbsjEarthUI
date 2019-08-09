@@ -95,7 +95,8 @@
                     }]
                 };
 
-                var imagery = earth.sceneTree.$refs.imagery.czmObject;
+                // var imagery = earth.sceneTree.$refs.imagery.czmObject;
+                var imagery = earth.sceneTree.root.children[1].czmObject;
                 this._imagery = imagery;
                 var tileset1 = earth.sceneTree.root.children[0].czmObject;
                 window.tileset1 = tileset1;
