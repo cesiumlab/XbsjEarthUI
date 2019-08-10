@@ -1,5 +1,18 @@
 vueApp.examples = [
     {
+        "title": "杂项",
+        "list": [
+            {
+                "title": "素模泛光",
+                "url": "./earth-buildings.html"
+            },
+            {
+                "title": "影像纠偏",
+                "url": "./earth-imageryCorrection.html"
+            }
+        ]
+    },
+    {
         "title": "Earth示例",
         "list": [
             {
@@ -45,15 +58,6 @@ vueApp.examples = [
             {
                 "title": "创建",
                 "url": "./earthui-basic.html"
-            }
-        ]
-    },
-    {
-        "title": "杂项",
-        "list": [
-            {
-                "title": "影像纠偏",
-                "url": "./earth-imageryCorrect.html"
             }
         ]
     },
