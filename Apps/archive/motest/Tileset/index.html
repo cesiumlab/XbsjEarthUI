@@ -231,7 +231,7 @@
             this._viewUnbinds = this._viewUnbinds || [];
             this.attribute.forEach(element => {
               element.properties.forEach(el => {
-                this._viewUnbinds.push(XbsjEarth.MVVM.bind(this, "Tileset." + el, motest, el));
+                this._viewUnbinds.push(XE.MVVM.bind(this, "Tileset." + el, motest, el));
               })
             });
           });

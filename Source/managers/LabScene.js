@@ -37,19 +37,19 @@ class LabScene {
         this._comp = root._comp.$refs.mainBarControl.$refs.navigate.$refs.sceneView;
 
         this.unbinds = [];
-        this.unbinds.push(XbsjEarth.MVVM.bind(
+        this.unbinds.push(XE.MVVM.bind(
             this._comp,
             "sceneID",
             this,
             "sceneID"
         ));
-        this.unbinds.push(XbsjEarth.MVVM.bind(
+        this.unbinds.push(XE.MVVM.bind(
             this._comp,
             "sceneName",
             this,
             "sceneName"
         ));
-        this.unbinds.push(XbsjEarth.MVVM.bind(
+        this.unbinds.push(XE.MVVM.bind(
             this._comp,
             "thumbnail",
             this,
@@ -57,12 +57,12 @@ class LabScene {
         ));
 
         //更新标题
-        this.unbinds.push(XbsjEarth.MVVM.watch(() => {
+        this.unbinds.push(XE.MVVM.watch(() => {
             document.title = this.sceneName;
         }));
 
         //更新url参数
-        this.unbinds.push(XbsjEarth.MVVM.watch(() => {
+        this.unbinds.push(XE.MVVM.watch(() => {
 
             if (this.sceneID) {
                 history.pushState(

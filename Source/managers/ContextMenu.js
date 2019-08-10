@@ -18,7 +18,7 @@ class ContextMenu {
             show: false
         });
         this.unbinds = [];
-        this.unbinds.push(XbsjEarth.MVVM.bind(
+        this.unbinds.push(XE.MVVM.bind(
             this._comp,
             "show",
             this,

@@ -243,7 +243,7 @@ export default {
       this.layerID = undefined;
     },
     bindPrp(layer, prp) {
-      this.unbind.push(XbsjEarth.MVVM.bind(this, prp, layer, prp));
+      this.unbind.push(XE.MVVM.bind(this, prp, layer, prp));
     },
     setImageLayer(layer) {
       if (layer && layer.guid == this.layerID) return;
