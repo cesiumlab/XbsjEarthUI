@@ -154,7 +154,7 @@ export default {
 
       Object.entries(bindData).forEach(([sm, vm]) => {
         if (typeof vm === "string") {
-          this._disposers.push(XbsjEarth.MVVM.bind(this, vm, czmObj, sm));
+          this._disposers.push(XE.MVVM.bind(this, vm, czmObj, sm));
         } else {
           this._disposers.push(vm.handler(this, vm.prop, czmObj, sm));
         }

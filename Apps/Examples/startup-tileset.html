@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth起步"></meta>
     <title>3dtiles数据加载</title>
     <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
@@ -29,49 +30,17 @@
                 <div style="width: 100%; height: 100%">
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
-                    <div style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 5px;">
-                        <span>服务地址: <input v-model="url" style="width: calc(100% - 80px);"></span><br/>
-                        <span>位置(经度/纬度/高度)：{{ position.map(e => e.toFixed(6)).join(' ') }}</span>
-                        <span>编辑<input type="checkbox" v-model="tilesetPositionEditing"></span><br/>
-                        <span>姿态(偏航/俯仰/翻转)：{{ rotation.map(e => e.toFixed(1)).join(' ') }}</span>
-                        <span>编辑<input type="checkbox" v-model="tilesetRotationEditing"></span><br/>
-                        <span><button @click='resetTileset'>恢复默认位置姿态</button></span>
-                        <span><button @click='flyTo'>飞入</button></span>
-                    </div>
                 </div>
             `,
             data() { 
                 return {
-                    url: '',
-                    position: [0, 0, 0],
-                    rotation: [0, 0, 0],
-                    tilesetPositionEditing: false,
-                    tilesetRotationEditing: false,
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
-                    _bgImagery: undefined,
                 };
-            },
-            methods: {
-                resetTileset: function () {
-                    if (this._tileset) {
-                        this._tileset.xbsjPosition = this._tileset.getOriginPosition();
-                        this._tileset.xbsjRotation = [0, 0, 0];
-                    }
-                },
-                flyTo: function () {
-                    if (this._tileset && this._tileset.ready) {
-                        this._tileset.flyTo();
-                    }
-                }
             },
             // 1.1 资源加载
             mounted() {
                 // 1.2.1 创建地球
                 var earth = new XE.Earth(this.$refs.earthContainer);
-
-                // 1.2.2 添加默认地球影像
-                var bgImagery = new XE.Obj.Imagery(earth);
-                bgImagery.xbsjImageryProvider = XE.Obj.Imagery.defaultImageryProviderConfig;
 
                 // 1.2.3 创建Tileset
                 earth.sceneTree.root = {
@@ -111,13 +80,6 @@
 
                 // 1.2.4 数据双向绑定
                 this._disposers = [];
-                this._disposers.push(XE.MVVM.bind(this, 'url', tileset, 'url'));
-                // 'position'前两几个元素的单位是度数，'xbsjPosition'前两个元素的单位是弧度。使用bindPosition进行绑定，自动进行角度和弧度转换。
-                this._disposers.push(XE.MVVM.bindPosition(this, 'position', tileset, 'xbsjPosition'));
-                // 'rotation'中元素的单位是度数，'xbsjPosition'中元素的单位是弧度。使用bindRotation进行绑定，自动进行角度和弧度转换。
-                this._disposers.push(XE.MVVM.bindRotation(this, 'rotation', tileset, 'xbsjRotation'));
-                this._disposers.push(XE.MVVM.bind(this, 'tilesetPositionEditing', tileset, 'positionEditing'));
-                this._disposers.push(XE.MVVM.bind(this, 'tilesetRotationEditing', tileset, 'rotationEditing'));
 
                 // 当url发生变动时，自动飞入3dtiles数据处
                 this._disposers.push(XE.MVVM.watch(tileset, 'ready', ready => (ready && tileset.flyTo())));
@@ -135,7 +97,6 @@
                 // vue程序销毁时，需要清理相关资源
                 this._disposers.forEach(d => d());
                 this._disposers.length = 0;
-                this._bgImagery = this._bgImagery && this._bgImagery.destroy();
                 this._earth = this._earth && this._earth.destroy();
             },
         }

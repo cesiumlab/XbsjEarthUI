@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import { getCodeUrl, getCode } from './code';
+
 function destroyVueNode(ivuNode, parent) {
   if (ivuNode._inner.disposer) {
     ivuNode._inner.disposer.basicPropDisposer &&
@@ -247,6 +249,30 @@ export default {
           border: true,
           func: () => {
             vueObject.titleEditable = true;
+          }
+        }, {
+          text: '输出示例',
+          keys: "",
+          border: true,
+          func: () => {
+            const jsonObject = item._inner.sn.toJSON();
+
+            const lastView = this.$root.$earth.cameraViewManager.lastView;
+            lastView.initWithCurrent();
+            const finalJsonObject = {
+              sceneTree: {
+                root: {
+                  children: [jsonObject],
+                }
+              },
+              cameraViewManager: {
+                lastView: lastView.toJSON(),
+              },
+            };
+            const code = getCode(finalJsonObject);
+            const url = getCodeUrl(code);
+            // prompt('url', url); // 有问题
+            window.open(url, '_blank'); 
           }
         }
       ];

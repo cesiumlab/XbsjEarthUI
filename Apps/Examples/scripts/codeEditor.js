@@ -146,7 +146,7 @@ var vueApp = new Vue({
         // you can use this.codemirror to do something...
     },
     methods: {
-        setCode(url) {
+        setCodeFromUrl(url) {
             setCodeFromUrl(url, this);
             window.history.replaceState(null, null, `?url=${url}`);
         },
@@ -158,6 +158,13 @@ var vueApp = new Vue({
                 title = titles[1];
             }
             this.title = title;
+        },
+        getCodeUrl() {
+            return getCodeUrl(this.code);
+        },
+        showCodeUrl() {
+            const codeUrl = this.getCodeUrl();
+            window.prompt('url:', codeUrl);
         }
     },
     watch: {
