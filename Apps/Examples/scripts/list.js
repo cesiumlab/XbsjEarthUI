@@ -1,20 +1,11 @@
 vueApp.examples = [
     {
-        "title": "杂项",
+        "title": "Earth示例",
         "list": [
             {
                 "title": "素模泛光",
                 "url": "./earth-buildings.html"
             },
-            {
-                "title": "影像纠偏",
-                "url": "./earth-imageryCorrection.html"
-            }
-        ]
-    },
-    {
-        "title": "Earth示例",
-        "list": [
             {
                 "title": "销毁地球",
                 "url": "./earth-destroyEarth.html"
@@ -38,6 +29,10 @@ vueApp.examples = [
             {
                 "title": "影像数据加载",
                 "url": "./earth-imageries.html"
+            },
+            {
+                "title": "影像纠偏",
+                "url": "./earth-imageryCorrection.html"
             },
             {
                 "title": "测量",
