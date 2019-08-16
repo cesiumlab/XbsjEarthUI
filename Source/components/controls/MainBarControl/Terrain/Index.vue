@@ -1,11 +1,13 @@
 <template>
   <!-- box -->
   <div class="xbsj-template">
-     <div class="xbsj-list"
-          ref="container" 
+    <div
+      class="xbsj-list"
+      ref="container"
       @mousedown="startMove($event)"
       @mousemove="onMoving($event)"
-      @mouseup="endMove($event)">
+      @mouseup="endMove($event)"
+    >
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.source}}</span>
         <div class="xbsj-item-btnbox ml20">
@@ -89,6 +91,20 @@
 
         <div class="xbsj-item-btnbox ml20">
           <div
+            class="xbsj-item-btn tailoringbutton"
+            @click="tailoringShow=!tailoringShow"
+            :class="{highlight:tailoringShow}"
+          ></div>
+          <span class="xbsj-item-name">{{lang.tailoring}}</span>
+        </div>
+        <span
+          class="xbsj-select"
+          :class="{highlight:popup == 'tailoring'}"
+          @click.stop="togglePopup('tailoring',$event)"
+        ></span>
+
+        <div class="xbsj-item-btnbox ml20">
+          <div
             class="xbsj-item-btn globalbutton"
             @click="globeShow=!globeShow"
             :class="{highlight:globeShow}"
@@ -104,7 +120,6 @@
           ></div>
           <span class="xbsj-item-name">{{lang.enableLighting}}</span>
         </div>
-
 
         <div class="xbsj-item-btnbox ml20">
           <div
@@ -140,7 +155,14 @@
         </div>
         <div class="xbsj-item-btnbox xbsjtransparent">
           <div class="XbsjSlider" :title="depthTest && '需要关闭地形深度检测，此功能才可使用！' || ''">
-            <XbsjSlider :min="0" :max="1" :step="0.01" showTip="hover" v-model="surfaceOpacity" :disabled="depthTest"></XbsjSlider>
+            <XbsjSlider
+              :min="0"
+              :max="1"
+              :step="0.01"
+              showTip="hover"
+              v-model="surfaceOpacity"
+              :disabled="depthTest"
+            ></XbsjSlider>
           </div>
           <span class="xbsj-item-name">{{lang.transparent}}</span>
         </div>
@@ -150,25 +172,28 @@
     <Aspect ref="aspect" v-show="popup =='aspect'"></Aspect>
     <Slope ref="slope" v-show="popup =='slope'"></Slope>
     <Contour ref="contour" v-show="popup =='contour'"></Contour>
+    <Tailoring ref="tailoring" v-show="popup =='tailoring'"></Tailoring>
   </div>
 </template>
 
 <script>
 import languagejs from "./index_locale";
- 
+
 import Elevation from "./Elevation";
 import Aspect from "./Aspect";
 import Slope from "./Slope";
 import Contour from "./Contour";
+import Tailoring from "./Tailoring";
 
 import { addOutterEventListener } from "../../../utils/xbsjUtil";
 
 export default {
-  components: { 
+  components: {
     Elevation,
     Slope,
     Aspect,
-    Contour
+    Contour,
+    Tailoring
   },
   data() {
     return {
@@ -184,14 +209,13 @@ export default {
       logDepth: true,
       subSurfaceEnabled: false,
       surfaceOpacity: 0.0,
-      langs:languagejs,
-      globeShow:true,
-      enableLighting:false,
+      langs: languagejs,
+      globeShow: true,
+      tailoringShow: false,
+      enableLighting: false
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
     //给所有popup的el上添加外部事件
     Object.keys(this.$refs).forEach(key => {
@@ -210,8 +234,6 @@ export default {
       this.showPopup(false);
       this.popup = "";
     });
-
-    
 
     this.$nextTick(() => {
       this.unbind = [];
@@ -270,13 +292,16 @@ export default {
         )
       );
 
-      
+      this.unbind.push(
+        XE.MVVM.bind(this, "globeShow", this.$root.$earth.terrainEffect, "show")
+      );
+
       this.unbind.push(
         XE.MVVM.bind(
           this,
-          "globeShow",
-          this.$root.$earth.terrainEffect,
-          "show"
+          "tailoringShow",
+          this.$root.$earth.terrainEffect.restrict,
+          "enabled"
         )
       );
 
@@ -288,7 +313,6 @@ export default {
           "enableLighting"
         )
       );
-
     });
   },
   methods: {
@@ -404,6 +428,17 @@ export default {
   width: 100px !important;
 }
 
+.tailoringbutton {
+  background: url(../../../../images/tailoring.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.tailoringbutton.highlight,
+.tailoringbutton:hover {
+  background: url(../../../../images/tailoring_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
 
 .globalbutton {
   background: url(../../../../images/global.png) no-repeat;
