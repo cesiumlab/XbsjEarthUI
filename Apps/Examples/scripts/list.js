@@ -7,6 +7,10 @@ vueApp.examples = [
                 "url": "./earth-buildings.html"
             },
             {
+                "title": "剖切面",
+                "url": "./earth-clippingPlane.html"
+            },
+            {
                 "title": "销毁地球",
                 "url": "./earth-destroyEarth.html"
             },
@@ -53,16 +57,16 @@ vueApp.examples = [
             {
                 "title": "视域分析",
                 "url": "./earth-viewshed.html"
-            },
-            {
-                "title": "创建",
-                "url": "./earthui-basic.html"
             }
         ]
     },
     {
         "title": "EarthUI示例",
         "list": [
+            {
+                "title": "创建",
+                "url": "./earthui-basic.html"
+            },
             {
                 "title": "自定义属性窗口",
                 "url": "./earthui-custom.html"
