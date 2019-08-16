@@ -554,6 +554,31 @@ class MainUI {
     this._vm.$refs.mainUI.promptInfo(info, type);
   }
 
+  /**
+   * 打开外部地址
+   * @param {String} url 地址链接 
+   */
+  openURL(url) {
+    if (typeof this._openURLCB == 'function') {
+      this._openURLCB(url);
+    }
+    else {
+      window.open(url, '_blank');
+    }
+  }
+
+
+  /**
+ *  打开URL回调
+ * @instance
+ * @type {Function} 
+ */
+  get openURLCB() {
+    return this._openURLCB;
+  }
+  set openURLCB(cb) {
+    this._openURLCB = cb;
+  }
 }
 
 export default MainUI;

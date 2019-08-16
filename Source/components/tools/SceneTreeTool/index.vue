@@ -144,7 +144,8 @@ export default {
           style: "样式",
           moving: "拖拽移动", 
           newFolder: "新建文件夹",
-          title: "图层管理"
+          title: "图层管理",
+          viewSource:"查看加载代码"
         },
         en: {
           confirm: "confirm to delete the layer?",
@@ -158,7 +159,8 @@ export default {
           style: "style",
           moving: "drag", 
           newFolder: "new folder",
-          title: "Layer Manager"
+          title: "Layer Manager",
+          viewSource:"View Source"
         }
       },
       lang: undefined
@@ -251,7 +253,7 @@ export default {
             vueObject.titleEditable = true;
           }
         }, {
-          text: '输出示例',
+          text: this.lang.viewSource,
           keys: "",
           border: true,
           func: () => {
@@ -270,9 +272,8 @@ export default {
               },
             };
             const code = getCode(finalJsonObject);
-            const url = getCodeUrl(code);
-            // prompt('url', url); // 有问题
-            window.open(url, '_blank'); 
+            const url = getCodeUrl(code); 
+            this.$root.$earthUI.openURL(url);
           }
         }
       ];
