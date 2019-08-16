@@ -291,7 +291,7 @@ export default {
     add() {
       // TODO(vtxf): 还是得想办法解决Vue数组不能响应增删的问题
       this._czmObj.polygons.push({});
-      this._czmObj.polygons[this._czmObj.polygons.length - 1].pointAdding = true;
+      this._czmObj.polygons[this._czmObj.polygons.length - 1].creating = true;
     },
     del(index) {
       //弹出提示
