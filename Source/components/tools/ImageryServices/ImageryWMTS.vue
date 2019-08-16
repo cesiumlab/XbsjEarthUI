@@ -133,12 +133,12 @@ export default {
       servers: [
         {
           title: "本地GeoServer",
-          addr: "http://localhost:8080/geoserver/gwc/service/wmts"
+          addr: "//localhost:8080/geoserver/gwc/service/wmts"
         },
         {
           title: "National Map",
           addr:
-            "http://basemap.nationalmap.gov/arcgis/rest/services/USGSShadedReliefOnly/MapServer/WMTS"
+            "//basemap.nationalmap.gov/arcgis/rest/services/USGSShadedReliefOnly/MapServer/WMTS"
         },
 
         {

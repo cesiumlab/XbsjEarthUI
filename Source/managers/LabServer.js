@@ -16,19 +16,19 @@ class LabServer {
       /**
       * CesiumLab服务地址
       * @type {string}
-      * @default 'http://localhost:9000/' 
+      * @default '//localhost:9000/' 
       * @instance
       * @memberof LabServer
       */
-      server: 'http://localhost:9000/',
+      server: '//localhost:9000/',
           /**
       * CesiumLab在线服务服务地址
       * @type {string}
-      * @default 'http://114.116.116.117/' 
+      * @default '//114.116.116.117/' 
       * @instance
       * @memberof LabServer
       */
-     serverOnline: 'http://114.116.116.117/',
+     serverOnline: '//114.116.116.117/',
     });
   }
 

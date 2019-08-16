@@ -20,8 +20,8 @@ function getCodeUrl(code) {
     const base64Encode = encodeURIComponent(base64);
 
     // return location.origin + location.pathname + `?code=${base64}`;
-    // return 'http://cesiumlab.gitee.io/xbsjearthui/Apps/Examples/' + `?code=${base64}`;
-    const url = 'http://cesiumlab.gitee.io/xbsjearthui/Apps/Examples/' + `?code=${base64Encode}`;
+    // return '//cesiumlab.gitee.io/xbsjearthui/Apps/Examples/' + `?code=${base64}`;
+    const url = '//cesiumlab.gitee.io/xbsjearthui/Apps/Examples/' + `?code=${base64Encode}`;
     // console.log(url);
     return url;
 }
