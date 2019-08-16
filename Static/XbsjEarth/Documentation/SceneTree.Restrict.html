@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>HTML - XbsjEarth Documentation</title>
+    <title>Restrict - XbsjEarth Documentation</title>
 
     <!--[if lt IE 9]>
       <script src="javascript/html5.js"></script>
@@ -19,7 +19,7 @@
     <h1 class="page-title">
         <!-- <a href="index.html"><img src="Images/CesiumLogo.png" class="cesiumLogo"></a> -->
         <a href="index.html">EarthSDK</a>
-        HTML
+        Restrict
         <div class="titleCenterer"></div>
     </h1>
 
@@ -32,6 +32,8 @@
 
 <header>
     
+        <div class="class-description">地形限制(地形剖切)</div>
+    
 </header>
 
 <article>
@@ -40,17 +42,47 @@
 
     
         
+    <div class="nameContainer">
+    <h4 class="name" id="Restrict">
+        <a href="#Restrict" class="doc-link"></a>
+        new Restrict<span class="signature">()</span>
+        
 
 <div class="source-link rightLinks">
 </div>
 
 
+    </h4>
 
-        
-            <div class="description">网页加载相关工具集合</div>
-        
+    </div>
 
-        
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <dl class="details">
 
 
@@ -83,8 +115,20 @@
     
 </dl>
 
+
     
     </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="XbsjBase.html">XbsjBase</a></li>
+    </ul>
+
 
     
 
@@ -102,9 +146,9 @@
         
             
 <div class="nameContainer">
-<h4 class="name" id="cesiumDir">
-    <a href="#cesiumDir" class="doc-link"></a>
-    <span class="type-signature attribute-readonly">readonly</span>cesiumDir<span class="type-signature"> : string</span>
+<h4 class="name" id="disposers">
+    <a href="#disposers" class="doc-link"></a>
+    disposers<span class="type-signature"></span>
     
 
 <div class="source-link rightLinks">
@@ -118,7 +162,7 @@
 
 
 <div class="description">
-    Cesium的加载路径
+    用来收集资源销毁函数，并在析构时自动调用！
 </div>
 
 
@@ -133,64 +177,10 @@
     
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-            
-<div class="nameContainer">
-<h4 class="name" id="xbsjEarthDir">
-    <a href="#xbsjEarthDir" class="doc-link"></a>
-    <span class="type-signature attribute-readonly">readonly</span>xbsjEarthDir<span class="type-signature"> : string</span>
-    
-
-<div class="source-link rightLinks">
-</div>
-
-
-</h4>
-
-</div>
-
-
-
-<div class="description">
-    XbsjEarth的加载路径
-</div>
-
-
-
-
-
-<dl class="details">
-
-
-    
-
-    
-
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjBase.html#disposers">XbsjBase#disposers</a>
+    </li></dd>
     
 
     
@@ -226,9 +216,9 @@
         
             
     <div class="nameContainer">
-    <h4 class="name" id=".addCSS">
-        <a href="#.addCSS" class="doc-link"></a>
-        <span class="type-signature attribute-static">static</span>HTML.addCSS<span class="signature">(newStyle)</span>
+    <h4 class="name" id="destroy">
+        <a href="#destroy" class="doc-link"></a>
+        destroy<span class="signature">()</span> &rarr; <span class="type-signature returnType">undefined</span>
         
 
 <div class="source-link rightLinks">
@@ -243,7 +233,7 @@
 
 
 <div class="description">
-    动态创建css
+    销毁
 </div>
 
 
@@ -256,61 +246,25 @@
 
 
 
-    
 
-<table class="params">
-    <thead>
-    <tr>
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
         
-        <th>Name</th>
-        
+<div class="param-desc">
+    返回undefined
+</div>
 
-        <th>Type</th>
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>newStyle</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            <td class="description last">
-            
-                css样式字符串</td>
-        </tr>
 
     
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -322,6 +276,11 @@
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjBase.html#destroy">XbsjBase#destroy</a>
+    </li></dd>
     
 
     
@@ -351,9 +310,9 @@
         
             
     <div class="nameContainer">
-    <h4 class="name" id=".autoLoad">
-        <a href="#.autoLoad" class="doc-link"></a>
-        <span class="type-signature attribute-static">static</span>HTML.autoLoad<span class="signature">(filePath)</span> &rarr; <span class="type-signature returnType">Promise</span>
+    <h4 class="name" id="isDestroyed">
+        <a href="#isDestroyed" class="doc-link"></a>
+        isDestroyed<span class="signature">()</span> &rarr; <span class="type-signature returnType">boolean</span>
         
 
 <div class="source-link rightLinks">
@@ -368,7 +327,7 @@
 
 
 <div class="description">
-    自动判断并加载js和css文件
+    对象是否已销毁
 </div>
 
 
@@ -380,51 +339,6 @@
 
 
 
-
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>filePath</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            <td class="description last">
-            
-                CSS或者JS文件路径</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -439,6 +353,10 @@
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    对象是否已销毁
+</div>
+
 
     
 
@@ -452,6 +370,11 @@
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjBase.html#isDestroyed">XbsjBase#isDestroyed</a>
+    </li></dd>
     
 
     
@@ -481,9 +404,9 @@
         
             
     <div class="nameContainer">
-    <h4 class="name" id=".loadCSS">
-        <a href="#.loadCSS" class="doc-link"></a>
-        <span class="type-signature attribute-static">static</span>HTML.loadCSS<span class="signature">(filePath)</span> &rarr; <span class="type-signature returnType">Promise</span>
+    <h4 class="name" id="toAllJSON">
+        <a href="#toAllJSON" class="doc-link"></a>
+        toAllJSON<span class="signature">()</span> &rarr; <span class="type-signature returnType">object</span>
         
 
 <div class="source-link rightLinks">
@@ -498,7 +421,7 @@
 
 
 <div class="description">
-    动态加载css文件
+    数据整个JSOn对象，包括默认值
 </div>
 
 
@@ -510,51 +433,6 @@
 
 
 
-
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>filePath</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            <td class="description last">
-            
-                CSS文件路径</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -569,6 +447,10 @@
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    创建的JSON数据对象
+</div>
+
 
     
 
@@ -582,6 +464,11 @@
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjBase.html#toAllJSON">XbsjBase#toAllJSON</a>
+    </li></dd>
     
 
     
@@ -611,9 +498,9 @@
         
             
     <div class="nameContainer">
-    <h4 class="name" id=".loadJS">
-        <a href="#.loadJS" class="doc-link"></a>
-        <span class="type-signature attribute-static">static</span>HTML.loadJS<span class="signature">(jsFilePath)</span> &rarr; <span class="type-signature returnType">Promise</span>
+    <h4 class="name" id="toJSON">
+        <a href="#toJSON" class="doc-link"></a>
+        toJSON<span class="signature">()</span> &rarr; <span class="type-signature returnType">object</span>
         
 
 <div class="source-link rightLinks">
@@ -628,7 +515,101 @@
 
 
 <div class="description">
-    动态加载js文件
+    转化成一个JSON数据对象 注意：每次都会创建一个新对象！
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    创建的JSON数据对象
+</div>
+
+
+    
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjBase.html#toJSON">XbsjBase#toJSON</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="xbsjFromJSON">
+        <a href="#xbsjFromJSON" class="doc-link"></a>
+        xbsjFromJSON<span class="signature">(jsonObject)</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    通过JSON数据对象来设置属性
 </div>
 
 
@@ -663,13 +644,13 @@
 
         <tr>
             
-                <td class="name"><code>jsFilePath</code></td>
+                <td class="name"><code>jsonObject</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">*</span>
 
 
             
@@ -679,7 +660,7 @@
 
             <td class="description last">
             
-                JS文件路径</td>
+                </td>
         </tr>
 
     
@@ -696,11 +677,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-
-    
 
 
 
@@ -712,6 +688,11 @@
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjBase.html#xbsjFromJSON">XbsjBase#xbsjFromJSON</a>
+    </li></dd>
     
 
     
