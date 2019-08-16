@@ -11,7 +11,7 @@ const sceneJson = {
                             "xbsjType": "XbsjTileset",
                             "xbsjGuid": "5caad563-3202-429a-842d-9b237102a51c",
                             "name": "三维瓦片1x",
-                            "url": "http://114.116.116.117/api/3dtiles/photo/5d205273053f8d14e00ec926/tileset.json",
+                            "url": "//114.116.116.117/api/3dtiles/photo/5d205273053f8d14e00ec926/tileset.json",
                             "xbsjPosition": [1.9016974701882112, 0.5972325152147303, 425.8641913624607],
                             "xbsjFlattenGuid": "72c32831-03c1-4d27-b902-a2b423d487d9",
                             "xbsjClippingPlanes": {}
@@ -22,7 +22,7 @@ const sceneJson = {
                             "xbsjType": "XbsjTileset",
                             "xbsjGuid": "2174cc4e-c882-4008-af1f-2ba4fabb4b30",
                             "name": "三维瓦片2",
-                            "url": "http://114.116.116.117/api/3dtiles/bim/5ca968a2daaf1c1034cd54f3/tileset.json",
+                            "url": "//114.116.116.117/api/3dtiles/bim/5ca968a2daaf1c1034cd54f3/tileset.json",
                             "xbsjPosition": [2.0314188886229756, 0.6965075857844879, 3.380522304181532],
                             "xbsjClippingPlanes": {}
                         }
@@ -34,7 +34,7 @@ const sceneJson = {
                             "name": "谷歌影像",
                             "xbsjImageryProvider": {
                                 "XbsjImageryProvider": {
-                                    "url": "http://mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali"
+                                    "url": "//mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali"
                                 }
                             }
                         }
@@ -46,7 +46,7 @@ const sceneJson = {
                             "name": "中国地形",
                             "xbsjTerrainProvider": {
                                 "XbsjCesiumTerrainProvider": {
-                                    "url": "http://114.116.116.117/api/wmts/terrain/5cbb024d053f8d0e8018cc0d"
+                                    "url": "//114.116.116.117/api/wmts/terrain/5cbb024d053f8d0e8018cc0d"
                                 },
                                 "type": "XbsjCesiumTerrainProvider"
                             },

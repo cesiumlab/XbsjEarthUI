@@ -7,7 +7,7 @@
     <title>Imagery</title>
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
     <script src="../../../../XbsjEarth/XbsjEarth.js"></script>
-    <!-- <script src="http://127.0.0.1:9529/XbsjEarth/XbsjEarth.js"></script> -->
+    <!-- <script src="//127.0.0.1:9529/XbsjEarth/XbsjEarth.js"></script> -->
     <style>
       html,
       body {
@@ -286,9 +286,9 @@
         window.imageryLayer = imageryLayer;
         const imageryProvider = new XE.ImageryProvider.XbsjImageryProvider();
         imageryProvider.url =
-          "http://mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali";
+          "//mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali";
         // imageryProvider.url =
-        //   "http://mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali";
+        //   "//mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali";
         // imageryProvider.rectangle = [
         //   -Math.PI,
         //   -Math.PI * 0.5,
@@ -305,7 +305,7 @@
         window.imageryLayer2 = imageryLayer2;
         const imageryProvider2 = new XE.ImageryProvider.XbsjImageryProvider();
         imageryProvider2.url =
-          "http://webrd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}";
+          "//webrd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}";
         imageryLayer2.xbsjImageryProvider.type = imageryProvider2.xbsjType;
         imageryLayer2.xbsjImageryProvider[
           imageryProvider.xbsjType

@@ -9,7 +9,7 @@ function sceneTreeCreateExample1(xbsjEarth) {
                     "xbsjType": "Tileset",
                     "xbsjGuid": "b4137394-d346-4434-a01e-5b2d3730ec9f",
                     "name": "三维瓦片1x",
-                    "url": "http://lab2.cesiumlab.com:9000/model/f15b9e90ac2d11e99dbd8fd044883638/tileset.json",
+                    "url": "//lab2.cesiumlab.com:9000/model/f15b9e90ac2d11e99dbd8fd044883638/tileset.json",
                     "lightColor": null,
                     "specularEnvironmentMaps": null,
                     "xbsjPosition": [
@@ -27,7 +27,7 @@ function sceneTreeCreateExample1(xbsjEarth) {
                     "xbsjType": "Tileset",
                     "xbsjGuid": "4c9e66a4-dc72-4744-a3c9-d0c554178f38",
                     "name": "三维瓦片2",
-                    "url": "http://lab2.cesiumlab.com:9000/model/d16c1ce0ac2d11e99dbd8fd044883638/tileset.json",
+                    "url": "//lab2.cesiumlab.com:9000/model/d16c1ce0ac2d11e99dbd8fd044883638/tileset.json",
                     "lightColor": null,
                     "specularEnvironmentMaps": null,
                     "xbsjPosition": [
@@ -46,7 +46,7 @@ function sceneTreeCreateExample1(xbsjEarth) {
                     "name": "谷歌影像",
                     "xbsjImageryProvider": {
                         "XbsjImageryProvider": {
-                            "url": "http://mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali"
+                            "url": "//mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali"
                         },
                         "UrlTemplateImageryProvider": {},
                         "WebMapTileServiceImageryProvider": {}
@@ -66,7 +66,7 @@ function sceneTreeCreateExample1(xbsjEarth) {
                         "XbsjImageryProvider": {},
                         "UrlTemplateImageryProvider": {},
                         "WebMapTileServiceImageryProvider": {
-                            "url": "http://basemap.nationalmap.gov/arcgis/rest/services/USGSShadedReliefOnly/MapServer/WMTS",
+                            "url": "//basemap.nationalmap.gov/arcgis/rest/services/USGSShadedReliefOnly/MapServer/WMTS",
                             "layer": "USGSShadedReliefOnly",
                             "style": "default",
                             "tileMatrixSetID": "GoogleMapsCompatible",
@@ -88,7 +88,7 @@ function sceneTreeCreateExample1(xbsjEarth) {
                         "type": "XbsjCesiumTerrainProvider",
                         "XbsjEllipsoidTerrainProvider": {},
                         "XbsjCesiumTerrainProvider": {
-                            "url": "http://lab2.cesiumlab.com:9000/terrain/577fd5b0ac1f11e99dbd8fd044883638"
+                            "url": "//lab2.cesiumlab.com:9000/terrain/577fd5b0ac1f11e99dbd8fd044883638"
                         }
                     },
                     "show": false
