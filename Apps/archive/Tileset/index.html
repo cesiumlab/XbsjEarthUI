@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/react-jsonschema-form/dist/react-jsonschema-form.js"></script>
     <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
     <script src="../../../XbsjEarth/XbsjEarth.js"></script>
-    <!-- <script src="http://127.0.0.1:9529/XbsjEarth/XbsjEarth.js"></script> -->
+    <!-- <script src="//127.0.0.1:9529/XbsjEarth/XbsjEarth.js"></script> -->
     <style>
         html, body {
             height: 100%;
@@ -54,7 +54,7 @@
             const xbsjEarth = new XE.Earth('xbsjEarthContainer');
             const tileset1 = new XE.Obj.Tileset(xbsjEarth);
             window.tileset1 = tileset1;
-            tileset1.url = 'http://114.116.116.117/api/3dtiles/photo/5ce4ad5a053f8d1260ec5d0a/tileset.json';
+            tileset1.url = '//114.116.116.117/api/3dtiles/photo/5ce4ad5a053f8d1260ec5d0a/tileset.json';
 
             setTimeout(() => tileset1.flyTo(), 1000);
             document.getElementById('flyToButton').onclick = () => tileset1.flyTo();
