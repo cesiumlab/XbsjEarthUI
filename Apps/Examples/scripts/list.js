@@ -43,6 +43,10 @@ vueApp.examples = [
                 "url": "./earth-nativeCesium.html"
             },
             {
+                "title": "地表限制(地表裁切)",
+                "url": "./earth-restrict.html"
+            },
+            {
                 "title": "地下模式和地表透明",
                 "url": "./earth-subsurface.html"
             },
