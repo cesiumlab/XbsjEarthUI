@@ -34,7 +34,7 @@
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
                     <div style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 5px;">
-                        <span><input type="checkbox" v-model="pointAdding">创建</span><br/>
+                        <span><input type="checkbox" v-model="pointAdding">重新创建</span><br/>
                         <span><input type="checkbox" v-model="editing">编辑</span><br/>
                         <span><input type="checkbox" v-model="innerDiscard">挖坑</span><br/>
                         <span><input type="checkbox" v-model="enabled">启用</span><br/>
@@ -85,6 +85,23 @@
                     ]
                 }
 
+
+                const config = {
+                    "positions": [
+                        1.8983489693711637,
+                        0.6174588651458429,
+                        2.0352390379780276,
+                        0.6139967713791016,
+                        2.0395752004470236,
+                        0.7212112953215714,
+                        1.892123027149397,
+                        0.7435488043489379
+                    ],
+                    "height": 28078.46014464221,
+                    "enabled": true,
+                };
+                earth.terrainEffect.restrict.xbsjFromJSON(config);
+
                 // 1.1.3 数据绑定
                 {
                     this._disposers = [];
@@ -92,14 +109,10 @@
                     this._disposers.push(XE.MVVM.bind(this, 'editing', earth.terrainEffect.restrict, 'editing'));
                     this._disposers.push(XE.MVVM.bind(this, 'innerDiscard', earth.terrainEffect.restrict, 'innerDiscard'));
                     this._disposers.push(XE.MVVM.bind(this, 'enabled', earth.terrainEffect.restrict, 'enabled'));
-                    this.enabled = true;
-
-                    // 设置初始值
-                    earth.terrainEffect.subSurfaceEnabled = true;
-                    earth.terrainEffect.surfaceOpacity = 0.5;
                 }
 
                 this._earth = earth;
+                window.earth = earth;
             },
             // 1.2 资源销毁
             beforeDestroy() {
@@ -108,6 +121,13 @@
                 this._disposers.forEach(d => d());
                 this._disposers.length = 0;
             },
+            watch: {
+                pointAdding(newVal) {
+                    if (newVal) {
+                        earth.terrainEffect.restrict.positions = [];
+                    }
+                }
+            }
         }
 
         // 2 创建vue程序
