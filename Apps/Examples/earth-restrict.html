@@ -121,13 +121,6 @@
                 this._disposers.forEach(d => d());
                 this._disposers.length = 0;
             },
-            watch: {
-                pointAdding(newVal) {
-                    if (newVal) {
-                        earth.terrainEffect.restrict.positions = [];
-                    }
-                }
-            }
         }
 
         // 2 创建vue程序
