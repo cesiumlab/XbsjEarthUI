@@ -98,7 +98,7 @@ export default {
       }
       function findGroupByField(fieldname) {
         var def = findDef(fieldname);
-        if (!def) return groups[0];
+        if (!def || def.group=="") return groups[0];
 
         var g = findGroup(def.group);
         if (!g) {
