@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <title>编辑互斥</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .checkbox {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 5px;">
+                        <span @click="positionEditing = !positionEditing" class="checkbox"><input type="checkbox" v-model="positionEditing">位置编辑</span><br/>
+                        <span @click="rotationEditing = !rotationEditing" class="checkbox"><input type="checkbox" v-model="rotationEditing">姿态编辑</span><br/>
+                    </div>
+                </div>
+            `,
+            data() {
+                return {
+                    positionEditing: false,
+                    rotationEditing: false,
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "title": "项目1",
+                    "isSelected": true,
+                    "children": [
+                        {
+                            "ref": "tileset",
+                            "czmObject": {
+                                "xbsjType": "Tileset",
+                                "xbsjGuid": "b4137394-d346-4434-a01e-5b2d3730ec9f",
+                                "name": "三维瓦片1x",
+                                "url": "//lab2.cesiumlab.com:9000/model/f15b9e90ac2d11e99dbd8fd044883638/tileset.json",
+                                "lightColor": null,
+                                "specularEnvironmentMaps": null,
+                                "xbsjPosition": [
+                                    1.9016974701882112,
+                                    0.5972325152147303,
+                                    425.8641913624607
+                                ],
+                                "xbsjFlattenGuid": "93916e9b-82dd-4a56-b15e-27303b08e781",
+                                "xbsjClippingPlanes": {
+                                    "planes": [
+                                        "9ab55d98-32ed-49ad-9004-1940f4903b68"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "ref": "clippingPlane",
+                            "czmObject": {
+                                "xbsjType": "ClippingPlane",
+                                "xbsjGuid": "9ab55d98-32ed-49ad-9004-1940f4903b68",
+                                "name": "裁剪面1",
+                                "position": [
+                                    1.9016970582304769,
+                                    0.5972442199495571,
+                                    426
+                                ],
+                                "showHelper": true,
+                            }
+                        },
+                        {
+                            "czmObject": {
+                                "xbsjType": "Imagery",
+                                "name": "谷歌影像",
+                                "xbsjImageryProvider": {
+                                    "XbsjImageryProvider": {
+                                        "url": "//mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali",
+                                        "srcCoordType": "WGS84",
+                                        "dstCoordType": "WGS84",
+                                        "rectangle": [
+                                            -3.141592653589793,
+                                            -1.5707963267948966,
+                                            3.141592653589793,
+                                            1.5707963267948966
+                                        ]
+                                    },
+                                }
+                            }
+                        }
+                    ]
+                };
+
+                var tileset = earth.sceneTree.$refs.tileset.czmObject;
+                XE.MVVM.watch(() => {
+                    if (tileset.ready) {
+                        tileset.flyTo();
+                    }
+                });
+
+                window.earth = earth;
+                window.tileset = tileset;
+                window.clippingPlane = earth.sceneTree.$refs.clippingPlane.czmObject;
+
+                // 1.1.5 数据绑定
+                {
+                    this._disposers = [];
+                    this._disposers.push(XE.MVVM.bind(this, 'positionEditing', clippingPlane, 'positionEditing'));
+                    this._disposers.push(XE.MVVM.bind(this, 'rotationEditing', clippingPlane, 'rotationEditing'));
+                }
+
+                this._earth = earth;
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._earth = this._earth && this._earth.destroy();
+                this._disposers.forEach(d => d());
+                this._disposers.length = 0;
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>
