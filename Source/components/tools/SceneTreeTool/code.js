@@ -18,11 +18,8 @@ function getCodeUrl(code) {
     const jsonStr = JSON.stringify(json);
     const base64 = stringToBase64(jsonStr);
     const base64Encode = encodeURIComponent(base64);
-
-    // return location.origin + location.pathname + `?code=${base64}`;
-    // return '//cesiumlab.gitee.io/xbsjearthui/Apps/Examples/' + `?code=${base64}`;
-    const url = '//cesiumlab.gitee.io/xbsjearthui/Apps/Examples/' + `?code=${base64Encode}`;
-    // console.log(url);
+    const url = '//cesiumlab.gitee.io/earthsdk/v/last/Apps/Examples/' + `?code=${base64Encode}`;
+    console.log(url);
     return url;
 }
 
