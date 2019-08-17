@@ -136,6 +136,7 @@ export default {
           confirm: "确认删除图层?",
           delete: "删除",
           cut: "剪切",
+          clone: '克隆',
           paste: "粘贴",
           rename: "重命名",
           locate: "定位",
@@ -151,6 +152,7 @@ export default {
           confirm: "confirm to delete the layer?",
           delete: "delete",
           cut: "cut",
+          clone: 'clone',
           paste: "paste",
           rename: "rename",
           locate: "locate",
@@ -231,6 +233,17 @@ export default {
             this._currentSceneNode = item._inner.sn;
           }
         },
+        {
+          text: this.lang.clone,
+          keys: '',
+          func: () => {
+            const sn = item._inner.sn;
+            if (sn) {
+              const index = sn.parent.children.indexOf(sn) + 1;
+              sn.cloneTo(sn.parent, index);
+            }
+          },
+        },      
         {
           text: this.lang.delete,
           keys: "",
