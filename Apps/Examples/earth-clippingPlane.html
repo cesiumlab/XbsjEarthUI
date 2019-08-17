@@ -119,11 +119,7 @@
                 };
 
                 var tileset = earth.sceneTree.$refs.tileset.czmObject;
-                XE.MVVM.watch(() => {
-                    if (tileset.ready) {
-                        tileset.flyTo();
-                    }
-                });
+                tileset.flyTo();
 
                 window.earth = earth;
                 window.tileset = tileset;

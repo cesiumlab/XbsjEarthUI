@@ -100,15 +100,7 @@
                 earth.postProcess.bloom.enabled = true; // 开启泛光
 
                 // 1.1.5 数据绑定
-                {
-                    this._disposers = [];
-
-                    this._disposers.push(XE.MVVM.watch(tileset1, 'ready', ready => {
-                        if (ready) {
-                            tileset1.flyTo();
-                        }
-                    }));
-                }
+                tileset1.flyTo();
 
                 this._tileset = tileset1;
                 this._earth = earth;
