@@ -152,6 +152,11 @@ var vueApp = new Vue({
         var q = {};
         location.search.replace(/([^?&=]+)=([^&]+)/g, (_, k, v) => q[k] = v);
         this.menu = q.menu;
+        if (q.menu === 'false') {
+            this.menu = false
+        } else {
+            this.menu = true
+        }
     },
     methods: {
         setCodeFromUrl(url) {
@@ -173,9 +178,11 @@ var vueApp = new Vue({
         },
         showCodeUrl() {
             const codeUrl = this.getCodeUrl();
-            this.copyText( codeUrl, function (){alert('复制成功')})
+            this.copyText(codeUrl, function () {
+                alert('复制成功')
+            })
         },
-        copyText(text, callback){ // text: 要复制的内容， callback: 回调
+        copyText(text, callback) { // text: 要复制的内容， callback: 回调
             var tag = document.createElement('input');
             tag.setAttribute('id', 'cp_hgz_input');
             tag.value = text;
@@ -183,7 +190,9 @@ var vueApp = new Vue({
             document.getElementById('cp_hgz_input').select();
             document.execCommand('copy');
             document.getElementById('cp_hgz_input').remove();
-            if(callback) {callback(text)}
+            if (callback) {
+                callback(text)
+            }
         }
     },
     watch: {
