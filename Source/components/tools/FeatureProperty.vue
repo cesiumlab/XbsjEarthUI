@@ -47,13 +47,13 @@ export default {
       disabled: false
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
     //监控获取pick到的对象
     this.unAutorun = XE.MVVM.watch(() => {
-      var feature = this.$root.$earth.pickedObject.clicked && this.$root.$earth.pickedObject.clicked.rawObject;
+      var feature =
+        this.$root.$earth.pickedObject.clicked &&
+        this.$root.$earth.pickedObject.clicked.rawObject;
       //如果有对象并且没有禁用弹出，那么弹出
       if (feature && !this.disabled) this.onPicked(feature);
       else this.show = false;
@@ -66,16 +66,19 @@ export default {
       //如果有文件名，那么依据文件名
       if (feature.hasProperty("file")) {
         var file = feature.getProperty("file");
-        for (var i = 0; i < feature.tileset.properties.length; i++) {
-          var params = feature.tileset.properties[i];
-          if (params.file == file) {
-            fileParams = params.params;
+
+        if (feature.tileset.properties) {
+          for (var i = 0; i < feature.tileset.properties.length; i++) {
+            var params = feature.tileset.properties[i];
+            if (params.file == file) {
+              fileParams = params.params;
+            }
           }
         }
       }
       //直接取第一个
       else if (feature.tileset.properties) {
-        if(feature.tileset.properties.length>0)
+        if (feature.tileset.properties.length > 0)
           fileParams = feature.tileset.properties[0].params;
       }
 
@@ -98,7 +101,7 @@ export default {
       }
       function findGroupByField(fieldname) {
         var def = findDef(fieldname);
-        if (!def || def.group=="") return groups[0];
+        if (!def || def.group == "") return groups[0];
 
         var g = findGroup(def.group);
         if (!g) {
