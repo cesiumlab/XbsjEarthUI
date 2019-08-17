@@ -23,13 +23,16 @@
     <script src="./scripts/zip.js"></script>
 
     <script>
-        Vue.use(VueCodemirror, /* {
-        options: { theme: 'base16-dark', ... },
-        events: ['scroll', ...]
-        } */);
+        Vue.use(VueCodemirror,
+            /* {
+                   options: { theme: 'base16-dark', ... },
+                   events: ['scroll', ...]
+                   } */
+        );
     </script>
     <style>
-        html, body {
+        html,
+        body {
             width: 100%;
             height: 100%;
             margin: 0px;
@@ -43,51 +46,97 @@
             height: 100%;
         }
 
-        a:link    {color: #CCC;}
-        a:visited {color: #CCC;}
-        a:hover   {color: #CCC;}
-        a:active  {color: #CCC;}
+        a:link {
+            color: #CCC;
+        }
+
+        a:visited {
+            color: #CCC;
+        }
+
+        a:hover {
+            color: #CCC;
+        }
+
+        a:active {
+            color: #CCC;
+        }
 
         #exampleList {
-            position: absolute; left: 0px; top: 0px; width: 200px; height: 100%; white-space: nowrap; background: #151718; padding: 5px;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 200px;
+            height: 100%;
+            white-space: nowrap;
+            background: #151718;
+            padding: 5px;
         }
 
         #codeEditor {
-            position: absolute; width: calc(50% - 100px); background: #151718; height: 100%; left: 200px; top: 0px;
+            position: absolute;
+            width: calc(50% - 100px);
+            background: #151718;
+            height: 100%;
+            left: 200px;
+            top: 0px;
         }
 
         #earthWin {
-            position: absolute; width: calc(50% - 100px); background: #151718; height: 100%; right: 0px; top: 0px;
+            position: absolute;
+            width: calc(50% - 100px);
+            background: #151718;
+            height: 100%;
+            right: 0px;
+            top: 0px;
         }
 
+        .exampleList {
+            width: 0px !important;
+            display: none !important;
+        }
+
+        .codeEditor {
+            width: 50% !important;
+            left: 0px !important;
+        }
+
+        .earthWin {
+            width: 50% !important;
+        }
     </style>
 </head>
 
 <body>
     <div id="vueApp" style="position: relative; width: 100%; height: 100%; overflow: hidden; color: #CCC;">
-        <div id="exampleList">
-            <a href="https://github.com/cesiumlab/XbsjEarthUI"><h2>EarthSDK示例集</h2></a>
+        <div id="exampleList" :class="{'exampleList':menu=='false'}">
+            <a href="https://github.com/cesiumlab/XbsjEarthUI">
+                <h2>EarthSDK示例集</h2>
+            </a>
             <template v-for="group in examples">
                 <h3>{{ group.title }}</h3>
                 <template v-for="e in group.list">
-                    <a class="elink" :href="e.url" @click.prevent="setCodeFromUrl(e.url)" :title="e.title">{{ e.title }}</a><br />
+                    <a class="elink" :href="e.url" @click.prevent="setCodeFromUrl(e.url)"
+                        :title="e.title">{{ e.title }}</a><br />
                 </template>
             </template>
         </div>
 
-        <div id="codeEditor">
-            <div style="height: 30px; line-height: 30px; padding-left: 8px; background: #151718; color: #CCC; position: relative;">
+        <div id="codeEditor" :class="{'codeEditor':menu=='false'}">
+            <div
+                style="height: 30px; line-height: 30px; padding-left: 8px; background: #151718; color: #CCC; position: relative;">
                 <input type="checkbox" v-model="autoRefresh" title="代码修改后2s自动刷新右侧的三维窗口">自动运行</button>
-                <button @click="apply" title="手动刷新右侧的三维窗口">手动运行</button> 
-                <button @click="showCodeUrl" title="修改后的代码可以通过此链接分享，但是url会比较长！">获取代码url</button> 
-                <div style="height: 30px; line-height: 30px; position: absolute; right: 0px; top: 0px; padding-right: 8px;">
+                <button @click="apply" title="手动刷新右侧的三维窗口">手动运行</button>
+                <button @click="showCodeUrl" title="修改后的代码可以通过此链接分享，但是url会比较长！">获取代码url</button>
+                <div
+                    style="height: 30px; line-height: 30px; position: absolute; right: 0px; top: 0px; padding-right: 8px;">
                     <span>{{ title }}</span>
                 </div>
             </div>
             <code-editor v-model="code" style="width: 100%; height: calc(100% - 30px);"></code-editor>
         </div>
-    
-        <div id="earthWin">
+
+        <div id="earthWin" :class="{'earthWin':menu==='false'}">
             <iframe ref="earthAppFrame" src="./startup-createEarth.html" frameborder="0"
                 style="width:100%; height: 100%; position: relative; background: grey"></iframe>
         </div>
@@ -96,10 +145,11 @@
     <script src="./scripts/codeEditor.js"></script>
     <script src='./scripts/list.js'></script>
     <script>
-        var q={};location.search.replace(/([^?&=]+)=([^&]+)/g,(_,k,v)=>q[k]=v);
+        var q = {};
+        location.search.replace(/([^?&=]+)=([^&]+)/g, (_, k, v) => q[k] = v);
         if (q.url) {
             vueApp.setCodeFromUrl(q.url);
-        } else if (q.code){
+        } else if (q.code) {
             const decode = decodeURIComponent(q.code);
             const jsonStr = base64ToString(decode);
             const json = JSON.parse(jsonStr);

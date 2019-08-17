@@ -6,13 +6,13 @@ var delayApply = (function () {
 
     function delayApply_(code, vueApp) {
         _settingCodeDelaySubscription = _settingCodeDelaySubscription || _settingCodeDelay.
-            pipe(rxjs.operators.debounceTime(2000)).
-            subscribe(() => {
-                const diffTime = Date.now() - lastForceCodeTimeStamp;
-                if (diffTime > 2000 + 500) {
-                    vueApp.autoRefresh && vueApp.apply();
-                }
-            });
+        pipe(rxjs.operators.debounceTime(2000)).
+        subscribe(() => {
+            const diffTime = Date.now() - lastForceCodeTimeStamp;
+            if (diffTime > 2000 + 500) {
+                vueApp.autoRefresh && vueApp.apply();
+            }
+        });
 
         _settingCodeDelay.next(code);
     }
@@ -21,6 +21,7 @@ var delayApply = (function () {
 
 var setCodeFromUrl = (function () {
     var _setCodeFromUrlSubscription;
+
     function setCodeFromUrl_(url, vueApp) {
         _setCodeFromUrlSubscription && _setCodeFromUrlSubscription.unsubscribe();
         _setCodeFromUrlSubscription = undefined;
@@ -30,13 +31,19 @@ var setCodeFromUrl = (function () {
                 if (res.ok) {
                     return res.text();
                 } else {
-                    return of({ error: true, message: `Error ${res.status}` });
+                    return of({
+                        error: true,
+                        message: `Error ${res.status}`
+                    });
                 }
             }),
             rxjs.operators.catchError(err => {
                 // Network or other error, handle appropriately
                 console.error(err);
-                return of({ error: true, message: err.message })
+                return of({
+                    error: true,
+                    message: err.message
+                })
             }),
             rxjs.operators.map(code => {
                 lastForceCodeTimeStamp = Date.now();
@@ -84,19 +91,19 @@ var CodeEditor = {
                 theme: 'seti',
                 // 是否代码折叠 -->
                 lineWrapping: false,
-             
+
                 // 是否在编辑器左侧显示行号 -->
                 lineNumbers: true,
                 // 行号从哪个数开始计数，默认为1 -->
                 firstLineNumber: 1,
-             
+
                 // tab字符的宽度，默认为4 -->
                 indentWithTabs: true,
                 // 自动缩进，设置是否根据上下文自动缩进,默认为true-->
                 smartIndent: true,
-             
+
                 // 括号匹配 -->
-                matchBrackets : true,
+                matchBrackets: true,
                 // 是否在初始化时自动获取焦点 -->
                 autofocus: true,
                 // 智能提示  -->
@@ -104,15 +111,13 @@ var CodeEditor = {
                 // 编辑器是否只读,并且不能获得焦点 -->
                 // readOnly:'nocursor',
                 // 在选择时是否显示光标，默认为false -->
-                showCursorWhenSelecting:true
+                showCursorWhenSelecting: true
             }
         }
     },
     methods: {
-        onCmReady(cm) {
-        },
-        onCmFocus(cm) {
-        },
+        onCmReady(cm) {},
+        onCmFocus(cm) {},
         onCmCodeChange(newCode) {
             this.$emit('input', newCode);
         }
@@ -126,8 +131,7 @@ var CodeEditor = {
         // console.log('this is current codemirror object', this.codemirror)
         // you can use this.codemirror to do something...
     },
-    beforeDestroy() {
-    }
+    beforeDestroy() {}
 };
 
 var vueApp = new Vue({
@@ -140,10 +144,14 @@ var vueApp = new Vue({
         autoRefresh: true,
         code: '',
         title: '<未能获取示例名称!>',
+        menu: ''
     },
     mounted() {
         // console.log('this is current codemirror object', this.codemirror)
         // you can use this.codemirror to do something...
+        var q = {};
+        location.search.replace(/([^?&=]+)=([^&]+)/g, (_, k, v) => q[k] = v);
+        this.menu = q.menu;
     },
     methods: {
         setCodeFromUrl(url) {
@@ -158,13 +166,24 @@ var vueApp = new Vue({
                 title = titles[1];
             }
             this.title = title;
+            document.title = '示例集合---' + this.title
         },
         getCodeUrl() {
             return getCodeUrl(this.code);
         },
         showCodeUrl() {
             const codeUrl = this.getCodeUrl();
-            window.prompt('url:', codeUrl);
+            this.copyText( codeUrl, function (){alert('复制成功')})
+        },
+        copyText(text, callback){ // text: 要复制的内容， callback: 回调
+            var tag = document.createElement('input');
+            tag.setAttribute('id', 'cp_hgz_input');
+            tag.value = text;
+            document.getElementsByTagName('body')[0].appendChild(tag);
+            document.getElementById('cp_hgz_input').select();
+            document.execCommand('copy');
+            document.getElementById('cp_hgz_input').remove();
+            if(callback) {callback(text)}
         }
     },
     watch: {
