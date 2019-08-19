@@ -4,7 +4,26 @@ function sceneTreeCreateExample1(xbsjEarth) {
         "title": "当前场景",
         "children": [
             {
-                "title": "三维瓦片1x",
+                "czmObject": {
+                    "xbsjType": "Cylinder",
+                    "name": "圆柱体",     
+                    "positions": [
+                        [
+                            1.9016974701882112,
+                            0.5972325152147303,
+                            425.8641913624607
+                        ],
+                        [
+                            1.9016974701882112,
+                            0.5972325152147303,
+                            525.8641913624607
+                        ],
+                    ],
+                    "radius": 20,  
+                    "color": [1.0, 0.0, 0.0, 1.0],           
+                }
+            },
+            {
                 "czmObject": {
                     "xbsjType": "Tileset",
                     "xbsjGuid": "b4137394-d346-4434-a01e-5b2d3730ec9f",
