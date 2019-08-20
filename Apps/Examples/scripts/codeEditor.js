@@ -144,7 +144,9 @@ var vueApp = new Vue({
         autoRefresh: true,
         code: '',
         title: '<未能获取示例名称!>',
-        menu: ''
+        menu: '',
+        scl: false,
+        reduce:false
     },
     mounted() {
         // console.log('this is current codemirror object', this.codemirror)
@@ -159,6 +161,12 @@ var vueApp = new Vue({
         }
     },
     methods: {
+        sclcontrl() {
+            this.scl = !this.scl
+        },
+        reducecontrl(){
+            this.reduce = !this.reduce
+        },
         setCodeFromUrl(url) {
             setCodeFromUrl(url, this);
             window.history.replaceState(null, null, `?url=${url}`);
