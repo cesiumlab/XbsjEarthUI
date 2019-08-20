@@ -146,7 +146,8 @@ export default {
           moving: "拖拽移动", 
           newFolder: "新建文件夹",
           title: "图层管理",
-          viewSource:"查看加载代码"
+          viewSource:"查看加载代码",
+          config: "控制台打印JSON配置"
         },
         en: {
           confirm: "confirm to delete the layer?",
@@ -162,7 +163,8 @@ export default {
           moving: "drag", 
           newFolder: "new folder",
           title: "Layer Manager",
-          viewSource:"View Source"
+          viewSource:"View Source",
+          config: "Console Print JSON Config"
         }
       },
       lang: undefined
@@ -287,6 +289,15 @@ export default {
             const code = getCode(finalJsonObject);
             const url = getCodeUrl(code); 
             this.$root.$earthUI.openURL(url);
+          }
+        }, {
+          text: this.lang.config,
+          keys: '',
+          border: true,
+          func: () => {
+            console.log(item._inner.sn);
+              const jsonStr = item._inner.sn.toJSONStr();
+              console.log(jsonStr);
           }
         }
       ];
