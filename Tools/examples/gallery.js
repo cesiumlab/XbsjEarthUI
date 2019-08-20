@@ -17,7 +17,8 @@ filePaths.forEach(filePath => {
     }
 
     // <meta name="xbsj-labels" content="Beginner, Showcases"></meta>
-    var results2 = /\<meta\sname=\"xbsj-labels\"\scontent=\"(.*)\"\>\<\/meta\>/mg.exec(content);
+    // var results2 = /\<meta\sname=\"xbsj-labels\"\scontent=\"(.*)\"\>\<\/meta\>/mg.exec(content);
+    var results2 = /\<meta\sname=\"xbsj-labels\"\scontent=\"(.*)\"\>/mg.exec(content);
     var labels = [];
     if (results2 && results2.length >= 2) {
         labels = results2[1].split(',').map(e => e.trim());
