@@ -7,6 +7,10 @@ vueApp.examples = [
                 "url": "./earth-buildings.html"
             },
             {
+                "title": "视频融合",
+                "url": "./earth-cameraVideo.html"
+            },
+            {
                 "title": "剖切面",
                 "url": "./earth-clippingPlane.html"
             },
@@ -65,12 +69,33 @@ vueApp.examples = [
         ]
     },
     {
-        "title": "Earth起步",
+        "title": "EarthUI示例",
         "list": [
             {
-                "title": "视频融合",
-                "url": "./earth-cameraVideo.html"
+                "title": "创建",
+                "url": "./earthui-basic.html"
             },
+            {
+                "title": "自定义属性窗口",
+                "url": "./earthui-custom.html"
+            },
+            {
+                "title": "从JSON创建场景结构",
+                "url": "./earthui-fromJSON.html"
+            },
+            {
+                "title": "高德地图纠偏",
+                "url": "./earthui-gaode.html"
+            },
+            {
+                "title": "内置UI组件",
+                "url": "./earthui-xbsjUI.html"
+            }
+        ]
+    },
+    {
+        "title": "Earth起步",
+        "list": [
             {
                 "title": "数据双向绑定-理论模型",
                 "url": "./startup-binds-classic.html"
@@ -94,31 +119,6 @@ vueApp.examples = [
             {
                 "title": "3dtiles数据加载",
                 "url": "./startup-tileset.html"
-            }
-        ]
-    },
-    {
-        "title": "EarthUI示例",
-        "list": [
-            {
-                "title": "创建",
-                "url": "./earthui-basic.html"
-            },
-            {
-                "title": "自定义属性窗口",
-                "url": "./earthui-custom.html"
-            },
-            {
-                "title": "从JSON创建场景结构",
-                "url": "./earthui-fromJSON.html"
-            },
-            {
-                "title": "高德地图纠偏",
-                "url": "./earthui-gaode.html"
-            },
-            {
-                "title": "内置UI组件",
-                "url": "./earthui-xbsjUI.html"
             }
         ]
     }
