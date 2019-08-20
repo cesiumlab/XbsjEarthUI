@@ -7,6 +7,14 @@ vueApp.examples = [
                 "url": "./earth-buildings.html"
             },
             {
+                "title": "剖切面",
+                "url": "./earth-clippingPlane.html"
+            },
+            {
+                "title": "圆柱体集群",
+                "url": "./earth-cylinders.html"
+            },
+            {
                 "title": "销毁地球",
                 "url": "./earth-destroyEarth.html"
             },
@@ -53,37 +61,16 @@ vueApp.examples = [
             {
                 "title": "视域分析",
                 "url": "./earth-viewshed.html"
-            },
-            {
-                "title": "创建",
-                "url": "./earthui-basic.html"
-            }
-        ]
-    },
-    {
-        "title": "EarthUI示例",
-        "list": [
-            {
-                "title": "自定义属性窗口",
-                "url": "./earthui-custom.html"
-            },
-            {
-                "title": "从JSON创建场景结构",
-                "url": "./earthui-fromJSON.html"
-            },
-            {
-                "title": "高德地图纠偏",
-                "url": "./earthui-gaode.html"
-            },
-            {
-                "title": "内置UI组件",
-                "url": "./earthui-xbsjUI.html"
             }
         ]
     },
     {
         "title": "Earth起步",
         "list": [
+            {
+                "title": "视频融合",
+                "url": "./earth-cameraVideo.html"
+            },
             {
                 "title": "数据双向绑定-理论模型",
                 "url": "./startup-binds-classic.html"
@@ -107,6 +94,31 @@ vueApp.examples = [
             {
                 "title": "3dtiles数据加载",
                 "url": "./startup-tileset.html"
+            }
+        ]
+    },
+    {
+        "title": "EarthUI示例",
+        "list": [
+            {
+                "title": "创建",
+                "url": "./earthui-basic.html"
+            },
+            {
+                "title": "自定义属性窗口",
+                "url": "./earthui-custom.html"
+            },
+            {
+                "title": "从JSON创建场景结构",
+                "url": "./earthui-fromJSON.html"
+            },
+            {
+                "title": "高德地图纠偏",
+                "url": "./earthui-gaode.html"
+            },
+            {
+                "title": "内置UI组件",
+                "url": "./earthui-xbsjUI.html"
             }
         ]
     }
