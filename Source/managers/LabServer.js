@@ -24,11 +24,11 @@ class LabServer {
           /**
       * CesiumLab在线服务服务地址
       * @type {string}
-      * @default '//114.116.116.117/' 
+      * @default '//lab2.cesiumlab.com/' 
       * @instance
       * @memberof LabServer
       */
-     serverOnline: '//114.116.116.117/',
+     serverOnline: '//lab2.cesiumlab.com/',
     });
   }
 

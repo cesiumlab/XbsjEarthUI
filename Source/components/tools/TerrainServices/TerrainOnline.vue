@@ -114,14 +114,14 @@ export default {
         // {
         //   name: this.lang.chinaterrain,
         //   url:
-        //     "//lab2.cesiumlab.com:9000/terrain/577fd5b0ac1f11e99dbd8fd044883638",
+        //     "//lab.earthsdk.com/terrain/577fd5b0ac1f11e99dbd8fd044883638",
         //   notSupportWater: true,
         //   cls: "google_map"
         // },
         // {
         //   name: this.lang.mount,
         //   url:
-        //     "//lab2.cesiumlab.com:9000/terrain/42752d50ac1f11e99dbd8fd044883638",
+        //     "//lab.earthsdk.com/terrain/42752d50ac1f11e99dbd8fd044883638",
         //   notSupportNormal: false,
         //   notSupportWater: true,
         //   cls: "google_map"
