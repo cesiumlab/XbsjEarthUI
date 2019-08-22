@@ -121,5 +121,27 @@ vueApp.examples = [
                 "url": "./startup-tileset.html"
             }
         ]
+    },
+    {
+        "title": "mrq",
+        "list": [{
+                "title": "基础地图-在线地图加载-天地图(无标记)",
+                "url": "./mrq/earth-online-tiandimap-nomark.html"
+            },
+            {
+                "title": "基础地图-在线地图加载-天地图(标记)",
+                "url": "./mrq/earth-online-tiandimap-mark.html"
+            },
+            {
+                "title": "地球动画",
+                "url": "./mrq/earth-animation.html"
+            },
+            {
+                "title": "高德地图",
+                "url": "./mrq/earth-online-gaodei.html"
+            }
+
+
+        ]
     }
 ]
