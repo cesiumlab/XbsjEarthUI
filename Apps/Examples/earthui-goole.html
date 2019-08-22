@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="EarthUI示例"></meta>
+    <title>谷歌</title>
+    <script src="../../XbsjEarthUI/xbsj.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+    </div>
+
+    <script>
+        XbsjEarthUI.create('main').then(earthUI => {
+
+
+            var earth = earthUI.earth;
+
+            var imageryskin = [
+                {
+                    url: '//www.google.cn/maps/vt?lyrs=m&gl=CN&x={x}&y={y}&z={z}',
+                    title: '谷歌地图'
+                },
+                {
+                    url: '//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}',
+                    title: '谷歌影像&标注'
+                }
+            ];
+
+            const g0 = new XE.SceneTree.Group(earth);
+            g0.title = '地图'
+            earth.sceneTree.root.children.push(g0);
+            {
+                imageryskin.forEach((value,index) => {
+                    var gooleImageryLayer = new XE.Obj.Imagery(earth);
+                    gooleImageryLayer.xbsjImageryProvider.type = 'XbsjImageryProvider';
+                    gooleImageryLayer.xbsjImageryProvider['XbsjImageryProvider'] = {
+                        url: value.url,
+                        rectangle: [-Math.PI, -Math.PI * 0.5, Math.PI, Math.PI * 0.5],
+                        srcCoordType: 'GCJ02',  //实时纠偏
+                        dstCoordType: 'WGS84'
+                    };
+                    const so = new XE.SceneTree.Leaf(gooleImageryLayer);
+                    so.title = value.title;
+                    g0.children.push(so);
+                })
+            }
+                
+                window.uia = earthUI;
+        });
+    </script>
+</body>
+
+</html>

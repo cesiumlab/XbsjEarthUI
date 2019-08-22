@@ -1,33 +1,33 @@
-import {deflate, inflate} from 'pako';
+import { deflate, inflate } from "pako";
 
 function base64ToString(base64String) {
-    var jsonString = inflate(atob(base64String), { raw: true, to: 'string' });
-    return jsonString;
-};
+  var jsonString = inflate(atob(base64String), { raw: true, to: "string" });
+  return jsonString;
+}
 
 function stringToBase64(data) {
-    var base64String = btoa(deflate(data, { raw: true, to: 'string', level: 9 }));
-    return base64String;
+  var base64String = btoa(deflate(data, { raw: true, to: "string", level: 9 }));
+  return base64String;
 }
 
 function getCodeUrl(code) {
-    const json = {
-        code,
-    }
+  const json = {
+    code
+  };
 
-    const jsonStr = JSON.stringify(json);
-    const base64 = stringToBase64(jsonStr);
-    const base64Encode = encodeURIComponent(base64);
-    const url = '//cesiumlab.gitee.io/earthsdk/v/last/Apps/Examples/' + `?code=${base64Encode}`;
-    console.log(url);
-    return url;
+  const jsonStr = JSON.stringify(json);
+  const base64 = stringToBase64(jsonStr);
+  const base64Encode = encodeURIComponent(base64);
+  const url =
+    "//www.earthsdk.com/v/last/Apps/Examples/" + `?code=${base64Encode}`;
+  console.log(url);
+  return url;
 }
 
 function getCode(jsonObject) {
+  const jsonStr = JSON.stringify(jsonObject, undefined, "    ");
 
-const jsonStr = JSON.stringify(jsonObject, undefined, '    ');
-
-const code = `<!DOCTYPE html>
+  const code = `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -107,7 +107,7 @@ const code = `<!DOCTYPE html>
 </html>
 `;
 
-return code;
+  return code;
 }
 
 export { getCodeUrl, getCode };
