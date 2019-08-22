@@ -89,17 +89,17 @@ function createVertexShad() {
                 var header = '';
                 var vsBody = '';
                 var fsComp = '';
-                const an = attribNum / 4;
+                const an = Math.floor(attribNum / 4);
                 const last = attribNum % 4;
-                for (let i=0; i<an; i+=1.0) {
+                for (let i=0; i<an; i+=1) {
                     header += `varying vec4 v_custom_${i+1};`;
                     vsBody += `v_custom_${i+1}=a_custom_${i+1};`;
                     const sub = (i*4).toFixed(1);
                     fsComp += `xbsjv += dot(step(vec4(0.0, 1.0, 2.0, 3.0), vec4(xbsji-${sub})) * step(vec4(xbsji-${sub}), vec4(1.0, 2.0, 3.0, 4.0)), vec4(v_custom_${i+1}));`;
                 }
                 if (last > 0) {
-                    const la = parseInt(an) + 1;
-                    header += `varying vec${last} v_custom_${la+1};`;
+                    const la = an;
+                    header += (last >= 2 ? `varying vec${last} v_custom_${la+1};` : `varying float v_custom_${la+1};`);
                     vsBody += `v_custom_${la+1}=a_custom_${la+1};`;
                     const sub = (la*4).toFixed(1);
                     const patch = ', 0.0'.repeat(4 - last);
