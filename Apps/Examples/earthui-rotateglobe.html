@@ -26,17 +26,28 @@
     <script>
         XbsjEarthUI.create('main').then(earthUI => {
 
+            earthUI.earth.sceneTree.root = {
+                "expand": true,
+                "title": "影像",
+                "children": [{
+                    "expand": true,
+                    "title": "地图",
+                    "children": [{
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": "谷歌影像",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}"
+                                }
+                            }
+                        },
+                        "enabled": true
+                    }]
+                }]
+            };
 
             var earth = earthUI.earth;
-
-            var gooleImageryLayer = new XE.Obj.Imagery(earth);
-            gooleImageryLayer.xbsjImageryProvider.type = 'XbsjImageryProvider';
-            gooleImageryLayer.xbsjImageryProvider['XbsjImageryProvider'] = {
-                url: '//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}',
-                rectangle: [-Math.PI, -Math.PI * 0.5, Math.PI, Math.PI * 0.5],
-                srcCoordType: 'GCJ02',  //实时纠偏
-                dstCoordType: 'WGS84'
-            };
             
             //隐藏图层管理
             earthUI.tools.sceneTree.show = false;

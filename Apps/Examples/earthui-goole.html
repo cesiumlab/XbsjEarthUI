@@ -26,40 +26,42 @@
     <script>
         XbsjEarthUI.create('main').then(earthUI => {
 
-
-            var earth = earthUI.earth;
-
-            var imageryskin = [
-                {
-                    url: '//www.google.cn/maps/vt?lyrs=m&gl=CN&x={x}&y={y}&z={z}',
-                    title: '谷歌地图'
-                },
-                {
-                    url: '//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}',
-                    title: '谷歌影像&标注'
-                }
-            ];
-
-            const g0 = new XE.SceneTree.Group(earth);
-            g0.title = '地图'
-            earth.sceneTree.root.children.push(g0);
-            {
-                imageryskin.forEach((value,index) => {
-                    var gooleImageryLayer = new XE.Obj.Imagery(earth);
-                    gooleImageryLayer.xbsjImageryProvider.type = 'XbsjImageryProvider';
-                    gooleImageryLayer.xbsjImageryProvider['XbsjImageryProvider'] = {
-                        url: value.url,
-                        rectangle: [-Math.PI, -Math.PI * 0.5, Math.PI, Math.PI * 0.5],
-                        srcCoordType: 'GCJ02',  //实时纠偏
-                        dstCoordType: 'WGS84'
-                    };
-                    const so = new XE.SceneTree.Leaf(gooleImageryLayer);
-                    so.title = value.title;
-                    g0.children.push(so);
-                })
-            }
+            earthUI.earth.sceneTree.root = {
+                "expand": true,
+                "title": "影像",
+                "children": [{
+                    "expand": true,
+                    "title": "地图",
+                    "children": [{
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": "谷歌地图",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=m&gl=CN&x={x}&y={y}&z={z}"
+                                }
+                            }
+                        },
+                        "enabled": true
+                    },{
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": "谷歌影像&标注",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}"
+                                }
+                            }
+                        },
+                        "enabled": true
+                    }]
+                }]
+            };
                 
-                window.uia = earthUI;
+            // 打开影像工具栏
+            earthUI.controls.mainBar.page = "imagery";
+            // only for Debug
+            window.uia = earthUI;
         });
     </script>
 </body>

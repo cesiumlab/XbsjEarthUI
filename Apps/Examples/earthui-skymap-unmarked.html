@@ -28,22 +28,34 @@
         // 2 创建地球
         XbsjEarthUI.create('main').then(earthUI => {
 
+            earthUI.earth.sceneTree.root = {
+                // 3 影像配置
+                "expand": true,
+                "title": "影像",
+                "children": [{
+                    "expand": true,
+                    "title": "地图",
+                    "children": [{
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": "天地图(无标记)",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    // 3.1 进入天地图官网 https://www.tianditu.gov.cn/
+                                    // 3.2 注册-->申请成为个人开发者-->控制台创建新应用-->应用key=此处的tk
+                                    "url": "//t6.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=835402675b4eef1d10ff69553d33801f"
+                                }
+                            }
+                        },
+                        "enabled": true
+                    }]
+                }]
+            };
 
-            var earth = earthUI.earth;
-
-            // 3 影像配置
-            var skymapImageryLayer = new XE.Obj.Imagery(earth);
-                skymapImageryLayer.xbsjImageryProvider.type = 'XbsjImageryProvider';
-                skymapImageryLayer.xbsjImageryProvider['XbsjImageryProvider'] = {
-                    // 3.1 进入天地图官网 https://www.tianditu.gov.cn/
-                    // 3.2 注册-->申请成为个人开发者-->控制台创建新应用-->应用key=此处的tk
-                    url: '//t6.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=835402675b4eef1d10ff69553d33801f',
-                    rectangle: [-Math.PI, -Math.PI * 0.5, Math.PI, Math.PI * 0.5],
-                    srcCoordType: 'WGS84',  //实时纠偏
-                    dstCoordType: 'WGS84'
-                };
-                
-                window.uia = earthUI;
+            // 打开影像工具栏
+            earthUI.controls.mainBar.page = "imagery";
+            // only for Debug
+            window.uia = earthUI;
         });
     </script>
 </body>

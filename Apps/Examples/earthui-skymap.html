@@ -26,9 +26,6 @@
     <script>
         XbsjEarthUI.create('main').then(earthUI => {
 
-
-            var earth = earthUI.earth;
-
             var imageryskin = [
                 {
                     url: '//t6.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=835402675b4eef1d10ff69553d33801f',
@@ -48,26 +45,34 @@
                 }
             ];
 
-            const g0 = new XE.SceneTree.Group(earth);
-            g0.title = '地图'
-            earth.sceneTree.root.children.push(g0);
-            {
-                imageryskin.forEach((value,index) => {
-                    var skymapImageryLayer = new XE.Obj.Imagery(earth);
-                    skymapImageryLayer.xbsjImageryProvider.type = 'XbsjImageryProvider';
-                    skymapImageryLayer.xbsjImageryProvider['XbsjImageryProvider'] = {
-                        url: value.url,
-                        rectangle: [-Math.PI, -Math.PI * 0.5, Math.PI, Math.PI * 0.5],
-                        srcCoordType: 'WGS84',  //实时纠偏
-                        dstCoordType: 'WGS84'
-                    };
-                    const so = new XE.SceneTree.Leaf(skymapImageryLayer);
-                    so.title = value.title;
-                    g0.children.push(so);
+            var children = [];
+            imageryskin.forEach((value,index) => {
+                children.push({
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": value.title,
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": value.url
+                                }
+                            }
+                        },
+                        "enabled": true
+                });
+            })
 
-                })
-            }
+            earthUI.earth.sceneTree.root = {
+                "expand": true,
+                "title": "影像",
+                "children": [{
+                    "expand": true,
+                    "title": "地图",
+                    "children": children
+                }]
+            };
                 
+            // 打开影像工具栏
+            earthUI.controls.mainBar.page = "imagery";
             // only for Debug
             window.uia = earthUI;
         });
