@@ -112,10 +112,6 @@ vueApp.examples = [
         url: "./earthui-openstreetmap.html"
       },
       {
-        title: "中心旋转",
-        url: "./earthui-rotatecenter.html"
-      },
-      {
         title: "全球旋转",
         url: "./earthui-rotateglobe.html"
       },
