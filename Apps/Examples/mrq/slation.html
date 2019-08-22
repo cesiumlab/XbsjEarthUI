@@ -80,7 +80,7 @@
             xbsjPosition: [0, 0, 0],
             xbsjRotation: [0, 0, 0],
             _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
-            _Tileset: undefined
+            _tileset: undefined
           };
         },
         // 1.1 资源加载
@@ -117,17 +117,17 @@
               },
             ]
           };
-          var Tileset = earth.sceneTree.$refs.tileset.czmObject;
+          var tileset = earth.sceneTree.$refs.tileset.czmObject;
           earth.sceneTree.$refs.tileset.czmObject.flyTo();
           // 1.2.3 双向数据绑定!
-          this._rotationEditingUnbind = XE.MVVM.bind(this, 'rotationEditing', Tileset, 'rotationEditing');
-          this._positionEditingUnbind = XE.MVVM.bind(this, 'positionEditing', Tileset, 'positionEditing');
-          this._xbsjPositionUnbind = XE.MVVM.bindPosition(this, 'xbsjPosition', Tileset, 'xbsjPosition');
-          this._xbsjRotationUnbind = XE.MVVM.bindPosition(this, 'xbsjRotation', Tileset, 'xbsjRotation');
+          this._rotationEditingUnbind = XE.MVVM.bind(this, 'rotationEditing', tileset, 'rotationEditing');
+          this._positionEditingUnbind = XE.MVVM.bind(this, 'positionEditing', tileset, 'positionEditing');
+          this._xbsjPositionUnbind = XE.MVVM.bindPosition(this, 'xbsjPosition', tileset, 'xbsjPosition');
+          this._xbsjRotationUnbind = XE.MVVM.bindPosition(this, 'xbsjRotation', tileset, 'xbsjRotation');
 
 
           this._earth = earth;
-          this._Tileset = Tileset;
+          this._tileset = tileset;
 
           window.vue = this;
         },
@@ -152,7 +152,7 @@
           this._positionEditingUnbind = this._positionEditingUnbind && this._positionEditingUnbind();
           this._xbsjPositionUnbind = this._xbsjPositionUnbind && this._xbsjPositionUnbind();
           this._xbsjRotationUnbind = this._xbsjRotationUnbind && this._xbsjRotationUnbind();
-          this._Tileset = this._Tileset && this._Tileset.destroy();
+          this._tileset = this._tileset && this._tileset.destroy();
           this._earth = this._earth && this._earth.destroy();
         },
       }
