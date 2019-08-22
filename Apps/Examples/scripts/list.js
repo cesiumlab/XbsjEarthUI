@@ -1,182 +1,161 @@
 vueApp.examples = [
-  {
-    title: "Earth示例",
-    list: [
-      {
-        title: "素模泛光",
-        url: "./earth-buildings.html"
-      },
-      {
-        title: "视频融合",
-        url: "./earth-cameraVideo.html"
-      },
-      {
-        title: "剖切面",
-        url: "./earth-clippingPlane.html"
-      },
-      {
-        title: "圆柱体集群",
-        url: "./earth-cylinders.html"
-      },
-      {
-        title: "销毁地球",
-        url: "./earth-destroyEarth.html"
-      },
-      {
-        title: "销毁Vue创建的地球",
-        url: "./earth-destroyEarthWithVue.html"
-      },
-      {
-        title: "编辑互斥",
-        url: "./earth-editing.html"
-      },
-      {
-        title: "3dtiles压平",
-        url: "./earth-flattenning.html"
-      },
-      {
-        title: "谷歌影像",
-        url: "./earth-googleImagery.html"
-      },
-      {
-        title: "影像数据加载",
-        url: "./earth-imageries.html"
-      },
-      {
-        title: "影像纠偏",
-        url: "./earth-imageryCorrection.html"
-      },
-      {
-        title: "测量",
-        url: "./earth-measurement.html"
-      },
-      {
-        title: "原生Cesium API的调用",
-        url: "./earth-nativeCesium.html"
-      },
-      {
-        title: "地表限制(地表裁切)",
-        url: "./earth-restrict.html"
-      },
-      {
-        title: "地下模式和地表透明",
-        url: "./earth-subsurface.html"
-      },
-      {
-        title: "视域分析",
-        url: "./earth-viewshed.html"
-      }
-    ]
-  },
-  {
-    title: "EarthUI示例",
-    list: [
-      {
-        title: "创建",
-        url: "./earthui-basic.html"
-      },
-      {
-        title: "自定义属性窗口",
-        url: "./earthui-custom.html"
-      },
-      {
-        title: "从JSON创建场景结构",
-        url: "./earthui-fromJSON.html"
-      },
-      {
-        title: "高德地图纠偏",
-        url: "./earthui-gaode.html"
-      },
-      {
-        title: "内置UI组件",
-        url: "./earthui-xbsjUI.html"
-      },
-      {
-        title: "天地图(无标记)",
-        url: "./earthui-skymap-unmarked.html"
-      },
-      {
-        title: "天地图",
-        url: "./earthui-skymap.html"
-      },
-      {
-        title: "高德",
-        url: "./earthui-gaode2.html"
-      },
-      {
-        title: "谷歌",
-        url: "./earthui-goole.html"
-      },
-      {
-        title: "百度",
-        url: "./earthui-baidu.html"
-      },
-      {
-        title: "OpenStreetMap(OSM)",
-        url: "./earthui-openstreetmap.html"
-      },
-      {
-        title: "MapBox",
-        url: "./earthui-mapbox.html"
-      },
-      {
-        title: "全球旋转",
-        url: "./earthui-rotateglobe.html"
-      },
-      {
-        title: "中心旋转",
-        url: "./earthui-rotatecenter.html"
-      }
-    ]
-  },
-  {
-    title: "Earth起步",
-    list: [
-      {
-        title: "数据双向绑定-理论模型",
-        url: "./startup-binds-classic.html"
-      },
-      {
-        title: "数据双向绑定-理论模型2",
-        url: "./startup-binds-classic2.html"
-      },
-      {
-        title: "数据双向绑定",
-        url: "./startup-binds.html"
-      },
-      {
-        title: "创建地球",
-        url: "./startup-createEarth.html"
-      },
-      {
-        title: "使用Vue创建地球",
-        url: "./startup-createEarthWithVue.html"
-      },
-      {
-        title: "3dtiles数据加载",
-        url: "./startup-tileset.html"
-      }
-    ]
-  }
-  // {
-  //     "title": "mrq",
-  //     "list": [{
-  //             "title": "基础地图-在线地图加载-天地图(无标记)",
-  //             "url": "./mrq/earth-online-tiandimap-nomark.html"
-  //         },
-  //         {
-  //             "title": "基础地图-在线地图加载-天地图(标记)",
-  //             "url": "./mrq/earth-online-tiandimap-mark.html"
-  //         },
-  //         {
-  //             "title": "地球动画",
-  //             "url": "./mrq/earth-animation.html"
-  //         },
-  //         {
-  //             "title": "高德地图",
-  //             "url": "./mrq/earth-online-gaodei.html"
-  //         }
-
-  //     ]
-  // }
-];
+    {
+        "title": "Earth示例",
+        "list": [
+            {
+                "title": "素模泛光",
+                "url": "./earth-buildings.html"
+            },
+            {
+                "title": "视频融合",
+                "url": "./earth-cameraVideo.html"
+            },
+            {
+                "title": "剖切面",
+                "url": "./earth-clippingPlane.html"
+            },
+            {
+                "title": "圆柱体集群",
+                "url": "./earth-cylinders.html"
+            },
+            {
+                "title": "销毁地球",
+                "url": "./earth-destroyEarth.html"
+            },
+            {
+                "title": "销毁Vue创建的地球",
+                "url": "./earth-destroyEarthWithVue.html"
+            },
+            {
+                "title": "编辑互斥",
+                "url": "./earth-editing.html"
+            },
+            {
+                "title": "3dtiles压平",
+                "url": "./earth-flattenning.html"
+            },
+            {
+                "title": "谷歌影像",
+                "url": "./earth-googleImagery.html"
+            },
+            {
+                "title": "影像数据加载",
+                "url": "./earth-imageries.html"
+            },
+            {
+                "title": "影像纠偏",
+                "url": "./earth-imageryCorrection.html"
+            },
+            {
+                "title": "测量",
+                "url": "./earth-measurement.html"
+            },
+            {
+                "title": "原生Cesium API的调用",
+                "url": "./earth-nativeCesium.html"
+            },
+            {
+                "title": "地表限制(地表裁切)",
+                "url": "./earth-restrict.html"
+            },
+            {
+                "title": "地下模式和地表透明",
+                "url": "./earth-subsurface.html"
+            },
+            {
+                "title": "视域分析",
+                "url": "./earth-viewshed.html"
+            }
+        ]
+    },
+    {
+        "title": "EarthUI示例",
+        "list": [
+            {
+                "title": "百度",
+                "url": "./earthui-baidu.html"
+            },
+            {
+                "title": "创建",
+                "url": "./earthui-basic.html"
+            },
+            {
+                "title": "自定义属性窗口",
+                "url": "./earthui-custom.html"
+            },
+            {
+                "title": "从JSON创建场景结构",
+                "url": "./earthui-fromJSON.html"
+            },
+            {
+                "title": "高德地图纠偏",
+                "url": "./earthui-gaode.html"
+            },
+            {
+                "title": "高德",
+                "url": "./earthui-gaode2.html"
+            },
+            {
+                "title": "谷歌",
+                "url": "./earthui-goole.html"
+            },
+            {
+                "title": "MapBox",
+                "url": "./earthui-mapbox.html"
+            },
+            {
+                "title": "OpenStreetMap(OSM)",
+                "url": "./earthui-openstreetmap.html"
+            },
+            {
+                "title": "中心旋转",
+                "url": "./earthui-rotatecenter.html"
+            },
+            {
+                "title": "全球旋转",
+                "url": "./earthui-rotateglobe.html"
+            },
+            {
+                "title": "天地图(无标记)",
+                "url": "./earthui-skymap-unmarked.html"
+            },
+            {
+                "title": "天地图",
+                "url": "./earthui-skymap.html"
+            },
+            {
+                "title": "内置UI组件",
+                "url": "./earthui-xbsjUI.html"
+            }
+        ]
+    },
+    {
+        "title": "Earth起步",
+        "list": [
+            {
+                "title": "数据双向绑定-理论模型",
+                "url": "./startup-binds-classic.html"
+            },
+            {
+                "title": "数据双向绑定-理论模型2",
+                "url": "./startup-binds-classic2.html"
+            },
+            {
+                "title": "数据双向绑定",
+                "url": "./startup-binds.html"
+            },
+            {
+                "title": "创建地球",
+                "url": "./startup-createEarth.html"
+            },
+            {
+                "title": "使用Vue创建地球",
+                "url": "./startup-createEarthWithVue.html"
+            },
+            {
+                "title": "3dtiles数据加载",
+                "url": "./startup-tileset.html"
+            }
+        ]
+    }
+]
