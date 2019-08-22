@@ -65,7 +65,12 @@ vueApp.examples = [
             {
                 "title": "视域分析",
                 "url": "./earth-viewshed.html"
+            },
+            {
+                "title": "tileset旋转平移",
+                "url": "./earth-slation.html"
             }
+            
         ]
     },
     {
