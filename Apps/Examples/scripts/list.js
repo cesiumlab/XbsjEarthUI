@@ -59,6 +59,10 @@ vueApp.examples = [
                 "url": "./earth-nativeCesium.html"
             },
             {
+                "title": "Pin",
+                "url": "./earth-pins.html"
+            },
+            {
                 "title": "地表限制(地表裁切)",
                 "url": "./earth-restrict.html"
             },
