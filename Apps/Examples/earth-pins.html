@@ -37,7 +37,14 @@
                 <div style="width: 100%; height: 100%">
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
-                    <div style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 5px;">
+                    <div style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.5); padding: 5px; border-radius: 5px;">
+                    </div>
+                    <div 
+                        v-show="showInfo" 
+                        style="position: absolute; width: 100px; min-height: 20px; color: white; background: rgba(0, 0, 0, 0.7); padding: 5px; border-radius: 5px;"
+                        :style="{ left: (winPos[0] + 30) + 'px', bottom: winPos[1] + 'px' }"
+                    >
+                        <span>点击飞入大雁塔！</span>
                     </div>
                 </div>
             `,
@@ -45,6 +52,8 @@
             data() {
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    showInfo: true,
+                    winPos: [0, 0],
                 };
             },
             // 1.1 资源创建
@@ -70,7 +79,8 @@
                         "czmObject": {
                             "name": 'Pin1',
                             "xbsjType": "Pin",
-                            "position": [1.9016974701882112, 0.5972325152147303, 425.8641913624607],                  
+                            "position": [1.9016974701882112, 0.5972325152147303, 425.8641913624607],       
+                            "near": 100,
                         },
                     }, {
                         "czmObject": {
@@ -88,7 +98,8 @@
                 window.pin1 = pin1;
 
                 // 1.1.5 数据绑定
-                pin1.flyTo();
+                XE.MVVM.track(this, 'winPos', pin1, 'winPos');
+                XE.MVVM.track(this, 'showInfo', pin1, 'hovered');
 
                 this._earth = earth;
             },
