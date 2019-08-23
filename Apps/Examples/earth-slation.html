@@ -33,9 +33,13 @@
       line-height: 38px;
       border-radius: 100px;
       border: 1px solid #C9C9C9;
-      background-color: #fff;
+      background-color: #FFF;
       color: #555;
       cursor: pointer;
+    }
+
+    .defultbtn:hover {
+      background-color: #b3daf8;
     }
 
     .btnon {
@@ -124,6 +128,7 @@
           this._xbsjPositionUnbind = XE.MVVM.bindPosition(this, 'xbsjPosition', Tileset, 'xbsjPosition');
           this._xbsjRotationUnbind = XE.MVVM.bindPosition(this, 'xbsjRotation', Tileset, 'xbsjRotation');
 
+          this.positionEditing = true; // 默认状态开启位置编辑
 
           this._earth = earth;
           this._Tileset = Tileset;
