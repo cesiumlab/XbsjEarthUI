@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>圆柱体集群</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(() => {
+            // 1.1 创建地球
+            earth = new XE.Earth('earthContainer');
+
+            // 1.2 添加默认地球影像
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "离线影像",
+                            "xbsjType": "Imagery",
+                            "show": true,
+                            "xbsjImageryProvider": {
+                                "createTileMapServiceImageryProvider": {
+                                    "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    "fileExtension": 'jpg',
+                                },
+                                "type": 'createTileMapServiceImageryProvider',
+                            },
+                        }
+                    }
+                ]
+            };
+
+            earth.cameraViewManager.lastView.xbsjFromJSON({
+                "position": [
+                    2.03263400958184,
+                    0.6973100279183362,
+                    4039.9270973124762
+                ],
+                "rotation": [
+                    3.9478253379776507,
+                    -0.7363643988112445,
+                    6.279973679470491
+                ],
+                "fov": 1.0471975511965976,
+                "near": 0.1,
+                "far": 10000000000
+            });
+            earth.cameraViewManager.lastView.flyTo();
+
+            {
+                const scene = earth.czm.scene;
+                const labels = earth.czm.scene.primitives.add(new Cesium.LabelCollection());
+
+                class Well {
+                    constructor(earth, labels, {
+                        startPosition = [0, 0, 0],
+                        endPosition = [0, 0, 0],
+                        name = '',
+                        fixScreenSize = 0,
+                        maxSceneScale = Number.POSITIVE_INFINITY,
+                        color = [1, 1, 0, 1],
+                        show = true,
+                        labelShow = false,
+                    } = {}) {
+                        this._earth = earth;
+                        this._labels = labels;
+
+                        XE.MVVM.extend(this, {
+                            startPosition,
+                            endPosition,
+                            name,
+                            fixScreenSize,
+                            maxSceneScale,
+                            color,
+                            show,
+                            labelShow,
+                            _hovered: false,
+                        });
+
+                        this._createClylinder({
+                            startPosition,
+                            endPosition,
+                            name,
+                            fixScreenSize,
+                            maxSceneScale,
+                            color,
+                        });
+
+                        this._createLabel({
+                            position: endPosition,
+                            name,
+                        });
+
+                        this._disposers = [];
+                        this._disposers.push(XE.MVVM.watch(() => {
+                            this._cylinder.startPosition = this.startPosition;
+                            this._cylinder.endPosition = this.endPosition;
+                            this._cylinder.name = this.name;
+                            // this._cylinder.fixScreenSize = this.fixScreenSize;
+                            this._cylinder.maxSceneScale = this.maxSceneScale;
+                            // this._cylinder.color = this.color;
+                            this._cylinder.fixScreenSize = !this._hovered ? this.fixScreenSize : this.fixScreenSize * 1.2;
+                            this._cylinder.color = !this._hovered ? this.color : [1, 1, 0, 1];
+
+                            this._label.position = Cesium.Cartesian3.fromRadians(...this.endPosition, undefined, this._label.position);
+                            this._label.text = this.name;
+
+                            this._cylinder.show = this.show;
+                            this._label.show = this.show && this.labelShow || this._hovered;
+                        }));
+                    }
+
+                    _createClylinder({
+                            startPosition,
+                            endPosition,
+                            name,
+                            fixScreenSize,
+                            maxSceneScale,
+                            color,
+                    }) {
+                        var config = {
+                            xbsjType: "Cylinder", // 类型不可更改！
+                            startPosition, // 起点
+                            endPosition, // 终点
+                            radius: 20, // 圆柱体的实际半径
+                            fixScreenSize, // 固定的屏幕像素，如果为0的话，表示用实际尺寸，即radius；大于0时radius不起作用
+                            maxSceneScale, // 使用固定的屏幕像素时，模型实际的最大缩放比例，如果设置为Number.POSITIVE_INFINITY表示没有限制
+                            // maxSceneScale: Number.POSITIVE_INFINITY, // 无限大
+                        };
+
+                        const cylinder = new XE.Obj.Cylinder(this._earth);
+                        cylinder.xbsjFromJSON(config);
+                        cylinder.onClick = (pickedObject) => {
+                            this.onClick(pickedObject);
+                        };
+                        cylinder.onHover = (pickedObject) => {
+                            this.onHover(pickedObject);
+                        };
+                        cylinder.onHoverEnd = () => {
+                            this.onHoverEnd();
+                        };
+                        this._cylinder = cylinder;
+                    }
+
+                    _createLabel({
+                        position,
+                        name,
+                    }) {
+                        const label = this._labels.add({
+                            position: Cesium.Cartesian3.fromRadians(...position),
+                            text: name,
+                            fillColor: Cesium.Color.WHITE,
+                            outlineColor: Cesium.Color.BLACK,
+                            font: '36px Calibri',
+                            outlineWidth: 2.0,
+                            scale: 1.0,
+                            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                            id: this,
+                        });
+
+                        this._label = label;
+                    }
+
+                    get cylinder() {
+                        return this._cylinder;
+                    }
+
+                    get label() {
+                        return this._label;
+                    }
+
+                    onClick() {
+                        alert(this.name);
+                    }
+
+                    onHover() {
+                        this._hovered = true;
+                    }
+
+                    onHoverEnd() {
+                        this._hovered = false;
+                    }
+
+                    flyTo() {
+                        this._cylinder.flyTo();
+                    }
+                    
+                    isDestroyed() {
+                        return false;
+                    }
+
+                    destroy() {
+                        this._disposers.forEach(d => d());
+                        this._disposers.length = 0;
+                        this._cylinder = this._cylinder && this._cylinder.destroy();
+                        this._label = this._label && this._label.destroy();
+                        return super.destroy();
+                    }
+                }
+
+                const tr = Cesium.Math.toRadians; // 角度转弧度
+                
+                var wells = [];
+
+                
+                for (let i=0; i<30; ++i) {
+                    for (let j=0; j<30; ++j) {
+                        well = new Well(earth, labels);
+                        well.startPosition = [tr(116.39), tr(39.9), 0];
+                        well.endPosition = [tr(116.39), tr(39.9), 500];
+                        well.fixScreenSize = 20;
+                        well.maxSceneScale = 20;
+                        well.color = [Math.random(), Math.random(), Math.random(), 1.0];
+                        XE.Tool.move([500 * i, 500 * j, 0], well.startPosition);
+                        XE.Tool.move([500 * i + Math.random() * (-200), 500 * j, Math.random() * (-200)], well.endPosition);
+
+                        well.name = `(${i}-${j})`;
+                    }
+                }
+
+                earth.interaction.picking.enabled = true; // 拾取状态打开！
+            }
+        });
+    </script>
+</body>
+
+</html>

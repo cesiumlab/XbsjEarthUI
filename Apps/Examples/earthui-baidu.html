@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="EarthUI示例"></meta>
+    <title>百度</title>
+    <script src="../../XbsjEarthUI/xbsj.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+    </div>
+
+    <script>
+        XbsjEarthUI.create('main').then(earthUI => {
+
+
+            var earth = earthUI.earth;
+
+            var imageryskin = [
+                {
+                    url: '//online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&scaler=1&p=1',
+                    title: '百度地图'
+                },
+                {
+                    url: '//shangetu1.map.bdimg.com/it/u=x={x};y={y};z={z};v=009;type=sate&fm=46',
+                    title: '百度影像'
+                },
+                {
+                    url: '//online6.map.bdimg.com/tile/?qt=tile&x={x}&y={y}&z={z}&styles=sl&v=020',
+                    title: '百度影像标注'
+                },
+                {
+                    url: '//api0.map.bdimg.com/customimage/tile?=&x={x}&y={y}&z={z}&scale=1&customid=midnight',
+                    title: '百度暗色风格'
+                },
+                {
+                    url: '//api2.map.bdimg.com/customimage/tile?=&x={x}&y={y}&z={z}&scale=1&customid=dark',
+                    title: '百度黑色风格'
+                }
+            ];
+
+            var children = [];
+            imageryskin.forEach((value,index) => {
+                children.push({
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": value.title,
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": value.url,
+                                    "srcCoordType": "BD09" //实时纠偏
+                                }
+                            }
+                        },
+                        "enabled": true
+                });
+            })
+
+            earthUI.earth.sceneTree.root = {
+                "expand": true,
+                "title": "影像",
+                "children": [{
+                    "expand": true,
+                    "title": "地图",
+                    "children": children
+                }]
+            };
+          
+            // 打开影像工具栏
+            earthUI.controls.mainBar.page = "imagery";
+            // only for Debug
+            window.uia = earthUI;
+        });
+    </script>
+</body>
+
+</html>

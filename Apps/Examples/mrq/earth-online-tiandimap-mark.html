@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="xbsj-labels" content="Earth示例">
+  </meta>
+  <title>天地图-标记</title>
+  <!-- 0 引入js文件 -->
+  <script src="../../XbsjEarth/XbsjEarth.js"></script>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+  </div>
+  <script>
+    var earth;
+
+    function startup() {
+      earth = new XE.Earth('earthContainer');
+
+      earth.sceneTree.root = {
+        "children": [
+
+          {
+            "czmObject": {
+              "name": "天地图-影像",
+              "xbsjType": "Imagery",
+              "xbsjImageryProvider": {
+                "XbsjImageryProvider": {
+                  "url": "http://t6.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=1c0b8ce9cfe7d851f0cfb8d399e5217a"
+                },
+              }
+            }
+          },
+          {
+            "czmObject": {
+              "name": "天地图-标记",
+              "xbsjType": "Imagery",
+              "xbsjImageryProvider": {
+                "XbsjImageryProvider": {
+                  "url": "http://t3.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=1c0b8ce9cfe7d851f0cfb8d399e5217a"
+                },
+              },
+              xbsjZIndex:99
+            }
+          }
+
+        ]
+      }
+    }
+
+    // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+    XE.ready().then(startup);
+  </script>
+</body>
+
+</html>

@@ -195,7 +195,7 @@ export default {
         return;
       }
 
-      var wmts = new XE.Utils.WMTSParser();
+      var wmts = new XE.Tool.WMTSParser();
       url = wmts.addUrlParam(url);
 
       if (this.useProxy) {

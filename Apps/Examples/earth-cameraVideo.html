@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <title>视频融合</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="scripts/vue.min.js"></script>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+<body>
+    <div id="vueApp" style="width:100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                </div>
+            `,
+            data() { 
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                };
+            },
+            // 1.1 资源加载
+            mounted() {
+                // 1.2.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                // 1.2.3 创建Tileset
+                earth.xbsjFromJSON({
+    "sceneTree": {
+        "root": {
+            "children": [
+                {
+                    "title": "项目2",
+                    "isSelected": true,
+                    "children": [
+                        {
+                            "czmObject": {
+                                "xbsjType": "Tileset",
+                                "xbsjGuid": "b4137394-d346-4434-a01e-5b2d3730ec9f",
+                                "name": "三维瓦片1x",
+                                "url": "//lab.earthsdk.com/model/f15b9e90ac2d11e99dbd8fd044883638/tileset.json",
+                                "lightColor": null,
+                                "specularEnvironmentMaps": null,
+                                "xbsjPosition": [
+                                    1.9016974701882112,
+                                    0.5972325152147303,
+                                    425.8641913624607
+                                ],
+                                "xbsjFlattenGuid": "93916e9b-82dd-4a56-b15e-27303b08e781",
+                                "xbsjClippingPlanes": {}
+                            }
+                        },
+                        {
+                            "czmObject": {
+                                "xbsjType": "CameraVideo",
+                                "xbsjGuid": "19e84dea-2faa-4949-95c2-8d333a03e0c7",
+                                "name": "视频融合1",
+                                "videoUrl": "//www.earthsdk.com/v/last/XbsjEarthUI/assets/demo.mp4",
+                                "position": [
+                                    1.9017043698837766,
+                                    0.5972379094016695,
+                                    446.2499351617626
+                                ],
+                                "rotation": [
+                                    0.07413323656963833,
+                                    -0.933639537288121,
+                                    0.0003900191769634631
+                                ],
+                                "far": 50
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "cameraViewManager": {
+        "lastView": {
+            "position": [
+                1.9017075410506683,
+                0.5972352467498696,
+                465.5130429801045
+            ],
+            "rotation": [
+                5.8887642878142685,
+                -0.8581361944659949,
+                6.281345779298704
+            ],
+            "fov": 1.0471975511965976,
+            "near": 0.1,
+            "far": 10000000000
+        }
+    }
+});
+                window.earth = earth; // only for Debug
+
+                // 1.2.5 变量记录
+                this._earth = earth;
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._disposers.forEach(d => d());
+                this._disposers.length = 0;
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+
+            // only for Debug
+            window.app = app;
+        });
+    </script>
+
+
+</body>
+</html>

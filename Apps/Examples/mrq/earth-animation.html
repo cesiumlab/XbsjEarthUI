@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="xbsj-labels" content="Earth示例">
+  </meta>
+  <title>动画</title>
+  <!-- 0 引入js文件 -->
+  <script src="../../XbsjEarth/XbsjEarth.js"></script>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+  </div>
+  <script>
+    var earth;
+
+    function startup() {
+      earth = new XE.Earth('earthContainer');
+
+      earth.sceneTree.root = {
+        "children": [
+
+          {
+            "czmObject": {
+              "name": "天地图-影像",
+              "xbsjType": "Imagery",
+              "xbsjImageryProvider": {
+                "XbsjImageryProvider": {
+                  "url": "http://t6.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=1c0b8ce9cfe7d851f0cfb8d399e5217a"
+                },
+              }
+            }
+          },
+          {
+            "czmObject": {
+              "name": "天地图-标记",
+              "xbsjType": "Imagery",
+              "xbsjImageryProvider": {
+                "XbsjImageryProvider": {
+                  "url": "http://t3.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=1c0b8ce9cfe7d851f0cfb8d399e5217a"
+                },
+              },
+              xbsjZIndex: 99
+            }
+          },
+          {
+            "czmObject": {
+              "name": "地形",
+              "xbsjType": "Imagery",
+              "xbsjImageryProvider": {
+                "XbsjImageryProvider": {
+                  "url": " http://lab2.cesiumlab.com:9000/terrain/577fd5b0ac1f11e99dbd8fd044883638"
+                },
+              },
+              xbsjZIndex: 100
+            }
+          },
+
+
+         
+
+        ]
+      }
+
+      var viewer = earth.czm.viewer;
+      var position = Cesium.Cartesian3.fromDegrees(112.315216, 39.5125612, 10000)
+
+      var earthposition = 
+
+      flyExtent();
+
+    
+
+
+      setTimeout(function () {
+        viewer.scene.camera.flyTo({
+        destination: position,
+        duration: 4
+      })
+      }, 4000);
+
+      function flyExtent() {
+        // 相机看点的角度，如果大于0那么则是从地底往上看，所以要为负值，这里取-30度
+        var pitch = Cesium.Math.toRadians(-30);
+        // 给定飞行一周所需时间，比如10s, 那么每秒转动度数
+        var angle = 360 / 5;
+        // 给定相机距离点多少距离飞行，这里取值为5000m
+        var distance = 15000;
+        var startTime = Cesium.JulianDate.fromDate(new Date());
+
+        var stopTime = Cesium.JulianDate.addSeconds(startTime, 5, new Cesium.JulianDate());
+
+        viewer.clock.startTime = startTime.clone(); // 开始时间
+        viewer.clock.stopTime = stopTime.clone(); // 结速时间
+        viewer.clock.currentTime = startTime.clone(); // 当前时间
+        viewer.clock.clockRange = Cesium.ClockRange.CLAMPED; // 行为方式
+        viewer.clock.clockStep = Cesium.ClockStep.SYSTEM_CLOCK; // 时钟设置为当前系统时间; 忽略所有其他设置。
+        // 相机的当前heading
+        var initialHeading = viewer.camera.heading;
+        var Exection = function TimeExecution() {
+          // 当前已经过去的时间，单位s
+          var delTime = Cesium.JulianDate.secondsDifference(viewer.clock.currentTime, viewer.clock.startTime);
+          var heading = Cesium.Math.toRadians(delTime * angle) + initialHeading;
+          viewer.scene.camera.setView({
+            destination: position, // 点的坐标
+            orientation: {
+              heading: heading,
+              pitch: pitch,
+            }
+          });
+          viewer.scene.camera.moveBackward(distance);
+          if (Cesium.JulianDate.compare(viewer.clock.currentTime, viewer.clock.stopTime) >= 0) {
+            viewer.clock.onTick.removeEventListener(Exection);
+          }
+
+        };
+        viewer.clock.onTick.addEventListener(Exection);
+
+      }
+    }
+
+
+
+
+    // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+    XE.ready().then(startup);
+  </script>
+</body>
+
+</html>

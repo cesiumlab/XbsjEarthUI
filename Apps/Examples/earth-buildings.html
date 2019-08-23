@@ -84,7 +84,7 @@
                             "czmObject": {
                                 "xbsjType": "Tileset",
                                 "name": "白模测试",
-                                "url": "//lab2.cesiumlab.com:9000/model/908311a0ac2f11e99dbd8fd044883638/tileset.json",
+                                "url": "//lab.earthsdk.com/model/908311a0ac2f11e99dbd8fd044883638/tileset.json",
                                 "luminanceAtZenith": 1.6, // 提高亮度
                                 "xbsjPosition": [
                                     2.120577669988032,
@@ -100,15 +100,7 @@
                 earth.postProcess.bloom.enabled = true; // 开启泛光
 
                 // 1.1.5 数据绑定
-                {
-                    this._disposers = [];
-
-                    this._disposers.push(XE.MVVM.watch(tileset1, 'ready', ready => {
-                        if (ready) {
-                            tileset1.flyTo();
-                        }
-                    }));
-                }
+                tileset1.flyTo();
 
                 this._tileset = tileset1;
                 this._earth = earth;

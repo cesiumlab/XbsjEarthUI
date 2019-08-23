@@ -104,7 +104,7 @@
                 };
 
                 var tileset = earth.sceneTree.root.children[1].czmObject;
-                XE.MVVM.watch(tileset, 'ready', () => (tileset.ready && tileset.flyTo()));
+                tileset.flyTo();
 
                 var flat = earth.sceneTree.root.children[2].czmObject;
                 flat.polygons[0].showHelper = false; // 是否开启线框显示，编辑状态下，不要开启，二者显示有影响

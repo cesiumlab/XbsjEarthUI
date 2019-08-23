@@ -87,12 +87,7 @@
                 {
                     this._disposers = [];
                     this._disposers.push(XE.MVVM.bind(this, 'measureMentType', earth.analyzation.measurement, 'type'));
-
-                    this._disposers.push(XE.MVVM.watch(tileset1, 'ready', ready => {
-                        if (ready) {
-                            tileset1.flyTo();
-                        }
-                    }));
+                    tileset1.flyTo();
                 }
 
                 this._earth = earth;

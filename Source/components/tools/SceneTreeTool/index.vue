@@ -136,6 +136,7 @@ export default {
           confirm: "确认删除图层?",
           delete: "删除",
           cut: "剪切",
+          clone: '克隆',
           paste: "粘贴",
           rename: "重命名",
           locate: "定位",
@@ -144,12 +145,15 @@ export default {
           style: "样式",
           moving: "拖拽移动", 
           newFolder: "新建文件夹",
-          title: "图层管理"
+          title: "图层管理",
+          viewSource:"查看加载代码",
+          config: "控制台打印JSON配置"
         },
         en: {
           confirm: "confirm to delete the layer?",
           delete: "delete",
           cut: "cut",
+          clone: 'clone',
           paste: "paste",
           rename: "rename",
           locate: "locate",
@@ -158,7 +162,9 @@ export default {
           style: "style",
           moving: "drag", 
           newFolder: "new folder",
-          title: "Layer Manager"
+          title: "Layer Manager",
+          viewSource:"View Source",
+          config: "Console Print JSON Config"
         }
       },
       lang: undefined
@@ -230,6 +236,17 @@ export default {
           }
         },
         {
+          text: this.lang.clone,
+          keys: '',
+          func: () => {
+            const sn = item._inner.sn;
+            if (sn) {
+              const index = sn.parent.children.indexOf(sn) + 1;
+              sn.cloneTo(sn.parent, index);
+            }
+          },
+        },      
+        {
           text: this.lang.delete,
           keys: "",
           func: () => {
@@ -251,7 +268,7 @@ export default {
             vueObject.titleEditable = true;
           }
         }, {
-          text: '输出示例',
+          text: this.lang.viewSource,
           keys: "",
           border: true,
           func: () => {
@@ -270,9 +287,17 @@ export default {
               },
             };
             const code = getCode(finalJsonObject);
-            const url = getCodeUrl(code);
-            // prompt('url', url); // 有问题
-            window.open(url, '_blank'); 
+            const url = getCodeUrl(code); 
+            this.$root.$earthUI.openURL(url);
+          }
+        }, {
+          text: this.lang.config,
+          keys: '',
+          border: true,
+          func: () => {
+            console.log(item._inner.sn);
+              const jsonStr = item._inner.sn.toJSONStr();
+              console.log(jsonStr);
           }
         }
       ];

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="EarthUI示例"></meta>
+    <title>地形</title>
+    <!-- 1 引入xbsj.js文件 -->
+    <script src="../../XbsjEarthUI/xbsj.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+    </div>
+
+    <script>
+        // 2 创建地球
+        XbsjEarthUI.create('main').then(earthUI => {
+
+            earthUI.earth.sceneTree.root = {
+                "expand": true,
+                "title": "地形",
+                "children": [{
+                    "expand": true,
+                    "title": "地形",
+                    "children": [{
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": "谷歌影像",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}"
+                                }
+                            }
+                        },
+                        "enabled": true
+                    },{
+                        "czmObject": {
+                            "xbsjType": "Terrain",
+                            "name": "中国14级（测试）",
+                            "xbsjTerrainProvider": {
+                                "type": "XbsjCesiumTerrainProvider",
+                                "XbsjCesiumTerrainProvider": {
+                                    "url": "http://lab2.cesiumlab.com:9000/terrain/577fd5b0ac1f11e99dbd8fd044883638",
+                                    "requestVertexNormals": true,
+                                    "requestWaterMask": true
+                                }
+                            }
+                        },
+                        "enabled": true
+                    },{
+                        "czmObject": {
+                            "xbsjType": "Terrain",
+                            "name": "cesium官方",
+                            "xbsjTerrainProvider": {
+                                "type": "XbsjCesiumTerrainProvider",
+                                "XbsjCesiumTerrainProvider": {
+                                    "url": "Ion(1)",
+                                    "requestVertexNormals": true,
+                                    "requestWaterMask": true
+                                }
+                            },
+                            "show": false // 控制地形的显示与隐藏
+                        },
+                        "enabled": true
+                    },{
+                        "czmObject": {
+                            "xbsjType": "Terrain",
+                            "name": "世界12级（测试）",
+                            "xbsjTerrainProvider": {
+                                "type": "XbsjCesiumTerrainProvider",
+                                "XbsjCesiumTerrainProvider": {
+                                    "url": "https://lab.earthsdk.com//terrain/42752d50ac1f11e99dbd8fd044883638",
+                                    "requestVertexNormals": true,
+                                    "requestWaterMask": true
+                                }
+                            },
+                            "show": false // 控制地形的显示与隐藏
+                        },
+                        "enabled": true
+                    }]
+                }]
+            };
+
+            earthUI.earth.cameraViewManager = {
+                "lastView": {
+                    "position": [
+                        1.5014810829789247,
+                        0.4812175685635465,
+                        11951.856074921616
+                    ],
+                    "rotation": [
+                        0.1829014343038864,
+                        -0.4565989348926234,
+                        0.0005581346571101875
+                    ],
+                    "fov": 1.0471975511965976,
+                    "near": 0.1,
+                    "far": 10000000000
+                }
+            }
+
+            // 打开影像工具栏
+            earthUI.controls.mainBar.page = "terrain";
+            // only for Debug
+            window.uia = earthUI;
+        });
+    </script>
+</body>
+
+</html>

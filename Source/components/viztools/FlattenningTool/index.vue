@@ -24,7 +24,7 @@
           <div
             v-show="showSelect"
             v-for="c in connections"
-            :key="c.name"
+            :key="c.tileset.guid"
             @click="toggleConnection(c)"
           >
             <span>{{c.name}}</span>

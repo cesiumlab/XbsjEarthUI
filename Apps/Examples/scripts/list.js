@@ -3,12 +3,24 @@ vueApp.examples = [
         "title": "Earth示例",
         "list": [
             {
+                "title": "3dtiles平移旋转",
+                "url": "./earth-3dtiles-editing.html"
+            },
+            {
                 "title": "素模泛光",
                 "url": "./earth-buildings.html"
             },
             {
+                "title": "视频融合",
+                "url": "./earth-cameraVideo.html"
+            },
+            {
                 "title": "剖切面",
                 "url": "./earth-clippingPlane.html"
+            },
+            {
+                "title": "圆柱体集群",
+                "url": "./earth-cylinders.html"
             },
             {
                 "title": "销毁地球",
@@ -64,6 +76,10 @@ vueApp.examples = [
         "title": "EarthUI示例",
         "list": [
             {
+                "title": "百度",
+                "url": "./earthui-baidu.html"
+            },
+            {
                 "title": "创建",
                 "url": "./earthui-basic.html"
             },
@@ -78,6 +94,38 @@ vueApp.examples = [
             {
                 "title": "高德地图纠偏",
                 "url": "./earthui-gaode.html"
+            },
+            {
+                "title": "高德",
+                "url": "./earthui-gaode2.html"
+            },
+            {
+                "title": "谷歌",
+                "url": "./earthui-goole.html"
+            },
+            {
+                "title": "MapBox",
+                "url": "./earthui-mapbox.html"
+            },
+            {
+                "title": "OpenStreetMap(OSM)",
+                "url": "./earthui-openstreetmap.html"
+            },
+            {
+                "title": "全球旋转",
+                "url": "./earthui-rotateglobe.html"
+            },
+            {
+                "title": "天地图(无标记)",
+                "url": "./earthui-skymap-unmarked.html"
+            },
+            {
+                "title": "天地图",
+                "url": "./earthui-skymap.html"
+            },
+            {
+                "title": "地形",
+                "url": "./earthui-terrain.html"
             },
             {
                 "title": "内置UI组件",

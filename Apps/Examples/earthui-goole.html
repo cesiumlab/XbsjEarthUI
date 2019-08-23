@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="EarthUI示例"></meta>
+    <title>谷歌</title>
+    <script src="../../XbsjEarthUI/xbsj.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+    </div>
+
+    <script>
+        XbsjEarthUI.create('main').then(earthUI => {
+
+            earthUI.earth.sceneTree.root = {
+                "expand": true,
+                "title": "影像",
+                "children": [{
+                    "expand": true,
+                    "title": "地图",
+                    "children": [{
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": "谷歌地图",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=m&gl=CN&x={x}&y={y}&z={z}"
+                                }
+                            }
+                        },
+                        "enabled": true
+                    },{
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": "谷歌影像&标注",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}"
+                                }
+                            }
+                        },
+                        "enabled": true
+                    }]
+                }]
+            };
+                
+            // 打开影像工具栏
+            earthUI.controls.mainBar.page = "imagery";
+            // only for Debug
+            window.uia = earthUI;
+        });
+    </script>
+</body>
+
+</html>

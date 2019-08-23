@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="xbsj-labels" content="Earth示例">
+  </meta>
+  <title>平移旋转示例</title>
+  <!-- 0 引入js文件 -->
+  <script src="../../XbsjEarth/XbsjEarth.js"></script>
+  <script src="./scripts/vue.min.js"></script>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+    }
+    .box span{
+      font-size: 18px;
+      display: block;
+      margin-top: 10px;
+    }
+
+    .defultbtn {
+      display: inline-block;
+      text-align: center;
+      min-width: 60px;
+      height: 38px;
+      padding: 0 10px;
+      line-height: 38px;
+      border-radius: 100px;
+      border: 1px solid #C9C9C9;
+      background-color: #fff;
+      color: #555;
+      cursor: pointer;
+    }
+
+    .btnon {
+      background-color: #1E9FFF;
+      color: #fff;
+      border: 1px solid #1E9FFF;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+    <earth-comp></earth-comp>
+  </div>
+
+  <script>
+    // 1 创建Earth的vue组件
+    var EarthComp = {
+        template: `
+          <div style="width: 100%; height: 100%">
+              <div ref="earthContainer" style="width: 100%; height: 100%">
+              </div>
+              <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.8); padding: 10px; border-radius: 5px;min-width:350px;">
+                  <div class="defultbtn" :class="{'btnon':positionEditing}"  @click="positionEditing = !positionEditing">平移</div>
+                  <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':rotationEditing}"  @click="rotationEditing = !rotationEditing">旋转</div><br/>
+                  <span>经度：{{xbsjPosition[0] | numFilter}}°</span> 
+                  <span>纬度：{{xbsjPosition[1] | numFilter}}°</span> 
+                  <span>高度：{{xbsjPosition[2] | numFilter2}}m</span> 
+                  <span>偏航角：{{xbsjRotation[0] | numFilter}}°</span> 
+                  <span>俯仰角：{{xbsjRotation[1] | numFilter}}°</span> 
+                  <span>翻滚角：{{xbsjRotation[2] | numFilter}}°</span> 
+              </div>
+          </div>
+      `,
+        data() {
+          return {
+            // xbsjUseOriginTransform: false,
+            positionEditing: false,
+            rotationEditing: false,
+            xbsjPosition: [0, 0, 0],
+            xbsjRotation: [0, 0, 0],
+            _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+            _tileset: undefined
+          };
+        },
+        // 1.1 资源加载
+        mounted() {
+          // 1.2.1 创建地球
+          var earth = new XE.Earth(this.$refs.earthContainer);
+
+          // 1.2.2 添加默认地球影像
+          earth.sceneTree.root = {
+            "title": "当前场景",
+            "isSelected": true,
+            "children": [{
+                "czmObject": {
+                  "xbsjType": "Imagery",
+                  "enabled": true,
+                  "name": "谷歌影像",
+                  "show": true,
+                  "xbsjImageryProvider": {
+                    "XbsjImageryProvider": {
+                      "url": "http://www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}",
+                    }
+                  }
+                }
+              },
+              {
+                "czmObject": {
+                  "xbsjType": "Tileset",
+                  "name": "三维瓦片1x",
+                  "url": "../assets/dayanta/tileset.json",
+                  "xbsjClippingPlanes": {},
+                  "xbsjUseOriginTransform": false //是否启用原先的状态
+                },
+                "ref": 'tileset'
+              },
+            ]
+          };
+          var tileset = earth.sceneTree.$refs.tileset.czmObject;
+          earth.sceneTree.$refs.tileset.czmObject.flyTo();
+          // 1.2.3 双向数据绑定!
+          this._rotationEditingUnbind = XE.MVVM.bind(this, 'rotationEditing', tileset, 'rotationEditing');
+          this._positionEditingUnbind = XE.MVVM.bind(this, 'positionEditing', tileset, 'positionEditing');
+          this._xbsjPositionUnbind = XE.MVVM.bindPosition(this, 'xbsjPosition', tileset, 'xbsjPosition');
+          this._xbsjRotationUnbind = XE.MVVM.bindPosition(this, 'xbsjRotation', tileset, 'xbsjRotation');
+
+
+          this._earth = earth;
+          this._tileset = tileset;
+
+          window.vue = this;
+        },
+        filters: {
+          numFilter(value) {
+            // 截取当前数据到小数点后两位
+            let realVal = parseFloat(value).toFixed(5)
+            return realVal
+          },
+          numFilter2(value) {
+            // 截取当前数据到小数点后两位
+            let realVal = parseFloat(value).toFixed(2)
+            return realVal
+          }
+        },
+        // 1.2 资源销毁
+        beforeDestroy() {
+          // vue程序销毁时，需要清理相关资源
+          this._xbsjUseOriginTransformUnbind = this._xbsjUseOriginTransformUnbind && this
+            ._xbsjUseOriginTransformUnbind();
+          this._rotationEditingUnbind = this._rotationEditingUnbind && this._rotationEditingUnbind();
+          this._positionEditingUnbind = this._positionEditingUnbind && this._positionEditingUnbind();
+          this._xbsjPositionUnbind = this._xbsjPositionUnbind && this._xbsjPositionUnbind();
+          this._xbsjRotationUnbind = this._xbsjRotationUnbind && this._xbsjRotationUnbind();
+          this._tileset = this._tileset && this._tileset.destroy();
+          this._earth = this._earth && this._earth.destroy();
+        },
+      }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+          var app = new Vue({
+            el: '#vueApp',
+            components: {
+              EarthComp,
+            },
+          });
+        });
+  </script>
+
+
+</body>
+
+</html>

@@ -108,12 +108,7 @@
                     this._disposers.push(XE.MVVM.bind(this, 'twoPostionsEditing', viewshed, 'twoPostionsEditing'));
                     this._disposers.push(XE.MVVM.bind(this, 'positionEditing', viewshed, 'positionEditing'));
                     this._disposers.push(XE.MVVM.bind(this, 'rotationEditing', viewshed, 'rotationEditing'));
-
-                    this._disposers.push(XE.MVVM.watch(tileset1, 'ready', ready => {
-                        if (ready) {
-                            tileset1.flyTo();
-                        }
-                    }));
+                    tileset1.flyTo();
                 }
 
                 this._earth = earth;

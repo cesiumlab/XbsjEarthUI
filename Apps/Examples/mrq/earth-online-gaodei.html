@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="xbsj-labels" content="Earth示例">
+  </meta>
+  <title>高德地图</title>
+  <!-- 0 引入js文件 -->
+  <script src="../../XbsjEarth/XbsjEarth.js"></script>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+  </div>
+  <script>
+    var earth;
+
+    function startup() {
+      earth = new XE.Earth('earthContainer');
+
+      earth.sceneTree.root = {
+        "children": [
+
+          {
+            "czmObject": {
+              "name": "高德-影像",
+              "xbsjType": "Imagery",
+              "xbsjImageryProvider": {
+                "XbsjImageryProvider": {
+                  "url": "http://webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}"
+                },
+              }
+            }
+          },
+          {
+            "czmObject": {
+              "name": "高德-标记",
+              "xbsjType": "Imagery",
+              "xbsjImageryProvider": {
+                "XbsjImageryProvider": {
+                  "url": "http://webst02.is.autonavi.com/appmaptile?style=8&x={x}&y={y}&z={z}"
+                },
+              },
+              xbsjZIndex: 99
+            }
+          },
+          {
+            "czmObject": {
+              "xbsjType": "Terrain",
+              "enabled": false,
+              "xbsjGuid": "640d2511-b5c4-4f9e-84f4-4dd3b0db515c",
+              "name": "中国地形",
+              "xbsjTerrainProvider": {
+                "type": "XbsjCesiumTerrainProvider",
+                "XbsjEllipsoidTerrainProvider": {},
+                "XbsjCesiumTerrainProvider": {
+                  "url": "//lab.earthsdk.com/terrain/577fd5b0ac1f11e99dbd8fd044883638"
+                }
+              },
+              "show": false
+            }
+          }
+
+        ]
+      }
+    }
+
+    // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+    XE.ready().then(startup);
+  </script>
+</body>
+
+</html>

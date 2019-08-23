@@ -4,12 +4,31 @@ function sceneTreeCreateExample1(xbsjEarth) {
         "title": "当前场景",
         "children": [
             {
-                "title": "三维瓦片1x",
+                "czmObject": {
+                    "xbsjType": "Cylinder",
+                    "name": "圆柱体",     
+                    "startPosition": [
+                        1.9016974701882112,
+                        0.5972325152147303,
+                        425.8641913624607
+                    ],
+                    "endPosition": [
+                        1.9016974701882112,
+                        0.5972325152147303,
+                        525.8641913624607
+                    ],
+                    "radius": 20,  
+                    "color": [1.0, 0.0, 0.0, 1.0],    
+                    // "maxSceneScale": 30,    
+                    // "fixScreenSize": 30,
+                }
+            },
+            {
                 "czmObject": {
                     "xbsjType": "Tileset",
                     "xbsjGuid": "b4137394-d346-4434-a01e-5b2d3730ec9f",
                     "name": "三维瓦片1x",
-                    "url": "//lab2.cesiumlab.com:9000/model/f15b9e90ac2d11e99dbd8fd044883638/tileset.json",
+                    "url": "//lab.earthsdk.com/model/f15b9e90ac2d11e99dbd8fd044883638/tileset.json",
                     "lightColor": null,
                     "specularEnvironmentMaps": null,
                     "xbsjPosition": [
@@ -27,7 +46,7 @@ function sceneTreeCreateExample1(xbsjEarth) {
                     "xbsjType": "Tileset",
                     "xbsjGuid": "4c9e66a4-dc72-4744-a3c9-d0c554178f38",
                     "name": "三维瓦片2",
-                    "url": "//lab2.cesiumlab.com:9000/model/d16c1ce0ac2d11e99dbd8fd044883638/tileset.json",
+                    "url": "//lab.earthsdk.com/model/d16c1ce0ac2d11e99dbd8fd044883638/tileset.json",
                     "lightColor": null,
                     "specularEnvironmentMaps": null,
                     "xbsjPosition": [
@@ -88,7 +107,7 @@ function sceneTreeCreateExample1(xbsjEarth) {
                         "type": "XbsjCesiumTerrainProvider",
                         "XbsjEllipsoidTerrainProvider": {},
                         "XbsjCesiumTerrainProvider": {
-                            "url": "//lab2.cesiumlab.com:9000/terrain/577fd5b0ac1f11e99dbd8fd044883638"
+                            "url": "//lab.earthsdk.com/terrain/577fd5b0ac1f11e99dbd8fd044883638"
                         }
                     },
                     "show": false

@@ -57,9 +57,9 @@ export default {
       var l = td(camera.positionCartographic.longitude).toFixed(5);
       var b = td(camera.positionCartographic.latitude).toFixed(5);
       var h = camera.positionCartographic.height.toFixed(2);
-      var y = camera.heading.toFixed(2);
-      var p = camera.pitch.toFixed(2);
-      var r = camera.roll.toFixed(2);
+      var y = td(camera.heading).toFixed(2);
+      var p = td(camera.pitch).toFixed(2);
+      var r = td(camera.roll).toFixed(2);
 
       this.cameraString = `${this.lang.longitude}: ${l}° ${this.lang.latitude}: ${b}° ${this.lang.height}: ${h}${this.lang.meter} ${this.lang.heading}: ${y}° ${this.lang.pitch}: ${p}° ${this.lang.roll}: ${r}°`;
     };
