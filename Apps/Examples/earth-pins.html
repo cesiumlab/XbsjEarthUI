@@ -93,15 +93,20 @@
 
                 var tileset = earth.sceneTree.$refs.tileset.czmObject;
                 var pin1 = earth.sceneTree.$refs.pin1.czmObject;
-
-                window.tileset = tileset;
-                window.pin1 = pin1;
+                pin1.onClick = () => {
+                    console.log('即将飞入大雁塔！');
+                    tileset.flyTo();
+                }
 
                 // 1.1.5 数据绑定
                 XE.MVVM.track(this, 'winPos', pin1, 'winPos');
                 XE.MVVM.track(this, 'showInfo', pin1, 'hovered');
 
                 this._earth = earth;
+
+                // only for Debug
+                window.tileset = tileset;
+                window.pin1 = pin1;
             },
             // 1.2 资源销毁
             beforeDestroy() {
