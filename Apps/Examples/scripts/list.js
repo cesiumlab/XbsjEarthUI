@@ -3,7 +3,7 @@ vueApp.examples = [
         "title": "Earth示例",
         "list": [
             {
-                "title": "平移旋转示例",
+                "title": "3dtiles平移旋转",
                 "url": "./earth-3dtiles-editing.html"
             },
             {
