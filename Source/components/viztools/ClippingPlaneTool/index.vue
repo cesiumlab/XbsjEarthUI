@@ -87,7 +87,7 @@
       <div class="cutting">
         <label>{{lang.getswitch}}</label>
         <div class="cutswitch">
-          <XbsjSwitch v-model="attribute.showHelper"></XbsjSwitch>
+          <XbsjSwitch v-model="attribute.show"></XbsjSwitch>
         </div>
       </div>
     </div>
@@ -113,7 +113,7 @@ export default {
         positionEditing: false,
         positionPicking: false,
         rotationEditing: false,
-        showHelper: false
+        show: false
       },
       langs: languagejs,
       connections: [],
@@ -133,7 +133,7 @@ export default {
         name: "attribute.name",
         position: "attribute.position",
         rotation: "attribute.rotation",
-        showHelper: "attribute.showHelper",
+        show: "attribute.show",
         positionEditing: "attribute.positionEditing",
         positionPicking: "attribute.positionPicking",
         rotationEditing: "attribute.rotationEditing"
