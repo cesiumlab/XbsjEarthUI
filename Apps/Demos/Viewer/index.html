@@ -71,7 +71,29 @@
             }
             //否则按照示例代码方法创建
             else {
-                sceneTreeCreateExample1(earthUI.earth);
+                earthUI.earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "title": "新建场景",
+                            "children": [
+                                {
+                                    "czmObject": {
+                                        "xbsjType": "Imagery",
+                                        "name": "离线影像",
+                                        "show": true,
+                                        "xbsjImageryProvider": {
+                                            "createTileMapServiceImageryProvider": {
+                                                "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                                "fileExtension": 'jpg',
+                                            },
+                                            "type": 'createTileMapServiceImageryProvider',
+                                        },
+                                    }
+                                }
+                            ]
+                        },
+                    ]
+                }  
             }
 
             if (urlOptions.lang) {
