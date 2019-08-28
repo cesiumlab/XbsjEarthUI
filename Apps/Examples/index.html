@@ -225,13 +225,14 @@
         if (q.url) {
             vueApp.setCodeFromUrl(q.url);
         } else if (q.code) {
-            console.log(q.code);
             const decode = decodeURIComponent(q.code);
             const jsonStr = base64ToString(decode);
             const json = JSON.parse(jsonStr);
+            vueApp.code = json.code;
+        } else if (q.id) {
             const submitData = {};
             submitData.contents = true;
-            submitData.ids = json.code;
+            submitData.ids = q.id;
             axios.get("//lab2.cesiumlab.com/api/examples/get", {
                 params: submitData
             })
@@ -246,10 +247,6 @@
             .catch(function(error) {
                 console.log(error);
             });
-            // const decode = decodeURIComponent(q.code);
-            // const jsonStr = base64ToString(decode);
-            // const json = JSON.parse(jsonStr);
-            // vueApp.code = json.code;
         } else {
             vueApp.setCodeFromUrl('./startup-createEarth.html');
         }
