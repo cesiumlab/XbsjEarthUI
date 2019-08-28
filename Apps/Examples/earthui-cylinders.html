@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="EarthUI示例"></meta>
+    <title>圆柱体</title>
+    <script src="../../XbsjEarthUI/xbsj.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+    </div>
+
+    <script>
+        XbsjEarthUI.create('main').then(earthUI => {
+
+            earthUI.earth.sceneTree.root = {
+                "expand": true,
+                "title": "项目",
+                "children": [{
+                    "expand": true,
+                    "title": "项目",
+                    "children": [{
+                        "czmObject": {
+                            "xbsjType": "Cylinder",
+                            "name": "圆柱体",
+                            "startPosition": [
+                                1.9016974701882112,
+                                0.5972325152147303,
+                                425.8641913624607
+                            ],
+                            "endPosition": [
+                                1.9016974701882112,
+                                0.5972325152147303,
+                                525.8641913624607
+                            ],
+                            "radius": 20
+                        },
+                        "enabled": true
+                    },{
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": "谷歌影像",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali"
+                                },
+                            },
+                        },
+                        "enabled": true
+                    }]
+                }]
+            };
+
+            earthUI.earth.cameraViewManager = {
+                "lastView": {
+                    "position": [
+                        1.9016974701882108,
+                        0.5971880502675593,
+                        708.5039659360604
+                    ],
+                    "rotation": [
+                        6.2831853071792745,
+                        -0.7854424896521253,
+                        6.283185307179586
+                    ],
+                    "fov": 1.0471975511965976,
+                    "near": 0.1,
+                    "far": 10000000000
+                }
+            }
+
+            window.uia = earthUI;
+        });
+    </script>
+</body>
+
+</html>

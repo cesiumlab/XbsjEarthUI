@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="EarthUI示例"></meta>
+    <title>视域分析</title>
+    <script src="../../XbsjEarthUI/xbsj.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+    </div>
+
+    <script>
+        XbsjEarthUI.create('main').then(earthUI => {
+
+            earthUI.earth.sceneTree.root = {
+                "expand": true,
+                "title": "项目",
+                "children": [{
+                    "expand": true,
+                    "title": "项目",
+                    "children": [{
+                        "czmObject": {
+                            "xbsjType": "Tileset",
+                            "name": "大雁塔",
+                            "url": "../assets/dayanta/tileset.json",
+                            "xbsjUseOriginTransform": false, 
+                        },
+                        "enabled": true
+                    },{
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": "默认影像",
+                            "xbsjImageryProvider": {
+                                "createTileMapServiceImageryProvider": {
+                                    "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    "fileExtension": 'jpg',
+                                },
+                                "type": 'createTileMapServiceImageryProvider',
+                            },
+                        },
+                        "enabled": true
+                    },{
+                        "czmObject": {
+                            "xbsjType": "Viewshed",
+                            "name": "视域分析",
+                            "position": [
+                                1.9016941363233133,
+                                0.5972280994903124,
+                                441.33440879700987
+                            ],
+                            "rotation": [
+                                5.661008560777628,
+                                -0.4002876987466508,
+                                6.281209044159919
+                            ],
+                            "near": 1,
+                            "far": 50
+                        },
+                        "ref": 'viewshed',
+                        "enabled": true
+                    }]
+                }]
+            };
+
+            earthUI.earth.sceneTree.$refs.viewshed.czmObject.flyTo();
+
+            window.uia = earthUI;
+        });
+    </script>
+</body>
+
+</html>

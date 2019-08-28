@@ -88,8 +88,16 @@ vueApp.examples = [
                 "url": "./earthui-basic.html"
             },
             {
+                "title": "视频融合",
+                "url": "./earthui-cameraVideo.html"
+            },
+            {
                 "title": "自定义属性窗口",
                 "url": "./earthui-custom.html"
+            },
+            {
+                "title": "圆柱体",
+                "url": "./earthui-cylinders.html"
             },
             {
                 "title": "从JSON创建场景结构",
@@ -130,6 +138,10 @@ vueApp.examples = [
             {
                 "title": "地形",
                 "url": "./earthui-terrain.html"
+            },
+            {
+                "title": "视域分析",
+                "url": "./earthui-viewshed.html"
             },
             {
                 "title": "内置UI组件",
