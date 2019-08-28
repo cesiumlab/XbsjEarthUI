@@ -55,14 +55,14 @@
 
             earth.cameraViewManager.lastView.xbsjFromJSON({
                 "position": [
-                    2.03263400958184,
-                    0.6973100279183362,
-                    4039.9270973124762
+                    2.031889263847462, 
+                    0.6962418623447842,
+                    3116.493479500443, 
                 ],
                 "rotation": [
-                    3.9478253379776507,
-                    -0.7363643988112445,
-                    6.279973679470491
+                    5.512527446464938,  
+                    -0.9111869236954493, 
+                    0, 
                 ],
                 "fov": 1.0471975511965976,
                 "near": 0.1,
@@ -162,6 +162,16 @@
                         cylinder.onHoverEnd = () => {
                             this.onHoverEnd();
                         };
+
+                        // TODO 这个watch没有销毁
+                        XE.MVVM.watch(cylinder, 'hovered', hovered => {
+                            if (hovered) {
+                                this.onHover(this);
+                            } else {
+                                this.onHoverEnd();
+                            }
+                        });
+
                         this._cylinder = cylinder;
                     }
 
@@ -226,8 +236,8 @@
                 var wells = [];
 
                 
-                for (let i=0; i<30; ++i) {
-                    for (let j=0; j<30; ++j) {
+                for (let i=0; i<10; ++i) {
+                    for (let j=0; j<10; ++j) {
                         well = new Well(earth, labels);
                         well.startPosition = [tr(116.39), tr(39.9), 0];
                         well.endPosition = [tr(116.39), tr(39.9), 500];
