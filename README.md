@@ -49,7 +49,7 @@ https://www.bilibili.com/video/av61977045/
 
 1. npm install
 2. npm run build
-3. cd dist
+3. cd dist  // ***这一步很重要！！！务必在dist目录下启动hs，很多人反馈打不开页面，都是因为少了这一步！***
 4. hs -p 81 启动服务
 5. 浏览器地址栏输入 localhost:81/index.html
 
