@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>路径</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .checkbox {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.5); padding: 5px; border-radius: 5px;">
+                    </div>
+                </div>
+            `,
+            // <span @click="positionEditing1 = !positionEditing1" class="checkbox"><input type="checkbox" v-model="positionEditing1">瓦片1的位置编辑</span><br/>
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+                earth.interaction.picking.enabled = true;
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "expand": true,
+                    "title": "预览场景",
+                    "children": [{
+                        "ref": 'tileset',
+                        "czmObject": {
+                            "name": '大雁塔',
+                            "xbsjType": "Tileset",
+                            "url": '../assets/dayanta/tileset.json',
+                            "xbsjUseOriginTransform": false,
+                        },
+                    }, {
+                        "ref": 'path1',
+                        "czmObject": {
+                            "xbsjType": "Path",
+                            "positions": [
+                                [
+                                    1.9016746584889261,
+                                    0.5972140444354529,
+                                    540.3422462577171
+                                ],
+                                [
+                                    1.9017267341518718,
+                                    0.5972133503414322,
+                                    520.1137699152557
+                                ],
+                                [
+                                    1.9017257997179968,
+                                    0.5972736030398242,
+                                    528.3876170108886
+                                ],
+                                [
+                                    1.9016747349263112,
+                                    0.5972754003153069,
+                                    521.087861389408
+                                ]
+                            ],
+                            "rotations": [
+                                [
+                                    6.868275118748086,
+                                    -0.2742692911775144,
+                                    0.0016584301080495578
+                                ],
+                                [
+                                    5.703866308921896,
+                                    -0.19385405041989068,
+                                    6.281509509407803
+                                ],
+                                [
+                                    3.8005195675504133,
+                                    -0.2597408290639396,
+                                    6.281339310424716
+                                ],
+                                [
+                                    2.501667530825695,
+                                    -0.2173829253288364,
+                                    0.001819016773946025
+                                ]
+                            ],
+                            "show": false,
+                            "loop": true
+                        }
+                    }, {
+                        "czmObject": {
+                            "name": '默认影像',
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
+                        },
+                    }]
+                };
+
+                var tileset = earth.sceneTree.$refs.tileset.czmObject;
+                var path1 = earth.sceneTree.$refs.path1.czmObject;
+
+                path1.fly();
+
+                this._earth = earth;
+
+                // only for Debug
+                window.tileset = tileset;
+                window.path1 = path1;
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>
