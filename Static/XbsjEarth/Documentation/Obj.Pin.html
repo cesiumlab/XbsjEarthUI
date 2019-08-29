@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Contour - XbsjEarth Documentation</title>
+    <title>Pin - XbsjEarth Documentation</title>
 
     <!--[if lt IE 9]>
       <script src="javascript/html5.js"></script>
@@ -19,7 +19,7 @@
     <h1 class="page-title">
         <!-- <a href="index.html"><img src="Images/CesiumLogo.png" class="cesiumLogo"></a> -->
         <a href="index.html">EarthSDK</a>
-        Contour
+        Pin
         <div class="titleCenterer"></div>
     </h1>
 
@@ -32,7 +32,7 @@
 
 <header>
     
-        <div class="class-description">地形等高线</div>
+        <div class="class-description">Pin用来展示一个兴趣点</div>
     
 </header>
 
@@ -43,9 +43,9 @@
     
         
     <div class="nameContainer">
-    <h4 class="name" id="Contour">
-        <a href="#Contour" class="doc-link"></a>
-        new Contour<span class="signature">()</span>
+    <h4 class="name" id="Pin">
+        <a href="#Pin" class="doc-link"></a>
+        new Pin<span class="signature">()</span>
         
 
 <div class="source-link rightLinks">
@@ -126,7 +126,7 @@
 
 
     <ul>
-        <li><a href="XbsjBase.html">XbsjBase</a></li>
+        <li><a href="XbsjCzmObj.html">XbsjCzmObj</a></li>
     </ul>
 
 
@@ -137,6 +137,13 @@
     
 
     
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="Obj.Pin.PinBuilder.html">PinBuilder</a></dt>
+            <dd></dd>
+        </dl>
+    
 
     
 
@@ -146,9 +153,9 @@
         
             
 <div class="nameContainer">
-<h4 class="name" id="color">
-    <a href="#color" class="doc-link"></a>
-    color<span class="type-signature"> : Array.&lt;number></span>
+<h4 class="name" id="disableDepthTestDistance">
+    <a href="#disableDepthTestDistance" class="doc-link"></a>
+    disableDepthTestDistance<span class="type-signature"> : number</span>
     
 
 <div class="source-link rightLinks">
@@ -162,7 +169,7 @@
 
 
 <div class="description">
-    等高线颜色
+    让深度检测失效的距离（在该距离以内不论是否被遮挡，都显示），设置为0时表示始终会被遮挡。
 </div>
 
 
@@ -188,7 +195,7 @@
 
     
     <span class="details-header">Default Value:</span>
-    <code class="language-javascript">[1,0,0,1]</code>
+    <code class="language-javascript">Number.MAX_VALUE</code>
     
 
     
@@ -272,6 +279,70 @@
         
             
 <div class="nameContainer">
+<h4 class="name" id="earth">
+    <a href="#earth" class="doc-link"></a>
+    <span class="type-signature attribute-readonly">readonly</span>earth<span class="type-signature"> : <a href="Earth.html">Earth</a></span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    返回该对象的所属earth实例
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjObject.html#earth">XbsjObject#earth</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
 <h4 class="name" id="enabled">
     <a href="#enabled" class="doc-link"></a>
     enabled<span class="type-signature"> : boolean</span>
@@ -288,7 +359,71 @@
 
 
 <div class="description">
-    开启等高线
+    是否启用
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjObject.html#enabled">XbsjObject#enabled</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="far">
+    <a href="#far" class="doc-link"></a>
+    far<span class="type-signature"> : number</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    最远可视距离
 </div>
 
 
@@ -314,7 +449,7 @@
 
     
     <span class="details-header">Default Value:</span>
-    <code class="language-javascript">false</code>
+    <code class="language-javascript">Number.MAX_VALUE</code>
     
 
     
@@ -334,9 +469,9 @@
         
             
 <div class="nameContainer">
-<h4 class="name" id="spacing">
-    <a href="#spacing" class="doc-link"></a>
-    spacing<span class="type-signature"> : number</span>
+<h4 class="name" id="guid">
+    <a href="#guid" class="doc-link"></a>
+    <span class="type-signature attribute-readonly">readonly</span>guid<span class="type-signature"> : string</span>
     
 
 <div class="source-link rightLinks">
@@ -350,7 +485,440 @@
 
 
 <div class="description">
-    等高线间隔
+    注意，对象一旦创建，guid不可更改！
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjObject.html#guid">XbsjObject#guid</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="imagerUrl">
+    <a href="#imagerUrl" class="doc-link"></a>
+    imagerUrl<span class="type-signature"> : string</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    图像路径
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <span class="details-header">Default Value:</span>
+    <code class="language-javascript">''</code>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="near">
+    <a href="#near" class="doc-link"></a>
+    near<span class="type-signature"> : number</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    最近可视距离
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <span class="details-header">Default Value:</span>
+    <code class="language-javascript">0</code>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="pinBuilder">
+    <a href="#pinBuilder" class="doc-link"></a>
+    pinBuilder<span class="type-signature"> : <a href="Obj.Pin.PinBuilder.html">Obj.Pin.PinBuilder</a></span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    pin构建器
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="position">
+    <a href="#position" class="doc-link"></a>
+    position<span class="type-signature"> : array</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    位置数组 [经度、纬度、高度]
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <span class="details-header">Default Value:</span>
+    <code class="language-javascript">[0, 0, 0]</code>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="scale">
+    <a href="#scale" class="doc-link"></a>
+    scale<span class="type-signature"> : number</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    缩放比例
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <span class="details-header">Default Value:</span>
+    <code class="language-javascript">1.0</code>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="show">
+    <a href="#show" class="doc-link"></a>
+    show<span class="type-signature"> : boolean</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    显示路径
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <span class="details-header">Default Value:</span>
+    <code class="language-javascript">true</code>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="viewDistance">
+    <a href="#viewDistance" class="doc-link"></a>
+    viewDistance<span class="type-signature"> : number</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    视点距离，当相机飞入时的停止距离
 </div>
 
 
@@ -396,9 +964,9 @@
         
             
 <div class="nameContainer">
-<h4 class="name" id="width">
-    <a href="#width" class="doc-link"></a>
-    width<span class="type-signature"> : number</span>
+<h4 class="name" id="xbsjGuid">
+    <a href="#xbsjGuid" class="doc-link"></a>
+    xbsjGuid<span class="type-signature"> : string|undefined</span>
     
 
 <div class="source-link rightLinks">
@@ -412,7 +980,7 @@
 
 
 <div class="description">
-    等高线宽度
+    唯一标识符
 </div>
 
 
@@ -427,7 +995,10 @@
     
 
     
-
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjObject.html#xbsjGuid">XbsjObject#xbsjGuid</a>
+    </li></dd>
     
 
     
@@ -437,8 +1008,7 @@
     
 
     
-    <span class="details-header">Default Value:</span>
-    <code class="language-javascript">1</code>
+
     
 
     
@@ -528,6 +1098,91 @@
     <dt class="inherited-from">Inherited From:</dt>
     <dd class="inherited-from"><ul class="dummy"><li>
         <a href="XbsjBase.html#destroy">XbsjBase#destroy</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="flyTo">
+        <a href="#flyTo" class="doc-link"></a>
+        flyTo<span class="signature">()</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    飞入该对象
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjCzmObj.html#flyTo">XbsjCzmObj#flyTo</a>
     </li></dd>
     
 

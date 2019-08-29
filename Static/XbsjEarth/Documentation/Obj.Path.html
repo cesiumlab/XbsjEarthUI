@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Contour - XbsjEarth Documentation</title>
+    <title>Path - XbsjEarth Documentation</title>
 
     <!--[if lt IE 9]>
       <script src="javascript/html5.js"></script>
@@ -19,7 +19,7 @@
     <h1 class="page-title">
         <!-- <a href="index.html"><img src="Images/CesiumLogo.png" class="cesiumLogo"></a> -->
         <a href="index.html">EarthSDK</a>
-        Contour
+        Path
         <div class="titleCenterer"></div>
     </h1>
 
@@ -32,7 +32,7 @@
 
 <header>
     
-        <div class="class-description">地形等高线</div>
+        <div class="class-description">路径</div>
     
 </header>
 
@@ -43,9 +43,9 @@
     
         
     <div class="nameContainer">
-    <h4 class="name" id="Contour">
-        <a href="#Contour" class="doc-link"></a>
-        new Contour<span class="signature">()</span>
+    <h4 class="name" id="Path">
+        <a href="#Path" class="doc-link"></a>
+        new Path<span class="signature">()</span>
         
 
 <div class="source-link rightLinks">
@@ -126,7 +126,7 @@
 
 
     <ul>
-        <li><a href="XbsjBase.html">XbsjBase</a></li>
+        <li><a href="XbsjCzmObj.html">XbsjCzmObj</a></li>
     </ul>
 
 
@@ -142,68 +142,6 @@
 
     
         <h3 class="subsection-title">Members</h3>
-
-        
-            
-<div class="nameContainer">
-<h4 class="name" id="color">
-    <a href="#color" class="doc-link"></a>
-    color<span class="type-signature"> : Array.&lt;number></span>
-    
-
-<div class="source-link rightLinks">
-</div>
-
-
-</h4>
-
-</div>
-
-
-
-<div class="description">
-    等高线颜色
-</div>
-
-
-
-
-
-<dl class="details">
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <span class="details-header">Default Value:</span>
-    <code class="language-javascript">[1,0,0,1]</code>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
 
         
             
@@ -272,6 +210,70 @@
         
             
 <div class="nameContainer">
+<h4 class="name" id="earth">
+    <a href="#earth" class="doc-link"></a>
+    <span class="type-signature attribute-readonly">readonly</span>earth<span class="type-signature"> : <a href="Earth.html">Earth</a></span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    返回该对象的所属earth实例
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjObject.html#earth">XbsjObject#earth</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
 <h4 class="name" id="enabled">
     <a href="#enabled" class="doc-link"></a>
     enabled<span class="type-signature"> : boolean</span>
@@ -288,7 +290,135 @@
 
 
 <div class="description">
-    开启等高线
+    是否启用
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjObject.html#enabled">XbsjObject#enabled</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="guid">
+    <a href="#guid" class="doc-link"></a>
+    <span class="type-signature attribute-readonly">readonly</span>guid<span class="type-signature"> : string</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    注意，对象一旦创建，guid不可更改！
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjObject.html#guid">XbsjObject#guid</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="loop">
+    <a href="#loop" class="doc-link"></a>
+    loop<span class="type-signature"> : boolean</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    是否为环线
 </div>
 
 
@@ -334,9 +464,9 @@
         
             
 <div class="nameContainer">
-<h4 class="name" id="spacing">
-    <a href="#spacing" class="doc-link"></a>
-    spacing<span class="type-signature"> : number</span>
+<h4 class="name" id="show">
+    <a href="#show" class="doc-link"></a>
+    show<span class="type-signature"> : boolean</span>
     
 
 <div class="source-link rightLinks">
@@ -350,7 +480,193 @@
 
 
 <div class="description">
-    等高线间隔
+    显示路径
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <span class="details-header">Default Value:</span>
+    <code class="language-javascript">true</code>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="showDirection">
+    <a href="#showDirection" class="doc-link"></a>
+    showDirection<span class="type-signature"> : boolean</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    显示方向
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <span class="details-header">Default Value:</span>
+    <code class="language-javascript">true</code>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="showHelper">
+    <a href="#showHelper" class="doc-link"></a>
+    showHelper<span class="type-signature"> : boolean</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    是否显示辅助线框
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <span class="details-header">Default Value:</span>
+    <code class="language-javascript">false</code>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="slices">
+    <a href="#slices" class="doc-link"></a>
+    slices<span class="type-signature"> : number</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    曲线分段数
 </div>
 
 
@@ -396,9 +712,9 @@
         
             
 <div class="nameContainer">
-<h4 class="name" id="width">
-    <a href="#width" class="doc-link"></a>
-    width<span class="type-signature"> : number</span>
+<h4 class="name" id="xbsjGuid">
+    <a href="#xbsjGuid" class="doc-link"></a>
+    xbsjGuid<span class="type-signature"> : string|undefined</span>
     
 
 <div class="source-link rightLinks">
@@ -412,8 +728,144 @@
 
 
 <div class="description">
-    等高线宽度
+    唯一标识符
 </div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjObject.html#xbsjGuid">XbsjObject#xbsjGuid</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="addHeight">
+        <a href="#addHeight" class="doc-link"></a>
+        addHeight<span class="signature">(height)</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    同时给所有关键点增加高度
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                高度，单位米</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -437,9 +889,6 @@
     
 
     
-    <span class="details-header">Default Value:</span>
-    <code class="language-javascript">1</code>
-    
 
     
 
@@ -456,10 +905,84 @@
 
 
         
+            
+    <div class="nameContainer">
+    <h4 class="name" id="currentCameraApply">
+        <a href="#currentCameraApply" class="doc-link"></a>
+        currentCameraApply<span class="signature">()</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    应用当前相机姿态
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+
     
 
     
-        <h3 class="subsection-title">Methods</h3>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
 
         
             
@@ -558,6 +1081,171 @@
         
             
     <div class="nameContainer">
+    <h4 class="name" id="fly">
+        <a href="#fly" class="doc-link"></a>
+        fly<span class="signature">()</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    沿路径飞行
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="flyTo">
+        <a href="#flyTo" class="doc-link"></a>
+        flyTo<span class="signature">()</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    飞入该对象
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjCzmObj.html#flyTo">XbsjCzmObj#flyTo</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
     <h4 class="name" id="isDestroyed">
         <a href="#isDestroyed" class="doc-link"></a>
         isDestroyed<span class="signature">()</span> &rarr; <span class="type-signature returnType">boolean</span>
@@ -623,6 +1311,131 @@
     <dd class="inherited-from"><ul class="dummy"><li>
         <a href="XbsjBase.html#isDestroyed">XbsjBase#isDestroyed</a>
     </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="targetTo">
+        <a href="#targetTo" class="doc-link"></a>
+        targetTo<span class="signature">(target)</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    将所有关键点的方向指向target所在位置
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                用来表示观察位置，包含三个元素的数组，分别表示经度、纬度、高度</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
     
 
     
