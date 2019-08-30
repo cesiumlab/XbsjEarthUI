@@ -59,6 +59,18 @@ vueApp.examples = [
                 "url": "./earth-nativeCesium.html"
             },
             {
+                "title": "路径-方向",
+                "url": "./earth-path-direction.html"
+            },
+            {
+                "title": "路径-编辑",
+                "url": "./earth-path-editing.html"
+            },
+            {
+                "title": "路径-飞行",
+                "url": "./earth-path-fly.html"
+            },
+            {
                 "title": "路径",
                 "url": "./earth-path.html"
             },
