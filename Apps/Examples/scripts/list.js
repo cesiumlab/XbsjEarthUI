@@ -63,8 +63,20 @@ vueApp.examples = [
                 "url": "./earth-path.html"
             },
             {
-                "title": "Pin-nearfar",
+                "title": "Pin-编辑",
+                "url": "./earth-pin-editing.html"
+            },
+            {
+                "title": "Pin-外部图像",
+                "url": "./earth-pin-imagerUrl.html"
+            },
+            {
+                "title": "Pin-可见范围",
                 "url": "./earth-pin-nearfar.html"
+            },
+            {
+                "title": "Pin-样式",
+                "url": "./earth-pin-pinBuilder.html"
             },
             {
                 "title": "Pin",
