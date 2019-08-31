@@ -75,6 +75,10 @@ vueApp.examples = [
                 "url": "./earth-path.html"
             },
             {
+                "title": "Pin-位置",
+                "url": "./earth-pin-div.html"
+            },
+            {
                 "title": "Pin-编辑",
                 "url": "./earth-pin-editing.html"
             },

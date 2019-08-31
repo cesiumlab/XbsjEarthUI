@@ -98,13 +98,13 @@
 
                 this._earth = earth;
 
-                // pd: positionDistance的缩写
-                // pin1.position.pd(earth.camera.position): 计算相机和pin之间的距离
-                this.distance = pin1.position.pd(earth.camera.position);
+                // xepd: xepositionDistance的缩写
+                // pin1.position.xepd(earth.camera.position): 计算相机和pin之间的距离
+                this.distance = pin1.position.xepd(earth.camera.position);
 
                 // 监控数据
                 this.uw = XE.MVVM.watch(earth.camera, 'position', () => {
-                    const d = pin1.position.pd(earth.camera.position);
+                    const d = pin1.position.xepd(earth.camera.position);
                     this.distance = d;
                 });
 
