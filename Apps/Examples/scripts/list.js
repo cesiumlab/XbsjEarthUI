@@ -71,11 +71,7 @@ vueApp.examples = [
                 "url": "./earth-path-fly.html"
             },
             {
-                "title": "路径",
-                "url": "./earth-path.html"
-            },
-            {
-                "title": "Pin-位置",
+                "title": "Pin-div",
                 "url": "./earth-pin-div.html"
             },
             {

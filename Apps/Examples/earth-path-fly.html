@@ -76,7 +76,7 @@
                     <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:400px; font-size:24px; font-family: 宋体;">
                         <div class="defultbtn" :class="{'btnon':playing}" @click="playing = !playing">路径播放</div>
                         <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':cameraAttached}"  @click="cameraAttached = !cameraAttached">相机绑定</div><br/>
-                        <span @click="show = !show" class="checkbox"><input class="fly" type="checkbox" v-model="show">绕线飞行</span><br/>
+                        <span @click="show = !show" class="checkbox"><input class="fly" type="checkbox" v-model="show">路径显隐</span><br/>
                         <span>当前速度: {{ currentSpeed }}m/s</span><br/>
                         <span><input type="range" min="0" max="100" step="1" v-model.number="currentSpeed"></span><br/>
                         <span>当前位置：{{currentD | numFilter}}米</span>

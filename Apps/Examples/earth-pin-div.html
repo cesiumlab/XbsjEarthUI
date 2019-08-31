@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="xbsj-labels" content="Earth示例"></meta>
-    <title>Pin-位置</title>
+    <title>Pin-div</title>
     <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <script src="./scripts/vue.min.js"></script>
@@ -25,7 +25,7 @@
 
         .dialog {
             position: absolute;
-            width: 100px;
+            width: 80px;
             min-height: 60px;
             color: white;
             background-image: url("./images/dialog.png");
@@ -57,7 +57,7 @@
                         v-show="showInfo" 
                         class="dialog"
                         @click = fly
-                        :style="{ left: winPos[0] + 'px', bottom: winPos[1] + 'px' }"
+                        :style="{ left: (winPos[0] - 62) + 'px', bottom: winPos[1] + 'px' }"
                     >
                         <span>点击飞入大雁塔！</span>
                     </div>
@@ -115,7 +115,7 @@
                 // 监控数据
                 this.uw = XE.MVVM.watch(earth.camera, 'position', () => {
                     const d = pin1.position.xepd(earth.camera.position);
-                    if(d < 200) {
+                    if(d < 100) {
                         this.showInfo = false;
                     }else {
                         this.showInfo = true;

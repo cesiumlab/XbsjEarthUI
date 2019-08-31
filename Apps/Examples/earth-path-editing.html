@@ -148,10 +148,7 @@
                             ],
                             "show": true, // 显示路径
                             "loop": true, // 环形                           
-                            "showDirection": true, // 显示相机                          
-                            "cameraAttached": true, // 绑定相机
-                            "playing": true, // 飞行
-                            "loopPlay": true // 循环飞行
+                            "showDirection": true, // 显示相机
                         }
                     }, {
                         "czmObject": {
@@ -164,6 +161,11 @@
 
                 var tileset = earth.sceneTree.$refs.tileset.czmObject;
                 var path1 = earth.sceneTree.$refs.path1.czmObject;
+
+                // 设置相机位置
+                // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
+                earth.camera.position =  [1.9017073702674707,0.5971714205484976,916.2867751683672];
+                earth.camera.rotation = [1.794120407794253e-13,-0.7854502013470803,1.0658141036401503e-14];
 
                 // 1.1.5 数据绑定
                 this._creatingUnbind = XE.MVVM.bind(this, 'creating', path1, 'creating');
