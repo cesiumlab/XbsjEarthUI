@@ -39,7 +39,7 @@
                     </div>
                     <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:350px; font-size:24px; font-family: 宋体;">
                         <span>图片地址：</span><br/>
-                        <input type="text" v-model="imagerUrl"><br/>
+                        <input type="text" v-model="imageUrl"><br/>
                         <span>图片大小：{{ scale | numFilter }}</span><br/>
                         <span><input type="range" min="0.05" max="2.00" step="0.01" v-model.number="scale"></span><br/>
                     </div>
@@ -48,7 +48,7 @@
             data() {
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
-                    imagerUrl: '',
+                    imageUrl: '',
                     scale: ''
                 };
             },
@@ -82,11 +82,11 @@
                 var pin1 = earth.sceneTree.$refs.pin1.czmObject;
     
                 // 1.1.5 数据绑定
-                this._imagerUrlUnbind = XE.MVVM.bind(this, 'imagerUrl', pin1, 'imagerUrl');
+                this._imagerUrlUnbind = XE.MVVM.bind(this, 'imageUrl', pin1, 'imageUrl');
                 this._scaleUnbind = XE.MVVM.bind(this, 'scale', pin1, 'scale');
 
                 // 设置初始值
-                pin1.imagerUrl = 'https://www.baidu.com/img/bd_logo1.png';
+                pin1.imageUrl = 'https://www.baidu.com/img/bd_logo1.png';
                 pin1.scale = 0.5;
 
                 this._earth = earth;

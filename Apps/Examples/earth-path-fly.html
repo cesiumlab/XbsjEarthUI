@@ -32,6 +32,35 @@
             width: 20px;
             height: 16px;
         }
+
+        .box span{
+            display: block;
+            margin-top: 10px;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 38px;
+            padding: 0 10px;
+            line-height: 38px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+
+        .btnon {
+            background-color: #1E9FFF;
+            color: #fff;
+            border: 1px solid #1E9FFF;
+        }
     </style>
 </head>
 
@@ -48,6 +77,8 @@
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
                     <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:400px; font-size:24px; font-family: 宋体;">
+                        <div class="defultbtn" :class="{'btnon':pathflying}" @click=pathfly>路径飞行</div>
+                        <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':cameraflying}"  @click=camerafly>相机飞行</div>
                         <span @click="show = !show" class="checkbox"><input class="fly" type="checkbox" v-model="show">绕线飞行</span><br/>
                         <span>当前速度: {{ currentSpeed }}m/s</span><br/>
                         <span><input type="range" min="0" max="100" step="1" v-model.number="currentSpeed"></span><br/>
@@ -58,9 +89,11 @@
             data() {
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
-                    show: false,
-                    currentSpeed: '',
-                    currentD: ''
+                    show: false, // 控制路径的显示与隐藏，默认为隐藏
+                    currentSpeed: '', // 当前运行速度
+                    currentD: '', // 相机当前位置
+                    pathflying: false,
+                    cameraflying: false
                 };
             },
             // 1.1 资源创建
@@ -129,8 +162,9 @@
                                     0.001819016773946025
                                 ]
                             ],
-                            "show": false,
-                            "loop": true
+                            "show": false, // 显示路径
+                            "loop": true, // 环形
+                            "showDirection": true, // 显示相机 
                         }
                     }, {
                         "czmObject": {
@@ -144,19 +178,41 @@
                 var tileset = earth.sceneTree.$refs.tileset.czmObject;
                 var path1 = earth.sceneTree.$refs.path1.czmObject;
 
-                path1.fly();
+                // 飞入大雁塔
+                path1.flyTo();
 
-                // 1.1.5 数据绑定
+                // 1.1.3 数据绑定
+                // 双向绑定的属性，如果一方发生变化，另一方同样会跟随变化
                 this._showUnbind = XE.MVVM.bind(this, 'show', path1, 'show');
                 this._currentSpeedUnbind = XE.MVVM.bind(this, 'currentSpeed', path1, 'currentSpeed');
                 this._currentDUnbind = XE.MVVM.bind(this, 'currentD', path1, 'currentD');
-
 
                 this._earth = earth;
 
                 // only for Debug
                 window.tileset = tileset;
                 window.path1 = path1;
+                window.earth = earth;
+            },
+            methods: {
+                pathfly() {
+                    this.pathflying = true;
+                    this.cameraflying = false;
+                    path1.cameraAttached = false; // 解绑相机
+                    // 定义一个pin用来跟踪路径
+                    const pin = new XE.Obj.Pin(earth);
+                    // 单向绑定的属性，pin将跟踪path1，但pin发生变化path1并不会跟踪！
+                    this._pinUnbind = XE.MVVM.track(pin, 'position' , path1 , 'currentPosition');
+                    path1.playing = true, // 显示路径
+                    path1.loopPlay = true // 循环飞行 
+                },
+                camerafly() {
+                    this.pathflying = false;
+                    this.cameraflying = true;
+                    path1.cameraAttached = true; // 绑定相机
+                    path1.playing = true, // 显示路径
+                    path1.loopPlay = true // 循环飞行
+                }
             },
             filters: {
                 numFilter(value) {
@@ -171,6 +227,7 @@
                 this._showUnbind = this._showUnbind && this._showUnbind();
                 this._currentSpeedUnbind = this._currentSpeedUnbind && this._currentSpeedUnbind();
                 this._currentDUnbind = this._currentDUnbind && this._currentDUnbind();
+                this._pinUnbind = this._pinUnbind && this._pinUnbind();
                 this._earth = this._earth && this._earth.destroy();
             },
         }

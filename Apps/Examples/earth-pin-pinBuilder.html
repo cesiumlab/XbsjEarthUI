@@ -27,6 +27,15 @@
             width: 242px;
             font-size: 18px;
         }
+
+        .colorbox {
+            width: 50px;
+        }
+        /* span {
+            display: inline-block;
+            width: 230px;
+            text-align: right;
+        } */
     </style>
 </head>
 
@@ -47,6 +56,8 @@
                         <span>pin图标: </span><select v-model="makiIcon"><option v-for="item in makiIconObj">{{item}}</option></select><br/>
                         <span>pin大小：{{ size }}</span><br/>
                         <span><input type="range" min="1" max="100" step="1" v-model.number="size"></span><br/>
+                        <span>pin背景颜色：</span><input class="colorbox" type="color" @input=colorchangeinner(event)><br/>
+                        <span>pin边框和文字颜色：</span><input class="colorbox" type="color" @input=colorchangeouter(event)>
                     </div>
                 </div>
             `,
@@ -103,6 +114,16 @@
 
                 // only for Debug
                 window.pin1 = pin1;
+            },
+            methods: {
+                colorchangeinner(event) {
+                    var fillcolor = event.target.value;
+                    pin1.pinBuilder.fillColor = fillcolor.xeColor;
+                },
+                colorchangeouter(event) {
+                    var outlinecolor = event.target.value;
+                    pin1.pinBuilder.outlineColor = outlinecolor.xeColor;
+                },
             },
             // 1.2 资源销毁
             beforeDestroy() {

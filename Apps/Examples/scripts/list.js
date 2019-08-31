@@ -105,6 +105,10 @@ vueApp.examples = [
             {
                 "title": "视域分析",
                 "url": "./earth-viewshed.html"
+            },
+            {
+                "title": "路径-pin",
+                "url": "./eath-path-pin.html"
             }
         ]
     },

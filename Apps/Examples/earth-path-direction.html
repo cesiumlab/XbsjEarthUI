@@ -64,7 +64,7 @@
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
                     <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:400px; font-size:24px; font-family: 宋体;">
-                        <div @click=clickpick class="defultbtn" :class="{'btnon':targetPicking}">相机方向</div>
+                        <div class="defultbtn" :class="{'btnon':targetPicking}" @click="targetPicking = !targetPicking">相机方向</div>
                     </div>
                 </div>
             `,
@@ -140,8 +140,9 @@
                                     0.001819016773946025
                                 ]
                             ],
-                            "show": true,
-                            "loop": true
+                            "show": true, // 显示路径
+                            "loop": true, // 环形   
+                            "showDirection": true, // 显示相机  
                         }
                     }, {
                         "czmObject": {
@@ -169,16 +170,6 @@
                 window.tileset = tileset;
                 window.path1 = path1;
                 window.earth = earth;
-            },
-            methods: {
-                clickpick() {
-                    this.targetPicking = !this.targetPicking;
-                    // 相机拾取
-                    if(this.targetPicking) {
-                        // 相机启用
-                        path1.targetEnabled = true;
-                    }
-                }
             },
             // 1.2 资源销毁
             beforeDestroy() {
