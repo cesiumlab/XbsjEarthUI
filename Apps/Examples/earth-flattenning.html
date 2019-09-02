@@ -104,11 +104,15 @@
                 };
 
                 var tileset = earth.sceneTree.root.children[1].czmObject;
-                tileset.flyTo();
 
                 var flat = earth.sceneTree.root.children[2].czmObject;
                 flat.polygons[0].showHelper = false; // 是否开启线框显示，编辑状态下，不要开启，二者显示有影响
                 flat.polygons[0].editing = true; // 是否开启编辑状态
+
+                // 设置相机位置
+                // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
+                earth.camera.position =  [1.901702007648937,0.5972368795713086,495.4360416207723];
+                earth.camera.rotation = [6.283185307179421,-0.7855047653582576,6.283185307179586];
 
                 // 1.1.5 数据绑定
                 {

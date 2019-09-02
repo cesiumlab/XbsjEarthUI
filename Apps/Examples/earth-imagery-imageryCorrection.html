@@ -150,6 +150,8 @@
                     this._viewshed && this._viewshed.setPositionWithCurrentCamera();
                 },
                 goTo() {
+                    // 设置相机位置
+                    // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
                     this._earth.camera.position =  [1.901700720490395,0.5972088628888674,479.1014955453072];
                     this._earth.camera.rotation = [6.265266391676448,-1.4855510600618218,0.0];
                 }

@@ -120,7 +120,15 @@ vueApp.examples = [
             },
             {
                 "title": "地下模式和地表透明",
-                "url": "./earth-terrain-subsurface.html"
+                "url": "./earth-subsurface.html"
+            },
+            {
+                "title": "地形-cesium官方",
+                "url": "./earth-terrain-cesium.html"
+            },
+            {
+                "title": "地形-中国14级",
+                "url": "./earth-terrain-china14.html"
             },
             {
                 "title": "视域分析",
