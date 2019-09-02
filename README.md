@@ -12,6 +12,9 @@ git 地址：
 https://github.com/cesiumlab/XbsjEarthUI  
 https://gitee.com/cesiumlab/XbsjEarthUI (⭐github 上下载缓慢的话，可以在 gitee.com 上下载)
 
+⭐EarthSDK使用指南：
+https://github.com/cesiumlab/XbsjEarthUI/wiki 
+
 demo 展示地址：
 https://www.earthsdk.com/v/last/Apps/Demos/Viewer/index.html
 
