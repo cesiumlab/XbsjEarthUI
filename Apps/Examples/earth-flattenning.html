@@ -44,7 +44,7 @@
             `,
             data() {
                 return {
-                    polygonEditing: false,
+                    polygonEditing: true,
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                 };
             },
@@ -108,7 +108,7 @@
 
                 var flat = earth.sceneTree.root.children[2].czmObject;
                 flat.polygons[0].showHelper = false; // 是否开启线框显示，编辑状态下，不要开启，二者显示有影响
-                flat.polygons[0].editing = false; // 是否开启编辑状态
+                flat.polygons[0].editing = true; // 是否开启编辑状态
 
                 // 1.1.5 数据绑定
                 {
@@ -117,6 +117,9 @@
                 }
 
                 this._earth = earth;
+
+                // only for Debug
+                window.earth = earth;
             },
             // 1.2 资源销毁
             beforeDestroy() {

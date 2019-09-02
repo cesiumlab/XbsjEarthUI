@@ -39,27 +39,35 @@ vueApp.examples = [
                 "url": "./earth-flattenning.html"
             },
             {
-                "title": "百度地图",
+                "title": "影像-百度",
                 "url": "./earth-imagery-baidu.html"
             },
             {
-                "title": "离线影像",
-                "url": "./earth-imagery-defaultImagery.html"
+                "title": "影像-离线",
+                "url": "./earth-imagery-default.html"
             },
             {
-                "title": "谷歌影像",
-                "url": "./earth-imagery-googleImagery.html"
+                "title": "影像-高德",
+                "url": "./earth-imagery-gaode.html"
             },
             {
-                "title": "影像数据加载",
-                "url": "./earth-imagery-imageries.html"
+                "title": "影像-谷歌",
+                "url": "./earth-imagery-google.html"
             },
             {
-                "title": "影像纠偏",
+                "title": "影像-纠偏",
                 "url": "./earth-imagery-imageryCorrection.html"
             },
             {
-                "title": "影像zIndex",
+                "title": "影像-天地图标记",
+                "url": "./earth-imagery-tiandimapMark.html"
+            },
+            {
+                "title": "影像-天地图无标记",
+                "url": "./earth-imagery-tiandimapUnmark.html"
+            },
+            {
+                "title": "影像-zIndex",
                 "url": "./earth-imagery-zIndex.html"
             },
             {

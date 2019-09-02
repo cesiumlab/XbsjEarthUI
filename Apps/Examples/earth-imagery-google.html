@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="xbsj-labels" content="Earth示例"></meta>
-    <title>影像-百度</title>
+    <title>影像-谷歌</title>
     <!-- 0 引入js文件 -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <style>
@@ -25,41 +25,29 @@
     </div>
     <script>
         var earth;
-        create();
 
-        function create() {
-            // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
-            XE.ready().then(() => {
-                if (earth) {
-                    return;
-                }
-
+        function startup() {
             earth = new XE.Earth('earthContainer');
 
             earth.sceneTree.root = {
                 "children": [
                     {
                         "czmObject": {
-                            "name": "百度地图",
+                            "name": "谷歌影像",
                             "xbsjType": "Imagery",
                             "xbsjImageryProvider": {
                                 "XbsjImageryProvider": {
-                                    "url": "//online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&scaler=1&p=1",
-                                    "srcCoordType": "BD09",
-                                    "dstCoordType": "WGS84",
+                                    "url": "//mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali"
                                 },
                             }
                         }
                     }
                 ]
             }
-        });
-    }
+        }
 
-    // 2 资源销毁
-    function destroy() {
-        earth = earth && earth.destroy();
-    }             
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);            
     </script>
 </body>
 
