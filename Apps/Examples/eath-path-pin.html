@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>路径-pin</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        input {
+            width: 350px;
+        }
+
+        .checkbox {
+            cursor: pointer;
+        }
+        
+        .fly {
+            width: 20px;
+            height: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:400px; font-size:24px; font-family: 宋体;">
+                        <span @click="show = !show" class="checkbox"><input class="fly" type="checkbox" v-model="show">路径显隐</span><br/>
+                        <span>当前速度: {{ currentSpeed }}m/s</span><br/>
+                        <span><input type="range" min="0" max="100" step="1" v-model.number="currentSpeed"></span><br/>
+                        <span>当前位置：{{currentD | numFilter}}米</span>
+                    </div>
+                </div>
+            `,
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    show: true, // 控制路径的显示与隐藏，默认为隐藏
+                    currentSpeed: '', // 当前运行速度
+                    currentD: '', // 相机当前位置
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+                earth.interaction.picking.enabled = true;
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "expand": true,
+                    "title": "预览场景",
+                    "children": [{
+                        "ref": 'tileset',
+                        "czmObject": {
+                            "name": '大雁塔',
+                            "xbsjType": "Tileset",
+                            "url": '../assets/dayanta/tileset.json',
+                            "xbsjUseOriginTransform": false,
+                        },
+                    }, {
+                        "ref": 'path1',
+                        "czmObject": {
+                            "xbsjType": "Path",
+                            "positions": [
+                                [
+                                    1.9016746584889261,
+                                    0.5972140444354529,
+                                    540.3422462577171
+                                ],
+                                [
+                                    1.9017267341518718,
+                                    0.5972133503414322,
+                                    520.1137699152557
+                                ],
+                                [
+                                    1.9017257997179968,
+                                    0.5972736030398242,
+                                    528.3876170108886
+                                ],
+                                [
+                                    1.9016747349263112,
+                                    0.5972754003153069,
+                                    521.087861389408
+                                ]
+                            ],
+                            "rotations": [
+                                [
+                                    6.868275118748086,
+                                    -0.2742692911775144,
+                                    0.0016584301080495578
+                                ],
+                                [
+                                    5.703866308921896,
+                                    -0.19385405041989068,
+                                    6.281509509407803
+                                ],
+                                [
+                                    3.8005195675504133,
+                                    -0.2597408290639396,
+                                    6.281339310424716
+                                ],
+                                [
+                                    2.501667530825695,
+                                    -0.2173829253288364,
+                                    0.001819016773946025
+                                ]
+                            ],
+                            "show": true, // 显示路径
+                            "loop": true, // 环形
+                            "showDirection": false, // 隐藏相机 
+                            "cameraAttached": true, // 绑定相机
+                            "playing": true, // 飞行
+                            "loopPlay": true // 循环飞行
+                        }
+                    }, {
+                        "czmObject": {
+                            "name": '默认影像',
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
+                        },
+                    }]
+                };
+
+                var tileset = earth.sceneTree.$refs.tileset.czmObject;
+                var path1 = earth.sceneTree.$refs.path1.czmObject;
+
+                // 定义一个pin用来跟踪路径
+                const pin = new XE.Obj.Pin(earth);
+
+                // 飞入大雁塔
+                path1.flyTo();
+
+                // 1.1.3 数据绑定
+                // 双向绑定的属性，如果一方发生变化，另一方同样会跟随变化
+                this._showUnbind = XE.MVVM.bind(this, 'show', path1, 'show');
+                this._currentSpeedUnbind = XE.MVVM.bind(this, 'currentSpeed', path1, 'currentSpeed');
+                this._currentDUnbind = XE.MVVM.bind(this, 'currentD', path1, 'currentD');
+
+                // 1.1.4 跟踪
+                // 单向绑定的属性，pin将跟踪path1，但pin发生变化path1并不会跟踪！
+                this._pinUnbind = XE.MVVM.track(pin, 'position' , path1 , 'currentPosition');
+
+                this._earth = earth;
+
+                // only for Debug
+                window.tileset = tileset;
+                window.path1 = path1;
+                window.earth = earth;
+            },
+            filters: {
+                numFilter(value) {
+                    // 截取当前数据到小数点后两位
+                    let realVal = parseFloat(value).toFixed(2)
+                    return realVal
+                }
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._showUnbind = this._showUnbind && this._showUnbind();
+                this._currentSpeedUnbind = this._currentSpeedUnbind && this._currentSpeedUnbind();
+                this._currentDUnbind = this._currentDUnbind && this._currentDUnbind();
+                this._pinUnbind = this._pinUnbind && this._pinUnbind();
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>

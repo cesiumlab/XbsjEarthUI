@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <title>Pin-外部图像</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        input {
+            width: 350px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:350px; font-size:24px; font-family: 宋体;">
+                        <span>图片地址：</span><br/>
+                        <input type="text" v-model="imageUrl"><br/>
+                        <span>图片大小：{{ scale | numFilter }}</span><br/>
+                        <span><input type="range" min="0.05" max="2.00" step="0.01" v-model.number="scale"></span><br/>
+                    </div>
+                </div>
+            `,
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    imageUrl: '',
+                    scale: ''
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+                earth.interaction.picking.enabled = true;
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "expand": true,
+                    "title": "预览场景",
+                    "children": [{
+                        "ref": 'pin1',
+                        "czmObject": {
+                            "name": 'Pin1',
+                            "xbsjType": "Pin",
+                            "position": [1.9016974701882112, 0.5972325152147303, 425.8641913624607],
+                            "near": 100,
+                        },
+                    }, {
+                        "czmObject": {
+                            "name": '默认影像',
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
+                        },
+                    }]
+                };
+
+                var pin1 = earth.sceneTree.$refs.pin1.czmObject;
+    
+                // 1.1.5 数据绑定
+                this._imagerUrlUnbind = XE.MVVM.bind(this, 'imageUrl', pin1, 'imageUrl');
+                this._scaleUnbind = XE.MVVM.bind(this, 'scale', pin1, 'scale');
+
+                // 设置初始值
+                pin1.imageUrl = 'https://www.baidu.com/img/bd_logo1.png';
+                pin1.scale = 0.5;
+
+                this._earth = earth;
+
+                // only for Debug
+                window.pin1 = pin1;
+            },
+            filters: {
+                numFilter(value) {
+                    // 截取当前数据到小数点后两位
+                    let realVal = parseFloat(value).toFixed(2)
+                    return realVal
+                }
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._imagerUrlUnbind = this._imagerUrlUnbind && this._imagerUrlUnbind();
+                this._scaleUnbind = this._scaleUnbind && this._scaleUnbind();
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>路径-方向</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .box span{
+            display: block;
+            margin-top: 10px;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 38px;
+            padding: 0 10px;
+            line-height: 38px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+
+        .btnon {
+            background-color: #1E9FFF;
+            color: #fff;
+            border: 1px solid #1E9FFF;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:400px; font-size:24px; font-family: 宋体;">
+                        <div class="defultbtn" :class="{'btnon':targetPicking}" @click="targetPicking = !targetPicking">相机方向</div>
+                    </div>
+                </div>
+            `,
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    targetPicking: false
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+                earth.interaction.picking.enabled = true;
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "expand": true,
+                    "title": "预览场景",
+                    "children": [{
+                        "ref": 'tileset',
+                        "czmObject": {
+                            "name": '大雁塔',
+                            "xbsjType": "Tileset",
+                            "url": '../assets/dayanta/tileset.json',
+                            "xbsjUseOriginTransform": false,
+                        },
+                    }, {
+                        "ref": 'path1',
+                        "czmObject": {
+                            "xbsjType": "Path",
+                            "positions": [
+                                [
+                                    1.9016746584889261,
+                                    0.5972140444354529,
+                                    540.3422462577171
+                                ],
+                                [
+                                    1.9017267341518718,
+                                    0.5972133503414322,
+                                    520.1137699152557
+                                ],
+                                [
+                                    1.9017257997179968,
+                                    0.5972736030398242,
+                                    528.3876170108886
+                                ],
+                                [
+                                    1.9016747349263112,
+                                    0.5972754003153069,
+                                    521.087861389408
+                                ]
+                            ],
+                            "rotations": [
+                                [
+                                    6.868275118748086,
+                                    -0.2742692911775144,
+                                    0.0016584301080495578
+                                ],
+                                [
+                                    5.703866308921896,
+                                    -0.19385405041989068,
+                                    6.281509509407803
+                                ],
+                                [
+                                    3.8005195675504133,
+                                    -0.2597408290639396,
+                                    6.281339310424716
+                                ],
+                                [
+                                    2.501667530825695,
+                                    -0.2173829253288364,
+                                    0.001819016773946025
+                                ]
+                            ],
+                            "show": true, // 显示路径
+                            "loop": true, // 环形   
+                            "showDirection": true, // 显示相机  
+                        }
+                    }, {
+                        "czmObject": {
+                            "name": '默认影像',
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
+                        },
+                    }]
+                };
+
+                // 设置相机位置
+                // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
+                earth.camera.position =  [1.9017581050561334,0.5971620000864428,902.9488013429717];
+                earth.camera.rotation = [5.68519760929593,-0.6384030801215013,6.280994248737583];
+
+                var tileset = earth.sceneTree.$refs.tileset.czmObject;
+                var path1 = earth.sceneTree.$refs.path1.czmObject;
+
+                // 1.1.5 数据绑定
+                this._targetPickingUnbind = XE.MVVM.bind(this, 'targetPicking', path1, 'targetPicking');
+
+
+                this._earth = earth;
+
+                // only for Debug
+                window.tileset = tileset;
+                window.path1 = path1;
+                window.earth = earth;
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._targetPickingUnbind = this._targetPickingUnbind && this._targetPickingUnbind();
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>

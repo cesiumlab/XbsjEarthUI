@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <title>Pin-可见范围</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        input {
+            width: 350px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:350px; font-size:24px; font-family: 宋体;">
+                        <div>pin可见范围</div>
+                        <span>最小值(near): {{ near | numFilter }}米</span><br/>
+                        <span><input @click=clicknear type="range" min="1" max="25000000" step="1" v-model.number="near"></span><br/>
+                        <span>最大值(far): {{ far | numFilter }}米</span><br/>
+                        <span><input @click=clickfar type="range" min="1" max="25000000" step="1" v-model.number="far"></span><br/>
+                        <span>当前距离：{{distance}}米</span><br/>
+                        <span>光标状态：{{hovered}}</span><br/>
+                    </div>
+                </div>
+            `,
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    near: 1,
+                    far: 1,
+                    distance: '',
+                    hovered: '当前光标在pin之外！！！'
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+                earth.interaction.picking.enabled = true;
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "expand": true,
+                    "title": "预览场景",
+                    "children": [{
+                        "ref": 'pin1',
+                        "czmObject": {
+                            "name": 'Pin1',
+                            "xbsjType": "Pin",
+                            "position": [1.9016974701882112, 0.5972325152147303, 425.8641913624607]
+                        },
+                    }, {
+                        "czmObject": {
+                            "name": '默认影像',
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
+                        },
+                    }]
+                };
+
+                var pin1 = earth.sceneTree.$refs.pin1.czmObject;
+                pin1.onClick = () => {
+                    alert('点击！');
+                }
+    
+                // 1.1.5 数据绑定
+                this._nearUnbind = XE.MVVM.bind(this, 'near', pin1, 'near');
+                this._farUnbind = XE.MVVM.bind(this, 'far', pin1, 'far');
+
+                // 设置初始值
+                pin1.near = 100;
+                pin1.far = 25000000;
+
+                this._earth = earth;
+
+                // xepd: xepositionDistance的缩写
+                // pin1.position.xepd(earth.camera.position): 计算相机和pin之间的距离
+                this.distance = pin1.position.xepd(earth.camera.position);
+
+                // 监控数据
+                this.uw = XE.MVVM.watch(earth.camera, 'position', () => {
+                    const d = pin1.position.xepd(earth.camera.position);
+                    this.distance = d;
+                });
+
+                this.hv = XE.MVVM.watch(pin1, 'hovered', () => {
+                    if(pin1.hovered) {
+                        this.hovered = '当前光标在pin之上！！！';
+                    } else {
+                        this.hovered = '当前光标在pin之外！！！';
+                    }
+                });
+
+                // only for Debug
+                window.pin1 = pin1;
+            },
+            methods: {
+                clicknear() {
+                    if (this.near > this.far) {
+                        this.near = this.far;
+                    }
+                },
+                clickfar() {
+                    if (this.far < this.near) {
+                        this.far = this.near;
+                    }
+                }
+            },
+            filters: {
+                numFilter(value) {
+                    // 截取当前数据到小数点后两位
+                    let realVal = value.toFixed(2)
+                    return realVal
+                }
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this.nearUnbind = this.nearUnbind && this.nearUnbind();
+                this.farUnbind = this.farUnbind && this.farUnbind();
+                this.uw = this.uw && this.uw();
+                this.hv = this.uw && this.hv();
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>

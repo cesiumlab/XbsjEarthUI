@@ -218,6 +218,7 @@
 
     <script src="./scripts/codeEditor.js"></script>
     <script src='./scripts/list.js'></script>
+    <script src="./scripts/axios.min.js"></script>
     <script>
         var q = {};
         location.search.replace(/([^?&=]+)=([^&]+)/g, (_, k, v) => q[k] = v);
@@ -228,6 +229,24 @@
             const jsonStr = base64ToString(decode);
             const json = JSON.parse(jsonStr);
             vueApp.code = json.code;
+        } else if (q.id) {
+            const submitData = {};
+            submitData.contents = true;
+            submitData.ids = q.id;
+            axios.get("//lab2.cesiumlab.com/api/examples/get", {
+                params: submitData
+            })
+            .then(res => {
+                if (res.status !== 200) return;
+                if (res.data.status !== "ok") return;
+                var data = res.data.result;
+                // console.log(data);
+                const code = data[0].content;
+                vueApp.code = code;
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
         } else {
             vueApp.setCodeFromUrl('./startup-createEarth.html');
         }

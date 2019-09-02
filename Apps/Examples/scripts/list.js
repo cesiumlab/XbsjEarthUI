@@ -59,6 +59,42 @@ vueApp.examples = [
                 "url": "./earth-nativeCesium.html"
             },
             {
+                "title": "路径-方向",
+                "url": "./earth-path-direction.html"
+            },
+            {
+                "title": "路径-编辑",
+                "url": "./earth-path-editing.html"
+            },
+            {
+                "title": "路径-飞行",
+                "url": "./earth-path-fly.html"
+            },
+            {
+                "title": "Pin-div",
+                "url": "./earth-pin-div.html"
+            },
+            {
+                "title": "Pin-编辑",
+                "url": "./earth-pin-editing.html"
+            },
+            {
+                "title": "Pin-外部图像",
+                "url": "./earth-pin-imagerUrl.html"
+            },
+            {
+                "title": "Pin-可见范围",
+                "url": "./earth-pin-nearfar.html"
+            },
+            {
+                "title": "Pin-样式",
+                "url": "./earth-pin-pinBuilder.html"
+            },
+            {
+                "title": "Pin",
+                "url": "./earth-pins.html"
+            },
+            {
                 "title": "地表限制(地表裁切)",
                 "url": "./earth-restrict.html"
             },
@@ -69,6 +105,10 @@ vueApp.examples = [
             {
                 "title": "视域分析",
                 "url": "./earth-viewshed.html"
+            },
+            {
+                "title": "路径-pin",
+                "url": "./eath-path-pin.html"
             }
         ]
     },
@@ -84,8 +124,16 @@ vueApp.examples = [
                 "url": "./earthui-basic.html"
             },
             {
+                "title": "视频融合",
+                "url": "./earthui-cameraVideo.html"
+            },
+            {
                 "title": "自定义属性窗口",
                 "url": "./earthui-custom.html"
+            },
+            {
+                "title": "圆柱体",
+                "url": "./earthui-cylinders.html"
             },
             {
                 "title": "从JSON创建场景结构",
@@ -126,6 +174,10 @@ vueApp.examples = [
             {
                 "title": "地形",
                 "url": "./earthui-terrain.html"
+            },
+            {
+                "title": "视域分析",
+                "url": "./earthui-viewshed.html"
             },
             {
                 "title": "内置UI组件",

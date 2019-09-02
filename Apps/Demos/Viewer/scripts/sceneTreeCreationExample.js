@@ -305,7 +305,6 @@ function sceneTreeCreateExample1(xbsjEarth) {
                 }
             },
             {
-                "title": "⚪",
                 "czmObject": {
                     "xbsjType": "Circle",
                     "xbsjGuid": "a1955ba2-da26-4f52-963d-a6d5fd3217a2",
@@ -323,7 +322,58 @@ function sceneTreeCreateExample1(xbsjEarth) {
                         "XbsjPolylineArrowMaterial": {}
                     }
                 }
-            }
+            },
+            {
+                "czmObject": {
+                    "xbsjType": "Path",
+                    "name": "路径1",
+                    "positions": [
+                        [
+                            1.814571585725295,
+                            0.5926754545800331,
+                            0
+                        ],
+                        [
+                            1.9756348623224034,
+                            0.5392133703498011,
+                            0
+                        ],
+                        [
+                            2.022471296883009,
+                            0.6516845091239842,
+                            0
+                        ],
+                        [
+                            1.8610188246667214,
+                            0.6860765980391648,
+                            0
+                        ]
+                    ],
+                    "rotations": [
+                        [
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0
+                        ]
+                    ],
+                    "loop": true
+                }
+            }            
         ]
     };
 

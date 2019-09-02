@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="EarthUI示例"></meta>
+    <title>视频融合</title>
+    <script src="../../XbsjEarthUI/xbsj.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+    </div>
+
+    <script>
+        XbsjEarthUI.create('main').then(earthUI => {
+
+            earthUI.earth.sceneTree.root = {
+                "expand": true,
+                "title": "项目",
+                "children": [{
+                    "expand": true,
+                    "title": "项目",
+                    "children": [{
+                        "czmObject": {
+                            "xbsjType": "Tileset",
+                            "name": "三维瓦片1x",
+                            "url": "//lab.earthsdk.com/model/f15b9e90ac2d11e99dbd8fd044883638/tileset.json",
+                            "xbsjPosition": [
+                                1.9016974701882112,
+                                0.5972325152147303,
+                                425.8641913624607
+                            ]
+                        },
+                        "enabled": true
+                    },{
+                        "czmObject": {
+                            "xbsjType": "CameraVideo",
+                            "name": "视频融合",
+                            "videoUrl": "//www.earthsdk.com/v/last/XbsjEarthUI/assets/demo.mp4",
+                            "position": [
+                                1.9017043698837766,
+                                0.5972379094016695,
+                                446.2499351617626
+                            ],
+                            "rotation": [
+                                0.07413323656963833,
+                                -0.933639537288121,
+                                0.0003900191769634631
+                            ],
+                            "far": 50
+                        },
+                        "enabled": true
+                    }]
+                }]
+            };
+
+            earthUI.earth.cameraViewManager = {
+                "lastView": {
+                    "position": [
+                        1.9017075410506683,
+                        0.5972352467498696,
+                        465.5130429801045
+                    ],
+                    "rotation": [
+                        5.8887642878142685,
+                        -0.8581361944659949,
+                        6.281345779298704
+                    ],
+                    "fov": 1.0471975511965976,
+                    "near": 0.1,
+                    "far": 10000000000
+                }
+            }
+
+            window.uia = earthUI;
+        });
+    </script>
+</body>
+
+</html>
