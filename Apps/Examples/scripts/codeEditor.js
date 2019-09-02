@@ -206,12 +206,13 @@ var vueApp = new Vue({
       document.title = "示例集合---" + this.title;
     },
     getCodeUrl() {
-      return getCodeUrl(this.code);
+      return getCodeUrl(this.code,this.menu);
     },
     showCodeUrl() {
       const codeUrl = this.getCodeUrl();
+      console.log(codeUrl)
       this.copyText(codeUrl, function() {
-        alert("复制成功");
+        alert("url复制成功");
       });
     },
     copyText(text, callback) {

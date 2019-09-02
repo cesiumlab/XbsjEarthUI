@@ -8,12 +8,12 @@ function stringToBase64(data) {
     return base64String;
 }
 
-function getCodeUrl(code) {
+function getCodeUrl(code,menu) {
     const json = {
         code,
     }
 
     const jsonStr = JSON.stringify(json);
     const base64 = stringToBase64(jsonStr);
-    return location.origin + location.pathname + `?code=${base64}`;
+    return location.origin + location.pathname + `?menu=${menu}&code=${base64}`;
 }
