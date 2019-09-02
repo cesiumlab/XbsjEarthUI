@@ -120,18 +120,18 @@
               },
             ]
           };
-          var Tileset = earth.sceneTree.$refs.tileset.czmObject;
+          var tileset = earth.sceneTree.$refs.tileset.czmObject;
           earth.sceneTree.$refs.tileset.czmObject.flyTo();
           // 1.2.3 双向数据绑定!
-          this._rotationEditingUnbind = XE.MVVM.bind(this, 'rotationEditing', Tileset, 'rotationEditing');
-          this._positionEditingUnbind = XE.MVVM.bind(this, 'positionEditing', Tileset, 'positionEditing');
-          this._xbsjPositionUnbind = XE.MVVM.bindPosition(this, 'xbsjPosition', Tileset, 'xbsjPosition');
-          this._xbsjRotationUnbind = XE.MVVM.bindPosition(this, 'xbsjRotation', Tileset, 'xbsjRotation');
+          this._rotationEditingUnbind = XE.MVVM.bind(this, 'rotationEditing', tileset, 'rotationEditing');
+          this._positionEditingUnbind = XE.MVVM.bind(this, 'positionEditing', tileset, 'positionEditing');
+          this._xbsjPositionUnbind = XE.MVVM.bindPosition(this, 'xbsjPosition', tileset, 'xbsjPosition');
+          this._xbsjRotationUnbind = XE.MVVM.bindPosition(this, 'xbsjRotation', tileset, 'xbsjRotation');
 
           this.positionEditing = true; // 默认状态开启位置编辑
 
           this._earth = earth;
-          this._Tileset = Tileset;
+          this._tileset = tileset;
 
           window.vue = this;
         },

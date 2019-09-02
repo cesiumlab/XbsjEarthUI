@@ -3,12 +3,12 @@ vueApp.examples = [
         "title": "Earth示例",
         "list": [
             {
-                "title": "3dtiles平移旋转",
-                "url": "./earth-3dtiles-editing.html"
+                "title": "素模泛光",
+                "url": "./earth-3dtiles-buildings.html"
             },
             {
-                "title": "素模泛光",
-                "url": "./earth-buildings.html"
+                "title": "3dtiles平移旋转",
+                "url": "./earth-3dtiles-editing.html"
             },
             {
                 "title": "视频融合",
@@ -39,16 +39,28 @@ vueApp.examples = [
                 "url": "./earth-flattenning.html"
             },
             {
+                "title": "百度地图",
+                "url": "./earth-imagery-baidu.html"
+            },
+            {
+                "title": "离线影像",
+                "url": "./earth-imagery-defaultImagery.html"
+            },
+            {
                 "title": "谷歌影像",
-                "url": "./earth-googleImagery.html"
+                "url": "./earth-imagery-googleImagery.html"
             },
             {
                 "title": "影像数据加载",
-                "url": "./earth-imageries.html"
+                "url": "./earth-imagery-imageries.html"
             },
             {
                 "title": "影像纠偏",
-                "url": "./earth-imageryCorrection.html"
+                "url": "./earth-imagery-imageryCorrection.html"
+            },
+            {
+                "title": "影像zIndex",
+                "url": "./earth-imagery-zIndex.html"
             },
             {
                 "title": "测量",
@@ -100,7 +112,7 @@ vueApp.examples = [
             },
             {
                 "title": "地下模式和地表透明",
-                "url": "./earth-subsurface.html"
+                "url": "./earth-terrain-subsurface.html"
             },
             {
                 "title": "视域分析",
