@@ -75,6 +75,10 @@ vueApp.examples = [
                 "url": "./earth-measurement.html"
             },
             {
+                "title": "MVVM.watch",
+                "url": "./earth-MVVM-watch.html"
+            },
+            {
                 "title": "原生Cesium API的调用",
                 "url": "./earth-nativeCesium.html"
             },
