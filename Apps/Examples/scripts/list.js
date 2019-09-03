@@ -79,6 +79,10 @@ vueApp.examples = [
                 "url": "./earth-nativeCesium.html"
             },
             {
+                "title": "OD线集群",
+                "url": "./earth-odlines.html"
+            },
+            {
                 "title": "路径-方向",
                 "url": "./earth-path-direction.html"
             },
