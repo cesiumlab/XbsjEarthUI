@@ -26,6 +26,59 @@
     </div>
 
     <script>
+        function loadData(dataFunc) {
+            Cesium.Resource.fetchJson('../assets/odlines/lines-bus.json').then(function(data) {
+                var timeDuration = 10.0;
+                var moveBaseDuration = 4.0;
+            
+                var hStep = 300 / (data.length - 1);
+            
+                // var busLines = [].concat.apply([], data.map(function (busLine, idx) {
+                var busLines = [];
+                data.map(function (busLine, idx) {
+                    var prevPt;
+                    var points = [];
+                    for (var i = 0; i < busLine.length; i += 2) {
+                        var pt = [busLine[i], busLine[i + 1]];
+                        if (i > 0) {
+                            pt = [
+                                prevPt[0] + pt[0],
+                                prevPt[1] + pt[1]
+                            ];
+                        }
+                        prevPt = pt;
+            
+                        // points.push([pt[0] / 1e4, pt[1] / 1e4]);
+                        var longitude = pt[0] / 1e4 * Math.PI / 180.0;
+                        var latitude = pt[1] / 1e4 * Math.PI / 180.0;
+                        // var cart = Cesium.Cartesian3.fromDegrees(longitude, latitude, 100.0);
+                        points.push([longitude, latitude]);
+                    }
+            
+                    busLines.push({
+                        //startPos: airports[route[1]].coord,
+                        //endPos: airports[route[2]].coord,
+                        posititons: points,
+                        width: 2.0,
+                        color: [1.0, 0.0, 0.0, 1.0],
+                        startTime: timeDuration * Math.random(),
+                        duration: moveBaseDuration + 1.0 * Math.random()
+                    });
+                });
+
+                // var busLinesCount = busLines.length;
+                // var busLinesPointsCount = 0;
+                // busLines.forEach(function (busLine) {
+                //     busLinesPointsCount += busLine.posititons.length;
+                // });
+                // console.log('busLinesCount: ' + busLinesCount);
+                // console.log('busLinesPointsCount: ' + busLinesPointsCount);
+            
+                // var routePaths = busLines;
+                dataFunc(busLines, timeDuration);
+            });
+        }
+
         // 1 创建Earth的vue组件
         var EarthComp = {
             template: `
@@ -62,13 +115,39 @@
                                         "fileExtension": 'jpg',
                                     },
                                     "type": "createTileMapServiceImageryProvider"
-                                }
+                                },
+                                "brightness": 0.1,
                             }
                         },
                     ]
                 };
 
+                const position = [
+                    2.033082406731791,
+                    0.6932973408430964,
+                    25375.718759865656
+                ];
+                const rotation = [
+                    5.907289830535223,
+                    -0.907166753023871,
+                    0.00031189810712373145
+                ];
+                earth.camera.position = position;
+                earth.camera.rotation = rotation;
+
                 this._earth = earth;
+
+                this._odlines = new XE.Obj.ODLines(earth);
+
+                loadData((data, timeDuration) => {
+                    this._odlines.data = data;
+                    this._odlines.timeDuration = timeDuration;
+                    this._odlines.playing = true;
+                });
+
+                // only for Debug
+                window.earth = earth;
+                window.odlines = this._odlines;
             },
             // 1.2 资源销毁
             beforeDestroy() {
