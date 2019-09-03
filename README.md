@@ -8,27 +8,31 @@ _我愿与你同行，因你势不可挡！_
 
 XbsjEarthUI 是一套基于 Cesium 和 EarthSDK 的三维 GIS/BIM 的应用框架，可以基于此定制自己的三维程序。
 
-git 地址：  
-https://github.com/cesiumlab/XbsjEarthUI  
-https://gitee.com/cesiumlab/XbsjEarthUI (⭐github 上下载缓慢的话，可以在 gitee.com 上下载)
+* 使用指南  
+    * github https://github.com/cesiumlab/XbsjEarthUI/wiki  
+    * 知乎 https://zhuanlan.zhihu.com/p/80749244  
 
-demo 展示地址：
-https://www.earthsdk.com/v/last/Apps/Demos/Viewer/index.html
+* 视景器 https://earthsdk.com/v/last/Apps/Demos/Viewer/index.html  
+* 示例集 https://earthsdk.com/v/last/Apps/Examples/  
 
-示例展示地址：
-https://www.earthsdk.com/v/last/Apps/Examples/
+* API文档  
+    * EearthSDK API文档 https://earthsdk.com/v/last/XbsjEarth/Documentation/  
+    * Cesium API文档：http://earthsdk.com/c/1.60/Build/Documentation/index.html  
+    * XbsjEarthUI API文档 https://earthsdk.com/v/last/XbsjEarthUI/Documentation/  
 
-api 文档：
-https://www.earthsdk.com/v/last/
+* EarthSDK & XbsjEarthUI 源码地址  
+    * github: https://github.com/cesiumlab/XbsjEarthUI  
+    * gitee(国内服务器，速度较快): https://gitee.com/cesiumlab/XbsjEarthUI  
 
-关于这个应用程序的操作，可以参考这个视频：  
-https://www.bilibili.com/video/av60366649?from=search&seid=3851172190041118781
+* EarthSDK & XbsjEarthUI 近期发布的版本  
+    * EarthSDK+XbsjEarthUI(最新版，可能不稳定)： https://earthsdk.com/v/last/ (下载)[https://earthsdk.com/v/last.zip]  
+    * EarthSDK+XbsjEarthUI 1.1.0(2019/9/2): https://earthsdk.com/v/v1.1.0 (下载)[https://earthsdk.com/v/v1.1.0.zip]  
+    * EarthSDK+XbsjEarthUI 1.0.1(2019/8/1): http://earthsdk.com/v/v1.0.1 (下载)[http://earthsdk.com/v/v1.0.1.zip]  
 
-EarthSDK 的 API 设计属于类似 VUE 的响应式属性设计，可以参考这篇文章来了解：  
-https://www.jianshu.com/p/a37cc18ca310
-
-CesiumLab2.0 和 EarthSDK 的首次培训视频：  
-https://www.bilibili.com/video/av61977045/
+* 其他项  
+    * XbsjEarthUI操作视频：https://www.bilibili.com/video/av60366649?from=search&seid=3851172190041118781  
+    * EarthSDK的响应式属性设计：https://www.jianshu.com/p/a37cc18ca310  
+    * CesiumLab2.0 和 EarthSDK 的首次培训视频：https://www.bilibili.com/video/av61977045/  
 
 ![](./Tools/readme/example.jpg)
 ![](./Tools/readme/start.png)  
