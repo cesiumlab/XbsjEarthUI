@@ -170,6 +170,21 @@ var vueApp = new Vue({
     }
   },
   methods: {
+    changemenu(){
+      var q = {};
+      location.search.replace(/([^?&=]+)=([^&]+)/g, (_, k, v) => q[k] = v);
+      this.menu = !this.menu; 
+      if(q.url){
+        window.history.replaceState(null, null, `?menu=${this.menu}&url=${q.url}`);
+      }else if(q.code){
+        window.history.replaceState(null, null, `?menu=${this.menu}&code=${q.code}`);
+      }else if(q.id){
+        window.history.replaceState(null, null, `?menu=${this.menu}&id=${q.id}`);
+      }else{
+        window.history.replaceState(null, null, `?menu=${this.menu}&url=./startup-createEarth.html`);
+      }
+      
+    },
     sclcontrl() {
       this.scl = !this.scl;
     },
@@ -178,7 +193,7 @@ var vueApp = new Vue({
     },
     setCodeFromUrl(url) {
       setCodeFromUrl(url, this);
-      window.history.replaceState(null, null, `?url=${url}`);
+      window.history.replaceState(null, null, `?menu=${this.menu}&url=${url}`);
     },
     apply() {
       this.$refs.earthAppFrame.srcdoc = this.code;
@@ -191,12 +206,13 @@ var vueApp = new Vue({
       document.title = "示例集合---" + this.title;
     },
     getCodeUrl() {
-      return getCodeUrl(this.code);
+      return getCodeUrl(this.code,this.menu);
     },
     showCodeUrl() {
       const codeUrl = this.getCodeUrl();
+      console.log(codeUrl)
       this.copyText(codeUrl, function() {
-        alert("复制成功");
+        alert("url复制成功");
       });
     },
     copyText(text, callback) {

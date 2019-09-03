@@ -3,12 +3,12 @@ vueApp.examples = [
         "title": "Earth示例",
         "list": [
             {
-                "title": "3dtiles平移旋转",
-                "url": "./earth-3dtiles-editing.html"
+                "title": "素模泛光",
+                "url": "./earth-3dtiles-buildings.html"
             },
             {
-                "title": "素模泛光",
-                "url": "./earth-buildings.html"
+                "title": "3dtiles平移旋转",
+                "url": "./earth-3dtiles-editing.html"
             },
             {
                 "title": "视频融合",
@@ -39,16 +39,36 @@ vueApp.examples = [
                 "url": "./earth-flattenning.html"
             },
             {
-                "title": "谷歌影像",
-                "url": "./earth-googleImagery.html"
+                "title": "影像-百度",
+                "url": "./earth-imagery-baidu.html"
             },
             {
-                "title": "影像数据加载",
-                "url": "./earth-imageries.html"
+                "title": "影像-离线",
+                "url": "./earth-imagery-default.html"
             },
             {
-                "title": "影像纠偏",
-                "url": "./earth-imageryCorrection.html"
+                "title": "影像-高德",
+                "url": "./earth-imagery-gaode.html"
+            },
+            {
+                "title": "影像-谷歌",
+                "url": "./earth-imagery-google.html"
+            },
+            {
+                "title": "影像-纠偏",
+                "url": "./earth-imagery-imageryCorrection.html"
+            },
+            {
+                "title": "影像-天地图标记",
+                "url": "./earth-imagery-tiandimapMark.html"
+            },
+            {
+                "title": "影像-天地图无标记",
+                "url": "./earth-imagery-tiandimapUnmark.html"
+            },
+            {
+                "title": "影像-zIndex",
+                "url": "./earth-imagery-zIndex.html"
             },
             {
                 "title": "测量",
@@ -101,6 +121,14 @@ vueApp.examples = [
             {
                 "title": "地下模式和地表透明",
                 "url": "./earth-subsurface.html"
+            },
+            {
+                "title": "地形-cesium官方",
+                "url": "./earth-terrain-cesium.html"
+            },
+            {
+                "title": "地形-中国14级",
+                "url": "./earth-terrain-china14.html"
             },
             {
                 "title": "视域分析",

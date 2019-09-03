@@ -19,8 +19,33 @@
             padding: 0px;
         }
 
-        .checkbox {
+        .box span{
+            display: block;
+            margin-top: 10px;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 38px;
+            padding: 0 10px;
+            line-height: 38px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
             cursor: pointer;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+
+        .btnon {
+        background-color: #1E9FFF;
+            color: #fff;
+            border: 1px solid #1E9FFF;
         }
     </style>
 </head>
@@ -38,13 +63,13 @@
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
                     <div style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 5px;">
-                        <span @click="polygonEditing = !polygonEditing" class="checkbox"><input type="checkbox" v-model="polygonEditing">多边形编辑</span><br/>
+                        <div class="defultbtn" :class="{'btnon':polygonEditing}"  @click="polygonEditing = !polygonEditing">多边形编辑</div>
                     </div>
                 </div>
             `,
             data() {
                 return {
-                    polygonEditing: false,
+                    polygonEditing: true,
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                 };
             },
@@ -104,11 +129,15 @@
                 };
 
                 var tileset = earth.sceneTree.root.children[1].czmObject;
-                tileset.flyTo();
 
                 var flat = earth.sceneTree.root.children[2].czmObject;
                 flat.polygons[0].showHelper = false; // 是否开启线框显示，编辑状态下，不要开启，二者显示有影响
-                flat.polygons[0].editing = false; // 是否开启编辑状态
+                flat.polygons[0].editing = true; // 是否开启编辑状态
+
+                // 设置相机位置
+                // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
+                earth.camera.position =  [1.901702007648937,0.5972368795713086,495.4360416207723];
+                earth.camera.rotation = [6.283185307179421,-0.7855047653582576,6.283185307179586];
 
                 // 1.1.5 数据绑定
                 {
@@ -117,6 +146,9 @@
                 }
 
                 this._earth = earth;
+
+                // only for Debug
+                window.earth = earth;
             },
             // 1.2 资源销毁
             beforeDestroy() {

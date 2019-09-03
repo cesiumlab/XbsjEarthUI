@@ -66,7 +66,7 @@
             position: absolute;
             left: 0px;
             top: 0px;
-            width: 200px;
+            width: 190px;
             height: 100%;
             white-space: nowrap;
             background: #151718;
@@ -195,11 +195,11 @@
         <div id="codeEditor" :class="{'codeEditor':menu===false,'enlargecode':scl,'menuenlarg':menu&scl}">
             <div
                 style="height: 30px; line-height: 30px; padding-left: 8px; background: #151718; color: #CCC; position: relative;">
-                <span @click="menu = !menu" class="menu"></span>
+                <span @click="changemenu" class="menu"></span>
                 <input type="checkbox" v-model="autoRefresh" style="margin-left: 50px;"
                     title="代码修改后2s自动刷新右侧的三维窗口">自动运行</button>
                 <button @click="apply" title="手动刷新右侧的三维窗口">手动运行</button>
-                <button @click="showCodeUrl" title="修改后的代码可以通过此链接分享，但是url会比较长！">获取代码url</button>
+                <button @click="showCodeUrl" title="修改后的代码可以通过此链接分享，但是url会比较长！">分享代码</button>
                 <div
                     style="height: 30px; line-height: 30px; position: absolute; right: 70px; top: 0px; padding-right: 8px;">
                     <span>{{ title }}</span>
