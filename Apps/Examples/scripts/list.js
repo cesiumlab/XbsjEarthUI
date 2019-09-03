@@ -35,6 +35,10 @@ vueApp.examples = [
                 "url": "./earth-editing.html"
             },
             {
+                "title": "第一人称漫游",
+                "url": "./earth-firstperson.html"
+            },
+            {
                 "title": "3dtiles压平",
                 "url": "./earth-flattenning.html"
             },
@@ -81,6 +85,14 @@ vueApp.examples = [
             {
                 "title": "原生Cesium API的调用",
                 "url": "./earth-nativeCesium.html"
+            },
+            {
+                "title": "指北针和比例尺",
+                "url": "./earth-navscale.html"
+            },
+            {
+                "title": "路径-currentD",
+                "url": "./earth-path-currentD.html"
             },
             {
                 "title": "路径-方向",

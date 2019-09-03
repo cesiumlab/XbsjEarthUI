@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="xbsj-labels" content="Earth示例">
     </meta>
-    <title>路径-飞行</title>
+    <title>路径-currentD</title>
     <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <script src="./scripts/vue.min.js"></script>
@@ -74,23 +74,16 @@
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
                     <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:400px; font-size:24px; font-family: 宋体;">
-                        <div class="defultbtn" :class="{'btnon':playing}" @click="playing = !playing">路径播放</div>
-                        <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':cameraAttached}"  @click=cameraAttachedClick>相机绑定</div><br/>
-                        <span @click="show = !show" class="checkbox"><input class="fly" type="checkbox" v-model="show">路径显隐</span><br/>
-                        <span>当前速度: {{ currentSpeed }}m/s</span><br/>
-                        <span><input type="range" min="0" max="100" step="1" v-model.number="currentSpeed"></span><br/>
-                        <span>当前位置：{{currentD | numFilter}}米</span>
+                        <span>当前位置(currentD): {{ currentD | numFilter }}米</span><br/>
+                        <span><input type="range" min="0" max="1320" step="1" v-model.number="currentD"></span><br/>
+                        <div class="defultbtn" :class="{'btnon':cameraAttached}"  @click=cameraAttachedClick>相机绑定</div>
                     </div>
                 </div>
             `,
             data() {
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
-                    show: true, // 控制路径的显示与隐藏，默认为隐藏
-                    currentSpeed: '', // 当前运行速度
                     currentD: '', // 相机当前位置
-                    // pathflying: true,
-                    playing: true,
                     cameraAttached: false
                 };
             },
@@ -162,9 +155,7 @@
                             ],
                             "show": true, // 显示路径
                             "loop": true, // 环形
-                            "showDirection": false, // 隐藏相机 
-                            "playing": true, // 飞行
-                            "loopPlay": true // 循环飞行
+                            "showDirection": false // 隐藏相机 
                         }
                     }, {
                         "czmObject": {
@@ -186,11 +177,8 @@
 
                 // 1.1.3 数据绑定
                 // 双向绑定的属性，如果一方发生变化，另一方同样会跟随变化
-                this._showUnbind = XE.MVVM.bind(this, 'show', path1, 'show');
-                this._currentSpeedUnbind = XE.MVVM.bind(this, 'currentSpeed', path1, 'currentSpeed');
                 this._currentDUnbind = XE.MVVM.bind(this, 'currentD', path1, 'currentD');
                 this._cameraAttachedUnbind = XE.MVVM.bind(this, 'cameraAttached', path1, 'cameraAttached');
-                this._playingUnbind = XE.MVVM.bind(this, 'playing', path1, 'playing');
 
                 // 1.1.4 跟踪 
                 // 单向绑定的属性，pin将跟踪path1，但pin发生变化path1并不会跟踪！
@@ -220,12 +208,9 @@
             // 1.2 资源销毁
             beforeDestroy() {
                 // vue程序销毁时，需要清理相关资源
-                this._showUnbind = this._showUnbind && this._showUnbind();
-                this._currentSpeedUnbind = this._currentSpeedUnbind && this._currentSpeedUnbind();
                 this._currentDUnbind = this._currentDUnbind && this._currentDUnbind();
                 this._pinUnbind = this._pinUnbind && this._pinUnbind();
                 this._cameraAttachedUnbind = this._cameraAttachedUnbind && this._cameraAttachedUnbind();
-                this._playingUnbind = this._playingUnbind && this._playingUnbind();
                 this._earth = this._earth && this._earth.destroy();
             },
         }
