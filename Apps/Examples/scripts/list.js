@@ -91,6 +91,10 @@ vueApp.examples = [
                 "url": "./earth-navscale.html"
             },
             {
+                "title": "路径-环球飞行",
+                "url": "./earth-path-around.html"
+            },
+            {
                 "title": "路径-currentD",
                 "url": "./earth-path-currentD.html"
             },
