@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <title>OD线集群-中国航班线路</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        function loadData(dataFunc) {
+            Cesium.Resource.fetchJson('../assets/odlines/flights.json').then(function(data) {
+                //var timeDuration = 5.0;
+                //var moveBaseDuration = 0.5;
+                var timeDuration = 10.0;
+                var moveBaseDuration = 4.0;
+
+                var airports = data.airports.map(function(item) {
+                    return {
+                        coord: [item[3], item[4]]
+                    };
+                });
+
+                function getAirportCoord(idx) {
+                    return [data.airports[idx][3], data.airports[idx][4]];
+                }
+
+                // Route: [airlineIndex, sourceAirportIndex, destinationAirportIndex]
+                var routesGroupByAirline = {};
+                data.routes.forEach(function(route) {
+                    var airline = data.airlines[route[0]];
+                    var airlineName = airline[0];
+                    if (!routesGroupByAirline[airlineName]) {
+                        routesGroupByAirline[airlineName] = [];
+                    }
+                    routesGroupByAirline[airlineName].push(route);
+                });
+
+                var pointsData = [];
+                data.routes.forEach(function(airline) {
+                    pointsData.push(getAirportCoord(airline[1]));
+                    pointsData.push(getAirportCoord(airline[2]));
+                });
+
+                var routes = routesGroupByAirline['Air China'];
+                console.log('ddd' + routes.length);
+
+                var timeDuration = 10.0;
+                var moveBaseDuration = 4.0;
+
+                var routePaths = [];
+                routes.forEach(function(route, index) {
+                    routePaths.push({
+                        startPos: airports[route[1]].coord.map(e => e * Math.PI / 180.0),
+                        endPos: airports[route[2]].coord.map(e => e * Math.PI / 180.0),
+                        width: 2.0,
+                        startTime: timeDuration * Math.random(),
+                        duration: moveBaseDuration + 1.0 * Math.random()
+                    });
+                });
+
+                dataFunc(routePaths, timeDuration);
+            });            
+        }
+
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div style="position: absolute; left: 18px; top: 18px">
+                        <button>{{ message }}</button>
+                    </div>
+                </div>
+            `,
+            data() { 
+                return {
+                    message: '页面加载于 ' + new Date().toLocaleString(),
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    _bgImagery: undefined,
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                // 1.1.2 添加默认地球影像
+                earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "czmObject": {
+                                "name": "默认离线影像",
+                                "xbsjType": "Imagery",
+                                "xbsjImageryProvider": {
+                                    "createTileMapServiceImageryProvider": {
+                                        "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                        "fileExtension": 'jpg',
+                                    },
+                                    "type": "createTileMapServiceImageryProvider"
+                                },
+                                "brightness": 0.1,
+                            }
+                        },
+                    ]
+                };
+
+                const position = [
+                    2.0298074880350025,
+                    0.34841324438878757,
+                    2513897.4758352037
+                ];
+                const rotation = [
+                    6.111857745206341,
+                    -1.1011764373040385,
+                    0.0030322475367121626
+                ]
+
+                earth.camera.position = position;
+                earth.camera.rotation = rotation;
+
+                this._earth = earth;
+
+                this._odlines = new XE.Obj.ODLines(earth);
+
+                loadData((data, timeDuration) => {
+                    this._odlines.data = data;
+                    this._odlines.timeDuration = timeDuration;
+                    this._odlines.playing = true;
+                    this._odlines.color = [0.7, 0.6, 1, 1];
+                });
+
+                // only for Debug
+                window.earth = earth;
+                window.odlines = this._odlines;
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>
