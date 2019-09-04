@@ -1,14 +1,22 @@
 <template>
   <!-- box -->
   <div class="xbsj-template">
-      <div class="xbsj-list"
-          ref="container" 
+    <div
+      class="xbsj-list"
+      ref="container"
       @mousedown="startMove($event)"
       @mousemove="onMoving($event)"
-      @mouseup="endMove($event)">
+      @mouseup="endMove($event)"
+    >
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.routine}}</span>
-        <div class="xbsj-item-btnbox ml20">
+        <!-- Pin -->
+        <div class="xbsj-item-btnbox ml20" @click="pinbtn" title="创建Pin">
+          <div class="xbsj-item-btn pinbutton"></div>
+          <span class="xbsj-item-name">{{lang.pin}}</span>
+        </div>
+
+        <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn spotbutton"></div>
           <span class="xbsj-item-name">{{lang.spot}}</span>
         </div>
@@ -114,20 +122,33 @@ export default {
     return {
       selectlist: false,
       lang: {},
-      langs:languagejs
+      langs: languagejs
     };
   },
-  created() {
-    
-  },
-  mounted() {
-    
-  },
-  methods: { 
+  created() {},
+  mounted() {},
+  methods: {
+    // startClipping() {
+    //   var clippingPlane = new XE.Obj.ClippingPlane(this.$root.$earth);
+    //   clippingPlane.name = "未命名剖切面";
+    //   clippingPlane.positionPicking = true;
+    //   clippingPlane.isCreating = true;
+    //   this.$root.$earthUI.showPropertyWindow(clippingPlane);
+    // },
+    pinbtn() {
+      var Pin = new XE.Obj.Pin(this.$root.$earth);
+      console.log(Pin)
+      Pin.name = "Pin 属性窗口";
+      Pin.positionPicking = true;
+      Pin.isCreating = true;
+      this.$root.$earthUI.showPropertyWindow(Pin);
+    },
     startMove(event) {
       //如果事件的目标不是本el 返回
-      if (event.target.parentElement !== this.$refs.container &&
-         event.target.parentElement.parentElement !== this.$refs.container) {
+      if (
+        event.target.parentElement !== this.$refs.container &&
+        event.target.parentElement.parentElement !== this.$refs.container
+      ) {
         this.moving = false;
         return;
       }
@@ -151,6 +172,16 @@ export default {
 </script>
 
 <style>
+.pinbutton {
+  background: url(../../../../images/pin.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.pinbutton:hover {
+  background: url(../../../../images/pin_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
 .spotbutton {
   background: url(../../../../images/spot.png) no-repeat;
   background-size: contain;

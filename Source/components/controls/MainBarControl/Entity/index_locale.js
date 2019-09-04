@@ -1,5 +1,6 @@
 const zh = {
   routine: "常规",
+  pin:"pin",
   spot: "点",
   line: "线",
   face: "面",
@@ -26,6 +27,7 @@ const zh = {
 
 const en = {
   routine: "routine",
+  pin:"pin",
   spot: "spot",
   line: "line",
   face: "face",

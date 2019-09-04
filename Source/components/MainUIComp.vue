@@ -62,6 +62,7 @@ import ContextMenu from "./common/ContextMenu";
 
 import FlattenningTool from "./viztools/FlattenningTool";
 import ClippingPlaneTool from "./viztools/ClippingPlaneTool";
+import PinTool from "./viztools/PinTool";
 import CamerVideoTool from "./viztools/CamerVideoTool";
 import ViewshedTool from "./viztools/ViewshedTool";
 
@@ -89,6 +90,7 @@ export default {
 
     FlattenningTool,
     ClippingPlaneTool,
+    PinTool,
     CamerVideoTool,
     ViewshedTool,
 
@@ -116,6 +118,7 @@ export default {
         CameraVideo: "CamerVideoTool",
         Viewshed: "ViewshedTool",
         ClippingPlane: "ClippingPlaneTool",
+        Pin: "PinTool",
         ["CameraView.View"]: "CameraViewPrp"
       },
       tools: [
