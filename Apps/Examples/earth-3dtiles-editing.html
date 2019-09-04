@@ -83,7 +83,7 @@
             xbsjPosition: [0, 0, 0],
             xbsjRotation: [0, 0, 0],
             _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
-            _Tileset: undefined
+            _tileset: undefined
           };
         },
         // 1.1 资源加载
@@ -133,7 +133,10 @@
           this._earth = earth;
           this._tileset = tileset;
 
-          window.vue = this;
+          // only for Debug
+          window.app = this;
+          window.tileset = this._tileset;
+          window.earth = earth;
         },
         filters: {
           numFilter(value) {
@@ -156,7 +159,7 @@
           this._positionEditingUnbind = this._positionEditingUnbind && this._positionEditingUnbind();
           this._xbsjPositionUnbind = this._xbsjPositionUnbind && this._xbsjPositionUnbind();
           this._xbsjRotationUnbind = this._xbsjRotationUnbind && this._xbsjRotationUnbind();
-          this._Tileset = this._Tileset && this._Tileset.destroy();
+          this._tileset = this._tileset && this._tileset.destroy();
           this._earth = this._earth && this._earth.destroy();
         },
       }
