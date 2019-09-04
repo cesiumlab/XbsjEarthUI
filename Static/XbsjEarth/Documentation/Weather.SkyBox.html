@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Restrict - XbsjEarth Documentation</title>
+    <title>SkyBox - XbsjEarth Documentation</title>
 
     <!--[if lt IE 9]>
       <script src="javascript/html5.js"></script>
@@ -19,7 +19,7 @@
     <h1 class="page-title">
         <!-- <a href="index.html"><img src="Images/CesiumLogo.png" class="cesiumLogo"></a> -->
         <a href="index.html">EarthSDK</a>
-        Restrict
+        SkyBox
         <div class="titleCenterer"></div>
     </h1>
 
@@ -32,7 +32,7 @@
 
 <header>
     
-        <div class="class-description">地形限制(地形剖切)</div>
+        <div class="class-description">太阳</div>
     
 </header>
 
@@ -43,9 +43,9 @@
     
         
     <div class="nameContainer">
-    <h4 class="name" id="Restrict">
-        <a href="#Restrict" class="doc-link"></a>
-        new Restrict<span class="signature">()</span>
+    <h4 class="name" id="SkyBox">
+        <a href="#SkyBox" class="doc-link"></a>
+        new SkyBox<span class="signature">()</span>
         
 
 <div class="source-link rightLinks">
@@ -118,17 +118,6 @@
 
     
     </div>
-
-    
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li><a href="XbsjBase.html">XbsjBase</a></li>
-    </ul>
-
 
     
 
@@ -146,9 +135,9 @@
         
             
 <div class="nameContainer">
-<h4 class="name" id="disposers">
-    <a href="#disposers" class="doc-link"></a>
-    disposers<span class="type-signature"></span>
+<h4 class="name" id="enabled">
+    <a href="#enabled" class="doc-link"></a>
+    enabled<span class="type-signature"> : boolean</span>
     
 
 <div class="source-link rightLinks">
@@ -162,7 +151,7 @@
 
 
 <div class="description">
-    用来收集资源销毁函数，并在析构时自动调用！
+    是否启用
 </div>
 
 
@@ -177,11 +166,6 @@
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="XbsjBase.html#disposers">XbsjBase#disposers</a>
-    </li></dd>
-    
 
     
 
@@ -191,6 +175,9 @@
 
     
 
+    
+    <span class="details-header">Default Value:</span>
+    <code class="language-javascript">true</code>
     
 
     
@@ -210,704 +197,6 @@
         
     
 
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-    <div class="nameContainer">
-    <h4 class="name" id="destroy">
-        <a href="#destroy" class="doc-link"></a>
-        destroy<span class="signature">()</span> &rarr; <span class="type-signature returnType">undefined</span>
-        
-
-<div class="source-link rightLinks">
-</div>
-
-
-    </h4>
-
-    </div>
-
-    
-
-
-<div class="description">
-    销毁
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    返回undefined
-</div>
-
-
-    
-
-
-
-
-<dl class="details">
-
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="XbsjBase.html#destroy">XbsjBase#destroy</a>
-    </li></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-            
-    <div class="nameContainer">
-    <h4 class="name" id="isDestroyed">
-        <a href="#isDestroyed" class="doc-link"></a>
-        isDestroyed<span class="signature">()</span> &rarr; <span class="type-signature returnType">boolean</span>
-        
-
-<div class="source-link rightLinks">
-</div>
-
-
-    </h4>
-
-    </div>
-
-    
-
-
-<div class="description">
-    对象是否已销毁
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    对象是否已销毁
-</div>
-
-
-    
-
-
-
-
-<dl class="details">
-
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="XbsjBase.html#isDestroyed">XbsjBase#isDestroyed</a>
-    </li></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-            
-    <div class="nameContainer">
-    <h4 class="name" id="toAllJSON">
-        <a href="#toAllJSON" class="doc-link"></a>
-        toAllJSON<span class="signature">()</span> &rarr; <span class="type-signature returnType">object</span>
-        
-
-<div class="source-link rightLinks">
-</div>
-
-
-    </h4>
-
-    </div>
-
-    
-
-
-<div class="description">
-    数据整个JSOn对象，包括默认值
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    创建的JSON数据对象
-</div>
-
-
-    
-
-
-
-
-<dl class="details">
-
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="XbsjBase.html#toAllJSON">XbsjBase#toAllJSON</a>
-    </li></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-            
-    <div class="nameContainer">
-    <h4 class="name" id="toAllJSONStr">
-        <a href="#toAllJSONStr" class="doc-link"></a>
-        toAllJSONStr<span class="signature">()</span> &rarr; <span class="type-signature returnType">string</span>
-        
-
-<div class="source-link rightLinks">
-</div>
-
-
-    </h4>
-
-    </div>
-
-    
-
-
-<div class="description">
-    转化成JSON字符串，输出全部元素
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    JSON格式化好的字符串
-</div>
-
-
-    
-
-
-
-
-<dl class="details">
-
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="XbsjBase.html#toAllJSONStr">XbsjBase#toAllJSONStr</a>
-    </li></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-            
-    <div class="nameContainer">
-    <h4 class="name" id="toJSON">
-        <a href="#toJSON" class="doc-link"></a>
-        toJSON<span class="signature">()</span> &rarr; <span class="type-signature returnType">object</span>
-        
-
-<div class="source-link rightLinks">
-</div>
-
-
-    </h4>
-
-    </div>
-
-    
-
-
-<div class="description">
-    转化成一个JSON数据对象 注意：每次都会创建一个新对象！
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    创建的JSON数据对象
-</div>
-
-
-    
-
-
-
-
-<dl class="details">
-
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="XbsjBase.html#toJSON">XbsjBase#toJSON</a>
-    </li></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-            
-    <div class="nameContainer">
-    <h4 class="name" id="toJSONStr">
-        <a href="#toJSONStr" class="doc-link"></a>
-        toJSONStr<span class="signature">()</span> &rarr; <span class="type-signature returnType">string</span>
-        
-
-<div class="source-link rightLinks">
-</div>
-
-
-    </h4>
-
-    </div>
-
-    
-
-
-<div class="description">
-    转化成JSON字符串，默认元素不输出
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    JSON格式化好的字符串
-</div>
-
-
-    
-
-
-
-
-<dl class="details">
-
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="XbsjBase.html#toJSONStr">XbsjBase#toJSONStr</a>
-    </li></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-            
-    <div class="nameContainer">
-    <h4 class="name" id="xbsjFromJSON">
-        <a href="#xbsjFromJSON" class="doc-link"></a>
-        xbsjFromJSON<span class="signature">(jsonObject)</span>
-        
-
-<div class="source-link rightLinks">
-</div>
-
-
-    </h4>
-
-    </div>
-
-    
-
-
-<div class="description">
-    通过JSON数据对象来设置属性
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>jsonObject</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-
-            <td class="description last">
-            
-                </td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="XbsjBase.html#xbsjFromJSON">XbsjBase#xbsjFromJSON</a>
-    </li></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
     
 
     

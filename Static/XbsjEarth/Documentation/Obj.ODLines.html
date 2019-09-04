@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Restrict - XbsjEarth Documentation</title>
+    <title>ODLines - XbsjEarth Documentation</title>
 
     <!--[if lt IE 9]>
       <script src="javascript/html5.js"></script>
@@ -19,7 +19,7 @@
     <h1 class="page-title">
         <!-- <a href="index.html"><img src="Images/CesiumLogo.png" class="cesiumLogo"></a> -->
         <a href="index.html">EarthSDK</a>
-        Restrict
+        ODLines
         <div class="titleCenterer"></div>
     </h1>
 
@@ -32,7 +32,7 @@
 
 <header>
     
-        <div class="class-description">地形限制(地形剖切)</div>
+        <div class="class-description">ODLines用于展示OD线集合</div>
     
 </header>
 
@@ -43,9 +43,9 @@
     
         
     <div class="nameContainer">
-    <h4 class="name" id="Restrict">
-        <a href="#Restrict" class="doc-link"></a>
-        new Restrict<span class="signature">()</span>
+    <h4 class="name" id="ODLines">
+        <a href="#ODLines" class="doc-link"></a>
+        new ODLines<span class="signature">()</span>
         
 
 <div class="source-link rightLinks">
@@ -126,7 +126,7 @@
 
 
     <ul>
-        <li><a href="XbsjBase.html">XbsjBase</a></li>
+        <li><a href="XbsjCzmObj.html">XbsjCzmObj</a></li>
     </ul>
 
 
@@ -180,6 +180,324 @@
     <dt class="inherited-from">Inherited From:</dt>
     <dd class="inherited-from"><ul class="dummy"><li>
         <a href="XbsjBase.html#disposers">XbsjBase#disposers</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="earth">
+    <a href="#earth" class="doc-link"></a>
+    <span class="type-signature attribute-readonly">readonly</span>earth<span class="type-signature"> : <a href="Earth.html">Earth</a></span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    返回该对象的所属earth实例
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjObject.html#earth">XbsjObject#earth</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="enabled">
+    <a href="#enabled" class="doc-link"></a>
+    enabled<span class="type-signature"> : boolean</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    是否启用
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjObject.html#enabled">XbsjObject#enabled</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="guid">
+    <a href="#guid" class="doc-link"></a>
+    <span class="type-signature attribute-readonly">readonly</span>guid<span class="type-signature"> : string</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    注意，对象一旦创建，guid不可更改！
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjObject.html#guid">XbsjObject#guid</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="show">
+    <a href="#show" class="doc-link"></a>
+    show<span class="type-signature"> : boolean</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    显示
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <span class="details-header">Default Value:</span>
+    <code class="language-javascript">true</code>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+<div class="nameContainer">
+<h4 class="name" id="xbsjGuid">
+    <a href="#xbsjGuid" class="doc-link"></a>
+    xbsjGuid<span class="type-signature"> : string|undefined</span>
+    
+
+<div class="source-link rightLinks">
+</div>
+
+
+</h4>
+
+</div>
+
+
+
+<div class="description">
+    唯一标识符
+</div>
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjObject.html#xbsjGuid">XbsjObject#xbsjGuid</a>
     </li></dd>
     
 
@@ -280,6 +598,91 @@
     <dt class="inherited-from">Inherited From:</dt>
     <dd class="inherited-from"><ul class="dummy"><li>
         <a href="XbsjBase.html#destroy">XbsjBase#destroy</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="flyTo">
+        <a href="#flyTo" class="doc-link"></a>
+        flyTo<span class="signature">()</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    飞入该对象
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="XbsjCzmObj.html#flyTo">XbsjCzmObj#flyTo</a>
     </li></dd>
     
 
