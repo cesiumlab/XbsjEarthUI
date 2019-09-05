@@ -18,15 +18,72 @@
         <label>{{lang.creating}}</label>
         <XbsjSwitch v-model="path.creating"></XbsjSwitch>
       </div>
-       <div class="flatten">
+      <div class="flatten">
+        <label>{{lang.show}}</label>
+        <XbsjSwitch v-model="path.show"></XbsjSwitch>
+      </div>
+      
+      <div class="flatten">
         <label>{{lang.currentShow}}</label>
         <XbsjSwitch v-model="path.currentShow"></XbsjSwitch>
       </div>
-       <div class="flatten">
+      <div class="flatten">
         <label>{{lang.editing}}</label>
         <XbsjSwitch v-model="path.editing"></XbsjSwitch>
       </div>
- 
+      <div class="flatten">
+        <label>{{lang.enabled}}</label>
+        <XbsjSwitch v-model="path.enabled"></XbsjSwitch>
+      </div>
+      <div class="flatten">
+        <label>{{lang.isCreating}}</label>
+        <XbsjSwitch v-model="path.isCreating"></XbsjSwitch>
+      </div>
+
+      <div class="flatten">
+        <label>{{lang.isSelected}}</label>
+        <XbsjSwitch v-model="path.isSelected"></XbsjSwitch>
+      </div>
+      <div class="flatten">
+        <label>{{lang.loop}}</label>
+        <XbsjSwitch v-model="path.loop"></XbsjSwitch>
+      </div>
+      
+     <div class="flatten">
+        <label>{{lang.loopPlay}}</label>
+        <XbsjSwitch v-model="path.loopPlay"></XbsjSwitch>
+      </div>
+           <div class="flatten">
+        <label>{{lang.positionPicking}}</label>
+        <XbsjSwitch v-model="path.positionPicking"></XbsjSwitch>
+      </div>
+            <div class="flatten">
+        <label>{{lang.showDirection}}</label>
+        <XbsjSwitch v-model="path.showDirection"></XbsjSwitch>
+      </div>
+            <div class="flatten">
+        <label>{{lang.showHelper}}</label>
+        <XbsjSwitch v-model="path.showHelper"></XbsjSwitch>
+      </div>
+       <div class="flatten" style="margin-top:20px;">
+        <label>{{lang.slices}}</label>
+        <div class="field">
+          <XbsjSlider
+            :min="1"
+            :max="100"
+            :step="1"
+            showTip="always"
+            v-model="path.slices"
+            ref="glowFactor"
+          ></XbsjSlider>
+        </div>
+      </div>
+         <div class="flatten">
+        <label>{{lang.targetPicking}}</label>
+        <XbsjSwitch v-model="path.targetPicking"></XbsjSwitch>
+      </div>
+
+
       <!-- <div class="flatten" style="margin-top:20px;">
         <label>{{lang.far}}</label>
         <div class="field">
@@ -39,15 +96,9 @@
             ref="glowFactor"
           ></XbsjSlider>
         </div>
-      </div> -->
- 
- 
- 
- 
- 
+      </div>-->
 
- 
-<!--  
+      <!--  
       <div class="flatten" v-show="!pinstyletype" style="margin-top:20px;">
         <label>{{lang.scale}}</label>
         <div class="field">
@@ -60,8 +111,7 @@
             ref="glowFactor"
           ></XbsjSlider>
         </div>
-      </div> -->
- 
+      </div>-->
     </div>
   </Window>
 </template>
@@ -81,29 +131,28 @@ export default {
       makiIconObj: {},
       path: {
         name: "",
-        creating:false,
-        currentD:0,
-        currentShow:false,
-        currentSpeed:50,
-        editing:false,
-        enabled:true,
+        creating: false,
+        currentD: 0,
+        currentShow: false,
+        currentSpeed: 50,
+        editing: false,
+        enabled: true,
         // ignoreDefualt:true,
-        isCreating:true,
-        isSelected:false,
-        loop:false,
-        loopPlay:false,
-        positionPicking:true,
-        positions:{},
-        rotations:{},
-        show:true,
-        showDirection:false,
-        showHelper:false,
-        slices:100,
-        targetPicking:false,
-
+        isCreating: true,
+        isSelected: false,
+        loop: false,
+        loopPlay: false,
+        positionPicking: true,
+        positions: {},
+        rotations: {},
+        show: true,
+        showDirection: false,
+        showHelper: false,
+        slices: 100,
+        targetPicking: false
       },
       pinstyletype: true,
- 
+
       langs: languagejs,
       dighole: false,
       connections: [],
@@ -120,36 +169,35 @@ export default {
       this._czmObj = czmObj;
       const bindData = {
         name: "path.name",
-        creating:"path.creating",
-        currentD:"path.currentD",
-        currentShow:"path.currentShow",
-        currentSpeed:"path.currentSpeed",
-        editing:"path.editing",
-        enabled:"path.enabled",
+        creating: "path.creating",
+        currentD: "path.currentD",
+        currentShow: "path.currentShow",
+        currentSpeed: "path.currentSpeed",
+        editing: "path.editing",
+        enabled: "path.enabled",
         // ignoreDefualt:"path.ignoreDefualt",
         // isCreating:"path.isCreating",
-        isSelected:"path.isSelected",
-        loop:"path.loop",
-        loopPlay:"path.loopPlay",
+        isSelected: "path.isSelected",
+        loop: "path.loop",
+        loopPlay: "path.loopPlay",
         // positionPicking:"path.positionPicking",
-        positions:"path.positions",
-        rotations:"path.rotations",
-        show:"path.show",
-        showDirection:"path.showDirection",
-        showHelper:"path.showHelper",
-        slices:"path.slices",
-        targetPicking:"path.targetPicking"
+        positions: "path.positions",
+        rotations: "path.rotations",
+        show: "path.show",
+        showDirection: "path.showDirection",
+        showHelper: "path.showHelper",
+        slices: "path.slices",
+        targetPicking: "path.targetPicking"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
-        console.log(vm)
+        console.log(vm);
         if (typeof vm === "string") {
           this._disposers.push(XE.MVVM.bind(this, vm, czmObj, sm));
         } else {
           this._disposers.push(vm.handler(this, vm.prop, czmObj, sm));
         }
       });
-
     }
   },
   beforeDestroy() {
