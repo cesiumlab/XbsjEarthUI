@@ -91,6 +91,14 @@ vueApp.examples = [
                 "url": "./earth-navscale.html"
             },
             {
+                "title": "OD线集群-北京公交线路",
+                "url": "./earth-odlines-bus-lines.html"
+            },
+            {
+                "title": "OD线集群-中国航班线路",
+                "url": "./earth-odlines-flight-lines.html"
+            },
+            {
                 "title": "路径-环球飞行",
                 "url": "./earth-path-around.html"
             },
@@ -135,6 +143,30 @@ vueApp.examples = [
                 "url": "./earth-pins.html"
             },
             {
+                "title": "折线-插值方式",
+                "url": "./earth-polyline-acytype.html"
+            },
+            {
+                "title": "折线-ArrowMaterial",
+                "url": "./earth-polyline-arrowmaterial.html"
+            },
+            {
+                "title": "折线-ColorMaterial",
+                "url": "./earth-polyline-colormaterial.html"
+            },
+            {
+                "title": "折线-DashMaterial",
+                "url": "./earth-polyline-dashmaterial.html"
+            },
+            {
+                "title": "折线-编辑",
+                "url": "./earth-polyline-editing.html"
+            },
+            {
+                "title": "折线-ODLineMaterial",
+                "url": "./earth-polyline-odlinematerial.html"
+            },
+            {
                 "title": "地表限制(地表裁切)",
                 "url": "./earth-restrict.html"
             },
@@ -149,6 +181,10 @@ vueApp.examples = [
             {
                 "title": "地形-中国14级",
                 "url": "./earth-terrain-china14.html"
+            },
+            {
+                "title": "多视口",
+                "url": "./earth-viewport.html"
             },
             {
                 "title": "视域分析",

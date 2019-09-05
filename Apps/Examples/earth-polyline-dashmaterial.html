@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>折线-DashMaterial</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        input {
+            width: 210px;
+        }
+
+        .colorbox {
+            width: 50px;
+        }
+
+        select{
+            width: 60px;
+            font-size: 18px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%"  @click="raise = false,reduce = false">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                        <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:180px; font-size:24px; font-family: 宋体;">
+                            <span>颜色：</span><input class="colorbox" type="color" value="#ff00ff" @input=colorchange(event)><br/>
+                            <span>间隔颜色：</span><input class="colorbox" type="color" value="#ffffff" @input=gapcolorchange(event)><br/>
+                            <span>点划线长度: {{ dashLength }}</span><br/>
+                            <span><input type="range" min="0" max="200" step="1" v-model.number="dashLength"></span><br/>
+                            <span>点划线样式: </span>
+                            <select v-model="dashPattern">
+                                <option>3</option>
+                                <option>12</option>
+                                <option>48</option>
+                                <option>51</option>
+                                <option>64</option>
+                                <option>124</option>
+                                <option>127</option>
+                                <option>255</option>
+                            </select> 
+                        </div>
+                </div>
+            `,
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    dashLength: '',
+                    dashPattern: ''
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+                earth.interaction.picking.enabled = true;
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "expand": true,
+                    "title": "预览场景",
+                    "children": [{
+                        "ref": 'polyline1',
+                        "czmObject": {
+                            "xbsjType": "Polyline",
+                            "positions": [
+                                [
+                                    1.6049052178907162,
+                                    0.4547675537396452,
+                                    0
+                                ],
+                                [
+                                    2.266206367018494,
+                                    0.4857724702174004,
+                                    -5.6841204016160695e-9
+                                ],
+                                [
+                                    2.8083374819013205,
+                                    0.9842980731992482,
+                                    -6.859619106471648e-9
+                                ]
+                            ]
+                        }
+                    }, {
+                        "czmObject": {
+                            "name": '默认影像',
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
+                        },
+                    }]
+                };
+
+                var polyline1 = earth.sceneTree.$refs.polyline1.czmObject;
+
+                // 1.1.3 设置相机位置
+                // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
+                earth.camera.position =  [1.9801824720243058,0.5645924417726427,8556103.623693792];
+                earth.camera.rotation = [2.6645352591003757e-15,-1.5694528555019995,0];
+
+                this._earth = earth;
+
+                // 1.1.4 设置初始值
+                polyline1.material.type = "XbsjPolylineDashMaterial";
+                polyline1.material.XbsjPolylineDashMaterial.gapColor = [1,1,1];
+                polyline1.width = 6;
+
+                // 1.1.5 数据绑定
+                this._dashLengthUnbind = XE.MVVM.bind(this, 'dashLength', polyline1.material.XbsjPolylineDashMaterial, 'dashLength');
+                this._dashPatternUnbind = XE.MVVM.bind(this, 'dashPattern', polyline1.material.XbsjPolylineDashMaterial, 'dashPattern');
+
+                // only for Debug
+                window.polyline1 = polyline1;
+                window.earth = earth;
+            },
+            methods: {
+                colorchange(event) {
+                    var color = event.target.value;
+                    polyline1.material.XbsjPolylineDashMaterial.color = color.xeColor;
+                },
+                gapcolorchange(event) {
+                    var gapcolor = event.target.value;
+                    polyline1.material.XbsjPolylineDashMaterial.gapColor = gapcolor.xeColor;
+                }
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._dashLengthUnbind = this._dashLengthUnbind && this._dashLengthUnbind();
+                this._dashPatternUnbind = this._dashPatternUnbind && this._dashPatternUnbind();
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>
