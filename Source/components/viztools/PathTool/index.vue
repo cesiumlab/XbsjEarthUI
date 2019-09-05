@@ -22,7 +22,12 @@
         <label>{{lang.show}}</label>
         <XbsjSwitch v-model="path.show"></XbsjSwitch>
       </div>
-      
+
+      <div class="flatten">
+        <label>{{lang.currentD}}</label>
+        <input style="float:left;" type="text" v-model="path.currentD" />
+      </div>
+
       <div class="flatten">
         <label>{{lang.currentShow}}</label>
         <XbsjSwitch v-model="path.currentShow"></XbsjSwitch>
@@ -35,37 +40,37 @@
         <label>{{lang.enabled}}</label>
         <XbsjSwitch v-model="path.enabled"></XbsjSwitch>
       </div>
-      <div class="flatten">
+      <!-- <div class="flatten">
         <label>{{lang.isCreating}}</label>
         <XbsjSwitch v-model="path.isCreating"></XbsjSwitch>
-      </div>
-
+      </div>-->
+      <!-- 
       <div class="flatten">
         <label>{{lang.isSelected}}</label>
         <XbsjSwitch v-model="path.isSelected"></XbsjSwitch>
-      </div>
+      </div>-->
       <div class="flatten">
         <label>{{lang.loop}}</label>
         <XbsjSwitch v-model="path.loop"></XbsjSwitch>
       </div>
-      
-     <div class="flatten">
+
+      <div class="flatten">
         <label>{{lang.loopPlay}}</label>
         <XbsjSwitch v-model="path.loopPlay"></XbsjSwitch>
       </div>
-           <div class="flatten">
+      <!-- <div class="flatten">
         <label>{{lang.positionPicking}}</label>
         <XbsjSwitch v-model="path.positionPicking"></XbsjSwitch>
-      </div>
-            <div class="flatten">
+      </div> -->
+      <div class="flatten">
         <label>{{lang.showDirection}}</label>
         <XbsjSwitch v-model="path.showDirection"></XbsjSwitch>
       </div>
-            <div class="flatten">
+      <div class="flatten">
         <label>{{lang.showHelper}}</label>
         <XbsjSwitch v-model="path.showHelper"></XbsjSwitch>
       </div>
-       <div class="flatten" style="margin-top:20px;">
+      <div class="flatten" style="margin-top:20px;">
         <label>{{lang.slices}}</label>
         <div class="field">
           <XbsjSlider
@@ -78,11 +83,10 @@
           ></XbsjSlider>
         </div>
       </div>
-         <div class="flatten">
+      <div class="flatten">
         <label>{{lang.targetPicking}}</label>
         <XbsjSwitch v-model="path.targetPicking"></XbsjSwitch>
       </div>
-
 
       <!-- <div class="flatten" style="margin-top:20px;">
         <label>{{lang.far}}</label>

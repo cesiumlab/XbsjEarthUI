@@ -9,12 +9,15 @@ const zh = {
   isCreating:'isCreating',
   isSelected:'isSelected',
   loop:'环',
-  loopPlay:'loopPlay',
+  loopPlay:'循环飞行',
   positionPicking:'positionPicking',
-  showDirection:'showDirection',
+  showDirection:'隐藏相机',
   showHelper:'showHelper',
-  slices:'slices',
-  targetPicking:'targetPicking'
+  slices:'分隔数',
+  targetPicking:'targetPicking',
+  currentSpeed:'运行速度',
+  currentD:'相机位置',
+  playing:'飞行',
 }
 
 const en = {
@@ -33,7 +36,10 @@ const en = {
   showDirection:'showDirection',
   showHelper:'showHelper',
   slices:'slices',
-  targetPicking:'targetPicking'
+  targetPicking:'targetPicking',
+  currentSpeed:'currentSpeed',
+  currentD:'currentD',
+  playing:'playing',
 }
 
 export default { zh, en }
