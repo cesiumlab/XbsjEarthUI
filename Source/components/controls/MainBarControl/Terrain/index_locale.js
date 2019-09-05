@@ -15,7 +15,7 @@ const zh = {
   depth: "深度检测",
   logarithmic: "对数深度",
   subSurface: "地下模式",
-  transparent: "地表透明",
+  transparent: "地表不透明",
   tocolor: "着色",
   wireFrame: "三角网",
   show:'显示地球',

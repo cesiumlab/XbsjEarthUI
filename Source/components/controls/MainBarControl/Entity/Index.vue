@@ -15,6 +15,11 @@
           <div class="xbsj-item-btn pinbutton"></div>
           <span class="xbsj-item-name">{{lang.pin}}</span>
         </div>
+         <!-- 路径 -->
+        <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
+          <div class="xbsj-item-btn pathbutton"></div>
+          <span class="xbsj-item-name">{{lang.path}}</span>
+        </div>
 
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn spotbutton"></div>
@@ -128,13 +133,13 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    // startClipping() {
-    //   var clippingPlane = new XE.Obj.ClippingPlane(this.$root.$earth);
-    //   clippingPlane.name = "未命名剖切面";
-    //   clippingPlane.positionPicking = true;
-    //   clippingPlane.isCreating = true;
-    //   this.$root.$earthUI.showPropertyWindow(clippingPlane);
-    // },
+    pathbtn() {
+      var Path = new XE.Obj.Path(this.$root.$earth);
+      Path.name = "Path路径属性窗口";
+      Path.positionPicking = true;
+      Path.isCreating = true;
+      this.$root.$earthUI.showPropertyWindow(Path);
+    },
     pinbtn() {
       var Pin = new XE.Obj.Pin(this.$root.$earth);
       console.log(Pin)
@@ -172,6 +177,16 @@ export default {
 </script>
 
 <style>
+.pathbutton {
+  background: url(../../../../images/path.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.pathbutton:hover {
+  background: url(../../../../images/path_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
 .pinbutton {
   background: url(../../../../images/pin.png) no-repeat;
   background-size: contain;
