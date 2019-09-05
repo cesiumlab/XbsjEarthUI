@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="xbsj-labels" content="Earth示例"></meta>
-    <title>Pin</title>
+    <title>Pin-onclick</title>
     <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <script src="./scripts/vue.min.js"></script>
@@ -93,10 +93,13 @@
 
                 var tileset = earth.sceneTree.$refs.tileset.czmObject;
                 var pin1 = earth.sceneTree.$refs.pin1.czmObject;
-                pin1.onClick = () => {
+                pin1.onclick = () => {
                     console.log('即将飞入大雁塔！');
                     tileset.flyTo();
-                }
+                };
+
+                pin1.onmouseover = () => pin1.scale = 1.1;
+                pin1.onmouseout = () => pin1.scale = 1.0;
 
                 // 1.1.5 数据绑定
                 XE.MVVM.track(this, 'winPos', pin1, 'winPos');
