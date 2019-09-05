@@ -104,6 +104,10 @@
 
                 this._tileset = tileset1;
                 this._earth = earth;
+
+                // only for debug
+                window.earth = this._earth;
+                window.tileset1 = this._tileset;
             },
             // 1.2 资源销毁
             beforeDestroy() {
