@@ -158,8 +158,8 @@ export default {
         showHelper: false,
         slices: 100,
         targetPicking: false,
-        currentPosition: {},
-        currentRotation: {}
+        currentPosition: [0, 0, 0],
+        currentRotation: [0, 0, 0]
       },
       pinstyletype: true,
 
@@ -174,7 +174,9 @@ export default {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
-    console.log(czmObj);
+    console.log( czmObj.currentPosition);
+
+    console.log(typeof czmObj.currentPosition);
     if (czmObj) {
       this._czmObj = czmObj;
       const bindData = {
@@ -203,7 +205,6 @@ export default {
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
-        console.log(vm);
         if (typeof vm === "string") {
           this._disposers.push(XE.MVVM.bind(this, vm, czmObj, sm));
         } else {

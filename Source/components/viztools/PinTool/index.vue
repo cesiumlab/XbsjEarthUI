@@ -165,10 +165,10 @@ export default {
         editing: false,
         far: 25000000,
         near: 100,
-        imageUrl: "http://pic.962.net/up/2017-11/15120163818558012.jpg",
+        imageUrl: "",
         scale: 1,
         show: true,
-        position: {},
+        position: [0, 0, 0],
         pinBuilder: {}
       },
       pinstyletype: true,

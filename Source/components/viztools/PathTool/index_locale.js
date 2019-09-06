@@ -20,7 +20,8 @@ const zh = {
   playing:'飞行',
   eidtbtn:'编辑按钮',
   play:'播放',
-  weizhi:'当前位置'
+  weizhi:'当前位置',
+  looppaly:'循环'
 }
 
 const en = {
@@ -45,7 +46,8 @@ const en = {
   playing:'playing',
   eidtbtn:'eidtbtn',
   play:'play',
-  weizhi:'weizhi'
+  weizhi:'weizhi',
+  looppaly:'looppaly'
 }
 
 export default { zh, en }
