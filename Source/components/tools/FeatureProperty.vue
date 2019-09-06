@@ -51,12 +51,12 @@ export default {
   mounted() {
     //监控获取pick到的对象
     const picking = this.$root.$earth.interaction.picking;
-    this.unAutorun = XE.MVVM.watch(picking, '_clickedObj', () => {
+    this.unAutorun = XE.MVVM.watch(picking, 'clickedObj', () => {
       // var feature =
       //   this.$root.$earth.pickedObject.clicked &&
       //   this.$root.$earth.pickedObject.clicked.rawObject;
-      const co = picking._clickedObj;
-      const pickedObject = co && co.clickedAttachedInfo;
+      const co = picking.clickedObj;
+      const pickedObject = co && picking.clickedAttachedInfo;
       const feature = pickedObject instanceof Cesium.Cesium3DTileFeature && pickedObject;
 
       //如果有对象并且没有禁用弹出，那么弹出
