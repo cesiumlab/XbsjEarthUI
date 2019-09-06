@@ -13,7 +13,7 @@ export default {
   },
   props: {
     lngLatHeight: {
-      type: Array,
+      type: undefined,
       default() {
         return [0, 0, 0];
       }

@@ -10,66 +10,90 @@
     @showclick="showSelect=false"
   >
     <div class="xbsj-flatten">
+      <!-- 名称 -->
       <div class="flatten">
         <label>{{lang.name}}</label>
         <input style="float:left;" type="text" v-model="path.name" />
       </div>
-      <div class="flatten">
-        <label>{{lang.creating}}</label>
-        <XbsjSwitch v-model="path.creating"></XbsjSwitch>
-      </div>
-      <div class="flatten">
-        <label>{{lang.show}}</label>
-        <XbsjSwitch v-model="path.show"></XbsjSwitch>
+
+      <!-- 编辑按钮 -->
+      <div class="attitudeEdit">
+        <label class="xbsj-label">{{lang.eidtbtn}}</label>
+        <div class="buttonGroup">
+          <div>
+            <button
+              class="attitudeEditCameraButton"
+              @click="path.creating =!path.creating"
+              :class="path.creating?'btncoloron':''"
+            >{{lang.creating}}</button>
+          </div>
+          <div>
+            <button
+              class="attitudeEditCameraButton"
+              @click="path.editing =!path.editing"
+              :class="path.editing?'btncoloron':''"
+            >{{lang.editing}}</button>
+          </div>
+          <div>
+            <button
+              class="attitudeEditCameraButton"
+              @click="path.targetPicking =!path.targetPicking"
+              :class="path.targetPicking?'btncoloron':''"
+            >{{lang.targetPicking}}</button>
+          </div>
+        </div>
       </div>
 
-      <div class="flatten">
-        <label>{{lang.currentD}}</label>
-        <input style="float:left;" type="text" v-model="path.currentD" />
+      <!-- 显示首尾相连 -->
+      <div class="flatten" style="display:flex;">
+        <div>
+          <label>{{lang.show}}</label>
+          <XbsjSwitch v-model="path.show"></XbsjSwitch>
+        </div>
+        <div>
+          <label>{{lang.loop}}</label>
+          <XbsjSwitch v-model="path.loop"></XbsjSwitch>
+        </div>
       </div>
 
-      <div class="flatten">
-        <label>{{lang.currentShow}}</label>
-        <XbsjSwitch v-model="path.currentShow"></XbsjSwitch>
-      </div>
-      <div class="flatten">
-        <label>{{lang.editing}}</label>
-        <XbsjSwitch v-model="path.editing"></XbsjSwitch>
-      </div>
+      <!-- 启用效果 -->
       <div class="flatten">
         <label>{{lang.enabled}}</label>
         <XbsjSwitch v-model="path.enabled"></XbsjSwitch>
       </div>
-      <!-- <div class="flatten">
-        <label>{{lang.isCreating}}</label>
-        <XbsjSwitch v-model="path.isCreating"></XbsjSwitch>
-      </div>-->
-      <!-- 
-      <div class="flatten">
-        <label>{{lang.isSelected}}</label>
-        <XbsjSwitch v-model="path.isSelected"></XbsjSwitch>
-      </div>-->
-      <div class="flatten">
-        <label>{{lang.loop}}</label>
-        <XbsjSwitch v-model="path.loop"></XbsjSwitch>
-      </div>
 
-      <div class="flatten">
-        <label>{{lang.loopPlay}}</label>
-        <XbsjSwitch v-model="path.loopPlay"></XbsjSwitch>
-      </div>
-      <!-- <div class="flatten">
-        <label>{{lang.positionPicking}}</label>
-        <XbsjSwitch v-model="path.positionPicking"></XbsjSwitch>
-      </div> -->
-      <div class="flatten">
-        <label>{{lang.showDirection}}</label>
-        <XbsjSwitch v-model="path.showDirection"></XbsjSwitch>
-      </div>
+      <!-- 显示辅助线框 -->
       <div class="flatten">
         <label>{{lang.showHelper}}</label>
         <XbsjSwitch v-model="path.showHelper"></XbsjSwitch>
       </div>
+      <!-- 显示关键点方向 -->
+      <div class="flatten">
+        <label>{{lang.showDirection}}</label>
+        <XbsjSwitch v-model="path.showDirection"></XbsjSwitch>
+      </div>
+
+      <!-- 暂停播放按钮 -->
+      <div class="attitudeEdit">
+        <label class="xbsj-label">{{lang.eidtbtn}}</label>
+        <div class="buttonGroup">
+          <div>
+            <button
+              class="attitudeEditCameraButton"
+              @click="path.play =!path.play"
+              :class="path.play?'btncoloron':''"
+            >{{lang.play}}</button>
+          </div>
+          <div>
+            <button
+              class="attitudeEditCameraButton"
+              @click="path.looppaly =!path.looppaly"
+              :class="path.looppaly?'btncoloron':''"
+            >{{lang.looppaly}}</button>
+          </div>
+        </div>
+      </div>
+
       <div class="flatten" style="margin-top:20px;">
         <label>{{lang.slices}}</label>
         <div class="field">
@@ -83,39 +107,19 @@
           ></XbsjSlider>
         </div>
       </div>
+      <!-- 当前位置 -->
       <div class="flatten">
-        <label>{{lang.targetPicking}}</label>
-        <XbsjSwitch v-model="path.targetPicking"></XbsjSwitch>
+        <label>{{lang.weizhi}}</label>
+        <div class="flatten-box">
+          <XbsjLngLatHeight v-model="path.currentPosition"></XbsjLngLatHeight>
+        </div>
       </div>
-
-      <!-- <div class="flatten" style="margin-top:20px;">
-        <label>{{lang.far}}</label>
-        <div class="field">
-          <XbsjSlider
-            :min="1"
-            :max="25000000"
-            :step="1"
-            showTip="always"
-            v-model="pin.far"
-            ref="glowFactor"
-          ></XbsjSlider>
+      <div class="flatten">
+        <label>{{lang.currentRotation}}</label>
+        <div class="flatten-box">
+          <XbsjHeadingPitchRoll v-model="path.currentRotation"></XbsjHeadingPitchRoll>
         </div>
-      </div>-->
-
-      <!--  
-      <div class="flatten" v-show="!pinstyletype" style="margin-top:20px;">
-        <label>{{lang.scale}}</label>
-        <div class="field">
-          <XbsjSlider
-            :min="0.05"
-            :max="2"
-            :step="0.01"
-            showTip="always"
-            v-model="pin.scale"
-            ref="glowFactor"
-          ></XbsjSlider>
-        </div>
-      </div>-->
+      </div>
     </div>
   </Window>
 </template>
@@ -153,7 +157,9 @@ export default {
         showDirection: false,
         showHelper: false,
         slices: 100,
-        targetPicking: false
+        targetPicking: false,
+        currentPosition: {},
+        currentRotation: {}
       },
       pinstyletype: true,
 
@@ -168,10 +174,12 @@ export default {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
-
+    console.log(czmObj);
     if (czmObj) {
       this._czmObj = czmObj;
       const bindData = {
+        currentPosition: "path.currentPosition",
+        currentRotation: "path.currentRotation",
         name: "path.name",
         creating: "path.creating",
         currentD: "path.currentD",
@@ -203,6 +211,8 @@ export default {
         }
       });
     }
+
+    this.path.creating = true;
   },
   beforeDestroy() {
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
@@ -555,5 +565,36 @@ button:focus {
   position: absolute;
   right: 15px;
   top: 11px;
+}
+
+.buttonGroup {
+  display: flex;
+}
+.buttonGroup div {
+  display: inline-block;
+  width: 62px;
+  height: 25px;
+  margin-left: 18px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  color: #dddddd;
+  padding: 0 4px;
+}
+.attitudeEditCameraButton {
+  color: #dddddd;
+}
+.btncoloron {
+  color: #1fffff !important;
+}
+button {
+  background: none;
+  border: none;
+  margin: 0 auto;
+  display: block;
+  line-height: 25px;
+  outline: none;
+}
+button:focus {
+  outline: none !important;
 }
 </style>

@@ -5,19 +5,22 @@ const zh = {
   editing:'编辑',
   show:'显示',
   currentShow:'当前显示',
-  enabled:'启用',
+  enabled:'启用效果',
   isCreating:'isCreating',
   isSelected:'isSelected',
-  loop:'环',
+  loop:'首尾相连',
   loopPlay:'循环飞行',
   positionPicking:'positionPicking',
-  showDirection:'隐藏相机',
-  showHelper:'showHelper',
+  showDirection:'显示关键点方向',
+  showHelper:'显示辅助线框',
   slices:'分隔数',
-  targetPicking:'targetPicking',
+  targetPicking:'方向',
   currentSpeed:'运行速度',
   currentD:'相机位置',
   playing:'飞行',
+  eidtbtn:'编辑按钮',
+  play:'播放',
+  weizhi:'当前位置'
 }
 
 const en = {
@@ -40,6 +43,9 @@ const en = {
   currentSpeed:'currentSpeed',
   currentD:'currentD',
   playing:'playing',
+  eidtbtn:'eidtbtn',
+  play:'play',
+  weizhi:'weizhi'
 }
 
 export default { zh, en }

@@ -3,11 +3,12 @@ const zh = {
   name:'名称',
   creating:'创建',
   editing:'编辑',
+  nearfar:'近远裁',
   far:'Far',
   near:'Near',
   imageUrl:'图标',
   scale:'缩放',
-  show:'是否显示',
+  show:'显示',
   pinstyletype:'内置样式',
   position:{
     longitude:'经度',
@@ -21,7 +22,9 @@ const zh = {
     fillColor:'pin背景',
     outlineColor:'边框/文字',
     pinstyle:'pin图标'
-  }
+  },
+  weizhi:"位置",
+  eidtbtn:"编辑按钮"
 }
 
 const en = {
@@ -47,7 +50,9 @@ const en = {
     fillColor:'FillColor',
     outlineColor:'OutlineColor',
     pinstyle:'Pinstyle'
-  }
+  },
+  weizhi:"weizhi",
+  eidtbtn:"eidt btn"
 }
 
 export default { zh, en }
