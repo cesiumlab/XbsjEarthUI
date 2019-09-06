@@ -75,6 +75,10 @@ vueApp.examples = [
                 "url": "./earth-imagery-zIndex.html"
             },
             {
+                "title": "多地图切换",
+                "url": "./earth-map-switch.html"
+            },
+            {
                 "title": "测量",
                 "url": "./earth-measurement.html"
             },
@@ -135,12 +139,12 @@ vueApp.examples = [
                 "url": "./earth-pin-nearfar.html"
             },
             {
-                "title": "Pin-样式",
-                "url": "./earth-pin-pinBuilder.html"
+                "title": "Pin-onclick",
+                "url": "./earth-pin-onclick.html"
             },
             {
-                "title": "Pin",
-                "url": "./earth-pins.html"
+                "title": "Pin-样式",
+                "url": "./earth-pin-pinBuilder.html"
             },
             {
                 "title": "折线-插值方式",
