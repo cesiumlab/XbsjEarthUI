@@ -138,6 +138,7 @@ export default {
       Path.name = "Path路径属性窗口";
       Path.positionPicking = true;
       Path.isCreating = true;
+       Path.creating = true;
       this.$root.$earthUI.showPropertyWindow(Path);
     },
     pinbtn() {
@@ -146,6 +147,7 @@ export default {
       Pin.name = "Pin 属性窗口";
       Pin.positionPicking = true;
       Pin.isCreating = true;
+       Pin.creating = true;
       this.$root.$earthUI.showPropertyWindow(Pin);
     },
     startMove(event) {

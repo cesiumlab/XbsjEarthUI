@@ -234,9 +234,6 @@ export default {
       );
 
       this.makiIconObj = XE.Obj.Pin.MakiIcon;
-      console.log(this.makiIconObj);
-
-      this.pin.creating = true;
     }
   },
   beforeDestroy() {
@@ -296,7 +293,7 @@ export default {
     },
     selectinput() {
       this.showPinSelect = !this.showPinSelect;
-      console.log(this.showSelect);
+      // console.log(this.showSelect);
     },
     close() {
       this.$parent.destroyTool(this);

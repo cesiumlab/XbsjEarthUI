@@ -73,6 +73,12 @@
         <XbsjSwitch v-model="path.showDirection"></XbsjSwitch>
       </div>
 
+      <!-- 当前方向 -->
+      <div class="flatten">
+        <label>{{lang.currentShow}}</label>
+        <XbsjSwitch v-model="path.currentShow"></XbsjSwitch>
+      </div>
+
       <!-- 暂停播放按钮 -->
       <div class="attitudeEdit">
         <label class="xbsj-label">{{lang.eidtbtn}}</label>
@@ -80,18 +86,24 @@
           <div>
             <button
               class="attitudeEditCameraButton"
-              @click="path.play =!path.play"
-              :class="path.play?'btncoloron':''"
+              @click="path.playing =!path.playing"
+              :class="path.playing?'btncoloron':''"
             >{{lang.play}}</button>
           </div>
           <div>
             <button
               class="attitudeEditCameraButton"
-              @click="path.looppaly =!path.looppaly"
-              :class="path.looppaly?'btncoloron':''"
+              @click="path.loopPlay =!path.loopPlay"
+              :class="path.loopPlay?'btncoloron':''"
             >{{lang.looppaly}}</button>
           </div>
         </div>
+      </div>
+
+      <!-- 速度 -->
+      <div class="flatten">
+        <label>{{lang.currentSpeed}}</label>
+        <input v-model="path.currentSpeed" type="text" />
       </div>
 
       <div class="flatten" style="margin-top:20px;">
@@ -141,6 +153,7 @@ export default {
         name: "",
         creating: false,
         currentD: 0,
+        playing: false,
         currentShow: false,
         currentSpeed: 50,
         editing: false,
@@ -151,8 +164,8 @@ export default {
         loop: false,
         loopPlay: false,
         positionPicking: true,
-        positions: {},
-        rotations: {},
+        // positions: {},
+        // rotations: {},
         show: true,
         showDirection: false,
         showHelper: false,
@@ -174,15 +187,14 @@ export default {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
-    console.log( czmObj.currentPosition);
-
-    console.log(typeof czmObj.currentPosition);
+ 
     if (czmObj) {
       this._czmObj = czmObj;
       const bindData = {
         currentPosition: "path.currentPosition",
         currentRotation: "path.currentRotation",
         name: "path.name",
+        playing: "path.playing",
         creating: "path.creating",
         currentD: "path.currentD",
         currentShow: "path.currentShow",
@@ -195,8 +207,8 @@ export default {
         loop: "path.loop",
         loopPlay: "path.loopPlay",
         // positionPicking:"path.positionPicking",
-        positions: "path.positions",
-        rotations: "path.rotations",
+        // positions: "path.positions",
+        // rotations: "path.rotations",
         show: "path.show",
         showDirection: "path.showDirection",
         showHelper: "path.showHelper",
@@ -212,8 +224,6 @@ export default {
         }
       });
     }
-
-    this.path.creating = true;
   },
   beforeDestroy() {
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
@@ -272,35 +282,35 @@ export default {
     },
     selectinput() {
       this.showPinSelect = !this.showPinSelect;
-      console.log(this.showSelect);
+      // console.log(this.showSelect);
     },
     close() {
       this.$parent.destroyTool(this);
     },
     cancel() {
       this.close();
-      const pinToolObj = this._czmObj;
-      if (!pinToolObj) {
+      const pathToolObj = this._czmObj;
+      if (!pathToolObj) {
         return;
       }
-      pinToolObj.positionEditing = false;
-      if (pinToolObj.isCreating) {
-        pinToolObj.isCreating = false;
-        pinToolObj.destroy();
+      pathToolObj.positionEditing = false;
+      if (pathToolObj.isCreating) {
+        pathToolObj.isCreating = false;
+        pathToolObj.destroy();
       }
     },
     ok() {
       this.close();
-      const pinToolObj = this._czmObj;
-      if (!pinToolObj) {
+      const pathToolObj = this._czmObj;
+      if (!pathToolObj) {
         return;
       }
-      pinToolObj.positionEditing = false;
-      pinToolObj.twoPostionsEditing = false;
-      if (pinToolObj.isCreating) {
-        pinToolObj.isCreating = false;
+      pathToolObj.positionEditing = false;
+      // pathToolObj.twoPostionsEditing = false;
+      if (pathToolObj.isCreating) {
+        pathToolObj.isCreating = false;
 
-        const sceneObject = new XE.SceneTree.Leaf(pinToolObj);
+        const sceneObject = new XE.SceneTree.Leaf(pathToolObj);
         this.$root.$earth.sceneTree.addSceneObject(sceneObject);
       }
     },
