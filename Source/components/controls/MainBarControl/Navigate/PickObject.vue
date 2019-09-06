@@ -54,8 +54,6 @@ export default {
     
   },
   mounted() {
-  
-
     this.bind("hoverEnable");
     this.bind("clickedColor");
     this.bind("hoveredColor");
@@ -67,7 +65,8 @@ export default {
         XE.MVVM.bind(
           this,
           prp,
-          this.$root.$earth.pickedObject,
+          // this.$root.$earth.pickedObject,
+          this.$root.$earth.interaction.picking,
           prp
         )
       );
