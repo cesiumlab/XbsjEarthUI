@@ -119,6 +119,13 @@
           ></XbsjSlider>
         </div>
       </div>
+
+      <!-- 相机绑定 -->
+      <div class="flatten">
+        <label>{{lang.cameraAttached}}</label>
+        <XbsjSwitch v-model="path.cameraAttached"></XbsjSwitch>
+      </div>
+      
       <!-- 当前位置 -->
       <div class="flatten">
         <label>{{lang.weizhi}}</label>
@@ -158,6 +165,7 @@ export default {
         currentSpeed: 50,
         editing: false,
         enabled: true,
+        cameraAttached:false,
         // ignoreDefualt:true,
         isCreating: true,
         isSelected: false,
@@ -190,6 +198,7 @@ export default {
  
     if (czmObj) {
       this._czmObj = czmObj;
+      console.log(this._czmObj)
       const bindData = {
         currentPosition: "path.currentPosition",
         currentRotation: "path.currentRotation",
@@ -213,7 +222,8 @@ export default {
         showDirection: "path.showDirection",
         showHelper: "path.showHelper",
         slices: "path.slices",
-        targetPicking: "path.targetPicking"
+        targetPicking: "path.targetPicking",
+        cameraAttached:"path.cameraAttached"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {

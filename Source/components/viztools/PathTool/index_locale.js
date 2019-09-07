@@ -21,7 +21,8 @@ const zh = {
   eidtbtn:'编辑按钮',
   play:'播放',
   weizhi:'当前位置',
-  looppaly:'循环'
+  looppaly:'循环',
+  cameraAttached:'相机绑定'
 }
 
 const en = {
@@ -47,7 +48,8 @@ const en = {
   eidtbtn:'eidtbtn',
   play:'play',
   weizhi:'weizhi',
-  looppaly:'looppaly'
+  looppaly:'looppaly',
+  cameraAttached:'Attached'
 }
 
 export default { zh, en }

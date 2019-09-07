@@ -234,6 +234,8 @@ export default {
       );
 
       this.makiIconObj = XE.Obj.Pin.MakiIcon;
+      this.makiIconObj.null = "";
+      console.log(this.makiIconObj);
     }
   },
   beforeDestroy() {
@@ -249,6 +251,13 @@ export default {
     }
   },
   watch: {
+    "pin.pinBuilder.text"(e) {
+      if (e !== "") {
+        this.pin.pinBuilder.makiIcon = "";
+      }
+
+      
+    },
     bgbaseColorUI(color) {
       let v = color.rgba;
 
@@ -288,6 +297,8 @@ export default {
   },
   methods: {
     optionssure(c) {
+      console.log(c);
+      console.log(typeof c);
       this.pin.pinBuilder.makiIcon = c;
       this.showPinSelect = !this.showPinSelect;
     },
