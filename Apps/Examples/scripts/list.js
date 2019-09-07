@@ -107,6 +107,10 @@ vueApp.examples = [
                 "url": "./earth-measurement.html"
             },
             {
+                "title": "模型平移旋转",
+                "url": "./earth-model-editing.html"
+            },
+            {
                 "title": "MVVM.watch",
                 "url": "./earth-MVVM-watch.html"
             },
@@ -145,6 +149,10 @@ vueApp.examples = [
             {
                 "title": "路径-飞行",
                 "url": "./earth-path-fly.html"
+            },
+            {
+                "title": "路径-车辆运动",
+                "url": "./earth-path-model.html"
             },
             {
                 "title": "Pin-div",
@@ -197,6 +205,18 @@ vueApp.examples = [
             {
                 "title": "地表限制(地表裁切)",
                 "url": "./earth-restrict.html"
+            },
+            {
+                "title": "扫描线-currentTime",
+                "url": "./earth-scaneline-currentTime.html"
+            },
+            {
+                "title": "扫描线-编辑",
+                "url": "./earth-scaneline-editing.html"
+            },
+            {
+                "title": "扫描线-播放",
+                "url": "./earth-scaneline-play.html"
             },
             {
                 "title": "地下模式和地表透明",

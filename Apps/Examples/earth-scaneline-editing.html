@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="xbsj-labels" content="Earth示例">
     </meta>
-    <title>折线-编辑</title>
+    <title>扫描线-编辑</title>
     <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <script src="./scripts/vue.min.js"></script>
@@ -18,6 +18,11 @@
             height: 100%;
             margin: 0px;
             padding: 0px;
+        }
+
+        .box span{
+            display: block;
+            margin-top: 10px;
         }
 
         .defultbtn {
@@ -43,23 +48,6 @@
             color: #fff;
             border: 1px solid #1E9FFF;
         }
-
-        .poyline {
-            width: 20px;
-            height: 16px;
-            cursor: pointer;
-        }
-
-        .checkbox {
-            display: inline-block;
-            margin: 5px 0;
-            cursor: pointer;
-        }
-
-        input {
-            width: 200px;
-        }
-
     </style>
 </head>
 
@@ -77,10 +65,7 @@
                     </div>
                         <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:200px; font-size:24px; font-family: 宋体;">
                             <div class="defultbtn" :class="{'btnon':creating}" @click="creating = !creating">创建</div>
-                            <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':editing}"  @click="editing = !editing">编辑</div><br/>
-                            <span @click="show = !show" class="checkbox"><input class="poyline" type="checkbox" v-model="show">折线显隐</span><br/>
-                            <span>折线宽度：{{width}}</span>像素<br/><input type="range" min="0" v-model.number="width"><br/>
-                            <span @click="depthTest = !depthTest" class="checkbox"><input class="poyline" type="checkbox" v-model="depthTest">深度检测</span><br/>
+                            <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':editing}"  @click="editing = !editing">编辑</div>
                         </div>
                 </div>
             `,
@@ -88,10 +73,7 @@
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                     creating: false,
-                    editing: false,
-                    show: true,
-                    width: 0,
-                    depthTest: false
+                    editing: false
                 };
             },
             // 1.1 资源创建
@@ -107,68 +89,57 @@
                     "children": [{
                         "ref": 'tileset',
                         "czmObject": {
-                            "name": '大雁塔',
+                            "name": '白模测试2',
                             "xbsjType": "Tileset",
-                            "url": '../assets/dayanta/tileset.json',
-                            "xbsjUseOriginTransform": false,
+                            "url": '//lab2.cesiumlab.com:9000/model/702aa950d03c11e99f7ddd77cbe22fea/tileset.json',
+                            "xbsjPosition": [
+                                2.120577669988032,
+                                0.545203009169497,
+                                9.313225746154785e-10
+                            ],
                         },
                     }, {
-                        "ref": 'polyline1',
+                        "ref": 'scaline1',
                         "czmObject": {
-                            "xbsjType": "Polyline",
-                            "positions": [
-                                [
-                                    1.9016888563093797,
-                                    0.5972258928370555,
-                                    425.51335836189367
-                                ],
-                                [
-                                    1.9017259298773688,
-                                    0.5972286988596388,
-                                    420.32280780951146
-                                ],
-                                [
-                                    1.9017235736282532,
-                                    0.5972663719954203,
-                                    436.43803099065457
-                                ],
-                                [
-                                    1.901681624036163,
-                                    0.5972641480813949,
-                                    420.2476124410519
-                                ]
-                            ]
+                            "xbsjType": "Scaneline",
+                            "position": [
+                                2.1206081845999845,
+                                0.5450905025102283,
+                                0
+                            ],
+                            "playing": true,
+                            "radius": 5000
                         }
                     }, {
                         "czmObject": {
-                            "name": '默认影像',
+                            "name": "谷歌影像",
                             "xbsjType": "Imagery",
-                            "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali"
+                                },
+                            }
                         },
                     }]
                 };
 
                 var tileset = earth.sceneTree.$refs.tileset.czmObject;
-                var polyline1 = earth.sceneTree.$refs.polyline1.czmObject;
+                var scaline1 = earth.sceneTree.$refs.scaline1.czmObject;
 
-
-                // 1.1.3 设置相机位置
+                // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position =  [1.9017017971891215,0.5971690064305392,847.4026284894902];
-                earth.camera.rotation = [6.283185307179345,-0.7856470997805363,6.283185307179586];
+                earth.camera.position =  [2.120534085472877,0.5445599473813671,3486.259508603404];
+                earth.camera.rotation = [6.283185307179578,-0.7863374047795091,1.0658141036401503e-14];
 
-                // 1.1.4 数据绑定
-                this._creatingUnbind = XE.MVVM.bind(this, 'creating', polyline1, 'creating');
-                this._editingUnbind = XE.MVVM.bind(this, 'editing', polyline1, 'editing');
-                this._showUnbind = XE.MVVM.bind(this, 'show', polyline1, 'show');
-                this._widthUnbind = XE.MVVM.bind(this, 'width', polyline1, 'width');
-                this._depthTestUnbind = XE.MVVM.bind(this, 'depthTest', polyline1, 'depthTest');
+                // 1.1.5 数据绑定
+                this._creatingUnbind = XE.MVVM.bind(this, 'creating', scaline1, 'creating');
+                this._editingUnbind = XE.MVVM.bind(this, 'editing', scaline1, 'editing');
 
                 this._earth = earth;
 
                 // only for Debug
                 window.tileset = tileset;
-                window.polyline1 = polyline1;
+                window.scaline1 = scaline1;
                 window.earth = earth;
             },
             // 1.2 资源销毁
@@ -176,9 +147,6 @@
                 // vue程序销毁时，需要清理相关资源
                 this._creatingUnbind = this._creatingUnbind && this._creatingUnbind();
                 this._editingUnbind = this._editingUnbind && this._editingUnbind();
-                this._showUnbind = this._showUnbind && this._showUnbind();
-                this._widthUnbind = this._widthUnbind && this._widthUnbind();
-                this._depthTestUnbind = this._depthTestUnbind && this._depthTestUnbind();
                 this._earth = this._earth && this._earth.destroy();
             },
         }

@@ -98,12 +98,17 @@
                     tileset.flyTo();
                 };
 
-                pin1.onmouseover = () => pin1.scale = 1.1;
-                pin1.onmouseout = () => pin1.scale = 1.0;
+                pin1.onmouseover = () => {
+                    pin1.scale = 1.1;
+                    this.showInfo = true;
+                }
+                pin1.onmouseout = () => {
+                    pin1.scale = 1.0;
+                    this.showInfo = false;
+                }
 
                 // 1.1.5 数据绑定
                 XE.MVVM.track(this, 'winPos', pin1, 'winPos');
-                XE.MVVM.track(this, 'showInfo', pin1, 'hovered');
 
                 this._earth = earth;
 
