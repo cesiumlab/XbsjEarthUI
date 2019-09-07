@@ -59,6 +59,7 @@
                         //startPos: airports[route[1]].coord,
                         //endPos: airports[route[2]].coord,
                         posititons: points,
+                        color: [Math.random() * 0.5 + 0.5, Math.random() * 0.8 + 0.2, 0.0, 1.0],
                         width: 2.0,
                         startTime: timeDuration * Math.random(),
                         duration: moveBaseDuration + 1.0 * Math.random()
@@ -141,6 +142,7 @@
                 this._earth = earth;
 
                 this._odlines = new XE.Obj.ODLines(earth);
+                this._odlines.color = [1, 1, 1, 1];
 
                 loadData((data, timeDuration) => {
                     this._odlines.data = data;
