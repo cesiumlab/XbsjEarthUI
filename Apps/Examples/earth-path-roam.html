@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="xbsj-labels" content="Earth示例">
+  </meta>
+  <title>路径-漫游</title>
+  <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+  <script src="../../XbsjEarth/XbsjEarth.js"></script>
+  <script src="./scripts/vue.min.js"></script>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+    }
+
+    input {
+      width: 350px;
+    }
+
+    .checkbox {
+      display: inline-block;
+      margin: 5px 0;
+      cursor: pointer;
+    }
+
+    .fly {
+      width: 20px;
+      height: 16px;
+    }
+
+    .defultbtn {
+      display: inline-block;
+      text-align: center;
+      min-width: 60px;
+      height: 38px;
+      padding: 0 10px;
+      line-height: 38px;
+      border-radius: 100px;
+      border: 1px solid #C9C9C9;
+      background-color: #FFF;
+      color: #555;
+      cursor: pointer;
+    }
+
+    .defultbtn:hover {
+      background-color: #b3daf8;
+    }
+
+    .btnon {
+      background-color: #1E9FFF;
+      color: #fff;
+      border: 1px solid #1E9FFF;
+    }
+
+    .triangle-top,
+    .triangle-bottom {
+      margin: 10px auto;
+      width: 0;
+      height: 0;
+      border: 40px solid transparent;
+    }
+
+    .triangle-top {
+      border-top-color: coral;
+    }
+
+    .triangle-bottom {
+      border-bottom-color: lightgreen;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+    <earth-comp></earth-comp>
+  </div>
+
+  <script>
+    // 1 创建Earth的vue组件
+    var EarthComp = {
+      template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:400px; font-size:24px; font-family: 宋体;">
+                      <div class="defultbtn" :class="{'btnon':playing}" @click="playing = !playing">播放</div>  
+                      <div class="defultbtn" :class="{'btnon':cameraAttached}" @click="cameraAttached = !cameraAttached">绑定相机</div>  
+                      <span>当前位置: {{ currentD | numFilter}}m</span><br/>
+                        <span><input type="range" min="0"  step="1" v-model="currentD"></span><br/>
+                    </div>
+                    <div class="contrlbox" style="position:absolute;right:18px;bottom:18px;color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:100px; font-size:24px; font-family: 宋体;">
+                      <div class="triangle-bottom"></div>
+                      <div class="triangle-top"></div>
+                    </div>
+                </div>
+            `,
+      data() {
+        return {
+          _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+          show: true, // 控制路径的显示与隐藏，默认为隐藏
+          currentSpeed: 0, // 当前运行速度
+          currentD: 0, // 相机当前位置
+          // pathflying: true,
+          playing: false,
+          cameraAttached: false
+        };
+      },
+      // 1.1 资源创建
+      mounted() {
+        // 1.1.1 创建地球
+        var earth = new XE.Earth(this.$refs.earthContainer);
+        //关闭拾取功能
+        earth.interaction.picking.enabled = false;
+
+        // 1.1.2 场景配置
+        earth.sceneTree.root = {
+          "title": "路径-漫游",
+          "children": [
+            // {
+            //   "ref": "bim",
+            //   "czmObject": {
+            //     "xbsjType": "Tileset",
+            //     "xbsjGuid": "ee6f8c09-0bfe-4725-9f93-c4324f2331a6",
+            //     "name": "BIM测试",
+            //     "url": "http://lab2.cesiumlab.com:9000/model/d16c1ce0ac2d11e99dbd8fd044883638/tileset.json",
+            //     "xbsjPosition": [
+            //       2.0314142297769386,
+            //       0.6965069903408323,
+            //       9.831644570475259
+            //     ],
+            //     "xbsjClippingPlanes": {}
+            //   }
+            // },
+            // {
+            //   "ref": "path",
+            //   "czmObject": {
+            //     "xbsjType": "Path",
+            //     "xbsjGuid": "f5d2c562-2a3f-4c66-9aab-4aefe04d183b",
+            //     "name": "Path路径属性窗口",
+            //     "positions": [
+            //       [
+            //         1.9016746584889261,
+            //         0.5972140444354529,
+            //         540.3422462577171
+            //       ],
+            //       [
+            //         1.9017267341518718,
+            //         0.5972133503414322,
+            //         520.1137699152557
+            //       ],
+            //       [
+            //         1.9017257997179968,
+            //         0.5972736030398242,
+            //         528.3876170108886
+            //       ],
+            //       [
+            //         1.9016747349263112,
+            //         0.5972754003153069,
+            //         521.087861389408
+            //       ]
+            //     ],
+            //     "rotations": [
+            //       [
+            //         6.868275118748086,
+            //         -0.2742692911775144,
+            //         0.0016584301080495578
+            //       ],
+            //       [
+            //         5.703866308921896,
+            //         -0.19385405041989068,
+            //         6.281509509407803
+            //       ],
+            //       [
+            //         3.8005195675504133,
+            //         -0.2597408290639396,
+            //         6.281339310424716
+            //       ],
+            //       [
+            //         2.501667530825695,
+            //         -0.2173829253288364,
+            //         0.001819016773946025
+            //       ]
+            //     ],
+            //   }
+            // }
+
+                {
+                  "ref": "path",
+                  "czmObject": {
+                    "xbsjType": "Path",
+                    "xbsjGuid": "f5d2c562-2a3f-4c66-9aab-4aefe04d183b",
+                    "name": "Path路径属性窗口",
+                    "positions": [
+                      [
+                        2.031412176790723,
+                        0.6965068340053823,
+                        -0.004555991728538495
+                      ],
+                      [
+                        2.031412173201882,
+                        0.6965067330816971,
+                        -0.006508602978240181
+                      ],
+                      [
+                        2.031412159395839,
+                        0.6965063391543752,
+                        -0.014073337727546518
+                      ],
+                      [
+                        2.0314121576997533,
+                        0.6965063161109737,
+                        -0.014073337727546518
+                      ],
+                      [
+                        2.031412065020082,
+                        0.6965063051687521,
+                        -0.014073337727546518
+                      ],
+                      [
+                        2.031412006543111,
+                        0.6965063065591048,
+                        -0.014073337727546518
+                      ],
+                      [
+                        2.031411936473151,
+                        0.6965063081560754,
+                        -0.014073337727546518
+                      ],
+                      [
+                        2.0314112438127787,
+                        0.6965063205133188,
+                        -0.014073337727546518
+                      ],
+                      [
+                        2.0314112091598764,
+                        0.6965063192443798,
+                        -0.014073337727546518
+                      ],
+                      [
+                        2.031411112128972,
+                        0.6965065356176086,
+                        -0.014073337727546518
+                      ],
+                      [
+                        2.0314111111664612,
+                        0.6965065940355605,
+                        -0.014073337727546518
+                      ],
+                      [
+                        2.031411101292652,
+                        0.6965096765923177,
+                        -0.014073337727546518
+                      ],
+                      [
+                        2.0314111008098426,
+                        0.6965097474511452,
+                        -0.014073337727546518
+                      ],
+                      [
+                        2.0314111034317115,
+                        0.6965098239606301,
+                        -0.014073337727546518
+                      ],
+                      [
+                        2.0314110949067414,
+                        0.6965098340119342,
+                        0.14844877495290135
+                      ],
+                      [
+                        2.0314110340554348,
+                        0.6965098320637078,
+                        0.14844877495290135
+                      ],
+                      [
+                        2.031410970601346,
+                        0.6965098296116092,
+                        0.14844877495290135
+                      ],
+                      [
+                        2.0314109184370803,
+                        0.6965098282831916,
+                        0.14844877495290135
+                      ],
+                      [
+                        2.0314108633617636,
+                        0.696509819541416,
+                        0.18118470515002086
+                      ],
+                      [
+                        2.0314108624555445,
+                        0.6965098654764363,
+                        0.18118470515002086
+                      ],
+                      [
+                        2.0314108637033828,
+                        0.6965106310490898,
+                        0.18118470515002086
+                      ],
+                      [
+                        2.0314108545113347,
+                        0.6965113627349575,
+                        0.18118470515002086
+                      ],
+                      [
+                        2.03141085389265,
+                        0.6965113790463517,
+                        0.18118470515002086
+                      ],
+                      [
+                        2.031410836397673,
+                        0.6965113712421689,
+                        0.18118470515002086
+                      ],
+                      [
+                        2.0314107027241253,
+                        0.6965113664401584,
+                        0.18118470515002086
+                      ],
+                      [
+                        2.031410582144291,
+                        0.6965113653940751,
+                        0.18118470515002086
+                      ],
+                      [
+                        2.0314104379865356,
+                        0.6965113569132291,
+                        0.18118470515002086
+                      ],
+                      [
+                        2.0314103560707935,
+                        0.6965113507275109,
+                        0.18118470515002086
+                      ],
+                      [
+                        2.0314103174682137,
+                        0.696511295405809,
+                        0.18118470515002086
+                      ]
+                    ],
+                    "rotations": [
+                      [
+                        -3.1552000427096605,
+                        0,
+                        0
+                      ],
+                      [
+                        -2.7807928237464594,
+                        0,
+                        0
+                      ],
+                      [
+                        -1.4426670991431356,
+                        0,
+                        0
+                      ],
+                      [
+                        -1.6566940549084825,
+                        0,
+                        0
+                      ],
+                      [
+                        -1.4029593194835814,
+                        0,
+                        0
+                      ],
+                      [
+                        -7.698560093197907,
+                        0,
+                        0
+                      ],
+                      [
+                        -1.561241253675949,
+                        0,
+                        0
+                      ],
+                      [
+                        -0.6012630176476095,
+                        0,
+                        0
+                      ],
+                      [
+                        -1.1771089719307417,
+                        0,
+                        0
+                      ],
+                      [
+                        0,
+                        0,
+                        0
+                      ],
+                      [
+                        0,
+                        0,
+                        0
+                      ],
+                      [
+                        0,
+                        0,
+                        0
+                      ],
+                      [
+                        0,
+                        0,
+                        0
+                      ],
+                      [
+                        -0.41106733739673773,
+                        0,
+                        -0.02179478267295165
+                      ],
+                      [
+                        -1.0244669433731044,
+                        0.01469825100819111,
+                        0
+                      ],
+                      [
+                        -1.5870035642796516,
+                        0,
+                        0
+                      ],
+                      [
+                        -1.3576912816894975,
+                        0,
+                        0
+                      ],
+                      [
+                        -0.7886597839232907,
+                        0,
+                        0
+                      ],
+                      [
+                        -0.2907888131246805,
+                        0,
+                        0
+                      ],
+                      [
+                        0,
+                        0,
+                        0
+                      ],
+                      [
+                        0,
+                        0,
+                        0
+                      ],
+                      [
+                        -0.7145029522296933,
+                        0,
+                        0
+                      ],
+                      [
+                        -0.880801531613248,
+                        0,
+                        0
+                      ],
+                      [
+                        -1.6599287107475758,
+                        0,
+                        0
+                      ],
+                      [
+                        -1.5928272392077272,
+                        0,
+                        0
+                      ],
+                      [
+                        -1.6709227930306851,
+                        0,
+                        0
+                      ],
+                      [
+                        -1.5927117569261995,
+                        0,
+                        0
+                      ],
+                      [
+                        3.577323009881348,
+                        0,
+                        0.016054475659453837
+                      ],
+                      [
+                        0,
+                        0,
+                        0
+                      ]
+                    ]
+                  }
+                }
+          ]
+        }
+
+        // 获取bim
+        // var bim = earth.sceneTree.$refs.bim.czmObject;
+        var path = earth.sceneTree.$refs.path.czmObject;
+
+        // 飞向bim所在位置
+        path.flyTo();
+        // console.log(path);
+        //当前播放速度
+        path.currentSpeed = 2;
+        // 开始播放
+        // path.playing = true;
+        path.currentShow = true;
+        // path.cameraAttached = true;
+
+        // 1.1.3 数据绑定
+        // 双向绑定的属性，如果一方发生变化，另一方同样会跟随变化
+        this._showUnbind = XE.MVVM.bind(this, 'show', path, 'show');
+        this._currentSpeedUnbind = XE.MVVM.bind(this, 'currentSpeed', path, 'currentSpeed');
+        this._currentDUnbind = XE.MVVM.bind(this, 'currentD', path, 'currentD');
+        this._cameraAttachedUnbind = XE.MVVM.bind(this, 'cameraAttached', path, 'cameraAttached');
+        this._playingUnbind = XE.MVVM.bind(this, 'playing', path, 'playing');
+
+
+        window.path = path;
+      },
+      filters: {
+        numFilter(value) {
+          // 截取当前数据到小数点后两位
+          let realVal = parseFloat(value).toFixed(2)
+          return realVal
+        }
+      },
+      methods: {
+
+      },
+      // 1.2 资源销毁
+      beforeDestroy() {
+        // vue程序销毁时，需要清理相关资源
+        this._showUnbind = this._showUnbind && this._showUnbind();
+        this._currentSpeedUnbind = this._currentSpeedUnbind && this._currentSpeedUnbind();
+        this._currentDUnbind = this._currentDUnbind && this._currentDUnbind();
+        this._pinUnbind = this._pinUnbind && this._pinUnbind();
+        this._cameraAttachedUnbind = this._cameraAttachedUnbind && this._cameraAttachedUnbind();
+        this._playingUnbind = this._playingUnbind && this._playingUnbind();
+        this._earth = this._earth && this._earth.destroy();
+      },
+    }
+
+    // 2 创建vue程序
+    // XE.ready()用来加载Cesium.js等相关资源
+    XE.ready().then(() => {
+      var app = new Vue({
+        el: '#vueApp',
+        components: {
+          EarthComp,
+        },
+      });
+    });
+  </script>
+</body>
+
+</html>
