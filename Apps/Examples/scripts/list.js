@@ -35,6 +35,30 @@ vueApp.examples = [
                 "url": "./earth-editing.html"
             },
             {
+                "title": "效果-大气",
+                "url": "./earth-effect-atmosphere.html"
+            },
+            {
+                "title": "效果-泛光",
+                "url": "./earth-effect-bloom.html"
+            },
+            {
+                "title": "效果-云",
+                "url": "./earth-effect-cloud.html"
+            },
+            {
+                "title": "效果-雾",
+                "url": "./earth-effect-fog.html"
+            },
+            {
+                "title": "效果-阴影",
+                "url": "./earth-effect-shadow.html"
+            },
+            {
+                "title": "效果-太阳/月亮/星空",
+                "url": "./earth-effect-SunMoonSkyBox.html"
+            },
+            {
                 "title": "第一人称漫游",
                 "url": "./earth-firstperson.html"
             },
