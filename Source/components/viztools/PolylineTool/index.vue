@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="300"
+    :height="458"
     :title="lang.title"
     @cancel="cancel"
     @ok="ok"
