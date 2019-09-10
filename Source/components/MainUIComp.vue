@@ -65,6 +65,7 @@ import ClippingPlaneTool from "./viztools/ClippingPlaneTool";
 import PinTool from "./viztools/PinTool";
 import PathTool from "./viztools/PathTool";
 import ModelTool from "./viztools/ModelTool";
+import PolylineTool from "./viztools/PolylineTool";
 
 import CamerVideoTool from "./viztools/CamerVideoTool";
 import ViewshedTool from "./viztools/ViewshedTool";
@@ -72,7 +73,6 @@ import ViewshedTool from "./viztools/ViewshedTool";
 import PropertyWindow from "./properties/PropertyWindow";
 import CameraViewPrp from "./properties/CameraViewPrp";
 import TilesetStyleEditor from "./properties/TilesetStyleEditor";
- 
 
 import GlobalColorPicker from "./common/GlobalColorPicker";
 import InformationBox from "./utils/InformationBox";
@@ -96,6 +96,7 @@ export default {
     PinTool,
     PathTool,
     ModelTool,
+    PolylineTool,
     CamerVideoTool,
     ViewshedTool,
 
@@ -108,7 +109,7 @@ export default {
     TerrainOnline,
     PropertyWindow,
     CameraViewPrp,
-    TilesetStyleEditor, 
+    TilesetStyleEditor,
     GlobalColorPicker,
     InformationBox,
     ModelTreeTool
@@ -124,8 +125,13 @@ export default {
         Viewshed: "ViewshedTool",
         ClippingPlane: "ClippingPlaneTool",
         Pin: "PinTool",
+<<<<<<< HEAD
         Path:"PathTool",
         Model:"ModelTool",
+=======
+        Path: "PathTool",
+        Polyline: "PolylineTool",
+>>>>>>> 5db3e4c79d517ecbabf4f522f238ae95de3f632e
         ["CameraView.View"]: "CameraViewPrp"
       },
       tools: [
@@ -312,7 +318,7 @@ export default {
         this.tools.splice(index, 1);
       }
     },
- 
+
     promptInfo(info, type) {
       var _info = {
         info,

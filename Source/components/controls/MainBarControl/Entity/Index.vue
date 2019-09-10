@@ -20,6 +20,11 @@
           <div class="xbsj-item-btn pathbutton"></div>
           <span class="xbsj-item-name">{{lang.path}}</span>
         </div>
+        <!-- 折线 -->
+        <div class="xbsj-item-btnbox" @click="polylinebtn" title="折线">
+          <div class="xbsj-item-btn linebutton"></div>
+          <span class="xbsj-item-name">{{lang.line}}</span>
+        </div>
 
         <!-- 模型 -->
         <div class="xbsj-item-btnbox" @click="createmodelbtn">
@@ -30,10 +35,6 @@
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn spotbutton"></div>
           <span class="xbsj-item-name">{{lang.spot}}</span>
-        </div>
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn linebutton"></div>
-          <span class="xbsj-item-name">{{lang.line}}</span>
         </div>
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn facebutton"></div>
@@ -157,12 +158,20 @@ export default {
     },
     pinbtn() {
       var Pin = new XE.Obj.Pin(this.$root.$earth);
-      console.log(Pin);
       Pin.name = "Pin 属性窗口";
       Pin.positionPicking = true;
       Pin.isCreating = true;
       Pin.creating = true;
       this.$root.$earthUI.showPropertyWindow(Pin);
+    },
+    polylinebtn() {
+      var Polyline = new XE.Obj.Polyline(this.$root.$earth);
+      console.log(Polyline);
+      Polyline.name = "polyLine折线属性窗口";
+      Polyline.positionPicking = true;
+      Polyline.isCreating = true;
+      Polyline.creating = true;
+      this.$root.$earthUI.showPropertyWindow(Polyline);
     },
     startMove(event) {
       //如果事件的目标不是本el 返回
