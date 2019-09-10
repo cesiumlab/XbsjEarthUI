@@ -15,10 +15,16 @@
           <div class="xbsj-item-btn pinbutton"></div>
           <span class="xbsj-item-name">{{lang.pin}}</span>
         </div>
-         <!-- 路径 -->
+        <!-- 路径 -->
         <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
           <div class="xbsj-item-btn pathbutton"></div>
           <span class="xbsj-item-name">{{lang.path}}</span>
+        </div>
+
+        <!-- 模型 -->
+        <div class="xbsj-item-btnbox" @click="createmodelbtn">
+          <div class="xbsj-item-btn modelbutton"></div>
+          <span class="xbsj-item-name">{{lang.createmodel}}</span>
         </div>
 
         <div class="xbsj-item-btnbox">
@@ -133,21 +139,29 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    createmodelbtn() {
+      var Model = new XE.Obj.Model(this.$root.$earth);
+      Model.name = "Model属性窗口";
+      // Model.positionPicking = true;
+      // Model.isCreating = true;
+      // Model.creating = true;
+      this.$root.$earthUI.showPropertyWindow(Model);
+    },
     pathbtn() {
       var Path = new XE.Obj.Path(this.$root.$earth);
       Path.name = "Path路径属性窗口";
       Path.positionPicking = true;
       Path.isCreating = true;
-       Path.creating = true;
+      Path.creating = true;
       this.$root.$earthUI.showPropertyWindow(Path);
     },
     pinbtn() {
       var Pin = new XE.Obj.Pin(this.$root.$earth);
-      console.log(Pin)
+      console.log(Pin);
       Pin.name = "Pin 属性窗口";
       Pin.positionPicking = true;
       Pin.isCreating = true;
-       Pin.creating = true;
+      Pin.creating = true;
       this.$root.$earthUI.showPropertyWindow(Pin);
     },
     startMove(event) {
@@ -179,6 +193,17 @@ export default {
 </script>
 
 <style>
+.modelbutton {
+  background: url(../../../../images/createmodel.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.modelbutton:hover {
+  background: url(../../../../images/createmodel_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
 .pathbutton {
   background: url(../../../../images/path.png) no-repeat;
   background-size: contain;

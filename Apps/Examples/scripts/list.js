@@ -243,7 +243,7 @@ vueApp.examples = [
                 "url": "./eath-path-pin.html"
             },
             {
-                "title": "路径-漫游",
+                "title": "路径-室内漫游",
                 "url": "./earth-path-roam.html"
             }
         ]
