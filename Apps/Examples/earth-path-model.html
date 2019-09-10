@@ -296,6 +296,8 @@
                 // vue程序销毁时，需要清理相关资源
                 this._earth = this._earth && this._earth.destroy();
                 this._model = this._model && this._model.destroy();
+                this._uw1 = this._uw1 && this._uw1();
+                this._uw2 = this._uw2 && this._uw2();
                 this._showUnbind = this._showUnbind && this._showUnbind();
                 this._currentSpeedUnbind = this._currentSpeedUnbind && this._currentSpeedUnbind();
                 this._currentDUnbind = this._currentDUnbind && this._currentDUnbind();

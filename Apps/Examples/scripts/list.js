@@ -143,6 +143,10 @@ vueApp.examples = [
                 "url": "./earth-path-direction.html"
             },
             {
+                "title": "路径-双视图",
+                "url": "./earth-path-doubleView.html"
+            },
+            {
                 "title": "路径-编辑",
                 "url": "./earth-path-editing.html"
             },
@@ -153,6 +157,14 @@ vueApp.examples = [
             {
                 "title": "路径-车辆运动",
                 "url": "./earth-path-model.html"
+            },
+            {
+                "title": "路径-漫游",
+                "url": "./earth-path-roam.html"
+            },
+            {
+                "title": "路径-视域分析",
+                "url": "./earth-path-viewshed.html"
             },
             {
                 "title": "Pin-div",
@@ -241,10 +253,6 @@ vueApp.examples = [
             {
                 "title": "路径-pin",
                 "url": "./eath-path-pin.html"
-            },
-            {
-                "title": "路径-漫游",
-                "url": "./earth-path-roam.html"
             }
         ]
     },
