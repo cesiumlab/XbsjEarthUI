@@ -471,7 +471,7 @@ button {
 }
 .xbsj-flatten label {
   float: left;
-  min-width: 50px;
+  min-width: 60px;
   height: 28px;
   line-height: 28px;
   text-align: right;
