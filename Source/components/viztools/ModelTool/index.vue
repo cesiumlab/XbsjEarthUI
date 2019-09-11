@@ -80,11 +80,7 @@ export default {
         xbsjRotation: [0, 0, 0]
       },
       pinstyletype: true,
-
-      langs: languagejs,
-      dighole: false,
-      connections: [],
-      connectedTileset: ""
+      langs: languagejs
     };
   },
   created() {},
@@ -128,48 +124,10 @@ export default {
     }
   },
   watch: {
-    bgbaseColorUI(color) {
-      let v = color.rgba;
-
-      var cc = [v.r / 255.0, v.g / 255.0, v.b / 255.0, v.a];
-      if (!this.bgbaseColor.every((c, index) => c === cc[index])) {
-        this.bgbaseColor = cc;
-      }
-    },
-    bgbaseColor(c) {
-      this.bgbaseColorUI = {
-        rgba: {
-          r: c[0] * 255,
-          g: c[1] * 255,
-          b: c[2] * 255,
-          a: c[3]
-        }
-      };
-    },
-    borderbaseColorUI(color) {
-      let v = color.rgba;
-
-      var cc = [v.r / 255.0, v.g / 255.0, v.b / 255.0, v.a];
-      if (!this.borderbaseColor.every((c, index) => c === cc[index])) {
-        this.borderbaseColor = cc;
-      }
-    },
-    borderbgbaseColor(c) {
-      this.borderbaseColorUI = {
-        rgba: {
-          r: c[0] * 255,
-          g: c[1] * 255,
-          b: c[2] * 255,
-          a: c[3]
-        }
-      };
-    }
+    
   },
   methods: {
-    selectinput() {
-      this.showPinSelect = !this.showPinSelect;
-      // console.log(this.showSelect);
-    },
+
     close() {
       this.$parent.destroyTool(this);
     },
@@ -192,14 +150,10 @@ export default {
         return;
       }
       modelToolObj.positionEditing = false;
-      // modelToolObj.twoPostionsEditing = false;
-
-      // if (modelToolObj.isCreating) {
       modelToolObj.isCreating = false;
       console.log(modelToolObj);
       const sceneObject = new XE.SceneTree.Leaf(modelToolObj);
       this.$root.$earth.sceneTree.addSceneObject(sceneObject);
-      // }
     },
 
     flyto(index) {
