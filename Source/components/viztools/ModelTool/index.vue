@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="300"
+    :height="322"
     :title="lang.title"
     @cancel="cancel"
     @ok="ok"
@@ -13,130 +13,44 @@
       <!-- 名称 -->
       <div class="flatten">
         <label>{{lang.name}}</label>
-        <input style="float:left;" type="text" v-model="path.name" />
+        <input style="float:left;" type="text" v-model="model.name" />
       </div>
 
-      <!-- 编辑按钮 -->
-      <div class="attitudeEdit">
-        <label class="xbsj-label">{{lang.eidtbtn}}</label>
-        <div class="buttonGroup">
-          <div>
-            <button
-              class="attitudeEditCameraButton"
-              @click="path.creating =!path.creating"
-              :class="path.creating?'btncoloron':''"
-            >{{lang.creating}}</button>
-          </div>
-          <div>
-            <button
-              class="attitudeEditCameraButton"
-              @click="path.editing =!path.editing"
-              :class="path.editing?'btncoloron':''"
-            >{{lang.editing}}</button>
-          </div>
-          <div>
-            <button
-              class="attitudeEditCameraButton"
-              @click="path.targetPicking =!path.targetPicking"
-              :class="path.targetPicking?'btncoloron':''"
-            >{{lang.targetPicking}}</button>
-          </div>
+      <!-- 显示隐藏 -->
+      <div class="flatten">
+        <label>{{lang.show}}</label>
+        <XbsjSwitch v-model="model.show"></XbsjSwitch>
+      </div>
+
+      <!-- 模型url -->
+      <div class="flatten">
+        <label>{{lang.url}}</label>
+        <input style="float:left;" type="text" v-model="model.url" />
+      </div>
+
+      <div class="flatten-flex">
+        <!-- positon -->
+        <div class="flatten">
+          <label>{{lang.positionEditing}}</label>
+          <XbsjSwitch v-model="model.positionEditing"></XbsjSwitch>
+        </div>
+        <!-- rotation -->
+        <div class="flatten">
+          <label>{{lang.rotationEditing}}</label>
+          <XbsjSwitch v-model="model.rotationEditing"></XbsjSwitch>
         </div>
       </div>
-
-      <!-- 显示首尾相连 -->
-      <div class="flatten" style="display:flex;">
-        <div>
-          <label>{{lang.show}}</label>
-          <XbsjSwitch v-model="path.show"></XbsjSwitch>
-        </div>
-        <div>
-          <label>{{lang.loop}}</label>
-          <XbsjSwitch v-model="path.loop"></XbsjSwitch>
-        </div>
-      </div>
-
-      <!-- 启用效果 -->
-      <div class="flatten">
-        <label>{{lang.enabled}}</label>
-        <XbsjSwitch v-model="path.enabled"></XbsjSwitch>
-      </div>
-
-      <!-- 显示辅助线框 -->
-      <div class="flatten">
-        <label>{{lang.showHelper}}</label>
-        <XbsjSwitch v-model="path.showHelper"></XbsjSwitch>
-      </div>
-      <!-- 显示关键点方向 -->
-      <div class="flatten">
-        <label>{{lang.showDirection}}</label>
-        <XbsjSwitch v-model="path.showDirection"></XbsjSwitch>
-      </div>
-
-      <!-- 当前方向 -->
-      <div class="flatten">
-        <label>{{lang.currentShow}}</label>
-        <XbsjSwitch v-model="path.currentShow"></XbsjSwitch>
-      </div>
-
-      <!-- 暂停播放按钮 -->
-      <div class="attitudeEdit">
-        <label class="xbsj-label">{{lang.eidtbtn}}</label>
-        <div class="buttonGroup">
-          <div>
-            <button
-              class="attitudeEditCameraButton"
-              @click="path.playing =!path.playing"
-              :class="path.playing?'btncoloron':''"
-            >{{lang.play}}</button>
-          </div>
-          <div>
-            <button
-              class="attitudeEditCameraButton"
-              @click="path.loopPlay =!path.loopPlay"
-              :class="path.loopPlay?'btncoloron':''"
-            >{{lang.looppaly}}</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- 速度 -->
-      <div class="flatten">
-        <label>{{lang.currentSpeed}}</label>
-        <input v-model="path.currentSpeed" type="text" />
-      </div>
-
-      <div class="flatten" style="margin-top:20px;">
-        <label>{{lang.slices}}</label>
-        <div class="field">
-          <XbsjSlider
-            :min="1"
-            :max="100"
-            :step="1"
-            showTip="always"
-            v-model="path.slices"
-            ref="glowFactor"
-          ></XbsjSlider>
-        </div>
-      </div>
-
-      <!-- 相机绑定 -->
-      <div class="flatten">
-        <label>{{lang.cameraAttached}}</label>
-        <XbsjSwitch v-model="path.cameraAttached"></XbsjSwitch>
-      </div>
-      
       <!-- 当前位置 -->
       <div class="flatten">
         <label>{{lang.weizhi}}</label>
         <div class="flatten-box">
-          <XbsjLngLatHeight v-model="path.currentPosition"></XbsjLngLatHeight>
+          <XbsjLngLatHeight v-model="model.xbsjPosition"></XbsjLngLatHeight>
         </div>
       </div>
       <div class="flatten">
         <label>{{lang.currentRotation}}</label>
         <div class="flatten-box">
-          <XbsjHeadingPitchRoll v-model="path.currentRotation"></XbsjHeadingPitchRoll>
+          <XbsjHeadingPitchRoll v-model="model.xbsjRotation"></XbsjHeadingPitchRoll>
         </div>
       </div>
     </div>
@@ -156,8 +70,14 @@ export default {
       lang: {},
       showPinSelect: false,
       makiIconObj: {},
-      path: {
- 
+      model: {
+        name: "",
+        show: true,
+        url: "",
+        positionEditing: false,
+        rotationEditing: false,
+        xbsjPosition: [0, 0, 0],
+        xbsjRotation: [0, 0, 0]
       },
       pinstyletype: true,
 
@@ -170,47 +90,30 @@ export default {
   created() {},
   mounted() {
     // 数据关联
-    // this._disposers = this._disposers || [];
-    // var czmObj = this.getBind();
- 
-    // if (czmObj) {
-    //   this._czmObj = czmObj;
-    //   console.log(this._czmObj)
-    //   const bindData = {
-    //     currentPosition: "path.currentPosition",
-    //     currentRotation: "path.currentRotation",
-    //     name: "path.name",
-    //     playing: "path.playing",
-    //     creating: "path.creating",
-    //     currentD: "path.currentD",
-    //     currentShow: "path.currentShow",
-    //     currentSpeed: "path.currentSpeed",
-    //     editing: "path.editing",
-    //     enabled: "path.enabled",
-    //     // ignoreDefualt:"path.ignoreDefualt",
-    //     // isCreating:"path.isCreating",
-    //     isSelected: "path.isSelected",
-    //     loop: "path.loop",
-    //     loopPlay: "path.loopPlay",
-    //     // positionPicking:"path.positionPicking",
-    //     // positions: "path.positions",
-    //     // rotations: "path.rotations",
-    //     show: "path.show",
-    //     showDirection: "path.showDirection",
-    //     showHelper: "path.showHelper",
-    //     slices: "path.slices",
-    //     targetPicking: "path.targetPicking",
-    //     cameraAttached:"path.cameraAttached"
-    //   };
+    this._disposers = this._disposers || [];
+    var czmObj = this.getBind();
+    console.log(czmObj);
 
-    //   Object.entries(bindData).forEach(([sm, vm]) => {
-    //     if (typeof vm === "string") {
-    //       this._disposers.push(XE.MVVM.bind(this, vm, czmObj, sm));
-    //     } else {
-    //       this._disposers.push(vm.handler(this, vm.prop, czmObj, sm));
-    //     }
-    //   });
-    // }
+    if (czmObj) {
+      this._czmObj = czmObj;
+      const bindData = {
+        name: "model.name",
+        show: "model.show",
+        url: "model.url",
+        positionEditing: "model.positionEditing",
+        rotationEditing: "model.rotationEditing",
+        xbsjRotation: "model.xbsjRotation",
+        xbsjPosition: "model.xbsjPosition"
+      };
+
+      Object.entries(bindData).forEach(([sm, vm]) => {
+        if (typeof vm === "string") {
+          this._disposers.push(XE.MVVM.bind(this, vm, czmObj, sm));
+        } else {
+          this._disposers.push(vm.handler(this, vm.prop, czmObj, sm));
+        }
+      });
+    }
   },
   beforeDestroy() {
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
@@ -218,7 +121,7 @@ export default {
   },
   computed: {
     name() {
-      return this.path.name;
+      return this.model.name;
     },
     guid() {
       return this.getBind().guid;
@@ -263,10 +166,6 @@ export default {
     }
   },
   methods: {
-    optionssure(c) {
-      this.pin.pinBuilder.makiIcon = c;
-      this.showPinSelect = !this.showPinSelect;
-    },
     selectinput() {
       this.showPinSelect = !this.showPinSelect;
       // console.log(this.showSelect);
@@ -276,30 +175,31 @@ export default {
     },
     cancel() {
       this.close();
-      const pathToolObj = this._czmObj;
-      if (!pathToolObj) {
+      const modelToolObj = this._czmObj;
+      if (!modelToolObj) {
         return;
       }
-      pathToolObj.positionEditing = false;
-      if (pathToolObj.isCreating) {
-        pathToolObj.isCreating = false;
-        pathToolObj.destroy();
+      modelToolObj.positionEditing = false;
+      if (modelToolObj.isCreating) {
+        modelToolObj.isCreating = false;
+        modelToolObj.destroy();
       }
     },
     ok() {
       this.close();
-      const pathToolObj = this._czmObj;
-      if (!pathToolObj) {
+      const modelToolObj = this._czmObj;
+      if (!modelToolObj) {
         return;
       }
-      pathToolObj.positionEditing = false;
-      // pathToolObj.twoPostionsEditing = false;
-      if (pathToolObj.isCreating) {
-        pathToolObj.isCreating = false;
+      modelToolObj.positionEditing = false;
+      // modelToolObj.twoPostionsEditing = false;
 
-        const sceneObject = new XE.SceneTree.Leaf(pathToolObj);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
-      }
+      // if (modelToolObj.isCreating) {
+      modelToolObj.isCreating = false;
+      console.log(modelToolObj);
+      const sceneObject = new XE.SceneTree.Leaf(modelToolObj);
+      this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+      // }
     },
 
     flyto(index) {
@@ -314,6 +214,9 @@ export default {
 </script>
 
 <style scoped>
+.flatten-flex {
+  display: flex;
+}
 .field {
   padding-left: 4px;
   display: inline-block;
