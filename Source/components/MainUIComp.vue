@@ -125,13 +125,9 @@ export default {
         Viewshed: "ViewshedTool",
         ClippingPlane: "ClippingPlaneTool",
         Pin: "PinTool",
-<<<<<<< HEAD
-        Path:"PathTool",
-        Model:"ModelTool",
-=======
         Path: "PathTool",
+        Model: "ModelTool",
         Polyline: "PolylineTool",
->>>>>>> 5db3e4c79d517ecbabf4f522f238ae95de3f632e
         ["CameraView.View"]: "CameraViewPrp"
       },
       tools: [
