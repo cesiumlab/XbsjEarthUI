@@ -54,29 +54,30 @@
           <label>{{lang.loop}}</label>
           <XbsjSwitch v-model="path.loop"></XbsjSwitch>
         </div>
+        <!-- 启用效果 -->
+        <div class="flatten">
+          <label>{{lang.enabled}}</label>
+          <XbsjSwitch v-model="path.enabled"></XbsjSwitch>
+        </div>
       </div>
 
-      <!-- 启用效果 -->
-      <div class="flatten">
-        <label>{{lang.enabled}}</label>
-        <XbsjSwitch v-model="path.enabled"></XbsjSwitch>
-      </div>
+      <div class="flatten-flex">
+        <!-- 显示辅助线框 -->
+        <div class="flatten">
+          <label>{{lang.showHelper}}</label>
+          <XbsjSwitch v-model="path.showHelper"></XbsjSwitch>
+        </div>
+        <!-- 显示关键点方向 -->
+        <div class="flatten">
+          <label>{{lang.showDirection}}</label>
+          <XbsjSwitch v-model="path.showDirection"></XbsjSwitch>
+        </div>
 
-      <!-- 显示辅助线框 -->
-      <div class="flatten">
-        <label>{{lang.showHelper}}</label>
-        <XbsjSwitch v-model="path.showHelper"></XbsjSwitch>
-      </div>
-      <!-- 显示关键点方向 -->
-      <div class="flatten">
-        <label>{{lang.showDirection}}</label>
-        <XbsjSwitch v-model="path.showDirection"></XbsjSwitch>
-      </div>
-
-      <!-- 当前方向 -->
-      <div class="flatten">
-        <label>{{lang.currentShow}}</label>
-        <XbsjSwitch v-model="path.currentShow"></XbsjSwitch>
+        <!-- 当前方向 -->
+        <div class="flatten">
+          <label>{{lang.currentShow}}</label>
+          <XbsjSwitch v-model="path.currentShow"></XbsjSwitch>
+        </div>
       </div>
 
       <!-- 暂停播放按钮 -->
@@ -106,26 +107,27 @@
         <input v-model="path.currentSpeed" type="text" />
       </div>
 
-      <div class="flatten" style="margin-top:20px;">
-        <label>{{lang.slices}}</label>
-        <div class="field">
-          <XbsjSlider
-            :min="1"
-            :max="100"
-            :step="1"
-            showTip="always"
-            v-model="path.slices"
-            ref="glowFactor"
-          ></XbsjSlider>
+      <div class="flatten-flex" style="margin-top:20px;">
+        <!-- 相机绑定 -->
+        <div class="flatten" >
+          <label>{{lang.cameraAttached}}</label>
+          <XbsjSwitch v-model="path.cameraAttached"></XbsjSwitch>
+        </div>
+        <div class="flatten" >
+          <label>{{lang.slices}}</label>
+          <div class="field">
+            <XbsjSlider
+              :min="1"
+              :max="100"
+              :step="1"
+              showTip="always"
+              v-model="path.slices"
+              ref="glowFactor"
+            ></XbsjSlider>
+          </div>
         </div>
       </div>
 
-      <!-- 相机绑定 -->
-      <div class="flatten">
-        <label>{{lang.cameraAttached}}</label>
-        <XbsjSwitch v-model="path.cameraAttached"></XbsjSwitch>
-      </div>
-      
       <!-- 当前位置 -->
       <div class="flatten">
         <label>{{lang.weizhi}}</label>
@@ -165,7 +167,7 @@ export default {
         currentSpeed: 50,
         editing: false,
         enabled: true,
-        cameraAttached:false,
+        cameraAttached: false,
         // ignoreDefualt:true,
         isCreating: true,
         isSelected: false,
@@ -195,10 +197,10 @@ export default {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
- 
+
     if (czmObj) {
       this._czmObj = czmObj;
-      console.log(this._czmObj)
+      console.log(this._czmObj);
       const bindData = {
         currentPosition: "path.currentPosition",
         currentRotation: "path.currentRotation",
@@ -223,7 +225,7 @@ export default {
         showHelper: "path.showHelper",
         slices: "path.slices",
         targetPicking: "path.targetPicking",
-        cameraAttached:"path.cameraAttached"
+        cameraAttached: "path.cameraAttached"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -337,6 +339,9 @@ export default {
 </script>
 
 <style scoped>
+.flatten-flex {
+  display: flex;
+}
 .field {
   padding-left: 4px;
   display: inline-block;

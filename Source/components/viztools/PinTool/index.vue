@@ -126,6 +126,8 @@
           ></XbsjSlider>
         </div>
       </div>
+
+
       <!-- pin自定义外部图标 -->
       <div class="flatten" v-show="pinstyletype">
         <label>{{lang.pinBuilder.fillColor}}</label>
@@ -136,6 +138,8 @@
         <label>{{lang.pinBuilder.outlineColor}}</label>
         <XbsjColorButton v-model="borderbaseColorUI" ref="borderbaseColor"></XbsjColorButton>
       </div>
+
+      
       <!-- pin自定义外部图标 -->
       <div class="flatten" v-show="!pinstyletype">
         <label>{{lang.imageUrl}}</label>
