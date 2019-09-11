@@ -100,6 +100,9 @@
                 var viewshed = earth.sceneTree.$refs.viewshed.czmObject;
                 this._viewshed = viewshed;
                 var tileset1 = earth.sceneTree.root.children[0].czmObject;
+
+                // only for Debug
+                window.earth = earth;
                 window.tileset1 = tileset1;
 
                 // 1.1.5 数据绑定

@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="xbsj-labels" content="Earth示例">
   </meta>
-  <title>路径-漫游</title>
+  <title>路径-室内漫游</title>
   <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
   <script src="../../XbsjEarth/XbsjEarth.js"></script>
   <script src="./scripts/vue.min.js"></script>
@@ -532,7 +532,8 @@
         this._cameraAttachedUnbind = XE.MVVM.bind(this, 'cameraAttached', path, 'cameraAttached');
         this._playingUnbind = XE.MVVM.bind(this, 'playing', path, 'playing');
 
-
+        // only for Debug
+        window.earth = earth;
         window.path = path;
       },
       filters: {

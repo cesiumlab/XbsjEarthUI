@@ -77,7 +77,6 @@
       `,
         data() {
           return {
-            // xbsjUseOriginTransform: false,
             positionEditing: false,
             rotationEditing: false,
             xbsjPosition: [0, 0, 0],
@@ -140,7 +139,7 @@
         },
         filters: {
           numFilter(value) {
-            // 截取当前数据到小数点后两位
+            // 截取当前数据到小数点后五位
             let realVal = parseFloat(value).toFixed(5)
             return realVal
           },
