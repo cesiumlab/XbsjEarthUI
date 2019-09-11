@@ -75,12 +75,13 @@
                 bgImagery = earth.sceneTree.root.children[0].czmObject;
 
                 this._earth = earth;
+
+                // only for Debug
+                window.earth = earth;
             },
             // 1.3 资源销毁
             beforeDestroy() {
                 // vue程序销毁时，需要清理相关资源
-                this._showUnbind = this._showUnbind && this._showUnbind();
-                this._alphaUnbind = this._alphaUnbind && this._alphaUnbind();
                 this._earth = this._earth && this._earth.destroy();
             }
         }

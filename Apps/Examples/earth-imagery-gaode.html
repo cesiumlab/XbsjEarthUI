@@ -49,6 +49,9 @@
       }
     }
 
+    // only for Debug
+    window.earth = earth;
+
     // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
     XE.ready().then(startup);
   </script>
