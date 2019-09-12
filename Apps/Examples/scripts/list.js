@@ -7,7 +7,7 @@ vueApp.examples = [
                 "url": "./earth-3dtiles-buildings.html"
             },
             {
-                "title": "3dtiles平移旋转",
+                "title": "3dtiles-平移旋转",
                 "url": "./earth-3dtiles-editing.html"
             },
             {
@@ -107,7 +107,7 @@ vueApp.examples = [
                 "url": "./earth-measurement.html"
             },
             {
-                "title": "模型平移旋转",
+                "title": "模型-平移旋转",
                 "url": "./earth-model-editing.html"
             },
             {
@@ -351,6 +351,10 @@ vueApp.examples = [
             {
                 "title": "使用Vue创建地球",
                 "url": "./startup-createEarthWithVue.html"
+            },
+            {
+                "title": "加载标绘插件",
+                "url": "./startup-curveArrow.html"
             },
             {
                 "title": "3dtiles数据加载",

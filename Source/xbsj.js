@@ -147,9 +147,12 @@ function create(earthDom, options) {
         //去加载 xbsjEarthUI.js
         if (typeof XbsjEarthUI.ready === 'undefined') {
             const xbsjEarthUIUri = getScriptBaseUrl('xbsj') + 'XbsjEarthUI.js';
-            const xbsjEarthDir = (window.xbsjEarthDir || getScriptBaseUrl('xbsj')) + '../XbsjEarth/XbsjEarth.js';
-            Promise.all([loadJS(xbsjEarthUIUri), loadJS(xbsjEarthDir)]).then(() => {
+            const xbsjEarthUri = (window.xbsjEarthDir || getScriptBaseUrl('xbsj')) + '../XbsjEarth/XbsjEarth.js';
+            const xbsjEarthPlottingSymbolUri = (window.xbsjEarthDir || getScriptBaseUrl('xbsj')) + '../XbsjEarth-Plugins/plottingSymbol.js';
+            Promise.all([loadJS(xbsjEarthUIUri), loadJS(xbsjEarthUri)]).then(() => {
                 XE.ready().then(() => {
+                    return loadJS(xbsjEarthPlottingSymbolUri);
+                }).then(() => {
                     //创建earthUI 
                     let earthUI = new XbsjEarthUI.MainUI(earthDom);
                     //隐藏等待图标
