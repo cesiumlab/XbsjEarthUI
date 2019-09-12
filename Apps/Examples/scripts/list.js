@@ -353,6 +353,10 @@ vueApp.examples = [
                 "url": "./startup-createEarthWithVue.html"
             },
             {
+                "title": "加载标绘插件",
+                "url": "./startup-curveArrow.html"
+            },
+            {
                 "title": "3dtiles数据加载",
                 "url": "./startup-tileset.html"
             }
