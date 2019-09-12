@@ -182,7 +182,7 @@ export default {
     // 打开模型属性窗口
     createmodelbtn() {
       var Model = new XE.Obj.Model(this.$root.$earth);
-      Model.name = "Model属性窗口";
+      Model.name = "Model";
       Model.isCreating = true;
       Model.creating = true;
       this.$root.$earthUI.showPropertyWindow(Model);
@@ -190,7 +190,7 @@ export default {
     // 打开path属性窗口
     pathbtn() {
       var Path = new XE.Obj.Path(this.$root.$earth);
-      Path.name = "Path路径属性窗口";
+      Path.name = "Path";
       Path.positionPicking = true;
       Path.isCreating = true;
       Path.creating = true;
@@ -199,7 +199,7 @@ export default {
     // 打开pin属性窗口
     pinbtn() {
       var Pin = new XE.Obj.Pin(this.$root.$earth);
-      Pin.name = "Pin 属性窗口";
+      Pin.name = "Pin";
       Pin.positionPicking = true;
       Pin.isCreating = true;
       Pin.creating = true;
@@ -209,7 +209,7 @@ export default {
     polylinebtn() {
       var Polyline = new XE.Obj.Polyline(this.$root.$earth);
       console.log(Polyline);
-      Polyline.name = "polyLine折线属性窗口";
+      Polyline.name = "polyLine";
       Polyline.positionPicking = true;
       Polyline.isCreating = true;
       Polyline.creating = true;
