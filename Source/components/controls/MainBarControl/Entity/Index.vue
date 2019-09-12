@@ -56,7 +56,7 @@
           <div class="xbsj-item-btn casebutton"></div>
           <span class="xbsj-item-name">{{lang.case}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
+        <div class="xbsj-item-btnbox" @click="routineMore">
           <div class="xbsj-item-btn more"></div>
           <span class="xbsj-item-name">{{lang.more}}</span>
         </div>
@@ -140,6 +140,11 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    // 打开常规更多弹窗
+    routineMore(){
+      
+    },
+    //创建树模型
     createTree(){
         var Model = new XE.Obj.Model(this.$root.$earth);
         Model.url = "../../../../../Apps/assets/shu.glb";
@@ -148,6 +153,7 @@ export default {
         Model.name = "树";
         this.$root.$earthUI.showPropertyWindow(Model);
     },
+    // 创建汽车模型
     createCar() {
         var Model = new XE.Obj.Model(this.$root.$earth);
         Model.url = "../../../../../Apps/assets/gongjiao.glb";
@@ -156,6 +162,7 @@ export default {
         Model.name = "汽车";
         this.$root.$earthUI.showPropertyWindow(Model);
     },
+    // 创建飞机模型
     createPlane() {
         var Model = new XE.Obj.Model(this.$root.$earth);
         Model.url = "../../../../../Apps/assets/feiji.glb";
@@ -164,6 +171,7 @@ export default {
         Model.name = "飞机";
         this.$root.$earthUI.showPropertyWindow(Model);
     },
+    // 打开模型属性窗口
     createmodelbtn() {
       var Model = new XE.Obj.Model(this.$root.$earth);
       Model.name = "Model属性窗口";
@@ -171,6 +179,7 @@ export default {
       Model.creating = true;
       this.$root.$earthUI.showPropertyWindow(Model);
     },
+    // 打开path属性窗口
     pathbtn() {
       var Path = new XE.Obj.Path(this.$root.$earth);
       Path.name = "Path路径属性窗口";
@@ -179,6 +188,7 @@ export default {
       Path.creating = true;
       this.$root.$earthUI.showPropertyWindow(Path);
     },
+    // 打开pin属性窗口
     pinbtn() {
       var Pin = new XE.Obj.Pin(this.$root.$earth);
       Pin.name = "Pin 属性窗口";
@@ -187,6 +197,7 @@ export default {
       Pin.creating = true;
       this.$root.$earthUI.showPropertyWindow(Pin);
     },
+    // 打开polyLine折线
     polylinebtn() {
       var Polyline = new XE.Obj.Polyline(this.$root.$earth);
       console.log(Polyline);
