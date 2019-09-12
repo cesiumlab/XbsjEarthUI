@@ -7,7 +7,7 @@ vueApp.examples = [
                 "url": "./earth-3dtiles-buildings.html"
             },
             {
-                "title": "3dtiles平移旋转",
+                "title": "3dtiles-平移旋转",
                 "url": "./earth-3dtiles-editing.html"
             },
             {
@@ -107,7 +107,7 @@ vueApp.examples = [
                 "url": "./earth-measurement.html"
             },
             {
-                "title": "模型平移旋转",
+                "title": "模型-平移旋转",
                 "url": "./earth-model-editing.html"
             },
             {
