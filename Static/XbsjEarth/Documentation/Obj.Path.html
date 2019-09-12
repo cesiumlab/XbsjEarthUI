@@ -1081,6 +1081,291 @@
         
             
     <div class="nameContainer">
+    <h4 class="name" id="directionAlongThePath">
+        <a href="#directionAlongThePath" class="doc-link"></a>
+        directionAlongThePath<span class="signature">(filterIndex)</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    沿路径计算方向
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>filterIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Array.html">Array</a>.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                索引数组，如果有值，则指只处理filterIndex有的索引，如果无值，则全部处理</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
+    <h4 class="name" id="directionLerpBetween">
+        <a href="#directionLerpBetween" class="doc-link"></a>
+        directionLerpBetween<span class="signature">(first, last)</span>
+        
+
+<div class="source-link rightLinks">
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    根据first和last的rotation，自动过度中间的rotation
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>first</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="default">
+                
+                    <code class="language-javascript">0</code>
+                
+                </td>
+            
+
+            <td class="description last">
+            
+                第一个索引</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>last</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">
+            
+                最后一个索引</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+    <div class="nameContainer">
     <h4 class="name" id="flyTo">
         <a href="#flyTo" class="doc-link"></a>
         flyTo<span class="signature">()</span>
@@ -1262,7 +1547,7 @@
     <div class="nameContainer">
     <h4 class="name" id="targetTo">
         <a href="#targetTo" class="doc-link"></a>
-        targetTo<span class="signature">(target)</span>
+        targetTo<span class="signature">(target, filterIndex)</span>
         
 
 <div class="source-link rightLinks">
@@ -1318,7 +1603,7 @@
             <td class="type">
             
                 
-<span class="param-type">array</span>
+<span class="param-type"><a href="Array.html">Array</a>.&lt;number></span>
 
 
             
@@ -1329,6 +1614,29 @@
             <td class="description last">
             
                 用来表示观察位置，包含三个元素的数组，分别表示经度、纬度、高度</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>filterIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Array.html">Array</a>.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                索引数组，如果有值，则指只处理filterIndex有的索引，如果无值，则全部处理</td>
         </tr>
 
     
