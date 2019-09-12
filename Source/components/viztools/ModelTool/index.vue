@@ -16,12 +16,18 @@
         <input style="float:left;" type="text" v-model="model.name" />
       </div>
 
-      <!-- 显示隐藏 -->
-      <div class="flatten">
-        <label>{{lang.show}}</label>
-        <XbsjSwitch v-model="model.show"></XbsjSwitch>
+      <div class="flatten-flex">
+        <!-- 显示隐藏 -->
+        <div class="flatten">
+          <label>{{lang.show}}</label>
+          <XbsjSwitch v-model="model.show"></XbsjSwitch>
+        </div>
+        <!-- 是否创建 -->
+        <div class="flatten">
+          <label>{{lang.creating}}</label>
+          <XbsjSwitch v-model="model.creating"></XbsjSwitch>
+        </div>
       </div>
-
       <!-- 模型url -->
       <div class="flatten">
         <label>{{lang.url}}</label>
@@ -73,6 +79,7 @@ export default {
       model: {
         name: "",
         show: true,
+        creating: true,
         url: "",
         positionEditing: false,
         rotationEditing: false,
@@ -94,6 +101,7 @@ export default {
       this._czmObj = czmObj;
       const bindData = {
         name: "model.name",
+        creating: "model.creating",
         show: "model.show",
         url: "model.url",
         positionEditing: "model.positionEditing",
@@ -123,11 +131,8 @@ export default {
       return this.getBind().guid;
     }
   },
-  watch: {
-    
-  },
+  watch: {},
   methods: {
-
     close() {
       this.$parent.destroyTool(this);
     },
@@ -150,10 +155,11 @@ export default {
         return;
       }
       modelToolObj.positionEditing = false;
-      modelToolObj.isCreating = false;
-      console.log(modelToolObj);
-      const sceneObject = new XE.SceneTree.Leaf(modelToolObj);
-      this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+      if (modelToolObj.isCreating) {
+        modelToolObj.isCreating = false;
+        const sceneObject = new XE.SceneTree.Leaf(modelToolObj);
+        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+      }
     },
 
     flyto(index) {

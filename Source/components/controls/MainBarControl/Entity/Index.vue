@@ -63,7 +63,7 @@
       </div>
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.model}}</span>
-        <div class="xbsj-item-btnbox ml20">
+        <div class="xbsj-item-btnbox ml20" @click="createPlane">
           <div class="xbsj-item-btn planebutton"></div>
           <span class="xbsj-item-name">{{lang.plane}}</span>
         </div>
@@ -71,11 +71,11 @@
           <div class="xbsj-item-btn characterbutton"></div>
           <span class="xbsj-item-name">{{lang.character}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
+        <div class="xbsj-item-btnbox" @click="createTree">
           <div class="xbsj-item-btn treebutton"></div>
           <span class="xbsj-item-name">{{lang.tree}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
+        <div class="xbsj-item-btnbox" @click="createCar">
           <div class="xbsj-item-btn carbutton"></div>
           <span class="xbsj-item-name">{{lang.car}}</span>
         </div>
@@ -134,18 +134,41 @@ export default {
     return {
       selectlist: false,
       lang: {},
-      langs: languagejs
+      langs: languagejs,
     };
   },
   created() {},
   mounted() {},
   methods: {
+    createTree(){
+        var Model = new XE.Obj.Model(this.$root.$earth);
+        Model.url = "../../../../../Apps/assets/shu.glb";
+        Model.creating = true;
+        Model.isCreating = true;
+        Model.name = "树";
+        this.$root.$earthUI.showPropertyWindow(Model);
+    },
+    createCar() {
+        var Model = new XE.Obj.Model(this.$root.$earth);
+        Model.url = "../../../../../Apps/assets/gongjiao.glb";
+        Model.creating = true;
+        Model.isCreating = true;
+        Model.name = "汽车";
+        this.$root.$earthUI.showPropertyWindow(Model);
+    },
+    createPlane() {
+        var Model = new XE.Obj.Model(this.$root.$earth);
+        Model.url = "../../../../../Apps/assets/feiji.glb";
+        Model.creating = true;
+        Model.isCreating = true;
+        Model.name = "飞机";
+        this.$root.$earthUI.showPropertyWindow(Model);
+    },
     createmodelbtn() {
       var Model = new XE.Obj.Model(this.$root.$earth);
       Model.name = "Model属性窗口";
-      // Model.positionPicking = true;
-      // Model.isCreating = true;
-      // Model.creating = true;
+      Model.isCreating = true;
+      Model.creating = true;
       this.$root.$earthUI.showPropertyWindow(Model);
     },
     pathbtn() {
