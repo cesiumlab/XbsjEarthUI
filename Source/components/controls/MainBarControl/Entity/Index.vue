@@ -123,53 +123,61 @@
           <span class="xbsj-item-name">{{lang.more}}</span>
         </div>
       </div>
+     
     </div>
+     <PlottingMore ref="plottingMore"></PlottingMore>
   </div>
 </template>
 
 <script>
 import languagejs from "./index_locale";
+import PlottingMore from "./PlottingMore/index";
 export default {
+  components: {
+    PlottingMore
+  },
   data() {
     return {
       selectlist: false,
       lang: {},
       langs: languagejs,
+      PlottingShow: false
     };
   },
   created() {},
   mounted() {},
   methods: {
     // 打开常规更多弹窗
-    routineMore(){
-      
+    routineMore() {
+      // console.log(this.$refs);
+      this.$refs.plottingMore.show = !this.$refs.plottingMore.show;
     },
     //创建树模型
-    createTree(){
-        var Model = new XE.Obj.Model(this.$root.$earth);
-        Model.url = "../../../../../Apps/assets/shu.glb";
-        Model.creating = true;
-        Model.isCreating = true;
-        Model.name = "树";
-        this.$root.$earthUI.showPropertyWindow(Model);
+    createTree() {
+      var Model = new XE.Obj.Model(this.$root.$earth);
+      Model.url = "../../../../../Apps/assets/shu.glb";
+      Model.creating = true;
+      Model.isCreating = true;
+      Model.name = "树";
+      this.$root.$earthUI.showPropertyWindow(Model);
     },
     // 创建汽车模型
     createCar() {
-        var Model = new XE.Obj.Model(this.$root.$earth);
-        Model.url = "../../../../../Apps/assets/gongjiao.glb";
-        Model.creating = true;
-        Model.isCreating = true;
-        Model.name = "汽车";
-        this.$root.$earthUI.showPropertyWindow(Model);
+      var Model = new XE.Obj.Model(this.$root.$earth);
+      Model.url = "../../../../../Apps/assets/gongjiao.glb";
+      Model.creating = true;
+      Model.isCreating = true;
+      Model.name = "汽车";
+      this.$root.$earthUI.showPropertyWindow(Model);
     },
     // 创建飞机模型
     createPlane() {
-        var Model = new XE.Obj.Model(this.$root.$earth);
-        Model.url = "../../../../../Apps/assets/feiji.glb";
-        Model.creating = true;
-        Model.isCreating = true;
-        Model.name = "飞机";
-        this.$root.$earthUI.showPropertyWindow(Model);
+      var Model = new XE.Obj.Model(this.$root.$earth);
+      Model.url = "../../../../../Apps/assets/feiji.glb";
+      Model.creating = true;
+      Model.isCreating = true;
+      Model.name = "飞机";
+      this.$root.$earthUI.showPropertyWindow(Model);
     },
     // 打开模型属性窗口
     createmodelbtn() {
