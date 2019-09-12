@@ -66,10 +66,10 @@
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
         XE.ready().then(() => {
             // 加载标绘插件
-            return XE.HTML.loadJS('http://localhost:8080/XbsjEarth-Plugins/plottingSymbol.js');
+            return XE.HTML.loadJS('../../XbsjEarth-Plugins/plottingSymbol.js');
         }).then(() => {
             startup()
-        });            
+        });
     </script>
 </body>
 
