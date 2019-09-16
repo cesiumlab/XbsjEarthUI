@@ -66,6 +66,7 @@ import PinTool from "./viztools/PinTool";
 import PathTool from "./viztools/PathTool";
 import ModelTool from "./viztools/ModelTool";
 import PolylineTool from "./viztools/PolylineTool";
+import GeoCurveArrow from "./viztools/GeoCurveArrow";
 
 import CamerVideoTool from "./viztools/CamerVideoTool";
 import ViewshedTool from "./viztools/ViewshedTool";
@@ -97,6 +98,7 @@ export default {
     PathTool,
     ModelTool,
     PolylineTool,
+    GeoCurveArrow,
     CamerVideoTool,
     ViewshedTool,
 
@@ -128,6 +130,7 @@ export default {
         Path: "PathTool",
         Model: "ModelTool",
         Polyline: "PolylineTool",
+        GeoCurveArrow:"GeoCurveArrow",
         ["CameraView.View"]: "CameraViewPrp"
       },
       tools: [

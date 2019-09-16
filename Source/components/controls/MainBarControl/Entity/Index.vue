@@ -31,6 +31,12 @@
           <div class="xbsj-item-btn modelbutton"></div>
           <span class="xbsj-item-name">{{lang.createmodel}}</span>
         </div>
+        <!-- 曲线箭头 -->
+              <div class="xbsj-item-btnbox" @click="curvedarrowbtn">
+          <div class="xbsj-item-btn modelbutton"></div>
+          <span class="xbsj-item-name">{{lang.curvedarrow}}</span>
+        </div>
+
 
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn spotbutton"></div>
@@ -147,6 +153,15 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    //打开曲线箭头弹窗
+    curvedarrowbtn(){
+   var GeoCurveArrow = new XE.Obj.Plots.GeoCurveArrow(this.$root.$earth);
+   console.log(GeoCurveArrow)
+      GeoCurveArrow.creating = true;
+      GeoCurveArrow.isCreating = true;
+      GeoCurveArrow.name = "曲线箭头";
+      this.$root.$earthUI.showPropertyWindow(GeoCurveArrow);
+    },
     // 打开常规更多弹窗
     routineMore() {
       // console.log(this.$refs);
