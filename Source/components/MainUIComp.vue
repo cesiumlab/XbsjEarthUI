@@ -67,6 +67,10 @@ import PathTool from "./viztools/PathTool";
 import ModelTool from "./viztools/ModelTool";
 import PolylineTool from "./viztools/PolylineTool";
 import GeoCurveArrow from "./viztools/GeoCurveArrow";
+import GeoDoubleArrow from "./viztools/GeoDoubleArrow";
+import GeoSectorSearch from "./viztools/GeoSectorSearch";
+import GeoPolylineArrow from "./viztools/GeoPolylineArrow";
+import GeoTriFlag from "./viztools/GeoTriFlag";
 
 import CamerVideoTool from "./viztools/CamerVideoTool";
 import ViewshedTool from "./viztools/ViewshedTool";
@@ -99,6 +103,11 @@ export default {
     ModelTool,
     PolylineTool,
     GeoCurveArrow,
+    GeoDoubleArrow,
+    GeoSectorSearch,
+    GeoPolylineArrow,
+    GeoTriFlag,
+
     CamerVideoTool,
     ViewshedTool,
 
@@ -130,7 +139,10 @@ export default {
         Path: "PathTool",
         Model: "ModelTool",
         Polyline: "PolylineTool",
-        GeoCurveArrow:"GeoCurveArrow",
+        GeoCurveArrow: "GeoCurveArrow",
+        GeoSectorSearch: "GeoSectorSearch",
+        GeoPolylineArrow: "GeoPolylineArrow",
+        GeoTriFlag: "GeoTriFlag",
         ["CameraView.View"]: "CameraViewPrp"
       },
       tools: [
