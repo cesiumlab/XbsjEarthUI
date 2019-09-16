@@ -148,7 +148,7 @@ function create(earthDom, options) {
         if (typeof XbsjEarthUI.ready === 'undefined') {
             const xbsjEarthUIUri = getScriptBaseUrl('xbsj') + 'XbsjEarthUI.js';
             const xbsjEarthUri = (window.xbsjEarthDir || getScriptBaseUrl('xbsj')) + '../XbsjEarth/XbsjEarth.js';
-            const xbsjEarthPlottingSymbolUri = (window.xbsjEarthDir || getScriptBaseUrl('xbsj')) + '../XbsjEarth-Plugins/plottingSymbol.js';
+            const xbsjEarthPlottingSymbolUri = getScriptBaseUrl('xbsj') + '../XbsjEarth-Plugins/plottingSymbol.js';
             Promise.all([loadJS(xbsjEarthUIUri), loadJS(xbsjEarthUri)]).then(() => {
                 XE.ready().then(() => {
                     return loadJS(xbsjEarthPlottingSymbolUri);
