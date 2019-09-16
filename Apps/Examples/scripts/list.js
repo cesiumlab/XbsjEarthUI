@@ -167,6 +167,10 @@ vueApp.examples = [
                 "url": "./earth-path-viewshed.html"
             },
             {
+                "title": "拾取-3dtiles数据",
+                "url": "./earth-picking-3dtiles.html"
+            },
+            {
                 "title": "Pin-div",
                 "url": "./earth-pin-div.html"
             },

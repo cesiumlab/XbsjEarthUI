@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <title>拾取-3dtiles数据</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .checkbox {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div style="line-height: 30px; padding-left: 5px; position: absolute; left: 10px; top: 10px; background: rgba(0, 0, 0, 0.5); color: white">
+                        <button @click="flyTo">定位</button><br/>
+                    </div>
+                </div>
+            `,
+
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "expand": true,
+                    "title": "预览场景",
+                    "children": [
+                        {
+                            "czmObject": {
+                                "xbsjType": "Imagery",
+                                "name": "离线影像",
+                                "show": true,
+                                "xbsjImageryProvider": {
+                                    "createTileMapServiceImageryProvider": {
+                                        "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                        "fileExtension": 'jpg',
+                                    },
+                                    "type": 'createTileMapServiceImageryProvider',
+                                },
+                            }
+                        },                     
+                        {
+                            "czmObject": {
+                                "xbsjType": "Tileset",
+                                "name": "BIM测试",
+                                "url": "http://lab2.cesiumlab.com:9000/model/d16c1ce0ac2d11e99dbd8fd044883638/tileset.json",
+                            }
+                        }
+                    ]
+                };
+
+                const tileset1 = earth.sceneTree.root.children[1].czmObject;
+
+                // Cesium后处理
+                var silhouetteBlue = Cesium.PostProcessStageLibrary.createEdgeDetectionStage();
+                silhouetteBlue.uniforms.color = Cesium.Color.BLUE;
+                silhouetteBlue.uniforms.length = 0.01;
+                silhouetteBlue.selected = [];
+
+                var silhouetteGreen = Cesium.PostProcessStageLibrary.createEdgeDetectionStage();
+                silhouetteGreen.uniforms.color = Cesium.Color.LIME;
+                silhouetteGreen.uniforms.length = 0.01;
+                silhouetteGreen.selected = [];                
+
+                earth.czm.scene.postProcessStages.add(Cesium.PostProcessStageLibrary.createSilhouetteStage([silhouetteBlue, silhouetteGreen]));
+
+                // 拾取事件定制
+                tileset1.onclick = pickedObject => {
+                    // pickedObject.getProperty('id');
+                    // pickedObject.getProperty('name');
+
+                    if (!silhouetteBlue.selected || silhouetteBlue.selected[0] !== pickedObject) {
+                        silhouetteBlue.selected = [pickedObject];
+                    }
+
+                    // return false; 是否禁用点选效果？
+                };
+
+                tileset1.onclickout = () => {
+                    if (silhouetteBlue.selected && silhouetteBlue.selected.length > 0) {
+                        silhouetteBlue.selected = [];
+                    }
+
+                    // return false; 是否禁用点选效果？
+                }
+
+                tileset1.onmouseover = pickedObject => {
+                    if (!silhouetteGreen.selected || silhouetteGreen.selected[0] !== pickedObject) {
+                        silhouetteGreen.selected = [pickedObject];
+                    }
+                    // return false; 是否禁用点选效果？
+                };
+                
+                tileset1.onmouseout = () => {
+                    if (silhouetteGreen.selected && silhouetteGreen.selected.length > 0) {
+                        silhouetteGreen.selected = [];
+                    }
+                    // return false; 是否禁用点选效果？
+                };
+
+                earth.camera.position = [2.0314298769404595, 0.6965174410620686, 82.46076133637786];
+                earth.camera.rotation = [4.052519100358341, -0.6321174896815931, 6.279954969503336];
+
+                this._tileset = tileset1;
+                this._earth = earth;
+
+                // only for debug
+                window.earth = this._earth;
+                window.tileset1 = this._tileset;
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._earth = this._earth && this._earth.destroy();
+            },
+            methods: {
+                flyTo() {
+                    this._tileset.flyTo();
+                }
+            }
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>
