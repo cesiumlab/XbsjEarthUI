@@ -32,11 +32,31 @@
           <span class="xbsj-item-name">{{lang.createmodel}}</span>
         </div>
         <!-- 曲线箭头 -->
-              <div class="xbsj-item-btnbox" @click="curvedarrowbtn">
-          <div class="xbsj-item-btn modelbutton"></div>
+        <div class="xbsj-item-btnbox" @click="curvedarrowbtn">
+          <div class="xbsj-item-btn curvedarrow"></div>
           <span class="xbsj-item-name">{{lang.curvedarrow}}</span>
         </div>
 
+        <!-- 折线箭头 -->
+        <div class="xbsj-item-btnbox" @click="PolylineArrow">
+          <div class="xbsj-item-btn PolylineArrow"></div>
+          <span class="xbsj-item-name">{{lang.PolylineArrow}}</span>
+        </div>
+        <!-- 扇区搜索 -->
+        <div class="xbsj-item-btnbox" @click="SectorSearch">
+          <div class="xbsj-item-btn modelbutton"></div>
+          <span class="xbsj-item-name">{{lang.SectorSearch}}</span>
+        </div>
+        <!-- 三角旗帜 -->
+        <div class="xbsj-item-btnbox" @click="TriFlag">
+          <div class="xbsj-item-btn TriFlag"></div>
+          <span class="xbsj-item-name">{{lang.TriFlag}}</span>
+        </div>
+        <!-- 双箭头 -->
+        <div class="xbsj-item-btnbox" @click="DoubleArrow">
+          <div class="xbsj-item-btn DoubleArrow"></div>
+          <span class="xbsj-item-name">{{lang.DoubleArrow}}</span>
+        </div>
 
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn spotbutton"></div>
@@ -129,9 +149,8 @@
           <span class="xbsj-item-name">{{lang.more}}</span>
         </div>
       </div>
-     
     </div>
-     <PlottingMore ref="plottingMore"></PlottingMore>
+    <PlottingMore ref="plottingMore"></PlottingMore>
   </div>
 </template>
 
@@ -153,10 +172,46 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    //双箭头
+    DoubleArrow() {
+      var DoubleArrow = new XE.Obj.Plots.GeoDoubleArrow(this.$root.$earth);
+      console.log(DoubleArrow);
+      DoubleArrow.creating = true;
+      DoubleArrow.isCreating = true;
+      DoubleArrow.name = "双箭头";
+      this.$root.$earthUI.showPropertyWindow(DoubleArrow);
+    },
+    //三角旗帜
+    TriFlag() {
+      var TriFlag = new XE.Obj.Plots.GeoTriFlag(this.$root.$earth);
+      console.log(TriFlag);
+      TriFlag.creating = true;
+      TriFlag.isCreating = true;
+      TriFlag.name = "三角旗帜";
+      this.$root.$earthUI.showPropertyWindow(TriFlag);
+    },
+    //打开扇形搜索
+    SectorSearch() {
+      var SectorSearch = new XE.Obj.Plots.GeoSectorSearch(this.$root.$earth);
+      console.log(SectorSearch);
+      SectorSearch.creating = true;
+      SectorSearch.isCreating = true;
+      SectorSearch.name = "扇形搜索";
+      this.$root.$earthUI.showPropertyWindow(SectorSearch);
+    },
+    // 打开折线箭头弹窗
+    PolylineArrow() {
+      var PolylineArrow = new XE.Obj.Plots.GeoPolylineArrow(this.$root.$earth);
+      console.log(PolylineArrow);
+      PolylineArrow.creating = true;
+      PolylineArrow.isCreating = true;
+      PolylineArrow.name = "折线箭头";
+      this.$root.$earthUI.showPropertyWindow(PolylineArrow);
+    },
     //打开曲线箭头弹窗
-    curvedarrowbtn(){
-   var GeoCurveArrow = new XE.Obj.Plots.GeoCurveArrow(this.$root.$earth);
-   console.log(GeoCurveArrow)
+    curvedarrowbtn() {
+      var GeoCurveArrow = new XE.Obj.Plots.GeoCurveArrow(this.$root.$earth);
+      console.log(GeoCurveArrow);
       GeoCurveArrow.creating = true;
       GeoCurveArrow.isCreating = true;
       GeoCurveArrow.name = "曲线箭头";
@@ -259,6 +314,63 @@ export default {
 </script>
 
 <style>
+
+.DoubleArrow {
+  background: url(../../../../images/DoubleArrow.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.DoubleArrow:hover {
+  background: url(../../../../images/DoubleArrow_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.TriFlag {
+  background: url(../../../../images/TriFlag.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.TriFlag:hover {
+  background: url(../../../../images/TriFlag_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+
+/* .SectorSearch {
+  background: url(../../../../images/SectorSearch.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.SectorSearch:hover {
+  background: url(../../../../images/SectorSearch_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+} */
+
+
+.PolylineArrow {
+  background: url(../../../../images/PolylineArrow.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.PolylineArrow:hover {
+  background: url(../../../../images/PolylineArrow_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.curvedarrow {
+  background: url(../../../../images/CurveArrow.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.curvedarrow:hover {
+  background: url(../../../../images/CurveArrow_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
 .modelbutton {
   background: url(../../../../images/createmodel.png) no-repeat;
   background-size: contain;
