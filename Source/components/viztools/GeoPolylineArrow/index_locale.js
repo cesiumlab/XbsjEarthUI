@@ -1,5 +1,5 @@
 const zh = {
-  title: '双箭头',
+  title: '折线箭头',
   name: '名称',
   show:'显示',
   creating:'创建',
@@ -10,7 +10,7 @@ const zh = {
 };
 
 const en = {
-  title: 'GeoDoubleArrow',
+  title: 'GeoPolylineArrow',
   name: 'name',
   show:'show',
   creating:'creating',

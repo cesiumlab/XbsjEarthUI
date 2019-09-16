@@ -1,11 +1,11 @@
 const zh = {
-  title: '双箭头',
+  title: '三角旗帜',
   name: '名称',
   show:'显示',
   creating:'创建',
   editing:'编辑',
   ground:'贴地',
-  width:'宽度',
+  outlineWidth:'宽度',
   color:'颜色'
 };
 
@@ -16,7 +16,7 @@ const en = {
   creating:'creating',
   editing:'editing',
   ground:'ground',
-  width:'width',
+  outlineWidth:'width',
   color:'color'
 };
 

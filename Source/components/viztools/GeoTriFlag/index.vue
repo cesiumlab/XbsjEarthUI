@@ -39,19 +39,19 @@
           <XbsjSwitch v-model="model.ground"></XbsjSwitch>
         </div>
         <!-- 宽度 -->
-        <div class="flatten" style="margin-top:20px;">
-          <label>{{lang.width}}</label>
+        <!-- <div class="flatten" style="margin-top:20px;">
+          <label>{{lang.outlineWidth}}</label>
           <div class="field">
             <XbsjSlider
               :min="1"
               :max="100"
               :step="1"
               showTip="always"
-              v-model="model.width"
+              v-model="model.outlineWidth"
               ref="glowFactor"
             ></XbsjSlider>
           </div>
-        </div>
+        </div> -->
       </div>
       <!-- 颜色 -->
       <div class="flatten" style="margin-top:30px;">
@@ -81,7 +81,7 @@ export default {
         creating: false,
         editing: false,
         ground: false,
-        width: 1
+        outlineWidth: 1
       },
       bgbaseColorUI: {
         rgba: {
@@ -110,20 +110,23 @@ export default {
         show: "model.show",
         creating: "model.creating",
         editing: "model.editing",
-        width: "model.width",
+        outlineWidth: "model.outlineWidth",
         ground: "model.ground"
         // color: "bgbaseColor"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
-        if (typeof vm === "string") {
-          this._disposers.push(XE.MVVM.bind(this, vm, czmObj, sm));
-        } else {
-          this._disposers.push(vm.handler(this, vm.prop, czmObj, sm));
-        }
+        console.log(vm)
+        console.log(sm)
+
+        // if (typeof vm === "string") {
+        //   this._disposers.push(XE.MVVM.bind(this, vm, czmObj, sm));
+        // } else {
+        //   this._disposers.push(vm.handler(this, vm.prop, czmObj, sm));
+        // }
       });
 
-      this._disposers.push(XE.MVVM.bind(this, "bgbaseColor", czmObj, "color"));
+      // this._disposers.push(XE.MVVM.bind(this, "bgbaseColor", czmObj, "color"));
     }
   },
   beforeDestroy() {
