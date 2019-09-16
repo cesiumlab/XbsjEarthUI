@@ -94,6 +94,11 @@
                 };
 
                 const tileset1 = earth.sceneTree.root.children[1].czmObject;
+
+                // 取消鼠标操作，类似html元素的操作，return false相当于不执行默认操作。
+                tileset1.onclick = () => false; 
+                tileset1.onmouseover = () => false;
+
                 earth.postProcess.bloom.enabled = true; // 开启泛光
 
                 // 1.1.5 数据绑定
