@@ -143,6 +143,7 @@ export default {
         GeoSectorSearch: "GeoSectorSearch",
         GeoPolylineArrow: "GeoPolylineArrow",
         GeoTriFlag: "GeoTriFlag",
+        GeoDoubleArrow:"GeoDoubleArrow",
         ["CameraView.View"]: "CameraViewPrp"
       },
       tools: [

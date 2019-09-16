@@ -34,29 +34,51 @@
       </div>
       <div class="flatten-flex">
         <!-- 贴地 -->
-        <div class="flatten" style="margin-top:20px;">
+        <div class="flatten">
           <label>{{lang.ground}}</label>
           <XbsjSwitch v-model="model.ground"></XbsjSwitch>
         </div>
-        <!-- 宽度 -->
-        <!-- <div class="flatten" style="margin-top:20px;">
-          <label>{{lang.outlineWidth}}</label>
-          <div class="field">
-            <XbsjSlider
-              :min="1"
-              :max="100"
-              :step="1"
-              showTip="always"
-              v-model="model.outlineWidth"
-              ref="glowFactor"
-            ></XbsjSlider>
-          </div>
-        </div> -->
+        <div class="flatten">
+          <label>{{lang.outlineShow}}</label>
+          <XbsjSwitch v-model="model.outlineShow"></XbsjSwitch>
+        </div>
       </div>
+      <!-- 宽度 -->
+      <div class="flatten" style="margin-top:20px;">
+        <label>{{lang.outlineWidth}}</label>
+        <div class="field">
+          <XbsjSlider
+            :min="1"
+            :max="100"
+            :step="1"
+            showTip="always"
+            v-model="model.outlineWidth"
+            ref="glowFactor"
+          ></XbsjSlider>
+        </div>
+      </div>
+      <!-- 填充不透明度 -->
+      <!-- <div class="flatten" style="margin-top:20px;">
+        <label>{{lang.transparency}}</label>
+        <div class="field">
+          <XbsjSlider
+            :min="0"
+            :max="1"
+            :step="0.1"
+            showTip="always"
+            v-model="bgbaseColorUI[3]"
+            ref="glowFactor"
+          ></XbsjSlider>
+        </div>
+      </div>-->
       <!-- 颜色 -->
-      <div class="flatten" style="margin-top:30px;">
+      <div class="flatten">
         <label>{{lang.color}}</label>
         <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
+      </div>
+      <div class="flatten" v-show="pinstyletype">
+        <label>{{lang.outlineColor}}</label>
+        <XbsjColorButton v-model="borderbaseColorUI" ref="borderbaseColor"></XbsjColorButton>
       </div>
     </div>
   </Window>
@@ -81,7 +103,8 @@ export default {
         creating: false,
         editing: false,
         ground: false,
-        outlineWidth: 1
+        outlineWidth: 1,
+        outlineShow: false
       },
       bgbaseColorUI: {
         rgba: {
@@ -92,6 +115,15 @@ export default {
         }
       },
       bgbaseColor: [0, 0, 0.5, 1],
+      borderbaseColorUI: {
+        rgba: {
+          r: 0,
+          g: 0,
+          b: 255,
+          a: 1
+        }
+      },
+      borderbaseColor: [0, 0, 0.5, 1],
       pinstyletype: true,
       langs: languagejs
     };
@@ -111,22 +143,26 @@ export default {
         creating: "model.creating",
         editing: "model.editing",
         outlineWidth: "model.outlineWidth",
-        ground: "model.ground"
-        // color: "bgbaseColor"
+        ground: "model.ground",
+        outlineWidth: "model.outlineWidth",
+        outlineShow: "model.outlineShow"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
-        console.log(vm)
-        console.log(sm)
+        console.log(vm);
+        console.log(sm);
 
-        // if (typeof vm === "string") {
-        //   this._disposers.push(XE.MVVM.bind(this, vm, czmObj, sm));
-        // } else {
-        //   this._disposers.push(vm.handler(this, vm.prop, czmObj, sm));
-        // }
+        if (typeof vm === "string") {
+          this._disposers.push(XE.MVVM.bind(this, vm, czmObj, sm));
+        } else {
+          this._disposers.push(vm.handler(this, vm.prop, czmObj, sm));
+        }
       });
 
-      // this._disposers.push(XE.MVVM.bind(this, "bgbaseColor", czmObj, "color"));
+      this._disposers.push(XE.MVVM.bind(this, "bgbaseColor", czmObj, "color"));
+      this._disposers.push(
+        XE.MVVM.bind(this, "borderbaseColor", czmObj, "outlineColor")
+      );
     }
   },
   beforeDestroy() {
@@ -151,6 +187,24 @@ export default {
     },
     bgbaseColor(c) {
       this.bgbaseColorUI = {
+        rgba: {
+          r: c[0] * 255,
+          g: c[1] * 255,
+          b: c[2] * 255,
+          a: c[3]
+        }
+      };
+    },
+    borderbaseColorUI(color) {
+      let v = color.rgba;
+
+      var cc = [v.r / 255.0, v.g / 255.0, v.b / 255.0, v.a];
+      if (!this.borderbaseColor.every((c, index) => c === cc[index])) {
+        this.borderbaseColor = cc;
+      }
+    },
+    borderbgbaseColor(c) {
+      this.borderbaseColorUI = {
         rgba: {
           r: c[0] * 255,
           g: c[1] * 255,

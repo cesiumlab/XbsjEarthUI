@@ -5,8 +5,11 @@ const zh = {
   creating:'创建',
   editing:'编辑',
   ground:'贴地',
-  outlineWidth:'宽度',
-  color:'颜色'
+  outlineWidth:'边框宽度',
+  outlineShow:'边框显示',
+  outlineColor:'边框颜色',
+  color:'颜色',
+  transparency:'透明度'
 };
 
 const en = {
@@ -17,7 +20,10 @@ const en = {
   editing:'editing',
   ground:'ground',
   outlineWidth:'width',
-  color:'color'
+  outlineShow:'outlineShow',
+  outlineColor:'outlineColor',
+  color:'color',
+  transparency:'transparency'
 };
 
 export default {

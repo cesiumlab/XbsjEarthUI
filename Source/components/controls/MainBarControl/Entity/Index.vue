@@ -316,12 +316,12 @@ export default {
 <style>
 
 .DoubleArrow {
-  background: url(../../../../images/DoubleArrow.png) no-repeat;
+  background: url(../../../../images/doublearrow.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
 .DoubleArrow:hover {
-  background: url(../../../../images/DoubleArrow_on.png) no-repeat;
+  background: url(../../../../images/doublearrow_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
