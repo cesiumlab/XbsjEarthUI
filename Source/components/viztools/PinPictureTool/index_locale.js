@@ -1,8 +1,8 @@
 const zh = {
   title:'图标属性',
   name:'名称',
-  creating:'鼠标点选',
-  editing:'修改位置',
+  creating:'创建',
+  editing:'编辑',
   nearfar:'近远裁',
   far:'Far',
   near:'Near',
@@ -19,7 +19,7 @@ const zh = {
   pinBuilder:{
     text:'内容',
     size:'大小',
-    fillColor:'图标背景',
+    fillColor:'背景',
     outlineColor:'边框/文字',
     pinstyle:'图标'
   },

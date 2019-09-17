@@ -11,10 +11,19 @@
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.routine}}</span>
         <!-- Pin -->
-        <div class="xbsj-item-btnbox ml20" @click="pinbtn" title="创建Pin">
+        <div class="xbsj-item-btnbox ml20" @click="pinbtn" title="内置图标">
           <div class="xbsj-item-btn pinbutton"></div>
           <span class="xbsj-item-name">{{lang.pin}}</span>
         </div>
+        <div class="xbsj-item-btnbox ml20" @click="pinpicturebtn" title="外置图标">
+          <div class="xbsj-item-btn pinbutton"></div>
+          <span class="xbsj-item-name">{{lang.pinpicturebtn}}</span>
+        </div>
+        <div class="xbsj-item-btnbox ml20" @click="pindivbtn" title="div图标">
+          <div class="xbsj-item-btn pinbutton"></div>
+          <span class="xbsj-item-name">{{lang.pindivbtn}}</span>
+        </div>
+
         <!-- 路径 -->
         <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
           <div class="xbsj-item-btn pathbutton"></div>
@@ -269,11 +278,27 @@ export default {
     // 打开pin属性窗口
     pinbtn() {
       var Pin = new XE.Obj.Pin(this.$root.$earth);
-      Pin.name = "Pin";
+      Pin.name = "内置图标";
       Pin.positionPicking = true;
       Pin.isCreating = true;
       Pin.creating = true;
       this.$root.$earthUI.showPropertyWindow(Pin);
+    },
+    pindivbtn() {
+      var PinDivTool = new XE.Obj.Pin(this.$root.$earth);
+      PinDivTool.name = "div图标";
+      PinDivTool.positionPicking = true;
+      PinDivTool.isCreating = true;
+      PinDivTool.creating = true;
+      this.$root.$earthUI.showPropertyWindow(PinDivTool);
+    },
+    pinpicturebtn() {
+      var PinPictureTool = new XE.Obj.Pin(this.$root.$earth);
+      PinPictureTool.name = "外置图标";
+      PinPictureTool.positionPicking = true;
+      PinPictureTool.isCreating = true;
+      PinPictureTool.creating = true;
+      this.$root.$earthUI.showPropertyWindow(PinPictureTool);
     },
     // 打开polyLine折线
     polylinebtn() {
@@ -314,7 +339,6 @@ export default {
 </script>
 
 <style>
-
 .DoubleArrow {
   background: url(../../../../images/doublearrow.png) no-repeat;
   background-size: contain;
@@ -337,7 +361,6 @@ export default {
   cursor: pointer;
 }
 
-
 /* .SectorSearch {
   background: url(../../../../images/SectorSearch.png) no-repeat;
   background-size: contain;
@@ -348,7 +371,6 @@ export default {
   background-size: contain;
   cursor: pointer;
 } */
-
 
 .PolylineArrow {
   background: url(../../../../images/PolylineArrow.png) no-repeat;

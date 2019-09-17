@@ -63,6 +63,8 @@ import ContextMenu from "./common/ContextMenu";
 import FlattenningTool from "./viztools/FlattenningTool";
 import ClippingPlaneTool from "./viztools/ClippingPlaneTool";
 import PinTool from "./viztools/PinTool";
+import PinPictureTool from "./viztools/PinPictureTool";
+import PinDivTool from "./viztools/PinDivTool";
 import PathTool from "./viztools/PathTool";
 import ModelTool from "./viztools/ModelTool";
 import PolylineTool from "./viztools/PolylineTool";
@@ -99,6 +101,8 @@ export default {
     FlattenningTool,
     ClippingPlaneTool,
     PinTool,
+    PinPictureTool,
+    PinDivTool,
     PathTool,
     ModelTool,
     PolylineTool,
@@ -136,6 +140,8 @@ export default {
         Viewshed: "ViewshedTool",
         ClippingPlane: "ClippingPlaneTool",
         Pin: "PinTool",
+        PinDivTool:"PinDivTool",
+        PinPictureTool:"PinPictureTool",
         Path: "PathTool",
         Model: "ModelTool",
         Polyline: "PolylineTool",

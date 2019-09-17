@@ -101,7 +101,7 @@ export default {
 .xbsj-lnglatheight .lon {
   width: 25%;
   /* margin-left: 5%; */
-  margin-left: 20px;
+  /* margin-left: 20px; */
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   border: none;

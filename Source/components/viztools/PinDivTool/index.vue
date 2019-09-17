@@ -15,10 +15,16 @@
         <label>{{lang.name}}</label>
         <input style="float:left;" type="text" v-model="pin.name" />
       </div>
+      <!-- 显示 -->
+      <div class="flatten">
+        <label>{{lang.show}}</label>
+        <XbsjSwitch v-model="pin.show"></XbsjSwitch>
+      </div>
 
       <!-- 缩放 -->
-      <!-- <div class="flatten" style="margin-top:20px;">
+      <div class="flatten" style="margin-top:20px;">
         <label>{{lang.scale}}</label>
+        <!-- <input style="float:left;" type="text" v-model="pin.scale" /> -->
         <div class="field">
           <XbsjSlider
             :min="0.05"
@@ -29,9 +35,9 @@
             ref="glowFactor"
           ></XbsjSlider>
         </div>
-      </div> -->
+      </div>
       <!-- 近远裁 -->
-      <!-- <div class="flatten">
+      <div class="flatten">
         <label>{{lang.nearfar}}</label>
         <div class="flatten-box">
           <input
@@ -47,7 +53,7 @@
             type="text"
           />
         </div>
-      </div> -->
+      </div>
 
       <!-- 位置 -->
       <div class="flatten">
@@ -59,7 +65,7 @@
 
       <!-- 编辑按钮 -->
       <div class="attitudeEdit">
-        <label class="xbsj-label"></label>
+        <label class="xbsj-label">{{lang.eidtbtn}}</label>
         <div class="buttonGroup">
           <div>
             <button
@@ -78,10 +84,10 @@
         </div>
       </div>
       <!-- 内置样式切换按钮 -->
-      <!-- <div class="flatten">
+      <div class="flatten">
         <label>{{lang.pinstyletype}}</label>
         <XbsjSwitch v-model="pinstyletype"></XbsjSwitch>
-      </div> -->
+      </div>
 
       <!-- pin内置样式 -->
       <div class="flatten" style="display:flex;" v-show="pinstyletype">
@@ -624,17 +630,9 @@ button:focus {
 }
 .buttonGroup div {
   display: inline-block;
+  width: 62px;
   height: 25px;
   margin-left: 18px;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 3px;
-  color: #dddddd;
-  padding: 0 4px;
-}
-.buttonGroup div:nth-child(1) {
-  display: inline-block;
-  height: 25px;
-  margin-left: 0;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   color: #dddddd;

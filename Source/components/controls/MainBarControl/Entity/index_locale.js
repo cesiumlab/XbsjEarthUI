@@ -1,6 +1,8 @@
 const zh = {
   routine: "常规",
-  pin:"pin",
+  pin:"内置图标",
+  pinpicturebtn:"外置图标",
+  pindivbtn:"div图标",
   path:'路径',
   createmodel:'模型',
   curvedarrow:'曲线箭头',
@@ -34,7 +36,9 @@ const zh = {
 
 const en = {
   routine: "routine",
-  pin:"pin",
+  pin:"Built icon",
+  pinpicturebtn:"External Icon",
+  pindivbtn:"div icon",
   path:'path',
   createmodel:'model',
   curvedarrow:'curvedArrow',
