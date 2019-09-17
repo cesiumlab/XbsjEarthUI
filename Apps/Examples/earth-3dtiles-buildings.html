@@ -93,6 +93,9 @@
                     ]
                 };
 
+                earth.camera.position = [2.1204784429287287, 0.5453567434019185, 984.8776452043272];
+                earth.camera.rotation = [2.6041692528943043, -0.8105587768466127, 0.002203744534782004];       
+
                 const tileset1 = earth.sceneTree.root.children[1].czmObject;
 
                 // 取消鼠标操作，类似html元素的操作，return false相当于不执行默认操作。
@@ -102,8 +105,6 @@
                 earth.postProcess.bloom.enabled = true; // 开启泛光
 
                 // 1.1.5 数据绑定
-                tileset1.flyTo();
-
                 this._tileset = tileset1;
                 this._earth = earth;
 
@@ -118,7 +119,8 @@
             },
             methods: {
                 flyTo() {
-                    this._tileset.flyTo();
+                    earth.camera.position = [2.1204784429287287, 0.5453567434019185, 984.8776452043272];
+                    earth.camera.rotation = [2.6041692528943043, -0.8105587768466127, 0.002203744534782004];    
                 }
             }
         }
