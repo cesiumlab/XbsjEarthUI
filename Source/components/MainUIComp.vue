@@ -139,9 +139,9 @@ export default {
         CameraVideo: "CamerVideoTool",
         Viewshed: "ViewshedTool",
         ClippingPlane: "ClippingPlaneTool",
-        Pin: "PinTool",
-        PinDivTool:"PinDivTool",
-        PinPictureTool:"PinPictureTool",
+        PinTool: "PinTool",
+        PinDivTool: "PinDivTool",
+        PinPictureTool: "PinPictureTool",
         Path: "PathTool",
         Model: "ModelTool",
         Polyline: "PolylineTool",
@@ -149,7 +149,7 @@ export default {
         GeoSectorSearch: "GeoSectorSearch",
         GeoPolylineArrow: "GeoPolylineArrow",
         GeoTriFlag: "GeoTriFlag",
-        GeoDoubleArrow:"GeoDoubleArrow",
+        GeoDoubleArrow: "GeoDoubleArrow",
         ["CameraView.View"]: "CameraViewPrp"
       },
       tools: [
@@ -259,7 +259,7 @@ export default {
 
       //默认是统一类型的属性窗口
       var component;
-
+      console.log(czmObject.ctrtype);
       //如果有外部配置
       if (
         options &&
@@ -268,11 +268,19 @@ export default {
       ) {
         component = options.component;
       }
+
       //如果有默认映射
       else if (czmObject.xbsjType) {
-        var c = this.registerComponents[czmObject.xbsjType];
-        if (c) {
-          component = c;
+        if (czmObject.ctrtype) {
+            var c = this.registerComponents[czmObject.ctrtype];
+          if (c) {
+            component = c;
+          }
+        } else {
+          var c = this.registerComponents[czmObject.xbsjType];
+          if (c) {
+            component = c;
+          }
         }
       }
 

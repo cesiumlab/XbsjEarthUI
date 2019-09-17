@@ -10,15 +10,17 @@
     >
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.routine}}</span>
-        <!-- Pin -->
+        <!-- 内置图标 -->
         <div class="xbsj-item-btnbox ml20" @click="pinbtn" title="内置图标">
           <div class="xbsj-item-btn pinbutton"></div>
           <span class="xbsj-item-name">{{lang.pin}}</span>
         </div>
+        <!-- 外置图标 -->
         <div class="xbsj-item-btnbox ml20" @click="pinpicturebtn" title="外置图标">
           <div class="xbsj-item-btn pinbutton"></div>
           <span class="xbsj-item-name">{{lang.pinpicturebtn}}</span>
         </div>
+        <!-- div图标 -->
         <div class="xbsj-item-btnbox ml20" @click="pindivbtn" title="div图标">
           <div class="xbsj-item-btn pinbutton"></div>
           <span class="xbsj-item-name">{{lang.pindivbtn}}</span>
@@ -67,7 +69,7 @@
           <span class="xbsj-item-name">{{lang.DoubleArrow}}</span>
         </div>
 
-        <div class="xbsj-item-btnbox">
+        <!-- <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn spotbutton"></div>
           <span class="xbsj-item-name">{{lang.spot}}</span>
         </div>
@@ -94,7 +96,7 @@
         <div class="xbsj-item-btnbox" @click="routineMore">
           <div class="xbsj-item-btn more"></div>
           <span class="xbsj-item-name">{{lang.more}}</span>
-        </div>
+        </div>-->
       </div>
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.model}}</span>
@@ -278,22 +280,27 @@ export default {
     // 打开pin属性窗口
     pinbtn() {
       var Pin = new XE.Obj.Pin(this.$root.$earth);
+      Pin.ctrtype = "PinTool";
       Pin.name = "内置图标";
       Pin.positionPicking = true;
       Pin.isCreating = true;
       Pin.creating = true;
+      console.log(Pin);
       this.$root.$earthUI.showPropertyWindow(Pin);
     },
     pindivbtn() {
       var PinDivTool = new XE.Obj.Pin(this.$root.$earth);
+      PinDivTool.ctrtype = "PinDivTool";
       PinDivTool.name = "div图标";
       PinDivTool.positionPicking = true;
       PinDivTool.isCreating = true;
       PinDivTool.creating = true;
+      console.log(PinDivTool);
       this.$root.$earthUI.showPropertyWindow(PinDivTool);
     },
     pinpicturebtn() {
       var PinPictureTool = new XE.Obj.Pin(this.$root.$earth);
+      PinPictureTool.ctrtype = "PinPictureTool";
       PinPictureTool.name = "外置图标";
       PinPictureTool.positionPicking = true;
       PinPictureTool.isCreating = true;

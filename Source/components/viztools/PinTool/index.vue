@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="300"
+    :height="400"
     :title="lang.title"
     @cancel="cancel"
     @ok="ok"
@@ -16,30 +16,11 @@
         <input style="float:left;" type="text" v-model="pin.name" />
       </div>
 
-      <!-- 缩放 -->
-      <!-- <div class="flatten" style="margin-top:20px;">
-        <label>{{lang.scale}}</label>
-        <div class="field">
-          <XbsjSlider
-            :min="0.05"
-            :max="2"
-            :step="0.01"
-            showTip="always"
-            v-model="pin.scale"
-            ref="glowFactor"
-          ></XbsjSlider>
-        </div>
-      </div> -->
       <!-- 近远裁 -->
-      <!-- <div class="flatten">
+      <div class="flatten">
         <label>{{lang.nearfar}}</label>
         <div class="flatten-box">
-          <input
-            v-model="pin.near"
-            placeholder="lang.near"
-            style="width: 25%;margin-left: 20px;"
-            type="text"
-          />
+          <input v-model="pin.near" placeholder="lang.near" style="width: 25%;" type="text" />
           <input
             v-model="pin.far"
             placeholder="lang.far"
@@ -47,7 +28,21 @@
             type="text"
           />
         </div>
-      </div> -->
+      </div>
+
+      <!-- <div class="flatten" style="margin-top:20px;">
+        <label>{{lang.pinBuilder.size}}</label>
+        <div class="field">
+          <XbsjSlider 
+            :min="1"
+            :max="100"
+            :step="1"
+            showTip="always"
+            v-model="pin.pinBuilder.size"
+            ref="glowFactor"
+          ></XbsjSlider>
+        </div>
+      </div>-->
 
       <!-- 位置 -->
       <div class="flatten">
@@ -77,14 +72,9 @@
           </div>
         </div>
       </div>
-      <!-- 内置样式切换按钮 -->
-      <!-- <div class="flatten">
-        <label>{{lang.pinstyletype}}</label>
-        <XbsjSwitch v-model="pinstyletype"></XbsjSwitch>
-      </div> -->
 
       <!-- pin内置样式 -->
-      <div class="flatten" style="display:flex;" v-show="pinstyletype">
+      <div class="flatten" style="display:flex;">
         <div>
           <label>{{lang.pinBuilder.text}}</label>
           <input style="float:left;" type="text" v-model="pin.pinBuilder.text" />
@@ -99,7 +89,7 @@
             style="cursor: pointer;"
           />
           <button class="selectButton"></button>
-          <div class="cutselectbox" v-show="showPinSelect">
+          <div class="cutselectbox" v-show="showPinSelect" style="  overflow:scroll;height:100px;">
             <div @click="optionssure(c)" v-for="(c,index) in makiIconObj" :key="index">
               <span>{{c}}</span>
             </div>
@@ -107,7 +97,7 @@
         </div>
       </div>
 
-      <div class="flatten" v-show="pinstyletype" style="margin-top:20px;">
+      <div class="flatten" style="margin-top:20px;">
         <label>{{lang.pinBuilder.size}}</label>
         <div class="field">
           <XbsjSlider
@@ -119,25 +109,6 @@
             ref="glowFactor"
           ></XbsjSlider>
         </div>
-      </div>
-
-
-      <!-- pin自定义外部图标 -->
-      <div class="flatten" v-show="pinstyletype">
-        <label>{{lang.pinBuilder.fillColor}}</label>
-        <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
-      </div>
-
-      <div class="flatten" v-show="pinstyletype">
-        <label>{{lang.pinBuilder.outlineColor}}</label>
-        <XbsjColorButton v-model="borderbaseColorUI" ref="borderbaseColor"></XbsjColorButton>
-      </div>
-
-      
-      <!-- pin自定义外部图标 -->
-      <div class="flatten" v-show="!pinstyletype">
-        <label>{{lang.imageUrl}}</label>
-        <input style="float:left;" type="text" v-model="pin.imageUrl" />
       </div>
     </div>
   </Window>
@@ -153,6 +124,7 @@ export default {
   },
   data() {
     return {
+      ranges: true,
       lang: {},
       showPinSelect: false,
       makiIconObj: {},
@@ -198,43 +170,49 @@ export default {
   mounted() {
     // 数据关联
     this._disposers = this._disposers || [];
-    var czmObj = this.getBind();
+  
+      var czmObj = this.getBind();
 
-    if (czmObj) {
-      this._czmObj = czmObj;
-      const bindData = {
-        name: "pin.name",
-        creating: "pin.creating",
-        editing: "pin.editing",
-        far: "pin.far",
-        near: "pin.near",
-        imageUrl: "pin.imageUrl",
-        show: "pin.show",
-        position: "pin.position",
-        scale: "pin.scale",
-        enabled: "pin.enabled",
-        pinBuilder: "pin.pinBuilder"
-      };
+      if (czmObj) {
+        this._czmObj = czmObj;
+        const bindData = {
+          name: "pin.name",
+          creating: "pin.creating",
+          editing: "pin.editing",
+          far: "pin.far",
+          near: "pin.near",
+          imageUrl: "pin.imageUrl",
+          show: "pin.show",
+          position: "pin.position",
+          scale: "pin.scale",
+          enabled: "pin.enabled",
+          pinBuilder: "pin.pinBuilder"
+        };
 
-      Object.entries(bindData).forEach(([sm, vm]) => {
-        if (typeof vm === "string") {
-          this._disposers.push(XE.MVVM.bind(this, vm, czmObj, sm));
-        } else {
-          this._disposers.push(vm.handler(this, vm.prop, czmObj, sm));
-        }
-      });
+        Object.entries(bindData).forEach(([sm, vm]) => {
+          if (typeof vm === "string") {
+            this._disposers.push(XE.MVVM.bind(this, vm, czmObj, sm));
+          } else {
+            this._disposers.push(vm.handler(this, vm.prop, czmObj, sm));
+          }
+        });
 
-      this._disposers.push(
-        XE.MVVM.bind(this, "bgbaseColor", czmObj, "pinBuilder.fillColor")
-      );
-      this._disposers.push(
-        XE.MVVM.bind(this, "borderbaseColor", czmObj, "pinBuilder.outlineColor")
-      );
+        this._disposers.push(
+          XE.MVVM.bind(this, "bgbaseColor", czmObj, "pinBuilder.fillColor")
+        );
+        this._disposers.push(
+          XE.MVVM.bind(
+            this,
+            "borderbaseColor",
+            czmObj,
+            "pinBuilder.outlineColor"
+          )
+        );
 
-      this.makiIconObj = XE.Obj.Pin.MakiIcon;
-      this.makiIconObj.null = "";
-      console.log(this.makiIconObj);
-    }
+        this.makiIconObj = XE.Obj.Pin.MakiIcon;
+        this.makiIconObj.null = "";
+        console.log(this.makiIconObj);
+      }
   },
   beforeDestroy() {
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
@@ -253,8 +231,6 @@ export default {
       if (e !== "") {
         this.pin.pinBuilder.makiIcon = "";
       }
-
-      
     },
     bgbaseColorUI(color) {
       let v = color.rgba;
@@ -625,11 +601,12 @@ button:focus {
 .buttonGroup div {
   display: inline-block;
   height: 25px;
-  margin-left: 18px;
+  width: 25%;
+  margin-left: 5%;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   color: #dddddd;
-  padding: 0 4px;
+  padding: 2px 1px;
 }
 .buttonGroup div:nth-child(1) {
   display: inline-block;
@@ -638,7 +615,6 @@ button:focus {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   color: #dddddd;
-  padding: 0 4px;
 }
 .attitudeEditCameraButton {
   color: #dddddd;
