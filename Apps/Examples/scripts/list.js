@@ -3,32 +3,44 @@ vueApp.examples = [
         "title": "Earth示例",
         "list": [
             {
-                "title": "素模泛光",
-                "url": "./earth-3dtiles-buildings.html"
-            },
-            {
                 "title": "3dtiles-平移旋转",
                 "url": "./earth-3dtiles-editing.html"
             },
             {
-                "title": "视频融合",
-                "url": "./earth-cameraVideo.html"
+                "title": "分析-剖切",
+                "url": "./earth-analyzation-clipping.html"
             },
             {
-                "title": "剖切面",
-                "url": "./earth-clippingPlane.html"
+                "title": "分析-压平",
+                "url": "./earth-analyzation-flattenning.html"
+            },
+            {
+                "title": "分析-测量",
+                "url": "./earth-analyzation-measurement.html"
+            },
+            {
+                "title": "分析-视频融合",
+                "url": "./earth-analyzation-video.html"
+            },
+            {
+                "title": "分析-视域",
+                "url": "./earth-analyzation-viewshed.html"
+            },
+            {
+                "title": "基础-销毁地球",
+                "url": "./earth-basic-destroy.html"
+            },
+            {
+                "title": "基础-销毁Vue创建的地球",
+                "url": "./earth-basic-destroy2.html"
+            },
+            {
+                "title": "漫游-第一人称",
+                "url": "./earth-camera-firstpersion.html"
             },
             {
                 "title": "圆柱体集群",
                 "url": "./earth-cylinders.html"
-            },
-            {
-                "title": "销毁地球",
-                "url": "./earth-destroyEarth.html"
-            },
-            {
-                "title": "销毁Vue创建的地球",
-                "url": "./earth-destroyEarthWithVue.html"
             },
             {
                 "title": "编辑互斥",
@@ -41,6 +53,10 @@ vueApp.examples = [
             {
                 "title": "效果-泛光",
                 "url": "./earth-effect-bloom.html"
+            },
+            {
+                "title": "效果-泛光2",
+                "url": "./earth-effect-bloom2.html"
             },
             {
                 "title": "效果-云",
@@ -57,14 +73,6 @@ vueApp.examples = [
             {
                 "title": "效果-太阳/月亮/星空",
                 "url": "./earth-effect-SunMoonSkyBox.html"
-            },
-            {
-                "title": "第一人称漫游",
-                "url": "./earth-firstperson.html"
-            },
-            {
-                "title": "3dtiles压平",
-                "url": "./earth-flattenning.html"
             },
             {
                 "title": "影像-百度",
@@ -103,10 +111,6 @@ vueApp.examples = [
                 "url": "./earth-map-switch.html"
             },
             {
-                "title": "测量",
-                "url": "./earth-measurement.html"
-            },
-            {
                 "title": "模型-平移旋转",
                 "url": "./earth-model-editing.html"
             },
@@ -117,10 +121,6 @@ vueApp.examples = [
             {
                 "title": "原生Cesium API的调用",
                 "url": "./earth-nativeCesium.html"
-            },
-            {
-                "title": "指北针和比例尺",
-                "url": "./earth-navscale.html"
             },
             {
                 "title": "OD线集群-北京公交线路",
@@ -251,12 +251,12 @@ vueApp.examples = [
                 "url": "./earth-terrain-china14.html"
             },
             {
-                "title": "多视口",
-                "url": "./earth-viewport.html"
+                "title": "视图-多视口",
+                "url": "./earth-view-multiviewport.html"
             },
             {
-                "title": "视域分析",
-                "url": "./earth-viewshed.html"
+                "title": "视图-指北针",
+                "url": "./earth-view-navigator.html"
             },
             {
                 "title": "路径-pin",

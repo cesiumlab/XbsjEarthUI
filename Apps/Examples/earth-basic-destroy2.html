@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <title>基础-销毁Vue创建的地球</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 24px;
+            padding: 0 6px;
+            line-height: 24px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+    </style>
+</head>
+
+<body>
+   <div style="padding:2px 5px; font-size:18px; font-family: 宋体;">
+        <div class="defultbtn" onclick="create()">创建地球</div>
+        <div class="defultbtn" onclick="destroy()">销毁地球</div>
+    </div>
+
+    <div id="vueApp" style="width:100%; height: calc(100% - 30px); background: grey">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        var earthApp;
+
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%; position: relative;">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div style="position: absolute; left: 18px; top: 18px;">
+                        <button style="font-size:18px; font-family: 宋体;">{{ message }}</button>
+                    </div>
+                </div>
+            `,
+            data() { 
+                return {
+                    message: '页面加载于 ' + new Date().toLocaleString(),
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                };
+            },
+            mounted() {
+                // 1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                // 1.2 添加默认地球影像
+                earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "czmObject": {
+                                "name": "默认离线影像",
+                                "xbsjType": "Imagery",
+                                "xbsjImageryProvider": {
+                                    "createTileMapServiceImageryProvider": {
+                                        url: XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                        fileExtension: 'jpg',
+                                    },
+                                    "type": "createTileMapServiceImageryProvider"
+                                }
+                            }
+                        },
+                    ]
+                };
+                bgImagery = earth.sceneTree.root.children[0].czmObject;
+
+                this._earth = earth;
+
+                // only for Debug
+                window.earth = earth;
+            },
+            // 1.3 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._earth = this._earth && this._earth.destroy();
+            }
+        }
+
+        // 2 创建vue程序
+        function createVueEarth() {
+            return new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        }
+
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(create);
+
+        function create() {
+            // XE.isReady()用来判断资源是否加载成功
+            if (XE.isReady() && !earthApp) {
+                earthApp = createVueEarth();
+            }
+        }
+
+        function destroy() {
+            if (earthApp) {
+                earthApp.$destroy();
+                earthApp = undefined;
+                const vueAppElement = document.getElementById('vueApp');
+                vueAppElement.innerHTML = `<earth-comp></earth-comp>`;
+            }
+        }
+    </script>
+
+</body>
+
+</html>
