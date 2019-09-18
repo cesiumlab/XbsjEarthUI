@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="300"
+    :height="350"
     :title="lang.title"
     @cancel="cancel"
     @ok="ok"
@@ -14,11 +14,6 @@
       <div class="flatten">
         <label>{{lang.name}}</label>
         <input style="float:left;" type="text" v-model="pin.name" />
-      </div>
-      <!-- 显示 -->
-      <div class="flatten">
-        <label>{{lang.show}}</label>
-        <XbsjSwitch v-model="pin.show"></XbsjSwitch>
       </div>
 
       <!-- 缩放 -->
@@ -36,6 +31,7 @@
           ></XbsjSlider>
         </div>
       </div>
+
       <!-- 近远裁 -->
       <div class="flatten">
         <label>{{lang.nearfar}}</label>
@@ -43,7 +39,7 @@
           <input
             v-model="pin.near"
             placeholder="lang.near"
-            style="width: 25%;margin-left: 20px;"
+            style="width: 25%;"
             type="text"
           />
           <input
@@ -63,9 +59,9 @@
         </div>
       </div>
 
-      <!-- 编辑按钮 -->
+ <!-- 编辑按钮 -->
       <div class="attitudeEdit">
-        <label class="xbsj-label">{{lang.eidtbtn}}</label>
+        <label class="xbsj-label"></label>
         <div class="buttonGroup">
           <div>
             <button
@@ -83,65 +79,9 @@
           </div>
         </div>
       </div>
-      <!-- 内置样式切换按钮 -->
+
+      <!-- pin自定义外部图标 -->
       <div class="flatten">
-        <label>{{lang.pinstyletype}}</label>
-        <XbsjSwitch v-model="pinstyletype"></XbsjSwitch>
-      </div>
-
-      <!-- pin内置样式 -->
-      <div class="flatten" style="display:flex;" v-show="pinstyletype">
-        <div>
-          <label>{{lang.pinBuilder.text}}</label>
-          <input style="float:left;" type="text" v-model="pin.pinBuilder.text" />
-        </div>
-        <div style="position: relative;">
-          <label>{{lang.pinBuilder.pinstyle}}</label>
-          <input
-            type="text"
-            v-model="pin.pinBuilder.makiIcon"
-            @click="selectinput"
-            readonly
-            style="cursor: pointer;"
-          />
-          <button class="selectButton"></button>
-          <div class="cutselectbox" v-show="showPinSelect">
-            <div @click="optionssure(c)" v-for="(c,index) in makiIconObj" :key="index">
-              <span>{{c}}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="flatten" v-show="pinstyletype" style="margin-top:20px;">
-        <label>{{lang.pinBuilder.size}}</label>
-        <div class="field">
-          <XbsjSlider
-            :min="1"
-            :max="100"
-            :step="1"
-            showTip="always"
-            v-model="pin.pinBuilder.size"
-            ref="glowFactor"
-          ></XbsjSlider>
-        </div>
-      </div>
-
-
-      <!-- pin自定义外部图标 -->
-      <div class="flatten" v-show="pinstyletype">
-        <label>{{lang.pinBuilder.fillColor}}</label>
-        <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
-      </div>
-
-      <div class="flatten" v-show="pinstyletype">
-        <label>{{lang.pinBuilder.outlineColor}}</label>
-        <XbsjColorButton v-model="borderbaseColorUI" ref="borderbaseColor"></XbsjColorButton>
-      </div>
-
-      
-      <!-- pin自定义外部图标 -->
-      <div class="flatten" v-show="!pinstyletype">
         <label>{{lang.imageUrl}}</label>
         <input style="float:left;" type="text" v-model="pin.imageUrl" />
       </div>
@@ -351,6 +291,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 .field {
@@ -630,13 +571,21 @@ button:focus {
 }
 .buttonGroup div {
   display: inline-block;
-  width: 62px;
   height: 25px;
-  margin-left: 18px;
+  width: 25%;
+  margin-left: 5%;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   color: #dddddd;
-  padding: 0 4px;
+  padding: 2px 1px;
+}
+.buttonGroup div:nth-child(1) {
+  display: inline-block;
+  height: 25px;
+  margin-left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  color: #dddddd;
 }
 .attitudeEditCameraButton {
   color: #dddddd;
