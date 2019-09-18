@@ -101,10 +101,6 @@
                 var tileset = earth.sceneTree.$refs.tileset.czmObject;
                 var scaline1 = earth.sceneTree.$refs.scaline1.czmObject;
 
-                // 取消鼠标操作，类似html元素的操作，return false相当于不执行默认操作。
-                tileset.onclick = () => false; 
-                tileset.onmouseover = () => false;
-
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
                 earth.camera.position =  [2.120534085472877,0.5445599473813671,3486.259508603404];

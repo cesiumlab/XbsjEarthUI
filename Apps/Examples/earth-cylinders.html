@@ -32,6 +32,7 @@
         XE.ready().then(() => {
             // 1.1 创建地球
             earth = new XE.Earth('earthContainer');
+            earth.interaction.picking.enabled = true; // 开启拾取操作
 
             // only for Debug
             window.earth = earth;
