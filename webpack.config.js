@@ -171,11 +171,13 @@ module.exports.plugins = (module.exports.plugins || []).concat([
         // 'Apps/**/*',
         'index.html',
         {
+            // from: 'Static/XbsjCesium', // 如果使用指定的XbsjCesium，可以在这里修改下
             from: './node_modules/earthsdk/dist/XbsjCesium',
             to: 'XbsjCesium',
             toType: 'dir'
         },
         {
+            // from: 'Static/XbsjEarth', // 如果使用指定的XbsjEarth，可以在这里修改下
             from: './node_modules/earthsdk/dist/XbsjEarth',
             to: 'XbsjEarth',
             toType: 'dir'
