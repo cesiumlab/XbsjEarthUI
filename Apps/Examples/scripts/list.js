@@ -87,8 +87,12 @@ vueApp.examples = [
                 "url": "./earth-imagery-gaode.html"
             },
             {
-                "title": "影像-谷歌",
-                "url": "./earth-imagery-google.html"
+                "title": "影像-谷歌标记",
+                "url": "./earth-imagery-googleMark.html"
+            },
+            {
+                "title": "影像-谷歌无标记",
+                "url": "./earth-imagery-googleUnmark.html"
             },
             {
                 "title": "影像-纠偏",
