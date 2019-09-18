@@ -183,9 +183,10 @@ module.exports.plugins = (module.exports.plugins || []).concat([
             toType: 'dir'
         },
         {
-            from: 'Static/XbsjEarth-Plugins',
-            to: 'XbsjEarth-Plugins',
-            toType: 'dir'
+            // from: 'Static/XbsjEarth-Plugins',
+            from: process.env.XBSJ_IMPORT !== 'external' ? './node_modules/earthsdk-plotting-symbol/dist/XbsjEarth-Plugins/plottingSymbol.js' : 'Static/XbsjEarth-Plugins/plottingSymbol.js',
+            to: 'XbsjEarth-Plugins/plottingSymbol.js',
+            toType: 'file'
         },
         {
             from: 'Static/assets',
