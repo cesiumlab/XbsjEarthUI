@@ -171,12 +171,12 @@ module.exports.plugins = (module.exports.plugins || []).concat([
         // 'Apps/**/*',
         'index.html',
         {
-            from: 'Static/XbsjCesium',
+            from: './node_modules/earthsdk/dist/XbsjCesium',
             to: 'XbsjCesium',
             toType: 'dir'
         },
         {
-            from: 'Static/XbsjEarth',
+            from: './node_modules/earthsdk/dist/XbsjEarth',
             to: 'XbsjEarth',
             toType: 'dir'
         },
