@@ -47,6 +47,7 @@
             background-color: #FFF;
             color: #555;
             cursor: pointer;
+            margin-bottom: 4px;
         }
 
         .defultbtn:hover {
@@ -74,7 +75,7 @@
                 <div style="width: 100%; height: 100%">
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
-                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:400px; font-size:24px; font-family: 宋体;">
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:350px; font-size:24px; font-family: 宋体;">
                         <div class="defultbtn" :class="{'btnon':enabled}" @click="enabled = !enabled">泛光</div><br/>
                         <span @click="glowOnly = !glowOnly" class="checkbox"><input class="shadowbox" type="checkbox" v-model="glowOnly">仅发光图</span><br/>
                         <span>对比度：{{contrast}}</span><br/><input type="range" min="0" step="1" max="255" v-model.number="contrast"><br/>

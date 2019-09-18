@@ -18,6 +18,35 @@
             margin: 0px;
             padding: 0px;
         }
+
+        .box span{
+            display: block;
+            margin-top: 10px;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 38px;
+            padding: 0 10px;
+            line-height: 38px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+
+        .btnon {
+            background-color: #1E9FFF;
+            color: #fff;
+            border: 1px solid #1E9FFF;
+        }
     </style>
 </head>
 
@@ -33,11 +62,11 @@
                 <div style="width: 100%; height: 100%">
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
-                    <div style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 5px;">
-                        <span><input type="checkbox" v-model="creating">重新创建</span><br/>
-                        <span><input type="checkbox" v-model="editing">编辑</span><br/>
-                        <span><input type="checkbox" v-model="innerDiscard">挖坑</span><br/>
-                        <span><input type="checkbox" v-model="enabled">启用</span><br/>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; padding: 20px; border-radius: 25px;min-width:150px; font-size:24px; font-family: 宋体;">
+                        <div class="defultbtn" :class="{'btnon':creating}"  @click="creating = !creating">重新创建</div>
+                        <div class="defultbtn" :class="{'btnon':editing}"  @click="editing = !editing">编辑</div>
+                        <div class="defultbtn" :class="{'btnon':innerDiscard}"  @click="innerDiscard = !innerDiscard">挖坑</div>
+                        <div class="defultbtn" :class="{'btnon':enabled}"  @click="enabled = !enabled">启用</div>
                     </div>
                 </div>
             `,

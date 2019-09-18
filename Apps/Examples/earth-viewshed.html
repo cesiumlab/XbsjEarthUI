@@ -19,8 +19,29 @@
             padding: 0px;
         }
 
-        .checkbox {
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 38px;
+            padding: 0 10px;
+            line-height: 38px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
             cursor: pointer;
+            margin-bottom: 4px;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+
+        .btnon {
+            background-color: #1E9FFF;
+            color: #fff;
+            border: 1px solid #1E9FFF;
         }
     </style>
 </head>
@@ -37,11 +58,11 @@
                 <div style="width: 100%; height: 100%">
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
-                    <div style="line-height: 30px; padding-left: 5px; position: absolute; left: 10px; top: 10px; background: rgba(0, 0, 0, 0.5); color: white">
-                        <button @click="setPositionWithCurrentCamera">设置为当前相机姿态</button><br/>
-                        <span @click="twoPostionsEditing = !twoPostionsEditing" class="checkbox"><input type="checkbox" v-model="twoPostionsEditing">拾取</span><br/>
-                        <span @click="positionEditing = !positionEditing" class="checkbox"><input type="checkbox" v-model="positionEditing">平移</span><br/>
-                        <span @click="rotationEditing = !rotationEditing" class="checkbox"><input type="checkbox" v-model="rotationEditing">旋转</span><br/>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:350px; font-size:24px; font-family: 宋体;">
+                        <div class="defultbtn" @click="setPositionWithCurrentCamera">设置为当前相机姿态</div>
+                        <div class="defultbtn" :class="{'btnon':twoPostionsEditing}"  @click="twoPostionsEditing = !twoPostionsEditing">拾取</div>
+                        <div class="defultbtn" :class="{'btnon':positionEditing}"  @click="positionEditing = !positionEditing">平移</div>
+                        <div class="defultbtn" :class="{'btnon':rotationEditing}"  @click="rotationEditing = !rotationEditing">旋转</div>
                     </div>
                 </div>
             `,

@@ -18,6 +18,35 @@
             margin: 0px;
             padding: 0px;
         }
+
+        input {
+            width: 350px;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 38px;
+            padding: 0 10px;
+            line-height: 38px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
+            cursor: pointer;
+            margin-bottom: 4px;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+
+        .btnon {
+            background-color: #1E9FFF;
+            color: #fff;
+            border: 1px solid #1E9FFF;
+        }
     </style>
 </head>
 
@@ -33,9 +62,9 @@
                 <div style="width: 100%; height: 100%">
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
-                    <div style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 5px;">
-                        <span><input type="checkbox" v-model="subSurfaceEnabled">地下模式</span><br/>
-                        <span>地表不透明度: {{ surfaceOpacity.toFixed(2) }}</span><br/>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:350px; font-size:24px; font-family: 宋体;">
+                        <div class="defultbtn" :class="{'btnon':subSurfaceEnabled}"  @click="subSurfaceEnabled = !subSurfaceEnabled">地下模式</div><br/>
+                        <span>地表不透明度: {{ surfaceOpacity | numFilter }}</span><br/>
                         <span><input type="range" min="0.0" max="1.0" step="0.01" v-model.number="surfaceOpacity"></span><br/>
                     </div>
                 </div>
@@ -130,6 +159,13 @@
                 // only for debug
                 window.earth = earth;
                 window.model = earth.sceneTree.$refs.model1.czmObject;
+            },
+            filters: {
+                numFilter(value) {
+                    // 截取当前数据到小数点后两位
+                    let realVal = parseFloat(value).toFixed(2)
+                    return realVal
+                }
             },
             // 1.2 资源销毁
             beforeDestroy() {
