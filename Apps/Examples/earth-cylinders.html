@@ -57,22 +57,8 @@
                 ]
             };
 
-            earth.cameraViewManager.lastView.xbsjFromJSON({
-                "position": [
-                    2.032760823167396,
-                    0.6959943988401194,
-                    4408.923380916176
-                ],
-                "rotation": [
-                    5.511217132254479,
-                    -0.6441479020764156,
-                    6.280298854606588
-                ],
-                "fov": 1.0471975511965976,
-                "near": 0.1,
-                "far": 10000000000
-            });
-            earth.cameraViewManager.lastView.flyTo();
+            earth.camera.position = [2.032760823167396, 0.6959943988401194, 4408.923380916176];
+            earth.camera.rotation = [5.511217132254479, -0.6441479020764156, 0.0];
 
             {
                 const scene = earth.czm.scene;
