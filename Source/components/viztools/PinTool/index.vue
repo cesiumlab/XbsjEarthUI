@@ -17,10 +17,22 @@
       </div>
 
       <!-- 近远裁 -->
-      <div class="flatten">
+      <div class="flatten" style="margin-top:20px;display:flex;">
         <label>{{lang.nearfar}}</label>
+        <div class="field">
+          <XbsjSlider range :min="1" :max="100" :step="1" v-model="nearfar" ref="glowFactor"></XbsjSlider>
+        </div>
+      </div>
+        <!-- 近远裁 -->
+      <div class="flatten">
+        <label></label>
         <div class="flatten-box">
-          <input v-model="pin.near" placeholder="lang.near" style="width: 25%;" type="text" />
+          <input
+            v-model="pin.near"
+            placeholder="lang.near"
+            style="width: 25%;"
+            type="text"
+          />
           <input
             v-model="pin.far"
             placeholder="lang.far"
@@ -29,20 +41,6 @@
           />
         </div>
       </div>
-
-      <!-- <div class="flatten" style="margin-top:20px;">
-        <label>{{lang.pinBuilder.size}}</label>
-        <div class="field">
-          <XbsjSlider 
-            :min="1"
-            :max="100"
-            :step="1"
-            showTip="always"
-            v-model="pin.pinBuilder.size"
-            ref="glowFactor"
-          ></XbsjSlider>
-        </div>
-      </div>-->
 
       <!-- 位置 -->
       <div class="flatten">
@@ -133,8 +131,8 @@ export default {
         creating: true,
         enabled: true,
         editing: false,
-        far: 25000000,
-        near: 100,
+        far: 100,
+        near: 1,
         imageUrl: "",
         scale: 1,
         show: true,
@@ -170,49 +168,46 @@ export default {
   mounted() {
     // 数据关联
     this._disposers = this._disposers || [];
-  
-      var czmObj = this.getBind();
 
-      if (czmObj) {
-        this._czmObj = czmObj;
-        const bindData = {
-          name: "pin.name",
-          creating: "pin.creating",
-          editing: "pin.editing",
-          far: "pin.far",
-          near: "pin.near",
-          imageUrl: "pin.imageUrl",
-          show: "pin.show",
-          position: "pin.position",
-          scale: "pin.scale",
-          enabled: "pin.enabled",
-          pinBuilder: "pin.pinBuilder"
-        };
+    var czmObj = this.getBind();
 
-        Object.entries(bindData).forEach(([sm, vm]) => {
-          if (typeof vm === "string") {
-            this._disposers.push(XE.MVVM.bind(this, vm, czmObj, sm));
-          } else {
-            this._disposers.push(vm.handler(this, vm.prop, czmObj, sm));
-          }
-        });
+    if (czmObj) {
+      this._czmObj = czmObj;
+      const bindData = {
+        name: "pin.name",
+        creating: "pin.creating",
+        editing: "pin.editing",
+        far: "pin.far",
+        near: "pin.near",
+        imageUrl: "pin.imageUrl",
+        show: "pin.show",
+        position: "pin.position",
+        scale: "pin.scale",
+        enabled: "pin.enabled",
+        pinBuilder: "pin.pinBuilder"
+      };
 
-        this._disposers.push(
-          XE.MVVM.bind(this, "bgbaseColor", czmObj, "pinBuilder.fillColor")
-        );
-        this._disposers.push(
-          XE.MVVM.bind(
-            this,
-            "borderbaseColor",
-            czmObj,
-            "pinBuilder.outlineColor"
-          )
-        );
+      Object.entries(bindData).forEach(([sm, vm]) => {
+        if (typeof vm === "string") {
+          this._disposers.push(XE.MVVM.bind(this, vm, czmObj, sm));
+        } else {
+          this._disposers.push(vm.handler(this, vm.prop, czmObj, sm));
+        }
+      });
 
-        this.makiIconObj = XE.Obj.Pin.MakiIcon;
-        this.makiIconObj.null = "";
-        console.log(this.makiIconObj);
-      }
+      this._disposers.push(
+        XE.MVVM.bind(this, "bgbaseColor", czmObj, "pinBuilder.fillColor")
+      );
+      this._disposers.push(
+        XE.MVVM.bind(this, "borderbaseColor", czmObj, "pinBuilder.outlineColor")
+      );
+
+      this.makiIconObj = XE.Obj.Pin.MakiIcon;
+      this.makiIconObj.null = "";
+      this.makiIconObj.far = 10;
+      this.makiIconObj.near = 1;
+      console.log(this.makiIconObj);
+    }
   },
   beforeDestroy() {
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
@@ -224,9 +219,19 @@ export default {
     },
     guid() {
       return this.getBind().guid;
+    },
+    nearfar: {
+      get() {
+        return [this.pin.far, this.pin.near];
+      },
+      set(newValue) {
+        this.pin.near = Math.pow(newValue[0], 5);
+        this.pin.far = Math.pow(newValue[1], 20);
+      }
     }
   },
   watch: {
+    nearfar(e) {},
     "pin.pinBuilder.text"(e) {
       if (e !== "") {
         this.pin.pinBuilder.makiIcon = "";
@@ -324,6 +329,7 @@ export default {
 
 <style scoped>
 .field {
+  margin-top: 20px;
   padding-left: 4px;
   display: inline-block;
   width: 220px;

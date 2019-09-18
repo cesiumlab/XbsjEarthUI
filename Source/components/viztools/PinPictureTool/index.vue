@@ -36,12 +36,7 @@
       <div class="flatten">
         <label>{{lang.nearfar}}</label>
         <div class="flatten-box">
-          <input
-            v-model="pin.near"
-            placeholder="lang.near"
-            style="width: 25%;"
-            type="text"
-          />
+          <input v-model="pin.near" placeholder="lang.near" style="width: 25%;" type="text" />
           <input
             v-model="pin.far"
             placeholder="lang.far"
@@ -59,7 +54,7 @@
         </div>
       </div>
 
- <!-- 编辑按钮 -->
+      <!-- 编辑按钮 -->
       <div class="attitudeEdit">
         <label class="xbsj-label"></label>
         <div class="buttonGroup">
@@ -192,6 +187,15 @@ export default {
     },
     guid() {
       return this.getBind().guid;
+    },
+    nearfar: {
+      get() {
+        return [this.pin.far, this.pin.near];
+      },
+      set(newValue) {
+        this.pin.near = Math.pow(newValue[0], 5);
+        this.pin.far = Math.pow(newValue[1], 20);
+      }
     }
   },
   watch: {
@@ -199,8 +203,6 @@ export default {
       if (e !== "") {
         this.pin.pinBuilder.makiIcon = "";
       }
-
-      
     },
     bgbaseColorUI(color) {
       let v = color.rgba;
@@ -266,6 +268,10 @@ export default {
       }
     },
     ok() {
+      if (this.pin.imageUrl === "") {
+        this.$root.$earthUI.promptInfo("请输入图片地址！", "error");
+        return;
+      }
       this.close();
       const pinToolObj = this._czmObj;
       if (!pinToolObj) {

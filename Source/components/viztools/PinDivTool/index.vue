@@ -1,93 +1,87 @@
 <template>
-  <Window
-    :width="480"
-    :minWidth="480"
-    :height="480"
-    :title="lang.title"
-    @cancel="cancel"
-    @ok="ok"
-    :footervisible="true"
-    @showclick="showSelect=false"
-  >
-    <div class="xbsj-flatten">
-      <!-- 名字 -->
-      <div class="flatten">
-        <label>{{lang.name}}</label>
-        <input style="float:left;" type="text" v-model="pin.name" />
-      </div>
-
-      <!-- 缩放 -->
-      <div class="flatten" style="margin-top:20px;">
-        <label>{{lang.scale}}</label>
-        <!-- <input style="float:left;" type="text" v-model="pin.scale" /> -->
-        <div class="field">
-          <XbsjSlider
-            :min="0.05"
-            :max="2"
-            :step="0.01"
-            showTip="always"
-            v-model="pin.scale"
-            ref="glowFactor"
-          ></XbsjSlider>
+  <div>
+    <div id="testid"></div>
+    <Window
+      :width="480"
+      :minWidth="480"
+      :height="480"
+      :title="lang.title"
+      @cancel="cancel"
+      @ok="ok"
+      :footervisible="true"
+      @showclick="showSelect=false"
+    >
+      <div class="xbsj-flatten">
+        <!-- 名字 -->
+        <div class="flatten">
+          <label>{{lang.name}}</label>
+          <input style="float:left;" type="text" v-model="pin.name" />
         </div>
-      </div>
 
-      <!-- 近远裁 -->
-      <div class="flatten">
-        <label>{{lang.nearfar}}</label>
-        <div class="flatten-box">
-          <input v-model="pin.near" placeholder="lang.near" style="width: 25%;" type="text" />
-          <input
-            v-model="pin.far"
-            placeholder="lang.far"
-            style="width: 25%;margin-left:5%;"
-            type="text"
-          />
-        </div>
-      </div>
-
-      <!-- 位置 -->
-      <div class="flatten">
-        <label>{{lang.weizhi}}</label>
-        <div class="flatten-box">
-          <XbsjLngLatHeight v-model="pin.position"></XbsjLngLatHeight>
-        </div>
-      </div>
-
-      <!-- 编辑按钮 -->
-      <div class="attitudeEdit">
-        <label class="xbsj-label"></label>
-        <div class="buttonGroup">
-          <div>
-            <button
-              class="attitudeEditCameraButton"
-              @click="pin.creating =!pin.creating"
-              :class="pin.creating?'btncoloron':''"
-            >{{lang.creating}}</button>
-          </div>
-          <div>
-            <button
-              class="attitudeEditCameraButton"
-              @click="pin.editing =!pin.editing"
-              :class="pin.editing?'btncoloron':''"
-            >{{lang.editing}}</button>
+        <!-- 近远裁 -->
+        <div class="flatten" style="margin-top:20px;display:flex;">
+          <label>{{lang.nearfar}}</label>
+          <div class="field">
+            <XbsjSlider range :min="1" :max="100" :step="1" v-model="nearfar" ref="glowFactor"></XbsjSlider>
           </div>
         </div>
-      </div>
+        <!-- 近远裁 -->
+        <div class="flatten">
+          <label></label>
+          <div class="flatten-box">
+            <input v-model="pin.near" placeholder="lang.near" style="width: 25%;" type="text" />
+            <input
+              v-model="pin.far"
+              placeholder="lang.far"
+              style="width: 25%;margin-left:5%;"
+              type="text"
+            />
+          </div>
+        </div>
 
-      <!-- pin自定义外部图标 -->
-      <div class="flatten">
-        <label>{{lang.divcontent}}</label>
-        <textarea class="flatten-textarea" v-model="divcontent" />
+        <!-- 位置 -->
+        <div class="flatten">
+          <label>{{lang.weizhi}}</label>
+          <div class="flatten-box">
+            <XbsjLngLatHeight v-model="pin.position"></XbsjLngLatHeight>
+          </div>
+        </div>
+
+        <!-- 编辑按钮 -->
+        <div class="attitudeEdit">
+          <label class="xbsj-label"></label>
+          <div class="buttonGroup">
+            <div>
+              <button
+                class="attitudeEditCameraButton"
+                @click="pin.creating =!pin.creating"
+                :class="pin.creating?'btncoloron':''"
+              >{{lang.creating}}</button>
+            </div>
+            <div>
+              <button
+                class="attitudeEditCameraButton"
+                @click="pin.editing =!pin.editing"
+                :class="pin.editing?'btncoloron':''"
+              >{{lang.editing}}</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- pin自定义外部图标 -->
+        <div class="flatten">
+          <label>{{lang.divcontent}}</label>
+          <textarea class="flatten-textarea" v-model="divcontent" />
+        </div>
       </div>
-    </div>
-  </Window>
+    </Window>
+  </div>
 </template>
 
 <script>
 import { copyobj } from "../../utils/tools";
 import languagejs from "./index_locale";
-
+import Vue from "vue";
 export default {
   props: {
     getBind: Function
@@ -97,7 +91,8 @@ export default {
       lang: {},
       showPinSelect: false,
       makiIconObj: {},
-      divcontent: "",
+      //divcontent: `<div v-show="pin.enabled" :style="{ left: (pin.winPos[0] - 62) + 'px', bottom: pin.winPos[1] + 'px' }" style="z-index:1;height:50px;width:100px;border:1px solid red;position:absolute;">xxxxxx</div>`,
+      divcontent: `<div style="z-index:1;height:50px;width:100px;left=100px;top:100px;border:1px solid red;position:absolute;">xxxxxx</div>`,
       pin: {
         name: "",
         creating: true,
@@ -109,7 +104,8 @@ export default {
         scale: 1,
         show: true,
         position: [0, 0, 0],
-        pinBuilder: {}
+        pinBuilder: {},
+        winPos: [0, 0]
       },
       pinstyletype: true,
       bgbaseColorUI: {
@@ -156,7 +152,8 @@ export default {
         position: "pin.position",
         scale: "pin.scale",
         enabled: "pin.enabled",
-        pinBuilder: "pin.pinBuilder"
+        pinBuilder: "pin.pinBuilder",
+        winPos: "pin.winPos"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -189,6 +186,15 @@ export default {
     },
     guid() {
       return this.getBind().guid;
+    },
+    nearfar: {
+      get() {
+        return [this.pin.far, this.pin.near];
+      },
+      set(newValue) {
+        this.pin.near = Math.pow(newValue[0], 5);
+        this.pin.far = Math.pow(newValue[1], 20);
+      }
     }
   },
   watch: {
@@ -261,10 +267,6 @@ export default {
       }
     },
     ok() {
-      console.log(this.divcontent);
-      document.body.appendChild(document.createRange().createContextualFragment(`<div style="z-index:999999999;heigth:100px;width:100px;border:1px solid red;position:absolute;top:100px;left:100px;">xxxxxx</div>`));
-      // document.getElementsByTagName("body").innderHTML = this.divcontent;
-
       this.close();
       const pinToolObj = this._czmObj;
       if (!pinToolObj) {
@@ -274,9 +276,52 @@ export default {
       pinToolObj.twoPostionsEditing = false;
       if (pinToolObj.isCreating) {
         pinToolObj.isCreating = false;
+        //创建一个pindiv在地图上
+        var pindiv = document.createElement("div");
+        pindiv.innerHTML = this.divcontent;
+        this.$root.$refs.mainUI.$el.appendChild(pindiv);
+
+        //添加标记属性到czmobj当中
+        pinToolObj.pindiv = pindiv;
+        pinToolObj.pindiv.style.position = "absolute";
+        //watch-winpos属性
+        const pin = this._czmObj;
+        var um = XE.MVVM.watch(
+          () => [...pin.winPos],
+          winPos => {
+            pindiv.style.left = winPos[0] + "px";
+            pindiv.style.bottom = winPos[1] + 100 + "px";
+          }
+        );
+
+        //watch-enabled属性
+        var um = XE.MVVM.watch(pin, "enabled", enabled => {
+          if (enabled) {
+            pindiv.style.display = "block";
+          } else {
+            pindiv.style.display = "none";
+          }
+        });
+
+        // 监测是否有对象销毁，如果有销毁，对应的属性窗口也需要跟着销毁
+        this._czmObjectOpsEventDisposer = this.$root.$earth.czmObjectOpsEvent.addEventListener(
+          ({ type, xbsjObj }) => {
+            if (type === "destroy") {
+              if (xbsjObj.ctrtype === "PinDivTool") {
+                this.$root.$refs.mainUI.$el.removeChild(pinToolObj.pindiv);
+              }
+            }
+          }
+        );
 
         const sceneObject = new XE.SceneTree.Leaf(pinToolObj);
         this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+      } else {
+        //判断Pin中的自定义属性pindiv是否为空
+        if (pinToolObj.pindiv !== undefined) {
+          //修改pindiv操作
+          pinToolObj.pindiv.innerHTML = this.divcontent;
+        }
       }
     },
 

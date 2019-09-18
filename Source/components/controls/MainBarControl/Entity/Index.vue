@@ -296,6 +296,7 @@ export default {
       PinDivTool.isCreating = true;
       PinDivTool.creating = true;
       PinDivTool.show = false;
+      PinDivTool.pindiv = undefined;
       console.log(PinDivTool);
       this.$root.$earthUI.showPropertyWindow(PinDivTool);
     },
