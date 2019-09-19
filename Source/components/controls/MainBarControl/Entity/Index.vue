@@ -104,10 +104,10 @@
           <div class="xbsj-item-btn planebutton"></div>
           <span class="xbsj-item-name">{{lang.plane}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
+        <!-- <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn characterbutton"></div>
           <span class="xbsj-item-name">{{lang.character}}</span>
-        </div>
+        </div> -->
         <div class="xbsj-item-btnbox" @click="createTree">
           <div class="xbsj-item-btn treebutton"></div>
           <span class="xbsj-item-name">{{lang.tree}}</span>
@@ -116,12 +116,12 @@
           <div class="xbsj-item-btn carbutton"></div>
           <span class="xbsj-item-name">{{lang.car}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
+        <!-- <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn more"></div>
           <span class="xbsj-item-name">{{lang.more}}</span>
-        </div>
+        </div> -->
       </div>
-      <div class="xbsj-list-item xbsj-list-lastitem">
+      <!-- <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{lang.senior}}</span>
         <div class="xbsj-item-btnbox ml20">
           <div class="xbsj-item-btn odbutton"></div>
@@ -159,7 +159,7 @@
           <div class="xbsj-item-btn more"></div>
           <span class="xbsj-item-name">{{lang.more}}</span>
         </div>
-      </div>
+      </div> -->
     </div>
     <PlottingMore ref="plottingMore"></PlottingMore>
   </div>
