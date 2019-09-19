@@ -91,8 +91,7 @@ export default {
       lang: {},
       showPinSelect: false,
       makiIconObj: {},
-      //divcontent: `<div v-show="pin.enabled" :style="{ left: (pin.winPos[0] - 62) + 'px', bottom: pin.winPos[1] + 'px' }" style="z-index:1;height:50px;width:100px;border:1px solid red;position:absolute;">xxxxxx</div>`,
-      divcontent: `<div style="z-index:1;height:50px;width:100px;left=100px;top:100px;border:1px solid red;position:absolute;">xxxxxx</div>`,
+      divcontent: `<div class="dialog" style="z-index:1;height:50px;width:100px;top:100px;position:absolute;">标记文字</div>`,
       pin: {
         name: "",
         creating: true,
@@ -173,7 +172,8 @@ export default {
 
       this.makiIconObj = XE.Obj.Pin.MakiIcon;
       this.makiIconObj.null = "";
-      console.log(this.makiIconObj);
+      this.winPos[0] = 1;
+      this.winPos[1] = 12157665459056929000;
     }
   },
   beforeDestroy() {
@@ -289,8 +289,8 @@ export default {
         var um = XE.MVVM.watch(
           () => [...pin.winPos],
           winPos => {
-            pindiv.style.left = winPos[0] + "px";
-            pindiv.style.bottom = winPos[1] + 100 + "px";
+            pindiv.style.left = winPos[0] - 78 + "px";
+            pindiv.style.bottom = winPos[1] + 170 + "px";
           }
         );
 

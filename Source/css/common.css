@@ -772,3 +772,15 @@
  }
 
  /* 自定义窗口样式 */
+
+ .dialog {
+  position: absolute;
+  width: 80px;
+  min-height: 60px;
+  color: white;
+  background-image: url("../../Apps/Examples/images/dialog.png");
+  background-size: 100% 100%;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
