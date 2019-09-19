@@ -107,7 +107,7 @@
         <!-- <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn characterbutton"></div>
           <span class="xbsj-item-name">{{lang.character}}</span>
-        </div> -->
+        </div>-->
         <div class="xbsj-item-btnbox" @click="createTree">
           <div class="xbsj-item-btn treebutton"></div>
           <span class="xbsj-item-name">{{lang.tree}}</span>
@@ -119,7 +119,7 @@
         <!-- <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn more"></div>
           <span class="xbsj-item-name">{{lang.more}}</span>
-        </div> -->
+        </div>-->
       </div>
       <!-- <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{lang.senior}}</span>
@@ -159,7 +159,7 @@
           <div class="xbsj-item-btn more"></div>
           <span class="xbsj-item-name">{{lang.more}}</span>
         </div>
-      </div> -->
+      </div>-->
     </div>
     <PlottingMore ref="plottingMore"></PlottingMore>
   </div>
@@ -177,7 +177,16 @@ export default {
       selectlist: false,
       lang: {},
       langs: languagejs,
-      PlottingShow: false
+      PlottingShow: false,
+      divcontent: `
+      <div class="dialog" 
+      style="
+      height:50px;
+      width:100px;
+      top:100px;
+      position:absolute;">
+      标记文字
+      </div>`
     };
   },
   created() {},
@@ -298,6 +307,49 @@ export default {
       PinDivTool.show = false;
       PinDivTool.pindiv = undefined;
       console.log(PinDivTool);
+      if (PinDivTool.isCreating) {
+        PinDivTool.isCreating = false;
+        //创建一个pindiv在地图上
+        var pindiv = document.createElement("div");
+        pindiv.innerHTML = this.divcontent;
+        this.$root.$refs.mainUI.$el.appendChild(pindiv);
+
+        //添加标记属性到czmobj当中
+        PinDivTool.pindiv = pindiv;
+        PinDivTool.pindiv.style.position = "absolute";
+        //watch-winpos属性
+        const pin = PinDivTool;
+        var um = XE.MVVM.watch(
+          () => [...pin.winPos],
+          winPos => {
+            pindiv.style.left = winPos[0] - 78 + "px";
+            pindiv.style.bottom = winPos[1] + 170 + "px";
+          }
+        );
+
+        //watch-enabled属性
+        var um = XE.MVVM.watch(pin, "enabled", enabled => {
+          if (enabled) {
+            pindiv.style.display = "block";
+          } else {
+            pindiv.style.display = "none";
+          }
+        });
+
+        // 监测是否有对象销毁，如果有销毁，对应的属性窗口也需要跟着销毁
+        this._czmObjectOpsEventDisposer = this.$root.$earth.czmObjectOpsEvent.addEventListener(
+          ({ type, xbsjObj }) => {
+            if (type === "destroy") {
+              if (xbsjObj.ctrtype === "PinDivTool") {
+                this.$root.$refs.mainUI.$el.removeChild(PinDivTool.pindiv);
+              }
+            }
+          }
+        );
+
+        const sceneObject = new XE.SceneTree.Leaf(PinDivTool);
+        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+      }  
       this.$root.$earthUI.showPropertyWindow(PinDivTool);
     },
     pinpicturebtn() {
