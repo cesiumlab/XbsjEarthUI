@@ -2,7 +2,8 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="350"
+    :height="400"
+    :left="1200"
     :title="lang.title"
     @cancel="cancel"
     @ok="ok"
@@ -16,25 +17,16 @@
         <input style="float:left;" type="text" v-model="pin.name" />
       </div>
 
-      <!-- 缩放 -->
-      <div class="flatten" style="margin-top:20px;">
-        <label>{{lang.scale}}</label>
-        <!-- <input style="float:left;" type="text" v-model="pin.scale" /> -->
+      <!-- 近远裁 -->
+      <div class="flatten" style="margin-top:20px;display:flex;">
+        <label>{{lang.nearfar}}</label>
         <div class="field">
-          <XbsjSlider
-            :min="0.05"
-            :max="2"
-            :step="0.01"
-            showTip="always"
-            v-model="pin.scale"
-            ref="glowFactor"
-          ></XbsjSlider>
+          <XbsjSlider range :min="1" :max="100" :step="1" v-model="nearfar" ref="glowFactor"></XbsjSlider>
         </div>
       </div>
-
       <!-- 近远裁 -->
       <div class="flatten">
-        <label>{{lang.nearfar}}</label>
+        <label></label>
         <div class="flatten-box">
           <input v-model="pin.near" placeholder="lang.near" style="width: 25%;" type="text" />
           <input
@@ -79,6 +71,22 @@
       <div class="flatten">
         <label>{{lang.imageUrl}}</label>
         <input style="float:left;" type="text" v-model="pin.imageUrl" />
+      </div>
+
+      <!-- 缩放 -->
+      <div class="flatten" style="margin-top:20px;">
+        <label>{{lang.scale}}</label>
+        <!-- <input style="float:left;" type="text" v-model="pin.scale" /> -->
+        <div class="field">
+          <XbsjSlider
+            :min="0.05"
+            :max="2"
+            :step="0.01"
+            showTip="always"
+            v-model="pin.scale"
+            ref="glowFactor"
+          ></XbsjSlider>
+        </div>
       </div>
     </div>
   </Window>
@@ -174,7 +182,8 @@ export default {
 
       this.makiIconObj = XE.Obj.Pin.MakiIcon;
       this.makiIconObj.null = "";
-      console.log(this.makiIconObj);
+      this.pin.imageUrl = "http://lab2.cesiumlab.com/pinlogo.png";
+      this._czmObj.far = 1073741824;
     }
   },
   beforeDestroy() {
@@ -190,11 +199,11 @@ export default {
     },
     nearfar: {
       get() {
-        return [this.pin.far, this.pin.near];
+        return [0, 30];
       },
       set(newValue) {
-        this.pin.near = Math.pow(newValue[0], 5);
-        this.pin.far = Math.pow(newValue[1], 20);
+        this.pin.near = Math.pow(2, newValue[0]);
+        this.pin.far = Math.pow(2, newValue[1]);
       }
     }
   },
@@ -301,6 +310,7 @@ export default {
 
 <style scoped>
 .field {
+  margin-top: 20px;
   padding-left: 4px;
   display: inline-block;
   width: 220px;

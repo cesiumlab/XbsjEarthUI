@@ -2,7 +2,8 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="400"
+    :height="440"
+    :left="1200"
     :title="lang.title"
     @cancel="cancel"
     @ok="ok"
@@ -23,16 +24,11 @@
           <XbsjSlider range :min="1" :max="100" :step="1" v-model="nearfar" ref="glowFactor"></XbsjSlider>
         </div>
       </div>
-        <!-- 近远裁 -->
+      <!-- 近远裁 -->
       <div class="flatten">
         <label></label>
         <div class="flatten-box">
-          <input
-            v-model="pin.near"
-            placeholder="lang.near"
-            style="width: 25%;"
-            type="text"
-          />
+          <input v-model="pin.near" placeholder="lang.near" style="width: 25%;" type="text" />
           <input
             v-model="pin.far"
             placeholder="lang.far"
@@ -204,9 +200,7 @@ export default {
 
       this.makiIconObj = XE.Obj.Pin.MakiIcon;
       this.makiIconObj.null = "";
-      this.makiIconObj.far = 10;
-      this.makiIconObj.near = 1;
-      console.log(this.makiIconObj);
+      this._czmObj.far = 1073741824;
     }
   },
   beforeDestroy() {
@@ -222,11 +216,11 @@ export default {
     },
     nearfar: {
       get() {
-        return [this.pin.far, this.pin.near];
+        return [0, 30];
       },
       set(newValue) {
-        this.pin.near = Math.pow(newValue[0], 5);
-        this.pin.far = Math.pow(newValue[1], 20);
+        this.pin.near = Math.pow(2, newValue[0]);
+        this.pin.far = Math.pow(2, newValue[1]);
       }
     }
   },

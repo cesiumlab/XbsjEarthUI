@@ -6,6 +6,7 @@
       :minWidth="480"
       :height="480"
       :title="lang.title"
+      :left="1200"
       @cancel="cancel"
       @ok="ok"
       :footervisible="true"
@@ -68,11 +69,12 @@
           </div>
         </div>
 
-        <!-- pin自定义外部图标 -->
+        <!-- pindiv部图标 -->
         <div class="flatten">
           <label>{{lang.divcontent}}</label>
           <textarea class="flatten-textarea" v-model="divcontent" />
         </div>
+        <div class="apply" @click="apply">应用</div>
       </div>
     </Window>
   </div>
@@ -91,15 +93,14 @@ export default {
       lang: {},
       showPinSelect: false,
       makiIconObj: {},
-      divcontent: `
-      <div class="dialog" 
-      style="
-      height:50px;
-      width:100px;
-      top:100px;
-      position:absolute;">
-      标记文字
-      </div>`,
+      divcontent: `<div
+      style="height:50px;width:100px;top:100px;
+      position: absolute;color: white;
+      background-size: 100% 100%;padding: 5px;
+      border-radius: 5px;cursor:pointer;
+      background-image:url('../../Examples/images/dialog.png');">
+标记文字
+</div>`,
       pin: {
         name: "",
         creating: true,
@@ -180,6 +181,7 @@ export default {
 
       this.makiIconObj = XE.Obj.Pin.MakiIcon;
       this.makiIconObj.null = "";
+        this._czmObj.far = 1073741824;
     }
   },
   beforeDestroy() {
@@ -195,11 +197,11 @@ export default {
     },
     nearfar: {
       get() {
-        return [this.pin.far, this.pin.near];
+        return [0,30];
       },
       set(newValue) {
-        this.pin.near = Math.pow(newValue[0], 5);
-        this.pin.far = Math.pow(newValue[1], 20);
+        this.pin.near = Math.pow(2, newValue[0]);
+        this.pin.far = Math.pow(2, newValue[1]);
       }
     }
   },
@@ -330,7 +332,13 @@ export default {
         }
       }
     },
-
+    apply() {
+      const pinToolObj = this._czmObj;
+      if (pinToolObj.pindiv !== undefined) {
+        //修改pindiv操作
+        pinToolObj.pindiv.innerHTML = this.divcontent;
+      }
+    },
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
     }
@@ -345,6 +353,7 @@ export default {
 
 <style scoped>
 .field {
+  margin-top: 20px;
   padding-left: 4px;
   display: inline-block;
   width: 220px;
@@ -645,11 +654,25 @@ button:focus {
 }
 .flatten-textarea {
   float: left;
-  height: 150px;
   width: calc(100% - 100px);
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   border: none;
   color: #dddddd;
+  position: absolute;
+  height: calc(100% - 250px);
+}
+.apply {
+  width: 35px !important;
+  height: 25px;
+  text-align: center;
+  font-size: 14px;
+  padding: 2px 15px;
+  text-decoration: none;
+  border-radius: 3px;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #dddddd;
+  line-height: 25px;
 }
 </style>

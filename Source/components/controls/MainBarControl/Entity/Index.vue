@@ -178,15 +178,14 @@ export default {
       lang: {},
       langs: languagejs,
       PlottingShow: false,
-      divcontent: `
-      <div class="dialog" 
-      style="
-      height:50px;
-      width:100px;
-      top:100px;
-      position:absolute;">
-      标记文字
-      </div>`
+      divcontent: `<div
+      style="height:50px;width:100px;top:100px;
+      position: absolute;color: white;
+      background-size: 100% 100%;padding: 5px;
+      border-radius: 5px;cursor:pointer;
+      background-image:url('../../Examples/images/dialog.png');">
+标记文字
+</div>`
     };
   },
   created() {},
@@ -349,7 +348,7 @@ export default {
 
         const sceneObject = new XE.SceneTree.Leaf(PinDivTool);
         this.$root.$earth.sceneTree.addSceneObject(sceneObject);
-      }  
+      }
       this.$root.$earthUI.showPropertyWindow(PinDivTool);
     },
     pinpicturebtn() {
