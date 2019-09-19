@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>视图-多视口</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 38px;
+            padding: 0 10px;
+            line-height: 38px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+
+        .btnon {
+            background-color: #1E9FFF;
+            color: #fff;
+            border: 1px solid #1E9FFF;
+        }
+
+        span {
+            display: inline-block;
+            margin-top: 12px;
+            margin-left: 14px;
+        }
+
+        .lefttopButton {
+            position: absolute;
+            width: 17px;
+            height: 17px;
+            background: rgba(71, 71, 71, 1);
+            cursor: pointer;
+            border: none;
+            outline: none;
+            left: 266px;
+            top: 70px;
+        }
+        .lefttopButtonActive {
+            background-color: rgba(31, 255, 255, 1);
+            cursor: pointer;
+        }
+        .righttopButton {
+            width: 17px;
+            height: 17px;
+            background: rgba(71, 71, 71, 1);
+            cursor: pointer;
+            border: none;
+            outline: none;
+            position: absolute;
+            left: 284px;
+            top: 70px;
+        }
+        .righttopButtonActive {
+            background-color: rgba(31, 255, 255, 1);
+            cursor: pointer;
+        }
+        .leftbottomButton {
+            width: 17px;
+            height: 17px;
+            background: rgba(71, 71, 71, 1);
+            cursor: pointer;
+            border: none;
+            outline: none;
+            position: absolute;
+            top: 88px;
+            left: 266px;
+        }
+        .leftbottomButtonActive {
+            background-color: rgba(31, 255, 255, 1);
+            cursor: pointer;
+        }
+        .rightbottomButton {
+            width: 17px;
+            height: 17px;
+            background: rgba(71, 71, 71, 1);
+            cursor: pointer;
+            border: none;
+            outline: none;
+            position: absolute;
+            top: 88px;
+            left: 284px;
+        }
+        .rightbottomButtonActive {
+            background-color: rgba(31, 255, 255, 1);
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; padding: 20px; border-radius: 25px;min-width:300px; font-size:24px; font-family: 宋体;">
+                        <div class="defultbtn" :class="{'btnon':viewport=='0'}" @click="viewportshow('0'),setViewport(1.0, 1.0)">单视口</div>
+                        <div class="defultbtn" :class="{'btnon':viewport=='1'}" @click="viewportshow('1'),setViewport(0.5, 1.0)">左右</div>
+                        <div class="defultbtn" :class="{'btnon':viewport=='2'}" @click="viewportshow('2'),setViewport(1.0, 0.5)">上下</div>
+                        <div class="defultbtn" :class="{'btnon':viewport=='3'}" @click="viewportshow('3'),setViewport(0.5, 0.5)">四分</div><br>
+                        <span>瓦片数据视口的样式：</span>
+                        <button
+                            class="lefttopButton"
+                            :class="xbsjLeftTopView ? 'lefttopButtonActive' : ''"
+                            @click="xbsjLeftTopView = !xbsjLeftTopView;"
+                        ></button>
+                        <button
+                            class="righttopButton"
+                            :class="xbsjRightTopView ? 'righttopButtonActive' : ''"
+                            @click="xbsjRightTopView = !xbsjRightTopView"
+                        ></button>
+                        <button
+                            class="leftbottomButton"
+                            :class="xbsjLeftBottomView ? 'leftbottomButtonActive' : ''"
+                            @click="xbsjLeftBottomView=!xbsjLeftBottomView"
+                        ></button>
+                        <button
+                            class="rightbottomButton"
+                            :class="xbsjRightBottomView ? 'rightbottomButtonActive' : ''"
+                            @click="xbsjRightBottomView=!xbsjRightBottomView"
+                        ></button>
+                    </div>
+                </div>
+            `,
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    playing: false,
+                    splitX: 1.0,
+                    splitY: 1.0,
+                    viewport: "0",
+                    xbsjLeftTopView: true,
+                    xbsjLeftBottomView: true,
+                    xbsjRightTopView: true,
+                    xbsjRightBottomView: true,
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+                earth.interaction.picking.enabled = true;
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "expand": true,
+                    "title": "预览场景",
+                    "children": [{
+                        "ref": 'tileset',
+                        "czmObject": {
+                            "name": '大雁塔',
+                            "xbsjType": "Tileset",
+                            "url": '../assets/dayanta/tileset.json',
+                            "xbsjUseOriginTransform": false,
+                        },
+                    }, {
+                        "czmObject": {
+                            "name": '默认影像',
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
+                        },
+                    }]
+                };
+
+                var tileset = earth.sceneTree.$refs.tileset.czmObject;
+
+                // 1.1.3 设置相机位置
+                // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
+                earth.camera.position =  [1.9017006607555602,0.5971757872571328,897.6553568768813];
+                earth.camera.rotation = [6.2831853071793455,-0.7862324279670445,6.283185307179586];
+
+                // 1.1.3 数据绑定
+                // 双向绑定的属性，如果一方发生变化，另一方同样会跟随变化
+                this._splitXUnbind = XE.MVVM.bind(this, 'splitX', earth.camera.viewport, 'splitX');
+                this._splitYUnbind = XE.MVVM.bind(this, 'splitY', earth.camera.viewport, 'splitY');
+                this._xbsjLeftTopViewUnbind = XE.MVVM.bind(this, 'xbsjLeftTopView', tileset, 'xbsjLeftTopView');
+                this._xbsjLeftBottomViewUnbind = XE.MVVM.bind(this, 'xbsjLeftBottomView', tileset, 'xbsjLeftBottomView');
+                this._xbsjRightTopViewUnbind = XE.MVVM.bind(this, 'xbsjRightTopView', tileset, 'xbsjRightTopView');
+                this._xbsjRightBottomViewUnbind = XE.MVVM.bind(this, 'xbsjRightBottomView', tileset, 'xbsjRightBottomView');
+
+                this._earth = earth;
+
+                // only for Debug
+                window.tileset = tileset;
+                window.earth = earth;
+            },
+            methods: {
+                setViewport(splitX, splitY) {
+                    this.splitX = splitX;
+                    this.splitY = splitY;
+                },
+                viewportshow(v) {
+                    this.viewport = v;
+                },
+                
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._splitXUnbind = this._splitXUnbind && this._splitXUnbind();
+                this._splitYUnbind = this._splitYUnbind && this._splitYUnbind();
+                this._xbsjLeftTopViewUnbind = this._xbsjLeftTopViewUnbind && this._xbsjLeftTopViewUnbind();
+                this._xbsjLeftBottomViewUnbind = this._xbsjLeftBottomViewUnbind && this._xbsjLeftBottomViewUnbind();
+                this._xbsjRightTopViewUnbind = this._xbsjRightTopViewUnbind && this._xbsjRightTopViewUnbind();
+                this._xbsjRightBottomViewUnbind = this._xbsjRightBottomViewUnbind && this._xbsjRightBottomViewUnbind();
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>

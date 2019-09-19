@@ -32,6 +32,10 @@
         XE.ready().then(() => {
             // 1.1 创建地球
             earth = new XE.Earth('earthContainer');
+            earth.interaction.picking.enabled = true; // 开启拾取操作
+
+            // only for Debug
+            window.earth = earth;
 
             // 1.2 添加默认地球影像
             earth.sceneTree.root = {
@@ -53,22 +57,8 @@
                 ]
             };
 
-            earth.cameraViewManager.lastView.xbsjFromJSON({
-                "position": [
-                    2.031889263847462, 
-                    0.6962418623447842,
-                    3116.493479500443, 
-                ],
-                "rotation": [
-                    5.512527446464938,  
-                    -0.9111869236954493, 
-                    0, 
-                ],
-                "fov": 1.0471975511965976,
-                "near": 0.1,
-                "far": 10000000000
-            });
-            earth.cameraViewManager.lastView.flyTo();
+            earth.camera.position = [2.032760823167396, 0.6959943988401194, 4408.923380916176];
+            earth.camera.rotation = [5.511217132254479, -0.6441479020764156, 0.0];
 
             {
                 const scene = earth.czm.scene;
@@ -153,24 +143,15 @@
 
                         const cylinder = new XE.Obj.Cylinder(this._earth);
                         cylinder.xbsjFromJSON(config);
-                        cylinder.onClick = (pickedObject) => {
-                            this.onClick(pickedObject);
+                        cylinder.onclick = (pickedObject) => {
+                            this.onclick(pickedObject);
                         };
-                        cylinder.onHover = (pickedObject) => {
-                            this.onHover(pickedObject);
+                        cylinder.onmouseover = (pickedObject) => {
+                            this.onmouseover(pickedObject);
                         };
-                        cylinder.onHoverEnd = () => {
-                            this.onHoverEnd();
+                        cylinder.onmouseout = () => {
+                            this.onmouseout();
                         };
-
-                        // TODO 这个watch没有销毁
-                        XE.MVVM.watch(cylinder, 'hovered', hovered => {
-                            if (hovered) {
-                                this.onHover(this);
-                            } else {
-                                this.onHoverEnd();
-                            }
-                        });
 
                         this._cylinder = cylinder;
                     }
@@ -202,15 +183,15 @@
                         return this._label;
                     }
 
-                    onClick() {
+                    onclick() {
                         alert(this.name);
                     }
 
-                    onHover() {
+                    onmouseover() {
                         this._hovered = true;
                     }
 
-                    onHoverEnd() {
+                    onmouseout() {
                         this._hovered = false;
                     }
 
@@ -235,23 +216,23 @@
                 
                 var wells = [];
 
-                
                 for (let i=0; i<10; ++i) {
                     for (let j=0; j<10; ++j) {
                         well = new Well(earth, labels);
-                        well.startPosition = [tr(116.39), tr(39.9), 0];
-                        well.endPosition = [tr(116.39), tr(39.9), 500];
+                        // xeptr用来把经纬度的度数的数组转化成弧度的数组
+                        well.startPosition = [116.39, 39.9, 0].xeptr;
+                        well.endPosition = [116.39, 39.9, 500].xeptr;
                         well.fixScreenSize = 20;
-                        well.maxSceneScale = 20;
+                        well.maxSceneScale = 50;
                         well.color = [Math.random(), Math.random(), Math.random(), 1.0];
-                        XE.Tool.move([500 * i, 500 * j, 0], well.startPosition);
-                        XE.Tool.move([500 * i + Math.random() * (-200), 500 * j, Math.random() * (-200)], well.endPosition);
+
+                        // xepm用来做平移，分别指向东、向北、向向偏移，单位都是米！
+                        well.startPosition.xepm(500 * i, 500 * j, 0);
+                        well.endPosition.xepm(500 * i + Math.random() * (-200), 500 * j, Math.random() * (-200));
 
                         well.name = `(${i}-${j})`;
                     }
                 }
-
-                earth.interaction.picking.enabled = true; // 拾取状态打开！
             }
         });
     </script>

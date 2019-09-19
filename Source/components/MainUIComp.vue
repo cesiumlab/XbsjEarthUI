@@ -62,13 +62,24 @@ import ContextMenu from "./common/ContextMenu";
 
 import FlattenningTool from "./viztools/FlattenningTool";
 import ClippingPlaneTool from "./viztools/ClippingPlaneTool";
+import PinTool from "./viztools/PinTool";
+import PinPictureTool from "./viztools/PinPictureTool";
+import PinDivTool from "./viztools/PinDivTool";
+import PathTool from "./viztools/PathTool";
+import ModelTool from "./viztools/ModelTool";
+import PolylineTool from "./viztools/PolylineTool";
+import GeoCurveArrow from "./viztools/GeoCurveArrow";
+import GeoDoubleArrow from "./viztools/GeoDoubleArrow";
+import GeoSectorSearch from "./viztools/GeoSectorSearch";
+import GeoPolylineArrow from "./viztools/GeoPolylineArrow";
+import GeoTriFlag from "./viztools/GeoTriFlag";
+
 import CamerVideoTool from "./viztools/CamerVideoTool";
 import ViewshedTool from "./viztools/ViewshedTool";
 
 import PropertyWindow from "./properties/PropertyWindow";
 import CameraViewPrp from "./properties/CameraViewPrp";
 import TilesetStyleEditor from "./properties/TilesetStyleEditor";
- 
 
 import GlobalColorPicker from "./common/GlobalColorPicker";
 import InformationBox from "./utils/InformationBox";
@@ -89,6 +100,18 @@ export default {
 
     FlattenningTool,
     ClippingPlaneTool,
+    PinTool,
+    PinPictureTool,
+    PinDivTool,
+    PathTool,
+    ModelTool,
+    PolylineTool,
+    GeoCurveArrow,
+    GeoDoubleArrow,
+    GeoSectorSearch,
+    GeoPolylineArrow,
+    GeoTriFlag,
+
     CamerVideoTool,
     ViewshedTool,
 
@@ -101,7 +124,7 @@ export default {
     TerrainOnline,
     PropertyWindow,
     CameraViewPrp,
-    TilesetStyleEditor, 
+    TilesetStyleEditor,
     GlobalColorPicker,
     InformationBox,
     ModelTreeTool
@@ -116,6 +139,17 @@ export default {
         CameraVideo: "CamerVideoTool",
         Viewshed: "ViewshedTool",
         ClippingPlane: "ClippingPlaneTool",
+        PinTool: "PinTool",
+        PinDivTool: "PinDivTool",
+        PinPictureTool: "PinPictureTool",
+        Path: "PathTool",
+        Model: "ModelTool",
+        Polyline: "PolylineTool",
+        GeoCurveArrow: "GeoCurveArrow",
+        GeoSectorSearch: "GeoSectorSearch",
+        GeoPolylineArrow: "GeoPolylineArrow",
+        GeoTriFlag: "GeoTriFlag",
+        GeoDoubleArrow: "GeoDoubleArrow",
         ["CameraView.View"]: "CameraViewPrp"
       },
       tools: [
@@ -225,7 +259,7 @@ export default {
 
       //默认是统一类型的属性窗口
       var component;
-
+      console.log(czmObject.ctrtype);
       //如果有外部配置
       if (
         options &&
@@ -234,11 +268,19 @@ export default {
       ) {
         component = options.component;
       }
+
       //如果有默认映射
       else if (czmObject.xbsjType) {
-        var c = this.registerComponents[czmObject.xbsjType];
-        if (c) {
-          component = c;
+        if (czmObject.ctrtype) {
+            var c = this.registerComponents[czmObject.ctrtype];
+          if (c) {
+            component = c;
+          }
+        } else {
+          var c = this.registerComponents[czmObject.xbsjType];
+          if (c) {
+            component = c;
+          }
         }
       }
 
@@ -302,7 +344,7 @@ export default {
         this.tools.splice(index, 1);
       }
     },
- 
+
     promptInfo(info, type) {
       var _info = {
         info,

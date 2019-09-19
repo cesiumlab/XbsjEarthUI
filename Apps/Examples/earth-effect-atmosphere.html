@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>效果-大气</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .box span{
+            display: block;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 38px;
+            padding: 0 10px;
+            line-height: 38px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
+            cursor: pointer;
+            margin-bottom: 4px;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+
+        .btnon {
+            background-color: #1E9FFF;
+            color: #fff;
+            border: 1px solid #1E9FFF;
+        }
+
+        input {
+            width: 180px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; padding: 20px; border-radius: 25px;min-width:150px; font-size:24px; font-family: 宋体;">
+                            <div class="defultbtn" :class="{'btnon':enabled}" @click="enabled = !enabled">大气</div>
+                            <span>亮度偏移：{{brightnessShift}}</span><input type="range" min="-1" step="0.01" max="1" v-model.number="brightnessShift">
+                            <span>色调偏移：{{hueShift}}</span><input type="range" min="0" step="0.01" max="1" v-model.number="hueShift">  
+                            <span>饱和度偏移：{{saturationShift}}</span><input type="range" min="-1" step="0.01" max="1" v-model.number="saturationShift">  
+                    </div>
+                </div>
+            `,
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    enabled: true,
+                    brightnessShift: 0,
+                    hueShift: 0,
+                    saturationShift: 0
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                this._earth = earth;
+
+                // 1.1.2 场景配置
+                // 默认显示天地图影像
+                earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "czmObject": {
+                                "name": '离线影像',
+                                "xbsjType": "Imagery",
+                                "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
+                            }
+                        }
+                    ]
+                }
+
+                // 设置相机位置
+                // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
+                earth.camera.position = [2.0836109889320853,0.45667427106858133,11763256.248715397];
+                earth.camera.rotation = [6.283185307179586,-1.5705982258639,0];
+
+                // 1.1.3 数据绑定
+                this._enabledUnbind = XE.MVVM.bind(this, 'enabled', earth.weather.atmosphere, 'enabled');
+                this._brightnessShiftUnbind = XE.MVVM.bind(this, 'brightnessShift', earth.weather.atmosphere, 'brightnessShift');
+                this._hueShiftUnbind = XE.MVVM.bind(this, 'hueShift', earth.weather.atmosphere, 'hueShift');
+                this._saturationShiftUnbind = XE.MVVM.bind(this, 'saturationShift', earth.weather.atmosphere, 'saturationShift');
+
+                // only for Debug
+                window.earth = earth;
+            },
+            methods: {
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._enabledUnbind = this._enabledUnbind && this._enabledUnbind();
+                this._brightnessShiftUnbind = this._brightnessShiftUnbind && this._brightnessShiftUnbind();
+                this._hueShiftUnbind = this._hueShiftUnbind && this._hueShiftUnbind();
+                this._saturationShiftUnbind = this._saturationShiftUnbind && this._saturationShiftUnbind();
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>

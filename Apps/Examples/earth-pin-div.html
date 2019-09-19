@@ -93,8 +93,8 @@
                         "czmObject": {
                             "name": 'Pin1',
                             "xbsjType": "Pin",
-                            "position": [1.9016974701882112, 0.5972325152147303, 425.8641913624607],       
-                            "near": 100,
+                            "position": [1.9017005694855162, 0.5972477268978722, 488.7695178987821],       
+                            "near": 300,
                             "show": false
                         },
                     }, {
@@ -125,13 +125,16 @@
                 this._earth = earth;
 
                 // only for Debug
+                window.earth = earth;
                 window.tileset = tileset;
                 window.pin1 = pin1;
             },
             methods: {
                 fly() {
                     console.log('即将飞入大雁塔！');
-                    tileset.flyTo();
+                    const position = [1.901729390218574, 0.5972202012953493, 594.3184362850787];
+                    const rotation = [5.538756509291041, -0.5562768563795704, 6.280692859184528];
+                    this._earth.camera.flyTo(position, 0, rotation);
                 }
             },
             filters: {

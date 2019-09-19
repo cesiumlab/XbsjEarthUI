@@ -1,4 +1,5 @@
 const zh = {
+  pin:"pin属性窗口",
   title: "剖切属性窗口",
   cuttitleset: "裁剪瓦片",
   name: "名称",
@@ -28,6 +29,7 @@ const zh = {
 };
 
 const en = {
+  pin:"Pin Property",
   title: "Cutting Property",
   cuttitleset: "Tileset",
   name: "Name",

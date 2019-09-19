@@ -31,11 +31,6 @@
         .colorbox {
             width: 50px;
         }
-        /* span {
-            display: inline-block;
-            width: 230px;
-            text-align: right;
-        } */
     </style>
 </head>
 
@@ -56,7 +51,7 @@
                         <span>pin图标: </span><select v-model="makiIcon"><option v-for="item in makiIconObj">{{item}}</option></select><br/>
                         <span>pin大小：{{ size }}</span><br/>
                         <span><input type="range" min="1" max="100" step="1" v-model.number="size"></span><br/>
-                        <span>pin背景颜色：</span><input class="colorbox" type="color" value="#ffffff" @input=colorchangeinner(event)><br/>
+                        <span>pin填充颜色：</span><input class="colorbox" type="color" value="#ffffff" @input=colorchangeinner(event)><br/>
                         <span>pin边框和文字颜色：</span><input class="colorbox" type="color" value="#007F00" @input=colorchangeouter(event)>
                     </div>
                 </div>
@@ -65,7 +60,7 @@
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                     text: '',
-                    size: '',
+                    size: 0,
                     makiIcon: '',
                     makiIconObj: {}
                 };
@@ -113,6 +108,7 @@
                 this._earth = earth;
 
                 // only for Debug
+                window.earth = earth;
                 window.pin1 = pin1;
             },
             methods: {

@@ -171,14 +171,22 @@ module.exports.plugins = (module.exports.plugins || []).concat([
         // 'Apps/**/*',
         'index.html',
         {
-            from: 'Static/XbsjCesium',
+            // from: 'Static/XbsjCesium', // 如果使用指定的XbsjCesium
+            from: process.env.XBSJ_IMPORT !== 'external' ? './node_modules/earthsdk/dist/XbsjCesium' : 'Static/XbsjCesium',
             to: 'XbsjCesium',
             toType: 'dir'
         },
         {
-            from: 'Static/XbsjEarth',
+            // from: 'Static/XbsjEarth', // 如果使用指定的XbsjEarth，可以在这里修改下
+            from: process.env.XBSJ_IMPORT !== 'external' ? './node_modules/earthsdk/dist/XbsjEarth' : 'Static/XbsjEarth',
             to: 'XbsjEarth',
             toType: 'dir'
+        },
+        {
+            // from: 'Static/XbsjEarth-Plugins',
+            from: process.env.XBSJ_IMPORT !== 'external' ? './node_modules/earthsdk-plotting-symbol/dist/XbsjEarth-Plugins/plottingSymbol.js' : 'Static/XbsjEarth-Plugins/plottingSymbol.js',
+            to: 'XbsjEarth-Plugins/plottingSymbol.js',
+            toType: 'file'
         },
         {
             from: 'Static/assets',

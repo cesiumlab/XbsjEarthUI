@@ -85,11 +85,11 @@
 
                 // 1.2.5 变量记录
                 this._earth = earth;
+                this._tileset = tileset;
 
                 // only for Debug
+                window.earth = earth;
                 window.tileset = tileset;
-
-                this._tileset = tileset;
             },
             // 1.2 资源销毁
             beforeDestroy() {

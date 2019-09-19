@@ -59,6 +59,7 @@
                         //startPos: airports[route[1]].coord,
                         //endPos: airports[route[2]].coord,
                         posititons: points,
+                        color: [Math.random() * 0.5 + 0.5, Math.random() * 0.8 + 0.2, 0.0, 1.0],
                         width: 2.0,
                         startTime: timeDuration * Math.random(),
                         duration: moveBaseDuration + 1.0 * Math.random()
@@ -85,15 +86,19 @@
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
                     <div style="position: absolute; left: 18px; top: 18px">
-                        <button>{{ message }}</button>
+                        <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:180px; font-size:24px; font-family: 宋体;">
+                            <span>帧率：{{fps}}帧/秒</span><br/>
+                            <span>时间：{{elapsedTime | numFilter}}毫秒</span><br/>
+                        </div>
                     </div>
                 </div>
             `,
             data() { 
                 return {
-                    message: '页面加载于 ' + new Date().toLocaleString(),
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                     _bgImagery: undefined,
+                    fps: 0,
+                    elapsedTime: 0
                 };
             },
             // 1.1 资源创建
@@ -137,6 +142,7 @@
                 this._earth = earth;
 
                 this._odlines = new XE.Obj.ODLines(earth);
+                this._odlines.color = [1, 1, 1, 1];
 
                 loadData((data, timeDuration) => {
                     this._odlines.data = data;
@@ -144,13 +150,27 @@
                     this._odlines.playing = true;
                 });
 
+                // 1.1.3 数据绑定
+                // 双向绑定的属性，如果一方发生变化，另一方同样会跟随变化
+                this._fpsUnbind = XE.MVVM.bind(this, 'fps', earth.status, 'fps');
+                this._elapsedTimeUnbind = XE.MVVM.bind(this, 'elapsedTime', earth.status, 'elapsedTime');
+
                 // only for Debug
                 window.earth = earth;
                 window.odlines = this._odlines;
             },
+            filters: {
+                numFilter(value) {
+                    // 截取当前数据到小数点后两位
+                    let realVal = parseFloat(value).toFixed(1)
+                    return realVal
+                }
+            },
             // 1.2 资源销毁
             beforeDestroy() {
                 // vue程序销毁时，需要清理相关资源
+                this._fpsUnbind = this._fpsUnbind && this._fpsUnbind();
+                this._elapsedTimeUnbind = this._elapsedTimeUnbind && this._elapsedTimeUnbind();
                 this._earth = this._earth && this._earth.destroy();
             },
         }

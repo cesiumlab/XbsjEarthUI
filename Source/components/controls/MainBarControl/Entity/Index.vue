@@ -1,20 +1,77 @@
 <template>
   <!-- box -->
   <div class="xbsj-template">
-      <div class="xbsj-list"
-          ref="container" 
+    <div
+      class="xbsj-list"
+      ref="container"
       @mousedown="startMove($event)"
       @mousemove="onMoving($event)"
-      @mouseup="endMove($event)">
+      @mouseup="endMove($event)"
+    >
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.routine}}</span>
-        <div class="xbsj-item-btnbox ml20">
-          <div class="xbsj-item-btn spotbutton"></div>
-          <span class="xbsj-item-name">{{lang.spot}}</span>
+        <!-- 内置图标 -->
+        <div class="xbsj-item-btnbox ml20" @click="pinbtn" title="内置图标">
+          <div class="xbsj-item-btn pinbutton"></div>
+          <span class="xbsj-item-name">{{lang.pin}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
+        <!-- 外置图标 -->
+        <div class="xbsj-item-btnbox ml20" @click="pinpicturebtn" title="外置图标">
+          <div class="xbsj-item-btn pinbutton"></div>
+          <span class="xbsj-item-name">{{lang.pinpicturebtn}}</span>
+        </div>
+        <!-- div图标 -->
+        <div class="xbsj-item-btnbox ml20" @click="pindivbtn" title="div图标">
+          <div class="xbsj-item-btn pinbutton"></div>
+          <span class="xbsj-item-name">{{lang.pindivbtn}}</span>
+        </div>
+
+        <!-- 路径 -->
+        <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
+          <div class="xbsj-item-btn pathbutton"></div>
+          <span class="xbsj-item-name">{{lang.path}}</span>
+        </div>
+        <!-- 折线 -->
+        <div class="xbsj-item-btnbox" @click="polylinebtn" title="折线">
           <div class="xbsj-item-btn linebutton"></div>
           <span class="xbsj-item-name">{{lang.line}}</span>
+        </div>
+
+        <!-- 模型 -->
+        <div class="xbsj-item-btnbox" @click="createmodelbtn">
+          <div class="xbsj-item-btn modelbutton"></div>
+          <span class="xbsj-item-name">{{lang.createmodel}}</span>
+        </div>
+        <!-- 曲线箭头 -->
+        <div class="xbsj-item-btnbox" @click="curvedarrowbtn">
+          <div class="xbsj-item-btn curvedarrow"></div>
+          <span class="xbsj-item-name">{{lang.curvedarrow}}</span>
+        </div>
+
+        <!-- 折线箭头 -->
+        <div class="xbsj-item-btnbox" @click="PolylineArrow">
+          <div class="xbsj-item-btn PolylineArrow"></div>
+          <span class="xbsj-item-name">{{lang.PolylineArrow}}</span>
+        </div>
+        <!-- 扇区搜索 -->
+        <div class="xbsj-item-btnbox" @click="SectorSearch">
+          <div class="xbsj-item-btn modelbutton"></div>
+          <span class="xbsj-item-name">{{lang.SectorSearch}}</span>
+        </div>
+        <!-- 三角旗帜 -->
+        <div class="xbsj-item-btnbox" @click="TriFlag">
+          <div class="xbsj-item-btn TriFlag"></div>
+          <span class="xbsj-item-name">{{lang.TriFlag}}</span>
+        </div>
+        <!-- 双箭头 -->
+        <div class="xbsj-item-btnbox" @click="DoubleArrow">
+          <div class="xbsj-item-btn DoubleArrow"></div>
+          <span class="xbsj-item-name">{{lang.DoubleArrow}}</span>
+        </div>
+
+        <!-- <div class="xbsj-item-btnbox">
+          <div class="xbsj-item-btn spotbutton"></div>
+          <span class="xbsj-item-name">{{lang.spot}}</span>
         </div>
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn facebutton"></div>
@@ -36,14 +93,14 @@
           <div class="xbsj-item-btn casebutton"></div>
           <span class="xbsj-item-name">{{lang.case}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
+        <div class="xbsj-item-btnbox" @click="routineMore">
           <div class="xbsj-item-btn more"></div>
           <span class="xbsj-item-name">{{lang.more}}</span>
-        </div>
+        </div>-->
       </div>
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.model}}</span>
-        <div class="xbsj-item-btnbox ml20">
+        <div class="xbsj-item-btnbox ml20" @click="createPlane">
           <div class="xbsj-item-btn planebutton"></div>
           <span class="xbsj-item-name">{{lang.plane}}</span>
         </div>
@@ -51,11 +108,11 @@
           <div class="xbsj-item-btn characterbutton"></div>
           <span class="xbsj-item-name">{{lang.character}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
+        <div class="xbsj-item-btnbox" @click="createTree">
           <div class="xbsj-item-btn treebutton"></div>
           <span class="xbsj-item-name">{{lang.tree}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
+        <div class="xbsj-item-btnbox" @click="createCar">
           <div class="xbsj-item-btn carbutton"></div>
           <span class="xbsj-item-name">{{lang.car}}</span>
         </div>
@@ -104,30 +161,170 @@
         </div>
       </div>
     </div>
+    <PlottingMore ref="plottingMore"></PlottingMore>
   </div>
 </template>
 
 <script>
 import languagejs from "./index_locale";
+import PlottingMore from "./PlottingMore/index";
 export default {
+  components: {
+    PlottingMore
+  },
   data() {
     return {
       selectlist: false,
       lang: {},
-      langs:languagejs
+      langs: languagejs,
+      PlottingShow: false
     };
   },
-  created() {
-    
-  },
-  mounted() {
-    
-  },
-  methods: { 
+  created() {},
+  mounted() {},
+  methods: {
+    //双箭头
+    DoubleArrow() {
+      var DoubleArrow = new XE.Obj.Plots.GeoDoubleArrow(this.$root.$earth);
+      console.log(DoubleArrow);
+      DoubleArrow.creating = true;
+      DoubleArrow.isCreating = true;
+      DoubleArrow.name = "双箭头";
+      this.$root.$earthUI.showPropertyWindow(DoubleArrow);
+    },
+    //三角旗帜
+    TriFlag() {
+      var TriFlag = new XE.Obj.Plots.GeoTriFlag(this.$root.$earth);
+      console.log(TriFlag);
+      TriFlag.creating = true;
+      TriFlag.isCreating = true;
+      TriFlag.name = "三角旗帜";
+      this.$root.$earthUI.showPropertyWindow(TriFlag);
+    },
+    //打开扇形搜索
+    SectorSearch() {
+      var SectorSearch = new XE.Obj.Plots.GeoSectorSearch(this.$root.$earth);
+      console.log(SectorSearch);
+      SectorSearch.creating = true;
+      SectorSearch.isCreating = true;
+      SectorSearch.name = "扇形搜索";
+      this.$root.$earthUI.showPropertyWindow(SectorSearch);
+    },
+    // 打开折线箭头弹窗
+    PolylineArrow() {
+      var PolylineArrow = new XE.Obj.Plots.GeoPolylineArrow(this.$root.$earth);
+      console.log(PolylineArrow);
+      PolylineArrow.creating = true;
+      PolylineArrow.isCreating = true;
+      PolylineArrow.name = "折线箭头";
+      this.$root.$earthUI.showPropertyWindow(PolylineArrow);
+    },
+    //打开曲线箭头弹窗
+    curvedarrowbtn() {
+      var GeoCurveArrow = new XE.Obj.Plots.GeoCurveArrow(this.$root.$earth);
+      console.log(GeoCurveArrow);
+      GeoCurveArrow.creating = true;
+      GeoCurveArrow.isCreating = true;
+      GeoCurveArrow.name = "曲线箭头";
+      this.$root.$earthUI.showPropertyWindow(GeoCurveArrow);
+    },
+    // 打开常规更多弹窗
+    routineMore() {
+      // console.log(this.$refs);
+      this.$refs.plottingMore.show = !this.$refs.plottingMore.show;
+    },
+    //创建树模型
+    createTree() {
+      var Model = new XE.Obj.Model(this.$root.$earth);
+      Model.url = "../../../../../Apps/assets/shu.glb";
+      Model.creating = true;
+      Model.isCreating = true;
+      Model.name = "树";
+      this.$root.$earthUI.showPropertyWindow(Model);
+    },
+    // 创建汽车模型
+    createCar() {
+      var Model = new XE.Obj.Model(this.$root.$earth);
+      Model.url = "../../../../../Apps/assets/gongjiao.glb";
+      Model.creating = true;
+      Model.isCreating = true;
+      Model.name = "汽车";
+      this.$root.$earthUI.showPropertyWindow(Model);
+    },
+    // 创建飞机模型
+    createPlane() {
+      var Model = new XE.Obj.Model(this.$root.$earth);
+      Model.url = "../../../../../Apps/assets/feiji.glb";
+      Model.creating = true;
+      Model.isCreating = true;
+      Model.name = "飞机";
+      this.$root.$earthUI.showPropertyWindow(Model);
+    },
+    // 打开模型属性窗口
+    createmodelbtn() {
+      var Model = new XE.Obj.Model(this.$root.$earth);
+      Model.name = "Model";
+      Model.isCreating = true;
+      Model.creating = true;
+      this.$root.$earthUI.showPropertyWindow(Model);
+    },
+    // 打开path属性窗口
+    pathbtn() {
+      var Path = new XE.Obj.Path(this.$root.$earth);
+      Path.name = "Path";
+      Path.positionPicking = true;
+      Path.isCreating = true;
+      Path.creating = true;
+      this.$root.$earthUI.showPropertyWindow(Path);
+    },
+    // 打开pin属性窗口
+    pinbtn() {
+      var Pin = new XE.Obj.Pin(this.$root.$earth);
+      Pin.ctrtype = "PinTool";
+      Pin.name = "内置图标";
+      Pin.positionPicking = true;
+      Pin.isCreating = true;
+      Pin.creating = true;
+      console.log(Pin);
+      this.$root.$earthUI.showPropertyWindow(Pin);
+    },
+    pindivbtn() {
+      var PinDivTool = new XE.Obj.Pin(this.$root.$earth);
+      PinDivTool.ctrtype = "PinDivTool";
+      PinDivTool.name = "div图标";
+      PinDivTool.positionPicking = true;
+      PinDivTool.isCreating = true;
+      PinDivTool.creating = true;
+      PinDivTool.show = false;
+      PinDivTool.pindiv = undefined;
+      console.log(PinDivTool);
+      this.$root.$earthUI.showPropertyWindow(PinDivTool);
+    },
+    pinpicturebtn() {
+      var PinPictureTool = new XE.Obj.Pin(this.$root.$earth);
+      PinPictureTool.ctrtype = "PinPictureTool";
+      PinPictureTool.name = "外置图标";
+      PinPictureTool.positionPicking = true;
+      PinPictureTool.isCreating = true;
+      PinPictureTool.creating = true;
+      this.$root.$earthUI.showPropertyWindow(PinPictureTool);
+    },
+    // 打开polyLine折线
+    polylinebtn() {
+      var Polyline = new XE.Obj.Polyline(this.$root.$earth);
+      console.log(Polyline);
+      Polyline.name = "polyLine";
+      Polyline.positionPicking = true;
+      Polyline.isCreating = true;
+      Polyline.creating = true;
+      this.$root.$earthUI.showPropertyWindow(Polyline);
+    },
     startMove(event) {
       //如果事件的目标不是本el 返回
-      if (event.target.parentElement !== this.$refs.container &&
-         event.target.parentElement.parentElement !== this.$refs.container) {
+      if (
+        event.target.parentElement !== this.$refs.container &&
+        event.target.parentElement.parentElement !== this.$refs.container
+      ) {
         this.moving = false;
         return;
       }
@@ -151,6 +348,91 @@ export default {
 </script>
 
 <style>
+.DoubleArrow {
+  background: url(../../../../images/doublearrow.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.DoubleArrow:hover {
+  background: url(../../../../images/doublearrow_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.TriFlag {
+  background: url(../../../../images/TriFlag.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.TriFlag:hover {
+  background: url(../../../../images/TriFlag_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+/* .SectorSearch {
+  background: url(../../../../images/SectorSearch.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.SectorSearch:hover {
+  background: url(../../../../images/SectorSearch_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+} */
+
+.PolylineArrow {
+  background: url(../../../../images/PolylineArrow.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.PolylineArrow:hover {
+  background: url(../../../../images/PolylineArrow_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.curvedarrow {
+  background: url(../../../../images/CurveArrow.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.curvedarrow:hover {
+  background: url(../../../../images/CurveArrow_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.modelbutton {
+  background: url(../../../../images/createmodel.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.modelbutton:hover {
+  background: url(../../../../images/createmodel_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.pathbutton {
+  background: url(../../../../images/path.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.pathbutton:hover {
+  background: url(../../../../images/path_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.pinbutton {
+  background: url(../../../../images/pin.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.pinbutton:hover {
+  background: url(../../../../images/pin_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
 .spotbutton {
   background: url(../../../../images/spot.png) no-repeat;
   background-size: contain;

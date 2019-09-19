@@ -1,7 +1,14 @@
 const zh = {
   routine: "常规",
+  pin:"内置图标",
+  pinpicturebtn:"外置图标",
+  pindivbtn:"div图标",
+  path:'路径',
+  createmodel:'模型',
+  curvedarrow:'曲线箭头',
+  PolylineArrow:'折线箭头',
   spot: "点",
-  line: "线",
+  line: "折线",
   face: "面",
   characters: "文字",
   globe: "球",
@@ -21,13 +28,23 @@ const zh = {
   singlearrow: "单箭头",
   doublearrow: "双箭头",
   radar: "雷达",
-  ribbon: "飘带"
+  ribbon: "飘带",
+  SectorSearch:'扇形搜索',
+  TriFlag:'三角旗帜',
+  DoubleArrow:'双箭头'
 };
 
 const en = {
   routine: "routine",
+  pin:"Built icon",
+  pinpicturebtn:"External Icon",
+  pindivbtn:"div icon",
+  path:'path',
+  createmodel:'model',
+  curvedarrow:'curvedArrow',
+  PolylineArrow:'PolylineArrow',
   spot: "spot",
-  line: "line",
+  line: "polyline",
   face: "face",
   characters: "characters",
   globe: "globe",
@@ -47,7 +64,10 @@ const en = {
   singlearrow: "sarrow",
   doublearrow: "darrow",
   radar: "radar",
-  ribbon: "ribbon"
+  ribbon: "ribbon",
+  SectorSearch:'SectorSearch',
+  TriFlag:'TriFlag',
+  DoubleArrow:'DoubleArrow'
 };
 
 export default { zh, en };

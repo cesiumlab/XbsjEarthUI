@@ -29,11 +29,11 @@
         @click="switchPage('effect')"
         :class="{'xbsj-title-item-on':page=='effect'}"
       >{{lang.effect}}</li>
-      <!--
+      
       <li
         @click="switchPage('entity')"
         :class="{'xbsj-title-item-on':page=='entity'}"
-      >{{lang.plotting}}</li>-->
+      >{{lang.plotting}}</li>
       <!-- <li @click="openmodel">测试model对话框</li> -->
     </ul>
  

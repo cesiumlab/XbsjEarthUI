@@ -49,7 +49,7 @@
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                     imageUrl: '',
-                    scale: ''
+                    scale: 0
                 };
             },
             // 1.1 资源创建
@@ -86,12 +86,13 @@
                 this._scaleUnbind = XE.MVVM.bind(this, 'scale', pin1, 'scale');
 
                 // 设置初始值
-                pin1.imageUrl = 'https://www.baidu.com/img/bd_logo1.png';
+                pin1.imageUrl = './images/earth.png';
                 pin1.scale = 0.5;
 
                 this._earth = earth;
 
                 // only for Debug
+                window.earth = earth;
                 window.pin1 = pin1;
             },
             filters: {

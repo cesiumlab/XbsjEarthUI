@@ -3,40 +3,76 @@ vueApp.examples = [
         "title": "Earth示例",
         "list": [
             {
-                "title": "素模泛光",
-                "url": "./earth-3dtiles-buildings.html"
-            },
-            {
-                "title": "3dtiles平移旋转",
+                "title": "3dtiles-平移旋转",
                 "url": "./earth-3dtiles-editing.html"
             },
             {
-                "title": "视频融合",
-                "url": "./earth-cameraVideo.html"
+                "title": "分析-剖切",
+                "url": "./earth-analyzation-clipping.html"
             },
             {
-                "title": "剖切面",
-                "url": "./earth-clippingPlane.html"
+                "title": "分析-压平",
+                "url": "./earth-analyzation-flattenning.html"
+            },
+            {
+                "title": "分析-测量",
+                "url": "./earth-analyzation-measurement.html"
+            },
+            {
+                "title": "分析-视频融合",
+                "url": "./earth-analyzation-video.html"
+            },
+            {
+                "title": "分析-视域",
+                "url": "./earth-analyzation-viewshed.html"
+            },
+            {
+                "title": "基础-销毁地球",
+                "url": "./earth-basic-destroy.html"
+            },
+            {
+                "title": "基础-销毁Vue创建的地球",
+                "url": "./earth-basic-destroy2.html"
+            },
+            {
+                "title": "漫游-第一人称",
+                "url": "./earth-camera-firstpersion.html"
             },
             {
                 "title": "圆柱体集群",
                 "url": "./earth-cylinders.html"
             },
             {
-                "title": "销毁地球",
-                "url": "./earth-destroyEarth.html"
-            },
-            {
-                "title": "销毁Vue创建的地球",
-                "url": "./earth-destroyEarthWithVue.html"
-            },
-            {
                 "title": "编辑互斥",
                 "url": "./earth-editing.html"
             },
             {
-                "title": "3dtiles压平",
-                "url": "./earth-flattenning.html"
+                "title": "效果-大气",
+                "url": "./earth-effect-atmosphere.html"
+            },
+            {
+                "title": "效果-泛光",
+                "url": "./earth-effect-bloom.html"
+            },
+            {
+                "title": "效果-泛光2",
+                "url": "./earth-effect-bloom2.html"
+            },
+            {
+                "title": "效果-云",
+                "url": "./earth-effect-cloud.html"
+            },
+            {
+                "title": "效果-雾",
+                "url": "./earth-effect-fog.html"
+            },
+            {
+                "title": "效果-阴影",
+                "url": "./earth-effect-shadow.html"
+            },
+            {
+                "title": "效果-太阳/月亮/星空",
+                "url": "./earth-effect-SunMoonSkyBox.html"
             },
             {
                 "title": "影像-百度",
@@ -51,8 +87,12 @@ vueApp.examples = [
                 "url": "./earth-imagery-gaode.html"
             },
             {
-                "title": "影像-谷歌",
-                "url": "./earth-imagery-google.html"
+                "title": "影像-谷歌标记",
+                "url": "./earth-imagery-googleMark.html"
+            },
+            {
+                "title": "影像-谷歌无标记",
+                "url": "./earth-imagery-googleUnmark.html"
             },
             {
                 "title": "影像-纠偏",
@@ -71,8 +111,16 @@ vueApp.examples = [
                 "url": "./earth-imagery-zIndex.html"
             },
             {
-                "title": "测量",
-                "url": "./earth-measurement.html"
+                "title": "多地图切换",
+                "url": "./earth-map-switch.html"
+            },
+            {
+                "title": "模型-平移旋转",
+                "url": "./earth-model-editing.html"
+            },
+            {
+                "title": "MVVM.watch",
+                "url": "./earth-MVVM-watch.html"
             },
             {
                 "title": "原生Cesium API的调用",
@@ -87,8 +135,20 @@ vueApp.examples = [
                 "url": "./earth-odlines-flight-lines.html"
             },
             {
+                "title": "路径-环球飞行",
+                "url": "./earth-path-around.html"
+            },
+            {
+                "title": "路径-currentD",
+                "url": "./earth-path-currentD.html"
+            },
+            {
                 "title": "路径-方向",
                 "url": "./earth-path-direction.html"
+            },
+            {
+                "title": "路径-双视图",
+                "url": "./earth-path-doubleView.html"
             },
             {
                 "title": "路径-编辑",
@@ -97,6 +157,26 @@ vueApp.examples = [
             {
                 "title": "路径-飞行",
                 "url": "./earth-path-fly.html"
+            },
+            {
+                "title": "路径-车辆运动",
+                "url": "./earth-path-model.html"
+            },
+            {
+                "title": "路径-室内漫游",
+                "url": "./earth-path-roam.html"
+            },
+            {
+                "title": "路径-视域分析",
+                "url": "./earth-path-viewshed.html"
+            },
+            {
+                "title": "拾取-3dtiles数据",
+                "url": "./earth-picking-3dtiles.html"
+            },
+            {
+                "title": "拾取-模型",
+                "url": "./earth-picking-model.html"
             },
             {
                 "title": "Pin-div",
@@ -115,16 +195,52 @@ vueApp.examples = [
                 "url": "./earth-pin-nearfar.html"
             },
             {
+                "title": "Pin-onclick",
+                "url": "./earth-pin-onclick.html"
+            },
+            {
                 "title": "Pin-样式",
                 "url": "./earth-pin-pinBuilder.html"
             },
             {
-                "title": "Pin",
-                "url": "./earth-pins.html"
+                "title": "折线-插值方式",
+                "url": "./earth-polyline-acytype.html"
+            },
+            {
+                "title": "折线-ArrowMaterial",
+                "url": "./earth-polyline-arrowmaterial.html"
+            },
+            {
+                "title": "折线-ColorMaterial",
+                "url": "./earth-polyline-colormaterial.html"
+            },
+            {
+                "title": "折线-DashMaterial",
+                "url": "./earth-polyline-dashmaterial.html"
+            },
+            {
+                "title": "折线-编辑",
+                "url": "./earth-polyline-editing.html"
+            },
+            {
+                "title": "折线-ODLineMaterial",
+                "url": "./earth-polyline-odlinematerial.html"
             },
             {
                 "title": "地表限制(地表裁切)",
                 "url": "./earth-restrict.html"
+            },
+            {
+                "title": "扫描线-currentTime",
+                "url": "./earth-scaneline-currentTime.html"
+            },
+            {
+                "title": "扫描线-编辑",
+                "url": "./earth-scaneline-editing.html"
+            },
+            {
+                "title": "扫描线-播放",
+                "url": "./earth-scaneline-play.html"
             },
             {
                 "title": "地下模式和地表透明",
@@ -139,8 +255,12 @@ vueApp.examples = [
                 "url": "./earth-terrain-china14.html"
             },
             {
-                "title": "视域分析",
-                "url": "./earth-viewshed.html"
+                "title": "视图-多视口",
+                "url": "./earth-view-multiviewport.html"
+            },
+            {
+                "title": "视图-指北针",
+                "url": "./earth-view-navigator.html"
             },
             {
                 "title": "路径-pin",
@@ -243,6 +363,10 @@ vueApp.examples = [
             {
                 "title": "使用Vue创建地球",
                 "url": "./startup-createEarthWithVue.html"
+            },
+            {
+                "title": "加载标绘插件",
+                "url": "./startup-curveArrow.html"
             },
             {
                 "title": "3dtiles数据加载",

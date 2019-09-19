@@ -73,9 +73,9 @@
                 <div style="width: 100%; height: 100%">
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
-                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:400px; font-size:24px; font-family: 宋体;">
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:350px; font-size:24px; font-family: 宋体;">
                         <div class="defultbtn" :class="{'btnon':playing}" @click="playing = !playing">路径播放</div>
-                        <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':cameraAttached}"  @click="cameraAttached = !cameraAttached">相机绑定</div><br/>
+                        <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':cameraAttached}"  @click=cameraAttachedClick>相机绑定</div><br/>
                         <span @click="show = !show" class="checkbox"><input class="fly" type="checkbox" v-model="show">路径显隐</span><br/>
                         <span>当前速度: {{ currentSpeed }}m/s</span><br/>
                         <span><input type="range" min="0" max="100" step="1" v-model.number="currentSpeed"></span><br/>
@@ -87,9 +87,8 @@
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                     show: true, // 控制路径的显示与隐藏，默认为隐藏
-                    currentSpeed: '', // 当前运行速度
-                    currentD: '', // 相机当前位置
-                    // pathflying: true,
+                    currentSpeed: 0, // 当前运行速度
+                    currentD: 0, // 相机当前位置
                     playing: true,
                     cameraAttached: false
                 };
@@ -192,7 +191,7 @@
                 this._cameraAttachedUnbind = XE.MVVM.bind(this, 'cameraAttached', path1, 'cameraAttached');
                 this._playingUnbind = XE.MVVM.bind(this, 'playing', path1, 'playing');
 
-                // 1.1.3 跟踪 
+                // 1.1.4 跟踪 
                 // 单向绑定的属性，pin将跟踪path1，但pin发生变化path1并不会跟踪！
                  this._pinUnbind = XE.MVVM.track(pin, 'position' , path1 , 'currentPosition');
 
@@ -210,6 +209,13 @@
                     return realVal
                 }
             },
+            methods: {
+                cameraAttachedClick() {
+                    this.cameraAttached = !this.cameraAttached;
+                    // 飞回原始位置
+                    earth.camera.flyTo([1.9017007350831854,0.5971922118633656,852.1812706303504], 0, [1.794120407794253e-13,-0.7863066183499514,6.283185307179586]);
+                }
+            },
             // 1.2 资源销毁
             beforeDestroy() {
                 // vue程序销毁时，需要清理相关资源
@@ -217,8 +223,8 @@
                 this._currentSpeedUnbind = this._currentSpeedUnbind && this._currentSpeedUnbind();
                 this._currentDUnbind = this._currentDUnbind && this._currentDUnbind();
                 this._pinUnbind = this._pinUnbind && this._pinUnbind();
-                this._cameraAttachedUnbind = this._pinUnbind && this._cameraAttachedUnbind();
-                this._playingUnbind = this._pinUnbind && this._playingUnbind();
+                this._cameraAttachedUnbind = this._cameraAttachedUnbind && this._cameraAttachedUnbind();
+                this._playingUnbind = this._playingUnbind && this._playingUnbind();
                 this._earth = this._earth && this._earth.destroy();
             },
         }

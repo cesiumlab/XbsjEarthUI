@@ -53,7 +53,7 @@
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                     near: 1,
                     far: 1,
-                    distance: '',
+                    distance: 0,
                     hovered: '当前光标在pin之外！！！'
                 };
             },
@@ -84,8 +84,14 @@
                 };
 
                 var pin1 = earth.sceneTree.$refs.pin1.czmObject;
-                pin1.onClick = () => {
+                pin1.onclick = () => {
                     alert('点击！');
+                }
+                pin1.onmouseover = () => {
+                    this.hovered = '当前光标在pin之上！！！';
+                }
+                pin1.onmouseout = () => {
+                    this.hovered = '当前光标在pin之外！！！';
                 }
     
                 // 1.1.5 数据绑定
@@ -108,15 +114,8 @@
                     this.distance = d;
                 });
 
-                this.hv = XE.MVVM.watch(pin1, 'hovered', () => {
-                    if(pin1.hovered) {
-                        this.hovered = '当前光标在pin之上！！！';
-                    } else {
-                        this.hovered = '当前光标在pin之外！！！';
-                    }
-                });
-
                 // only for Debug
+                window.earth = earth;
                 window.pin1 = pin1;
             },
             methods: {

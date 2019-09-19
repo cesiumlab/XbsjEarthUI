@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <title>路径-室内漫游</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        input {
+            width: 350px;
+        }
+
+        .checkbox {
+            display: inline-block;
+            margin: 5px 0;
+            cursor: pointer;
+        }
+
+        .fly {
+            width: 20px;
+            height: 16px;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 38px;
+            padding: 0 10px;
+            line-height: 38px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+
+        .btnon {
+            background-color: #1E9FFF;
+            color: #fff;
+            border: 1px solid #1E9FFF;
+        }
+
+        .triangle-top,
+        .triangle-bottom {
+            margin: 10px auto;
+            width: 0;
+            height: 0;
+            border: 40px solid transparent;
+        }
+
+        .triangle-top {
+            border-top-color: coral;
+        }
+
+        .triangle-bottom {
+            border-bottom-color: lightgreen;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:400px; font-size:24px; font-family: 宋体;">
+                      <div class="defultbtn" :class="{'btnon':playing}" @click="playing = !playing">播放</div>  
+                      <div class="defultbtn" :class="{'btnon':cameraAttached}" @click="cameraAttached = !cameraAttached">绑定相机</div>  
+                      <span>当前位置: {{ currentD | numFilter}}m</span><br/>
+                        <span><input type="range" min="0"  step="1" v-model.number="currentD"></span><br/>
+                    </div>
+                    <div class="contrlbox" style="position:absolute;right:18px;bottom:18px;color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:100px; font-size:24px; font-family: 宋体;">
+                      <div class="triangle-bottom" @click="incrementPlusOne" v-longpress="incrementPlusOne"></div>
+                      <div class="triangle-top" @click="reduceone" v-longpress="reduceone" ></div>
+                    </div>
+                </div>
+            `,
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    show: true, // 控制路径的显示与隐藏，默认为隐藏
+                    currentSpeed: 0, // 当前运行速度
+                    currentD: 0, // 相机当前位置
+                    // pathflying: true,
+                    playing: false,
+                    cameraAttached: false,
+                    timeOutEvent: ""
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+                //关闭拾取功能
+                earth.interaction.picking.enabled = false;
+                //关闭对数深度检测
+                earth.terrainEffect.logDepth = false;
+
+                const pathPositions = [
+                    [
+                        2.031412240829891,
+                        0.6965081489018029,
+                        1.6228890454671874
+                    ],
+                    [
+                        2.031412137812921,
+                        0.696506733216724,
+                        1.6157876475589479
+                    ],
+                    [
+                        2.0314121274551464,
+                        0.6965065706397975,
+                        1.6269845512660923
+                    ],
+                    [
+                        2.031412111161536,
+                        0.6965064625635007,
+                        1.6202828582692015
+                    ],
+                    [
+                        2.0314119359008833,
+                        0.6965064283049995,
+                        1.617851118174483
+                    ],
+                    [
+                        2.031411832340684,
+                        0.6965064278604021,
+                        1.617851118174483
+                    ],
+                    [
+                        2.031411308626957,
+                        0.6965064241390053,
+                        1.617851118174483
+                    ],
+                    [
+                        2.031411203040657,
+                        0.696506424057472,
+                        1.617851118174483
+                    ],
+                    [
+                        2.0314111755320767,
+                        0.6965064231946836,
+                        1.617851118174483
+                    ],
+                    [
+                        2.031411166764732,
+                        0.6965064707657176,
+                        1.617851118174483
+                    ],
+                    [
+                        2.0314111612983843,
+                        0.6965065495463737,
+                        1.6101930715404296
+                    ],
+                    [
+                        2.0314111250182347,
+                        0.6965070375725037,
+                        1.617851118174483
+                    ],
+                    [
+                        2.0314108657119188,
+                        0.6965104030525979,
+                        1.634538568433143
+                    ],
+                    [
+                        2.031410751507978,
+                        0.6965113639673536,
+                        1.634538568433143
+                    ],
+                    [
+                        2.031410748845312,
+                        0.6965113885857878,
+                        1.634538568433143
+                    ],
+                    [
+                        2.03141065669846,
+                        0.6965113858806959,
+                        1.634538568433143
+                    ],
+                    [
+                        2.031410356689425,
+                        0.6965113839891393,
+                        1.634538568433143
+                    ],
+                    [
+                        2.0314088448939485,
+                        0.6965113761004667,
+                        1.634538568433143
+                    ],
+                    [
+                        2.0314088194229916,
+                        0.6965113760785822,
+                        1.634538568433143
+                    ],
+                    [
+                        2.031408820797073,
+                        0.696511362739398,
+                        1.634538568433143
+                    ],
+                    [
+                        2.03140882073892,
+                        0.6965112987443166,
+                        1.634538568433143
+                    ],
+                    [
+                        2.0314088230610357,
+                        0.696510702629188,
+                        1.634538568433143
+                    ],
+                    [
+                        2.0314088233696173,
+                        0.6965106627069213,
+                        1.634538568433143
+                    ],
+                    [
+                        2.0314089537587563,
+                        0.6965106640761491,
+                        1.634538568433143
+                    ],
+                    [
+                        2.031410525975153,
+                        0.6965106663196702,
+                        1.634538568433143
+                    ],
+                    [
+                        2.0314105685617783,
+                        0.6965106659432405,
+                        1.634538568433143
+                    ],
+                    [
+                        2.0314106114214137,
+                        0.696510664916347,
+                        1.634538568433143
+                    ],
+                    [
+                        2.031410615137031,
+                        0.6965105547269014,
+                        1.634538568433143
+                    ],
+                    [
+                        2.0314106494275705,
+                        0.6965093063966167,
+                        1.634538568433143
+                    ],
+                    [
+                        2.0314106905327964,
+                        0.69650834658983,
+                        1.634538568433143
+                    ],
+                    [
+                        2.031410696511038,
+                        0.6965081447548496,
+                        1.634538568433143
+                    ],
+                    [
+                        2.031410683047347,
+                        0.6965080494396022,
+                        1.8865768660548925
+                    ],
+                    [
+                        2.0314106965183196,
+                        0.6965076436280021,
+                        2.0620342176381277
+                    ],
+                    [
+                        2.031410734330994,
+                        0.6965074235833136,
+                        2.3104652027841963
+                    ]
+                ];
+                const pathRotations = [
+                    [
+                        3.1971270853895852,
+                        -0.04002550355461287,
+                        6.2817234248620935
+                    ],
+                    [
+                        -1.6796044061484936,
+                        -0.10306000299571677,
+                        0.06880974425484689
+                    ],
+                    [
+                        -1.5177545817673948,
+                        -0.11480324853038378,
+                        0.06945403896426851
+                    ],
+                    [
+                        -1.409446459749946,
+                        -0.1226434699501145,
+                        0.06881623279559111
+                    ],
+                    [
+                        -1.270663602566787,
+                        -0.13249794765394018,
+                        0.0667592198723342
+                    ],
+                    [
+                        -1.1910845537570942,
+                        -0.13798392320283207,
+                        0.06496524912404758
+                    ],
+                    [
+                        -0.7875078573863595,
+                        -0.16261172886400088,
+                        0.04952419810793259
+                    ],
+                    [
+                        -0.7059169208749241,
+                        -0.1667181955757384,
+                        0.04525894799282942
+                    ],
+                    [
+                        -0.6846303395917381,
+                        -0.167731374705238,
+                        0.0440916549130147
+                    ],
+                    [
+                        -0.6363748189022976,
+                        -0.16993511471269118,
+                        0.04136654435117862
+                    ],
+                    [
+                        -0.5570804898379058,
+                        -0.17326496434974323,
+                        0.03666510648420607
+                    ],
+                    [
+                        -0.06477425662001068,
+                        -0.18485567455768837,
+                        0.003095738224129896
+                    ],
+                    [
+                        6.212388374581663,
+                        -0.01587174072560238,
+                        0.00044403162000694607
+                    ],
+                    [
+                        -1.1937630718621304,
+                        -0.013121599907688,
+                        0.0011205891137514835
+                    ],
+                    [
+                        -1.2225120839573762,
+                        -0.013049383180413028,
+                        0.0010954740372767465
+                    ],
+                    [
+                        -1.3051574549821028,
+                        -0.012846171657662369,
+                        0.0010118502142798982
+                    ],
+                    [
+                        4.709140999641363,
+                        -0.012244421799073146,
+                        0.0006293975253521822
+                    ],
+                    [
+                        2.0313268891876852,
+                        -0.039292629325984985,
+                        0.0029570738577016087
+                    ],
+                    [
+                        2.022028656018934,
+                        -0.03855732134316603,
+                        0.0029706716362989383
+                    ],
+                    [
+                        2.009656798223144,
+                        -0.03883383220326442,
+                        0.002988221211154496
+                    ],
+                    [
+                        1.9457707737319359,
+                        -0.039915068416782606,
+                        0.0030715418303151054
+                    ],
+                    [
+                        7.5507886842727725,
+                        -0.04102464071766421,
+                        0.003150195026701219
+                    ],
+                    [
+                        7.508155003525353,
+                        -0.040452411723170156,
+                        0.003105402368386301
+                    ],
+                    [
+                        7.4672752404954945,
+                        -0.04520467734368827,
+                        0.003056458245639604
+                    ],
+                    [
+                        1.6129184864733936,
+                        0.0008805222356251807,
+                        0.0009061652447464041
+                    ],
+                    [
+                        1.6478233636099038,
+                        0.006174520230945197,
+                        -0.0039811107262753415
+                    ],
+                    [
+                        1.6829418249565504,
+                        0.011673656987785134,
+                        -0.008712332518768363
+                    ],
+                    [
+                        1.8000004180351952,
+                        0.031166279022693616,
+                        -0.02305838171423946
+                    ],
+                    [
+                        3.1409385721988428,
+                        0.2844411422892483,
+                        0.0012167417009534276
+                    ],
+                    [
+                        3.143005737051481,
+                        0.3868259842036046,
+                        0.001707207561537416
+                    ],
+                    [
+                        2.4700337291554404,
+                        0.2995990772203575,
+                        -0.19968923665681146
+                    ],
+                    [
+                        2.1430487956792046,
+                        0.21267067351241542,
+                        -0.26669950870884535
+                    ],
+                    [
+                        0.9117296942652249,
+                        -0.18435267357898497,
+                        -0.21187653431729822
+                    ],
+                    [
+                        6.468689395731998,
+                        -0.28648901244298974,
+                        0.0025080902150103057
+                    ]
+                ];
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "title": "路径-漫游",
+                    "children": [{
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "xbsjGuid": "99c871c1-680d-4b16-a5c9-b93116f502da",
+                            "name": "谷歌影像",
+                            "xbsjImageryProvider": {
+                                "createTileMapServiceImageryProvider": {
+                                    "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    "fileExtension": 'jpg',
+                                },
+                                "type": 'createTileMapServiceImageryProvider',
+                            },
+                        }
+                    }, {
+                        "ref": "bim",
+                        "czmObject": {
+                            "xbsjType": "Tileset",
+                            "xbsjGuid": "ee6f8c09-0bfe-4725-9f93-c4324f2331a6",
+                            "name": "BIM测试",
+                            "url": "http://lab2.cesiumlab.com:9000/model/d16c1ce0ac2d11e99dbd8fd044883638/tileset.json",
+                            "xbsjPosition": [
+                                2.0314142297769386,
+                                0.6965069903408323,
+                                9.831644570475259
+                            ],
+                            "xbsjClippingPlanes": {}
+                        }
+                    },
+                    {
+                        "ref": "path",
+                        "czmObject": {
+                            "xbsjType": "Path",
+                            "xbsjGuid": "8e547cc4-1a3f-4a9c-b569-a62c92290851",
+                            "name": "Path路径属性窗口",
+                            "positions": pathPositions,
+                            "rotations": pathRotations,
+                        }
+                    }
+                    ]
+                }
+
+                // 获取bim
+                var bim = earth.sceneTree.$refs.bim.czmObject;
+                var path = earth.sceneTree.$refs.path.czmObject;
+
+                // 飞向bim所在位置
+                bim.flyTo();
+                // console.log(path);
+                //当前播放速度
+                path.currentSpeed = 2;
+                // 开始播放
+                // path.playing = true;
+                path.currentShow = false;
+                path.show = false;
+                // path.cameraAttached = true;
+
+                // 1.1.3 数据绑定
+                // 双向绑定的属性，如果一方发生变化，另一方同样会跟随变化
+                this._showUnbind = XE.MVVM.bind(this, 'show', path, 'show');
+                this._currentSpeedUnbind = XE.MVVM.bind(this, 'currentSpeed', path, 'currentSpeed');
+                this._currentDUnbind = XE.MVVM.bind(this, 'currentD', path, 'currentD');
+                this._cameraAttachedUnbind = XE.MVVM.bind(this, 'cameraAttached', path, 'cameraAttached');
+                this._playingUnbind = XE.MVVM.bind(this, 'playing', path, 'playing');
+
+                // only for Debug
+                window.earth = earth;
+                window.path = path;
+            },
+            filters: {
+                numFilter(value) {
+                    // 截取当前数据到小数点后两位
+                    let realVal = parseFloat(value).toFixed(2)
+                    return realVal
+                }
+            },
+            methods: {
+                // 增加1
+                incrementPlusOne() {
+                    this.currentD++
+                },
+                reduceone() {
+                    this.currentD--;
+                }
+            },
+            directives: {
+                longpress: {
+                    inserted(el, binding) {
+
+                        var timer = null;
+                        var start = function (e) {
+                            // 如果是点击事件，不启动计时器，直接返回
+                            if (e.type === 'click') {
+                                return
+                            }
+                            if (timer == null) {
+                                // 创建定时器 ( .5s之后执行长按功能函数 )
+                                timer = setInterval(function () {
+                                    //执行长按功能函数
+                                    binding.value()
+                                    // this.currentD++;
+                                    // console.log("xxxx")
+                                }, 500)
+                            }
+                        }
+                        var cancel = function () {
+                            if (timer !== null) {
+                                clearInterval(timer)
+                                timer = null
+                            }
+                        }
+
+                        // 添加事件监听器
+                        el.addEventListener("mousedown", start);
+
+                        // 取消计时器
+                        el.addEventListener("click", cancel);
+                        el.addEventListener("mouseout", cancel);
+                    }
+                }
+
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._showUnbind = this._showUnbind && this._showUnbind();
+                this._currentSpeedUnbind = this._currentSpeedUnbind && this._currentSpeedUnbind();
+                this._currentDUnbind = this._currentDUnbind && this._currentDUnbind();
+                this._pinUnbind = this._pinUnbind && this._pinUnbind();
+                this._cameraAttachedUnbind = this._cameraAttachedUnbind && this._cameraAttachedUnbind();
+                this._playingUnbind = this._playingUnbind && this._playingUnbind();
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>

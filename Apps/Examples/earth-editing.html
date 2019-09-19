@@ -19,8 +19,33 @@
             padding: 0px;
         }
 
-        .checkbox {
+        .box span{
+            display: block;
+            margin-top: 10px;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 38px;
+            padding: 0 10px;
+            line-height: 38px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
             cursor: pointer;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+
+        .btnon {
+            background-color: #1E9FFF;
+            color: #fff;
+            border: 1px solid #1E9FFF;
         }
     </style>
 </head>
@@ -37,11 +62,13 @@
                 <div style="width: 100%; height: 100%">
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
-                    <div style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 5px;">
-                        <span @click="positionEditing1 = !positionEditing1" class="checkbox"><input type="checkbox" v-model="positionEditing1">瓦片1的位置编辑</span><br/>
-                        <span @click="rotationEditing1 = !rotationEditing1" class="checkbox"><input type="checkbox" v-model="rotationEditing1">瓦片1的姿态编辑</span><br/>
-                        <span @click="positionEditing2 = !positionEditing2" class="checkbox"><input type="checkbox" v-model="positionEditing2">瓦片2的位置编辑</span><br/>
-                        <span @click="rotationEditing2 = !rotationEditing2" class="checkbox"><input type="checkbox" v-model="rotationEditing2">瓦片2的姿态编辑</span><br/>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:200px; font-size:24px; font-family: 宋体;">
+                        <div style="font-size：30px; font-weight:bold; margin-bottom:10px;">瓦片1</div>
+                        <div class="defultbtn" :class="{'btnon':positionEditing1}"  @click="positionEditing1 = !positionEditing1">平移</div>
+                        <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':rotationEditing1}"  @click="rotationEditing1 = !rotationEditing1">旋转</div><br/>
+                        <div style="font-size：30px; font-weight:bold; margin:10px 0;">瓦片2</div>
+                        <div class="defultbtn" :class="{'btnon':positionEditing2}"  @click="positionEditing2 = !positionEditing2">平移</div>
+                        <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':rotationEditing2}"  @click="rotationEditing2 = !rotationEditing2">旋转</div><br/>
                     </div>
                 </div>
             `,
@@ -89,6 +116,9 @@
 
                 var tileset1 = earth.sceneTree.root.children[0].czmObject;
                 var tileset2 = earth.sceneTree.root.children[1].czmObject;
+                
+                // only for Debug
+                window.earth = earth;
                 window.tileset1 = tileset1;
                 window.tileset2 = tileset2;
 

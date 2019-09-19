@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>多地图切换</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        *{
+            margin: 0px;
+            padding: 0px;
+        }
+
+        ul {
+            display: flex;
+        }
+
+        li {
+            list-style: none;
+            height: 134px;
+            cursor: pointer;
+        }
+
+        .backimg {
+            width: 100px;
+            height: 100px;
+            border: 2px solid;
+            border-radius: 4px;
+            background: gray;
+            margin: 5px;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+        }
+
+        span {
+            display: inline-block;
+            width: 100px;
+            text-align: center;
+        }
+
+        .highlight, .backimg:hover {
+            border: 2px solid rgba(31, 255, 255, 1);
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                        <div class="box" style="position: absolute; left: 50%; top: 18px; transform: translate(-50%); color: white; border-radius: 25px; font-size:16px; font-family: 宋体;">
+                            <ul>                              
+                                <li v-for="item in imageryskin" @click="select(item)">
+                                    <div class="backimg" :class="[{highlight:selected == item.name} ]">
+                                        <img :src="item.imgUrl"><br>
+                                        <span>{{item.name}}</span>
+                                    </div>
+                                    
+                                </li>    
+                            </ul>
+                        </div>
+                </div>
+            `,
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    imageryskin: [],
+                    selected: '离线影像'
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                this.imageryskin = [
+                {
+                    "name": '离线影像',
+                    "imgUrl": './images/defaultmap.jpg',
+                    "xbsjType": "Imagery",
+                    "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
+                },
+                {
+                    "name": '天地图影像',
+                    "imgUrl": './images/tiandimap.jpg',
+                    "xbsjType": "Imagery",
+                    "xbsjImageryProvider": {
+                        "XbsjImageryProvider": {
+                            "url": '//t6.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=835402675b4eef1d10ff69553d33801f',
+                            "srcCoordType": 'WGS84',
+                            "dstCoordType": "WGS84",
+                        },
+                    }
+                },
+                {
+                    "name": '谷歌影像',
+                    "imgUrl": './images/goolemap.jpg',
+                    "xbsjType": "Imagery",
+                    "xbsjImageryProvider": {
+                        "XbsjImageryProvider": {
+                            "url": '//www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}',
+                            "srcCoordType": 'WGS84',
+                            "dstCoordType": "WGS84",
+                        },
+                    }
+                },
+                {
+                    "name": '高德影像',
+                    "imgUrl": './images/gaodemap.jpg',
+                    "xbsjType": "Imagery",
+                    "xbsjImageryProvider": {
+                        "XbsjImageryProvider": {
+                            "url": '//webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',
+                            "srcCoordType": 'GCJ02',
+                            "dstCoordType": "WGS84",
+                        },
+                    }
+                },
+                {
+                    "name": '百度影像',
+                    "imgUrl": './images/baidumap.jpg',
+                    "xbsjType": "Imagery",
+                    "xbsjImageryProvider": {
+                        "XbsjImageryProvider": {
+                            "url": '//shangetu1.map.bdimg.com/it/u=x={x};y={y};z={z};v=009;type=sate&fm=46',
+                            "srcCoordType": 'BD09',
+                            "dstCoordType": "WGS84",
+                        },
+                    }
+                },
+                {
+                    "name": 'OpenStreetMap',
+                    "imgUrl": './images/openstreetmap.jpg',
+                    "xbsjType": "Imagery",
+                    "xbsjImageryProvider": {
+                        "XbsjImageryProvider": {
+                            "url": '//c.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            "srcCoordType": 'WGS84',
+                            "dstCoordType": "WGS84",
+                        },
+                    }
+                },
+                {
+                    "name": 'mapbox影像',
+                    "imgUrl": './images/mapbox.jpg',
+                    "xbsjType": "Imagery",
+                    "xbsjImageryProvider": {
+                        "XbsjImageryProvider": {
+                            "url": '//c.tiles.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYW5hbHl0aWNhbGdyYXBoaWNzIiwiYSI6ImNpd204Zm4wejAwNzYyeW5uNjYyZmFwdWEifQ.7i-VIZZWX8pd1bTfxIVj9g',
+                            "srcCoordType": 'WGS84',
+                            "dstCoordType": "WGS84",
+                        },
+                    }
+                }
+            ];
+
+            this._earth = earth;
+
+            // only for Debug
+            window.earth = earth;
+
+                // 1.1.2 场景配置
+                // 默认显示天地图影像
+                earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "czmObject": {
+                                "name": '离线影像',
+                                "xbsjType": "Imagery",
+                                "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
+                            }
+                        }
+                    ]
+                }
+            },
+            methods: {
+                select(service) {
+                    this.selected = service.name;
+                    
+                    // 清空上一个影像
+                    this._earth.sceneTree.root.children[0].czmObject = {};
+                    this._earth.sceneTree.root.children[0].czmObject = service;
+                }
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>

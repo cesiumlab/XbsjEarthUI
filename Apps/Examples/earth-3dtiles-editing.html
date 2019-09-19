@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="xbsj-labels" content="Earth示例">
   </meta>
-  <title>3dtiles平移旋转</title>
+  <title>3dtiles-平移旋转</title>
   <!-- 0 引入js文件 -->
   <script src="../../XbsjEarth/XbsjEarth.js"></script>
   <script src="./scripts/vue.min.js"></script>
@@ -77,7 +77,6 @@
       `,
         data() {
           return {
-            // xbsjUseOriginTransform: false,
             positionEditing: false,
             rotationEditing: false,
             xbsjPosition: [0, 0, 0],
@@ -140,7 +139,7 @@
         },
         filters: {
           numFilter(value) {
-            // 截取当前数据到小数点后两位
+            // 截取当前数据到小数点后五位
             let realVal = parseFloat(value).toFixed(5)
             return realVal
           },

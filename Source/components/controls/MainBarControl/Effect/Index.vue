@@ -108,6 +108,16 @@
           :class="{highlight:popup == 'fog'}"
           @click.stop="togglePopup('fog',$event)"
         ></span>
+
+        <!-- 星空显隐 -->
+         <div class="xbsj-item-btnbox">
+          <div
+            class="xbsj-item-btn starryskybutton"
+            :class="{'starryskybutton-on':weather.skyBox}"
+            @click="weather.skyBox = !weather.skyBox"
+          ></div>
+          <span class="xbsj-item-name">{{lang.starrysky}}</span>
+        </div>
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{lang.effect}}</span>
@@ -328,7 +338,8 @@ export default {
         cloud: false,
         rain: false,
         snow: false,
-        fog: false
+        fog: false,
+        skyBox: true
       },
       popup: "",
       effect: {
@@ -379,6 +390,7 @@ export default {
       this.binVue("weather.rain");
       this.binVue("weather.snow");
       this.binVue("weather.fog");
+      this.binVue("weather.skyBox");
 
       this.binVue("effect.shadow");
 
@@ -621,6 +633,18 @@ export default {
   background: url(../../../../images/fog_on.png) no-repeat;
   background-size: contain;
 }
+
+.starryskybutton {
+  background: url(../../../../images/starrysky.png) no-repeat;
+  background-size: contain;
+}
+.starryskybutton:hover,
+.starryskybutton-on {
+  background: url(../../../../images/starrysky_on.png) no-repeat;
+  background-size: contain;
+}
+
+
 
 .shadowbutton {
   background: url(../../../../images/shadow.png) no-repeat;

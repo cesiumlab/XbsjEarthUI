@@ -11,9 +11,11 @@
   "author": "xbsj",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server",
+    "dev2": "cross-env NODE_ENV=development XBSJ_IMPORT=external webpack-dev-server",
     "xbsjDebug": "cross-env NODE_ENV=xbsjDebug webpack-dev-server",
     "xbsjDebug2": "cross-env NODE_ENV=xbsjDebug2 webpack-dev-server",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "build2": "cross-env NODE_ENV=production XBSJ_IMPORT=external webpack --progress --hide-modules && npm run postbuild",
     "postbuild": "npm run doc",
     "doc": "jsdoc --configure Tools/jsdoc/conf.json",
     "gallery": "node Tools/examples/gallery.js"
@@ -37,6 +39,8 @@
     "copy-webpack-plugin": "^4.5.2",
     "cross-env": "^5.1.3",
     "css-loader": "^0.28.11",
+    "earthsdk": "1.1.12",
+    "earthsdk-plotting-symbol": "^1.0.0",
     "file-loader": "^1.1.6",
     "globby": "^10.0.1",
     "history": "^4.7.2",
