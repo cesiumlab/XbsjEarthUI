@@ -91,7 +91,15 @@ export default {
       lang: {},
       showPinSelect: false,
       makiIconObj: {},
-      divcontent: `<div class="dialog" style="z-index:1;height:50px;width:100px;top:100px;position:absolute;">标记文字</div>`,
+      divcontent: `
+      <div class="dialog" 
+      style="
+      height:50px;
+      width:100px;
+      top:100px;
+      position:absolute;">
+      标记文字
+      </div>`,
       pin: {
         name: "",
         creating: true,
