@@ -307,7 +307,7 @@ export default {
       PinDivTool.pindiv = undefined;
       console.log(PinDivTool);
       if (PinDivTool.isCreating) {
-        PinDivTool.isCreating = false;
+        
         //创建一个pindiv在地图上
         var pindiv = document.createElement("div");
         pindiv.innerHTML = this.divcontent;
@@ -345,9 +345,6 @@ export default {
             }
           }
         );
-
-        const sceneObject = new XE.SceneTree.Leaf(PinDivTool);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
       }
       this.$root.$earthUI.showPropertyWindow(PinDivTool);
     },

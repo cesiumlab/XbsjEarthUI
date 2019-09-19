@@ -181,7 +181,7 @@ export default {
 
       this.makiIconObj = XE.Obj.Pin.MakiIcon;
       this.makiIconObj.null = "";
-        this._czmObj.far = 1073741824;
+      this._czmObj.far = 1073741824;
     }
   },
   beforeDestroy() {
@@ -197,7 +197,7 @@ export default {
     },
     nearfar: {
       get() {
-        return [0,30];
+        return [0, 30];
       },
       set(newValue) {
         this.pin.near = Math.pow(2, newValue[0]);
@@ -667,12 +667,12 @@ button:focus {
   height: 25px;
   text-align: center;
   font-size: 14px;
-  padding: 2px 15px;
+  padding: 0px 15px;
   text-decoration: none;
   border-radius: 3px;
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.5);
   color: #dddddd;
-  line-height: 25px;
+  line-height: 27px;
 }
 </style>
