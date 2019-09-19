@@ -159,6 +159,10 @@ vueApp.examples = [
                 "url": "./earth-path-fly.html"
             },
             {
+                "title": "路径-鹰眼图",
+                "url": "./earth-path-mapx.html"
+            },
+            {
                 "title": "路径-车辆运动",
                 "url": "./earth-path-model.html"
             },
