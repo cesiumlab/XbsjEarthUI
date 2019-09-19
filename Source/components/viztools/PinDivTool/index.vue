@@ -172,8 +172,6 @@ export default {
 
       this.makiIconObj = XE.Obj.Pin.MakiIcon;
       this.makiIconObj.null = "";
-      this.winPos[0] = 1;
-      this.winPos[1] = 12157665459056929000;
     }
   },
   beforeDestroy() {
