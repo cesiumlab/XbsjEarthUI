@@ -102,6 +102,10 @@
                 earth.interaction.picking.enabled = true;
                 earth2.interaction.picking.enabled = true;
 
+                // 关闭指北针和比例尺
+                earth2.camera.navigator.showCompass = false;
+                earth2.camera.navigator.showDistanceLegend = false;
+
                 // 1.1.2 场景配置
                 earth.sceneTree.root = {
                     "expand": true,
