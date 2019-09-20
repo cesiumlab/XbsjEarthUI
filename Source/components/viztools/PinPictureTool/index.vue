@@ -21,7 +21,7 @@
       <div class="flatten" style="margin-top:20px;display:flex;">
         <label>{{lang.nearfar}}</label>
         <div class="field">
-          <XbsjSlider range :min="1" :max="100" :step="1" v-model="nearfar" ref="glowFactor"></XbsjSlider>
+         <XbsjSlider range :min="0" :max="30" :step="0.1" v-model="nearfar" ref="glowFactor"></XbsjSlider>
         </div>
       </div>
       <!-- 近远裁 -->
@@ -46,7 +46,7 @@
         </div>
       </div>
 
-      <!-- 编辑按钮 -->
+          <!-- 编辑按钮 -->
       <div class="attitudeEdit">
         <label class="xbsj-label"></label>
         <div class="buttonGroup">
