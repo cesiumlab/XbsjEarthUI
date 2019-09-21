@@ -182,7 +182,11 @@ export default {
 
       this.makiIconObj = XE.Obj.Pin.MakiIcon;
       this.makiIconObj.null = "";
-      this.pin.imageUrl = "http://lab2.cesiumlab.com/pinlogo.png";
+      if (this._czmObj.isCreating) {
+        this.pin.imageUrl =
+          "http://localhost:9530/Apps/Examples/images/earth.png";
+      }
+
       this._czmObj.far = 1073741824;
     }
   },
@@ -288,6 +292,7 @@ export default {
       }
       pinToolObj.positionEditing = false;
       pinToolObj.twoPostionsEditing = false;
+      pinToolObj.imageUrl = this.pin.imageUrl;
       if (pinToolObj.isCreating) {
         pinToolObj.isCreating = false;
 
