@@ -219,8 +219,8 @@ export default {
         return [0, 30];
       },
       set(newValue) {
-        this.pin.near = Math.pow(2, newValue[0]);
-        this.pin.far = Math.pow(2, newValue[1]);
+         this.pin.near = Math.round(Math.pow(2, newValue[0]));
+        this.pin.far = Math.round(Math.pow(2, newValue[1]));
       }
     }
   },

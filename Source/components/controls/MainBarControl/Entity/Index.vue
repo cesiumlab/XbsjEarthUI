@@ -179,13 +179,13 @@ export default {
       langs: languagejs,
       PlottingShow: false,
       divcontent: `<div
-      style="height:50px;width:100px;top:100px;
-      position: absolute;color: white;
-      background-size: 100% 100%;padding: 5px;
-      border-radius: 5px;cursor:pointer;
-      background-image:url('../../Examples/images/dialog.png');">
-标记文字
-</div>`
+        style="height:50px;width:100px;left:-76px;
+        bottom:0px;position: absolute;color: white;
+        background-size: 100% 100%;padding: 5px;
+        border-radius: 5px;cursor:pointer;
+        background-image:url('../../Examples/images/dialog.png');">
+  标记文字
+  </div>`
     };
   },
   created() {},
@@ -297,55 +297,12 @@ export default {
       this.$root.$earthUI.showPropertyWindow(Pin);
     },
     pindivbtn() {
-      var PinDivTool = new XE.Obj.Pin(this.$root.$earth);
+      var PinDivTool = new XE.Obj.Plots.GeoPin(this.$root.$earth);
       PinDivTool.ctrtype = "PinDivTool";
       PinDivTool.name = "div图标";
-      PinDivTool.positionPicking = true;
       PinDivTool.isCreating = true;
       PinDivTool.creating = true;
-      PinDivTool.show = false;
-      PinDivTool.pindiv = undefined;
-      console.log(PinDivTool);
-      if (PinDivTool.isCreating) {
-        
-        //创建一个pindiv在地图上
-        var pindiv = document.createElement("div");
-        pindiv.innerHTML = this.divcontent;
-        this.$root.$refs.mainUI.$el.appendChild(pindiv);
-
-        //添加标记属性到czmobj当中
-        PinDivTool.pindiv = pindiv;
-        PinDivTool.pindiv.style.position = "absolute";
-        //watch-winpos属性
-        const pin = PinDivTool;
-        var um = XE.MVVM.watch(
-          () => [...pin.winPos],
-          winPos => {
-            pindiv.style.left = winPos[0] - 78 + "px";
-            pindiv.style.bottom = winPos[1] + 170 + "px";
-          }
-        );
-
-        //watch-enabled属性
-        var um = XE.MVVM.watch(pin, "enabled", enabled => {
-          if (enabled) {
-            pindiv.style.display = "block";
-          } else {
-            pindiv.style.display = "none";
-          }
-        });
-
-        // 监测是否有对象销毁，如果有销毁，对应的属性窗口也需要跟着销毁
-        this._czmObjectOpsEventDisposer = this.$root.$earth.czmObjectOpsEvent.addEventListener(
-          ({ type, xbsjObj }) => {
-            if (type === "destroy") {
-              if (xbsjObj.ctrtype === "PinDivTool") {
-                this.$root.$refs.mainUI.$el.removeChild(PinDivTool.pindiv);
-              }
-            }
-          }
-        );
-      }
+      PinDivTool._pin.show = false;
       this.$root.$earthUI.showPropertyWindow(PinDivTool);
     },
     pinpicturebtn() {
