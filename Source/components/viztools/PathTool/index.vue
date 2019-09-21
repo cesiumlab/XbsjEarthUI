@@ -1,8 +1,8 @@
 <template>
   <Window
-    :width="480"
-    :minWidth="480"
-    :height="450"
+    :width="622"
+    :minWidth="622"
+    :height="375"
     :title="lang.title"
     @cancel="cancel"
     @ok="ok"
@@ -16,119 +16,90 @@
         <input style="float:left;" type="text" v-model="path.name" />
       </div>
 
-      <!-- 编辑按钮 -->
-      <div class="attitudeEdit">
-        <label class="xbsj-label">{{lang.eidtbtn}}</label>
-        <div class="buttonGroup">
-          <div>
-            <button
-              class="attitudeEditCameraButton"
-              @click="path.creating =!path.creating"
-              :class="path.creating?'btncoloron':''"
-            >{{lang.creating}}</button>
-          </div>
-          <div>
-            <button
-              class="attitudeEditCameraButton"
-              @click="path.editing =!path.editing"
-              :class="path.editing?'btncoloron':''"
-            >{{lang.editing}}</button>
-          </div>
-          <div>
-            <button
-              class="attitudeEditCameraButton"
-              @click="path.targetPicking =!path.targetPicking"
-              :class="path.targetPicking?'btncoloron':''"
-            >{{lang.targetPicking}}</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- 显示首尾相连 -->
-      <div class="flatten" style="display:flex;">
+      <div class="flatten-flex">
+        <!-- 编辑按钮 -->
         <div>
-          <label>{{lang.show}}</label>
+          <label>{{lang.eidtbtn}}</label>
           <XbsjSwitch v-model="path.show"></XbsjSwitch>
+        </div>
+        <div class="attitudeEdit" style="margin-left:25px;">
+          <div class="buttonGroup">
+            <div>
+              <button
+                class="attitudeEditCameraButton"
+                @click="path.creating =!path.creating"
+                :class="path.creating?'btncoloron':''"
+              >{{lang.creating}}</button>
+            </div>
+            <div>
+              <button
+                class="attitudeEditCameraButton"
+                @click="path.editing =!path.editing"
+                :class="path.editing?'btncoloron':''"
+              >{{lang.editing}}</button>
+            </div>
+          </div>
         </div>
         <div>
           <label>{{lang.loop}}</label>
           <XbsjSwitch v-model="path.loop"></XbsjSwitch>
         </div>
-        <!-- 启用效果 -->
-        <div class="flatten">
-          <label>{{lang.enabled}}</label>
-          <XbsjSwitch v-model="path.enabled"></XbsjSwitch>
-        </div>
       </div>
 
       <div class="flatten-flex">
-        <!-- 显示辅助线框 -->
-        <div class="flatten">
-          <label>{{lang.showHelper}}</label>
-          <XbsjSwitch v-model="path.showHelper"></XbsjSwitch>
-        </div>
         <!-- 显示关键点方向 -->
         <div class="flatten">
           <label>{{lang.showDirection}}</label>
           <XbsjSwitch v-model="path.showDirection"></XbsjSwitch>
         </div>
-
-        <!-- 当前方向 -->
-        <div class="flatten">
-          <label>{{lang.currentShow}}</label>
-          <XbsjSwitch v-model="path.currentShow"></XbsjSwitch>
-        </div>
-      </div>
-
-      <!-- 暂停播放按钮 -->
-      <div class="attitudeEdit">
-        <label class="xbsj-label">{{lang.eidtbtn}}</label>
-        <div class="buttonGroup">
-          <div>
-            <button
-              class="attitudeEditCameraButton"
-              @click="path.playing =!path.playing"
-              :class="path.playing?'btncoloron':''"
-            >{{lang.play}}</button>
-          </div>
-          <div>
-            <button
-              class="attitudeEditCameraButton"
-              @click="path.loopPlay =!path.loopPlay"
-              :class="path.loopPlay?'btncoloron':''"
-            >{{lang.looppaly}}</button>
+        <div class="attitudeEdit" style="margin-left:25px;">
+          <div class="buttonGroup">
+            <div style="width:80px;">
+              <button @click="directionAlongThePath" class="attitudeEditCameraButton">{{lang.yxfx}}</button>
+            </div>
+            <div>
+              <button
+                @click="path.targetPicking =!path.targetPicking"
+                class="attitudeEditCameraButton"
+              >{{lang.Observation}}</button>
+            </div>
           </div>
         </div>
-      </div>
-
-      <!-- 速度 -->
-      <div class="flatten">
-        <label>{{lang.currentSpeed}}</label>
-        <input v-model="path.currentSpeed" type="text" />
       </div>
 
       <div class="flatten-flex" style="margin-top:20px;">
-        <!-- 相机绑定 -->
-        <div class="flatten" >
+        <!-- 动画 -->
+        <div class="attitudeEdit">
+          <label class="xbsj-label">{{lang.animation}}</label>
+          <div class="buttonGroup">
+            <div style="background:none;">
+              <button v-show="!path.playing" class="playButton" @click="path.playing=!path.playing"></button>
+              <button
+                v-show="path.playing"
+                class="suspendButton"
+                @click="path.playing=!path.playing"
+              ></button>
+            </div>
+          </div>
+        </div>
+        <!-- 视角跟随 -->
+        <div class="flatten">
+          <label>{{lang.looppaly}}</label>
+          <XbsjSwitch v-model="path.looppaly"></XbsjSwitch>
+        </div>
+        <!-- 视角跟随 -->
+        <div class="flatten">
           <label>{{lang.cameraAttached}}</label>
           <XbsjSwitch v-model="path.cameraAttached"></XbsjSwitch>
         </div>
-        <div class="flatten" >
-          <label>{{lang.slices}}</label>
-          <div class="field">
-            <XbsjSlider
-              :min="1"
-              :max="100"
-              :step="1"
-              showTip="always"
-              v-model="path.slices"
-              ref="glowFactor"
-            ></XbsjSlider>
-          </div>
+        <!-- 速度 -->
+        <div class="flatten">
+          <label>{{lang.currentSpeed}}</label>
+          <input style="width:62px" v-model="path.currentSpeed" type="text" /> m/s
         </div>
       </div>
 
-      <!-- 当前位置 -->
+      <!-- 当前状态 -->
       <div class="flatten">
         <label>{{lang.weizhi}}</label>
         <div class="flatten-box">
@@ -136,7 +107,7 @@
         </div>
       </div>
       <div class="flatten">
-        <label>{{lang.currentRotation}}</label>
+        <label></label>
         <div class="flatten-box">
           <XbsjHeadingPitchRoll v-model="path.currentRotation"></XbsjHeadingPitchRoll>
         </div>
@@ -288,6 +259,9 @@ export default {
     }
   },
   methods: {
+    directionAlongThePath() {
+      this._czmObj.directionAlongThePath();
+    },
     optionssure(c) {
       this.pin.pinBuilder.makiIcon = c;
       this.showPinSelect = !this.showPinSelect;
@@ -606,6 +580,9 @@ button:focus {
   color: #dddddd;
   padding: 0 4px;
 }
+.buttonGroup div:nth-child(1) {
+  margin-left: 0;
+}
 .attitudeEditCameraButton {
   color: #dddddd;
 }
@@ -623,4 +600,25 @@ button {
 button:focus {
   outline: none !important;
 }
+.xbsj-videoAttribute .attributePlay button {
+  width: 99px;
+  height: 28px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+}
+.buttonGroup div .playButton {
+  background: url(../../../images/play.png) no-repeat !important;
+  background-size: contain;
+  height: 30px;
+  width: 100px;
+}
+.buttonGroup div .suspendButton {
+  background: url(../../../images/suspend.png) no-repeat !important;
+  background-size: contain;
+  height: 30px;
+  width: 100px;
+}
+ 
 </style>

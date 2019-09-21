@@ -279,7 +279,7 @@ export default {
     // 打开path属性窗口
     pathbtn() {
       var Path = new XE.Obj.Path(this.$root.$earth);
-      Path.name = "Path";
+      Path.name = "路径";
       Path.positionPicking = true;
       Path.isCreating = true;
       Path.creating = true;
