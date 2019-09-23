@@ -3,6 +3,7 @@
     :width="480"
     :minWidth="480"
     :height="322"
+    :floatright="true"
     :title="lang.title"
     @cancel="cancel"
     @ok="ok"
@@ -468,7 +469,7 @@ button:focus {
   color: #dddddd;
   padding: 0 4px;
 }
- 
+
 .btncoloron {
   color: #1fffff !important;
 }

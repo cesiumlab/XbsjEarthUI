@@ -3,6 +3,7 @@
     :width="480"
     :minWidth="480"
     :height="322"
+    :floatright="true"
     :title="lang.title"
     @cancel="cancel"
     @ok="ok"

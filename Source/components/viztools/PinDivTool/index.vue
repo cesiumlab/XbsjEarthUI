@@ -6,7 +6,7 @@
       :minWidth="480"
       :height="480"
       :title="lang.title"
-      :left="1200"
+      :floatright="true"
       @cancel="cancel"
       @ok="ok"
       :footervisible="true"

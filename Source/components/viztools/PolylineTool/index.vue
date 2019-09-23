@@ -3,6 +3,7 @@
     :width="480"
     :minWidth="480"
     :height="458"
+    :floatright="true"
     :title="lang.title"
     @cancel="cancel"
     @ok="ok"
@@ -166,7 +167,7 @@
           <label>{{lang.totoalFrameCount}}</label>
           <div class="field">
             <XbsjSlider :min="0" :max="200" :step="1" showTip="always" v-model="totoalFrameCount"></XbsjSlider>
-          </div>  帧
+          </div>帧
         </div>
       </div>
     </div>
@@ -881,7 +882,7 @@ button:focus {
   outline: none !important;
 }
 .attitudeEditCameraButton {
-  display:block;
+  display: block;
   float: left;
   height: 25px;
   margin-left: 0;

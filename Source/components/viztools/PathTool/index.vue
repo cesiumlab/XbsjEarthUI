@@ -3,6 +3,7 @@
     :width="622"
     :minWidth="622"
     :height="375"
+    :floatright="true"
     :title="lang.title"
     @cancel="cancel"
     @ok="ok"
@@ -100,10 +101,10 @@
       </div>
 
       <!-- 当前状态 -->
-        <div class="flatten">
-          <label>{{lang.currentShow}}</label>
-          <XbsjSwitch v-model="path.currentShow"></XbsjSwitch>
-        </div>
+      <div class="flatten">
+        <label>{{lang.currentShow}}</label>
+        <XbsjSwitch v-model="path.currentShow"></XbsjSwitch>
+      </div>
       <div class="flatten">
         <label>{{lang.weizhi}}</label>
         <div class="flatten-box">

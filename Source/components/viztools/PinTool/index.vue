@@ -3,7 +3,7 @@
     :width="480"
     :minWidth="480"
     :height="440"
-    :left="1200"
+    :floatright="true"
     :title="lang.title"
     @cancel="cancel"
     @ok="ok"
@@ -219,7 +219,7 @@ export default {
         return [0, 30];
       },
       set(newValue) {
-         this.pin.near = Math.round(Math.pow(2, newValue[0]));
+        this.pin.near = Math.round(Math.pow(2, newValue[0]));
         this.pin.far = Math.round(Math.pow(2, newValue[1]));
       }
     }
