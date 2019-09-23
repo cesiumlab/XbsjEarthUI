@@ -2,8 +2,8 @@ const zh = {
   title: '折线箭头',
   name: '名称',
   show:'显示',
-  creating:'创建',
-  editing:'编辑',
+  creating:'鼠标点选',
+  editing:'修改位置',
   ground:'贴地',
   width:'宽度',
   color:'颜色'

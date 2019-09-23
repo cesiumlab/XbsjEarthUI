@@ -17,7 +17,7 @@
       </div>
 
       <!-- 创建、编辑按钮 -->
-      <div class="attitudeEdit">
+      <!-- <div class="attitudeEdit">
         <label class="xbsj-label">{{lang.eidtbtn}}</label>
         <div class="buttonGroup">
           <div style="margin-left: 0px;">
@@ -35,38 +35,48 @@
             >{{lang.editing}}</button>
           </div>
         </div>
+      </div>-->
+
+      <div class="flatten-flex">
+        <!-- 编辑按钮 -->
+        <div class="buttonGroup">
+          <label class="xbsj-label"></label>
+          <button
+            class="attitudeEditCameraButton"
+            @click="polyline.creating =!polyline.creating"
+            :class="polyline.creating?'btncoloron':''"
+          >{{lang.creating}}</button>
+          <button
+            style="margin-left:20px;"
+            class="attitudeEditCameraButton"
+            @click="polyline.editing =!polyline.editing"
+            :class="polyline.editing?'btncoloron':''"
+          >{{lang.editing}}</button>
+          <div class="flatten" style="display: inline-block;">
+            <label>{{lang.loop}}</label>
+            <XbsjSwitch v-model="polyline.loop"></XbsjSwitch>
+          </div>
+          <!-- 深度检测 -->
+          <div class="flatten" style="display: inline-block;">
+            <label>{{lang.depthTest}}</label>
+            <XbsjSwitch v-model="polyline.depthTest"></XbsjSwitch>
+          </div>
+        </div>
+        <!-- 首尾相连 -->
       </div>
 
-      <!-- 显示首尾相连 -->
-      <div class="flatten" style="display:flex;">
-        <div>
-          <label>{{lang.show}}</label>
-          <XbsjSwitch v-model="polyline.show"></XbsjSwitch>
-        </div>
-        <div>
-          <label>{{lang.loop}}</label>
-          <XbsjSwitch v-model="polyline.loop"></XbsjSwitch>
-        </div>
-      </div>
-
-      <!-- 显示辅助线框 -->
+      <!-- 显示辅助线框
       <div class="flatten">
         <label>{{lang.showHelper}}</label>
         <XbsjSwitch v-model="polyline.showHelper"></XbsjSwitch>
-      </div>
+      </div>-->
 
       <!-- 宽度 -->
       <div class="flatten" style="margin-top:20px;">
         <label>{{lang.width}}</label>
         <div class="field">
-          <XbsjSlider :min="0" :max="100" :step="1" showTip="always" v-model="polyline.width"></XbsjSlider>
+          <XbsjSlider :min="1" :max="100" :step="1" showTip="always" v-model="polyline.width"></XbsjSlider>
         </div>
-      </div>
-
-      <!-- 深度检测 -->
-      <div class="flatten">
-        <label>{{lang.depthTest}}</label>
-        <XbsjSwitch v-model="polyline.depthTest"></XbsjSwitch>
       </div>
 
       <!-- 插值方式 -->
@@ -95,7 +105,7 @@
           <label>{{lang.materialbtn}}</label>
           <input
             type="text"
-            v-model="materialType"
+            v-model="materialName"
             @click="selectinputMaterial"
             readonly
             style="cursor: pointer;"
@@ -103,7 +113,7 @@
           <button class="selectButton"></button>
           <div class="cutselectbox" v-show="showMaterialSelect">
             <div @click="optionssureMaterial(c)" v-for="(c,index) in materialTypeObj" :key="index">
-              <span>{{c}}</span>
+              <span>{{c.name}}</span>
             </div>
           </div>
         </div>
@@ -125,9 +135,12 @@
             <XbsjSlider :min="0" :max="200" :step="1" showTip="always" v-model="dashLength"></XbsjSlider>
           </div>
         </div>
-        <div style="position: relative; width: 262px;">
+        <div style="margin-top:16px; margin-bottom:10px;">
           <label>{{lang.dashPattern}}</label>
-          <input
+          <div class="field">
+            <XbsjSlider :min="2" :max="255" :step="1" showTip="always" v-model="dashPattern"></XbsjSlider>
+          </div>
+          <!-- <input
             type="text"
             v-model="dashPattern"
             @click="selectinputPattern"
@@ -139,7 +152,7 @@
             <div @click="optionssurePattern(c)" v-for="(c,index) in dashPatternObj" :key="index">
               <span>{{c}}</span>
             </div>
-          </div>
+          </div>-->
         </div>
       </div>
       <div class="flatten" v-show="arrowMaterialBox">
@@ -153,7 +166,7 @@
           <label>{{lang.totoalFrameCount}}</label>
           <div class="field">
             <XbsjSlider :min="0" :max="200" :step="1" showTip="always" v-model="totoalFrameCount"></XbsjSlider>
-          </div>
+          </div>  帧
         </div>
       </div>
     </div>
@@ -191,6 +204,7 @@ export default {
         RHUMB: "RHUMB"
       },
       materialType: "XbsjColorMaterial",
+      materialName: "实线",
       dashPatternObj: {
         0: 3,
         1: 12,
@@ -209,10 +223,22 @@ export default {
       langs: languagejs,
       showMaterialSelect: false,
       materialTypeObj: {
-        XbsjColorMaterial: "XbsjColorMaterial",
-        XbsjPolylineDashMaterial: "XbsjPolylineDashMaterial",
-        XbsjPolylineArrowMaterial: "XbsjPolylineArrowMaterial",
-        XbsjODLineMaterial: "XbsjODLineMaterial"
+        XbsjColorMaterial: {
+          type: "XbsjColorMaterial",
+          name: "实线"
+        },
+        XbsjPolylineDashMaterial: {
+          type: "XbsjPolylineDashMaterial",
+          name: "虚线"
+        },
+        XbsjPolylineArrowMaterial: {
+          type: "XbsjPolylineArrowMaterial",
+          name: "箭头线"
+        },
+        XbsjODLineMaterial: {
+          type: "XbsjODLineMaterial",
+          name: "轨迹线"
+        }
       },
       colorUI: {
         rgba: {
@@ -487,20 +513,21 @@ export default {
       this.showMaterialSelect = !this.showMaterialSelect;
     },
     optionssureMaterial(c) {
-      this.materialType = c;
-      if (c === "XbsjColorMaterial") {
+      this.materialName = c.name;
+      this.materialType = c.type;
+      if (c.type === "XbsjColorMaterial") {
         this.polyline.width = 2;
         this.colorMaterialBox = true;
         this.dashMaterialBox = false;
         this.arrowMaterialBox = false;
         this.oDLineMaterialBox = false;
-      } else if (c === "XbsjPolylineDashMaterial") {
+      } else if (c.type === "XbsjPolylineDashMaterial") {
         this.polyline.width = 6;
         this.colorMaterialBox = false;
         this.dashMaterialBox = true;
         this.arrowMaterialBox = false;
         this.oDLineMaterialBox = false;
-      } else if (c === "XbsjPolylineArrowMaterial") {
+      } else if (c.type === "XbsjPolylineArrowMaterial") {
         this.polyline.width = 20;
         this.colorMaterialBox = false;
         this.dashMaterialBox = false;
@@ -822,10 +849,10 @@ button:focus {
   right: 18px;
 }
 
-.buttonGroup {
+/* .buttonGroup {
   display: flex;
-}
-.buttonGroup div {
+} */
+/* .buttonGroup div {
   display: inline-block;
   width: 62px;
   height: 25px;
@@ -835,7 +862,7 @@ button:focus {
   color: #dddddd;
   padding: 0 4px;
   cursor: pointer;
-}
+} */
 .attitudeEditCameraButton {
   color: #dddddd;
 }
@@ -852,5 +879,13 @@ button {
 }
 button:focus {
   outline: none !important;
+}
+.attitudeEditCameraButton {
+  display: inline-block;
+  height: 25px;
+  margin-left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  color: #dddddd;
 }
 </style>

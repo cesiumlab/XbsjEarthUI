@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="345"
+    :height="355"
     :title="lang.title"
     @cancel="cancel"
     @ok="ok"
@@ -16,28 +16,35 @@
         <input style="float:left;" type="text" v-model="model.name" />
       </div>
       <div class="flatten-flex">
-        <!-- 显示隐藏 -->
-        <div class="flatten">
-          <label>{{lang.show}}</label>
-          <XbsjSwitch v-model="model.show"></XbsjSwitch>
+        <!-- 编辑按钮 -->
+
+        <div class="buttonGroup">
+          <label class="xbsj-label"></label>
+          <button
+            class="attitudeEditCameraButton"
+            @click="model.creating =!model.creating"
+            :class="model.creating?'btncoloron':''"
+          >{{lang.creating}}</button>
+
+          <button
+            style="margin-left:20px;"
+            class="attitudeEditCameraButton"
+            @click="model.editing =!model.editing"
+            :class="model.editing?'btncoloron':''"
+          >{{lang.editing}}</button>
         </div>
-        <!-- 是否创建 -->
-        <div class="flatten">
-          <label>{{lang.creating}}</label>
-          <XbsjSwitch v-model="model.creating"></XbsjSwitch>
-        </div>
-        <!-- 是否编辑 -->
-        <div class="flatten">
-          <label>{{lang.editing}}</label>
-          <XbsjSwitch v-model="model.editing"></XbsjSwitch>
-        </div>
-      </div>
-      <div class="flatten-flex">
         <!-- 贴地 -->
         <div class="flatten">
           <label>{{lang.ground}}</label>
           <XbsjSwitch v-model="model.ground"></XbsjSwitch>
         </div>
+      </div>
+      <!-- 颜色 -->
+      <div class="flatten">
+        <label>{{lang.color}}</label>
+        <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
+      </div>
+      <div class="flatten-flex" style="padding-top:10px;">
         <div class="flatten">
           <label>{{lang.outlineShow}}</label>
           <XbsjSwitch v-model="model.outlineShow"></XbsjSwitch>
@@ -71,11 +78,7 @@
           ></XbsjSlider>
         </div>
       </div>-->
-      <!-- 颜色 -->
-      <div class="flatten">
-        <label>{{lang.color}}</label>
-        <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
-      </div>
+
       <div class="flatten" v-show="pinstyletype">
         <label>{{lang.outlineColor}}</label>
         <XbsjColorButton v-model="borderbaseColorUI" ref="borderbaseColor"></XbsjColorButton>
@@ -539,5 +542,13 @@ button {
 }
 button:focus {
   outline: none !important;
+}
+.attitudeEditCameraButton {
+  display: inline-block;
+  height: 25px;
+  margin-left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  color: #dddddd;
 }
 </style>

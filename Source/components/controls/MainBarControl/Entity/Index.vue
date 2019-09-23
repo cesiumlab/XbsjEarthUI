@@ -37,11 +37,6 @@
           <span class="xbsj-item-name">{{lang.line}}</span>
         </div>
 
-        <!-- 模型 -->
-        <div class="xbsj-item-btnbox" @click="createmodelbtn">
-          <div class="xbsj-item-btn modelbutton"></div>
-          <span class="xbsj-item-name">{{lang.createmodel}}</span>
-        </div>
         <!-- 曲线箭头 -->
         <div class="xbsj-item-btnbox" @click="curvedarrowbtn">
           <div class="xbsj-item-btn curvedarrow"></div>
@@ -100,7 +95,12 @@
       </div>
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.model}}</span>
-        <div class="xbsj-item-btnbox ml20" @click="createPlane">
+        <!-- 模型 -->
+        <div class="xbsj-item-btnbox ml20" @click="createmodelbtn">
+          <div class="xbsj-item-btn modelbutton"></div>
+          <span class="xbsj-item-name">{{lang.createmodel}}</span>
+        </div>
+        <div class="xbsj-item-btnbox" @click="createPlane">
           <div class="xbsj-item-btn planebutton"></div>
           <span class="xbsj-item-name">{{lang.plane}}</span>
         </div>
@@ -271,7 +271,7 @@ export default {
     // 打开模型属性窗口
     createmodelbtn() {
       var Model = new XE.Obj.Model(this.$root.$earth);
-      Model.name = "Model";
+      Model.name = "模型";
       Model.isCreating = true;
       Model.creating = true;
       this.$root.$earthUI.showPropertyWindow(Model);
@@ -299,7 +299,7 @@ export default {
     pindivbtn() {
       var PinDivTool = new XE.Obj.Plots.GeoPin(this.$root.$earth);
       PinDivTool.ctrtype = "PinDivTool";
-      PinDivTool.name = "div图标";
+      PinDivTool.name = "自定义图标";
       PinDivTool.isCreating = true;
       PinDivTool.creating = true;
       PinDivTool._pin.show = false;
@@ -318,7 +318,7 @@ export default {
     polylinebtn() {
       var Polyline = new XE.Obj.Polyline(this.$root.$earth);
       console.log(Polyline);
-      Polyline.name = "polyLine";
+      Polyline.name = "折线";
       Polyline.positionPicking = true;
       Polyline.isCreating = true;
       Polyline.creating = true;
