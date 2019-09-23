@@ -468,9 +468,7 @@ button:focus {
   color: #dddddd;
   padding: 0 4px;
 }
-.attitudeEditCameraButton {
-  color: #dddddd;
-}
+ 
 .btncoloron {
   color: #1fffff !important;
 }
@@ -484,5 +482,14 @@ button {
 }
 button:focus {
   outline: none !important;
+}
+.attitudeEditCameraButton {
+  display: block;
+  float: left;
+  height: 25px;
+  margin-left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  color: #dddddd;
 }
 </style>

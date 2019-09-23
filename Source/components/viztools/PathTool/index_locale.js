@@ -1,5 +1,5 @@
 const zh = {
-  title:'Path属性',
+  title:'路径属性',
   name:'名称',
   creating:'创建',
   editing:'编辑',

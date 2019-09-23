@@ -881,7 +881,8 @@ button:focus {
   outline: none !important;
 }
 .attitudeEditCameraButton {
-  display: inline-block;
+  display:block;
+  float: left;
   height: 25px;
   margin-left: 0;
   background: rgba(0, 0, 0, 0.5);
