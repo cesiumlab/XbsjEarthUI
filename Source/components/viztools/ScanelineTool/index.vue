@@ -1,7 +1,7 @@
 <template>
   <Window
     :width="730"
-    :minWidth="355"
+    :minWidth="730"
     :height="355"
     :floatright="true"
     :title="lang.title"
@@ -550,7 +550,7 @@ button:focus {
 .attitudeEditCameraButton {
   display: block;
   float: left;
-  height: 25px;
+  height: 30px;
   margin-left: 0;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
