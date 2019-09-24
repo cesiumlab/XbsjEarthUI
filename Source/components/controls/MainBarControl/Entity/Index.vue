@@ -122,9 +122,13 @@
           <span class="xbsj-item-name">{{lang.more}}</span>
         </div>-->
       </div>
-      <!-- <div class="xbsj-list-item xbsj-list-lastitem">
-        <span class="xbsj-list-name">{{lang.senior}}</span>
-        <div class="xbsj-item-btnbox ml20">
+      <div class="xbsj-list-item xbsj-list-lastitem">
+        <span class="xbsj-list-name">{{lang.animation}}</span>
+        <div class="xbsj-item-btnbox ml20" @click="scanLineBtn">
+          <div class="xbsj-item-btn radarbutton"></div>
+          <span class="xbsj-item-name">{{lang.Scanline}}</span>
+        </div>
+        <!-- <div class="xbsj-item-btnbox ml20">
           <div class="xbsj-item-btn odbutton"></div>
           <span class="xbsj-item-name">{{lang.od}}</span>
         </div>
@@ -159,8 +163,8 @@
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn more"></div>
           <span class="xbsj-item-name">{{lang.more}}</span>
-        </div>
-      </div>-->
+        </div>-->
+      </div>
     </div>
     <PlottingMore ref="plottingMore"></PlottingMore>
   </div>
@@ -318,12 +322,17 @@ export default {
     // 打开polyLine折线
     polylinebtn() {
       var Polyline = new XE.Obj.Polyline(this.$root.$earth);
-      console.log(Polyline);
       Polyline.name = "折线";
       Polyline.positionPicking = true;
       Polyline.isCreating = true;
       Polyline.creating = true;
       this.$root.$earthUI.showPropertyWindow(Polyline);
+    },
+    //打开扫描线-动画
+    scanLineBtn() {
+      var Scaneline = new XE.Obj.Scaneline(this.$root.$earth);
+      Scaneline.name = "扫描线";
+      this.$root.$earthUI.showPropertyWindow(Scaneline);
     },
     startMove(event) {
       //如果事件的目标不是本el 返回
