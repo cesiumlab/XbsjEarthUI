@@ -332,6 +332,8 @@ export default {
     scanLineBtn() {
       var Scaneline = new XE.Obj.Scaneline(this.$root.$earth);
       Scaneline.name = "扫描线";
+      Scaneline.creating = true;
+      console.log(Scaneline);
       this.$root.$earthUI.showPropertyWindow(Scaneline);
     },
     startMove(event) {

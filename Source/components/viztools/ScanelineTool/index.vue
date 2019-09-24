@@ -16,11 +16,6 @@
         <label>{{lang.name}}</label>
         <input style="float:left;" type="text" v-model="model.name" />
       </div>
-      <!-- 模型url -->
-      <div class="flatten">
-        <label>{{lang.url}}</label>
-        <input style="float:left;" type="text" v-model="model.url" />
-      </div>
       <div class="flatten-flex">
         <!-- 鼠标点选 -->
         <div class="flatten">
@@ -34,14 +29,14 @@
             <button
               style="margin-left:20px;"
               class="attitudeEditCameraButton"
-              @click="model.positionEditing =!model.positionEditing"
-              :class="model.positionEditing?'btncoloron':''"
-            >{{lang.positionEditing}}</button>
-            <button
+              @click="model.editing =!model.editing"
+              :class="model.editing?'btncoloron':''"
+            >{{lang.editing}}</button>
+            <!-- <button
               style="margin-left:20px;"
               class="attitudeEditCameraButton"
               @click="flyto"
-            >{{lang.flyto}}</button>
+            >{{lang.flyto}}</button>-->
           </div>
         </div>
       </div>
@@ -53,28 +48,60 @@
         </div>
       </div>
 
-      <div class="flatten-flex">
-        <!-- rotation -->
-        <div class="flatten">
-          <label>{{lang.cx}}</label>
-          <div class="buttonGroup">
+      <!-- 半径  -->
+      <div class="flatten">
+        <label>{{lang.radius}}</label>
+        <div class="flatten-box">
+          <input style="float:left;" type="text" v-model="model.radius" />
+        </div>
+      </div>
+
+      <!-- 动画 -->
+      <div class="flatten-flex xbsj-videoAttribute">
+        <label>{{lang.animation}}</label>
+        <div class="buttonGroup">
+          <div style="background:none;">
+            <button
+              v-show="!model.playing"
+              class="playButton"
+              @click="model.playing=!model.playing"
+            ></button>
+
+            <button
+              v-show="model.playing"
+              class="suspendButton"
+              @click="model.playing=!model.playing"
+            ></button>
+          </div>
+
+          <div style="background:none;margin-left:20px;">
             <button
               class="attitudeEditCameraButton"
-              @click="model.rotationEditing =!model.rotationEditing"
-              :class="model.rotationEditing?'btncoloron':''"
-            >{{lang.rotationEditing}}</button>
-            <button
-              @click="reset"
-              style="margin-left:20px;"
-              class="attitudeEditCameraButton"
-            >{{lang.reset}}</button>
+              @click="model.loopPlay =!model.loopPlay"
+              :class="model.loopPlay?'btncoloron':''"
+            >{{lang.loopPlay}}</button>
+          </div>
+
+          <!-- 循环周期 -->
+          <div class="flatten">
+            <label>{{lang.loopcycle}}</label>
+            <input style="float:left;" type="text" v-model="model.name" />
+          </div>
+
+          <!-- 当前时刻 -->
+          <div class="flatten">
+            <label>{{lang.loopcycle}}</label>
+            <div class="field">
+              <!-- <XbsjSlider range :min="0" :max="30" :step="1" v-model="nearfar" ref="glowFactor"></XbsjSlider> -->
+            </div>
           </div>
         </div>
       </div>
-      <div class="flatten">
-        <label></label>
-        <div class="flatten-box">
-          <XbsjHeadingPitchRoll v-model="model.xbsjRotation"></XbsjHeadingPitchRoll>
+
+      <!-- 颜色 -->
+      <div class="flatten-flex">
+        <div class="flatten">
+          <label>{{lang.color}}</label>
         </div>
       </div>
     </div>
@@ -97,10 +124,9 @@ export default {
       model: {
         name: "",
         show: true,
+        editing: false,
+        radius: Number,
         creating: true,
-        url: "",
-        positionEditing: false,
-        rotationEditing: false,
         xbsjPosition: [0, 0, 0],
         xbsjRotation: [0, 0, 0]
       },
@@ -121,11 +147,12 @@ export default {
         name: "model.name",
         creating: "model.creating",
         show: "model.show",
-        url: "model.url",
-        positionEditing: "model.positionEditing",
-        rotationEditing: "model.rotationEditing",
-        xbsjRotation: "model.xbsjRotation",
-        xbsjPosition: "model.xbsjPosition"
+        editing: "model.editing",
+        // positionEditing: "model.positionEditing",
+        // rotationEditing: "model.rotationEditing",
+        // xbsjRotation: "model.xbsjRotation",
+        position: "model.xbsjPosition",
+        radius: "model.radius"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -454,13 +481,10 @@ button:focus {
 }
 .buttonGroup div {
   display: inline-block;
-  width: 62px;
   height: 25px;
-  margin-left: 18px;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   color: #dddddd;
-  padding: 0 4px;
 }
 .attitudeEditCameraButton {
   color: #dddddd;
@@ -487,5 +511,25 @@ button:focus {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   color: #dddddd;
+}
+.xbsj-videoAttribute .attributePlay button {
+  width: 99px;
+  height: 28px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+}
+.buttonGroup div .playButton {
+  background: url(../../../images/play.png) no-repeat !important;
+  background-size: contain;
+  height: 30px;
+  width: 100px;
+}
+.buttonGroup div .suspendButton {
+  background: url(../../../images/suspend.png) no-repeat !important;
+  background-size: contain;
+  height: 30px;
+  width: 100px;
 }
 </style>
