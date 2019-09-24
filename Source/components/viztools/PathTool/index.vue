@@ -86,7 +86,7 @@
         <!-- 视角跟随 -->
         <div class="flatten">
           <label>{{lang.looppaly}}</label>
-          <XbsjSwitch v-model="path.looppaly"></XbsjSwitch>
+          <XbsjSwitch v-model="path.loopPlay"></XbsjSwitch>
         </div>
         <!-- 视角跟随 -->
         <div class="flatten">

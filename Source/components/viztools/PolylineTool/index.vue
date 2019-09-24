@@ -138,9 +138,92 @@
         </div>
         <div style="margin-top:16px; margin-bottom:10px;">
           <label>{{lang.dashPattern}}</label>
-          <div class="field">
-            <XbsjSlider :min="2" :max="255" :step="1" showTip="always" v-model="dashPattern"></XbsjSlider>
+          <div class="dottedstyle">
+            <div
+              @click="changebtn(0)"
+              class="Dottedline-default"
+              :class="dashPatternarr[0]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(1)"
+              class="Dottedline-default"
+              :class="dashPatternarr[1]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(2)"
+              class="Dottedline-default"
+              :class="dashPatternarr[2]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(3)"
+              class="Dottedline-default"
+              :class="dashPatternarr[3]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(4)"
+              class="Dottedline-default"
+              :class="dashPatternarr[4]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(5)"
+              class="Dottedline-default"
+              :class="dashPatternarr[5]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(6)"
+              class="Dottedline-default"
+              :class="dashPatternarr[6]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(7)"
+              class="Dottedline-default"
+              :class="dashPatternarr[7]===1?'Dottedline-active':''"
+            ></div>
+            <!-- <div
+              @click="changebtn(8)"
+              class="Dottedline-default"
+              :class="dashPatternarr[8]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(9)"
+              class="Dottedline-default"
+              :class="dashPatternarr[9]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(10)"
+              class="Dottedline-default"
+              :class="dashPatternarr[10]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(11)"
+              class="Dottedline-default"
+              :class="dashPatternarr[11]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(12)"
+              class="Dottedline-default"
+              :class="dashPatternarr[12]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(13)"
+              class="Dottedline-default"
+              :class="dashPatternarr[13]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(14)"
+              class="Dottedline-default"
+              :class="dashPatternarr[14]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(15)"
+              class="Dottedline-default"
+              :class="dashPatternarr[15]===1?'Dottedline-active':''"
+            ></div>-->
           </div>
+
+          <!-- <div class="field">
+            <XbsjSlider :min="2" :max="255" :step="1" showTip="always" v-model="dashPattern"></XbsjSlider>
+          </div>-->
           <!-- <input
             type="text"
             v-model="dashPattern"
@@ -178,7 +261,7 @@
 import { copyobj } from "../../utils/tools";
 import languagejs from "./index_locale";
 import { fips } from "crypto";
-
+import Vue from "vue";
 export default {
   props: {
     getBind: Function
@@ -187,6 +270,8 @@ export default {
     return {
       showPolylineSelect: false,
       makiIconObj: {},
+      dashPatternarr: [],
+      dashPatternarrString: "",
       polyline: {
         name: "",
         creating: false,
@@ -389,6 +474,19 @@ export default {
           "material.XbsjODLineMaterial.totoalFrameCount"
         )
       );
+
+      if (this._czmObj.dashPatternarrString !== undefined) {
+        this.dashPatternarr = this._czmObj.dashPatternarrString.split("");
+        this.dashPatternarr = this.dashPatternarr.map(i => {
+          return parseInt(i);
+        });
+      } else {
+        this.dashPatternarr = [];
+        this.dashPatternarr = this.dashPattern.toString(2).split("");
+        this.dashPatternarr = this.dashPatternarr.map(i => {
+          return parseInt(i);
+        });
+      }
     }
   },
   beforeDestroy() {
@@ -404,6 +502,15 @@ export default {
     }
   },
   watch: {
+    dashPatternarr: {
+      handler(old, newval) {
+        let str = newval.join("");
+        this._czmObj.dashPatternarrString = str;
+        this.dashPattern = parseInt(this.dashPatternarr.join(""), 2);
+        console.log(this.dashPattern)
+      },
+      deep: true
+    },
     colorUI(color) {
       let v = color.rgba;
 
@@ -496,6 +603,13 @@ export default {
     }
   },
   methods: {
+    changebtn(c) {
+      if (this.dashPatternarr[c] === 1) {
+        Vue.set(this.dashPatternarr, c, 0);
+      } else {
+        Vue.set(this.dashPatternarr, c, 1);
+      }
+    },
     optionssure(c) {
       this.polyline.arcType = c;
       this.showPolylineSelect = !this.showPolylineSelect;
@@ -889,5 +1003,18 @@ button:focus {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   color: #dddddd;
+}
+.Dottedline-default {
+  width: 18px;
+  height: 12px;
+  background: #333333;
+  margin-top: 9px;
+}
+.Dottedline-active {
+  background: red !important;
+}
+.dottedstyle {
+  display: flex;
+  justify-content: space-around;
 }
 </style>

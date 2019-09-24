@@ -108,7 +108,6 @@ export default {
   },
   created() {
     // console.log(earth.czm.viewer.container)
-    console.log(this.$root.$earthUI._mainUI.clientWidth);
     let earthUIWidth = this.$root.$earthUI._mainUI.clientWidth;
     this._width = this.width;
     this._height = this.height;
