@@ -334,6 +334,7 @@ export default {
       Scaneline.name = "扫描线";
       Scaneline.creating = true;
       Scaneline.isCreating = true;
+      Scaneline.playing = true;
       console.log(Scaneline);
       this.$root.$earthUI.showPropertyWindow(Scaneline);
     },

@@ -9,7 +9,8 @@ const zh = {
   loopPlay: '循环',
   loopcycle: '循环周期',
   color: '颜色',
-  flyto:'定位'
+  flyto:'定位',
+  nowtime:'当前时刻'
 };
 
 const en = {
@@ -23,7 +24,8 @@ const en = {
   loopPlay: 'loopPlay',
   loopcycle: 'loopcycle',
   color: 'color',
-  flyto:'flyto'
+  flyto:'flyto',
+  nowtime:'time'
 
 };
 

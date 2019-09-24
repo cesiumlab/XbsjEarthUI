@@ -1,8 +1,8 @@
 <template>
   <Window
-    :width="730"
-    :minWidth="730"
-    :height="355"
+    :width="490"
+    :minWidth="490"
+    :height="370"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -88,19 +88,18 @@
           <label>{{lang.loopcycle}}</label>
           <input style="float:left;width:60px;" type="text" v-model="model.timeDuration" />
         </div>
-
-        <!-- 当前时刻 -->
-        <div class="flatten">
-          <label>{{lang.loopcycle}}</label>
-          <div class="field">
-            <XbsjSlider
-              :min="0"
-              :max="maxcurrentTime"
-              :step="0.01"
-              v-model="model.currentTime"
-              ref="glowFactor"
-            ></XbsjSlider>
-          </div>
+      </div>
+      <!-- 当前时刻 -->
+      <div class="flatten">
+        <label>{{lang.nowtime}}</label>
+        <div class="field">
+          <XbsjSlider
+            :min="0"
+            :max="maxcurrentTime"
+            :step="0.01"
+            v-model="model.currentTime"
+            ref="glowFactor"
+          ></XbsjSlider>
         </div>
       </div>
 

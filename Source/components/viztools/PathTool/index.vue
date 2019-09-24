@@ -99,11 +99,16 @@
           <input style="width:62px" v-model="path.currentSpeed" type="text" /> m/s
         </div>
       </div>
-
-      <!-- 当前状态 -->
-      <div class="flatten">
-        <label>{{lang.currentShow}}</label>
-        <XbsjSwitch v-model="path.currentShow"></XbsjSwitch>
+      <div class="flatten-flex">
+        <!-- 当前状态 -->
+        <div class="flatten">
+          <label>{{lang.currentShow}}</label>
+          <XbsjSwitch v-model="path.currentShow"></XbsjSwitch>
+        </div>
+        <div class="flatten">
+          <label>{{lang.Tangentdirection}}</label>
+          <XbsjSwitch v-model="path.alwaysAlongThePath"></XbsjSwitch>
+        </div>
       </div>
       <div class="flatten">
         <label>{{lang.weizhi}}</label>
@@ -147,6 +152,7 @@ export default {
         // ignoreDefualt:true,
         isCreating: true,
         isSelected: false,
+        alwaysAlongThePath: false,
         loop: false,
         loopPlay: false,
         positionPicking: true,
@@ -188,6 +194,7 @@ export default {
         currentSpeed: "path.currentSpeed",
         editing: "path.editing",
         enabled: "path.enabled",
+        alwaysAlongThePath: "path.alwaysAlongThePath",
         // ignoreDefualt:"path.ignoreDefualt",
         // isCreating:"path.isCreating",
         isSelected: "path.isSelected",

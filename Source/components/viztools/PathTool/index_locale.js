@@ -25,7 +25,8 @@ const zh = {
   cameraAttached:'视角跟随',
   animation:'动画',
   Observation:'观察点',
-  yxfx:'延线方向'
+  yxfx:'延线方向',
+  Tangentdirection:'切线方向'
 }
 
 const en = {
@@ -55,7 +56,8 @@ const en = {
   cameraAttached:'Attached',
   animation:'Animation',
   Observation:'Observation',
-  yxfx:'Direction'
+  yxfx:'Direction',
+  Tangentdirection:'Tangent'
 
 }
 
