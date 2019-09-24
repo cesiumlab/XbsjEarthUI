@@ -15,23 +15,17 @@
         <label>{{lang.name}}</label>
         <input style="float:left;" type="text" v-model="model.name" />
       </div>
-
-      <div class="flatten-flex">
-        <!-- 显示隐藏 -->
-        <div class="flatten">
-          <label>{{lang.show}}</label>
-          <XbsjSwitch v-model="model.show"></XbsjSwitch>
-        </div>
-        <!-- 是否创建 -->
-        <div class="flatten">
-          <label>{{lang.creating}}</label>
-          <XbsjSwitch v-model="model.creating"></XbsjSwitch>
-        </div>
-      </div>
       <!-- 模型url -->
       <div class="flatten">
         <label>{{lang.url}}</label>
         <input style="float:left;" type="text" v-model="model.url" />
+      </div>
+      <div class="flatten-flex">
+        <!-- 鼠标点选 -->
+        <div class="flatten">
+          <label>{{lang.creating}}</label>
+          <XbsjSwitch v-model="model.creating"></XbsjSwitch>
+        </div>
       </div>
 
       <div class="flatten-flex">

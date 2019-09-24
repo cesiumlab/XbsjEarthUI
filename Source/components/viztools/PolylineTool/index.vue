@@ -179,7 +179,7 @@
               class="Dottedline-default"
               :class="dashPatternarr[7]===1?'Dottedline-active':''"
             ></div>
-            <!-- <div
+            <div
               @click="changebtn(8)"
               class="Dottedline-default"
               :class="dashPatternarr[8]===1?'Dottedline-active':''"
@@ -218,7 +218,7 @@
               @click="changebtn(15)"
               class="Dottedline-default"
               :class="dashPatternarr[15]===1?'Dottedline-active':''"
-            ></div>-->
+            ></div>
           </div>
 
           <!-- <div class="field">
@@ -385,7 +385,6 @@ export default {
 
     if (czmObj) {
       this._czmObj = czmObj;
-      // console.log(this._czmObj);
       const bindData = {
         name: "polyline.name",
         creating: "polyline.creating",
@@ -507,7 +506,6 @@ export default {
         let str = newval.join("");
         this._czmObj.dashPatternarrString = str;
         this.dashPattern = parseInt(this.dashPatternarr.join(""), 2);
-        console.log(this.dashPattern)
       },
       deep: true
     },
