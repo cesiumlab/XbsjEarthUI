@@ -8,7 +8,8 @@ const zh = {
   animation: '动画',
   loopPlay: '循环',
   loopcycle: '循环周期',
-  color: '颜色'
+  color: '颜色',
+  flyto:'定位'
 };
 
 const en = {
@@ -21,7 +22,8 @@ const en = {
   animation: 'animation',
   loopPlay: 'loopPlay',
   loopcycle: 'loopcycle',
-  color: 'color'
+  color: 'color',
+  flyto:'flyto'
 
 };
 

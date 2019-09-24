@@ -333,6 +333,7 @@ export default {
       var Scaneline = new XE.Obj.Scaneline(this.$root.$earth);
       Scaneline.name = "扫描线";
       Scaneline.creating = true;
+      Scaneline.isCreating = true;
       console.log(Scaneline);
       this.$root.$earthUI.showPropertyWindow(Scaneline);
     },

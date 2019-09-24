@@ -1,8 +1,8 @@
 <template>
   <Window
-    :width="480"
-    :minWidth="480"
-    :height="322"
+    :width="730"
+    :minWidth="355"
+    :height="355"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -32,11 +32,11 @@
               @click="model.editing =!model.editing"
               :class="model.editing?'btncoloron':''"
             >{{lang.editing}}</button>
-            <!-- <button
+            <button
               style="margin-left:20px;"
               class="attitudeEditCameraButton"
               @click="flyto"
-            >{{lang.flyto}}</button>-->
+            >{{lang.flyto}}</button>
           </div>
         </div>
       </div>
@@ -81,28 +81,33 @@
               :class="model.loopPlay?'btncoloron':''"
             >{{lang.loopPlay}}</button>
           </div>
+        </div>
 
-          <!-- 循环周期 -->
-          <div class="flatten">
-            <label>{{lang.loopcycle}}</label>
-            <input style="float:left;" type="text" v-model="model.name" />
-          </div>
+        <!-- 循环周期 -->
+        <div class="flatten">
+          <label>{{lang.loopcycle}}</label>
+          <input style="float:left;width:60px;" type="text" v-model="model.timeDuration" />
+        </div>
 
-          <!-- 当前时刻 -->
-          <div class="flatten">
-            <label>{{lang.loopcycle}}</label>
-            <div class="field">
-              <!-- <XbsjSlider range :min="0" :max="30" :step="1" v-model="nearfar" ref="glowFactor"></XbsjSlider> -->
-            </div>
+        <!-- 当前时刻 -->
+        <div class="flatten">
+          <label>{{lang.loopcycle}}</label>
+          <div class="field">
+            <XbsjSlider
+              :min="0"
+              :max="maxcurrentTime"
+              :step="0.01"
+              v-model="model.currentTime"
+              ref="glowFactor"
+            ></XbsjSlider>
           </div>
         </div>
       </div>
 
       <!-- 颜色 -->
-      <div class="flatten-flex">
-        <div class="flatten">
-          <label>{{lang.color}}</label>
-        </div>
+      <div class="flatten">
+        <label>{{lang.color}}</label>
+        <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
       </div>
     </div>
   </Window>
@@ -123,15 +128,29 @@ export default {
       makiIconObj: {},
       model: {
         name: "",
+        playing: false,
         show: true,
         editing: false,
+        enabled: true,
         radius: Number,
+        timeDuration: 0,
+        currentTime: 0,
         creating: true,
+        loopPlay: true,
         xbsjPosition: [0, 0, 0],
         xbsjRotation: [0, 0, 0]
       },
       pinstyletype: true,
-      langs: languagejs
+      langs: languagejs,
+      bgbaseColorUI: {
+        rgba: {
+          r: 0,
+          g: 0,
+          b: 255,
+          a: 1
+        }
+      },
+      bgbaseColor: [0, 0, 0.5, 1]
     };
   },
   created() {},
@@ -148,11 +167,13 @@ export default {
         creating: "model.creating",
         show: "model.show",
         editing: "model.editing",
-        // positionEditing: "model.positionEditing",
-        // rotationEditing: "model.rotationEditing",
-        // xbsjRotation: "model.xbsjRotation",
         position: "model.xbsjPosition",
-        radius: "model.radius"
+        radius: "model.radius",
+        loopPlay: "model.loopPlay",
+        playing: "model.playing",
+        timeDuration: "model.timeDuration",
+        currentTime: "model.currentTime",
+        enabled: "model.enabled"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -162,6 +183,7 @@ export default {
           this._disposers.push(vm.handler(this, vm.prop, czmObj, sm));
         }
       });
+      this._disposers.push(XE.MVVM.bind(this, "bgbaseColor", czmObj, "color"));
     }
   },
   beforeDestroy() {
@@ -174,9 +196,31 @@ export default {
     },
     guid() {
       return this.getBind().guid;
+    },
+    maxcurrentTime() {
+      return Number(this.model.timeDuration);
     }
   },
-  watch: {},
+  watch: {
+    bgbaseColorUI(color) {
+      let v = color.rgba;
+
+      var cc = [v.r / 255.0, v.g / 255.0, v.b / 255.0, v.a];
+      if (!this.bgbaseColor.every((c, index) => c === cc[index])) {
+        this.bgbaseColor = cc;
+      }
+    },
+    bgbaseColor(c) {
+      this.bgbaseColorUI = {
+        rgba: {
+          r: c[0] * 255,
+          g: c[1] * 255,
+          b: c[2] * 255,
+          a: c[3]
+        }
+      };
+    }
+  },
   methods: {
     close() {
       this.$parent.destroyTool(this);
