@@ -3,6 +3,7 @@
     :width="480"
     :minWidth="480"
     :height="322"
+    :floatright="true"
     :title="lang.title"
     @cancel="cancel"
     @ok="ok"
@@ -23,32 +24,55 @@
       <div class="flatten-flex">
         <!-- 鼠标点选 -->
         <div class="flatten">
-          <label>{{lang.creating}}</label>
-          <XbsjSwitch v-model="model.creating"></XbsjSwitch>
-        </div>
-      </div>
-
-      <div class="flatten-flex">
-        <!-- positon -->
-        <div class="flatten">
-          <label>{{lang.positionEditing}}</label>
-          <XbsjSwitch v-model="model.positionEditing"></XbsjSwitch>
-        </div>
-        <!-- rotation -->
-        <div class="flatten">
-          <label>{{lang.rotationEditing}}</label>
-          <XbsjSwitch v-model="model.rotationEditing"></XbsjSwitch>
+          <label>{{lang.weizhi}}</label>
+          <div class="buttonGroup">
+            <button
+              class="attitudeEditCameraButton"
+              @click="model.creating =!model.creating"
+              :class="model.creating?'btncoloron':''"
+            >{{lang.creating}}</button>
+            <button
+              style="margin-left:20px;"
+              class="attitudeEditCameraButton"
+              @click="model.positionEditing =!model.positionEditing"
+              :class="model.positionEditing?'btncoloron':''"
+            >{{lang.positionEditing}}</button>
+            <button
+              style="margin-left:20px;"
+              class="attitudeEditCameraButton"
+              @click="flyto"
+            >{{lang.flyto}}</button>
+          </div>
         </div>
       </div>
       <!-- 当前位置 -->
       <div class="flatten">
-        <label>{{lang.weizhi}}</label>
+        <label></label>
         <div class="flatten-box">
           <XbsjLngLatHeight v-model="model.xbsjPosition"></XbsjLngLatHeight>
         </div>
       </div>
+
+      <div class="flatten-flex">
+        <!-- rotation -->
+        <div class="flatten">
+          <label>{{lang.cx}}</label>
+          <div class="buttonGroup">
+            <button
+              class="attitudeEditCameraButton"
+              @click="model.rotationEditing =!model.rotationEditing"
+              :class="model.rotationEditing?'btncoloron':''"
+            >{{lang.rotationEditing}}</button>
+            <button
+              @click="reset"
+              style="margin-left:20px;"
+              class="attitudeEditCameraButton"
+            >{{lang.reset}}</button>
+          </div>
+        </div>
+      </div>
       <div class="flatten">
-        <label>{{lang.currentRotation}}</label>
+        <label></label>
         <div class="flatten-box">
           <XbsjHeadingPitchRoll v-model="model.xbsjRotation"></XbsjHeadingPitchRoll>
         </div>
@@ -156,8 +180,11 @@ export default {
       }
     },
 
-    flyto(index) {
-      this._czmObj.polygons[index].flyTo();
+    flyto() {
+      this._czmObj.flyTo();
+    },
+    reset() {
+      this.model.xbsjRotation = [0, 0, 0];
     }
   },
   beforeDestroy() {
@@ -451,5 +478,14 @@ button {
 }
 button:focus {
   outline: none !important;
+}
+.attitudeEditCameraButton {
+  display: block;
+  float: left;
+  height: 25px;
+  margin-left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  color: #dddddd;
 }
 </style>

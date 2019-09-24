@@ -95,11 +95,7 @@
       </div>
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.model}}</span>
-        <!-- 模型 -->
-        <div class="xbsj-item-btnbox ml20" @click="createmodelbtn">
-          <div class="xbsj-item-btn modelbutton"></div>
-          <span class="xbsj-item-name">{{lang.createmodel}}</span>
-        </div>
+
         <div class="xbsj-item-btnbox" @click="createPlane">
           <div class="xbsj-item-btn planebutton"></div>
           <span class="xbsj-item-name">{{lang.plane}}</span>
@@ -115,6 +111,11 @@
         <div class="xbsj-item-btnbox" @click="createCar">
           <div class="xbsj-item-btn carbutton"></div>
           <span class="xbsj-item-name">{{lang.car}}</span>
+        </div>
+        <!-- 模型更多 -->
+        <div class="xbsj-item-btnbox ml20" @click="createmodelbtn">
+          <div class="xbsj-item-btn modelbutton"></div>
+          <span class="xbsj-item-name">{{lang.createmodel}}</span>
         </div>
         <!-- <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn more"></div>
