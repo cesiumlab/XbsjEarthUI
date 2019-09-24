@@ -140,74 +140,9 @@
           <label>{{lang.dashPattern}}</label>
           <div class="dottedstyle">
             <div
-              @click="changebtn(0)"
+              @click="changebtn(15)"
               class="Dottedline-default"
-              :class="dashPatternarr[0]===1?'Dottedline-active':''"
-            ></div>
-            <div
-              @click="changebtn(1)"
-              class="Dottedline-default"
-              :class="dashPatternarr[1]===1?'Dottedline-active':''"
-            ></div>
-            <div
-              @click="changebtn(2)"
-              class="Dottedline-default"
-              :class="dashPatternarr[2]===1?'Dottedline-active':''"
-            ></div>
-            <div
-              @click="changebtn(3)"
-              class="Dottedline-default"
-              :class="dashPatternarr[3]===1?'Dottedline-active':''"
-            ></div>
-            <div
-              @click="changebtn(4)"
-              class="Dottedline-default"
-              :class="dashPatternarr[4]===1?'Dottedline-active':''"
-            ></div>
-            <div
-              @click="changebtn(5)"
-              class="Dottedline-default"
-              :class="dashPatternarr[5]===1?'Dottedline-active':''"
-            ></div>
-            <div
-              @click="changebtn(6)"
-              class="Dottedline-default"
-              :class="dashPatternarr[6]===1?'Dottedline-active':''"
-            ></div>
-            <div
-              @click="changebtn(7)"
-              class="Dottedline-default"
-              :class="dashPatternarr[7]===1?'Dottedline-active':''"
-            ></div>
-            <div
-              @click="changebtn(8)"
-              class="Dottedline-default"
-              :class="dashPatternarr[8]===1?'Dottedline-active':''"
-            ></div>
-            <div
-              @click="changebtn(9)"
-              class="Dottedline-default"
-              :class="dashPatternarr[9]===1?'Dottedline-active':''"
-            ></div>
-            <div
-              @click="changebtn(10)"
-              class="Dottedline-default"
-              :class="dashPatternarr[10]===1?'Dottedline-active':''"
-            ></div>
-            <div
-              @click="changebtn(11)"
-              class="Dottedline-default"
-              :class="dashPatternarr[11]===1?'Dottedline-active':''"
-            ></div>
-            <div
-              @click="changebtn(12)"
-              class="Dottedline-default"
-              :class="dashPatternarr[12]===1?'Dottedline-active':''"
-            ></div>
-            <div
-              @click="changebtn(13)"
-              class="Dottedline-default"
-              :class="dashPatternarr[13]===1?'Dottedline-active':''"
+              :class="dashPatternarr[15]===1?'Dottedline-active':''"
             ></div>
             <div
               @click="changebtn(14)"
@@ -215,9 +150,74 @@
               :class="dashPatternarr[14]===1?'Dottedline-active':''"
             ></div>
             <div
-              @click="changebtn(15)"
+              @click="changebtn(13)"
               class="Dottedline-default"
-              :class="dashPatternarr[15]===1?'Dottedline-active':''"
+              :class="dashPatternarr[13]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(12)"
+              class="Dottedline-default"
+              :class="dashPatternarr[12]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(11)"
+              class="Dottedline-default"
+              :class="dashPatternarr[11]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(10)"
+              class="Dottedline-default"
+              :class="dashPatternarr[10]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(9)"
+              class="Dottedline-default"
+              :class="dashPatternarr[9]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(8)"
+              class="Dottedline-default"
+              :class="dashPatternarr[8]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(7)"
+              class="Dottedline-default"
+              :class="dashPatternarr[7]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(6)"
+              class="Dottedline-default"
+              :class="dashPatternarr[6]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(5)"
+              class="Dottedline-default"
+              :class="dashPatternarr[5]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(4)"
+              class="Dottedline-default"
+              :class="dashPatternarr[4]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(3)"
+              class="Dottedline-default"
+              :class="dashPatternarr[3]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(2)"
+              class="Dottedline-default"
+              :class="dashPatternarr[2]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(1)"
+              class="Dottedline-default"
+              :class="dashPatternarr[1]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(0)"
+              class="Dottedline-default"
+              :class="dashPatternarr[0]===1?'Dottedline-active':''"
             ></div>
           </div>
 
@@ -293,13 +293,13 @@ export default {
       materialName: "实线",
       dashPatternObj: {
         0: 3,
-        1: 12,
+        1: 3,
         2: 48,
         3: 51,
         4: 64,
         5: 124,
         6: 127,
-        7: 255
+        6: 255
       },
       colorMaterialBox: true,
       dashMaterialBox: false,
@@ -474,7 +474,17 @@ export default {
         )
       );
 
-      if (this._czmObj.dashPatternarrString !== undefined) {
+      Object.keys(this.materialTypeObj).forEach(e => {
+        if (e == this._czmObj.material.type) {
+          this.showMaterialSelect = true;
+          this.optionssureMaterial(this.materialTypeObj[e]);
+        }
+      });
+
+      if (
+        this._czmObj.dashPatternarrString !== undefined &&
+        this._czmObj.dashPatternarrString !== ""
+      ) {
         this.dashPatternarr = this._czmObj.dashPatternarrString.split("");
         this.dashPatternarr = this.dashPatternarr.map(i => {
           return parseInt(i);
@@ -485,6 +495,13 @@ export default {
         this.dashPatternarr = this.dashPatternarr.map(i => {
           return parseInt(i);
         });
+
+        if (this.dashPatternarr.length < 16) {
+          let count = 16 - this.dashPatternarr.length;
+          for (var i = 1; i <= count; i++) {
+            this.dashPatternarr.unshift(0);
+          }
+        }
       }
     }
   },
@@ -501,6 +518,20 @@ export default {
     }
   },
   watch: {
+    dashPattern() {
+      this.dashPatternarr = [];
+      this.dashPatternarr = this.dashPattern.toString(2).split("");
+      this.dashPatternarr = this.dashPatternarr.map(i => {
+        return parseInt(i);
+      });
+
+      if (this.dashPatternarr.length < 16) {
+        let count = 16 - this.dashPatternarr.length;
+        for (var i = 1; i <= count; i++) {
+          this.dashPatternarr.unshift(0);
+        }
+      }
+    },
     dashPatternarr: {
       handler(old, newval) {
         let str = newval.join("");
@@ -899,7 +930,7 @@ button:focus {
 .select-ul {
   width: 80%;
   padding-left: 8px;
-  margin-left: calc(10% + 23px);
+  margin-left: calc(5% + 23px);
   background: rgba(138, 138, 138, 1);
   z-index: 9999;
   position: relative;
