@@ -330,13 +330,13 @@ export default {
     },
     //打开扫描线-动画
     scanLineBtn() {
-      var Scaneline = new XE.Obj.Scaneline(this.$root.$earth);
-      Scaneline.name = "扫描线";
-      Scaneline.creating = true;
-      Scaneline.isCreating = true;
-      Scaneline.playing = true;
-      console.log(Scaneline);
-      this.$root.$earthUI.showPropertyWindow(Scaneline);
+      var Scanline = new XE.Obj.Scanline(this.$root.$earth);
+      Scanline.name = "扫描线";
+      Scanline.creating = true;
+      Scanline.isCreating = true;
+      Scanline.playing = true;
+      console.log(Scanline);
+      this.$root.$earthUI.showPropertyWindow(Scanline);
     },
     startMove(event) {
       //如果事件的目标不是本el 返回

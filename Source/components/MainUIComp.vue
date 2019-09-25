@@ -73,7 +73,7 @@ import GeoDoubleArrow from "./viztools/GeoDoubleArrow";
 import GeoSectorSearch from "./viztools/GeoSectorSearch";
 import GeoPolylineArrow from "./viztools/GeoPolylineArrow";
 import GeoTriFlag from "./viztools/GeoTriFlag";
-import ScanelineTool from "./viztools/ScanelineTool";
+import ScanlineTool from "./viztools/ScanlineTool";
 
 
 import CamerVideoTool from "./viztools/CamerVideoTool";
@@ -113,7 +113,7 @@ export default {
     GeoSectorSearch,
     GeoPolylineArrow,
     GeoTriFlag,
-    ScanelineTool,
+    ScanlineTool,
 
     CamerVideoTool,
     ViewshedTool,
@@ -146,7 +146,7 @@ export default {
         PinDivTool: "PinDivTool",
         PinPictureTool: "PinPictureTool",
         Path: "PathTool",
-        Scaneline:'ScanelineTool',
+        Scanline:'ScanlineTool',
         Model: "ModelTool",
         Polyline: "PolylineTool",
         GeoCurveArrow: "GeoCurveArrow",
