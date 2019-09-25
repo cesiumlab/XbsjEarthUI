@@ -99,9 +99,9 @@
                             ],
                         },
                     }, {
-                        "ref": 'scaline1',
+                        "ref": 'scanline1',
                         "czmObject": {
-                            "xbsjType": "Scaneline",
+                            "xbsjType": "Scanline",
                             "position": [
                                 2.1206081845999845,
                                 0.5450905025102283,
@@ -124,7 +124,7 @@
                 };
 
                 var tileset = earth.sceneTree.$refs.tileset.czmObject;
-                var scaline1 = earth.sceneTree.$refs.scaline1.czmObject;
+                var scanline1 = earth.sceneTree.$refs.scanline1.czmObject;
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
@@ -132,14 +132,14 @@
                 earth.camera.rotation = [6.283185307179578,-0.7863374047795091,1.0658141036401503e-14];
 
                 // 1.1.5 数据绑定
-                this._creatingUnbind = XE.MVVM.bind(this, 'creating', scaline1, 'creating');
-                this._editingUnbind = XE.MVVM.bind(this, 'editing', scaline1, 'editing');
+                this._creatingUnbind = XE.MVVM.bind(this, 'creating', scanline1, 'creating');
+                this._editingUnbind = XE.MVVM.bind(this, 'editing', scanline1, 'editing');
 
                 this._earth = earth;
 
                 // only for Debug
                 window.tileset = tileset;
-                window.scaline1 = scaline1;
+                window.scanline1 = scanline1;
                 window.earth = earth;
             },
             // 1.2 资源销毁
