@@ -74,6 +74,16 @@
                             <span>旋转角：{{rotation[1] | numFilter2}}°</span> 
                             <span>翻转角：{{rotation[2] | numFilter2}}°</span> 
                         </div>
+                        <div>
+                            <span>近裁：<input type="text" v-model.number="near"></span><br/>    
+                            <span>远裁：<input type="text" v-model.number="far"></span><br/>    
+                        </div>
+                        <div>
+                            水平广角<span><input type="range" min="1" max="179" step="1" v-model.number="fovH" /></span><br/>
+                        </div>
+                        <div>
+                            垂直广角<span><input type="range" min="1" max="179" step="1" v-model.number="fovV" /></span><br/>
+                        </div>
                         </div>
                 </div>
             `,
@@ -85,6 +95,22 @@
                     rotationEditing: true,
                     position: [0, 0, 0],
                     rotation: [0, 0, 0],
+                    near: 0,
+                    far: 0,
+                    fovH: 0,
+                    fovV: 0,
+                    // attribute: {
+                    //     fovH: 60,
+                    //     fovV: 30,
+                    // },
+                    // fovH: {
+                    //     prop: "attribute.fovH",
+                    //     handler: XE.MVVM.bindDegreeRadian
+                    // },
+                    // fovV: {
+                    //     prop: "attribute.fovV",
+                    //     handler: XE.MVVM.bindDegreeRadian
+                    // },
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                 };
             },
@@ -126,7 +152,7 @@
                                 6.283128281412125
                             ],
                             "near": 1,
-                            "far": 50
+                            "far": 200
                         },
                     }]
                 };
@@ -148,8 +174,14 @@
                     this._disposers.push(XE.MVVM.bind(this, 'rotationEditing', viewshed, 'rotationEditing'));
                     this._disposers.push(XE.MVVM.bind(this, 'position', viewshed, 'position'));
                     this._disposers.push(XE.MVVM.bind(this, 'rotation', viewshed, 'rotation'));
+                    this._disposers.push(XE.MVVM.bind(this, 'near', viewshed, 'near'));
+                    this._disposers.push(XE.MVVM.bind(this, 'far', viewshed, 'far'));
+                    this._disposers.push(XE.MVVM.bindDegreeRadian(this, 'fovH', viewshed, 'fovH'));
+                    this._disposers.push(XE.MVVM.bindDegreeRadian(this, 'fovV', viewshed, 'fovV'));
                     tileset1.flyTo();
                 }
+
+
 
                 this._earth = earth;
             },
@@ -171,6 +203,11 @@
                 this._earth = this._earth && this._earth.destroy();
                 this._disposers.forEach(d => d());
                 this._disposers.length = 0;
+            },
+            watch: {
+                fovH() {
+                    console.log(this.fovH)
+                }
             },
             methods: {
                 setPositionWithCurrentCamera() {
