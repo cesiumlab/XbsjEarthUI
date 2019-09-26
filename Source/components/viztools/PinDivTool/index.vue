@@ -4,7 +4,7 @@
     <Window
       :width="480"
       :minWidth="480"
-      :height="480"
+      :height="490"
       :title="lang.title"
       :floatright="true"
       @cancel="cancel"
@@ -68,6 +68,28 @@
             </div>
           </div>
         </div>
+        <div class="flatten">
+          <div style="position: relative;">
+            <label>{{lang.pathAnimation}}</label>
+            <input
+              type="text"
+              v-model="pin.attachedPathGuid"
+              @click="pinselectinput"
+              readonly
+              style="cursor: pointer;"
+            />
+            <button class="selectButton"></button>
+            <div
+              class="cutselectbox"
+              v-show="pinshowPinSelect"
+              style="overflow:scroll;height:100px;"
+            >
+              <div @click="pinoptionssure(c)" v-for="(c,index) in pathGuidarr" :key="index">
+                <span>{{c.name}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- pindiv部图标 -->
         <div class="flatten">
@@ -92,6 +114,7 @@ export default {
     return {
       lang: {},
       showPinSelect: false,
+      pinshowPinSelect: false,
       makiIconObj: {},
       divcontent: `<div
         style="height:50px;width:100px;left:-76px;
@@ -113,7 +136,8 @@ export default {
         show: true,
         position: [0, 0, 0],
         pinBuilder: {},
-        winPos: [0, 0]
+        winPos: [0, 0],
+        attachedPathGuid: ""
       },
       pinstyletype: true,
       bgbaseColorUI: {
@@ -137,7 +161,8 @@ export default {
       langs: languagejs,
       dighole: false,
       connections: [],
-      connectedTileset: ""
+      connectedTileset: "",
+      pathGuidarr: []
     };
   },
   created() {},
@@ -156,7 +181,8 @@ export default {
         show: "pin.show",
         position: "pin.position",
         enabled: "pin.enabled",
-        innerHTML: "divcontent"
+        innerHTML: "divcontent",
+        attachedPathGuid: "pin.attachedPathGuid"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -193,6 +219,27 @@ export default {
   },
   watch: {},
   methods: {
+    pinoptionssure(c) {
+      this.pin.attachedPathGuid = c.guid;
+      this.pinshowPinSelect = !this.pinshowPinSelect;
+    },
+    pinselectinput() {
+      this.pathGuidarr = [];
+      let guidobj = {};
+      this.$root.$earth.pathCollection.forEach(e => {
+        guidobj.name = e.name;
+        guidobj.guid = e.guid;
+        this.pathGuidarr.push(guidobj);
+      });
+      if (this.pathGuidarr.length < 1) {
+        this.$root.$earthUI.promptInfo(
+          "There is no path in the current scenario",
+          "warning"
+        );
+        return;
+      }
+      this.pinshowPinSelect = !this.pinshowPinSelect;
+    },
     optionssure(c) {
       this.pin.pinBuilder.makiIcon = c;
       this.showPinSelect = !this.showPinSelect;
@@ -558,7 +605,7 @@ button:focus {
   border: none;
   color: #dddddd;
   position: absolute;
-  height: calc(100% - 250px);
+  height: calc(100% - 280px);
 }
 .apply {
   width: 35px !important;

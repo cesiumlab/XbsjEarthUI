@@ -59,6 +59,7 @@ const en = {
   yxfx:'Direction',
   Tangentdirection:'Tangent'
 
+
 }
 
 export default { zh, en }

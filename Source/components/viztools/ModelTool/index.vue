@@ -193,8 +193,13 @@ export default {
       this.showPinSelect = !this.showPinSelect;
     },
     selectinput() {
-      console.log(this.$root.$earth.pathCollection);
-      this.pathGuidarr = this.$root.$earth.pathCollection;
+      this.pathGuidarr = [];
+      let guidobj = {};
+      this.$root.$earth.pathCollection.forEach(e => {
+        guidobj.name = e.name;
+        guidobj.guid = e.guid;
+        this.pathGuidarr.push(guidobj);
+      });
       if (this.pathGuidarr.length < 1) {
         this.$root.$earthUI.promptInfo(
           "There is no path in the current scenario",
