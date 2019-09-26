@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="322"
+    :height="540"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -77,6 +77,37 @@
           <XbsjHeadingPitchRoll v-model="model.xbsjRotation"></XbsjHeadingPitchRoll>
         </div>
       </div>
+      <div class="flatten">
+        <label>{{lang.enlargeScale}}</label>
+        <div class="flatten-box">
+          <input style="width:100px;" v-model.number="model.maximumScale" />
+        </div>
+      </div>
+      <div class="flatten">
+        <label>{{lang.minpx}}</label>
+        <!-- <input style="width:100px;" v-model="model.minimumPixelSize" /> -->
+        <div class="field">
+          <XbsjSlider :min="0" :max="256" :step="1" v-model.number="model.minimumPixelSize"></XbsjSlider>
+        </div>
+      </div>
+      <div class="flatten">
+        <div style="position: relative;">
+          <label>{{lang.pathAnimation}}</label>
+          <input
+            type="text"
+            v-model="model.attachedPathGuid"
+            @click="selectinput"
+            readonly
+            style="cursor: pointer;"
+          />
+          <button class="selectButton"></button>
+          <div class="cutselectbox" v-show="showPinSelect" style="overflow:scroll;height:100px;">
+            <div @click="optionssure(c)" v-for="(c,index) in pathGuidarr" :key="index">
+              <span>{{c.name}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </Window>
 </template>
@@ -93,7 +124,7 @@ export default {
     return {
       lang: {},
       showPinSelect: false,
-      makiIconObj: {},
+      pathGuidarr: [],
       model: {
         name: "",
         show: true,
@@ -102,7 +133,10 @@ export default {
         positionEditing: false,
         rotationEditing: false,
         xbsjPosition: [0, 0, 0],
-        xbsjRotation: [0, 0, 0]
+        xbsjRotation: [0, 0, 0],
+        maximumScale: 0,
+        minimumPixelSize: 0,
+        attachedPathGuid: ""
       },
       pinstyletype: true,
       langs: languagejs
@@ -125,7 +159,10 @@ export default {
         positionEditing: "model.positionEditing",
         rotationEditing: "model.rotationEditing",
         xbsjRotation: "model.xbsjRotation",
-        xbsjPosition: "model.xbsjPosition"
+        xbsjPosition: "model.xbsjPosition",
+        maximumScale: "model.maximumScale",
+        minimumPixelSize: "model.minimumPixelSize",
+        attachedPathGuid: "model.attachedPathGuid"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -151,6 +188,22 @@ export default {
   },
   watch: {},
   methods: {
+    optionssure(c) {
+      this.model.attachedPathGuid = c.guid;
+      this.showPinSelect = !this.showPinSelect;
+    },
+    selectinput() {
+      console.log(this.$root.$earth.pathCollection);
+      this.pathGuidarr = this.$root.$earth.pathCollection;
+      if (this.pathGuidarr.length < 1) {
+        this.$root.$earthUI.promptInfo(
+          "There is no path in the current scenario",
+          "warning"
+        );
+        return;
+      }
+      this.showPinSelect = !this.showPinSelect;
+    },
     close() {
       this.$parent.destroyTool(this);
     },
@@ -408,7 +461,7 @@ button:focus {
   width: calc(100% - 102px);
   background: rgba(138, 138, 138, 1);
   position: absolute;
-  left: 78px;
+  left: 85px;
   border-radius: 0px 0px 4px 4px;
   overflow: auto;
   z-index: 999;
