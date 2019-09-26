@@ -199,7 +199,7 @@ export default {
     //双箭头
     DoubleArrow() {
       var DoubleArrow = new XE.Obj.Plots.GeoDoubleArrow(this.$root.$earth);
-      console.log(DoubleArrow);
+      // console.log(DoubleArrow);
       DoubleArrow.creating = true;
       DoubleArrow.isCreating = true;
       DoubleArrow.name = "双箭头";
@@ -208,7 +208,7 @@ export default {
     //三角旗帜
     TriFlag() {
       var TriFlag = new XE.Obj.Plots.GeoTriFlag(this.$root.$earth);
-      console.log(TriFlag);
+      // console.log(TriFlag);
       TriFlag.creating = true;
       TriFlag.isCreating = true;
       TriFlag.name = "三角旗帜";
@@ -217,7 +217,7 @@ export default {
     //打开扇形搜索
     SectorSearch() {
       var SectorSearch = new XE.Obj.Plots.GeoSectorSearch(this.$root.$earth);
-      console.log(SectorSearch);
+      // console.log(SectorSearch);
       SectorSearch.creating = true;
       SectorSearch.isCreating = true;
       SectorSearch.name = "扇形搜索";
@@ -226,7 +226,7 @@ export default {
     // 打开折线箭头弹窗
     PolylineArrow() {
       var PolylineArrow = new XE.Obj.Plots.GeoPolylineArrow(this.$root.$earth);
-      console.log(PolylineArrow);
+      // console.log(PolylineArrow);
       PolylineArrow.creating = true;
       PolylineArrow.isCreating = true;
       PolylineArrow.name = "折线箭头";
@@ -235,7 +235,7 @@ export default {
     //打开曲线箭头弹窗
     curvedarrowbtn() {
       var GeoCurveArrow = new XE.Obj.Plots.GeoCurveArrow(this.$root.$earth);
-      console.log(GeoCurveArrow);
+      // console.log(GeoCurveArrow);
       GeoCurveArrow.creating = true;
       GeoCurveArrow.isCreating = true;
       GeoCurveArrow.name = "曲线箭头";
@@ -298,7 +298,7 @@ export default {
       Pin.positionPicking = true;
       Pin.isCreating = true;
       Pin.creating = true;
-      console.log(Pin);
+      // console.log(Pin);
       this.$root.$earthUI.showPropertyWindow(Pin);
     },
     pindivbtn() {
@@ -335,7 +335,7 @@ export default {
       Scanline.creating = true;
       Scanline.isCreating = true;
       Scanline.playing = true;
-      console.log(Scanline);
+      // console.log(Scanline);
       this.$root.$earthUI.showPropertyWindow(Scanline);
     },
     startMove(event) {

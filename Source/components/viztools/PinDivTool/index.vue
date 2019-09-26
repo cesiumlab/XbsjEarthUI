@@ -221,6 +221,7 @@ export default {
   methods: {
     pinoptionssure(c) {
       this.pin.attachedPathGuid = c.guid;
+      // console.log(this._czmObj)
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
     pinselectinput() {

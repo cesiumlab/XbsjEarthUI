@@ -157,7 +157,7 @@ export default {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
-    console.log(czmObj);
+    // console.log(czmObj);
 
     if (czmObj) {
       this._czmObj = czmObj;

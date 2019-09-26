@@ -182,7 +182,7 @@ export default {
 
     if (czmObj) {
       this._czmObj = czmObj;
-      console.log(this._czmObj);
+      // console.log(this._czmObj);
       const bindData = {
         currentPosition: "path.currentPosition",
         currentRotation: "path.currentRotation",

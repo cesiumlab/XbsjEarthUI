@@ -263,7 +263,7 @@ export default {
 
       //默认是统一类型的属性窗口
       var component;
-      console.log(czmObject.ctrtype);
+      // console.log(czmObject.ctrtype);
       //如果有外部配置
       if (
         options &&

@@ -300,8 +300,6 @@ export default {
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
     optionssure(c) {
-      console.log(c);
-      console.log(typeof c);
       this.pin.pinBuilder.makiIcon = c;
       this.showPinSelect = !this.showPinSelect;
     },
