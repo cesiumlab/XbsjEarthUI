@@ -195,12 +195,13 @@ export default {
     selectinput() {
       this.pathGuidarr = [];
       let guidobj = {};
+      this.pathGuidarr.push({ name: "空", guid: "" });
       this.$root.$earth.pathCollection.forEach(e => {
         guidobj.name = e.name;
         guidobj.guid = e.guid;
         this.pathGuidarr.push(guidobj);
       });
-      if (this.pathGuidarr.length < 1) {
+      if (this.pathGuidarr.length < 2) {
         this.$root.$earthUI.promptInfo(
           "There is no path in the current scenario",
           "warning"

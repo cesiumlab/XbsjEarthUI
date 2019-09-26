@@ -307,7 +307,6 @@ export default {
       // pathToolObj.twoPostionsEditing = false;
       if (pathToolObj.isCreating) {
         pathToolObj.isCreating = false;
-
         const sceneObject = new XE.SceneTree.Leaf(pathToolObj);
         this.$root.$earth.sceneTree.addSceneObject(sceneObject);
       }
