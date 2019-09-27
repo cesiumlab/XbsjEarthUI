@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { getCodeUrl, getCode } from "./code";
+import { getCodeUrl, getCode, getCzmCode } from "./code";
 
 function destroyVueNode(ivuNode, parent) {
   if (ivuNode._inner.disposer) {
@@ -158,6 +158,7 @@ export default {
           newFolder: "新建文件夹",
           title: "图层管理",
           viewSource: "查看加载代码",
+          viewCzmSource: "查看Cesium加载代码",
           config: "控制台打印JSON配置",
           cameraAttached: "相机绑定"
         },
@@ -176,6 +177,7 @@ export default {
           newFolder: "new folder",
           title: "Layer Manager",
           viewSource: "View Source",
+          viewCzmSource: "View Cesium's Source",
           config: "Console Print JSON Config",
           cameraAttached: "cameraAttached"
         }
@@ -410,6 +412,16 @@ export default {
                   if (item._inner.sn.czmObject.positionEditing) {
                     item._inner.sn.czmObject.xbsjUseOriginTransform = false;
                   }
+                }
+              },
+              {
+                text: this.lang.viewCzmSource,
+                func: () => {
+                  // 查看Cesium加载代码
+                  const tilesetCzmObject = item._inner.sn.czmObject;
+                  const code = getCzmCode(tilesetCzmObject);
+                  const url = getCodeUrl(code);
+                  this.$root.$earthUI.openURL(url);                  
                 }
               }
             ]
