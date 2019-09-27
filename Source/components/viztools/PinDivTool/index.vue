@@ -121,7 +121,7 @@ export default {
         bottom:0px;position: absolute;color: white;
         background-size: 100% 100%;padding: 5px;
         border-radius: 5px;cursor:pointer;
-        background-image:url('../../Examples/images/dialog.png');">
+        background-image:url('./assets/dialog.png');">
   标记文字
   </div>`,
       pin: {

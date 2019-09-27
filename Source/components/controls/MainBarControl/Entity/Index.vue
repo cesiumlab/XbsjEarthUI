@@ -182,15 +182,7 @@ export default {
       selectlist: false,
       lang: {},
       langs: languagejs,
-      PlottingShow: false,
-      divcontent: `<div
-        style="height:50px;width:100px;left:-76px;
-        bottom:0px;position: absolute;color: white;
-        background-size: 100% 100%;padding: 5px;
-        border-radius: 5px;cursor:pointer;
-        background-image:url('../../Examples/images/dialog.png');">
-  标记文字
-  </div>`
+      PlottingShow: false
     };
   },
   created() {},
@@ -249,7 +241,7 @@ export default {
     //创建树模型
     createTree() {
       var Model = new XE.Obj.Model(this.$root.$earth);
-      Model.url = "../../../../../Apps/assets/shu.glb";
+      Model.url = "./assets/shu.glb";
       Model.creating = true;
       Model.isCreating = true;
       Model.name = "树";
@@ -258,7 +250,7 @@ export default {
     // 创建汽车模型
     createCar() {
       var Model = new XE.Obj.Model(this.$root.$earth);
-      Model.url = "../../../../../Apps/assets/gongjiao.glb";
+      Model.url = "./assets/gongjiao.glb";
       Model.creating = true;
       Model.isCreating = true;
       Model.name = "汽车";
@@ -267,7 +259,7 @@ export default {
     // 创建飞机模型
     createPlane() {
       var Model = new XE.Obj.Model(this.$root.$earth);
-      Model.url = "../../../../../Apps/assets/feiji.glb";
+      Model.url = "./assets/feiji.glb";
       Model.creating = true;
       Model.isCreating = true;
       Model.name = "飞机";
