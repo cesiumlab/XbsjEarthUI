@@ -52,7 +52,7 @@
       <div class="flatten">
         <label>{{lang.radius}}</label>
         <div class="flatten-box">
-          <input style="float:left;" type="text" v-model="model.radius" />
+          <input style="float:left;" type="text" v-model.number="model.radius" />
         </div>
       </div>
 
