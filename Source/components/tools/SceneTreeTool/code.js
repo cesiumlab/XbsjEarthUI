@@ -38,7 +38,7 @@ function getCode(jsonObject) {
         <meta name="xbsj-labels" content="Earth起步"></meta>
         <title>EarthSDK场景加载</title>
         <!-- 0 引入js文件 -->
-        <script src="../../XbsjEarth/XbsjEarth.js"></script>
+        <script src="https://earthsdk.com/v/last/XbsjEarth/XbsjEarth.js"></script>
         <style>            
             html,body { width: 100%; height: 100%; margin: 0px; padding: 0px;}
         </style>
@@ -48,12 +48,12 @@ function getCode(jsonObject) {
         <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
         </div>
         <script>
-            var earth;
-            var bgImagery;
-    
             function startup() {
-                earth = new XE.Earth('earthContainer');
+                var earth = new XE.Earth('earthContainer');
                 earth.xbsjFromJSON(${jsonStr});
+
+                // 仅为测试
+                window.earth = earth;          
             }
     
             // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
@@ -73,12 +73,15 @@ function getCzmCode(tilesetCzmObj) {
     const lss = ls.replace(/\n/g, '\n                    ');
 
     var loadTilesetString = `
-
                 // earth加载代码
                 /*
                 earth.sceneTree.root.children.push({
 					czmObject: ${lss}
                 });
+
+                // 指定相机位置
+                earth.camera.position = [${earth.camera.position}];
+                earth.camera.rotation = [${earth.camera.rotation}];                
                 */
                 
                 // cesium加载代码
@@ -87,10 +90,7 @@ function getCzmCode(tilesetCzmObj) {
                     url: '${tilesetCzmObj.url}',
                     modelMatrix: Cesium.Matrix4.fromArray([${Cesium.Matrix4.toArray(tilesetCzmObj._tileset.modelMatrix)}]),
                 }));
-
-                // 指定相机位置
-                earth.camera.position = [${earth.camera.position}];
-                earth.camera.rotation = [${earth.camera.rotation}];
+                viewer.flyTo(tileset);
     `;
 
     const code = `<!DOCTYPE html>
@@ -103,7 +103,7 @@ function getCzmCode(tilesetCzmObj) {
         <meta name="xbsj-labels" content="Earth起步"></meta>
         <title>EarthSDK场景加载</title>
         <!-- 0 引入js文件 -->
-        <script src="../../XbsjEarth/XbsjEarth.js"></script>
+        <script src="//earthsdk.com/v/last/XbsjEarth/XbsjEarth.js"></script>
         <style>            
             html,body { width: 100%; height: 100%; margin: 0px; padding: 0px;}
         </style>
@@ -112,12 +112,9 @@ function getCzmCode(tilesetCzmObj) {
     <body>
         <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
         </div>
-        <script>
-            var earth;
-            var bgImagery;
-    
+        <script>    
             function startup() {
-                earth = new XE.Earth('earthContainer');
+                var earth = new XE.Earth('earthContainer');
     
                 earth.sceneTree.root = {
                     "children": [
@@ -138,6 +135,11 @@ function getCzmCode(tilesetCzmObj) {
                 };
 
 ${loadTilesetString}
+
+                // 仅为测试
+                window.earth = earth;
+                window.viewer = viewer;
+                window.tileset = tileset;
             }
     
             // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
