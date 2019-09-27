@@ -61,7 +61,7 @@ export default {
 
   mounted() {
     this.movetreeitem(this.item);
-    console.log(this.item)
+    // console.log(this.item)
   },
   data() {
     return {

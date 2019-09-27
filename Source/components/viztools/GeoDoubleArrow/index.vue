@@ -152,8 +152,8 @@ export default {
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
-        console.log(vm);
-        console.log(sm);
+        // console.log(vm);
+        // console.log(sm);
 
         if (typeof vm === "string") {
           this._disposers.push(XE.MVVM.bind(this, vm, czmObj, sm));

@@ -66,7 +66,7 @@ function createVueNode(xbsjSceneNode) {
   if (xbsjSceneNode.czmObject) {
     //判断是否有type属性，用于展示树状结构图标
     ivuNode.type = xbsjSceneNode.czmObject.xbsjType;
-    console.log(xbsjSceneNode.czmObject.cameraAttached);
+    // console.log(xbsjSceneNode.czmObject.cameraAttached);
     //添加attachedPathGuid判断，用于显示pin和model是否绑定了path的guid
     if (xbsjSceneNode.czmObject.cameraAttached !== undefined) {
       ivuNode.cameraAttached = xbsjSceneNode.czmObject.cameraAttached;
@@ -308,9 +308,7 @@ export default {
           keys: "",
           border: true,
           func: () => {
-            console.log(item._inner.sn);
             const jsonStr = item._inner.sn.toJSONStr();
-            console.log(jsonStr);
           }
         }
       ];
@@ -374,8 +372,6 @@ export default {
             }
           ]
         );
-
-        console.log(item._inner.sn);
         //如果有cameraAttached属性，就添加一个相机绑定菜单
         if (item._inner.sn.czmObject.cameraAttached !== undefined) {
           baseItems.push({
