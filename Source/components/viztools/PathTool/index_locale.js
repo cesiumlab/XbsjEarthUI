@@ -26,7 +26,8 @@ const zh = {
   animation:'动画',
   Observation:'观察点',
   yxfx:'延线方向',
-  Tangentdirection:'切线方向'
+  Tangentdirection:'切线方向',
+  nowtime:'播放进度'
 }
 
 const en = {
@@ -57,9 +58,8 @@ const en = {
   animation:'Animation',
   Observation:'Observation',
   yxfx:'Direction',
-  Tangentdirection:'Tangent'
-
-
+  Tangentdirection:'Tangent',
+  nowtime:'playProgress'
 }
 
 export default { zh, en }

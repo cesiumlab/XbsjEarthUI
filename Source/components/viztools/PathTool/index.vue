@@ -2,7 +2,7 @@
   <Window
     :width="622"
     :minWidth="622"
-    :height="375"
+    :height="415"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -99,6 +99,19 @@
           <input style="width:62px" v-model="path.currentSpeed" type="text" /> m/s
         </div>
       </div>
+      <!-- 播放进度 -->
+      <div class="flatten">
+        <label>{{lang.nowtime}}</label>
+        <div class="field">
+          <XbsjSlider
+            :min="0"
+            :max="path.length"
+            :step="1"
+            v-model="path.currentD"
+            ref="glowFactor"
+          ></XbsjSlider>
+        </div>
+      </div>
       <div class="flatten-flex">
         <!-- 当前状态 -->
         <div class="flatten">
@@ -164,7 +177,8 @@ export default {
         slices: 100,
         targetPicking: false,
         currentPosition: [0, 0, 0],
-        currentRotation: [0, 0, 0]
+        currentRotation: [0, 0, 0],
+        length:0
       },
       pinstyletype: true,
 
@@ -208,7 +222,8 @@ export default {
         showHelper: "path.showHelper",
         slices: "path.slices",
         targetPicking: "path.targetPicking",
-        cameraAttached: "path.cameraAttached"
+        cameraAttached: "path.cameraAttached",
+        length: "path.length"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
