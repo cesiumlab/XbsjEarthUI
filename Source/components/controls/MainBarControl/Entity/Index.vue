@@ -296,7 +296,7 @@ export default {
     pindivbtn() {
       var PinDivTool = new XE.Obj.Plots.GeoPin(this.$root.$earth);
       PinDivTool.ctrtype = "PinDivTool";
-      PinDivTool.name = "自定义图标";
+      PinDivTool.name = "div图标";
       PinDivTool.isCreating = true;
       PinDivTool.creating = true;
       PinDivTool._pin.show = false;

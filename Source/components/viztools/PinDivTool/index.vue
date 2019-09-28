@@ -116,14 +116,7 @@ export default {
       showPinSelect: false,
       pinshowPinSelect: false,
       makiIconObj: {},
-      divcontent: `<div
-        style="height:50px;width:100px;left:-76px;
-        bottom:0px;position: absolute;color: white;
-        background-size: 100% 100%;padding: 5px;
-        border-radius: 5px;cursor:pointer;
-        background-image:url('./assets/dialog.png');">
-  标记文字
-  </div>`,
+      divcontent: ``,
       pin: {
         name: "",
         creating: true,
@@ -194,6 +187,19 @@ export default {
       });
 
       this._czmObj.far = 1073741824;
+      this._czmObj.innerHTML =
+        `<div
+        style="height:50px;width:100px;left:-76px;
+        bottom:0px;position: absolute;color: white;
+        background-size: 100% 100%;padding: 5px;
+        border-radius: 5px;cursor:pointer;
+        background-image:url('` +
+        this._czmObj.defaultImgUrl() +
+        `');">
+    标记文字
+    </div>`;
+
+    console.log(this._czmObj.defaultImgUrl())
     }
   },
   beforeDestroy() {
