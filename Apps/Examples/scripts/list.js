@@ -251,6 +251,10 @@ vueApp.examples = [
                 "url": "./earth-scaneline-play.html"
             },
             {
+                "title": "扫描线-点击显示",
+                "url": "./earth-scaneline-show.html"
+            },
+            {
                 "title": "地下模式和地表透明",
                 "url": "./earth-subsurface.html"
             },
