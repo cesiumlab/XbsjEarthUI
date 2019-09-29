@@ -1,8 +1,8 @@
 const zh = {
   title:'图标属性',
   name:'名称',
-  creating:'创建',
-  editing:'编辑',
+  creating:'鼠标点选',
+  editing:'修改位置',
   nearfar:'近远裁',
   far:'Far',
   near:'Near',
@@ -24,7 +24,8 @@ const zh = {
     pinstyle:'图标'
   },
   weizhi:"位置",
-  eidtbtn:"编辑按钮"
+  eidtbtn:"编辑按钮",
+  pathAnimation:'路径动画'
 }
 
 const en = {
@@ -52,7 +53,8 @@ const en = {
     pinstyle:'Pinstyle'
   },
   weizhi:"weizhi",
-  eidtbtn:"eidt btn"
+  eidtbtn:"eidt btn",
+  pathAnimation:'pathAnimation'
 }
 
 export default { zh, en }

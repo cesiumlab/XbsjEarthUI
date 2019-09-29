@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { getCodeUrl, getCode } from './code';
+import { getCodeUrl, getCode, getCzmCode } from "./code";
 
 function destroyVueNode(ivuNode, parent) {
   if (ivuNode._inner.disposer) {
@@ -62,12 +62,18 @@ function createVueNode(xbsjSceneNode) {
   ivuNode.title = xbsjSceneNode.title; // 是否有必要？
   ivuNode.isSelected = xbsjSceneNode.isSelected;
   ivuNode.checkStatus = xbsjSceneNode.checkStatus;
-  if(xbsjSceneNode.czmObject){ //判断是否有type属性，用于展示树状结构图标
-      ivuNode.type = xbsjSceneNode.czmObject.xbsjType;
-  }else{
-      ivuNode.type = 'ios-folder'
-  }
 
+  if (xbsjSceneNode.czmObject) {
+    //判断是否有type属性，用于展示树状结构图标
+    ivuNode.type = xbsjSceneNode.czmObject.xbsjType;
+    // console.log(xbsjSceneNode.czmObject.cameraAttached);
+    //添加attachedPathGuid判断，用于显示pin和model是否绑定了path的guid
+    if (xbsjSceneNode.czmObject.cameraAttached !== undefined) {
+      ivuNode.cameraAttached = xbsjSceneNode.czmObject.cameraAttached;
+    }
+  } else {
+    ivuNode.type = "ios-folder";
+  }
 
   if (xbsjSceneNode instanceof XE.SceneTree.Group) {
     ivuNode.expand = xbsjSceneNode.expand;
@@ -90,6 +96,11 @@ function createVueNode(xbsjSceneNode) {
     ivuNode.isSelected = xbsjSceneNode.isSelected;
     ivuNode.expand = !!xbsjSceneNode.expand;
     ivuNode.checkStatus = xbsjSceneNode.checkStatus;
+    if (xbsjSceneNode.czmObject) {
+      if (xbsjSceneNode.czmObject.cameraAttached !== undefined) {
+        ivuNode.cameraAttached = xbsjSceneNode.czmObject.cameraAttached;
+      }
+    }
   });
   ivuNode._inner.disposer.basicPropDisposer = basicPropDisposer;
 
@@ -130,49 +141,51 @@ export default {
     return {
       show: true,
       tree: [],
-      canmove: true,   
+      canmove: true,
       langs: {
         zh: {
           confirm: "确认删除图层?",
           delete: "删除",
           cut: "剪切",
-          clone: '克隆',
+          clone: "克隆",
           paste: "粘贴",
           rename: "重命名",
           locate: "定位",
           property: "属性",
           addFolder: "添加文件夹",
           style: "样式",
-          moving: "拖拽移动", 
+          moving: "拖拽移动",
           newFolder: "新建文件夹",
           title: "图层管理",
-          viewSource:"查看加载代码",
-          config: "控制台打印JSON配置"
+          viewSource: "查看加载代码",
+          viewCzmSource: "查看Cesium加载代码",
+          config: "控制台打印JSON配置",
+          cameraAttached: "相机绑定"
         },
         en: {
           confirm: "confirm to delete the layer?",
           delete: "delete",
           cut: "cut",
-          clone: 'clone',
+          clone: "clone",
           paste: "paste",
           rename: "rename",
           locate: "locate",
           property: "property",
           addFolder: "add folder",
           style: "style",
-          moving: "drag", 
+          moving: "drag",
           newFolder: "new folder",
           title: "Layer Manager",
-          viewSource:"View Source",
-          config: "Console Print JSON Config"
+          viewSource: "View Source",
+          viewCzmSource: "View Cesium's Source",
+          config: "Console Print JSON Config",
+          cameraAttached: "cameraAttached"
         }
       },
       lang: undefined
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
     this.setSceneTree(this.$root.$earth.sceneTree);
   },
@@ -204,7 +217,7 @@ export default {
     rotationClick() {
       this.rotationShow = !this.rotationShow;
     },
-    
+
     setSceneTree(sceneTree) {
       if (this._vueTree) {
         destroyVueNode(this._vueTree, undefined);
@@ -237,15 +250,15 @@ export default {
         },
         {
           text: this.lang.clone,
-          keys: '',
+          keys: "",
           func: () => {
             const sn = item._inner.sn;
             if (sn) {
               const index = sn.parent.children.indexOf(sn) + 1;
               sn.cloneTo(sn.parent, index);
             }
-          },
-        },      
+          }
+        },
         {
           text: this.lang.delete,
           keys: "",
@@ -267,7 +280,8 @@ export default {
           func: () => {
             vueObject.titleEditable = true;
           }
-        }, {
+        },
+        {
           text: this.lang.viewSource,
           keys: "",
           border: true,
@@ -279,25 +293,24 @@ export default {
             const finalJsonObject = {
               sceneTree: {
                 root: {
-                  children: [jsonObject],
+                  children: [jsonObject]
                 }
               },
               cameraViewManager: {
-                lastView: lastView.toJSON(),
-              },
+                lastView: lastView.toJSON()
+              }
             };
             const code = getCode(finalJsonObject);
-            const url = getCodeUrl(code); 
+            const url = getCodeUrl(code);
             this.$root.$earthUI.openURL(url);
           }
-        }, {
+        },
+        {
           text: this.lang.config,
-          keys: '',
+          keys: "",
           border: true,
           func: () => {
-            console.log(item._inner.sn);
-              const jsonStr = item._inner.sn.toJSONStr();
-              console.log(jsonStr);
+            const jsonStr = item._inner.sn.toJSONStr();
           }
         }
       ];
@@ -361,6 +374,16 @@ export default {
             }
           ]
         );
+        //如果有cameraAttached属性，就添加一个相机绑定菜单
+        if (item._inner.sn.czmObject.cameraAttached !== undefined) {
+          baseItems.push({
+            text: this.lang.cameraAttached,
+            func: () => {
+              item._inner.sn.czmObject.cameraAttached = !item._inner.sn
+                .czmObject.cameraAttached;
+            }
+          });
+        }
 
         //如果是tileset 那么增加几个属性   样式，移动，分层着色
         if (item._inner.sn.czmObject.xbsjType == "Tileset") {
@@ -384,13 +407,23 @@ export default {
                 text: this.lang.moving,
                 func: () => {
                   //显示移动编辑面板
-                  item._inner.sn.czmObject.positionEditing = !item._inner
-                    .sn.czmObject.positionEditing;
+                  item._inner.sn.czmObject.positionEditing = !item._inner.sn
+                    .czmObject.positionEditing;
                   if (item._inner.sn.czmObject.positionEditing) {
                     item._inner.sn.czmObject.xbsjUseOriginTransform = false;
                   }
                 }
-              }  
+              },
+              {
+                text: this.lang.viewCzmSource,
+                func: () => {
+                  // 查看Cesium加载代码
+                  const tilesetCzmObject = item._inner.sn.czmObject;
+                  const code = getCzmCode(tilesetCzmObject);
+                  const url = getCodeUrl(code);
+                  this.$root.$earthUI.openURL(url);                  
+                }
+              }
             ]
           );
         }

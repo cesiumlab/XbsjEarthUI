@@ -159,6 +159,10 @@ vueApp.examples = [
                 "url": "./earth-path-fly.html"
             },
             {
+                "title": "路径-鹰眼图",
+                "url": "./earth-path-mapx.html"
+            },
+            {
                 "title": "路径-车辆运动",
                 "url": "./earth-path-model.html"
             },
@@ -181,6 +185,10 @@ vueApp.examples = [
             {
                 "title": "Pin-div",
                 "url": "./earth-pin-div.html"
+            },
+            {
+                "title": "Pin-gif",
+                "url": "./earth-pin-gif.html"
             },
             {
                 "title": "Pin-编辑",
@@ -241,6 +249,10 @@ vueApp.examples = [
             {
                 "title": "扫描线-播放",
                 "url": "./earth-scaneline-play.html"
+            },
+            {
+                "title": "扫描线-点击显示",
+                "url": "./earth-scaneline-show.html"
             },
             {
                 "title": "地下模式和地表透明",

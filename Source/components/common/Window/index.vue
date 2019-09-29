@@ -80,6 +80,7 @@ export default {
       default: 100
     },
     footervisible: false,
+    floatright: true,
     windowID: {
       type: String,
       default: ""
@@ -87,14 +88,14 @@ export default {
   },
   data() {
     return {
-      langs:{
-        zh:{
-          ok:'确定',
-          cancel:'取消'
+      langs: {
+        zh: {
+          ok: "确定",
+          cancel: "取消"
         },
-        en:{
-          ok:'OK',
-          cancel:'Cancel'
+        en: {
+          ok: "OK",
+          cancel: "Cancel"
         }
       },
       collapsed: false,
@@ -106,27 +107,34 @@ export default {
     };
   },
   created() {
+    // console.log(earth.czm.viewer.container)
+    let earthUIWidth = this.$root.$earthUI._mainUI.clientWidth;
     this._width = this.width;
     this._height = this.height;
-    this._left = this.left;
+    if (this.floatright) {
+      this._left = earthUIWidth - this.width;
+    } else {
+      this._left = this.left;
+    }
+
     this._top = this.top;
 
     this.updateStyle();
   },
- computed:{
-   compCancelText:function(){
-     if(this.canceltext ==''){
-       return this.lang.cancel;
-     }
-     return this.canceltext;
-   },
-   compOkText:function(){
-     if(this.confirmtext ==''){
-       return this.lang.ok;
-     }
-     return this.confirmtext;
-   },
- },
+  computed: {
+    compCancelText: function() {
+      if (this.canceltext == "") {
+        return this.lang.cancel;
+      }
+      return this.canceltext;
+    },
+    compOkText: function() {
+      if (this.confirmtext == "") {
+        return this.lang.ok;
+      }
+      return this.confirmtext;
+    }
+  },
   mounted() {},
   methods: {
     contextMenu() {

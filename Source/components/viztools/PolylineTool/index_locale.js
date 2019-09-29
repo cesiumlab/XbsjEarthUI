@@ -1,5 +1,5 @@
 const zh = {
-  title: "Polyline属性",
+  title: "折线属性",
   name: "名称",
   eidtbtn: "编辑按钮",
   creating: "创建",
@@ -13,17 +13,17 @@ const zh = {
   polylinearctype: "插值方式",
   materialbtn: "材质类型",
   colorMaterial: "color",
-  color: "折线颜色",
+  color: "颜色",
   dashMaterial: "dash",
   dashcolor: "颜色",
   gapColor: "间隔颜色",
-  dashLength: "点划线长度",
-  dashPattern: "点划线样式",
+  dashLength: "虚线长度",
+  dashPattern: "虚线样式",
   arrowMaterial: "arrow",
   arrowcolor: "颜色",
   oDLineMaterial: "ODLine",
   odLinecolor: "颜色",
-  totoalFrameCount: "totoalFrameCount",
+  totoalFrameCount: "循环周期",
   weizhi: "位置"
 };
 

@@ -140,7 +140,7 @@ export default {
 
     if (czmObj) {
       this._czmObj = czmObj;
-      console.log(this._camObj)
+      // console.log(this._camObj)
       const bindData = {
         name: "attribute.name",
         position: "attribute.position",

@@ -37,6 +37,10 @@
             background-color: #FFF;
             color: #555;
             cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .defultbtn:hover {
@@ -66,8 +70,8 @@
                         <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:200px; font-size:24px; font-family: 宋体;">
                             <div class="defultbtn" :class="{'btnon':creating}" @click="creating = !creating">创建</div>
                             <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':editing}"  @click="editing = !editing">编辑</div>
-                            <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':raise}"  @click.stop=clickraise>抬高</div>
-                            <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':reduce}"  @click.stop=clickreduce>降低</div>
+                            <div class="defultbtn" style="margin-left:20px;" @click.stop=clickraise>抬高</div>
+                            <div class="defultbtn" style="margin-left:20px;" @click.stop=clickreduce>降低</div>
                         </div>
                 </div>
             `,

@@ -73,6 +73,8 @@ import GeoDoubleArrow from "./viztools/GeoDoubleArrow";
 import GeoSectorSearch from "./viztools/GeoSectorSearch";
 import GeoPolylineArrow from "./viztools/GeoPolylineArrow";
 import GeoTriFlag from "./viztools/GeoTriFlag";
+import ScanlineTool from "./viztools/ScanlineTool";
+
 
 import CamerVideoTool from "./viztools/CamerVideoTool";
 import ViewshedTool from "./viztools/ViewshedTool";
@@ -111,6 +113,7 @@ export default {
     GeoSectorSearch,
     GeoPolylineArrow,
     GeoTriFlag,
+    ScanlineTool,
 
     CamerVideoTool,
     ViewshedTool,
@@ -143,6 +146,7 @@ export default {
         PinDivTool: "PinDivTool",
         PinPictureTool: "PinPictureTool",
         Path: "PathTool",
+        Scanline:'ScanlineTool',
         Model: "ModelTool",
         Polyline: "PolylineTool",
         GeoCurveArrow: "GeoCurveArrow",
@@ -259,7 +263,7 @@ export default {
 
       //默认是统一类型的属性窗口
       var component;
-      console.log(czmObject.ctrtype);
+      // console.log(czmObject.ctrtype);
       //如果有外部配置
       if (
         options &&

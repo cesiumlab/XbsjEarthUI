@@ -4,7 +4,7 @@ const zh = {
   pinpicturebtn:"外置图标",
   pindivbtn:"div图标",
   path:'路径',
-  createmodel:'模型',
+  createmodel:'更多',
   curvedarrow:'曲线箭头',
   PolylineArrow:'折线箭头',
   spot: "点",
@@ -21,6 +21,7 @@ const zh = {
   tree: "树",
   car: "汽车",
   senior: "高级",
+  animation:'动画',
   od: "OD线",
   water: "水面",
   haplochromatization: "单体化",
@@ -31,7 +32,8 @@ const zh = {
   ribbon: "飘带",
   SectorSearch:'扇形搜索',
   TriFlag:'三角旗帜',
-  DoubleArrow:'双箭头'
+  DoubleArrow:'双箭头',
+  Scanline:'扫描线'
 };
 
 const en = {
@@ -40,7 +42,8 @@ const en = {
   pinpicturebtn:"External Icon",
   pindivbtn:"div icon",
   path:'path',
-  createmodel:'model',
+  animation:'animation',
+  createmodel:'more',
   curvedarrow:'curvedArrow',
   PolylineArrow:'PolylineArrow',
   spot: "spot",
@@ -67,7 +70,8 @@ const en = {
   ribbon: "ribbon",
   SectorSearch:'SectorSearch',
   TriFlag:'TriFlag',
-  DoubleArrow:'DoubleArrow'
+  DoubleArrow:'DoubleArrow',
+  Scanline:'Scanline'
 };
 
 export default { zh, en };

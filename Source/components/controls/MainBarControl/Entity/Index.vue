@@ -17,12 +17,12 @@
         </div>
         <!-- 外置图标 -->
         <div class="xbsj-item-btnbox ml20" @click="pinpicturebtn" title="外置图标">
-          <div class="xbsj-item-btn pinbutton"></div>
+          <div class="xbsj-item-btn pinpicbutton"></div>
           <span class="xbsj-item-name">{{lang.pinpicturebtn}}</span>
         </div>
         <!-- div图标 -->
         <div class="xbsj-item-btnbox ml20" @click="pindivbtn" title="div图标">
-          <div class="xbsj-item-btn pinbutton"></div>
+          <div class="xbsj-item-btn pindivbutton"></div>
           <span class="xbsj-item-name">{{lang.pindivbtn}}</span>
         </div>
 
@@ -37,11 +37,6 @@
           <span class="xbsj-item-name">{{lang.line}}</span>
         </div>
 
-        <!-- 模型 -->
-        <div class="xbsj-item-btnbox" @click="createmodelbtn">
-          <div class="xbsj-item-btn modelbutton"></div>
-          <span class="xbsj-item-name">{{lang.createmodel}}</span>
-        </div>
         <!-- 曲线箭头 -->
         <div class="xbsj-item-btnbox" @click="curvedarrowbtn">
           <div class="xbsj-item-btn curvedarrow"></div>
@@ -55,7 +50,7 @@
         </div>
         <!-- 扇区搜索 -->
         <div class="xbsj-item-btnbox" @click="SectorSearch">
-          <div class="xbsj-item-btn modelbutton"></div>
+          <div class="xbsj-item-btn Searchbutton"></div>
           <span class="xbsj-item-name">{{lang.SectorSearch}}</span>
         </div>
         <!-- 三角旗帜 -->
@@ -100,14 +95,15 @@
       </div>
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.model}}</span>
-        <div class="xbsj-item-btnbox ml20" @click="createPlane">
+
+        <div class="xbsj-item-btnbox" @click="createPlane">
           <div class="xbsj-item-btn planebutton"></div>
           <span class="xbsj-item-name">{{lang.plane}}</span>
         </div>
         <!-- <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn characterbutton"></div>
           <span class="xbsj-item-name">{{lang.character}}</span>
-        </div> -->
+        </div>-->
         <div class="xbsj-item-btnbox" @click="createTree">
           <div class="xbsj-item-btn treebutton"></div>
           <span class="xbsj-item-name">{{lang.tree}}</span>
@@ -116,14 +112,23 @@
           <div class="xbsj-item-btn carbutton"></div>
           <span class="xbsj-item-name">{{lang.car}}</span>
         </div>
+        <!-- 模型更多 -->
+        <div class="xbsj-item-btnbox ml20" @click="createmodelbtn">
+          <div class="xbsj-item-btn modelbutton"></div>
+          <span class="xbsj-item-name">{{lang.createmodel}}</span>
+        </div>
         <!-- <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn more"></div>
           <span class="xbsj-item-name">{{lang.more}}</span>
-        </div> -->
+        </div>-->
       </div>
-      <!-- <div class="xbsj-list-item xbsj-list-lastitem">
-        <span class="xbsj-list-name">{{lang.senior}}</span>
-        <div class="xbsj-item-btnbox ml20">
+      <div class="xbsj-list-item xbsj-list-lastitem">
+        <span class="xbsj-list-name">{{lang.animation}}</span>
+        <div class="xbsj-item-btnbox ml20" @click="scanLineBtn">
+          <div class="xbsj-item-btn radarbutton"></div>
+          <span class="xbsj-item-name">{{lang.Scanline}}</span>
+        </div>
+        <!-- <div class="xbsj-item-btnbox ml20">
           <div class="xbsj-item-btn odbutton"></div>
           <span class="xbsj-item-name">{{lang.od}}</span>
         </div>
@@ -158,8 +163,8 @@
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn more"></div>
           <span class="xbsj-item-name">{{lang.more}}</span>
-        </div>
-      </div> -->
+        </div>-->
+      </div>
     </div>
     <PlottingMore ref="plottingMore"></PlottingMore>
   </div>
@@ -186,7 +191,7 @@ export default {
     //双箭头
     DoubleArrow() {
       var DoubleArrow = new XE.Obj.Plots.GeoDoubleArrow(this.$root.$earth);
-      console.log(DoubleArrow);
+      // console.log(DoubleArrow);
       DoubleArrow.creating = true;
       DoubleArrow.isCreating = true;
       DoubleArrow.name = "双箭头";
@@ -195,7 +200,7 @@ export default {
     //三角旗帜
     TriFlag() {
       var TriFlag = new XE.Obj.Plots.GeoTriFlag(this.$root.$earth);
-      console.log(TriFlag);
+      // console.log(TriFlag);
       TriFlag.creating = true;
       TriFlag.isCreating = true;
       TriFlag.name = "三角旗帜";
@@ -204,7 +209,7 @@ export default {
     //打开扇形搜索
     SectorSearch() {
       var SectorSearch = new XE.Obj.Plots.GeoSectorSearch(this.$root.$earth);
-      console.log(SectorSearch);
+      // console.log(SectorSearch);
       SectorSearch.creating = true;
       SectorSearch.isCreating = true;
       SectorSearch.name = "扇形搜索";
@@ -213,7 +218,7 @@ export default {
     // 打开折线箭头弹窗
     PolylineArrow() {
       var PolylineArrow = new XE.Obj.Plots.GeoPolylineArrow(this.$root.$earth);
-      console.log(PolylineArrow);
+      // console.log(PolylineArrow);
       PolylineArrow.creating = true;
       PolylineArrow.isCreating = true;
       PolylineArrow.name = "折线箭头";
@@ -222,7 +227,7 @@ export default {
     //打开曲线箭头弹窗
     curvedarrowbtn() {
       var GeoCurveArrow = new XE.Obj.Plots.GeoCurveArrow(this.$root.$earth);
-      console.log(GeoCurveArrow);
+      // console.log(GeoCurveArrow);
       GeoCurveArrow.creating = true;
       GeoCurveArrow.isCreating = true;
       GeoCurveArrow.name = "曲线箭头";
@@ -236,7 +241,7 @@ export default {
     //创建树模型
     createTree() {
       var Model = new XE.Obj.Model(this.$root.$earth);
-      Model.url = "../../../../../Apps/assets/shu.glb";
+      Model.url = "./assets/shu.glb";
       Model.creating = true;
       Model.isCreating = true;
       Model.name = "树";
@@ -245,7 +250,7 @@ export default {
     // 创建汽车模型
     createCar() {
       var Model = new XE.Obj.Model(this.$root.$earth);
-      Model.url = "../../../../../Apps/assets/gongjiao.glb";
+      Model.url = "./assets/gongjiao.glb";
       Model.creating = true;
       Model.isCreating = true;
       Model.name = "汽车";
@@ -254,7 +259,7 @@ export default {
     // 创建飞机模型
     createPlane() {
       var Model = new XE.Obj.Model(this.$root.$earth);
-      Model.url = "../../../../../Apps/assets/feiji.glb";
+      Model.url = "./assets/feiji.glb";
       Model.creating = true;
       Model.isCreating = true;
       Model.name = "飞机";
@@ -263,7 +268,7 @@ export default {
     // 打开模型属性窗口
     createmodelbtn() {
       var Model = new XE.Obj.Model(this.$root.$earth);
-      Model.name = "Model";
+      Model.name = "模型";
       Model.isCreating = true;
       Model.creating = true;
       this.$root.$earthUI.showPropertyWindow(Model);
@@ -271,7 +276,7 @@ export default {
     // 打开path属性窗口
     pathbtn() {
       var Path = new XE.Obj.Path(this.$root.$earth);
-      Path.name = "Path";
+      Path.name = "路径";
       Path.positionPicking = true;
       Path.isCreating = true;
       Path.creating = true;
@@ -285,19 +290,16 @@ export default {
       Pin.positionPicking = true;
       Pin.isCreating = true;
       Pin.creating = true;
-      console.log(Pin);
+      // console.log(Pin);
       this.$root.$earthUI.showPropertyWindow(Pin);
     },
     pindivbtn() {
-      var PinDivTool = new XE.Obj.Pin(this.$root.$earth);
+      var PinDivTool = new XE.Obj.Plots.GeoPin(this.$root.$earth);
       PinDivTool.ctrtype = "PinDivTool";
       PinDivTool.name = "div图标";
-      PinDivTool.positionPicking = true;
       PinDivTool.isCreating = true;
       PinDivTool.creating = true;
-      PinDivTool.show = false;
-      PinDivTool.pindiv = undefined;
-      console.log(PinDivTool);
+      PinDivTool._pin.show = false;
       this.$root.$earthUI.showPropertyWindow(PinDivTool);
     },
     pinpicturebtn() {
@@ -312,12 +314,21 @@ export default {
     // 打开polyLine折线
     polylinebtn() {
       var Polyline = new XE.Obj.Polyline(this.$root.$earth);
-      console.log(Polyline);
-      Polyline.name = "polyLine";
+      Polyline.name = "折线";
       Polyline.positionPicking = true;
       Polyline.isCreating = true;
       Polyline.creating = true;
       this.$root.$earthUI.showPropertyWindow(Polyline);
+    },
+    //打开扫描线-动画
+    scanLineBtn() {
+      var Scanline = new XE.Obj.Scanline(this.$root.$earth);
+      Scanline.name = "扫描线";
+      Scanline.creating = true;
+      Scanline.isCreating = true;
+      Scanline.playing = true;
+      // console.log(Scanline);
+      this.$root.$earthUI.showPropertyWindow(Scanline);
     },
     startMove(event) {
       //如果事件的目标不是本el 返回
@@ -433,6 +444,37 @@ export default {
   background-size: contain;
   cursor: pointer;
 }
+.pinpicbutton {
+  background: url(../../../../images/pinpic.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.pinpicbutton:hover {
+  background: url(../../../../images/pinpic_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.pindivbutton {
+  background: url(../../../../images/pindiv.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.pindivbutton:hover {
+  background: url(../../../../images/pindiv_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.Searchbutton {
+  background: url(../../../../images/GeoSectorSearch.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.Searchbutton:hover {
+  background: url(../../../../images/GeoSectorSearch_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
 .spotbutton {
   background: url(../../../../images/spot.png) no-repeat;
   background-size: contain;

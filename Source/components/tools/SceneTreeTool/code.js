@@ -25,89 +25,132 @@ function getCodeUrl(code) {
 }
 
 function getCode(jsonObject) {
-  const jsonStr = JSON.stringify(jsonObject, undefined, "    ");
+  let jsonStr = JSON.stringify(jsonObject, undefined, "    ");
+  jsonStr = jsonStr.replace(/\n/g, '\n                    ');
 
   const code = `<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="xbsj-labels" content="Earth起步"></meta>
-    <title>3dtiles数据加载</title>
-    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
-    <script src="../../XbsjEarth/XbsjEarth.js"></script>
-    <script src="scripts/vue.min.js"></script>
-    <style>
-        html, body {
-            width: 100%;
-            height: 100%;
-            margin: 0px;
-            padding: 0px;
-        }
-    </style>
-</head>
-<body>
-    <div id="vueApp" style="width:100%; height: 100%; background: grey; position: relative;">
-        <earth-comp></earth-comp>
-    </div>
-
-    <script>
-        // 1 创建Earth的vue组件
-        var EarthComp = {
-            template: \`
-                <div style="width: 100%; height: 100%">
-                    <div ref="earthContainer" style="width: 100%; height: 100%">
-                    </div>
-                </div>
-            \`,
-            data() { 
-                return {
-                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
-                };
-            },
-            // 1.1 资源加载
-            mounted() {
-                // 1.2.1 创建地球
-                var earth = new XE.Earth(this.$refs.earthContainer);
-
-                // 1.2.3 创建Tileset
+    <html lang="zh-CN">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="xbsj-labels" content="Earth起步"></meta>
+        <title>EarthSDK场景加载</title>
+        <!-- 0 引入js文件 -->
+        <script src="https://earthsdk.com/v/last/XbsjEarth/XbsjEarth.js"></script>
+        <style>            
+            html,body { width: 100%; height: 100%; margin: 0px; padding: 0px;}
+        </style>
+    </head>
+    
+    <body>
+        <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+        </div>
+        <script>
+            function startup() {
+                var earth = new XE.Earth('earthContainer');
                 earth.xbsjFromJSON(${jsonStr});
-                window.earth = earth; // only for Debug
 
-                // 1.2.5 变量记录
-                this._earth = earth;
-            },
-            // 1.2 资源销毁
-            beforeDestroy() {
-                // vue程序销毁时，需要清理相关资源
-                this._disposers.forEach(d => d());
-                this._disposers.length = 0;
-                this._earth = this._earth && this._earth.destroy();
-            },
-        }
-
-        // 2 创建vue程序
-        // XE.ready()用来加载Cesium.js等相关资源
-        XE.ready().then(() => {
-            var app = new Vue({
-                el: '#vueApp',
-                components: {
-                    EarthComp,
-                },
-            });
-
-            // only for Debug
-            window.app = app;
-        });
-    </script>
-
-
-</body>
-</html>
+                // 仅为测试
+                window.earth = earth;          
+            }
+    
+            // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+            XE.ready().then(startup);            
+        </script>
+    </body>
+    
+    </html>
 `;
 
   return code;
 }
 
-export { getCodeUrl, getCode };
+function getCzmCode(tilesetCzmObj) {
+    const earth = tilesetCzmObj.earth;
+    const ls = tilesetCzmObj.toJSONStr();
+    const lss = ls.replace(/\n/g, '\n                    ');
+
+    var loadTilesetString = `
+                // earth加载代码
+                /*
+                earth.sceneTree.root.children.push({
+					czmObject: ${lss}
+                });
+
+                // 指定相机位置
+                earth.camera.position = [${earth.camera.position}];
+                earth.camera.rotation = [${earth.camera.rotation}];                
+                */
+                
+                // cesium加载代码
+                var viewer = earth.czm.viewer;
+                var tileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
+                    url: '${tilesetCzmObj.url}',
+                    modelMatrix: Cesium.Matrix4.fromArray([${Cesium.Matrix4.toArray(tilesetCzmObj._tileset.modelMatrix)}]),
+                }));
+                viewer.flyTo(tileset);
+    `;
+
+    const code = `<!DOCTYPE html>
+    <html lang="zh-CN">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="xbsj-labels" content="Earth起步"></meta>
+        <title>EarthSDK场景加载</title>
+        <!-- 0 引入js文件 -->
+        <script src="//earthsdk.com/v/last/XbsjEarth/XbsjEarth.js"></script>
+        <style>            
+            html,body { width: 100%; height: 100%; margin: 0px; padding: 0px;}
+        </style>
+    </head>
+    
+    <body>
+        <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+        </div>
+        <script>    
+            function startup() {
+                var earth = new XE.Earth('earthContainer');
+    
+                earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "czmObject": {
+                                "name": "默认离线影像",
+                                "xbsjType": "Imagery",
+                                "xbsjImageryProvider": {
+                                    "createTileMapServiceImageryProvider": {
+                                        "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                        "fileExtension": 'jpg',
+                                    },
+                                    "type": "createTileMapServiceImageryProvider"
+                                }
+                            }
+                        },
+                    ]
+                };
+
+${loadTilesetString}
+
+                // 仅为测试
+                window.earth = earth;
+                window.viewer = viewer;
+                window.tileset = tileset;
+            }
+    
+            // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+            XE.ready().then(startup);            
+        </script>
+    </body>
+    
+    </html>
+  `;
+  
+    return code;
+  }
+
+export { getCodeUrl, getCode, getCzmCode };

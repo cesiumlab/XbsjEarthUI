@@ -42,6 +42,8 @@
         style="width: 200px"
         @on-blur="$event => ($emit('on-change-title', {item, title: $event.target.value}), titleEditable = false)"
       ></XbsjInput>
+
+      <span v-show="item.cameraAttached" class="pathbind"></span>
     </div>
   </div>
 </template>
@@ -59,6 +61,7 @@ export default {
 
   mounted() {
     this.movetreeitem(this.item);
+    // console.log(this.item)
   },
   data() {
     return {
@@ -231,6 +234,16 @@ export default {
 .ivu-checkbox-indeterminate .ivu-checkbox-inner {
   background-color: #000000;
   border-color: #ffffff;
+}
+.pathbind {
+  width: 30px;
+  height: 30px;
+  background: url(../../../images/pathbind.png) no-repeat;
+  background-size: 60%;
+  background-position: center;
+  position: absolute;
+  right: 5px;
+  top: 0;
 }
 </style>
 

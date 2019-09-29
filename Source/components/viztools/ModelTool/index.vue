@@ -2,7 +2,8 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="322"
+    :height="540"
+    :floatright="true"
     :title="lang.title"
     @cancel="cancel"
     @ok="ok"
@@ -15,48 +16,96 @@
         <label>{{lang.name}}</label>
         <input style="float:left;" type="text" v-model="model.name" />
       </div>
-
-      <div class="flatten-flex">
-        <!-- 显示隐藏 -->
-        <div class="flatten">
-          <label>{{lang.show}}</label>
-          <XbsjSwitch v-model="model.show"></XbsjSwitch>
-        </div>
-        <!-- 是否创建 -->
-        <div class="flatten">
-          <label>{{lang.creating}}</label>
-          <XbsjSwitch v-model="model.creating"></XbsjSwitch>
-        </div>
-      </div>
       <!-- 模型url -->
       <div class="flatten">
         <label>{{lang.url}}</label>
         <input style="float:left;" type="text" v-model="model.url" />
       </div>
-
       <div class="flatten-flex">
-        <!-- positon -->
+        <!-- 鼠标点选 -->
         <div class="flatten">
-          <label>{{lang.positionEditing}}</label>
-          <XbsjSwitch v-model="model.positionEditing"></XbsjSwitch>
-        </div>
-        <!-- rotation -->
-        <div class="flatten">
-          <label>{{lang.rotationEditing}}</label>
-          <XbsjSwitch v-model="model.rotationEditing"></XbsjSwitch>
+          <label>{{lang.weizhi}}</label>
+          <div class="buttonGroup">
+            <button
+              class="attitudeEditCameraButton"
+              @click="model.creating =!model.creating"
+              :class="model.creating?'btncoloron':''"
+            >{{lang.creating}}</button>
+            <button
+              style="margin-left:20px;"
+              class="attitudeEditCameraButton"
+              @click="model.positionEditing =!model.positionEditing"
+              :class="model.positionEditing?'btncoloron':''"
+            >{{lang.positionEditing}}</button>
+            <button
+              style="margin-left:20px;"
+              class="attitudeEditCameraButton"
+              @click="flyto"
+            >{{lang.flyto}}</button>
+          </div>
         </div>
       </div>
       <!-- 当前位置 -->
       <div class="flatten">
-        <label>{{lang.weizhi}}</label>
+        <label></label>
         <div class="flatten-box">
           <XbsjLngLatHeight v-model="model.xbsjPosition"></XbsjLngLatHeight>
         </div>
       </div>
+
+      <div class="flatten-flex">
+        <!-- rotation -->
+        <div class="flatten">
+          <label>{{lang.cx}}</label>
+          <div class="buttonGroup">
+            <button
+              class="attitudeEditCameraButton"
+              @click="model.rotationEditing =!model.rotationEditing"
+              :class="model.rotationEditing?'btncoloron':''"
+            >{{lang.rotationEditing}}</button>
+            <button
+              @click="reset"
+              style="margin-left:20px;"
+              class="attitudeEditCameraButton"
+            >{{lang.reset}}</button>
+          </div>
+        </div>
+      </div>
       <div class="flatten">
-        <label>{{lang.currentRotation}}</label>
+        <label></label>
         <div class="flatten-box">
           <XbsjHeadingPitchRoll v-model="model.xbsjRotation"></XbsjHeadingPitchRoll>
+        </div>
+      </div>
+      <div class="flatten">
+        <label>{{lang.enlargeScale}}</label>
+        <div class="flatten-box">
+          <input style="width:100px;" v-model.number="model.maximumScale" />
+        </div>
+      </div>
+      <div class="flatten">
+        <label>{{lang.minpx}}</label>
+        <!-- <input style="width:100px;" v-model="model.minimumPixelSize" /> -->
+        <div class="field">
+          <XbsjSlider :min="0" :max="256" :step="1" v-model.number="model.minimumPixelSize"></XbsjSlider>
+        </div>
+      </div>
+      <div class="flatten">
+        <div style="position: relative;">
+          <label>{{lang.pathAnimation}}</label>
+          <input
+            type="text"
+            v-model="model.attachedPathGuid"
+            @click="selectinput"
+            readonly
+            style="cursor: pointer;"
+          />
+          <button class="selectButton"></button>
+          <div class="cutselectbox" v-show="showPinSelect" style="overflow:scroll;height:100px;">
+            <div @click="optionssure(c)" v-for="(c,index) in pathGuidarr" :key="index">
+              <span>{{c.name}}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -75,7 +124,7 @@ export default {
     return {
       lang: {},
       showPinSelect: false,
-      makiIconObj: {},
+      pathGuidarr: [],
       model: {
         name: "",
         show: true,
@@ -84,7 +133,10 @@ export default {
         positionEditing: false,
         rotationEditing: false,
         xbsjPosition: [0, 0, 0],
-        xbsjRotation: [0, 0, 0]
+        xbsjRotation: [0, 0, 0],
+        maximumScale: 0,
+        minimumPixelSize: 0,
+        attachedPathGuid: ""
       },
       pinstyletype: true,
       langs: languagejs
@@ -95,7 +147,7 @@ export default {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
-    console.log(czmObj);
+    // console.log(czmObj);
 
     if (czmObj) {
       this._czmObj = czmObj;
@@ -107,7 +159,10 @@ export default {
         positionEditing: "model.positionEditing",
         rotationEditing: "model.rotationEditing",
         xbsjRotation: "model.xbsjRotation",
-        xbsjPosition: "model.xbsjPosition"
+        xbsjPosition: "model.xbsjPosition",
+        maximumScale: "model.maximumScale",
+        minimumPixelSize: "model.minimumPixelSize",
+        attachedPathGuid: "model.attachedPathGuid"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -133,6 +188,28 @@ export default {
   },
   watch: {},
   methods: {
+    optionssure(c) {
+      this.model.attachedPathGuid = c.guid;
+      this.showPinSelect = !this.showPinSelect;
+    },
+    selectinput() {
+      this.pathGuidarr = [];
+      let guidobj = {};
+      this.pathGuidarr.push({ name: "空", guid: "" });
+      this.$root.$earth.pathCollection.forEach(e => {
+        guidobj.name = e.name;
+        guidobj.guid = e.guid;
+        this.pathGuidarr.push(guidobj);
+      });
+      if (this.pathGuidarr.length < 2) {
+        this.$root.$earthUI.promptInfo(
+          "There is no path in the current scenario",
+          "warning"
+        );
+        return;
+      }
+      this.showPinSelect = !this.showPinSelect;
+    },
     close() {
       this.$parent.destroyTool(this);
     },
@@ -162,8 +239,11 @@ export default {
       }
     },
 
-    flyto(index) {
-      this._czmObj.polygons[index].flyTo();
+    flyto() {
+      this._czmObj.flyTo();
+    },
+    reset() {
+      this.model.xbsjRotation = [0, 0, 0];
     }
   },
   beforeDestroy() {
@@ -387,7 +467,7 @@ button:focus {
   width: calc(100% - 102px);
   background: rgba(138, 138, 138, 1);
   position: absolute;
-  left: 78px;
+  left: 85px;
   border-radius: 0px 0px 4px 4px;
   overflow: auto;
   z-index: 999;
@@ -457,5 +537,14 @@ button {
 }
 button:focus {
   outline: none !important;
+}
+.attitudeEditCameraButton {
+  display: block;
+  float: left;
+  height: 25px;
+  margin-left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  color: #dddddd;
 }
 </style>

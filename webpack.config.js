@@ -184,9 +184,9 @@ module.exports.plugins = (module.exports.plugins || []).concat([
         },
         {
             // from: 'Static/XbsjEarth-Plugins',
-            from: process.env.XBSJ_IMPORT !== 'external' ? './node_modules/earthsdk-plotting-symbol/dist/XbsjEarth-Plugins/plottingSymbol.js' : 'Static/XbsjEarth-Plugins/plottingSymbol.js',
-            to: 'XbsjEarth-Plugins/plottingSymbol.js',
-            toType: 'file'
+            from: process.env.XBSJ_IMPORT !== 'external' ? './node_modules/earthsdk-plotting-symbol/dist/XbsjEarth-Plugins/plottingSymbol' : 'Static/XbsjEarth-Plugins/plottingSymbol',
+            to: 'XbsjEarth-Plugins/plottingSymbol',
+            toType: 'dir'
         },
         {
             from: 'Static/assets',

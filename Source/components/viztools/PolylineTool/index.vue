@@ -3,6 +3,7 @@
     :width="480"
     :minWidth="480"
     :height="458"
+    :floatright="true"
     :title="lang.title"
     @cancel="cancel"
     @ok="ok"
@@ -17,7 +18,7 @@
       </div>
 
       <!-- 创建、编辑按钮 -->
-      <div class="attitudeEdit">
+      <!-- <div class="attitudeEdit">
         <label class="xbsj-label">{{lang.eidtbtn}}</label>
         <div class="buttonGroup">
           <div style="margin-left: 0px;">
@@ -35,38 +36,48 @@
             >{{lang.editing}}</button>
           </div>
         </div>
+      </div>-->
+
+      <div class="flatten-flex">
+        <!-- 编辑按钮 -->
+        <div class="buttonGroup">
+          <label class="xbsj-label"></label>
+          <button
+            class="attitudeEditCameraButton"
+            @click="polyline.creating =!polyline.creating"
+            :class="polyline.creating?'btncoloron':''"
+          >{{lang.creating}}</button>
+          <button
+            style="margin-left:20px;"
+            class="attitudeEditCameraButton"
+            @click="polyline.editing =!polyline.editing"
+            :class="polyline.editing?'btncoloron':''"
+          >{{lang.editing}}</button>
+          <div class="flatten" style="display: inline-block;">
+            <label>{{lang.loop}}</label>
+            <XbsjSwitch v-model="polyline.loop"></XbsjSwitch>
+          </div>
+          <!-- 深度检测 -->
+          <div class="flatten" style="display: inline-block;">
+            <label>{{lang.depthTest}}</label>
+            <XbsjSwitch v-model="polyline.depthTest"></XbsjSwitch>
+          </div>
+        </div>
+        <!-- 首尾相连 -->
       </div>
 
-      <!-- 显示首尾相连 -->
-      <div class="flatten" style="display:flex;">
-        <div>
-          <label>{{lang.show}}</label>
-          <XbsjSwitch v-model="polyline.show"></XbsjSwitch>
-        </div>
-        <div>
-          <label>{{lang.loop}}</label>
-          <XbsjSwitch v-model="polyline.loop"></XbsjSwitch>
-        </div>
-      </div>
-
-      <!-- 显示辅助线框 -->
+      <!-- 显示辅助线框
       <div class="flatten">
         <label>{{lang.showHelper}}</label>
         <XbsjSwitch v-model="polyline.showHelper"></XbsjSwitch>
-      </div>
+      </div>-->
 
       <!-- 宽度 -->
       <div class="flatten" style="margin-top:20px;">
         <label>{{lang.width}}</label>
         <div class="field">
-          <XbsjSlider :min="0" :max="100" :step="1" showTip="always" v-model="polyline.width"></XbsjSlider>
+          <XbsjSlider :min="1" :max="100" :step="1" showTip="always" v-model="polyline.width"></XbsjSlider>
         </div>
-      </div>
-
-      <!-- 深度检测 -->
-      <div class="flatten">
-        <label>{{lang.depthTest}}</label>
-        <XbsjSwitch v-model="polyline.depthTest"></XbsjSwitch>
       </div>
 
       <!-- 插值方式 -->
@@ -95,7 +106,7 @@
           <label>{{lang.materialbtn}}</label>
           <input
             type="text"
-            v-model="materialType"
+            v-model="materialName"
             @click="selectinputMaterial"
             readonly
             style="cursor: pointer;"
@@ -103,7 +114,7 @@
           <button class="selectButton"></button>
           <div class="cutselectbox" v-show="showMaterialSelect">
             <div @click="optionssureMaterial(c)" v-for="(c,index) in materialTypeObj" :key="index">
-              <span>{{c}}</span>
+              <span>{{c.name}}</span>
             </div>
           </div>
         </div>
@@ -125,9 +136,95 @@
             <XbsjSlider :min="0" :max="200" :step="1" showTip="always" v-model="dashLength"></XbsjSlider>
           </div>
         </div>
-        <div style="position: relative; width: 262px;">
+        <div style="margin-top:16px; margin-bottom:10px;">
           <label>{{lang.dashPattern}}</label>
-          <input
+          <div class="dottedstyle">
+            <div
+              @click="changebtn(15)"
+              class="Dottedline-default"
+              :class="dashPatternarr[15]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(14)"
+              class="Dottedline-default"
+              :class="dashPatternarr[14]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(13)"
+              class="Dottedline-default"
+              :class="dashPatternarr[13]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(12)"
+              class="Dottedline-default"
+              :class="dashPatternarr[12]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(11)"
+              class="Dottedline-default"
+              :class="dashPatternarr[11]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(10)"
+              class="Dottedline-default"
+              :class="dashPatternarr[10]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(9)"
+              class="Dottedline-default"
+              :class="dashPatternarr[9]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(8)"
+              class="Dottedline-default"
+              :class="dashPatternarr[8]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(7)"
+              class="Dottedline-default"
+              :class="dashPatternarr[7]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(6)"
+              class="Dottedline-default"
+              :class="dashPatternarr[6]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(5)"
+              class="Dottedline-default"
+              :class="dashPatternarr[5]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(4)"
+              class="Dottedline-default"
+              :class="dashPatternarr[4]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(3)"
+              class="Dottedline-default"
+              :class="dashPatternarr[3]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(2)"
+              class="Dottedline-default"
+              :class="dashPatternarr[2]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(1)"
+              class="Dottedline-default"
+              :class="dashPatternarr[1]===1?'Dottedline-active':''"
+            ></div>
+            <div
+              @click="changebtn(0)"
+              class="Dottedline-default"
+              :class="dashPatternarr[0]===1?'Dottedline-active':''"
+            ></div>
+          </div>
+
+          <!-- <div class="field">
+            <XbsjSlider :min="2" :max="255" :step="1" showTip="always" v-model="dashPattern"></XbsjSlider>
+          </div>-->
+          <!-- <input
             type="text"
             v-model="dashPattern"
             @click="selectinputPattern"
@@ -139,7 +236,7 @@
             <div @click="optionssurePattern(c)" v-for="(c,index) in dashPatternObj" :key="index">
               <span>{{c}}</span>
             </div>
-          </div>
+          </div>-->
         </div>
       </div>
       <div class="flatten" v-show="arrowMaterialBox">
@@ -153,7 +250,7 @@
           <label>{{lang.totoalFrameCount}}</label>
           <div class="field">
             <XbsjSlider :min="0" :max="200" :step="1" showTip="always" v-model="totoalFrameCount"></XbsjSlider>
-          </div>
+          </div>帧
         </div>
       </div>
     </div>
@@ -164,7 +261,7 @@
 import { copyobj } from "../../utils/tools";
 import languagejs from "./index_locale";
 import { fips } from "crypto";
-
+import Vue from "vue";
 export default {
   props: {
     getBind: Function
@@ -173,6 +270,8 @@ export default {
     return {
       showPolylineSelect: false,
       makiIconObj: {},
+      dashPatternarr: [],
+      dashPatternarrString: "",
       polyline: {
         name: "",
         creating: false,
@@ -191,15 +290,16 @@ export default {
         RHUMB: "RHUMB"
       },
       materialType: "XbsjColorMaterial",
+      materialName: "实线",
       dashPatternObj: {
         0: 3,
-        1: 12,
+        1: 3,
         2: 48,
         3: 51,
         4: 64,
         5: 124,
         6: 127,
-        7: 255
+        6: 255
       },
       colorMaterialBox: true,
       dashMaterialBox: false,
@@ -209,10 +309,22 @@ export default {
       langs: languagejs,
       showMaterialSelect: false,
       materialTypeObj: {
-        XbsjColorMaterial: "XbsjColorMaterial",
-        XbsjPolylineDashMaterial: "XbsjPolylineDashMaterial",
-        XbsjPolylineArrowMaterial: "XbsjPolylineArrowMaterial",
-        XbsjODLineMaterial: "XbsjODLineMaterial"
+        XbsjColorMaterial: {
+          type: "XbsjColorMaterial",
+          name: "实线"
+        },
+        XbsjPolylineDashMaterial: {
+          type: "XbsjPolylineDashMaterial",
+          name: "虚线"
+        },
+        XbsjPolylineArrowMaterial: {
+          type: "XbsjPolylineArrowMaterial",
+          name: "箭头线"
+        },
+        XbsjODLineMaterial: {
+          type: "XbsjODLineMaterial",
+          name: "轨迹线"
+        }
       },
       colorUI: {
         rgba: {
@@ -273,7 +385,6 @@ export default {
 
     if (czmObj) {
       this._czmObj = czmObj;
-      // console.log(this._czmObj);
       const bindData = {
         name: "polyline.name",
         creating: "polyline.creating",
@@ -362,6 +473,36 @@ export default {
           "material.XbsjODLineMaterial.totoalFrameCount"
         )
       );
+
+      Object.keys(this.materialTypeObj).forEach(e => {
+        if (e == this._czmObj.material.type) {
+          this.showMaterialSelect = true;
+          this.optionssureMaterial(this.materialTypeObj[e]);
+        }
+      });
+
+      if (
+        this._czmObj.dashPatternarrString !== undefined &&
+        this._czmObj.dashPatternarrString !== ""
+      ) {
+        this.dashPatternarr = this._czmObj.dashPatternarrString.split("");
+        this.dashPatternarr = this.dashPatternarr.map(i => {
+          return parseInt(i);
+        });
+      } else {
+        this.dashPatternarr = [];
+        this.dashPatternarr = this.dashPattern.toString(2).split("");
+        this.dashPatternarr = this.dashPatternarr.map(i => {
+          return parseInt(i);
+        });
+
+        if (this.dashPatternarr.length < 16) {
+          let count = 16 - this.dashPatternarr.length;
+          for (var i = 1; i <= count; i++) {
+            this.dashPatternarr.unshift(0);
+          }
+        }
+      }
     }
   },
   beforeDestroy() {
@@ -377,6 +518,28 @@ export default {
     }
   },
   watch: {
+    dashPattern() {
+      this.dashPatternarr = [];
+      this.dashPatternarr = this.dashPattern.toString(2).split("");
+      this.dashPatternarr = this.dashPatternarr.map(i => {
+        return parseInt(i);
+      });
+
+      if (this.dashPatternarr.length < 16) {
+        let count = 16 - this.dashPatternarr.length;
+        for (var i = 1; i <= count; i++) {
+          this.dashPatternarr.unshift(0);
+        }
+      }
+    },
+    dashPatternarr: {
+      handler(old, newval) {
+        let str = newval.join("");
+        this._czmObj.dashPatternarrString = str;
+        this.dashPattern = parseInt(this.dashPatternarr.join(""), 2);
+      },
+      deep: true
+    },
     colorUI(color) {
       let v = color.rgba;
 
@@ -469,6 +632,13 @@ export default {
     }
   },
   methods: {
+    changebtn(c) {
+      if (this.dashPatternarr[c] === 1) {
+        Vue.set(this.dashPatternarr, c, 0);
+      } else {
+        Vue.set(this.dashPatternarr, c, 1);
+      }
+    },
     optionssure(c) {
       this.polyline.arcType = c;
       this.showPolylineSelect = !this.showPolylineSelect;
@@ -487,20 +657,21 @@ export default {
       this.showMaterialSelect = !this.showMaterialSelect;
     },
     optionssureMaterial(c) {
-      this.materialType = c;
-      if (c === "XbsjColorMaterial") {
+      this.materialName = c.name;
+      this.materialType = c.type;
+      if (c.type === "XbsjColorMaterial") {
         this.polyline.width = 2;
         this.colorMaterialBox = true;
         this.dashMaterialBox = false;
         this.arrowMaterialBox = false;
         this.oDLineMaterialBox = false;
-      } else if (c === "XbsjPolylineDashMaterial") {
+      } else if (c.type === "XbsjPolylineDashMaterial") {
         this.polyline.width = 6;
         this.colorMaterialBox = false;
         this.dashMaterialBox = true;
         this.arrowMaterialBox = false;
         this.oDLineMaterialBox = false;
-      } else if (c === "XbsjPolylineArrowMaterial") {
+      } else if (c.type === "XbsjPolylineArrowMaterial") {
         this.polyline.width = 20;
         this.colorMaterialBox = false;
         this.dashMaterialBox = false;
@@ -759,7 +930,7 @@ button:focus {
 .select-ul {
   width: 80%;
   padding-left: 8px;
-  margin-left: calc(10% + 23px);
+  margin-left: calc(5% + 23px);
   background: rgba(138, 138, 138, 1);
   z-index: 9999;
   position: relative;
@@ -822,10 +993,10 @@ button:focus {
   right: 18px;
 }
 
-.buttonGroup {
+/* .buttonGroup {
   display: flex;
-}
-.buttonGroup div {
+} */
+/* .buttonGroup div {
   display: inline-block;
   width: 62px;
   height: 25px;
@@ -835,7 +1006,7 @@ button:focus {
   color: #dddddd;
   padding: 0 4px;
   cursor: pointer;
-}
+} */
 .attitudeEditCameraButton {
   color: #dddddd;
 }
@@ -852,5 +1023,27 @@ button {
 }
 button:focus {
   outline: none !important;
+}
+.attitudeEditCameraButton {
+  display: block;
+  float: left;
+  height: 25px;
+  margin-left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  color: #dddddd;
+}
+.Dottedline-default {
+  width: 18px;
+  height: 12px;
+  background: #333333;
+  margin-top: 9px;
+}
+.Dottedline-active {
+  background: red !important;
+}
+.dottedstyle {
+  display: flex;
+  justify-content: space-around;
 }
 </style>

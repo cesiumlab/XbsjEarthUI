@@ -1,5 +1,5 @@
 const zh = {
-  title:'Path属性',
+  title:'路径属性',
   name:'名称',
   creating:'创建',
   editing:'编辑',
@@ -11,18 +11,23 @@ const zh = {
   loop:'首尾相连',
   loopPlay:'循环飞行',
   positionPicking:'positionPicking',
-  showDirection:'关键点方向',
+  showDirection:'关键点',
   showHelper:'辅助线框',
   slices:'分隔数',
   targetPicking:'方向',
   currentSpeed:'运行速度',
   currentD:'相机位置',
   playing:'飞行',
-  eidtbtn:'编辑按钮',
+  eidtbtn:'路径',
   play:'播放',
-  weizhi:'当前位置',
+  weizhi:'当前状态',
   looppaly:'循环',
-  cameraAttached:'相机绑定'
+  cameraAttached:'视角跟随',
+  animation:'动画',
+  Observation:'观察点',
+  yxfx:'延线方向',
+  Tangentdirection:'切线方向',
+  nowtime:'播放进度'
 }
 
 const en = {
@@ -45,11 +50,16 @@ const en = {
   currentSpeed:'currentSpeed',
   currentD:'currentD',
   playing:'playing',
-  eidtbtn:'eidtbtn',
+  eidtbtn:'path',
   play:'play',
   weizhi:'weizhi',
   looppaly:'looppaly',
-  cameraAttached:'Attached'
+  cameraAttached:'Attached',
+  animation:'Animation',
+  Observation:'Observation',
+  yxfx:'Direction',
+  Tangentdirection:'Tangent',
+  nowtime:'playProgress'
 }
 
 export default { zh, en }

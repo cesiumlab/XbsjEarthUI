@@ -103,7 +103,6 @@
             mounted() {
                 // 1.1.1 创建地球
                 var earth = new XE.Earth(this.$refs.earthContainer);
-                earth.interaction.picking.enabled = true;
 
                 // 1.1.2 场景配置
                 earth.sceneTree.root = {
@@ -122,9 +121,9 @@
                             ],
                         },
                     }, {
-                        "ref": 'scaline1',
+                        "ref": 'scanline1',
                         "czmObject": {
-                            "xbsjType": "Scaneline",
+                            "xbsjType": "Scanline",
                             "position": [
                                 2.1206081845999845,
                                 0.5450905025102283,
@@ -147,7 +146,7 @@
                 };
 
                 var tileset = earth.sceneTree.$refs.tileset.czmObject;
-                var scaline1 = earth.sceneTree.$refs.scaline1.czmObject;
+                var scanline1 = earth.sceneTree.$refs.scanline1.czmObject;
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
@@ -155,18 +154,18 @@
                 earth.camera.rotation = [6.283185307179578,-0.7863374047795091,1.0658141036401503e-14];
 
                 // 1.1.5 数据绑定
-                this._playingUnbind = XE.MVVM.bind(this, 'playing', scaline1, 'playing');
-                this._showUnbind = XE.MVVM.bind(this, 'show', scaline1, 'show');
-                this._loopPlayUnbind = XE.MVVM.bind(this, 'loopPlay', scaline1, 'loopPlay');
-                this._timeDurationUnbind = XE.MVVM.bind(this, 'timeDuration', scaline1, 'timeDuration');
-                this._radiusUnbind = XE.MVVM.bind(this, 'radius', scaline1, 'radius');
-                this._currentTimeUnbind = XE.MVVM.bind(this, 'currentTime', scaline1, 'currentTime');
+                this._playingUnbind = XE.MVVM.bind(this, 'playing', scanline1, 'playing');
+                this._showUnbind = XE.MVVM.bind(this, 'show', scanline1, 'show');
+                this._loopPlayUnbind = XE.MVVM.bind(this, 'loopPlay', scanline1, 'loopPlay');
+                this._timeDurationUnbind = XE.MVVM.bind(this, 'timeDuration', scanline1, 'timeDuration');
+                this._radiusUnbind = XE.MVVM.bind(this, 'radius', scanline1, 'radius');
+                this._currentTimeUnbind = XE.MVVM.bind(this, 'currentTime', scanline1, 'currentTime');
 
                 this._earth = earth;
 
                 // only for Debug
                 window.tileset = tileset;
-                window.scaline1 = scaline1;
+                window.scanline1 = scanline1;
                 window.earth = earth;
             },
             filters: {
@@ -179,7 +178,7 @@
             methods: {
                 colorchange(event) {
                     var color = event.target.value;
-                    scaline1.color = color.xeColor;
+                    scanline1.color = color.xeColor;
                 }
             },
             // 1.2 资源销毁

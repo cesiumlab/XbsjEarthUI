@@ -63,9 +63,9 @@
           <div class="attitudeEditMouseDiv">
             <button
               class="attitudeEditMouseButton"
-              :class="attribute.positionPicking ? 'attitudeEditMouseButtonActive' : ''"
-              @click="attribute.positionPicking =! attribute.positionPicking"
-            >{{lang.positionPicking}}</button>
+              :class="attribute.creating ? 'attitudeEditMouseButtonActive' : ''"
+              @click="attribute.creating =! attribute.creating"
+            >{{lang.creating}}</button>
           </div>
           <div class="attitudeEditRotationDiv">
             <button
@@ -111,7 +111,7 @@ export default {
         position: [0, 0, 0],
         rotation: [0, 0, 0],
         positionEditing: false,
-        positionPicking: false,
+        creating: false,
         rotationEditing: false,
         show: false
       },
@@ -135,7 +135,7 @@ export default {
         rotation: "attribute.rotation",
         show: "attribute.show",
         positionEditing: "attribute.positionEditing",
-        positionPicking: "attribute.positionPicking",
+        creating: "attribute.creating",
         rotationEditing: "attribute.rotationEditing"
       };
 

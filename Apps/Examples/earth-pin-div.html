@@ -49,7 +49,7 @@
                 <div style="width: 100%; height: 100%">
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
-                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:300px; font-size:24px; font-family: 宋体;">
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:210px; font-size:24px; font-family: 宋体;">
                         <span>左边距离:{{winPos[0] | numFilter}}米</span><br/>
                         <span>底部距离:{{winPos[1] | numFilter}}米</span>
                     </div>
@@ -114,6 +114,8 @@
 
                 // 监控数据
                 this.uw = XE.MVVM.watch(earth.camera, 'position', () => {
+                    // xepd: xepositionDistance的缩写
+                    // pin1.position.xepd(earth.camera.position): 计算相机和pin之间的距离
                     const d = pin1.position.xepd(earth.camera.position);
                     if(d < 100) {
                         this.showInfo = false;

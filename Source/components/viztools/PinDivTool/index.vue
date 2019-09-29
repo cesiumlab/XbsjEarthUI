@@ -4,8 +4,9 @@
     <Window
       :width="480"
       :minWidth="480"
-      :height="480"
+      :height="490"
       :title="lang.title"
+      :floatright="true"
       @cancel="cancel"
       @ok="ok"
       :footervisible="true"
@@ -22,7 +23,7 @@
         <div class="flatten" style="margin-top:20px;display:flex;">
           <label>{{lang.nearfar}}</label>
           <div class="field">
-            <XbsjSlider range :min="1" :max="100" :step="1" v-model="nearfar" ref="glowFactor"></XbsjSlider>
+            <XbsjSlider range :min="0" :max="30" :step="0.1" v-model="nearfar" ref="glowFactor"></XbsjSlider>
           </div>
         </div>
         <!-- 近远裁 -->
@@ -67,12 +68,35 @@
             </div>
           </div>
         </div>
+        <div class="flatten">
+          <div style="position: relative;">
+            <label>{{lang.pathAnimation}}</label>
+            <input
+              type="text"
+              v-model="pin.attachedPathGuid"
+              @click="pinselectinput"
+              readonly
+              style="cursor: pointer;"
+            />
+            <button class="selectButton"></button>
+            <div
+              class="cutselectbox"
+              v-show="pinshowPinSelect"
+              style="overflow:scroll;height:100px;"
+            >
+              <div @click="pinoptionssure(c)" v-for="(c,index) in pathGuidarr" :key="index">
+                <span>{{c.name}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <!-- pin自定义外部图标 -->
+        <!-- pindiv部图标 -->
         <div class="flatten">
           <label>{{lang.divcontent}}</label>
           <textarea class="flatten-textarea" v-model="divcontent" />
         </div>
+        <!-- <div class="apply" @click="apply">应用</div> -->
       </div>
     </Window>
   </div>
@@ -90,16 +114,9 @@ export default {
     return {
       lang: {},
       showPinSelect: false,
+      pinshowPinSelect: false,
       makiIconObj: {},
-      divcontent: `
-      <div class="dialog" 
-      style="
-      height:50px;
-      width:100px;
-      top:100px;
-      position:absolute;">
-      标记文字
-      </div>`,
+      divcontent: ``,
       pin: {
         name: "",
         creating: true,
@@ -112,7 +129,8 @@ export default {
         show: true,
         position: [0, 0, 0],
         pinBuilder: {},
-        winPos: [0, 0]
+        winPos: [0, 0],
+        attachedPathGuid: ""
       },
       pinstyletype: true,
       bgbaseColorUI: {
@@ -136,7 +154,8 @@ export default {
       langs: languagejs,
       dighole: false,
       connections: [],
-      connectedTileset: ""
+      connectedTileset: "",
+      pathGuidarr: []
     };
   },
   created() {},
@@ -144,8 +163,6 @@ export default {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
-    console.log(czmObj);
-
     if (czmObj) {
       this._czmObj = czmObj;
       const bindData = {
@@ -154,13 +171,11 @@ export default {
         editing: "pin.editing",
         far: "pin.far",
         near: "pin.near",
-        imageUrl: "pin.imageUrl",
         show: "pin.show",
         position: "pin.position",
-        scale: "pin.scale",
         enabled: "pin.enabled",
-        pinBuilder: "pin.pinBuilder",
-        winPos: "pin.winPos"
+        innerHTML: "divcontent",
+        attachedPathGuid: "pin.attachedPathGuid"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -171,15 +186,20 @@ export default {
         }
       });
 
-      this._disposers.push(
-        XE.MVVM.bind(this, "bgbaseColor", czmObj, "pinBuilder.fillColor")
-      );
-      this._disposers.push(
-        XE.MVVM.bind(this, "borderbaseColor", czmObj, "pinBuilder.outlineColor")
-      );
+      this._czmObj.far = 1073741824;
+      this._czmObj.innerHTML =
+        `<div
+        style="height:50px;width:100px;left:-76px;
+        bottom:0px;position: absolute;color: white;
+        background-size: 100% 100%;padding: 5px;
+        border-radius: 5px;cursor:pointer;
+        background-image:url('` +
+        this._czmObj.defaultImgUrl() +
+        `');">
+    标记文字
+    </div>`;
 
-      this.makiIconObj = XE.Obj.Pin.MakiIcon;
-      this.makiIconObj.null = "";
+    console.log(this._czmObj.defaultImgUrl())
     }
   },
   beforeDestroy() {
@@ -195,73 +215,52 @@ export default {
     },
     nearfar: {
       get() {
-        return [this.pin.far, this.pin.near];
+        return [0, 30];
       },
       set(newValue) {
-        this.pin.near = Math.pow(newValue[0], 5);
-        this.pin.far = Math.pow(newValue[1], 20);
+        this.pin.near = Math.round(Math.pow(2, newValue[0]));
+        this.pin.far = Math.round(Math.pow(2, newValue[1]));
       }
     }
   },
-  watch: {
-    "pin.pinBuilder.text"(e) {
-      if (e !== "") {
-        this.pin.pinBuilder.makiIcon = "";
-      }
-    },
-    bgbaseColorUI(color) {
-      let v = color.rgba;
-
-      var cc = [v.r / 255.0, v.g / 255.0, v.b / 255.0, v.a];
-      if (!this.bgbaseColor.every((c, index) => c === cc[index])) {
-        this.bgbaseColor = cc;
-      }
-    },
-    bgbaseColor(c) {
-      this.bgbaseColorUI = {
-        rgba: {
-          r: c[0] * 255,
-          g: c[1] * 255,
-          b: c[2] * 255,
-          a: c[3]
-        }
-      };
-    },
-    borderbaseColorUI(color) {
-      let v = color.rgba;
-
-      var cc = [v.r / 255.0, v.g / 255.0, v.b / 255.0, v.a];
-      if (!this.borderbaseColor.every((c, index) => c === cc[index])) {
-        this.borderbaseColor = cc;
-      }
-    },
-    borderbgbaseColor(c) {
-      this.borderbaseColorUI = {
-        rgba: {
-          r: c[0] * 255,
-          g: c[1] * 255,
-          b: c[2] * 255,
-          a: c[3]
-        }
-      };
-    }
-  },
+  watch: {},
   methods: {
+    pinoptionssure(c) {
+      this.pin.attachedPathGuid = c.guid;
+      // console.log(this._czmObj)
+      this.pinshowPinSelect = !this.pinshowPinSelect;
+    },
+    pinselectinput() {
+      this.pathGuidarr = [];
+      let guidobj = {};
+      this.pathGuidarr.push({ name: "空", guid: "" });
+      this.$root.$earth.pathCollection.forEach(e => {
+        guidobj.name = e.name;
+        guidobj.guid = e.guid;
+        this.pathGuidarr.push(guidobj);
+      });
+      if (this.pathGuidarr.length < 2) {
+        this.$root.$earthUI.promptInfo(
+          "There is no path in the current scenario",
+          "warning"
+        );
+        return;
+      }
+      this.pinshowPinSelect = !this.pinshowPinSelect;
+    },
     optionssure(c) {
-      console.log(c);
-      console.log(typeof c);
       this.pin.pinBuilder.makiIcon = c;
       this.showPinSelect = !this.showPinSelect;
     },
     selectinput() {
       this.showPinSelect = !this.showPinSelect;
-      // console.log(this.showSelect);
     },
     close() {
       this.$parent.destroyTool(this);
     },
     cancel() {
       this.close();
+
       const pinToolObj = this._czmObj;
       if (!pinToolObj) {
         return;
@@ -278,59 +277,21 @@ export default {
       if (!pinToolObj) {
         return;
       }
-      pinToolObj.positionEditing = false;
-      pinToolObj.twoPostionsEditing = false;
+
       if (pinToolObj.isCreating) {
         pinToolObj.isCreating = false;
-        //创建一个pindiv在地图上
-        var pindiv = document.createElement("div");
-        pindiv.innerHTML = this.divcontent;
-        this.$root.$refs.mainUI.$el.appendChild(pindiv);
-
-        //添加标记属性到czmobj当中
-        pinToolObj.pindiv = pindiv;
-        pinToolObj.pindiv.style.position = "absolute";
-        //watch-winpos属性
-        const pin = this._czmObj;
-        var um = XE.MVVM.watch(
-          () => [...pin.winPos],
-          winPos => {
-            pindiv.style.left = winPos[0] - 78 + "px";
-            pindiv.style.bottom = winPos[1] + 170 + "px";
-          }
-        );
-
-        //watch-enabled属性
-        var um = XE.MVVM.watch(pin, "enabled", enabled => {
-          if (enabled) {
-            pindiv.style.display = "block";
-          } else {
-            pindiv.style.display = "none";
-          }
-        });
-
-        // 监测是否有对象销毁，如果有销毁，对应的属性窗口也需要跟着销毁
-        this._czmObjectOpsEventDisposer = this.$root.$earth.czmObjectOpsEvent.addEventListener(
-          ({ type, xbsjObj }) => {
-            if (type === "destroy") {
-              if (xbsjObj.ctrtype === "PinDivTool") {
-                this.$root.$refs.mainUI.$el.removeChild(pinToolObj.pindiv);
-              }
-            }
-          }
-        );
-
+        // 点击确定将pindiv添加到sceneTree当中
         const sceneObject = new XE.SceneTree.Leaf(pinToolObj);
         this.$root.$earth.sceneTree.addSceneObject(sceneObject);
       } else {
-        //判断Pin中的自定义属性pindiv是否为空
-        if (pinToolObj.pindiv !== undefined) {
-          //修改pindiv操作
-          pinToolObj.pindiv.innerHTML = this.divcontent;
-        }
+        pinToolObj.innerHTML = this.divcontent;
       }
     },
-
+    apply() {
+      const pinToolObj = this._czmObj;
+      //修改pindiv操作
+      pinToolObj.innerHTML = this.divcontent;
+    },
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
     }
@@ -345,6 +306,7 @@ export default {
 
 <style scoped>
 .field {
+  margin-top: 20px;
   padding-left: 4px;
   display: inline-block;
   width: 220px;
@@ -645,11 +607,25 @@ button:focus {
 }
 .flatten-textarea {
   float: left;
-  height: 150px;
   width: calc(100% - 100px);
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   border: none;
   color: #dddddd;
+  position: absolute;
+  height: calc(100% - 280px);
+}
+.apply {
+  width: 35px !important;
+  height: 25px;
+  text-align: center;
+  font-size: 14px;
+  padding: 0px 15px;
+  text-decoration: none;
+  border-radius: 3px;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #dddddd;
+  line-height: 27px;
 }
 </style>

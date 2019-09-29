@@ -24,7 +24,8 @@ const zh = {
     pinstyle:'图标'
   },
   weizhi:"位置",
-  eidtbtn:"编辑按钮"
+  eidtbtn:"编辑按钮",
+  pathAnimation:'路径动画'
 }
 
 const en = {
@@ -52,7 +53,8 @@ const en = {
     pinstyle:'Pinstyle'
   },
   weizhi:"weizhi",
-  eidtbtn:"eidt btn"
+  eidtbtn:"eidt btn",
+  pathAnimation:'pathAnimation'
 }
 
 export default { zh, en }

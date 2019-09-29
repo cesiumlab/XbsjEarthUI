@@ -95,7 +95,7 @@ function createVertexShad() {
                     header += `varying vec4 v_custom_${i+1};`;
                     vsBody += `v_custom_${i+1}=a_custom_${i+1};`;
                     const sub = (i*4).toFixed(1);
-                    fsComp += `xbsjv += dot(step(vec4(0.0, 1.0, 2.0, 3.0), vec4(xbsji-${sub})) * step(vec4(xbsji-${sub}), vec4(1.0, 2.0, 3.0, 4.0)), vec4(v_custom_${i+1}));`;
+                    fsComp += `xbsjv += dot(step(vec4(0.0-0.1, 1.0-0.1, 2.0-0.1, 3.0-0.1), vec4(xbsji-${sub})) * step(vec4(xbsji-${sub}), vec4(0.0+0.1, 1.0+0.1, 2.0+0.1, 3.0+0.1)), vec4(v_custom_${i+1}));`;
                 }
                 if (last > 0) {
                     const la = an;
@@ -103,7 +103,7 @@ function createVertexShad() {
                     vsBody += `v_custom_${la+1}=a_custom_${la+1};`;
                     const sub = (la*4).toFixed(1);
                     const patch = ', 0.0'.repeat(4 - last);
-                    fsComp += `xbsjv += dot(step(vec4(0.0, 1.0, 2.0, 3.0), vec4(xbsji-${sub})) * step(vec4(xbsji-${sub}), vec4(1.0, 2.0, 3.0, 4.0)), vec4(v_custom_${la+1}${patch}));`;
+                    fsComp += `xbsjv += dot(step(vec4(0.0-0.1, 1.0-0.1, 2.0-0.1, 3.0-0.1), vec4(xbsji-${sub})) * step(vec4(xbsji-${sub}), vec4(0.0+0.1, 1.0+0.1, 2.0+0.1, 3.0+0.1)), vec4(v_custom_${la+1}${patch}));`;
                 }
 
                 var cs = {
