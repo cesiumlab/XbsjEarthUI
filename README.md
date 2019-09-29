@@ -6,7 +6,8 @@ _我愿与你同行，因你势不可挡！_
 
 ## 简介
 
-XbsjEarthUI 是一套基于 Cesium 和 EarthSDK 的三维 GIS/BIM 的应用框架，可以基于此定制自己的三维程序。
+XbsjEarthUI是基于Cesium和EarthSDK的三维GIS/BIM的UI模板，可以基于此定制自己的三维App。  
+官网地址: earthsdk.com
 
 * 使用指南  
     * github https://github.com/cesiumlab/XbsjEarthUI/wiki  
