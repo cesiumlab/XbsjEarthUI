@@ -188,8 +188,8 @@
                         'twoPostionsEditing'));
                     this._disposers.push(XE.MVVM.bind(this, 'positionEditing', CameraVideo, 'positionEditing'));
                     this._disposers.push(XE.MVVM.bind(this, 'rotationEditing', CameraVideo, 'rotationEditing'));
-                    this._disposers.push(XE.MVVM.bind(this, 'position', CameraVideo, 'position'));
-                    this._disposers.push(XE.MVVM.bind(this, 'rotation', CameraVideo, 'rotation'));
+                    this._disposers.push(XE.MVVM.bindPosition(this, 'position', CameraVideo, 'position'));
+                    this._disposers.push(XE.MVVM.bindPosition(this, 'rotation', CameraVideo, 'rotation'));
                     this._disposers.push(XE.MVVM.bind(this, 'near', CameraVideo, 'near'));
                     this._disposers.push(XE.MVVM.bind(this, 'far', CameraVideo, 'far'));
                     this._disposers.push(XE.MVVM.bind(this, 'showHelper', CameraVideo, 'showHelper'));

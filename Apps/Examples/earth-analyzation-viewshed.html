@@ -160,8 +160,8 @@
                     this._disposers.push(XE.MVVM.bind(this, 'twoPostionsEditing', viewshed, 'twoPostionsEditing'));
                     this._disposers.push(XE.MVVM.bind(this, 'positionEditing', viewshed, 'positionEditing'));
                     this._disposers.push(XE.MVVM.bind(this, 'rotationEditing', viewshed, 'rotationEditing'));
-                    this._disposers.push(XE.MVVM.bind(this, 'position', viewshed, 'position'));
-                    this._disposers.push(XE.MVVM.bind(this, 'rotation', viewshed, 'rotation'));
+                    this._disposers.push(XE.MVVM.bindPosition(this, 'position', viewshed, 'position'));
+                    this._disposers.push(XE.MVVM.bindPosition(this, 'rotation', viewshed, 'rotation'));
                     this._disposers.push(XE.MVVM.bind(this, 'near', viewshed, 'near'));
                     this._disposers.push(XE.MVVM.bind(this, 'far', viewshed, 'far'));
                     this._disposers.push(XE.MVVM.bindDegreeRadian(this, 'fovH', viewshed, 'fovH'));
