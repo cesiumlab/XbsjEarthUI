@@ -70,6 +70,7 @@ import ModelTool from "./viztools/ModelTool";
 import PolylineTool from "./viztools/PolylineTool";
 import GeoCurveArrow from "./viztools/GeoCurveArrow";
 import GeoDoubleArrow from "./viztools/GeoDoubleArrow";
+import GeoPolygon from "./viztools/GeoPolygon";
 import GeoSectorSearch from "./viztools/GeoSectorSearch";
 import GeoPolylineArrow from "./viztools/GeoPolylineArrow";
 import GeoTriFlag from "./viztools/GeoTriFlag";
@@ -110,6 +111,7 @@ export default {
     PolylineTool,
     GeoCurveArrow,
     GeoDoubleArrow,
+    GeoPolygon,
     GeoSectorSearch,
     GeoPolylineArrow,
     GeoTriFlag,
@@ -154,6 +156,7 @@ export default {
         GeoPolylineArrow: "GeoPolylineArrow",
         GeoTriFlag: "GeoTriFlag",
         GeoDoubleArrow: "GeoDoubleArrow",
+        GeoPolygon:"GeoPolygon",
         ["CameraView.View"]: "CameraViewPrp"
       },
       tools: [

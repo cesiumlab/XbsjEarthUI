@@ -63,15 +63,17 @@
           <div class="xbsj-item-btn DoubleArrow"></div>
           <span class="xbsj-item-name">{{lang.DoubleArrow}}</span>
         </div>
+        <!-- 多边形 -->
+        <div class="xbsj-item-btnbox" @click="Polygon">
+          <div class="xbsj-item-btn facebutton"></div>
+          <span class="xbsj-item-name">{{lang.face}}</span>
+        </div>
 
         <!-- <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn spotbutton"></div>
           <span class="xbsj-item-name">{{lang.spot}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn facebutton"></div>
-          <span class="xbsj-item-name">{{lang.face}}</span>
-        </div>
+
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn charactersbutton"></div>
           <span class="xbsj-item-name">{{lang.characters}}</span>
@@ -188,6 +190,15 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    // 多边形
+    Polygon(){
+      var Polygon = new XE.Obj.Plots.GeoPolygon(this.$root.$earth);
+      console.log(Polygon);
+      Polygon.creating = true;
+      Polygon.isCreating = true;
+      Polygon.name = "多边形";
+      this.$root.$earthUI.showPropertyWindow(Polygon);
+    },
     //双箭头
     DoubleArrow() {
       var DoubleArrow = new XE.Obj.Plots.GeoDoubleArrow(this.$root.$earth);
