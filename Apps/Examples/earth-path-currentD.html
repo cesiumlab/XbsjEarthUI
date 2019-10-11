@@ -83,7 +83,9 @@
             data() {
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
-                    currentD: 0, // 相机当前位置
+                    // 当前步进距离
+                    // 指当前播放状态下由第一个关键点沿路径运动到当前位置的长度，单位是米。
+                    currentD: 0,
                     cameraAttached: false
                 };
             },
@@ -91,6 +93,7 @@
             mounted() {
                 // 1.1.1 创建地球
                 var earth = new XE.Earth(this.$refs.earthContainer);
+                // enabled 是否启用
                 earth.interaction.picking.enabled = true;
 
                 // 1.1.2 场景配置
@@ -154,8 +157,8 @@
                                 ]
                             ],
                             "show": true, // 显示路径
-                            "loop": true, // 环形
-                            "showDirection": false // 隐藏相机 
+                            "loop": true, // 是否为环线
+                            "showDirection": false // 显示方向(默认为true)
                         }
                     }, {
                         "czmObject": {
@@ -182,6 +185,7 @@
 
                 // 1.1.4 跟踪 
                 // 单向绑定的属性，pin将跟踪path1，但pin发生变化path1并不会跟踪！
+                // currentPosition 当前相机位置，形式如：[0, 0, 0] 该数组中的元素分别表示经度（单位弧度）、纬度（单位弧度）、高度（单位米）。 注意该属性，为只读属性！
                  this._pinUnbind = XE.MVVM.track(pin, 'position' , path1 , 'currentPosition');
 
                 this._earth = earth;

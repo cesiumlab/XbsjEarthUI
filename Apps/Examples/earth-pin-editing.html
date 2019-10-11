@@ -75,6 +75,8 @@
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                     creating: false,
+                    // 是否处于编辑状态
+                    // 设置为true以后，将进入重新创建的状态；此时可以使用鼠标左键在三维窗口中选取需要修改路径的关键点，当点击鼠标右键，则表示编辑完成。此时该属性会自动变成false。
                     editing: false,
                     position: [0, 0, 0]
                 };

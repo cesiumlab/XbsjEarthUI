@@ -104,8 +104,13 @@
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                     show: true, // 控制路径的显示与隐藏，默认为隐藏
-                    currentSpeed: 0, // 当前运行速度
-                    currentD: 0, // 相机当前位置
+                    // 当前播放速度，单位为米/秒。
+                    // 注意，此属性可以实时修改，修改后的速度立即生效，所以可以动态修改路径上物体的前进速度！
+                    currentSpeed: 0,
+                    // 当前步进距离
+                    // 指当前播放状态下由第一个关键点沿路径运动到当前位置的长度，单位是米。
+                    // 当前playing属性为false时，此属性恒定不变；当playing为true，此属性会自动增加。 随着currentD的变化，会实时计算currentPosition、currentRotation这两个属性。 currentPosition指当前位置，currentRotation指当前姿态
+                    currentD: 0,
                     // pathflying: true,
                     playing: false,
                     cameraAttached: false,
@@ -521,6 +526,11 @@
                 path.currentSpeed = 2;
                 // 开始播放
                 // path.playing = true;
+                
+                // 当前相机是否可见 
+                // 当前相机指位于currentPosition处的一个相机。
+                // 此属性，主要用来显示当前播放的位置，方便调试。
+                // 注意：当设置cameraAttached为true时，务必手动将此属性设置为false。否则相机绑定以后，会发现前方有一个物体遮挡整个画面！
                 path.currentShow = false;
                 path.show = false;
                 // path.cameraAttached = true;

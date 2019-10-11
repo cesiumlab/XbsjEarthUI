@@ -107,9 +107,7 @@ export default {
       langs: languagejs
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
     this.$nextTick(() => {
       this._disposers = this._disposers || [];
@@ -127,7 +125,6 @@ export default {
     this._disposers.forEach(d => d());
   },
   methods: {
-    
     startCameraVideo() {
       var demoVideo =
         XE.HTML.getScriptBaseUrl("XbsjEarthUI") + "/assets/demo.mp4";
@@ -167,7 +164,7 @@ export default {
     },
     clearResults() {
       this.$root.$earth.analyzation.measurement.clearResults();
-      this.$root.$earth.analyzation.cutFillComputing.clearResults(); 
+      this.$root.$earth.analyzation.cutFillComputing.clearResults();
     },
     startMove(event) {
       //如果事件的目标不是本el 返回

@@ -132,6 +132,7 @@
                 earth.terrainEffect.restrict = config;
 
                 // 1.1.3 数据绑定
+                // disposers 用来收集资源销毁函数，并在析构时自动调用！
                 {
                     this._disposers = [];
                     this._disposers.push(XE.MVVM.bind(this, 'creating', earth.terrainEffect.restrict, 'creating'));

@@ -20,11 +20,6 @@
             padding: 0px;
         }
 
-        .box span{
-            display: block;
-            margin-top: 10px;
-        }
-
         .defultbtn {
             display: inline-block;
             text-align: center;
@@ -52,6 +47,14 @@
             color: #fff;
             border: 1px solid #1E9FFF;
         }
+        select {
+            font-size: 20px;
+        }
+        .setbox span:nth-child(1) {
+            font-weight: bold;
+            display: inline-block;
+            margin: 5px 0;
+        }
     </style>
 </head>
 
@@ -71,23 +74,51 @@
                             <div class="defultbtn" :class="{'btnon':creating}" @click="creating = !creating">创建</div>
                             <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':editing}"  @click="editing = !editing">编辑</div>
                             <div class="defultbtn" style="margin-left:20px;" @click.stop=clickraise>抬高</div>
-                            <div class="defultbtn" style="margin-left:20px;" @click.stop=clickreduce>降低</div>
+                            <div class="defultbtn" style="margin-left:20px;" @click.stop=clickreduce>降低</div><br/>
+                            <div class="setbox" style="margin-top:5px">
+                                <span>平滑过渡</span><br/>
+                                <span>首个相机：</span>
+                                <select v-model="previous"><option v-for="item in previousArr">{{item}}</option></select>
+                                <span>末个相机：</span>
+                                <select v-model="next"><option v-for="item in nextArr">{{item}}</option></select>
+                                <div class="defultbtn" style="margin-left:20px;" @click="set">设置</div><br/>
+                                <span style="font-weight: bold; display: inline-block; margin: 5px 0 10px 0;">沿着路径方向</span><br/>
+                                <span>选择目标：</span><select multiple size="2" v-model="selectArr1"><option v-for="item in previousArr">{{item}}</option></select>
+                                <div class="defultbtn" style="margin-left:20px;" @click="alongThePath">确定</div><br/>
+                                <span style="font-weight: bold; display: inline-block; margin: 5px 0 10px 0;">相机指向</span><br/>
+                                <span>选择目标：</span><select multiple size="2" v-model="arr"><option v-for="item in previousArr">{{item}}</option></select>
+                                <div class="defultbtn" style="margin-left:20px;" @click="setdirection">指向位置</div>
+                                <div class="defultbtn" style="margin-left:20px;" @click="ok">确定</div><br/>
+                            </div>
                         </div>
                 </div>
             `,
             data() {
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    _pin: undefined,
+                    // 是否处于创建状态
+                    // 设置为true以后，将进入重新创建的状态；此时可以使用鼠标左键在三维窗口中点击来创建路径的关键点，当点击鼠标右键，则表示创建完成。此时该属性会自动变成false。
                     creating: false,
+                    // 是否处于编辑状态
+                    // 设置为true以后，将进入重新创建的状态；此时可以使用鼠标左键在三维窗口中选取需要修改路径的关键点，当点击鼠标右键，则表示编辑完成。此时该属性会自动变成false。
                     editing: false,
                     raise: false,
-                    reduce: false
+                    reduce: false,
+                    previous: 0,
+                    next: 0,
+                    previousArr: [],
+                    nextArr: [],
+                    selectArr1: [],
+                    arr: [],
+                    position: []
                 };
             },
             // 1.1 资源创建
             mounted() {
                 // 1.1.1 创建地球
                 var earth = new XE.Earth(this.$refs.earthContainer);
+                // enabled 是否启用
                 earth.interaction.picking.enabled = true;
 
                 // 1.1.2 场景配置
@@ -108,53 +139,108 @@
                             "xbsjType": "Path",
                             "positions": [
                                 [
-                                    1.9016746584889261,
-                                    0.5972140444354529,
-                                    540.3422462577171
+                                    1.901680132420559,
+                                    0.5972182908445829,
+                                    433.0683171316799
                                 ],
                                 [
-                                    1.9017267341518718,
-                                    0.5972133503414322,
-                                    520.1137699152557
+                                    1.9016955279727528,
+                                    0.5972181452778111,
+                                    423.12350415411714
                                 ],
                                 [
-                                    1.9017257997179968,
-                                    0.5972736030398242,
-                                    528.3876170108886
+                                    1.9017145828580002,
+                                    0.5972208009081579,
+                                    425.4850832912241
                                 ],
                                 [
-                                    1.9016747349263112,
-                                    0.5972754003153069,
-                                    521.087861389408
+                                    1.9017262789547222,
+                                    0.5972351096523284,
+                                    422.8497499192048
+                                ],
+                                [
+                                    1.901727649590904,
+                                    0.5972528175704416,
+                                    430.28505722755125
+                                ],
+                                [
+                                    1.9017257110942418,
+                                    0.5972725123064561,
+                                    424.4079951073853
+                                ],
+                                [
+                                    1.9017036577863207,
+                                    0.5972724396334318,
+                                    424.7490241854184
+                                ],
+                                [
+                                    1.901686600965538,
+                                    0.5972705593917232,
+                                    427.02149479702354
+                                ],
+                                [
+                                    1.9016766994617944,
+                                    0.5972603070896778,
+                                    431.7015124084112
                                 ]
                             ],
                             "rotations": [
                                 [
-                                    6.868275118748086,
-                                    -0.2742692911775144,
-                                    0.0016584301080495578
+                                    0.09013100029970911,
+                                    -0.18377735899612802,
+                                    0.003054530379764664
                                 ],
                                 [
-                                    5.703866308921896,
-                                    -0.19385405041989068,
-                                    6.281509509407803
+                                    6.2774807418185326,
+                                    -0.027139787365685564,
+                                    0.003118310344536468
                                 ],
                                 [
-                                    3.8005195675504133,
-                                    -0.2597408290639396,
-                                    6.281339310424716
+                                    5.661660276351502,
+                                    -0.021720571300320346,
+                                    0.002535544669053813
                                 ],
                                 [
-                                    2.501667530825695,
-                                    -0.2173829253288364,
-                                    0.001819016773946025
+                                    4.981394998665019,
+                                    0.05285693534942659,
+                                    0.0008279383261120543
+                                ],
+                                [
+                                    4.8175908508971865,
+                                    -0.01246899314535077,
+                                    0.0003275578935015844
+                                ],
+                                [
+                                    3.5587596233006114,
+                                    -0.02089253969273508,
+                                    6.28033382242212
+                                ],
+                                [
+                                    3.1760456928764027,
+                                    0.0119204105288373,
+                                    6.280067735240507
+                                ],
+                                [
+                                    2.6119489784580585,
+                                    0.04429838944262987,
+                                    6.280495736703571
+                                ],
+                                [
+                                    1.96205879990623,
+                                    0.059989205852726935,
+                                    6.28199776080986
                                 ]
                             ],
                             "show": true, // 显示路径
-                            "loop": true, // 环形                           
-                            "showDirection": true, // 显示相机
-                            "playing": false, // 飞行
-                            "loopPlay": false // 循环飞行
+                            "loop": false, // 是否为环线                           
+                            "showDirection": true, // 显示方向(默认为true)
+                            // 是否处于播放状态
+                            // 如果属性值为true，则所有'current'开头的相关属性会动态发生变化。 可以通过手动设置为false，来结束播放状态。 当loopPlay属性为false时，playing属性会在路径播放到最后一个关键点的位置时，自动变为false。
+                            "playing": false,
+                            // 是否循环播放
+                            // 如果为false，则playing设置为true时，会从当前位置播放到最后一个关键点，并停止播放，此时playing属性会自动变成false。 若此属性为true时，播放到最后一个关键点以后，将自动重第一个关键点继续播放。
+                            "loopPlay": false,
+                            "alwaysAlongThePath": true // 始终沿着路径方向运动(默认值为false)
                         }
                     }, {
                         "czmObject": {
@@ -167,11 +253,26 @@
 
                 var tileset = earth.sceneTree.$refs.tileset.czmObject;
                 var path1 = earth.sceneTree.$refs.path1.czmObject;
+                var pin = new XE.Obj.Pin(earth);
+
+                // 定义一个pin为相机排序
+                var ps = path1.positions.map((e, i) => {
+                    var pin = new XE.Obj.Pin(earth);
+                    pin.position = e;
+                    pin.pinBuilder.text = '' + i;
+                    return pin;
+                })
+
+                var cameraLength = path1.positions.length;
+                for(var i=0; i<cameraLength; i++) {
+                    this.previousArr.push(i);
+                    this.nextArr.push(i);
+                }
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position =  [1.9017073702674707,0.5971714205484976,916.2867751683672];
-                earth.camera.rotation = [1.794120407794253e-13,-0.7854502013470803,1.0658141036401503e-14];
+                earth.camera.position =  [1.901703273472499,0.5971739421771012,965.6307343927805];
+                earth.camera.rotation = [1.758593271006248e-13,-0.7854502059287727,6.283185307179586];
 
                 // 1.1.5 数据绑定
                 this._creatingUnbind = XE.MVVM.bind(this, 'creating', path1, 'creating');
@@ -183,19 +284,60 @@
                 window.tileset = tileset;
                 window.path1 = path1;
                 window.earth = earth;
+                window.pin = pin;
             },
             methods: {
                 // 抬高相机路径，每次加10
                 clickraise() {
                     this.raise = true;
                     this.reduce = false;
+                    // 同时给所有关键点增加高度
                     path1.addHeight(10);
                 },
                 // 降低相机路径，每次减10
                 clickreduce() {
                     this.reduce = true;
                     this.raise = false;
+                    // 同时给所有关键点增加高度
                     path1.addHeight(-10);
+                },
+                alongThePath() {
+                    if(this.selectArr1.length === 0) {
+                        // directionAlongThePath(includeIndex)
+                        // 自动延沿路径计算关键点的姿态
+                        // 注意：如果不设置参数，从修改所有关键点的姿态
+                        // includeIndex是一个数组，囊括所有需要计算的关键点的索引。
+                        path1.directionAlongThePath();
+                    } else {
+                        var selectNumArr1 = this.selectArr1.map(Number);
+                        path1.directionAlongThePath(selectNumArr1);
+                    }                   
+                },
+                set() {
+                    // directionLerpBetween(first, last)
+                    // 根据索引值为first和last的关键点的姿态，对first和last之间的关键点自动进行插值处理。
+                    // 这样操作，可以做到自动进行相机姿态的平滑
+                    // 如果参数不写，则自动根据首末关键点的姿态插值中间所有关键点的姿态。
+                    // 注意：first务必小于last
+                    path1.directionLerpBetween(this.previous, this.next);
+                },
+                ok() {
+                    this.position = [...pin.position];
+                    if(this.arr.length === 0) {
+                        // targetTo(target, includeIndex)
+                        // 将所有关键点的方向指向target所在位置
+                        // target用来表示观察位置，包含三个元素的数组，分别表示经度、纬度、高度
+                        // includeIndex索引数组，如果有值，则指只处理includeIndex有的索引，如果无值，则全部处理
+                        path1.targetTo(this.position);
+                    } else {
+                        var arrnum = this.arr.map(Number);;
+                        path1.targetTo(this.position, arrnum);
+                    }  
+                },
+                setdirection() {
+                    pin.creating = true;
+                    pin.pinBuilder.text = "目标点";
+                    pin.pinBuilder.size = 80;
                 }
             },
             // 1.2 资源销毁
@@ -204,6 +346,7 @@
                 this._creatingUnbind = this._creatingUnbind && this._creatingUnbind();
                 this._editingUnbind = this._editingUnbind && this._editingUnbind();
                 this._earth = this._earth && this._earth.destroy();
+                this._uw = this._uw && this._uw();
             },
         }
 

@@ -102,6 +102,7 @@
                 window.tileset2 = tileset2;
 
                 // 1.1.5 数据绑定
+                // disposers 用来收集资源销毁函数，并在析构时自动调用！
                 {
                     this._disposers = [];
                     this._disposers.push(XE.MVVM.bind(this, 'measureMentType', earth.analyzation.measurement, 'type'));
