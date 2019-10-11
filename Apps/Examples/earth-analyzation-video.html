@@ -73,9 +73,9 @@
                             <span>高度：{{position[2] | numFilter}}m</span> 
                         </div>
                         <div>
-                            <span>偏航角：{{rotation[0] | numFilter2}}°</span> 
-                            <span>俯仰角：{{rotation[1] | numFilter2}}°</span> 
-                            <span>翻滚角：{{rotation[2] | numFilter2}}°</span> 
+                            <span>偏航角：{{rotation[0] | numFilter2}}度</span> 
+                            <span>俯仰角：{{rotation[1] | numFilter2}}度</span> 
+                            <span>翻滚角：{{rotation[2] | numFilter2}}度</span> 
                         </div>
                         <div>
                             <span>近裁：<input type="text" v-model.number="near"></span><br/>    
@@ -136,7 +136,7 @@
                                         }
                                     },
                                     {
-                                        "ref": "CameraVideo",
+                                        "ref": "cameravideo",
                                         "czmObject": {
                                             "xbsjType": "CameraVideo",
                                             "xbsjGuid": "19e84dea-2faa-4949-95c2-8d333a03e0c7",
@@ -178,24 +178,25 @@
                     }
                 });
                 window.earth = earth; // only for Debug
-                window.CameraVideo = earth.sceneTree.$refs.CameraVideo.czmObject;
+                window.cameravideo = earth.sceneTree.$refs.cameravideo.czmObject;
+                this._cameravideo = cameravideo;
 
 
                 // 1.1.5 数据绑定
                 {
                     this._disposers = [];
-                    this._disposers.push(XE.MVVM.bind(this, 'twoPostionsEditing', CameraVideo,
+                    this._disposers.push(XE.MVVM.bind(this, 'twoPostionsEditing', cameravideo,
                         'twoPostionsEditing'));
-                    this._disposers.push(XE.MVVM.bind(this, 'positionEditing', CameraVideo, 'positionEditing'));
-                    this._disposers.push(XE.MVVM.bind(this, 'rotationEditing', CameraVideo, 'rotationEditing'));
-                    this._disposers.push(XE.MVVM.bind(this, 'position', CameraVideo, 'position'));
-                    this._disposers.push(XE.MVVM.bind(this, 'rotation', CameraVideo, 'rotation'));
-                    this._disposers.push(XE.MVVM.bind(this, 'near', CameraVideo, 'near'));
-                    this._disposers.push(XE.MVVM.bind(this, 'far', CameraVideo, 'far'));
-                    this._disposers.push(XE.MVVM.bind(this, 'showHelper', CameraVideo, 'showHelper'));
-                    this._disposers.push(XE.MVVM.bind(this, 'videoUrl', CameraVideo, 'videoUrl'));
-                    this._disposers.push(XE.MVVM.bindDegreeRadian(this, 'fovH', CameraVideo, 'fovH'));
-                    this._disposers.push(XE.MVVM.bindDegreeRadian(this, 'fovV', CameraVideo, 'fovV'));
+                    this._disposers.push(XE.MVVM.bind(this, 'positionEditing', cameravideo, 'positionEditing'));
+                    this._disposers.push(XE.MVVM.bind(this, 'rotationEditing', cameravideo, 'rotationEditing'));
+                    this._disposers.push(XE.MVVM.bind(this, 'position', cameravideo, 'position'));
+                    this._disposers.push(XE.MVVM.bind(this, 'rotation', cameravideo, 'rotation'));
+                    this._disposers.push(XE.MVVM.bind(this, 'near', cameravideo, 'near'));
+                    this._disposers.push(XE.MVVM.bind(this, 'far', cameravideo, 'far'));
+                    this._disposers.push(XE.MVVM.bind(this, 'showHelper', cameravideo, 'showHelper'));
+                    this._disposers.push(XE.MVVM.bind(this, 'videoUrl', cameravideo, 'videoUrl'));
+                    this._disposers.push(XE.MVVM.bindDegreeRadian(this, 'fovH', cameravideo, 'fovH'));
+                    this._disposers.push(XE.MVVM.bindDegreeRadian(this, 'fovV', cameravideo, 'fovV'));
                 }
                 // 1.2.5 变量记录
                 this._earth = earth;
@@ -214,7 +215,7 @@
             },
             methods: {
                 setPositionWithCurrentCamera() {
-                    this._viewshed && this._viewshed.setPositionWithCurrentCamera();
+                    this._cameravideo && this._cameravideo.setPositionWithCurrentCamera();
                 }
             },
             // 1.2 资源销毁
