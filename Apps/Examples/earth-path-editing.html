@@ -12,6 +12,7 @@
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <script src="./scripts/vue.min.js"></script>
     <script src="./scripts/iview.min.js"></script>
+    <link rel="stylesheet" href="./scripts/iview.css">
     <style>
         html,
         body {
@@ -37,6 +38,7 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            margin-bottom: 12px;
         }
 
         .defultbtn:hover {
@@ -56,17 +58,43 @@
             display: inline-block;
             margin: 5px 0;
         }
-        .ivu-tag-checked {
-            width: 16px;
-            display: inline-block;
-        }
-        .ivu-select-dropdown {
-            background: white;
-        } 
         .ivu-tooltip-popper {
+            left: 20px !important;
+        }
+        .ivu-select-selection {
+            border-radius: 0;
+        }
+        .ivu-select-multiple .ivu-tag span:not(.ivu-select-max-tag) {
+            margin-top: 0px;
+        }
+        button {
+            width: 200px;
+            background: transparent;
+            border: none;
+            color: white;
+            letter-spacing: 18px;
+            font-weight: bold;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        .ivu-select-multiple .ivu-select-selection .ivu-select-placeholder {
+            height: 20px;
+            line-height: 20px;
             color: black;
-            background: #ffffff;
-            left: 30px !important;
+            font-family: "宋体";
+            font-size: 20px;
+            font-weight: normal;
+        }
+        .ivu-select-single .ivu-select-selection .ivu-select-selected-value {
+            height: 20px;
+            line-height: 20px;
+            font-size: 20px;
+        }
+        .ivu-tag {
+            font-size: 20px;
+        }
+        .ivu-select-item {
+            font-size: 20px !important;
         }
     </style>
 </head>
@@ -90,31 +118,35 @@
                             <div class="defultbtn" style="margin-left:20px;" @click.stop=clickreduce>降低</div><br/>
                             <hr/>
                             <div class="setbox" style="margin-top:5px">
-                                <Tooltip max-width="450" style="cursor: pointer;" content="平滑过渡：对首末两个相机之间的相机自动进行插值处理，这样可以做到自动进行相机姿态的平滑。操作方法：点击下拉框根据相机编号选择要进行平滑过渡的首末两个相机，再点击设置按钮就可以做到相机姿态的平滑。注意：首个相机的编号务必要小于末个相机的编号">
-                                    <span style="cursor: pointer;">平滑过渡</span>
-                                </Tooltip>
-                                <span>首个相机：</span>
-                                <select v-model="previous"><option v-for="item in previousArr">{{item}}</option></select>
+                                <Tooltip max-width="200" content="平滑过渡：对首末两个相机之间的相机自动进行插值处理，这样可以做到自动进行相机姿态的平滑。操作方法：点击下拉框根据相机编号选择要进行平滑过渡的首末两个相机，再点击设置按钮就可以做到相机姿态的平滑。注意：首个相机的编号务必要小于末个相机的编号">
+                                    <button style="width:200px;">平滑过渡</button>
+                                </Tooltip><br/>
+                                <span>首个相机：</span>                                
+                                <Select v-model="previous" style="width:60px">
+                                    <Option v-for="item in previousArr" :value="item" :key="item">{{ item }}</Option>
+                                </Select>
                                 <span>末个相机：</span>
-                                <select v-model="next"><option v-for="item in nextArr">{{item}}</option></select>
+                                <Select v-model="next" style="width:60px">
+                                    <Option v-for="item in nextArr" :value="item" :key="item">{{ item }}</Option>
+                                </Select>
                                 <div class="defultbtn" style="margin-left:20px;" @click="set">设置</div><br/>
                                 <hr/>
-                                <Tooltip max-width="450" style="cursor: pointer;" content="沿着路径方向：自动沿路径计算相机的姿态。注意：如果不设置参数，将会修改所有相机的姿态。操作方法：点击下拉框选择相机编号，再点击确定按钮即可。">
-                                    <span style="font-weight: bold; display: inline-block; margin: 5px 0 10px 0; cursor: pointer;">沿着路径方向</span>
-                                </Tooltip>
-                                <span>选择目标：</span><Select v-model="selectArr1" multiple style="width:230px; display:inline-block; color: black; background: white;">
+                                <Tooltip max-width="300" content="沿着路径方向：自动沿路径计算相机的姿态。注意：如果不选择相机，将会修改所有相机的姿态。操作方法：点击下拉框选择相机编号，再点击确定按钮即可。">
+                                    <button style="width: 300px;">沿着路径方向</button>
+                                </Tooltip><br/>
+                                <span>选择目标：</span><Select v-model="selectArr1" multiple style="width:276px; display:inline-block; color: black; background: white;">
                                     <Option v-for="item in previousArr" :value="item" :key="item">{{ item }}</Option>
                                 </Select>
                                 <div class="defultbtn" style="margin-left:20px;" @click="alongThePath">确定</div><br/>
                                 <hr/>
-                                <Tooltip max-width="450" style="cursor: pointer;" content="相机指向：将相机的方向指向目标点所在位置。点击目标点按钮来确定目标点所在位置，点击下拉框选择要进行操作的相机，再点击确定按钮即可将选择的相机方向指向目标点。注意：如果不选择相机将会将所有相机指向目标点，如果不选择目标点将会指向默认位置。">
-                                    <span style="font-weight: bold; display: inline-block; margin: 5px 0 10px 0; cursor: pointer;">相机指向</span><br/>
-                                </Tooltip>
-                                <span>选择目标：</span><Select v-model="arr" multiple style="width:104px; display:inline-block; color: black; background: white;">
+                                <Tooltip max-width="200" content="相机指向：将相机的方向指向目标点所在位置。操作方法：点击目标点按钮来确定目标点所在位置，点击下拉框选择要进行操作的相机，再点击确定按钮即可将选择的相机方向指向目标点。注意：如果不选择相机将会将所有相机指向目标点，如果不选择目标点将会指向默认位置。">
+                                    <button>相机指向</button><br/>
+                                </Tooltip><br/>
+                                <span>选择目标：</span><Select v-model="arr" multiple style="width:170px; display:inline-block; color: black; background: white;">
                                     <Option v-for="item in previousArr" :value="item" :key="item">{{ item }}</Option>
                                 </Select>
-                                <div class="defultbtn" style="margin-left:20px;" @click="setdirection">目标点</div>
-                                <div class="defultbtn" style="margin-left:20px;" @click="ok">确定</div><br/>
+                                <div class="defultbtn" style="margin-left:10px;" @click="setdirection">目标点</div>
+                                <div class="defultbtn" style="margin-left:10px;" @click="ok">确定</div><br/>
                             </div>
                         </div>
                 </div>
