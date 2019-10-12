@@ -84,6 +84,13 @@
                 // 1.1.1 创建地球
                 var earth = new XE.Earth(this.$refs.earthContainer);
 
+                earth.weather.atmosphere.enabled = false;
+                earth.weather.skyBox.enabled = false;
+                earth.czm.scene.backgroundColor = new Cesium.Color(0.2, 0.2, 0.2, 1.0);
+                earth.weather.sun.enabled = false;
+                earth.weather.moon.enabled = false;
+                earth.terrainEffect.subSurfaceEnabled = true;
+
                 earth.sceneTree.root = {
                     "children": [
                         {
@@ -113,7 +120,6 @@
                         // }
                     ]
                 }
-
 
                 const config = {
                     "positions": [
