@@ -67,6 +67,8 @@
                         <div class="defultbtn" :class="{'btnon':editing}"  @click="editing = !editing">编辑</div>
                         <div class="defultbtn" :class="{'btnon':innerDiscard}"  @click="innerDiscard = !innerDiscard">挖坑</div>
                         <div class="defultbtn" :class="{'btnon':enabled}"  @click="enabled = !enabled">启用</div>
+                        <div class="defultbtn" :class="{'btnon':showHelper}"  @click="showHelper = !showHelper">辅助线框显示</div>
+                        <div class="defultbtn" @click="flyTo">飞入</div>
                     </div>
                 </div>
             `,
@@ -75,7 +77,8 @@
                     creating: false,
                     editing: false,
                     innerDiscard: false,
-                    enabled: false,                    
+                    enabled: false,     
+                    showHelper: false,               
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                 };
             },
@@ -145,6 +148,7 @@
                     this._disposers.push(XE.MVVM.bind(this, 'editing', earth.terrainEffect.restrict, 'editing'));
                     this._disposers.push(XE.MVVM.bind(this, 'innerDiscard', earth.terrainEffect.restrict, 'innerDiscard'));
                     this._disposers.push(XE.MVVM.bind(this, 'enabled', earth.terrainEffect.restrict, 'enabled'));
+                    this._disposers.push(XE.MVVM.bind(this, 'showHelper', earth.terrainEffect.restrict, 'showHelper'));
                 }
 
                 this._earth = earth;
@@ -159,6 +163,11 @@
                 this._disposers.forEach(d => d());
                 this._disposers.length = 0;
             },
+            methods: {
+                flyTo() {
+                    earth.terrainEffect.restrict.flyTo();
+                }
+            }
         }
 
         // 2 创建vue程序
