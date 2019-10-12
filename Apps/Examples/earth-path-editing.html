@@ -11,6 +11,7 @@
     <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <script src="./scripts/vue.min.js"></script>
+    <script src="./scripts/iview.min.js"></script>
     <style>
         html,
         body {
@@ -55,6 +56,18 @@
             display: inline-block;
             margin: 5px 0;
         }
+        .ivu-tag-checked {
+            width: 16px;
+            display: inline-block;
+        }
+        .ivu-select-dropdown {
+            background: white;
+        } 
+        .ivu-tooltip-popper {
+            color: black;
+            background: #ffffff;
+            left: 30px !important;
+        }
     </style>
 </head>
 
@@ -75,19 +88,32 @@
                             <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':editing}"  @click="editing = !editing">编辑</div>
                             <div class="defultbtn" style="margin-left:20px;" @click.stop=clickraise>抬高</div>
                             <div class="defultbtn" style="margin-left:20px;" @click.stop=clickreduce>降低</div><br/>
+                            <hr/>
                             <div class="setbox" style="margin-top:5px">
-                                <span>平滑过渡</span><br/>
+                                <Tooltip max-width="450" style="cursor: pointer;" content="平滑过渡：对首末两个相机之间的相机自动进行插值处理，这样可以做到自动进行相机姿态的平滑。操作方法：点击下拉框根据相机编号选择要进行平滑过渡的首末两个相机，再点击设置按钮就可以做到相机姿态的平滑。注意：首个相机的编号务必要小于末个相机的编号">
+                                    <span style="cursor: pointer;">平滑过渡</span>
+                                </Tooltip>
                                 <span>首个相机：</span>
                                 <select v-model="previous"><option v-for="item in previousArr">{{item}}</option></select>
                                 <span>末个相机：</span>
                                 <select v-model="next"><option v-for="item in nextArr">{{item}}</option></select>
                                 <div class="defultbtn" style="margin-left:20px;" @click="set">设置</div><br/>
-                                <span style="font-weight: bold; display: inline-block; margin: 5px 0 10px 0;">沿着路径方向</span><br/>
-                                <span>选择目标：</span><select multiple size="2" v-model="selectArr1"><option v-for="item in previousArr">{{item}}</option></select>
+                                <hr/>
+                                <Tooltip max-width="450" style="cursor: pointer;" content="沿着路径方向：自动沿路径计算相机的姿态。注意：如果不设置参数，将会修改所有相机的姿态。操作方法：点击下拉框选择相机编号，再点击确定按钮即可。">
+                                    <span style="font-weight: bold; display: inline-block; margin: 5px 0 10px 0; cursor: pointer;">沿着路径方向</span>
+                                </Tooltip>
+                                <span>选择目标：</span><Select v-model="selectArr1" multiple style="width:230px; display:inline-block; color: black; background: white;">
+                                    <Option v-for="item in previousArr" :value="item" :key="item">{{ item }}</Option>
+                                </Select>
                                 <div class="defultbtn" style="margin-left:20px;" @click="alongThePath">确定</div><br/>
-                                <span style="font-weight: bold; display: inline-block; margin: 5px 0 10px 0;">相机指向</span><br/>
-                                <span>选择目标：</span><select multiple size="2" v-model="arr"><option v-for="item in previousArr">{{item}}</option></select>
-                                <div class="defultbtn" style="margin-left:20px;" @click="setdirection">指向位置</div>
+                                <hr/>
+                                <Tooltip max-width="450" style="cursor: pointer;" content="相机指向：将相机的方向指向目标点所在位置。点击目标点按钮来确定目标点所在位置，点击下拉框选择要进行操作的相机，再点击确定按钮即可将选择的相机方向指向目标点。注意：如果不选择相机将会将所有相机指向目标点，如果不选择目标点将会指向默认位置。">
+                                    <span style="font-weight: bold; display: inline-block; margin: 5px 0 10px 0; cursor: pointer;">相机指向</span><br/>
+                                </Tooltip>
+                                <span>选择目标：</span><Select v-model="arr" multiple style="width:104px; display:inline-block; color: black; background: white;">
+                                    <Option v-for="item in previousArr" :value="item" :key="item">{{ item }}</Option>
+                                </Select>
+                                <div class="defultbtn" style="margin-left:20px;" @click="setdirection">目标点</div>
                                 <div class="defultbtn" style="margin-left:20px;" @click="ok">确定</div><br/>
                             </div>
                         </div>
@@ -111,7 +137,7 @@
                     nextArr: [],
                     selectArr1: [],
                     arr: [],
-                    position: []
+                    position: [],
                 };
             },
             // 1.1 资源创建
@@ -304,20 +330,18 @@
                 alongThePath() {
                     if(this.selectArr1.length === 0) {
                         // directionAlongThePath(includeIndex)
-                        // 自动延沿路径计算关键点的姿态
+                        // 自动沿路径计算关键点的姿态
                         // 注意：如果不设置参数，从修改所有关键点的姿态
                         // includeIndex是一个数组，囊括所有需要计算的关键点的索引。
                         path1.directionAlongThePath();
                     } else {
-                        var selectNumArr1 = this.selectArr1.map(Number);
-                        path1.directionAlongThePath(selectNumArr1);
+                        // var selectNumArr1 = this.selectArr1.map(Number);
+                        path1.directionAlongThePath(this.selectArr1);
                     }                   
                 },
                 set() {
                     // directionLerpBetween(first, last)
                     // 根据索引值为first和last的关键点的姿态，对first和last之间的关键点自动进行插值处理。
-                    // 这样操作，可以做到自动进行相机姿态的平滑
-                    // 如果参数不写，则自动根据首末关键点的姿态插值中间所有关键点的姿态。
                     // 注意：first务必小于last
                     path1.directionLerpBetween(this.previous, this.next);
                 },
@@ -330,8 +354,8 @@
                         // includeIndex索引数组，如果有值，则指只处理includeIndex有的索引，如果无值，则全部处理
                         path1.targetTo(this.position);
                     } else {
-                        var arrnum = this.arr.map(Number);;
-                        path1.targetTo(this.position, arrnum);
+                        // var arrnum = this.arr.map(Number);
+                        path1.targetTo(this.position, this.arr);
                     }  
                 },
                 setdirection() {
