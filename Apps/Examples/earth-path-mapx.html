@@ -102,9 +102,6 @@
             mounted() {
                 // 1.1.1 创建地球
                 var earth = new XE.Earth(this.$refs.earthContainer);
-               
-                // enabled 是否启用
-                earth.interaction.picking.enabled = true;
 
                 // 1.1.2 场景配置
                 earth.sceneTree.root = {
@@ -213,8 +210,6 @@
 
                 // 2.1.1 创建地球
                 var earth2 = new XE.Earth(this.$refs.earthContainer2);
-                // enabled 是否启用
-                earth2.interaction.picking.enabled = true;
                 // 关闭指北针和比例尺
                 earth2.camera.navigator.showCompass = false;
                 earth2.camera.navigator.showDistanceLegend = false;
