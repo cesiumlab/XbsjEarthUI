@@ -93,7 +93,9 @@
             mounted() {
                 // 1.1.1 创建地球
                 var earth = new XE.Earth(this.$refs.earthContainer);
-                earth.interaction.picking.enabled = true;
+
+                earth.camera.navigator.showCompass = true; // 显示指北针
+                earth.camera.navigator.showDistanceLegend = true; // 显示比例尺                
 
                 // 1.1.2 场景配置
                 earth.sceneTree.root = {
