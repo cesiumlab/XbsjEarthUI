@@ -240,7 +240,7 @@ export default {
         XE.MVVM.bind(
           this,
           "baseColor",
-          this.$root.$earth.effect,
+          this.$root.$earth.terrainEffect,
           "baseColor"
         )
       );
