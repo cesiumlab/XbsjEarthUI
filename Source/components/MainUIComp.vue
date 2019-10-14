@@ -76,7 +76,6 @@ import GeoPolylineArrow from "./viztools/GeoPolylineArrow";
 import GeoTriFlag from "./viztools/GeoTriFlag";
 import ScanlineTool from "./viztools/ScanlineTool";
 
-
 import CamerVideoTool from "./viztools/CamerVideoTool";
 import ViewshedTool from "./viztools/ViewshedTool";
 
@@ -148,7 +147,7 @@ export default {
         PinDivTool: "PinDivTool",
         PinPictureTool: "PinPictureTool",
         Path: "PathTool",
-        Scanline:'ScanlineTool',
+        Scanline: "ScanlineTool",
         Model: "ModelTool",
         Polyline: "PolylineTool",
         GeoCurveArrow: "GeoCurveArrow",
@@ -156,7 +155,7 @@ export default {
         GeoPolylineArrow: "GeoPolylineArrow",
         GeoTriFlag: "GeoTriFlag",
         GeoDoubleArrow: "GeoDoubleArrow",
-        GeoPolygon:"GeoPolygon",
+        GeoPolygon: "GeoPolygon",
         ["CameraView.View"]: "CameraViewPrp"
       },
       tools: [
@@ -209,10 +208,73 @@ export default {
           ref: "modelTreeTool"
         }
       ],
-      infos: []
+      infos: [],
+      jsontext: ""
     };
   },
-  mounted() {},
+  mounted() {
+    let xbsjcesium = this.$refs.xbsjcesium;
+    let that = this;
+
+    function handleDragOver(e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    function handleFileSelect(e) {
+      // e.stopPropagation();
+      e.preventDefault();
+      let item = e.dataTransfer;
+
+      var files = [];
+      [].forEach.call(
+        e.dataTransfer.files,
+        function(file) {
+          files.push(file);
+        },
+        false
+      );
+
+      for (var f of files) {
+        var reader = new FileReader();
+        reader.readAsText(f);
+        //读取文件的内容
+        reader.onload = function() {
+          that.jsontext = JSON.parse(this.result);
+          if (that.jsontext.type != "") {
+            const g0 = new XE.SceneTree.Group(that.$root.$earth);
+            g0.title = "图形组合文件夹";
+            g0.isSelected = true;
+            const xbsjSceneTree = that.$root.$earth.sceneTree;
+            xbsjSceneTree.root.children.push(g0);
+          }
+          if (that.jsontext.features.length > 0) {
+            let arr = that.jsontext.features;
+            for (let j = 0, len = arr.length; j < len; j++) {
+              if (arr[j].geometry.type === "Polygon") {
+                var Polygon = new XE.Obj.Plots.GeoPolygon(that.$root.$earth);
+                Polygon.name = arr[j].properties.name;
+                var positionarr = arr[j].geometry.coordinates[0];
+                for (let k = 0; k < positionarr.length; k++) {
+                  positionarr[k][0] = (Math.PI / 180) * positionarr[k][0];
+                  positionarr[k][1] = (Math.PI / 180) * positionarr[k][1];
+                  positionarr[k][2] = 0;
+                }
+                // π/180×角度
+                Polygon.positions = positionarr;
+                var selected = that.$root.$earth.sceneTree.currentSelectedNode;
+                const obj = new XE.SceneTree.Leaf(Polygon);
+                selected.children.push(obj);
+              }
+            }
+          }
+        };
+      }
+    }
+
+    xbsjcesium.addEventListener("dragover", handleDragOver, false);
+    xbsjcesium.addEventListener("drop", handleFileSelect, false);
+  },
   computed: {
     type() {
       return this.viewporttype;
@@ -279,7 +341,7 @@ export default {
       //如果有默认映射
       else if (czmObject.xbsjType) {
         if (czmObject.ctrtype) {
-            var c = this.registerComponents[czmObject.ctrtype];
+          var c = this.registerComponents[czmObject.ctrtype];
           if (c) {
             component = c;
           }
