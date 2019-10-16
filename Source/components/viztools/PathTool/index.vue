@@ -245,13 +245,14 @@ export default {
       e.preventDefault();
     }
 
-    var that  = this;
+    var that = this;
     function handleFileSelect(e) {
       // e.stopPropagation();
       e.preventDefault();
       that._czmObj.creating = false;
-      let obj = e.dataTransfer.getData('obj');
+      let obj = e.dataTransfer.getData("obj");
       that._czmObj.positions = JSON.parse(obj).positions;
+      that._czmObj.flyTo();
     }
 
     btn.addEventListener("dragover", handleDragOver, false);
