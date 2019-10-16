@@ -39,6 +39,9 @@
                 :class="path.editing?'btncoloron':''"
               >{{lang.editing}}</button>
             </div>
+            <div>
+              <button id="textbtn" class="attitudeEditCameraButton">{{lang.select}}</button>
+            </div>
           </div>
         </div>
         <div>
@@ -178,7 +181,7 @@ export default {
         targetPicking: false,
         currentPosition: [0, 0, 0],
         currentRotation: [0, 0, 0],
-        length:0
+        length: 0
       },
       pinstyletype: true,
 
@@ -234,6 +237,25 @@ export default {
         }
       });
     }
+
+    //测试通过拖拽图层树中的item进行绑定路径
+    let btn = document.getElementById("textbtn");
+    function handleDragOver(e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    var that  = this;
+    function handleFileSelect(e) {
+      // e.stopPropagation();
+      e.preventDefault();
+      that._czmObj.creating = false;
+      let obj = e.dataTransfer.getData('obj');
+      that._czmObj.positions = JSON.parse(obj).positions;
+    }
+
+    btn.addEventListener("dragover", handleDragOver, false);
+    btn.addEventListener("drop", handleFileSelect, false);
   },
   beforeDestroy() {
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();

@@ -95,7 +95,7 @@ export default {
       source.addEventListener(
         "dragstart",
         function(event) {
-          event.dataTransfer.setData("Firefox", " "); //兼容火狐浏览器，拖动时候必须携带数据否则没效果
+          event.dataTransfer.setData('obj', JSON.stringify(item._inner.sn.czmObject)); //兼容火狐浏览器，拖动时候必须携带数据否则没效果
           self.$emit("on-item-move", { item, vueObject: self, $event });
         },
         false
