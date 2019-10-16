@@ -43,6 +43,10 @@
             color: #fff;
             border: 1px solid #1E9FFF;
         }
+        input {
+            padding: 5px;
+            width: 60px;
+        }
     </style>
 </head>
 
@@ -60,7 +64,13 @@
                     </div>
                     <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:200px; font-size:24px; font-family: 宋体;">
                         <div class="defultbtn" :class="{'btnon':showCompass}" @click="showCompass = !showCompass">指北针</div>
-                        <div class="defultbtn" :class="{'btnon':showDistanceLegend}" @click="showDistanceLegend = !showDistanceLegend">比例尺</div>
+                        <div class="defultbtn" :class="{'btnon':showDistanceLegend}" @click="showDistanceLegend = !showDistanceLegend">比例尺</div><br/>
+                        <span>指北针位置</span><br/>
+                        <span style="vertical-align: middle;">顶部距离：</span><input type="number" v-model="compasstop" @input="compassbottom=undefined"><span style="vertical-align: middle;">右边距离：</span><input type="number" v-model="compassright" @input="compassleft=undefined"><br/>
+                        <span style="vertical-align: middle;">底部距离：</span><input type="number" v-model="compassbottom" @input="compasstop=undefined"><span style="vertical-align: middle;">左边距离：</span><input type="number" v-model="compassleft" @input="compassright=undefined"><br/>
+                        <span>比例尺位置</span><br/>
+                        <span style="vertical-align: middle;">顶部距离：</span><input type="number" v-model="distancetop" @input="distancebottom=undefined"><span style="vertical-align: middle;">右边距离：</span><input type="number" v-model="distanceright" @input="distanceleft=undefined"><br/>
+                        <span style="vertical-align: middle;">底部距离：</span><input type="number" v-model="distancebottom" @input="distancetop=undefined"><span style="vertical-align: middle;">左边距离：</span><input type="number" v-model="distanceleft" @input="distanceright=undefined"><br/>
                     </div>
                 </div>
             `,
@@ -68,7 +78,15 @@
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                     showCompass: false, // 控制指北针的开启与关闭，默认为开启
-                    showDistanceLegend: false // 控制比例尺的开启与关闭，默认为开启
+                    showDistanceLegend: false, // 控制比例尺的开启与关闭，默认为开启
+                    compasstop: undefined,
+                    compassright: undefined,
+                    compassbottom: undefined,
+                    compassleft: undefined,
+                    distancetop: undefined,
+                    distanceright: undefined,
+                    distancebottom: undefined,
+                    distanceleft: undefined
                 };
             },
             // 1.1 资源创建
@@ -106,7 +124,15 @@
                 // 1.1.3 数据绑定
                 // 双向绑定的属性，如果一方发生变化，另一方同样会跟随变化
                 this._showCompassUnbind = XE.MVVM.bind(this, 'showCompass', earth.camera.navigator, 'showCompass');
+                this._topCompassUnbind = XE.MVVM.bind(this, 'compasstop', earth.camera.navigator.compassStyle, 'top');
+                this._rightCompassUnbind = XE.MVVM.bind(this, 'compassright', earth.camera.navigator.compassStyle, 'right');
+                this._bottomCompassUnbind = XE.MVVM.bind(this, 'compassbottom', earth.camera.navigator.compassStyle, 'bottom');               
+                this._leftCompassUnbind = XE.MVVM.bind(this, 'compassleft', earth.camera.navigator.compassStyle, 'left');
                 this._showDistanceLegendUnbind = XE.MVVM.bind(this, 'showDistanceLegend', earth.camera.navigator, 'showDistanceLegend');
+                this._topDistanceUnbind = XE.MVVM.bind(this, 'distancetop', earth.camera.navigator.distanceLegendStyle, 'top');
+                this._rightDistanceUnbind = XE.MVVM.bind(this, 'distanceright', earth.camera.navigator.distanceLegendStyle, 'right');
+                this._bottomDistanceUnbind = XE.MVVM.bind(this, 'distancebottom', earth.camera.navigator.distanceLegendStyle, 'bottom');               
+                this._leftDistanceUnbind = XE.MVVM.bind(this, 'distanceleft', earth.camera.navigator.distanceLegendStyle, 'left');
 
                 this._earth = earth;
 
@@ -125,7 +151,15 @@
             beforeDestroy() {
                 // vue程序销毁时，需要清理相关资源
                 this._showCompassUnbind = this._showCompassUnbind && this._showCompassUnbind();
+                this._topCompassUnbind = this._topCompassUnbind && this._topCompassUnbind();
+                this._rightCompassUnbind = this._rightCompassUnbind && this._rightCompassUnbind();
+                this._bottomCompassUnbind = this._bottomCompassUnbind && this._bottomCompassUnbind();
+                this._leftCompassUnbind = this._leftCompassUnbind && this._leftCompassUnbind();
                 this._showDistanceLegendUnbind = this._showDistanceLegendUnbind && this._showDistanceLegendUnbind();
+                this._topDistanceUnbind = this._topDistanceUnbind && this._topDistanceUnbind();
+                this._rightDistanceUnbind = this._rightDistanceUnbind && this._rightDistanceUnbind();
+                this._bottomDistanceUnbind = this._bottomDistanceUnbind && this._bottomDistanceUnbind();
+                this._leftDistanceUnbind = this._leftDistanceUnbind && this._leftDistanceUnbind();
                 this._earth = this._earth && this._earth.destroy();
             },
         }

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <title>分析-体积测量</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 38px;
+            padding: 0 10px;
+            line-height: 38px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+
+        button {
+            width: 114px;
+            height: 31px;
+            font-size: 21px;
+            font-family: "宋体";
+            margin: 5px 0;
+            cursor: pointer;
+        }
+
+        .gridWidth {
+            width: 70px;
+            font-size: 16px;
+            padding: 0 5px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:100px; font-size:24px; font-family: 宋体;">
+                        <div class="defultbtn" v-model="enabled"  @click="volumeClick">体积测量</div>
+                        <div v-show="show" style="width: 280px; margin-top: 5px;">
+                            <div v-if="status==='completed' || computing">
+                                <button class="xbsj-button" @click="buttonClick">{{buttonText}}</button>
+                            </div>
+                            <div v-if="status==='completed'">
+                                <span>计算结果:</span>
+                                <br />
+                                <span>采样间距:{{ results.gridWidth.toFixed(2) }} m</span>
+                                <br />
+                                <span>总面积:{{ results.area.toFixed(2) }} ㎡</span>
+                                <br />
+                                <span>挖方:{{ results.cut.toFixed(2) }} m³</span>
+                                <br />
+                                <span>填方:{{ results.fill.toFixed(2) }} m³</span>
+                                <br />
+                                <span>挖填方:{{ results.total.toFixed(2) }} m³</span>
+                                <br />
+                                </div>
+                                <div v-else-if="status==='cancelled'">
+                                <span>意外终止！请重新开始！</span><br />
+                                <button class="xbsj-button" @click="buttonClick">{{buttonText}}</button>
+                                <br />
+                                </div>
+                                <div v-else-if="computing">
+                                <span>计算进度:{{ (progress * 100).toFixed(1) }}%</span>
+                                <br />
+                            </div>
+                            <div v-else>
+                                <span>使用鼠标在模型数据上绘制待分析的多边形区域</span><br/>
+                                <span style="vertical-align: middle;">采样间距:</span>
+                                <input v-model.number="gridWidth" class="gridWidth"> m
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    text: {
+                        cancelComputing: "取消计算",
+                        start: "开始分析",
+                        reStart: "重新开始"
+                    },
+                    show: false,
+                    enabled: false,
+                    status: "",
+                    progress: 0.0,
+                    computing: false,
+                    gridWidth: 1.0,
+                    results: {
+                        gridWidth: 0.0,
+                        area: 0.0,
+                        cut: 0.0,
+                        fill: 0.0,
+                        total: 0.0
+                    },
+                };
+            },
+            computed: {
+                buttonText() {
+                    //如果正在计算，返回取消计算
+                    if (this.computing) {
+                        return this.text.cancelComputing;
+                    }
+                    //如果计算结束，返回重新开始
+                    if (this.status == "completed") {
+                        return this.text.reStart;
+                    }
+                    //返回开始计算
+                    return this.text.start;
+                }
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "expand": true,
+                    "title": "预览场景",
+                    "children": [{
+                        "czmObject": {
+                            "name": '大雁塔',
+                            "xbsjType": "Tileset",
+                            "url": '../assets/dayanta/tileset.json',
+                            "xbsjUseOriginTransform": false,              
+                        },
+                    }, {
+                        "czmObject": {
+                            "name": '默认影像',
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
+                        },
+                    }]
+                };
+
+                var tileset1 = earth.sceneTree.root.children[0].czmObject;
+                var tileset2 = earth.sceneTree.root.children[1].czmObject;
+
+                // only for Debug
+                window.earth = earth;
+                window.tileset1 = tileset1;
+                window.tileset2 = tileset2;
+
+                // 1.1.5 数据绑定
+                // disposers 用来收集资源销毁函数，并在析构时自动调用！
+                {
+                    this._cutFillComputing = earth.analyzation.cutFillComputing;
+                    this._disposers = [];
+                    const props = [
+                        "enabled",
+                        "status",
+                        "progress",
+                        "computing",
+                        "gridWidth",
+                        "results.gridWidth",
+                        "results.area",
+                        "results.cut",
+                        "results.fill",
+                        "results.total"
+                    ];
+                    props.forEach(p => {
+                        this._disposers.push(XE.MVVM.bind(this, p, this._cutFillComputing, p));
+                    });
+                    tileset1.flyTo();
+                }
+
+                this._earth = earth;
+            },
+            methods: {
+                volumeClick() {
+                    //清空结果 停止
+                    this._cutFillComputing.clearResults();
+                    this.show = !this.show;
+                },
+                buttonClick() {
+                    //清空结果 停止
+                    this._cutFillComputing.clearResults();
+                    this._cutFillComputing.enabled = false;
+                    //下一个帧再次开始
+                    this.$nextTick(() => {
+                        this._cutFillComputing.enabled = true;
+                    });
+                }
+            },
+            watch: {
+                show(v) {
+                    if (v) {
+                        this._cutFillComputing.enabled = true;
+                    } else {
+                        this._cutFillComputing.clearResults();
+                        this._cutFillComputing.enabled = false;
+                    }
+                }
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._earth = this._earth && this._earth.destroy();
+                this._disposers.forEach(d => d());
+                this._disposers.length = 0;
+            }
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>
