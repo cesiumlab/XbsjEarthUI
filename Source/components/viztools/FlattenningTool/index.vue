@@ -203,12 +203,11 @@ export default {
 
       let obj = e.dataTransfer.getData("obj");
       let arr = [];
-      arr = JSON.parse(obj)
-        .positions.toString()
-        .split(",")
-        .filter((item, i, arr) => {
-          return item != 0;
-        });
+      arr = JSON.parse(obj).positions;
+      for (var j = 0; j < arr.length; j++) {
+        arr[j].pop();
+      }
+      arr = arr.toString().split(",");
       arr = arr.map(function(el) {
         return +el;
       });
