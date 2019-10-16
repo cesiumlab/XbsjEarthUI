@@ -458,6 +458,7 @@ export default {
     itemDoubleClick({ item, vueObject }) {
       const czmObject = item._inner.sn.czmObject;
       if (czmObject) {
+        console.log(czmObject)
         czmObject.flyTo();
 
         let t = czmObject.xbsjType;
