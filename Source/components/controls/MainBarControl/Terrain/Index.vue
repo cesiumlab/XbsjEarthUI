@@ -340,6 +340,7 @@ export default {
       });
 
       that.$root.$earth.terrainEffect.restrict.positions = arr;
+      that.$root.$earth.terrainEffect.restrict.enabled = true;
       that.$root.$earth.terrainEffect.restrict.flyTo();
     }
 
