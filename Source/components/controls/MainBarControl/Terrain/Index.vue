@@ -91,6 +91,7 @@
 
         <div class="xbsj-item-btnbox ml20">
           <div
+            ref="tailoringbutton"
             class="xbsj-item-btn tailoringbutton"
             @click="tailoringShow=!tailoringShow"
             :class="{highlight:tailoringShow}"
@@ -314,6 +315,36 @@ export default {
         )
       );
     });
+
+    let tailoringbutton = this.$refs.tailoringbutton;
+    function handleDragOver(e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    var that = this;
+    function handleFileSelect(e) {
+      // e.stopPropagation();
+      e.preventDefault();
+      let obj = e.dataTransfer.getData("obj");
+      that.$root.$earth.terrainEffect.restrict.editing = true;
+
+      let arr = [];
+      arr = JSON.parse(obj).positions;
+      for (var j = 0; j < arr.length; j++) {
+        arr[j].pop();
+      }
+      arr = arr.toString().split(",");
+      arr = arr.map(function(el) {
+        return +el;
+      });
+
+      that.$root.$earth.terrainEffect.restrict.positions = arr;
+      that.$root.$earth.terrainEffect.restrict.flyTo();
+    }
+
+    tailoringbutton.addEventListener("dragover", handleDragOver, false);
+    tailoringbutton.addEventListener("drop", handleFileSelect, false);
   },
   methods: {
     contoure() {

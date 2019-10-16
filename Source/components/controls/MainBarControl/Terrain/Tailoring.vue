@@ -34,25 +34,6 @@ export default {
     this.bind("editing");
     this.bind("positions");
     console.log(this.positions);
-
-    let tailoring = this.$refs.tailoring;
-    function handleDragOver(e) {
-      e.stopPropagation();
-      e.preventDefault();
-    }
-
-    var that = this;
-    function handleFileSelect(e) {
-      // e.stopPropagation();
-      e.preventDefault();
-      that._czmObj.creating = false;
-      let obj = e.dataTransfer.getData("obj");
-      that.positions = JSON.parse(obj).positions;
-      console.log(JSON.parse(obj));
-    }
-
-    tailoring.addEventListener("dragover", handleDragOver, false);
-    tailoring.addEventListener("drop", handleFileSelect, false);
   },
   methods: {
     bind(prp) {
