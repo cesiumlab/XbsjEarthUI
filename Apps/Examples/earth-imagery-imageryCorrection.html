@@ -47,6 +47,15 @@
             color: #fff;
             border: 1px solid #1E9FFF;
         }
+        .dialog, .tip {
+            position: absolute;
+            width: 84px;
+            min-height: 22px;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            cursor:pointer;
+        }
     </style>
 </head>
 
@@ -66,6 +75,20 @@
                         <div class="defultbtn" :class="{'btnon':correct}"  @click="correct = !correct">纠偏</div>
                         <div class="defultbtn"  @click="goTo">定位</div>
                     </div>
+                    <div 
+                        v-show="showInfo" 
+                        class="dialog"
+                        :style="{ left: (winPos1[0]) + 'px', bottom: (winPos1[1] - 11) + 'px' }"
+                    >
+                        <span>3dtiles数据</span>
+                    </div>
+                    <div 
+                        v-show="showTip" 
+                        class="tip"
+                        :style="{ left: (winPos2[0]) + 'px', bottom: (winPos2[1] - 11) + 'px' }"
+                    >
+                        <span>地形影像</span>
+                    </div>
                 </div>
             `,
 
@@ -74,12 +97,17 @@
                     dstCoordType: 'WGS84',
                     correct: true,
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    showInfo: true,
+                    showTip: true,
+                    winPos1: [0, 0],
+                    winPos2: [0, 0],
                 };
             },
             // 1.1 资源创建
             mounted() {
                 // 1.1.1 创建地球
                 var earth = new XE.Earth(this.$refs.earthContainer);
+                earth.interaction.picking.enabled = true;
 
                 // 1.1.2 场景配置
                 earth.sceneTree.root = {
@@ -110,6 +138,56 @@
                                 },
                             }
                         },
+                    }, {
+                        "ref": "polylineArrow1",
+                        "czmObject": {
+                            "xbsjType": "GeoPolylineArrow",
+                            "positions": [
+                                [
+                                    1.9017391128055674,
+                                    0.5972332869821096,
+                                    0
+                                ],
+                                [
+                                    1.9017000577417968,
+                                    0.5972166912517689,
+                                    1.2122642818080087
+                                ]
+                            ]
+                        }
+                    }, {
+                        "ref": "polylineArrow2",
+                        "czmObject": {
+                            "xbsjType": "GeoPolylineArrow",
+                            "positions": [
+                                [
+                                    1.9017215140865549,
+                                    0.5971876293116101,
+                                    0
+                                ],
+                                [
+                                    1.9017017380258212,
+                                    0.597203108224537,
+                                    0
+                                ]
+                            ]
+                        }
+                    }, {
+                        "ref": 'pin1',
+                        "czmObject": {
+                            "name": 'Pin1',
+                            "xbsjType": "Pin",
+                            "position": [1.9017393161494873, 0.5972330002724645, 9.313225746154785e-10],       
+                            "show": false
+                        },
+                    }, {
+                        "ref": 'pin2',
+                        "czmObject": {
+                            "name": 'Pin2',
+                            "xbsjType": "Pin",
+                            "position": [1.9017217177802577, 0.5971871382500731, 9.313225746154785e-10],       
+                            "show": false
+                        },
                     }]
                 };
 
@@ -117,17 +195,28 @@
                 var imagery = earth.sceneTree.root.children[1].czmObject;
                 this._imagery = imagery;
                 var tileset1 = earth.sceneTree.root.children[0].czmObject;
+                var pin1 = earth.sceneTree.$refs.pin1.czmObject;
+                var pin2 = earth.sceneTree.$refs.pin2.czmObject;
+                var polylineArrow1 = earth.sceneTree.$refs.polylineArrow1.czmObject;
+                var polylineArrow2 = earth.sceneTree.$refs.polylineArrow2.czmObject;
 
                 // only for Debug
                 window.earth = earth;
                 window.tileset1 = tileset1;
+                window.polylineArrow1 = polylineArrow1;
+                window.polylineArrow2 = polylineArrow2;
+                window.pin1 = pin1;
+                window.pin2 = pin2;
 
                 this._earth = earth;
 
                 // 1.1.5 数据绑定
+                // disposers 用来收集资源销毁函数，并在析构时自动调用！
                 {
                     this._disposers = [];
                     this._disposers.push(XE.MVVM.bind(this, 'dstCoordType', imagery.xbsjImageryProvider.XbsjImageryProvider, 'dstCoordType'));
+                    this._disposers.push(XE.MVVM.track(this, 'winPos1', pin1, 'winPos'));
+                    this._disposers.push(XE.MVVM.track(this, 'winPos2', pin2, 'winPos'));
 
                     this.goTo();
                 }
@@ -146,8 +235,11 @@
                 goTo() {
                     // 设置相机位置
                     // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                    this._earth.camera.position =  [1.901700720490395,0.5972088628888674,479.1014955453072];
-                    this._earth.camera.rotation = [6.265266391676448,-1.4855510600618218,0.0];
+                    // this._earth.camera.position =  [1.9016996731582811,0.5972206212385686,891.9777956516596];
+                    // this._earth.camera.rotation = [6.2652663916764455,-1.4855510600618218,6.283185307179586];
+                    const position =  [1.9016996731582811,0.5972206212385686,891.9777956516596];
+                    const rotation = [6.2652663916764455,-1.4855510600618218,6.283185307179586];
+                    this._earth.camera.flyTo(position, 0, rotation);
                 }
             },
             watch: {
@@ -164,6 +256,9 @@
         // 2 创建vue程序
         // XE.ready()用来加载Cesium.js等相关资源
         XE.ready().then(() => {
+            // 加载标绘插件
+            return XE.HTML.loadJS('../../XbsjEarth-Plugins/plottingSymbol/plottingSymbol.js');
+        }).then(() => {
             var app = new Vue({
                 el: '#vueApp',
                 components: {

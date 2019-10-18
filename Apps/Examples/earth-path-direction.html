@@ -71,6 +71,8 @@
             data() {
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    // 是否处于指定所有关键点相机的目标的状态
+                    // 设置为true以后，所有关键点相机都会同时旋转，指向目标点。鼠标左键点击以后，该属性会自动变为false。 注意：关键点相机状态需要开启showDirection属性以后，才能方便观察！
                     targetPicking: false
                 };
             },
@@ -78,7 +80,7 @@
             mounted() {
                 // 1.1.1 创建地球
                 var earth = new XE.Earth(this.$refs.earthContainer);
-                earth.interaction.picking.enabled = true;
+
 
                 // 1.1.2 场景配置
                 earth.sceneTree.root = {
@@ -141,8 +143,8 @@
                                 ]
                             ],
                             "show": true, // 显示路径
-                            "loop": true, // 环形   
-                            "showDirection": true, // 显示相机  
+                            "loop": true, // 是否为环线   
+                            "showDirection": true, // 显示方向(默认为true)  
                         }
                     }, {
                         "czmObject": {

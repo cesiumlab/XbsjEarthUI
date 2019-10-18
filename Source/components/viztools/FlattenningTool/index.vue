@@ -9,7 +9,7 @@
     :footervisible="true"
     @showclick="showSelect=false"
   >
-    <div class="xbsj-flatten">
+    <div class="xbsj-flatten" ref="flattenning">
       <div class="flatten">
         <label>{{lang.Pressingtiles}}</label>
         <input
@@ -113,9 +113,7 @@ export default {
       showSelect: false
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
     // 数据关联
     this._disposers = this._disposers || [];
@@ -188,6 +186,37 @@ export default {
         )
       );
     }
+
+    let flattenning = this.$refs.flattenning;
+    function handleDragOver(e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    var that = this;
+    function handleFileSelect(e) {
+      // e.stopPropagation();
+      e.preventDefault();
+      that._czmObj.polygons.push({});
+      that._czmObj.polygons[that._czmObj.polygons.length - 1].creating = false;
+      that._czmObj.polygons[that._czmObj.polygons.length - 1].edit = true;
+
+      let obj = e.dataTransfer.getData("obj");
+      let arr = [];
+      arr = JSON.parse(obj).positions;
+      for (var j = 0; j < arr.length; j++) {
+        arr[j].pop();
+      }
+      arr = arr.toString().split(",");
+      arr = arr.map(function(el) {
+        return +el;
+      });
+      that._czmObj.polygons[that._czmObj.polygons.length - 1].positions = arr;
+      that._czmObj.polygons[that._czmObj.polygons.length - 1].flyTo();
+    }
+
+    flattenning.addEventListener("dragover", handleDragOver, false);
+    flattenning.addEventListener("drop", handleFileSelect, false);
   },
   beforeDestroy() {
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
@@ -210,13 +239,10 @@ export default {
       } else {
         if (con.guid != "" && con.guid != this.guid) {
           //弹出提示
-          this.$root.$earthUI.confirm(
-            this.lang.confirmOther,
-            () => {
-              tileset.xbsjFlattenGuid = this.guid;
-              this.updateConnections();
-            }
-          );
+          this.$root.$earthUI.confirm(this.lang.confirmOther, () => {
+            tileset.xbsjFlattenGuid = this.guid;
+            this.updateConnections();
+          });
         } else {
           tileset.xbsjFlattenGuid = this.guid;
         }
@@ -292,6 +318,7 @@ export default {
       // TODO(vtxf): 还是得想办法解决Vue数组不能响应增删的问题
       this._czmObj.polygons.push({});
       this._czmObj.polygons[this._czmObj.polygons.length - 1].creating = true;
+      console.log(this._czmObj);
     },
     del(index) {
       //弹出提示
@@ -439,6 +466,7 @@ button {
 }
 .xbsj-flatten {
   min-width: 462px;
+  height: 100%;
 }
 .xbsj-flatten > div {
   width: 100%;

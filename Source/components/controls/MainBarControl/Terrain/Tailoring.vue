@@ -1,5 +1,5 @@
 <template>
-  <div class="xbsj-mainbar-popup popup">
+  <div class="xbsj-mainbar-popup popup" ref="tailoring">
     <div class="row">
       <div>
         <button :class="{coloron:creating}" @click="creating = !creating">{{lang.redraw}}</button>

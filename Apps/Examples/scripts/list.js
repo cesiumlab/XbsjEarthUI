@@ -27,6 +27,10 @@ vueApp.examples = [
                 "url": "./earth-analyzation-viewshed.html"
             },
             {
+                "title": "分析-体积测量",
+                "url": "./earth-analyzation-volumeMeasurement.html"
+            },
+            {
                 "title": "基础-销毁地球",
                 "url": "./earth-basic-destroy.html"
             },
@@ -73,6 +77,18 @@ vueApp.examples = [
             {
                 "title": "效果-太阳/月亮/星空",
                 "url": "./earth-effect-SunMoonSkyBox.html"
+            },
+            {
+                "title": "热力图-currentTime",
+                "url": "./earth-heatMap-currentTime.html"
+            },
+            {
+                "title": "热力图-编辑",
+                "url": "./earth-heatMap-editing.html"
+            },
+            {
+                "title": "热力图-播放",
+                "url": "./earth-heatMap-play.html"
             },
             {
                 "title": "影像-百度",
@@ -187,12 +203,12 @@ vueApp.examples = [
                 "url": "./earth-pin-div.html"
             },
             {
-                "title": "Pin-gif",
-                "url": "./earth-pin-gif.html"
-            },
-            {
                 "title": "Pin-编辑",
                 "url": "./earth-pin-editing.html"
+            },
+            {
+                "title": "Pin-div",
+                "url": "./earth-pin-gif.html"
             },
             {
                 "title": "Pin-外部图像",
@@ -251,7 +267,7 @@ vueApp.examples = [
                 "url": "./earth-scaneline-play.html"
             },
             {
-                "title": "扫描线-点击显示",
+                "title": "扫描线-播放",
                 "url": "./earth-scaneline-show.html"
             },
             {

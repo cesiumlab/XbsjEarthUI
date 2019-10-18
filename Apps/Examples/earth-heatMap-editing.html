@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="xbsj-labels" content="Earth示例">
     </meta>
-    <title>折线-编辑</title>
+    <title>热力图-编辑</title>
     <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <script src="./scripts/vue.min.js"></script>
@@ -18,6 +18,11 @@
             height: 100%;
             margin: 0px;
             padding: 0px;
+        }
+
+        .box span{
+            display: inline-block;
+            margin-top: 10px;
         }
 
         .defultbtn {
@@ -44,22 +49,9 @@
             border: 1px solid #1E9FFF;
         }
 
-        .poyline {
-            width: 20px;
-            height: 16px;
-            cursor: pointer;
-        }
-
-        .checkbox {
-            display: inline-block;
-            margin: 5px 0;
-            cursor: pointer;
-        }
-
         input {
-            width: 200px;
+            width: 222px;
         }
-
     </style>
 </head>
 
@@ -75,12 +67,12 @@
                 <div style="width: 100%; height: 100%"  @click="raise = false,reduce = false">
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
-                        <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:200px; font-size:24px; font-family: 宋体;">
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:200px; font-size:24px; font-family: 宋体;">
                             <div class="defultbtn" :class="{'btnon':creating}" @click="creating = !creating">创建</div>
                             <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':editing}"  @click="editing = !editing">编辑</div><br/>
-                            <span @click="show = !show" class="checkbox"><input class="poyline" type="checkbox" v-model="show">折线显隐</span><br/>
-                            <span>折线宽度：{{width}}</span>像素<br/><input type="range" min="0" v-model.number="width"><br/>
-                            <span @click="depthTest = !depthTest" class="checkbox"><input class="poyline" type="checkbox" v-model="depthTest">深度检测</span><br/>
+                            <span @click="show = !show" style="cursor: pointer;"><input class="poyline" type="checkbox" style="width: 14px; cursor: pointer;" v-model="show">热力图显隐</span><br/>
+                            <span>热力图宽度：{{width}}像素</span><br/><input type="range" min="0" max="500" step="1" v-model.number="width"><br/>
+                            <span>热力图高度：{{height}}像素</span><br/><input type="range" min="0" max="500" step="1" v-model.number="height"><br/>
                         </div>
                 </div>
             `,
@@ -91,7 +83,7 @@
                     editing: false,
                     show: true,
                     width: 0,
-                    depthTest: false
+                    height: 0,
                 };
             },
             // 1.1 资源创建
@@ -101,73 +93,68 @@
 
                 // 1.1.2 场景配置
                 earth.sceneTree.root = {
-                    "expand": true,
-                    "title": "预览场景",
+                    "title": "当前场景",
+                    "isSelected": true,
                     "children": [{
-                        "ref": 'tileset',
+                        "czmObject": {
+                        "xbsjType": "Imagery",
+                        "enabled": true,
+                        "name": "谷歌影像",
+                        "show": true,
+                        "xbsjImageryProvider": {
+                            "XbsjImageryProvider": {
+                            "url": "//www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}",
+                            }
+                        }
+                        }
+                    },
+                    {
                         "czmObject": {
                             "name": '大雁塔',
                             "xbsjType": "Tileset",
                             "url": '../assets/dayanta/tileset.json',
+                            "xbsjPosition": [
+                                1.9016974701882112,
+                                0.5972325152147303,
+                                58.352576160356152
+                            ],                            
                             "xbsjUseOriginTransform": false,
                         },
+                        "ref": 'tileset'
                     }, {
-                        "ref": 'polyline1',
-                        "czmObject": {
-                            "xbsjType": "Polyline",
-                            "positions": [
-                                [
-                                    1.9016888563093797,
-                                    0.5972258928370555,
-                                    425.51335836189367
+                            "ref": 'heatMap1',
+                            "czmObject": {
+                                "xbsjType": "HeatMap",
+                                "position": [
+                                    1.9017007449558452,
+                                    0.5972456941664638,
+                                    63.031468750219
                                 ],
-                                [
-                                    1.9017259298773688,
-                                    0.5972286988596388,
-                                    420.32280780951146
-                                ],
-                                [
-                                    1.9017235736282532,
-                                    0.5972663719954203,
-                                    436.43803099065457
-                                ],
-                                [
-                                    1.901681624036163,
-                                    0.5972641480813949,
-                                    420.2476124410519
-                                ]
-                            ]
+                            }
                         }
-                    }, {
-                        "czmObject": {
-                            "name": '默认影像',
-                            "xbsjType": "Imagery",
-                            "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
-                        },
-                    }]
+                    ]
                 };
 
                 var tileset = earth.sceneTree.$refs.tileset.czmObject;
-                var polyline1 = earth.sceneTree.$refs.polyline1.czmObject;
+                var heatMap1 = earth.sceneTree.$refs.heatMap1.czmObject;
 
-
-                // 1.1.3 设置相机位置
+                // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position =  [1.9017017971891215,0.5971690064305392,847.4026284894902];
-                earth.camera.rotation = [6.283185307179345,-0.7856470997805363,6.283185307179586];
+                earth.camera.position =  [1.901698593871776,0.5971787500035555,373.14370697033013];
+                earth.camera.rotation = [0.03593315314102252,-0.7634808012756493,0.00015558788214686814];
 
-                // 1.1.4 数据绑定
-                this._creatingUnbind = XE.MVVM.bind(this, 'creating', polyline1, 'creating');
-                this._editingUnbind = XE.MVVM.bind(this, 'editing', polyline1, 'editing');
-                this._showUnbind = XE.MVVM.bind(this, 'show', polyline1, 'show');
-                this._widthUnbind = XE.MVVM.bind(this, 'width', polyline1, 'width');
-                this._depthTestUnbind = XE.MVVM.bind(this, 'depthTest', polyline1, 'depthTest');
+                // 1.1.5 数据绑定
+                this._creatingUnbind = XE.MVVM.bind(this, 'creating', heatMap1, 'creating');
+                this._editingUnbind = XE.MVVM.bind(this, 'editing', heatMap1, 'editing');
+                this._showUnbind = XE.MVVM.bind(this, 'show', heatMap1, 'show');
+                this._widthUnbind = XE.MVVM.bind(this, 'width', heatMap1, 'width');
+                this._heightUnbind = XE.MVVM.bind(this, 'height', heatMap1, 'height');
 
                 this._earth = earth;
 
                 // only for Debug
                 window.tileset = tileset;
-                window.polyline1 = polyline1;
+                window.heatMap1 = heatMap1;
                 window.earth = earth;
             },
             // 1.2 资源销毁
@@ -177,7 +164,7 @@
                 this._editingUnbind = this._editingUnbind && this._editingUnbind();
                 this._showUnbind = this._showUnbind && this._showUnbind();
                 this._widthUnbind = this._widthUnbind && this._widthUnbind();
-                this._depthTestUnbind = this._depthTestUnbind && this._depthTestUnbind();
+                this._heightUnbind = this._heightUnbind && this._heightUnbind();
                 this._earth = this._earth && this._earth.destroy();
             },
         }

@@ -80,7 +80,9 @@ class MainUI {
     cesiumContainer.style.cssText = "width: 100%; height: 100%;";
 
     var earth = new XE.Earth(cesiumContainer);
+    earth.camera.navigator.showCompass = true; // 显示指北针
     earth.camera.navigator.distanceLegendStyle.bottom = 40; // 比例尺位置调整
+    earth.camera.navigator.showDistanceLegend = true; // 显示比例尺
     this._earth = earth;
 
     // mainUI

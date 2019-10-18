@@ -91,8 +91,13 @@
                     _uw1: undefined,
                     _uw2: undefined,
                     show: true, // 控制路径的显示与隐藏，默认为隐藏
-                    currentSpeed: 0, // 当前运行速度
-                    currentD: 0, // 相机当前位置
+                    // 当前播放速度，单位为米/秒。
+                    // 注意，此属性可以实时修改，修改后的速度立即生效，所以可以动态修改路径上物体的前进速度！
+                    currentSpeed: 0,
+                    // 当前步进距离
+                    // 指当前播放状态下由第一个关键点沿路径运动到当前位置的长度，单位是米。
+                    // 当前playing属性为false时，此属性恒定不变；当playing为true，此属性会自动增加。 随着currentD的变化，会实时计算currentPosition、currentRotation这两个属性。 currentPosition指当前位置，currentRotation指当前姿态
+                    currentD: 0,
                     playing: true,
                     cameraAttached: false,
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
@@ -187,10 +192,12 @@
                                 ]
                             ],
                             "show": true, // 显示路径
-                            "loop": true, // 环形
-                            "showDirection": false, // 隐藏相机 
+                            "loop": true, // 是否为环线
+                            "showDirection": false, // 显示方向(默认为true) 
                             "playing": true, // 飞行
-                            "loopPlay": true // 循环飞行
+                            // 是否循环播放
+                            // 如果为false，则playing设置为true时，会从当前位置播放到最后一个关键点，并停止播放，此时playing属性会自动变成false。 若此属性为true时，播放到最后一个关键点以后，将自动重第一个关键点继续播放。
+                            "loopPlay": true
                         }
                     }]
                 };
@@ -206,6 +213,7 @@
                 earth.camera.rotation = [6.283185307179429, -0.7855047806765185, 1.0658141036401503e-14];
 
                 // 1.1.5 数据绑定
+                // disposers 用来收集资源销毁函数，并在析构时自动调用！
                 {
                     this._disposers = [];
                     this._disposers.push(XE.MVVM.bind(this, 'show', path1, 'show'));
@@ -216,10 +224,12 @@
                 }
 
                 // 1.1.6 数据监控
+                // currentPosition 当前相机位置，形式如：[0, 0, 0] 该数组中的元素分别表示经度（单位弧度）、纬度（单位弧度）、高度（单位米）。 注意该属性，为只读属性！
                 this._uw1 = XE.MVVM.watch(path1, 'currentPosition', position => {
                     viewshed.position = [...position];
                 });
 
+                // currentRotation 当前相机姿态，形式如：[0, 0, 0] 该数组中的元素分别表示偏航角（单位弧度）、俯仰角（单位弧度）、翻转角（单位弧度）。 注意该属性，为只读属性！ 
                 this._uw2 = XE.MVVM.watch(path1, 'currentRotation', rotation => {
                     viewshed.rotation = [...rotation];;
                 });

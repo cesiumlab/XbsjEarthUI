@@ -78,6 +78,7 @@
                 const tileset = earth.sceneTree.root.children[1].czmObject;
 
                 // 1.2.4 数据双向绑定
+                // disposers 用来收集资源销毁函数，并在析构时自动调用！
                 this._disposers = [];
 
                 // 当url发生变动时，自动飞入3dtiles数据处

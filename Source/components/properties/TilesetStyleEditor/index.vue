@@ -39,6 +39,27 @@
   </Window>
 </template>
 <script>
+
+function codeValid(code, earthUI) {
+  try {
+      const style = JSON.parse(code);         
+  } catch (error) {
+      try {
+          const style = eval(code+";style");        
+          if (typeof style === 'undefined') {
+            earthUI.promptInfo(`typeof style === 'undefined'`, "error");
+            return false;
+          }
+      } catch (error) {
+          // console.warn('3dtiles的style设置不合法！');
+          //提醒
+          earthUI.promptInfo(error.message || error, "error");
+          return false;          
+      }
+  }
+  return true;
+}
+
 export default {
   props: {
     getBind: Function
@@ -110,18 +131,10 @@ export default {
       this.$parent.destroyTool(this);
     },
     ok() {
-      //尝试运行
-      try {
-        var sytle = eval(this.code + ";style");
-        this.getBind().xbsjStyle = this.code;
-
+      if (codeValid(this.code, this.$root.$earthUI)) {
         //设置样式
+        this.getBind().xbsjStyle = this.code;
         this.$parent.destroyTool(this);
-      } catch (ex) {
-        //提醒
-        this.error = ex.message || ex;
-        this.$root.$earthUI.promptInfo(this.error, "error");
-        return;
       }
     },
     save() {
@@ -138,15 +151,8 @@ export default {
         });
     },
     apply() {
-      //尝试运行
-      try {
-        var sytle = eval(this.code + ";style");
+      if (codeValid(this.code, this.$root.$earthUI)) {
         this.getBind().xbsjStyle = this.code;
-      } catch (ex) {
-        //提醒
-        this.error = ex.message || ex;
-        this.$root.$earthUI.promptInfo(this.error, "error");
-        return;
       }
     },
     _newStyle(img) {

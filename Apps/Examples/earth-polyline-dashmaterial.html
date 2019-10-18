@@ -78,7 +78,6 @@
             mounted() {
                 // 1.1.1 创建地球
                 var earth = new XE.Earth(this.$refs.earthContainer);
-                earth.interaction.picking.enabled = true;
 
                 // 1.1.2 场景配置
                 earth.sceneTree.root = {

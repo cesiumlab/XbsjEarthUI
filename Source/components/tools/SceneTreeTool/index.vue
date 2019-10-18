@@ -311,6 +311,7 @@ export default {
           border: true,
           func: () => {
             const jsonStr = item._inner.sn.toJSONStr();
+            console.log(jsonStr); // 控制台打印json配置信息，不要删！ vtxf 20191016
           }
         }
       ];
@@ -458,6 +459,7 @@ export default {
     itemDoubleClick({ item, vueObject }) {
       const czmObject = item._inner.sn.czmObject;
       if (czmObject) {
+        console.log(czmObject)
         czmObject.flyTo();
 
         let t = czmObject.xbsjType;
