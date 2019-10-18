@@ -18,6 +18,9 @@
     "build2": "cross-env NODE_ENV=production XBSJ_IMPORT=external webpack --progress --hide-modules && npm run postbuild",
     "postbuild": "npm run doc",
     "doc": "jsdoc --configure Tools/jsdoc/conf.json",
+    "login": "npm adduser --registry http://registry.npmjs.org",
+    "publish": "npm publish --registry http://registry.npmjs.org",
+    "deprecate": "npm deprecate --registry http://registry.npmjs.org", 
     "gallery": "node Tools/examples/gallery.js"
   },
   "dependencies": {
@@ -27,6 +30,9 @@
     "vue-drag-tree": "^1.1.8",
     "x2js": "^3.3.1"
   },
+  "files": [
+    "dist"
+  ],  
   "devDependencies": {
     "axios": "^0.18.0",
     "babel-core": "^6.26.0",
