@@ -79,6 +79,14 @@ vueApp.examples = [
                 "url": "./earth-effect-SunMoonSkyBox.html"
             },
             {
+                "title": "热力图-编辑",
+                "url": "./earth-heatMap-editing.html"
+            },
+            {
+                "title": "热力图-播放",
+                "url": "./earth-heatMap-play.html"
+            },
+            {
                 "title": "影像-百度",
                 "url": "./earth-imagery-baidu.html"
             },
