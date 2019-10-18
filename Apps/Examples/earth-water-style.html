@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>水面-样式</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .box span{
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 38px;
+            padding: 0 10px;
+            line-height: 38px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+
+        .btnon {
+            background-color: #1E9FFF;
+            color: #fff;
+            border: 1px solid #1E9FFF;
+        }
+
+        input {
+            width: 222px;
+        }
+
+        .colorbox {
+            width: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%"  @click="raise = false,reduce = false">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:200px; font-size:24px; font-family: 宋体;">
+                            <span>水面基本颜色：</span><input class="colorbox" type="color" value="#007FFF" @input=baseColorchange(event)><br/>
+                            <span>填充不透明度: {{ baseWaterColor[3] }}</span><br/>
+                            <span><input type="range" min="0" max="1" step="0.1" v-model.number="baseWaterColor[3]"></span><br/>
+                            <span>融合颜色：</span><input class="colorbox" type="color" value="#7F7F7F" @input=blendColorchange(event)><br/>
+                            <span>填充不透明度: {{ blendColor[3] }}</span><br/>
+                            <span><input type="range" min="0" max="1" step="0.1" v-model.number="blendColor[3]"></span><br/>
+                        </div>
+                </div>
+            `,
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    baseWaterColor: [0,0,0,0],
+                    blendColor: [0,0,0,0]
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "title": "当前场景",
+                    "isSelected": true,
+                    "children": [{
+                        "czmObject": {
+                        "xbsjType": "Imagery",
+                        "enabled": true,
+                        "name": "谷歌影像",
+                        "show": true,
+                        "xbsjImageryProvider": {
+                            "XbsjImageryProvider": {
+                            "url": "//www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}",
+                            }
+                        }
+                        }
+                    },
+                    {
+                        "czmObject": {
+                            "name": '大雁塔',
+                            "xbsjType": "Tileset",
+                            "url": '../assets/dayanta/tileset.json',
+                            "xbsjPosition": [
+                                1.9016974701882112,
+                                0.5972325152147303,
+                                0
+                            ],                            
+                            "xbsjUseOriginTransform": false,
+                        },
+                        "ref": 'tileset'
+                    },
+                    {
+                            "ref": 'water1',
+                            "czmObject": {
+                                "xbsjType": "Water",
+                                "positions": [
+                                    1.90168174313679,
+                                    0.5972732924673276,
+                                    1.9017230593134629,
+                                    0.5972734968580539,
+                                    1.9017177812531605,
+                                    0.5972242141220793,
+                                    1.90168212565758,
+                                    0.5972259534519064
+                                ],
+                                height: 0.24
+                            }
+                        }
+                    ]
+                };
+
+                var water1 = earth.sceneTree.$refs.water1.czmObject;
+
+                // 设置相机位置
+                // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
+                earth.camera.position =  [1.9017005861053253,0.5972203009968811,286.26848737110424];
+                earth.camera.rotation = [0.053155606800175725,-1.0733469123234674,0.0003493379109942296];
+
+                // 1.1.5 数据绑定
+                this._baseWaterColorUnbind = XE.MVVM.bind(this, 'baseWaterColor', water1, 'baseWaterColor');
+                this._blendColorUnbind = XE.MVVM.bind(this, 'blendColor', water1, 'blendColor');
+
+                this._earth = earth;
+
+                // only for Debug
+                window.water1 = water1;
+                window.earth = earth;
+            },
+            methods: {
+                baseColorchange(event) {
+                    var basecolor = event.target.value;
+                    water1.baseWaterColor = basecolor.xeColor;
+                },
+                blendColorchange(event) {
+                    var blendcolor = event.target.value;
+                    water1.blendColor = blendcolor.xeColor;
+                },
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._baseWaterColorUnbind = this._baseWaterColorUnbind && this_baseWaterColorUnbind();
+                this._blendColorUnbind = this._blendColorUnbind && this._blendColorUnbind();
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>
