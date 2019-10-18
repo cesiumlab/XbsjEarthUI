@@ -163,7 +163,6 @@
                     </div>
                     <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:200px; font-size:24px; font-family: 宋体;">
                         <div class="defultbtn" :class="{'btnon':playing}" @click="playing = !playing">热力图播放</div><br/>
-                        <span @click="show = !show" class="checkbox"><input class="play" type="checkbox" v-model="show">热力图显隐</span><br/>
                         <span @click="loopPlay = !loopPlay" class="checkbox"><input class="play" type="checkbox" v-model="loopPlay">循环播放</span><br/>
                         <span>持续时间: {{ timeDuration }}s</span><br/><input type="range" min="0" step="0.1" max="5" v-model.number="timeDuration"><br/>
                         <span>当前时间：</span><br/><input type="range" min="0" step="0.01" max="1" v-model.number="currentTime"><br/>
@@ -190,7 +189,6 @@
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                     playing: true,
-                    show: true,
                     loopPlay: true,
                     timeDuration: 0,
                     currentTime: 0,
@@ -258,13 +256,12 @@
                 earth.camera.rotation = [0.03593315314102252,-0.7634808012756493,0.00015558788214686814];
 
                 // 设置初始值
-                this.labelarr=["https://www.baidu.com/img/bd_logo1.png","https://www.earthsdk.com/images/logo.png"];
-                heatMap1.imageUrls=["https://www.baidu.com/img/bd_logo1.png","https://www.earthsdk.com/images/logo.png"];
+                this.labelarr=["https://www.baidu.com/img/bd_logo1.png","https://www.earthsdk.com/images/logo.png","https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=700ed7d0f7edab6474724ac6cf0dc8fe/7dd98d1001e93901f53e242577ec54e736d196e9.jpg"];
+                heatMap1.imageUrls=["https://www.baidu.com/img/bd_logo1.png","https://www.earthsdk.com/images/logo.png","https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=700ed7d0f7edab6474724ac6cf0dc8fe/7dd98d1001e93901f53e242577ec54e736d196e9.jpg"];
 
                 // 1.1.5 数据绑定
                 this._playingUnbind = XE.MVVM.bind(this, 'playing', heatMap1, 'playing');
                 this._loopPlayUnbind = XE.MVVM.bind(this, 'loopPlay', heatMap1, 'loopPlay');
-                this._showUnbind = XE.MVVM.bind(this, 'show', heatMap1, 'show');
                 this._timeDurationUnbind = XE.MVVM.bind(this, 'timeDuration', heatMap1, 'timeDuration');
                 this._currentTimeUnbind = XE.MVVM.bind(this, 'currentTime', heatMap1, 'currentTime');
 
@@ -283,10 +280,7 @@
                 },
                 // input回车加入labelarr中
                 addlabel () {
-                    let count = this.labelarr.indexOf(this.currentval)
-                    if (count === -1) {
-                        this.labelarr.push(this.currentval)
-                    }
+                    this.labelarr.push(this.currentval);
                     this.currentval = ''
                     if (this.labelarr.length > 0) {
                         this.imageUrls=[];
@@ -306,7 +300,6 @@
                 // vue程序销毁时，需要清理相关资源
                 this._playingUnbind = this._playingUnbind && this._playingUnbind();
                 this._loopPlayUnbind = this._loopPlayUnbind && this._loopPlayUnbind();
-                this._showUnbind = this._showUnbind && this._showUnbind();
                 this._timeDurationUnbind = this._timeDurationUnbind && this._timeDurationUnbind();
                 this._currentTimeUnbind = this._currentTimeUnbind && this._currentTimeUnbind();
                 this._earth = this._earth && this._earth.destroy();

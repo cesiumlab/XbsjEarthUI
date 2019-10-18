@@ -79,6 +79,10 @@ vueApp.examples = [
                 "url": "./earth-effect-SunMoonSkyBox.html"
             },
             {
+                "title": "热力图-currentTime",
+                "url": "./earth-heatMap-currentTime.html"
+            },
+            {
                 "title": "热力图-编辑",
                 "url": "./earth-heatMap-editing.html"
             },
