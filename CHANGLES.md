@@ -4,12 +4,12 @@ Change Log
 ### 1.2.2
 
 ##### Additions :tada:
-* Model中增加luminanceAtZenith属性
+* Model中增加luminanceAtZenith属性；
+* 增加强制光照效果，可以任意修改太阳光方向；
 
 ##### Fixes :wrench:
 * 修复引入Cesium1.62以后模型加载变灰的问题
 * 修复引入Cesium1.62以后锯齿严重的问题
-* 
 
 ### 1.2.1 - 2019-10-18
 
