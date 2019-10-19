@@ -62,6 +62,7 @@ import ContextMenu from "./common/ContextMenu";
 
 import FlattenningTool from "./viztools/FlattenningTool";
 import ClippingPlaneTool from "./viztools/ClippingPlaneTool";
+import WaterTool from "./viztools/WaterTool";
 import PinTool from "./viztools/PinTool";
 import PinPictureTool from "./viztools/PinPictureTool";
 import PinDivTool from "./viztools/PinDivTool";
@@ -102,6 +103,7 @@ export default {
 
     FlattenningTool,
     ClippingPlaneTool,
+    WaterTool,
     PinTool,
     PinPictureTool,
     PinDivTool,
@@ -143,6 +145,7 @@ export default {
         CameraVideo: "CamerVideoTool",
         Viewshed: "ViewshedTool",
         ClippingPlane: "ClippingPlaneTool",
+        Water: "WaterTool",
         PinTool: "PinTool",
         PinDivTool: "PinDivTool",
         PinPictureTool: "PinPictureTool",

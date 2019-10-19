@@ -41,10 +41,15 @@
           <div class="xbsj-item-btn potholingbutton"></div>
           <span class="xbsj-item-name">{{lang.potholing}}</span>
         </div>-->
-
+        <!-- 可视域 -->
         <div class="xbsj-item-btnbox ml20" @click="startViewshed" title="以当前相机姿态创建新的视域分析">
           <div class="xbsj-item-btn visualbutton"></div>
           <span class="xbsj-item-name">{{lang.visual}}</span>
+        </div>
+        <!-- 水面 -->
+        <div class="xbsj-item-btnbox" @click="startWater" title="创建水面">
+          <div class="xbsj-item-btn waterbutton"></div>
+          <span class="xbsj-item-name">{{lang.water}}</span>
         </div>
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
@@ -162,6 +167,14 @@ export default {
       clippingPlane.isCreating = true;
       this.$root.$earthUI.showPropertyWindow(clippingPlane);
     },
+    startWater() {
+      var water = new XE.Obj.Water(this.$root.$earth);
+      water.name = "未命名水面";
+      water.isCreating = true;
+      water.positionPicking = true;
+      water.creating = true;
+      this.$root.$earthUI.showPropertyWindow(water);
+    },
     clearResults() {
       this.$root.$earth.analyzation.measurement.clearResults();
       this.$root.$earth.analyzation.cutFillComputing.clearResults();
@@ -257,6 +270,16 @@ export default {
 }
 .sectioningbutton:hover {
   background: url(../../../../images/sectioning_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.waterbutton {
+  background: url(../../../../images/water.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.waterbutton:hover {
+  background: url(../../../../images/water_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
