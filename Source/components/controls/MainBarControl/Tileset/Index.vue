@@ -234,7 +234,7 @@ export default {
       enabled: false,
       ssePower: 4,
       maximumScreenSpaceError: 16,
-      luminanceAtZenith: 0.5,
+      luminanceAtZenith: 0.2, // Cesium 1.62以后默认值变成了0.2！
       imageBasedLightingFactor: [1.0, 1.0],
       // lightColorOne: 1,
       lightColor: [1, 1, 1],
