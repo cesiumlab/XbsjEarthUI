@@ -2,7 +2,7 @@
   <Window
     :width="445"
     :minWidth="445"
-    :height="522"
+    :height="416"
     :title="lang.title"
     @cancel="cancel"
     @ok="ok"
@@ -60,42 +60,58 @@
         <label class="xbsj-label" style="margin-right: 20px;">{{lang.outlinecolor}}</label>
         <XbsjColorButton v-model="outlineColorUI" ref="outlineColor"></XbsjColorButton>
         <!-- 基本颜色 -->
-        <label class="xbsj-label" style="margin-right: 20px;">{{lang.basecolor}}</label>
+        <label class="xbsj-label" style="margin-right: 20px; margin-left: 42px;">{{lang.basecolor}}</label>
         <XbsjColorButton v-model="baseColorUI" ref="baseColor"></XbsjColorButton>
         <!-- 融合颜色 -->
-        <label class="xbsj-label" style="margin-right: 20px;">{{lang.blendcolor}}</label>
+        <label class="xbsj-label" style="margin-right: 20px; margin-left: 42px;">{{lang.blendcolor}}</label>
         <XbsjColorButton v-model="blendColorUI" ref="blendColor"></XbsjColorButton>
       </div>
-      <!-- 水面频率 -->
-      <div class="attributeName">
-        <label class="xbsj-label">{{lang.frequency}}</label>
+
+      <div class="movebox">
+        <!-- 水面频率 -->
+        <label class="movespan">{{lang.frequency}}</label>
         <input type="text" v-model="attribute.frequency" />
-      </div>
-      <!-- 动画速度 -->
-      <div class="attributeName">
-        <label class="xbsj-label">{{lang.animationspeed}}</label>
+        <!-- 动画速度 -->
+        <label class="movespan">{{lang.animationspeed}}</label>
         <input type="text" v-model="attribute.animationSpeed" />
-      </div>
-      <!-- 水面振幅 -->
-      <div class="attributeName">
-        <label class="xbsj-label">{{lang.amplitude}}</label>
+        <!-- 水面振幅 -->
+        <label class="movespan">{{lang.amplitude}}</label>
         <input type="text" v-model="attribute.amplitude" />
-      </div>
-      <!-- 水面强度 -->
-      <div class="attributeName">
-        <label class="xbsj-label">{{lang.specularintensity}}</label>
+        <!-- 水面强度 -->
+        <label class="movespan">{{lang.specularintensity}}</label>
         <input type="text" v-model="attribute.specularIntensity" />
-      </div>
-      <!-- 水平方向速度 -->
-      <div class="attributeName">
-        <label class="xbsj-label">{{lang.horizontalspeed}}</label>
+        <!-- 水平方向速度 -->
+        <label class="movespan">{{lang.horizontalspeed}}</label>
         <input type="text" v-model="attribute.velocity[0]" />
-      </div>
-      <!-- 垂直方向速度 -->
-      <div class="attributeName">
-        <label class="xbsj-label">{{lang.verticalspeed}}</label>
+        <!-- 垂直方向速度 -->
+        <label class="movespan">{{lang.verticalspeed}}</label>
         <input type="text" v-model="attribute.velocity[1]" />
       </div>
+
+      <!-- <div class="attributeName">
+        <label class="xbsj-label">{{lang.animationspeed}}</label>
+        <input type="text" v-model="attribute.animationSpeed" />
+      </div>-->
+
+      <!-- <div class="attributeName">
+        <label class="xbsj-label">{{lang.amplitude}}</label>
+        <input type="text" v-model="attribute.amplitude" />
+      </div>-->
+
+      <!-- <div class="attributeName">
+        <label class="xbsj-label">{{lang.specularintensity}}</label>
+        <input type="text" v-model="attribute.specularIntensity" />
+      </div>-->
+
+      <!-- <div class="attributeName">
+        <label class="xbsj-label">{{lang.horizontalspeed}}</label>
+        <input type="text" v-model="attribute.velocity[0]" />
+      </div>-->
+
+      <!-- <div class="attributeName">
+        <label class="xbsj-label">{{lang.verticalspeed}}</label>
+        <input type="text" v-model="attribute.velocity[1]" />
+      </div>-->
     </div>
   </Window>
 </template>
@@ -580,5 +596,20 @@ button:focus {
   text-align: right;
   margin-left: 12px;
   vertical-align: text-bottom;
+}
+.movespan {
+  margin-left: 12px;
+}
+.movebox input {
+  width: calc(50% - 108px);
+  height: 28px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  border: none;
+  color: #dddddd;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-left: 18px;
+  margin-bottom: 10px;
 }
 </style>

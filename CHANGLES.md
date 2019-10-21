@@ -6,6 +6,9 @@ Change Log
 ##### Additions :tada:
 * Model中增加luminanceAtZenith属性；
 * 增加强制光照效果，可以任意修改太阳光方向；
+* 影像纠偏示例增加了一些提示；
+* 增加了热力图和水面示例；
+* EarthUI中增加了水面功能；
 
 ##### Fixes :wrench:
 * 修复引入Cesium1.62以后模型加载变灰的问题
