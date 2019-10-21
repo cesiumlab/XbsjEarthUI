@@ -1,7 +1,12 @@
 Change Log
 ==========
 
-### 1.2.2
+### 1.2.3 - 2019-10-21
+
+##### Fixes :wrench:
+* 材质颜色修正
+
+### 1.2.2 - 2019-10-21
 
 ##### Additions :tada:
 * Model中增加luminanceAtZenith属性；
@@ -13,6 +18,7 @@ Change Log
 ##### Fixes :wrench:
 * 修复引入Cesium1.62以后模型加载变灰的问题
 * 修复引入Cesium1.62以后锯齿严重的问题
+* 修复旋转用gltf重复加载问题
 
 ### 1.2.1 - 2019-10-18
 
