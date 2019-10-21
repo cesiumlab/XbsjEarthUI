@@ -291,6 +291,18 @@ vueApp.examples = [
                 "url": "./earth-view-navigator.html"
             },
             {
+                "title": "水面-编辑",
+                "url": "./earth-water-editing.html"
+            },
+            {
+                "title": "水面-运动",
+                "url": "./earth-water-move.html"
+            },
+            {
+                "title": "水面-样式",
+                "url": "./earth-water-style.html"
+            },
+            {
                 "title": "路径-pin",
                 "url": "./eath-path-pin.html"
             }
