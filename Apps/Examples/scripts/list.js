@@ -79,6 +79,10 @@ vueApp.examples = [
                 "url": "./earth-effect-SunMoonSkyBox.html"
             },
             {
+                "title": "强制光照",
+                "url": "./earth-forceSunPos.html"
+            },
+            {
                 "title": "热力图-currentTime",
                 "url": "./earth-heatMap-currentTime.html"
             },
