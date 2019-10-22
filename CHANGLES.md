@@ -3,6 +3,11 @@ Change Log
 
 ### 1.2.3 - 2019-10-21
 
+##### Additions :tada:
+* 增加了强制光照示例；
+* EarthUI中增加了强制光照功能；
+* EarthUI中模型的属性窗口增加了材质底色属性
+
 ##### Fixes :wrench:
 * 材质颜色修正
 
