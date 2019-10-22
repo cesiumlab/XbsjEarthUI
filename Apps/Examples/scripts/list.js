@@ -389,6 +389,58 @@ vueApp.examples = [
         "title": "Earth起步",
         "list": [
             {
+                "title": "mapv-热力图",
+                "url": "./mapv-map-point-heatmap.html"
+            },
+            {
+                "title": "mapv-气泡",
+                "url": "./mapv-point-bubble.html"
+            },
+            {
+                "title": "mapv-种类",
+                "url": "./mapv-point-category.html"
+            },
+            {
+                "title": "mapv-集群",
+                "url": "./mapv-point-cluster.html"
+            },
+            {
+                "title": "mapv-点色斑",
+                "url": "./mapv-point-colorpleth.html"
+            },
+            {
+                "title": "mapv-矩形",
+                "url": "./mapv-point-density-rect.html"
+            },
+            {
+                "title": "mapv-蜂窝体",
+                "url": "./mapv-point-honeycomb.html"
+            },
+            {
+                "title": "mapv-点强度",
+                "url": "./mapv-point-intensity.html"
+            },
+            {
+                "title": "mapv-多边形色斑",
+                "url": "./mapv-polygon-colorpleth.html"
+            },
+            {
+                "title": "mapv-多边形强度",
+                "url": "./mapv-polygon-intensity.html"
+            },
+            {
+                "title": "mapv-多段线动画",
+                "url": "./mapv-polyline-animation.html"
+            },
+            {
+                "title": "mapv-简单折线",
+                "url": "./mapv-polyline-simple.html"
+            },
+            {
+                "title": "mapv-webgl",
+                "url": "./mapv-webgl-simple.html"
+            },
+            {
                 "title": "数据双向绑定-理论模型",
                 "url": "./startup-binds-classic.html"
             },
