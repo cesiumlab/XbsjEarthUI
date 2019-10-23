@@ -55,55 +55,55 @@
             });
 
             var data = [];
-    polygons.forEach(function (polygon) {
-        data.push({
-            geometry: {
-                type: 'Polygon',
-                coordinates:[polygon.geo]
-            },
-            count: polygon.count
-        });
-    })
+            polygons.forEach(function (polygon) {
+                data.push({
+                    geometry: {
+                        type: 'Polygon',
+                        coordinates:[polygon.geo]
+                    },
+                    count: polygon.count
+                });
+            })
 
-    var dataSet = new mapv.DataSet(data);
+            var dataSet = new mapv.DataSet(data);
 
-    var options = {
-        splitList: [
-               {
-                   start: 0,
-                   end: 30,
-                   value: '#FF8C00'
-               },{
-                   start: 30,
-                   end: 100,
-                   value: '#FF83FA'
-               },{
-                   start: 100,
-                   end: 500,
-                   value: '#63B8FF	'
-               },{
-                   start: 500,
-                   end: 1000,
-                   value: '#EEEE00'
-               },{
-                   start: 1000,
-                   end: 2000,
-                   value: '#C0FF3E'
-               },{
-                   start: 2000,
-                   value: '#9400D3'
-               }
-        ],
-        label: { // 显示label文字
-            show: true, // 是否显示
-            font: "11px", // 设置字号
-            minZoom: 7, // 最小显示的级别
-            fillStyle: 'rgba(255, 255, 255, 1)' // label颜色
-        },
-        draw: 'choropleth'
-    }
+            var options = {
+                splitList: [
+                    {
+                        start: 0,
+                        end: 30,
+                        value: '#FF8C00'
+                    },{
+                        start: 30,
+                        end: 100,
+                        value: '#FF83FA'
+                    },{
+                        start: 100,
+                        end: 500,
+                        value: '#63B8FF	'
+                    },{
+                        start: 500,
+                        end: 1000,
+                        value: '#EEEE00'
+                    },{
+                        start: 1000,
+                        end: 2000,
+                        value: '#C0FF3E'
+                    },{
+                        start: 2000,
+                        value: '#9400D3'
+                    }
+                ],
+                label: { // 显示label文字
+                    show: true, // 是否显示
+                    font: "11px", // 设置字号
+                    minZoom: 7, // 最小显示的级别
+                    fillStyle: 'rgba(255, 255, 255, 1)' // label颜色
+                },
+                draw: 'choropleth'
+            }
 
-        var mapvLayer = mapv.cesiumMapLayer(viewer, dataSet, options);
+            var mapvLayer = mapv.cesiumMapLayer(viewer, dataSet, options);
 
 
             // only for Debug

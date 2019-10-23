@@ -54,47 +54,47 @@
             });
 
             var randomCount = 300;
-    var data = [];
-    polygons.forEach(function (polygon) {
-        data.push({
-            geometry: {
-                type: 'Polygon',
-                coordinates:[polygon.geo]
-            },
-            count: polygon.count
-        });
-    })
-    /*while (randomCount--) {
-        data.push({
-            geometry: {
-                type: 'Point',
-                coordinates: [-125.8 + Math.random() * 50, 30.3 + Math.random() * 20]
-            },
-            count: parseInt(30 * Math.random())
-        });
-    }*/
+            var data = [];
+            polygons.forEach(function (polygon) {
+                data.push({
+                    geometry: {
+                        type: 'Polygon',
+                        coordinates:[polygon.geo]
+                    },
+                    count: polygon.count
+                });
+            })
+            /*while (randomCount--) {
+                data.push({
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [-125.8 + Math.random() * 50, 30.3 + Math.random() * 20]
+                    },
+                    count: parseInt(30 * Math.random())
+                });
+            }*/
 
-    var dataSet = new mapv.DataSet(data);
+            var dataSet = new mapv.DataSet(data);
 
-    var options = {
-        gradient: { // 显示的颜色渐变范围
-            0: 'blue',
-            0.6: 'cyan',
-            0.7: 'lime',
-            0.8: 'yellow',
-            1.0: 'red'
-        },
-        max: 5000,
-        label: { // 显示label文字
-            show: true, // 是否显示
-            font: "11px", // 设置字号
-            minZoom: 7, // 最小显示的级别
-            fillStyle: 'rgba(255, 255, 255, 1)' // label颜色
-        },
-        draw: 'intensity'
-    }
+            var options = {
+                gradient: { // 显示的颜色渐变范围
+                    0: 'blue',
+                    0.6: 'cyan',
+                    0.7: 'lime',
+                    0.8: 'yellow',
+                    1.0: 'red'
+                },
+                max: 5000,
+                label: { // 显示label文字
+                    show: true, // 是否显示
+                    font: "11px", // 设置字号
+                    minZoom: 7, // 最小显示的级别
+                    fillStyle: 'rgba(255, 255, 255, 1)' // label颜色
+                },
+                draw: 'intensity'
+            }
 
-        var mapvLayer = mapv.cesiumMapLayer(viewer, dataSet, options);
+            var mapvLayer = mapv.cesiumMapLayer(viewer, dataSet, options);
 
 
             // only for Debug
