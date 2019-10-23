@@ -29,28 +29,15 @@
         function startup() {
             const earth = new XE.Earth('earthContainer');
 
-            earth.sceneTree.root = {
-                "children": [
-                    {
-                        "czmObject": {
-                            "xbsjType": "Imagery",
-                            "xbsjImageryProvider": {
-                                "createTileMapServiceImageryProvider": {
-                                    url: XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
-                                    fileExtension: 'jpg',
-                                },
-                                "type": "createTileMapServiceImageryProvider"
-                            },
-                            "name": "默认离线影像",
-                        }
-                    },
-                ]
-            };
-
             var viewer = earth.czm.viewer;
-            viewer.camera.setView({
-                destination: Cesium.Cartesian3.fromDegrees(118.403, 32.928, 5000000)
-            });
+            viewer.imageryLayers.addImageryProvider({
+                url: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                subdomains: ['a', 'b', 'c', 'd', 'e'],
+            })
+            // 设置相机位置
+            // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
+            earth.camera.position = [2.0321029947215896, 0.6960977535289034, 137213.2651419932];
+            earth.camera.rotation = [6.195234718457592, -1.5386280819124152, 0];
 
             $.get('./scripts/beijing-village.json', function (data) {
 
@@ -65,7 +52,7 @@
                     draw: 'simple'
                 }
 
-                var mapvLayer = mapv.cesiumMapLayer(viewer, dataSet, options);
+                var mapvLayer = XE.mixins.mapVLayer(viewer, dataSet, options);
             });
 
 
@@ -74,13 +61,7 @@
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
-        XE.ready().then(() => {
-            window.L = undefined;
-            // 加载mapv
-            return XE.HTML.loadJS('./scripts/mapv.js');
-        }).then(() => {
-            startup()
-        });
+        XE.ready().then(() => XE.HTML.loadMapV()).then(startup);
     </script>
 </body>
 

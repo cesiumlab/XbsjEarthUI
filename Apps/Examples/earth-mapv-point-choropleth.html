@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="xbsj-labels" content="Earth起步">
     </meta>
-    <title>mapv-点色斑</title>
+    <title>mapv-点等值线图</title>
     <!-- 0 引入js文件 -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <style>
@@ -28,25 +28,11 @@
         function startup() {
             const earth = new XE.Earth('earthContainer');
 
-            earth.sceneTree.root = {
-                "children": [
-                    {
-                        "czmObject": {
-                            "xbsjType": "Imagery",
-                            "xbsjImageryProvider": {
-                                "createTileMapServiceImageryProvider": {
-                                    url: XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
-                                    fileExtension: 'jpg',
-                                },
-                                "type": "createTileMapServiceImageryProvider"
-                            },
-                            "name": "默认离线影像",
-                        }
-                    },
-                ]
-            };
-
             var viewer = earth.czm.viewer;
+            viewer.imageryLayers.addImageryProvider({
+                url: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                subdomains: ['a', 'b', 'c', 'd', 'e'],
+            })
             viewer.camera.setView({
                 destination: Cesium.Cartesian3.fromDegrees(-102.17609405517578, 34.41583177128595, 5000000)
             });
@@ -55,6 +41,7 @@
             var data = [];
             while (randomCount--) {
                 data.push({
+                    // 点数据
                     geometry: {
                         type: 'Point',
                         coordinates: [-125.8 + Math.random() * 50, 30.3 + Math.random() * 20]
@@ -66,7 +53,8 @@
             var dataSet = new mapv.DataSet(data);
 
             var options = {
-                size: 5,
+                size: 5, // 大小值
+                // 按数值区间来展示不同颜色的点
                 splitList: [
                     {
                         start: 0,
@@ -81,23 +69,17 @@
                         value: 'blue'
                     }
                 ],
-                max: 30,
-                draw: 'choropleth'
+                max: 30, // 数值最大值范围
+                draw: 'choropleth' // 按不同的值区间进行分类，并使用对应的颜色展示
             }
-            var mapvLayer = mapv.cesiumMapLayer(viewer, dataSet, options);
+            var mapvLayer = XE.mixins.mapVLayer(viewer, dataSet, options);
 
             // only for Debug
             window.earth = earth;
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
-        XE.ready().then(() => {
-            window.L = undefined;
-            // 加载mapv
-            return XE.HTML.loadJS('./scripts/mapv.js');
-        }).then(() => {
-            startup()
-        });
+        XE.ready().then(() => XE.HTML.loadMapV()).then(startup);
     </script>
 </body>
 

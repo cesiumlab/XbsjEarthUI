@@ -28,25 +28,11 @@
         function startup() {
             const earth = new XE.Earth('earthContainer');
 
-            earth.sceneTree.root = {
-                "children": [
-                    {
-                        "czmObject": {
-                            "xbsjType": "Imagery",
-                            "xbsjImageryProvider": {
-                                "createTileMapServiceImageryProvider": {
-                                    url: XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
-                                    fileExtension: 'jpg',
-                                },
-                                "type": "createTileMapServiceImageryProvider"
-                            },
-                            "name": "默认离线影像",
-                        }
-                    },
-                ]
-            };
-
             var viewer = earth.czm.viewer;
+            viewer.imageryLayers.addImageryProvider({
+                url: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                subdomains: ['a', 'b', 'c', 'd', 'e'],
+            })
             viewer.camera.setView({
                 destination: Cesium.Cartesian3.fromDegrees(-102.17609405517578, 34.41583177128595, 5000000)
             });
@@ -55,6 +41,7 @@
             var data = [];
             while (randomCount--) {
                 data.push({
+                    // 点数据
                     geometry: {
                         type: 'Point',
                         coordinates: [-125.8 + Math.random() * 50, 30.3 + Math.random() * 20]
@@ -74,11 +61,11 @@
                     0.8: 'yellow',
                     1.0: 'red'
                 },
-                max: 30,
-                draw: 'intensity'
+                max: 30, // 数值最大值范围
+                draw: 'intensity' // 根据不同的值对应按渐变色中颜色进行展示
             }
 
-            var mapvLayer = mapv.cesiumMapLayer(viewer, dataSet, options);
+            var mapvLayer = XE.mixins.mapVLayer(viewer, dataSet, options);
 
 
             // only for Debug
@@ -86,13 +73,7 @@
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
-        XE.ready().then(() => {
-            window.L = undefined;
-            // 加载mapv
-            return XE.HTML.loadJS('./scripts/mapv.js');
-        }).then(() => {
-            startup()
-        });
+        XE.ready().then(() => XE.HTML.loadMapV()).then(startup);
     </script>
 </body>
 
