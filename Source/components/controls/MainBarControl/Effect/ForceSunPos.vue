@@ -9,26 +9,9 @@
 
     <div :class="!useCameraPos ? '': 'divnotClick'">
       <div class="row">
-        <label class="label" @click="useCameraPos=false">{{lang.jingdu}}:</label>
+        <label class="label" @click="useCameraPos=false">{{lang.position}}</label>
         <div class="field">
-          <input type="text" v-model="position[0]" />
-          <br />
-        </div>
-      </div>
-
-      <div class="row">
-        <label class="label" @click="useCameraPos=false">{{lang.weidu}}:</label>
-        <div class="field">
-          <input type="text" v-model="position[1]" />
-          <br />
-        </div>
-      </div>
-
-      <div class="row">
-        <label class="label" @click="useCameraPos=false">{{lang.gaodu}}:</label>
-        <div class="field">
-          <input type="text" v-model="position[2]" />
-          <br />
+          <XbsjLngLatHeight v-model="position"></XbsjLngLatHeight>
         </div>
       </div>
     </div>
@@ -41,16 +24,12 @@ export default {
     return {
       langs: {
         zh: {
-          usecamerapos: "绑定相机",
-          jingdu: "经度",
-          weidu: "纬度",
-          gaodu: "高度"
+          usecamerapos: "相机方向",
+          position: "位置"
         },
         en: {
-          usecamerapos: "usecamerapos",
-          jingdu: "jingdu",
-          weidu: "weidu",
-          gaodu: "gaodu"
+          usecamerapos: "cameraposition",
+          position: "position"
         }
       },
       lang: undefined,

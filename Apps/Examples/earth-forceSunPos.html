@@ -83,12 +83,12 @@
                     </div>
                     <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:200px; font-size:24px; font-family: 宋体;">
                             <div class="defultbtn" :class="{'btnon':enabled}" @click="enabled = !enabled">强制光照</div><br/>
-                            <span :class="enabled ? '': 'notClick'" @click="useCameraPos = !useCameraPos" style="cursor: pointer;"><input :disabled="!enabled" class="poyline" type="checkbox" style="width: 14px; cursor: pointer;" v-model="useCameraPos">绑定相机</span><br/>
+                            <span :class="enabled ? '': 'notClick'" @click="useCameraPos = !useCameraPos" style="cursor: pointer;"><input :disabled="!enabled" class="poyline" type="checkbox" style="width: 14px; cursor: pointer;" v-model="useCameraPos">相机方向</span><br/>
                             <div :class="enabled && !useCameraPos ? '': 'divnotClick'">
                                 <span>强制光照位置</span><br/>
-                                <span>经度：</span><input type="text" v-model="position[0]"><br/>
-                                <span>纬度：</span><input type="text" v-model="position[1]"><br/>
-                                <span>高度：</span><input type="text" v-model="position[2]"><br/>
+                                <span>经度：</span><input type="text" v-model="position[0].toFixed(5)">。<br/>
+                                <span>纬度：</span><input type="text" v-model="position[1].toFixed(5)">。<br/>
+                                <span>高度：</span><input type="text" v-model="position[2].toFixed(2)">m<br/>
                             </div>
                         </div>
                 </div>
@@ -154,7 +154,7 @@
 
                 // 1.1.5 数据绑定
                 this._enabledUnbind = XE.MVVM.bind(this, 'enabled', earth.effect.forceSunPos, 'enabled');
-                this._positionUnbind = XE.MVVM.bind(this, 'position', earth.effect.forceSunPos, 'position');
+                this._positionUnbind = XE.MVVM.bindPosition(this, 'position', earth.effect.forceSunPos, 'position');
                 this._useCameraPosUnbind = XE.MVVM.bind(this, 'useCameraPos', earth.effect.forceSunPos, 'useCameraPos');
                 // this._widthUnbind = XE.MVVM.bind(this, 'width', heatMap1, 'width');
                 // this._heightUnbind = XE.MVVM.bind(this, 'height', heatMap1, 'height');
