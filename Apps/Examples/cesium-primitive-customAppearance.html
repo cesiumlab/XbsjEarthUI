@@ -200,7 +200,7 @@
                     }
                 });
             // 5.1 加载纹理
-            var imageUri = '../../SampleData/models/CesiumBalloon/CesiumBalloonPrint_singleDot.png';
+            var imageUri = './images/earth.png';
             Cesium.Resource.createIfNeeded(imageUri).fetchImage().then(function (image) {
                 console.log('image loaded!');
                 var texture;

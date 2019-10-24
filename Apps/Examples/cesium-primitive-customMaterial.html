@@ -48,6 +48,8 @@
                 ]
             };
 
+            const viewer = earth.czm.viewer;
+
             var boxLength = 100000.0;
             var position = Cesium.Cartesian3.fromDegrees(116.39, 39.9, 0.5*boxLength);
             var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(position);
@@ -167,7 +169,7 @@
                 // }),
                 appearance: new Cesium.MaterialAppearance({
                     material: Cesium.Material.fromType('Image', {
-                        image: '../../SampleData/models/CesiumBalloon/CesiumBalloonPrint_singleDot.png'
+                        image: './images/earth.png'
                     }),
                     //faceForward : true // 当绘制的三角面片法向不能朝向视点时，自动翻转法向，从而避免法向计算后发黑等问题
                     closed: true // 是否为封闭体，实际上执行的是是否进行背面裁剪
@@ -175,7 +177,9 @@
                 modelMatrix: modelMatrix,
                 asynchronous: false
             }));
+
             viewer.camera.flyToBoundingSphere(new Cesium.BoundingSphere(position, 100000));
+
             // 6 创建material
             // 6.1 创建纯色material
             var colorMaterial = new Cesium.Material({
@@ -196,7 +200,7 @@
                 fabric: {
                     type: 'Image',
                     uniforms: {
-                        image: '../../SampleData/models/CesiumBalloon/CesiumBalloonPrint_singleDot.png',
+                        image: './images/earth.png',
                         repeat: new Cesium.Cartesian2(1.0, 1.0),
                         color: new Cesium.Color(1.0, 1.0, 1.0, 1.0)
                     },
@@ -216,7 +220,7 @@
                         diffuseMaterial: {
                             type: 'DiffuseMap',
                             uniforms: {
-                                image: '../../SampleData/models/CesiumBalloon/CesiumBalloonPrint_singleDot.png'
+                                image: './images/earth.png'
                             }
                         },
                         alphaMap: {
@@ -245,7 +249,7 @@
                 fabric: {
                     type: 'MyCustomShader1',
                     uniforms: {
-                        image: '../../SampleData/models/CesiumBalloon/CesiumBalloonPrint_singleDot.png',
+                        image: './images/earth.png',
                         color: new Cesium.Color(1.0, 1.0, 0.0, 1.0),
                         cellAlpha: 0.3
                     },
@@ -269,30 +273,16 @@
                 },
                 translucent: false
             });
+
+            // 使用纯色材质
+            // myBox.appearance.material = colorMaterial;
+            // 使用图像材质
+            myBox.appearance.material = imageMaterial;
+            // 使用组合材质
+            // myBox.appearance.material = compositeMaterial;
+            // 自定义Shader材质
+            // myBox.appearance.material = customMaterial;
         }
-
-        // var options = [{
-        //         text: '使用纯色材质',
-        //         onselect: function() {
-        //             myBox.appearance.material = colorMaterial;
-        //         }
-        //     }, {
-        //         text: '使用图像材质',
-        //         onselect: function() {
-        //             myBox.appearance.material = imageMaterial;
-        //         }
-        //     }, {
-        //         text: '使用组合材质',
-        //         onselect: function() {
-        //             myBox.appearance.material = compositeMaterial;
-        //         }
-        //     }, {
-        //         text: '自定义Shader材质',
-        //         onselect: function() {
-        //             myBox.appearance.material = customMaterial;
-        //         }
-        //     }];
-
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
         XE.ready().then(startup);            

@@ -3,12 +3,24 @@ vueApp.examples = [
         "title": "Cesium示例",
         "list": [
             {
-                "title": "Cesium自定义Primitive",
-                "url": "./cesium-primitive-createCube copy.html"
-            },
-            {
                 "title": "Cesium创建立方体",
                 "url": "./cesium-primitive-createCube.html"
+            },
+            {
+                "title": "Cesium自定义Appearance",
+                "url": "./cesium-primitive-customAppearance.html"
+            },
+            {
+                "title": "Cesium自定义材质",
+                "url": "./cesium-primitive-customMaterial.html"
+            },
+            {
+                "title": "Cesium自定义Primitive",
+                "url": "./cesium-primitive-customPrimitive.html"
+            },
+            {
+                "title": "Cesium雷达特效",
+                "url": "./cesium-primitive-radarEffect.html"
             }
         ]
     },
