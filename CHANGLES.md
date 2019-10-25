@@ -7,6 +7,7 @@ Change Log
 * 把mapv和cesium结合的示例加到了EarthSDK中；
 * Cesium自定义材质增加了几个按钮；
 * EarthUI标绘中增加了折线和圆弧；
+* 新增了5个Cesium自定义Primitive相关的示例；
 
 ##### Fixes :wrench:
 * 改进地形限制功能，创建时不再需要确定高度；
@@ -17,7 +18,7 @@ Change Log
 ##### Additions :tada:
 * 增加了强制光照示例；
 * EarthUI中增加了强制光照功能；
-* EarthUI中模型的属性窗口增加了材质底色属性
+* EarthUI中模型的属性窗口增加了材质底色属性；
 
 ##### Fixes :wrench:
 * 材质颜色修正
