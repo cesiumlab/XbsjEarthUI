@@ -68,6 +68,10 @@ vueApp.examples = [
                 "url": "./earth-camera-firstpersion.html"
             },
             {
+                "title": "自定义几何体",
+                "url": "./earth-customPrimitive.html"
+            },
+            {
                 "title": "圆柱体集群",
                 "url": "./earth-cylinders.html"
             },

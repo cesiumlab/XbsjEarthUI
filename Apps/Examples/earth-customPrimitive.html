@@ -54,6 +54,10 @@
             p.normals = [0,0,1,0,0,1,0,0,1,0,0,1];
             p.sts = [0,0,1,0,0,1,1,1];
             p.indices = [0, 1, 2, 1, 2, 3];
+            p.rotation = [0, 1.57, 0];
+            p.renderState = XE.Obj.CustomPrimitive.getRenderState(false, true);
+
+            window.p = p;
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
