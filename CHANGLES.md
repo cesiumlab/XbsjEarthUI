@@ -3,8 +3,13 @@ Change Log
 
 ### 1.2.4
 
+##### Additions :tada:
+* 把mapv和cesium结合的示例加到了EarthSDK中；
+* Cesium自定义材质增加了几个按钮；
+
 ##### Fixes :wrench:
 * 改进地形限制功能，创建时不再需要确定高度；
+* 把tileset的skipLevelOfDetail属性修改为了false；
 
 ### 1.2.3 - 2019-10-21
 
