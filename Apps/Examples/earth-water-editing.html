@@ -107,15 +107,15 @@
                     "isSelected": true,
                     "children": [{
                         "czmObject": {
-                        "xbsjType": "Imagery",
-                        "enabled": true,
-                        "name": "谷歌影像",
-                        "show": true,
-                        "xbsjImageryProvider": {
-                            "XbsjImageryProvider": {
-                            "url": "//www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}",
+                            "xbsjType": "Imagery",
+                            "enabled": true,
+                            "name": "谷歌影像",
+                            "show": true,
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}",
+                                }
                             }
-                        }
                         }
                     },
                     {
@@ -127,28 +127,29 @@
                                 1.9016974701882112,
                                 0.5972325152147303,
                                 0
-                            ],                            
+                            ],
                             "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
                         },
                         "ref": 'tileset'
                     },
                     {
-                            "ref": 'water1',
-                            "czmObject": {
-                                "xbsjType": "Water",
-                                "positions": [
-                                    1.90168174313679,
-                                    0.5972732924673276,
-                                    1.9017230593134629,
-                                    0.5972734968580539,
-                                    1.9017177812531605,
-                                    0.5972242141220793,
-                                    1.90168212565758,
-                                    0.5972259534519064
-                                ],
-                                height: 0.24
-                            }
+                        "ref": 'water1',
+                        "czmObject": {
+                            "xbsjType": "Water",
+                            "positions": [
+                                1.90168174313679,
+                                0.5972732924673276,
+                                1.9017230593134629,
+                                0.5972734968580539,
+                                1.9017177812531605,
+                                0.5972242141220793,
+                                1.90168212565758,
+                                0.5972259534519064
+                            ],
+                            height: 0.24
                         }
+                    }
                     ]
                 };
 
@@ -156,8 +157,8 @@
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position =  [1.901699638033817,0.5972090528439601,268.1942851441749];
-                earth.camera.rotation = [0.035912984572358475,-0.8495548404958315,0.00017022824617729526];
+                earth.camera.position = [1.901699638033817, 0.5972090528439601, 268.1942851441749];
+                earth.camera.rotation = [0.035912984572358475, -0.8495548404958315, 0.00017022824617729526];
 
                 // 1.1.5 数据绑定
                 this._creatingUnbind = XE.MVVM.bind(this, 'creating', water1, 'creating');

@@ -27,7 +27,7 @@
         .checkbox {
             cursor: pointer;
         }
-        
+
         .fly {
             width: 20px;
             height: 16px;
@@ -84,6 +84,7 @@
                             "xbsjType": "Tileset",
                             "url": '../assets/dayanta/tileset.json',
                             "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
                         },
                     }, {
                         "ref": 'path1',
@@ -171,7 +172,7 @@
                 // 1.1.4 跟踪
                 // 单向绑定的属性，pin将跟踪path1，但pin发生变化path1并不会跟踪！
                 // currentPosition 当前相机位置，形式如：[0, 0, 0] 该数组中的元素分别表示经度（单位弧度）、纬度（单位弧度）、高度（单位米）。 注意该属性，为只读属性！
-                this._pinUnbind = XE.MVVM.track(pin, 'position' , path1 , 'currentPosition');
+                this._pinUnbind = XE.MVVM.track(pin, 'position', path1, 'currentPosition');
 
                 this._earth = earth;
 

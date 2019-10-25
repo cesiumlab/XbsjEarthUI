@@ -29,7 +29,7 @@
             margin: 5px 0;
             cursor: pointer;
         }
-        
+
         .shadowbox {
             width: 20px;
             height: 16px;
@@ -59,7 +59,6 @@
             color: #fff;
             border: 1px solid #1E9FFF;
         }
-
     </style>
 </head>
 
@@ -109,37 +108,38 @@
                 // 默认显示天地图影像
                 earth.sceneTree.root = {
                     "children": [{
-                            "ref": 'tileset',
-                            "czmObject": {
-                                "xbsjType": "Tileset",
-                                "name": "白模测试",
-                                "url": "//lab.earthsdk.com/model/908311a0ac2f11e99dbd8fd044883638/tileset.json",
-                                "luminanceAtZenith": 0.8, // 提高亮度
-                                "xbsjPosition": [
-                                    2.120577669988032,
-                                    0.545203009169497,
-                                    9.313225746154785e-10
-                                ],
-                            }
-                        }, {
-                            "czmObject": {
-                                "xbsjType": "Imagery",
-                                "name": "百度暗色风格",
-                                "xbsjImageryProvider": {
-                                    "XbsjImageryProvider": {
-                                        "url": "//api0.map.bdimg.com/customimage/tile?=&x={x}&y={y}&z={z}&scale=1&customid=midnight",
-                                        "srcCoordType": "BD09",
-                                        "dstCoordType": "WGS84",
-                                        "rectangle": [
-                                            -3.141592653589793,
-                                            -1.5707963267948966,
-                                            3.141592653589793,
-                                            1.5707963267948966
-                                        ]
-                                    },
-                                }
+                        "ref": 'tileset',
+                        "czmObject": {
+                            "xbsjType": "Tileset",
+                            "name": "白模测试",
+                            "url": "//lab.earthsdk.com/model/908311a0ac2f11e99dbd8fd044883638/tileset.json",
+                            "luminanceAtZenith": 0.8, // 提高亮度
+                            "xbsjPosition": [
+                                2.120577669988032,
+                                0.545203009169497,
+                                9.313225746154785e-10
+                            ],
+                            "skipLevelOfDetail": false
+                        }
+                    }, {
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": "百度暗色风格",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//api0.map.bdimg.com/customimage/tile?=&x={x}&y={y}&z={z}&scale=1&customid=midnight",
+                                    "srcCoordType": "BD09",
+                                    "dstCoordType": "WGS84",
+                                    "rectangle": [
+                                        -3.141592653589793,
+                                        -1.5707963267948966,
+                                        3.141592653589793,
+                                        1.5707963267948966
+                                    ]
+                                },
                             }
                         }
+                    }
                     ]
                 }
 
@@ -147,8 +147,8 @@
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position = [2.120069990413752,0.5447829944974025,218.4753177709103];
-                earth.camera.rotation = [0.051857712187779015,-0.7346991033500352,0.00020811900760620006];
+                earth.camera.position = [2.120069990413752, 0.5447829944974025, 218.4753177709103];
+                earth.camera.rotation = [0.051857712187779015, -0.7346991033500352, 0.00020811900760620006];
 
                 // 1.1.3 数据绑定
                 this._enabledUnbind = XE.MVVM.bind(this, 'enabled', earth.postProcess.bloom, 'enabled');
@@ -164,6 +164,7 @@
 
                 // only for Debug
                 window.earth = earth;
+                window.tileset = tileset1;
             },
             methods: {
             },

@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
     <title>分析-压平</title>
     <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
@@ -19,7 +20,7 @@
             padding: 0px;
         }
 
-        .box span{
+        .box span {
             display: block;
             margin-top: 10px;
         }
@@ -43,7 +44,7 @@
         }
 
         .btnon {
-        background-color: #1E9FFF;
+            background-color: #1E9FFF;
             color: #fff;
             border: 1px solid #1E9FFF;
         }
@@ -100,7 +101,8 @@
                                 "name": "三维瓦片1x",
                                 "url": "../assets/dayanta/tileset.json",
                                 "xbsjFlattenGuid": "93916e9b-82dd-4a56-b15e-27303b08e781",
-                                "xbsjClippingPlanes": {}
+                                "xbsjClippingPlanes": {},
+                                "skipLevelOfDetail": false
                             }
                         },
                         {
@@ -136,8 +138,8 @@
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position =  [1.901702007648937,0.5972368795713086,495.4360416207723];
-                earth.camera.rotation = [6.283185307179421,-0.7855047653582576,6.283185307179586];
+                earth.camera.position = [1.901702007648937, 0.5972368795713086, 495.4360416207723];
+                earth.camera.rotation = [6.283185307179421, -0.7855047653582576, 6.283185307179586];
 
                 // 1.1.5 数据绑定
                 // disposers 用来收集资源销毁函数，并在析构时自动调用！
@@ -150,6 +152,7 @@
 
                 // only for Debug
                 window.earth = earth;
+                window.tileset = tileset;
             },
             // 1.2 资源销毁
             beforeDestroy() {

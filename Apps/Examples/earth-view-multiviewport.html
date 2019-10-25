@@ -61,10 +61,12 @@
             left: 266px;
             top: 70px;
         }
+
         .lefttopButtonActive {
             background-color: rgba(31, 255, 255, 1);
             cursor: pointer;
         }
+
         .righttopButton {
             width: 17px;
             height: 17px;
@@ -76,10 +78,12 @@
             left: 284px;
             top: 70px;
         }
+
         .righttopButtonActive {
             background-color: rgba(31, 255, 255, 1);
             cursor: pointer;
         }
+
         .leftbottomButton {
             width: 17px;
             height: 17px;
@@ -91,10 +95,12 @@
             top: 88px;
             left: 266px;
         }
+
         .leftbottomButtonActive {
             background-color: rgba(31, 255, 255, 1);
             cursor: pointer;
         }
+
         .rightbottomButton {
             width: 17px;
             height: 17px;
@@ -106,11 +112,11 @@
             top: 88px;
             left: 284px;
         }
+
         .rightbottomButtonActive {
             background-color: rgba(31, 255, 255, 1);
             cursor: pointer;
         }
-
     </style>
 </head>
 
@@ -184,6 +190,7 @@
                             "xbsjType": "Tileset",
                             "url": '../assets/dayanta/tileset.json',
                             "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
                         },
                     }, {
                         "czmObject": {
@@ -198,8 +205,8 @@
 
                 // 1.1.3 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position =  [1.9017006607555602,0.5971757872571328,897.6553568768813];
-                earth.camera.rotation = [6.2831853071793455,-0.7862324279670445,6.283185307179586];
+                earth.camera.position = [1.9017006607555602, 0.5971757872571328, 897.6553568768813];
+                earth.camera.rotation = [6.2831853071793455, -0.7862324279670445, 6.283185307179586];
 
                 // 1.1.3 数据绑定
                 // 双向绑定的属性，如果一方发生变化，另一方同样会跟随变化
@@ -224,7 +231,7 @@
                 viewportshow(v) {
                     this.viewport = v;
                 },
-                
+
             },
             // 1.2 资源销毁
             beforeDestroy() {

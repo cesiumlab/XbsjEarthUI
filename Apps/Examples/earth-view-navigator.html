@@ -43,6 +43,7 @@
             color: #fff;
             border: 1px solid #1E9FFF;
         }
+
         input {
             padding: 5px;
             width: 60px;
@@ -108,6 +109,7 @@
                             "xbsjType": "Tileset",
                             "url": '../assets/dayanta/tileset.json',
                             "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
                         },
                     }, {
                         "czmObject": {
@@ -128,12 +130,12 @@
                 this._showCompassUnbind = XE.MVVM.bind(this, 'showCompass', earth.camera.navigator, 'showCompass');
                 this._topCompassUnbind = XE.MVVM.bind(this, 'compasstop', earth.camera.navigator.compassStyle, 'top');
                 this._rightCompassUnbind = XE.MVVM.bind(this, 'compassright', earth.camera.navigator.compassStyle, 'right');
-                this._bottomCompassUnbind = XE.MVVM.bind(this, 'compassbottom', earth.camera.navigator.compassStyle, 'bottom');               
+                this._bottomCompassUnbind = XE.MVVM.bind(this, 'compassbottom', earth.camera.navigator.compassStyle, 'bottom');
                 this._leftCompassUnbind = XE.MVVM.bind(this, 'compassleft', earth.camera.navigator.compassStyle, 'left');
                 this._showDistanceLegendUnbind = XE.MVVM.bind(this, 'showDistanceLegend', earth.camera.navigator, 'showDistanceLegend');
                 this._topDistanceUnbind = XE.MVVM.bind(this, 'distancetop', earth.camera.navigator.distanceLegendStyle, 'top');
                 this._rightDistanceUnbind = XE.MVVM.bind(this, 'distanceright', earth.camera.navigator.distanceLegendStyle, 'right');
-                this._bottomDistanceUnbind = XE.MVVM.bind(this, 'distancebottom', earth.camera.navigator.distanceLegendStyle, 'bottom');               
+                this._bottomDistanceUnbind = XE.MVVM.bind(this, 'distancebottom', earth.camera.navigator.distanceLegendStyle, 'bottom');
                 this._leftDistanceUnbind = XE.MVVM.bind(this, 'distanceleft', earth.camera.navigator.distanceLegendStyle, 'left');
 
                 this._earth = earth;

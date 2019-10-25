@@ -20,7 +20,7 @@
             padding: 0px;
         }
 
-        .box span{
+        .box span {
             display: block;
             margin-top: 10px;
         }
@@ -96,6 +96,7 @@
                                 0.545203009169497,
                                 9.313225746154785e-10
                             ],
+                            "skipLevelOfDetail": false
                         },
                     }, {
                         "ref": 'scanline1',
@@ -127,8 +128,8 @@
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position =  [2.120534085472877,0.5445599473813671,3486.259508603404];
-                earth.camera.rotation = [6.283185307179578,-0.7863374047795091,1.0658141036401503e-14];
+                earth.camera.position = [2.120534085472877, 0.5445599473813671, 3486.259508603404];
+                earth.camera.rotation = [6.283185307179578, -0.7863374047795091, 1.0658141036401503e-14];
 
                 // 1.1.5 数据绑定
                 this._creatingUnbind = XE.MVVM.bind(this, 'creating', scanline1, 'creating');

@@ -11,10 +11,6 @@ vueApp.examples = [
                 "url": "./cesium-primitive-customAppearance.html"
             },
             {
-                "title": "Cesium自定义材质",
-                "url": "./cesium-primitive-customMaterial.html"
-            },
-            {
                 "title": "Cesium自定义Primitive",
                 "url": "./cesium-primitive-customPrimitive.html"
             },
@@ -27,6 +23,10 @@ vueApp.examples = [
     {
         "title": "Earth示例",
         "list": [
+            {
+                "title": "Cesium自定义材质",
+                "url": "./cesium-primitive-customMaterial.html"
+            },
             {
                 "title": "3dtiles-平移旋转",
                 "url": "./earth-3dtiles-editing.html"
@@ -288,7 +288,7 @@ vueApp.examples = [
                 "url": "./earth-pin-editing.html"
             },
             {
-                "title": "Pin-div",
+                "title": "Pin-gif",
                 "url": "./earth-pin-gif.html"
             },
             {
@@ -348,7 +348,7 @@ vueApp.examples = [
                 "url": "./earth-scaneline-play.html"
             },
             {
-                "title": "扫描线-播放",
+                "title": "扫描线-点击",
                 "url": "./earth-scaneline-show.html"
             },
             {

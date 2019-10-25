@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
     <title>影像-纠偏</title>
     <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
@@ -19,7 +20,7 @@
             padding: 0px;
         }
 
-        .box span{
+        .box span {
             display: block;
             margin-top: 10px;
         }
@@ -47,14 +48,16 @@
             color: #fff;
             border: 1px solid #1E9FFF;
         }
-        .dialog, .tip {
+
+        .dialog,
+        .tip {
             position: absolute;
             width: 84px;
             min-height: 22px;
             color: white;
             padding: 5px;
             border-radius: 5px;
-            cursor:pointer;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -122,8 +125,9 @@
                                 1.9016974701882112,
                                 0.5972325152147303,
                                 8.352576160356152
-                            ],                            
+                            ],
                             "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
                         },
                     }, {
                         "ref": "imagery",
@@ -177,7 +181,7 @@
                         "czmObject": {
                             "name": 'Pin1',
                             "xbsjType": "Pin",
-                            "position": [1.9017393161494873, 0.5972330002724645, 9.313225746154785e-10],       
+                            "position": [1.9017393161494873, 0.5972330002724645, 9.313225746154785e-10],
                             "show": false
                         },
                     }, {
@@ -185,7 +189,7 @@
                         "czmObject": {
                             "name": 'Pin2',
                             "xbsjType": "Pin",
-                            "position": [1.9017217177802577, 0.5971871382500731, 9.313225746154785e-10],       
+                            "position": [1.9017217177802577, 0.5971871382500731, 9.313225746154785e-10],
                             "show": false
                         },
                     }]
@@ -237,8 +241,8 @@
                     // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
                     // this._earth.camera.position =  [1.9016996731582811,0.5972206212385686,891.9777956516596];
                     // this._earth.camera.rotation = [6.2652663916764455,-1.4855510600618218,6.283185307179586];
-                    const position =  [1.9016996731582811,0.5972206212385686,891.9777956516596];
-                    const rotation = [6.2652663916764455,-1.4855510600618218,6.283185307179586];
+                    const position = [1.9016996731582811, 0.5972206212385686, 891.9777956516596];
+                    const rotation = [6.2652663916764455, -1.4855510600618218, 6.283185307179586];
                     this._earth.camera.flyTo(position, 0, rotation);
                 }
             },

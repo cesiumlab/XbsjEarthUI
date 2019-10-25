@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 
@@ -107,7 +106,7 @@
                             "show": true,
                             "xbsjImageryProvider": {
                                 "XbsjImageryProvider": {
-                                "url": "//www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}",
+                                    "url": "//www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}",
                                 }
                             }
                         }
@@ -121,28 +120,29 @@
                                 1.9016974701882112,
                                 0.5972325152147303,
                                 0
-                            ],                            
+                            ],
                             "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
                         },
                         "ref": 'tileset'
                     },
                     {
-                            "ref": 'water1',
-                            "czmObject": {
-                                "xbsjType": "Water",
-                                "positions": [
-                                    1.90168174313679,
-                                    0.5972732924673276,
-                                    1.9017230593134629,
-                                    0.5972734968580539,
-                                    1.9017177812531605,
-                                    0.5972242141220793,
-                                    1.90168212565758,
-                                    0.5972259534519064
-                                ],
-                                height: 0.24
-                            }
+                        "ref": 'water1',
+                        "czmObject": {
+                            "xbsjType": "Water",
+                            "positions": [
+                                1.90168174313679,
+                                0.5972732924673276,
+                                1.9017230593134629,
+                                0.5972734968580539,
+                                1.9017177812531605,
+                                0.5972242141220793,
+                                1.90168212565758,
+                                0.5972259534519064
+                            ],
+                            height: 0.24
                         }
+                    }
                     ]
                 };
 
@@ -150,8 +150,8 @@
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position =  [1.9016982759594276,0.5972275015346384,39.162930282027936];
-                earth.camera.rotation = [6.231624429485172,-0.8839888902059405,6.282930780502687];
+                earth.camera.position = [1.9016982759594276, 0.5972275015346384, 39.162930282027936];
+                earth.camera.rotation = [6.231624429485172, -0.8839888902059405, 6.282930780502687];
 
                 // 1.1.5 数据绑定
                 this._frequencyUnbind = XE.MVVM.bind(this, 'frequency', water1, 'frequency');

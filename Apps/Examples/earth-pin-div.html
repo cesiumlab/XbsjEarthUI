@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
     <title>Pin-div</title>
     <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
@@ -32,7 +33,7 @@
             background-size: 100% 100%;
             padding: 5px;
             border-radius: 5px;
-            cursor:pointer;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -86,14 +87,15 @@
                             "name": '大雁塔',
                             "xbsjType": "Tileset",
                             "url": '../assets/dayanta/tileset.json',
-                            "xbsjUseOriginTransform": false,                    
+                            "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
                         },
                     }, {
                         "ref": 'pin1',
                         "czmObject": {
                             "name": 'Pin1',
                             "xbsjType": "Pin",
-                            "position": [1.9017005694855162, 0.5972477268978722, 488.7695178987821],       
+                            "position": [1.9017005694855162, 0.5972477268978722, 488.7695178987821],
                             "near": 300,
                             "show": false
                         },
@@ -117,9 +119,9 @@
                     // xepd: xepositionDistance的缩写
                     // pin1.position.xepd(earth.camera.position): 计算相机和pin之间的距离
                     const d = pin1.position.xepd(earth.camera.position);
-                    if(d < 100) {
+                    if (d < 100) {
                         this.showInfo = false;
-                    }else {
+                    } else {
                         this.showInfo = true;
                     }
                 });

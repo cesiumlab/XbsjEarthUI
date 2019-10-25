@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
     <title>3dtiles强制双面显示</title>
     <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <script src="scripts/vue.min.js"></script>
     <style>
-        html, body {
+        html,
+        body {
             width: 100%;
             height: 100%;
             margin: 0px;
@@ -18,6 +21,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="vueApp" style="width:100%; height: 100%; background: grey; position: relative;">
         <earth-comp></earth-comp>
@@ -32,7 +36,7 @@
                     </div>
                 </div>
             `,
-            data() { 
+            data() {
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                 };
@@ -42,7 +46,7 @@
                 // 1.2.1 创建地球
                 var earth = new XE.Earth(this.$refs.earthContainer);
                 // 强制双面，注意此属性不能影响已加载进来的模型，一旦设置，之后所有加载进来的模型都将以双面显示。
-                Cesium.Model.xbsjDebugForceDoubleSided = true; 
+                Cesium.Model.xbsjDebugForceDoubleSided = true;
 
                 // 1.2.3 创建Tileset
                 earth.sceneTree.root = {
@@ -71,6 +75,7 @@
                                     425.8641913624607
                                 ],
                                 "xbsjUseOriginTransform": false, // 可以不填写
+                                "skipLevelOfDetail": false
                             }
                         },
                     ]
@@ -120,4 +125,5 @@
 
 
 </body>
+
 </html>

@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
     <title>效果-泛光2</title>
     <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
@@ -102,13 +103,14 @@
                                     0.545203009169497,
                                     9.313225746154785e-10
                                 ],
+                                "skipLevelOfDetail": false
                             }
                         }
                     ]
                 };
 
                 earth.camera.position = [2.1204784429287287, 0.5453567434019185, 984.8776452043272];
-                earth.camera.rotation = [2.6041692528943043, -0.8105587768466127, 0.002203744534782004];       
+                earth.camera.rotation = [2.6041692528943043, -0.8105587768466127, 0.002203744534782004];
 
                 const tileset1 = earth.sceneTree.root.children[1].czmObject;
 
@@ -130,7 +132,7 @@
             methods: {
                 flyTo() {
                     earth.camera.position = [2.1204784429287287, 0.5453567434019185, 984.8776452043272];
-                    earth.camera.rotation = [2.6041692528943043, -0.8105587768466127, 0.002203744534782004];    
+                    earth.camera.rotation = [2.6041692528943043, -0.8105587768466127, 0.002203744534782004];
                 }
             }
         }
