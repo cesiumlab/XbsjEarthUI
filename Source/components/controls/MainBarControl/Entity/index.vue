@@ -32,7 +32,11 @@
           <span class="xbsj-item-name">{{lang.path}}</span>
         </div>
         <!-- 折线 -->
-        <div class="xbsj-item-btnbox" @click="polylinebtn" title="折线">
+        <!-- <div class="xbsj-item-btnbox" @click="polylinebtn" title="折线">
+          <div class="xbsj-item-btn linebutton"></div>
+          <span class="xbsj-item-name">{{lang.line}}</span>
+        </div>-->
+        <div class="xbsj-item-btnbox" @click="Polyline">
           <div class="xbsj-item-btn linebutton"></div>
           <span class="xbsj-item-name">{{lang.line}}</span>
         </div>
@@ -191,7 +195,7 @@ export default {
   mounted() {},
   methods: {
     // 多边形
-    Polygon(){
+    Polygon() {
       var Polygon = new XE.Obj.Plots.GeoPolygon(this.$root.$earth);
       console.log(Polygon);
       Polygon.creating = true;
@@ -225,6 +229,15 @@ export default {
       SectorSearch.isCreating = true;
       SectorSearch.name = "扇形搜索";
       this.$root.$earthUI.showPropertyWindow(SectorSearch);
+    },
+    // 打开折线弹窗
+    Polyline() {
+      var Polyline = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+      // console.log(Polyline);
+      Polyline.creating = true;
+      Polyline.isCreating = true;
+      Polyline.name = "折线";
+      this.$root.$earthUI.showPropertyWindow(Polyline);
     },
     // 打开折线箭头弹窗
     PolylineArrow() {
