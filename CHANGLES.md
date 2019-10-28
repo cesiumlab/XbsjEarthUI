@@ -6,6 +6,7 @@ Change Log
 ##### Additions :tada:
 * 把mapv和cesium结合的示例加到了EarthSDK中；
 * Cesium自定义材质增加了几个按钮；
+* EarthUI标绘中增加了折线和圆弧；
 
 ##### Fixes :wrench:
 * 改进地形限制功能，创建时不再需要确定高度；

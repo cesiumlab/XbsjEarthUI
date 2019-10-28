@@ -72,6 +72,11 @@
           <div class="xbsj-item-btn facebutton"></div>
           <span class="xbsj-item-name">{{lang.face}}</span>
         </div>
+        <!-- 圆弧 -->
+        <div class="xbsj-item-btnbox" @click="Arc">
+          <div class="xbsj-item-btn facebutton"></div>
+          <span class="xbsj-item-name">{{lang.arc}}</span>
+        </div>
 
         <!-- <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn spotbutton"></div>
@@ -197,11 +202,19 @@ export default {
     // 多边形
     Polygon() {
       var Polygon = new XE.Obj.Plots.GeoPolygon(this.$root.$earth);
-      console.log(Polygon);
+      // console.log(Polygon);
       Polygon.creating = true;
       Polygon.isCreating = true;
       Polygon.name = "多边形";
       this.$root.$earthUI.showPropertyWindow(Polygon);
+    },
+    // 圆弧
+    Arc() {
+      var Arc = new XE.Obj.Plots.GeoArc(this.$root.$earth);
+      Arc.creating = true;
+      Arc.isCreating = true;
+      Arc.name = "圆弧";
+      this.$root.$earthUI.showPropertyWindow(Arc);
     },
     //双箭头
     DoubleArrow() {

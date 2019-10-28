@@ -75,6 +75,7 @@ import GeoPolygon from "./viztools/GeoPolygon";
 import GeoSectorSearch from "./viztools/GeoSectorSearch";
 import GeoPolylineArrow from "./viztools/GeoPolylineArrow";
 import GeoPolyline from "./viztools/GeoPolyline";
+import GeoArc from "./viztools/GeoArc";
 import GeoTriFlag from "./viztools/GeoTriFlag";
 import ScanlineTool from "./viztools/ScanlineTool";
 
@@ -117,6 +118,7 @@ export default {
     GeoSectorSearch,
     GeoPolylineArrow,
     GeoPolyline,
+    GeoArc,
     GeoTriFlag,
     ScanlineTool,
 
@@ -159,6 +161,7 @@ export default {
         GeoSectorSearch: "GeoSectorSearch",
         GeoPolylineArrow: "GeoPolylineArrow",
         GeoPolyline: "GeoPolyline",
+        GeoArc: "GeoArc",
         GeoTriFlag: "GeoTriFlag",
         GeoDoubleArrow: "GeoDoubleArrow",
         GeoPolygon: "GeoPolygon",
