@@ -72,10 +72,10 @@
           <div class="xbsj-item-btn facebutton"></div>
           <span class="xbsj-item-name">{{lang.face}}</span>
         </div>
-        <!-- 圆弧 -->
-        <div class="xbsj-item-btnbox" @click="Arc">
-          <div class="xbsj-item-btn facebutton"></div>
-          <span class="xbsj-item-name">{{lang.arc}}</span>
+        <!-- 标绘更多 -->
+        <div class="xbsj-item-btnbox" @click="EntityMoreShow=!EntityMoreShow">
+          <div class="xbsj-item-btn more"></div>
+          <span class="xbsj-item-name">{{lang.more}}</span>
         </div>
 
         <!-- <div class="xbsj-item-btnbox">
@@ -193,7 +193,8 @@ export default {
       selectlist: false,
       lang: {},
       langs: languagejs,
-      PlottingShow: false
+      PlottingShow: false,
+      EntityMoreShow: false
     };
   },
   created() {},
