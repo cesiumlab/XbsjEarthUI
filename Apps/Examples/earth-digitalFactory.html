@@ -30,6 +30,16 @@
         function startup() {
             earth = new XE.Earth('earthContainer');
 
+            const bloom = earth.postProcess.bloom;
+            bloom.enabled = true;
+            bloom.glowOnly = false;
+            bloom.contrast = 119;
+            bloom.brightness = -0.4;
+            bloom.delta = 0.9;
+            bloom.sigma = 3.78;
+            bloom.stepSize = 5;
+            bloom.isSelected = false;            
+
             earth.sceneTree.root = {
                 "children": [
                     {
