@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth案例"></meta>
+    <title>数字城市</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function startup() {
+            earth = new XE.Earth('earthContainer');
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "xbsjGuid": "0a74da9f-bff6-4eab-af64-d8cf95978145",
+                            "name": "谷歌影像",
+                            "brightness": 0.2,
+                            "rectangle": null,
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}",
+                                    "srcCoordType": "GCJ02",
+                                    "rectangle": null
+                                },
+                                "UrlTemplateImageryProvider": {
+                                    "rectangle": null
+                                },
+                                "WebMapTileServiceImageryProvider": {
+                                    "rectangle": null
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "ref": "tileset",
+                        "czmObject": {
+                            "xbsjType": "Tileset",
+                            "xbsjGuid": "094b1984-4aae-4ac3-bb35-86d84e6a8204",
+                            "name": "白模测试2",
+                            "url": "https://lab.earthsdk.com/model/702aa950d03c11e99f7ddd77cbe22fea/tileset.json",
+                            "xbsjPosition": [
+                                2.120577669988032,
+                                0.545203009169497,
+                                9.313225746154785e-10
+                            ],
+                            "xbsjStyle": "var style = {\n    color: \"vec4(0, 0.5, 1.0,1)\"\n}",
+                            "xbsjClippingPlanes": {},
+                            "xbsjCustomShader": {
+                                "fsBody": "\nfloat vtxf_a12 = v_elevationPos.z / 60.0;\ngl_FragColor *= vec4(vtxf_a12, vtxf_a12, vtxf_a12, 0.5);\n"
+                            }
+                        }
+                    }
+                ]
+            };
+
+            var tileset = earth.sceneTree.$refs.tileset.czmObject;
+            window.tileset = tileset;
+
+            earth.camera.position = [2.1210391698749964, 0.544944336488856, 822.8789229124824];
+            earth.camera.rotation = [5.190679265289419, -0.41493986255762305, 6.280299562599916];
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);            
+    </script>
+</body>
+
+</html>
