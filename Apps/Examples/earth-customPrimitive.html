@@ -51,15 +51,20 @@
             var p = new XE.Obj.CustomPrimitive(earth)
             p.flyTo();
             p.positions = [0,0,0,10,0,0,0,5,0,10,5,0];
-            p.normals = [0,0,1,0,0,1,0,0,1,0,0,1];
+            // p.normals = [0,0,1,0,0,1,0,0,1,0,0,1];
             p.sts = [0,0, 1,0, 0,1, 1,1];
-            p.colors = [1,1,0,1, 1,1,1,1, 1,1,1,1, 1,1,1,1];
+            // p.colors = [1,1,0,1, 1,1,1,1, 1,1,1,1, 1,1,1,1];
             p.indices = [0, 1, 2, 1, 2, 3];
             p.rotation = [0, 1.57, 0];
             p.renderState = XE.Obj.CustomPrimitive.getRenderState(false, true);
 
             p.vertexShaderSource = '#define FLAT\n' + p.vertexShaderSource;
             p.fragmentShaderSource = '#define FLAT\n' + p.fragmentShaderSource;
+
+            var imageUri = './images/earth.png';
+            Cesium.Resource.createIfNeeded(imageUri).fetchImage().then(image => {
+                p.texture = XE.Obj.CustomPrimitive.createTextureFromImage(earth.czm.scene.context, image);
+            });
 
             // if (this.flat) {
             //     parts.push('#define FLAT');

@@ -128,7 +128,7 @@ function createVertexShad() {
             }
 
 
-           var unBind =   XE.MVVM.watch(czmObject, 'ready', () => {
+           var unBind = XE.MVVM.watch(czmObject, 'ready', () => {
                 customShader(czmObject._tileset, this.nodeDatas.length);
                 this.setTexture();
                 this.setParam();
