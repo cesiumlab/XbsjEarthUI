@@ -30,6 +30,8 @@
         function startup() {
             earth = new XE.Earth('earthContainer');
 
+            earth.weather.atmosphere.enabled = false;
+
             const bloom = earth.postProcess.bloom;
             bloom.enabled = true;
             bloom.glowOnly = false;
@@ -83,12 +85,41 @@
                                 "fsBody": "\nfloat vtxf_a12 = v_elevationPos.z / 20.0;\ngl_FragColor *= vec4(vtxf_a12, vtxf_a12, vtxf_a12, 1.0);\n"
                             }
                         }
+                    },
+                    {
+                        "ref": "scaneline",
+                        "czmObject": {
+                            "xbsjType": "Scanline",
+                            "xbsjGuid": "c827bdc1-c14b-4452-81de-7b2ce427b786",
+                            "name": "扫描线",
+                            "position": [2.0313392580015766, 0.6964409014088834, 0],
+                            "radius": 3000,
+                            "timeDuration": "3",
+                            "currentTime": 0,
+                            "color": [0.5, 0.8, 1.0, 1.0],
+                        }
                     }
                 ]
             };
 
             var tileset = earth.sceneTree.$refs.tileset.czmObject;
+            var scaneline = earth.sceneTree.$refs.scaneline.czmObject;
             window.tileset = tileset;
+            window.scaneline = scaneline;
+
+            scaneline.playing = true;
+
+            tileset.xbsjCustomShader.fsBody = `
+            float vtxf_a11 = fract(czm_frameNumber / 120.0) * 3.14159265 * 2.0;
+            float vtxf_a12 = v_elevationPos.z / 20.0 + sin(vtxf_a11) * 0.1;
+            gl_FragColor *= vec4(vtxf_a12, vtxf_a12, vtxf_a12, 1.0);
+
+            float vtxf_a13 = fract(czm_frameNumber / 360.0);
+            float vtxf_h = clamp(v_elevationPos.z / 300.0, 0.0, 1.0);
+            vtxf_a13 = abs(vtxf_a13 - 0.5) * 2.0;
+            float vtxf_diff = step(0.005, abs(vtxf_h - vtxf_a13));
+            gl_FragColor.rgb += gl_FragColor.rgb * (1.0 - vtxf_diff);
+            `;            
 
             earth.camera.position = [2.03164809508113, 0.6966244295326638, 1040.2661065255693];
             earth.camera.rotation = [3.972507149093452, -0.5205829134298061, 6.28037637077842];
