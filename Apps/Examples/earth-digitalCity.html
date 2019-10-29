@@ -30,6 +30,8 @@
         function startup() {
             earth = new XE.Earth('earthContainer');
 
+            earth.weather.atmosphere.enabled = false;
+
             const bloom = earth.postProcess.bloom;
             bloom.enabled = true;
             bloom.glowOnly = false;
@@ -103,6 +105,18 @@
             var scaneline = earth.sceneTree.$refs.scaneline.czmObject;
             window.tileset = tileset;
             window.scaneline = scaneline;
+
+            tileset.xbsjCustomShader.fsBody = `
+            float vtxf_a11 = fract(czm_frameNumber / 120.0) * 3.14159265 * 2.0;
+            float vtxf_a12 = v_elevationPos.z / 60.0 + sin(vtxf_a11) * 0.1;
+            gl_FragColor *= vec4(vtxf_a12, vtxf_a12, vtxf_a12, 1.0);
+
+            float vtxf_a13 = fract(czm_frameNumber / 360.0);
+            float vtxf_h = clamp(v_elevationPos.z / 300.0, 0.0, 1.0);
+            vtxf_a13 = abs(vtxf_a13 - 0.5) * 2.0;
+            float vtxf_diff = step(0.005, abs(vtxf_h - vtxf_a13));
+            gl_FragColor.rgb += gl_FragColor.rgb * (1.0 - vtxf_diff);
+            `;
 
             scaneline.playing = true;
 
