@@ -398,6 +398,19 @@ vueApp.examples = [
         ]
     },
     {
+        "title": "Earth案例",
+        "list": [
+            {
+                "title": "数字城市",
+                "url": "./earth-digitalCity.html"
+            },
+            {
+                "title": "数字工厂",
+                "url": "./earth-digitalFactory.html"
+            }
+        ]
+    },
+    {
         "title": "EarthUI示例",
         "list": [
             {
