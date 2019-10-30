@@ -4,17 +4,16 @@
     :footervisible="false"
     @cancel="show=false"
     v-show="show"
-    :width="320"
-    :height="300"
+    :width="396"
+    :height="345"
+    :min-width="396"
     :left="500"
     :top="138"
     :title="lang.title"
   >
     <div class="containbox">
       <div class="leftbox">
-        <span @click="dotShow=true, lineShow=false, surfaceShow=false">{{lang.dot}}</span>
-        <span @click="lineShow=true, dotShow=false, surfaceShow=false">{{lang.line}}</span>
-        <span @click="surfaceShow=true, dotShow=false, lineShow=false">{{lang.surface}}</span>
+        <XbsjVirtualTree ref="vtree" :tree="tree" @on-click="itemClick"></XbsjVirtualTree>
       </div>
       <div class="rightbox">
         <div>
@@ -48,6 +47,7 @@ export default {
       dotShow: true,
       lineShow: false,
       surfaceShow: false,
+      tree: [],
       langs: {
         zh: {
           dot: "点",
@@ -58,7 +58,8 @@ export default {
           curveflag: "曲面旗标",
           rectangle: "矩形",
           rightangleflag: "直角旗标",
-          title: "标绘"
+          title: "标绘",
+          entityclassic: "标绘类型"
         },
         en: {
           dot: "dot",
@@ -69,16 +70,65 @@ export default {
           curveflag: "curveflag",
           rectangle: "rectangle",
           rightangleflag: "rightangleflag",
-          title: "Entity"
+          title: "Entity",
+          entityclassic: "EntityClassic"
         }
       },
       lang: undefined
     };
   },
   created() {},
-  mounted() {},
+  mounted() {
+    this.tree = [
+      {
+        title: this.lang.entityclassic,
+        expand: true,
+        checkStatus: "checked",
+        children: [
+          {
+            id: 1,
+            title: this.lang.dot,
+            expand: false,
+            checkStatus: "checked",
+            dotShows: true
+          },
+          {
+            id: 2,
+            title: this.lang.line,
+            expand: false,
+            checkStatus: "checked",
+            lineShows: true
+          },
+          {
+            id: 3,
+            title: this.lang.surface,
+            expand: false,
+            checkStatus: "checked",
+            surfaceShows: true
+          }
+        ]
+      }
+    ];
+  },
   methods: {
-    // dotClick() {},
+    itemClick(item) {
+      // console.log(item);
+      if (item.item.dotShows) {
+        this.dotShow = true;
+        this.lineShow = false;
+        this.surfaceShow = false;
+      }
+      if (item.item.lineShows) {
+        this.dotShow = false;
+        this.lineShow = true;
+        this.surfaceShow = false;
+      }
+      if (item.item.surfaceShows) {
+        this.dotShow = false;
+        this.lineShow = false;
+        this.surfaceShow = true;
+      }
+    },
     // 圆弧
     Arc() {
       var Arc = new XE.Obj.Plots.GeoArc(this.$root.$earth);
@@ -144,13 +194,13 @@ li:hover {
   background: rgba(0, 0, 0, 0.51);
 }
 .leftbox {
-  width: 30%;
+  width: 36%;
   height: 100%;
   float: left;
   border-right: 1px solid black;
 }
 .rightbox {
-  width: 70%;
+  width: 64%;
   height: 100%;
   float: left;
 }
