@@ -251,8 +251,8 @@ export default {
       e.preventDefault();
       that._czmObj.creating = false;
       let obj = e.dataTransfer.getData("obj");
-      let arr = []
-      arr = JSON.parse(obj).positions
+      let arr = [];
+      arr = JSON.parse(obj).positions;
       that._czmObj.positions = arr;
       that._czmObj.flyTo();
     }
@@ -340,6 +340,7 @@ export default {
     ok() {
       this.close();
       const pathToolObj = this._czmObj;
+      pathToolObj.editing = false;
       if (!pathToolObj) {
         return;
       }

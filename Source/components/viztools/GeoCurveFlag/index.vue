@@ -236,6 +236,7 @@ export default {
     ok() {
       this.close();
       const modelToolObj = this._czmObj;
+      modelToolObj.editing = false;
       if (!modelToolObj) {
         return;
       }
