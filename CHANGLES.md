@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-### 1.2.4
+### 1.2.4 - 2019-11-2
 
 ##### Additions :tada:
 * 把mapv和cesium结合的示例加到了EarthSDK中；
