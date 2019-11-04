@@ -196,6 +196,7 @@ export default {
         return;
       }
       cameraVideo.positionEditing = false;
+      cameraVideo.rotationEditing = false;
       cameraVideo.twoPostionsEditing = false;
       if (cameraVideo.isCreating) {
         cameraVideo.isCreating = false;

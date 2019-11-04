@@ -10,9 +10,10 @@ const zh = {
   weizhi: '位置',
   flyto: '定位',
   reset: '重置',
-  enlargeScale:'放大比例',
-  minpx:'像素大小',
-  pathAnimation:'路径动画'
+  enlargeScale: '放大比例',
+  minpx: '像素大小',
+  pathAnimation: '路径动画',
+  material: '材质底色'
 }
 
 const en = {
@@ -27,10 +28,10 @@ const en = {
   weizhi: 'weizhi',
   flyto: 'flyto',
   reset: 'reset',
-  enlargeScale:'enlargeScale',
-  minpx:'min px',
-  pathAnimation:'pathAnimation'
-
+  enlargeScale: 'enlargeScale',
+  minpx: 'min px',
+  pathAnimation: 'pathAnimation',
+  material: 'material'
 }
 
 export default {

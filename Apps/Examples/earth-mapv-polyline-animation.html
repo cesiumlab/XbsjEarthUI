@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>mapv-多段线动画</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/jquery.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        function startup() {
+            const earth = new XE.Earth('earthContainer');
+
+            var viewer = earth.czm.viewer;
+            viewer.imageryLayers.addImageryProvider(new Cesium.UrlTemplateImageryProvider({
+                url: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                subdomains: ['a', 'b', 'c', 'd', 'e'],
+            }));
+            // 设置相机位置
+            // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
+            earth.camera.position = [2.0318085713332255, 0.6906484565329043, 55792.896435757175];
+            earth.camera.rotation = [6.128290204901391, -1.1520461574349783, 6.283181299380239];
+
+            $.get('./scripts/od-xierqi.txt', function (rs) {
+                var data = [];
+                var timeData = [];
+
+                rs = rs.split("\n");
+                console.log(rs.length);
+                var maxLength = 0;
+                for (var i = 0; i < rs.length; i++) {
+                    var item = rs[i].split(',');
+                    var coordinates = [];
+                    if (item.length > maxLength) {
+                        maxLength = item.length;
+                    }
+                    for (j = 0; j < item.length; j += 2) {
+                        // var coord = trans.untransform(new maptalks.Point(Number(item[j]), Number(item[j + 1])),1);
+                        //coordinates.push([coord.x,coord.y]);
+                        var x = Number(item[j]) / 20037508.34 * 180;
+                        var y = Number(item[j + 1]) / 20037508.34 * 180;
+                        y = 180 / Math.PI * (2 * Math.atan(Math.exp(y * Math.PI / 180)) - Math.PI / 2);
+                        if (x == 0 || y == NaN) {
+                            continue;
+                        }
+                        coordinates.push([x, y]);
+                        timeData.push({
+                            geometry: {
+                                type: 'Point',
+                                coordinates: [x, y]
+                            },
+                            count: 1,
+                            time: j
+                        });
+                    }
+                    data.push({
+                        geometry: {
+                            type: 'LineString',
+                            coordinates: coordinates
+                        }
+                    });
+
+                }
+
+                var dataSet = new mapv.DataSet(data);
+
+                var options = {
+                    strokeStyle: 'rgba(53,57,255,0.5)',
+                    // globalCompositeOperation: 'lighter',
+                    shadowColor: 'rgba(53,57,255,0.2)',
+                    shadowBlur: 3,
+                    lineWidth: 3.0,
+                    draw: 'simple'
+                }
+
+                var mapvLayer = mapv.cesiumMapLayer(viewer, dataSet, options);
+
+
+                var dataSet = new mapv.DataSet(timeData);
+
+                var options = {
+                    fillStyle: 'rgba(255, 250, 250, 0.2)',
+                    globalCompositeOperation: "lighter",
+                    size: 1.5,
+                    animation: {
+                        stepsRange: {
+                            start: 0,
+                            end: 100
+                        },
+                        trails: 3,
+                        duration: 5,
+                    },
+                    draw: 'simple'
+                }
+
+                var mapvLayer = XE.mixins.mapVLayer(viewer, dataSet, options);
+            });
+
+
+            // only for Debug
+            window.earth = earth;
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(() => XE.HTML.loadMapV()).then(startup);
+    </script>
+</body>
+
+</html>

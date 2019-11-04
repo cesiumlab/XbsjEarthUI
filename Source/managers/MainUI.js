@@ -60,6 +60,7 @@ import FeatureProperty from "./tools/FeatureProperty"
 import LabScene from "./LabScene"
 
 import ModelTree from "./tools/ModelTree";
+import EntityMore from "./tools/EntityMore";
 
 /**
  * EarthUI根管理器
@@ -213,6 +214,7 @@ class MainUI {
 
     //模型结构
     this._modelTree = new ModelTree(this);
+    this._entitymore = new EntityMore(this);
     //其他工具
     this._imageryLab = new ImageryLab(this);
     this._imageryOnline = new ImageryOnline(this);
@@ -364,6 +366,16 @@ class MainUI {
           */
           get modelTree() {
             return mainUI._modelTree;
+          },
+          /**
+          * 标绘更多结构管理树
+          * @readonly
+          * @type {EntityMore} 
+          * @instance
+          * @memberof ToolsCollection
+          */
+          get entitymore() {
+            return mainUI._entitymore;
           }
         };
       }

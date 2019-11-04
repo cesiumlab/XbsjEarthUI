@@ -263,6 +263,7 @@ export default {
       this.close();
 
       const viewshed = this._czmObj;
+      viewshed.editing = false;
       if (!viewshed) {
         return;
       }

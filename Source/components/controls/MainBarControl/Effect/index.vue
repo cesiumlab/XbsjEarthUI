@@ -110,7 +110,7 @@
         ></span>
 
         <!-- 星空显隐 -->
-         <div class="xbsj-item-btnbox">
+        <div class="xbsj-item-btnbox">
           <div
             class="xbsj-item-btn starryskybutton"
             :class="{'starryskybutton-on':weather.skyBox}"
@@ -258,6 +258,20 @@
           <span class="xbsj-item-name">{{lang.mosaic}}</span>
         </div>
 
+        <div class="xbsj-item-btnbox ml20">
+          <div
+            class="xbsj-item-btn forcesunbutton"
+            :class="{'forcesunbutton-on':effect.forceSunPos}"
+            @click="effect.forceSunPos=!effect.forceSunPos"
+          ></div>
+          <span class="xbsj-item-name">{{lang.forceSunPos}}</span>
+        </div>
+        <span
+          class="xbsj-select"
+          :class="{highlight:popup == 'forceSunPos'}"
+          @click.stop="togglePopup('forceSunPos',$event)"
+        ></span>
+
         <!--
         <span
           class="xbsj-select"
@@ -284,6 +298,7 @@
     <Mosaic ref="mosaic" v-show="popup =='mosaic'"></Mosaic>
     <NightVision ref="nightVision" v-show="popup =='nightVision'"></NightVision>
     <DepthOfField ref="depthOfField" v-show="popup =='depthOfField'"></DepthOfField>
+    <ForceSunPos ref="forceSunPos" v-show="popup =='forceSunPos'"></ForceSunPos>
   </div>
 </template>
 
@@ -306,6 +321,7 @@ import Mosaic from "./Mosaic";
 import Silhouette from "./Silhouette";
 import NightVision from "./NightVision";
 import DepthOfField from "./DepthOfField";
+import ForceSunPos from "./ForceSunPos";
 import { addOutterEventListener } from "../../../utils/xbsjUtil";
 export default {
   components: {
@@ -325,7 +341,8 @@ export default {
     Mosaic,
     Silhouette,
     NightVision,
-    DepthOfField
+    DepthOfField,
+    ForceSunPos
   },
   data() {
     return {
@@ -343,7 +360,8 @@ export default {
       },
       popup: "",
       effect: {
-        shadow: false
+        shadow: false,
+        forceSunPos: false
       },
       postProcess: {
         bloom: false,
@@ -359,9 +377,7 @@ export default {
       langs: languagejs
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
     //给所有popup的el上添加外部事件
     Object.keys(this.$refs).forEach(key => {
@@ -393,6 +409,7 @@ export default {
       this.binVue("weather.skyBox");
 
       this.binVue("effect.shadow");
+      this.binVue("effect.forceSunPos");
 
       this.binVue("postProcess.ambientOcclusion");
       this.binVue("postProcess.bloom");
@@ -644,8 +661,6 @@ export default {
   background-size: contain;
 }
 
-
-
 .shadowbutton {
   background: url(../../../../images/shadow.png) no-repeat;
   background-size: contain;
@@ -741,6 +756,16 @@ export default {
 .nightvisionbutton-on,
 .nightvisionbutton:hover {
   background: url(../../../../images/nightvision_on.png) no-repeat;
+  background-size: contain;
+}
+
+.forcesunbutton {
+  background: url(../../../../images/forcesun.png) no-repeat;
+  background-size: contain;
+}
+.forcesunbutton-on,
+.forcesunbutton:hover {
+  background: url(../../../../images/forcesun_on.png) no-repeat;
   background-size: contain;
 }
 </style>

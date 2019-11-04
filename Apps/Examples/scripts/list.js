@@ -1,5 +1,30 @@
 vueApp.examples = [
     {
+        "title": "Cesium示例",
+        "list": [
+            {
+                "title": "Cesium创建立方体",
+                "url": "./cesium-primitive-createCube.html"
+            },
+            {
+                "title": "Cesium自定义Appearance",
+                "url": "./cesium-primitive-customAppearance.html"
+            },
+            {
+                "title": "Cesium自定义材质",
+                "url": "./cesium-primitive-customMaterial.html"
+            },
+            {
+                "title": "Cesium自定义Primitive",
+                "url": "./cesium-primitive-customPrimitive.html"
+            },
+            {
+                "title": "Cesium雷达特效",
+                "url": "./cesium-primitive-radarEffect.html"
+            }
+        ]
+    },
+    {
         "title": "Earth示例",
         "list": [
             {
@@ -43,6 +68,14 @@ vueApp.examples = [
                 "url": "./earth-camera-firstpersion.html"
             },
             {
+                "title": "自定义图元",
+                "url": "./earth-customPrimitive.html"
+            },
+            {
+                "title": "自定义图元2",
+                "url": "./earth-customPrimitive2.html"
+            },
+            {
                 "title": "圆柱体集群",
                 "url": "./earth-cylinders.html"
             },
@@ -59,10 +92,6 @@ vueApp.examples = [
                 "url": "./earth-effect-bloom.html"
             },
             {
-                "title": "效果-泛光2",
-                "url": "./earth-effect-bloom2.html"
-            },
-            {
                 "title": "效果-云",
                 "url": "./earth-effect-cloud.html"
             },
@@ -77,6 +106,10 @@ vueApp.examples = [
             {
                 "title": "效果-太阳/月亮/星空",
                 "url": "./earth-effect-SunMoonSkyBox.html"
+            },
+            {
+                "title": "强制光照",
+                "url": "./earth-forceSunPos.html"
             },
             {
                 "title": "热力图-currentTime",
@@ -129,6 +162,58 @@ vueApp.examples = [
             {
                 "title": "多地图切换",
                 "url": "./earth-map-switch.html"
+            },
+            {
+                "title": "mapv-热力图",
+                "url": "./earth-mapv-map-point-heatmap.html"
+            },
+            {
+                "title": "mapv-气泡",
+                "url": "./earth-mapv-point-bubble.html"
+            },
+            {
+                "title": "mapv-种类",
+                "url": "./earth-mapv-point-category.html"
+            },
+            {
+                "title": "mapv-点等值线图",
+                "url": "./earth-mapv-point-choropleth.html"
+            },
+            {
+                "title": "mapv-集群",
+                "url": "./earth-mapv-point-cluster.html"
+            },
+            {
+                "title": "mapv-矩形",
+                "url": "./earth-mapv-point-density-rect.html"
+            },
+            {
+                "title": "mapv-蜂窝状",
+                "url": "./earth-mapv-point-honeycomb.html"
+            },
+            {
+                "title": "mapv-点强度",
+                "url": "./earth-mapv-point-intensity.html"
+            },
+            {
+                "title": "mapv-多边形等值线图",
+                "url": "./earth-mapv-polygon-choropleth.html"
+            },
+            {
+                "title": "mapv-多边形强度",
+                "url": "./earth-mapv-polygon-intensity.html"
+            },
+            {
+                "title": "mapv-多段线动画",
+                "url": "./earth-mapv-polyline-animation.html"
+            },
+            {
+                "title": "mapv-简单折线",
+                "url": "./earth-mapv-polyline-simple.html"
+            },
+            {
+                "title": "mapv-webgl",
+                "url": "./earth-mapv-webgl-simple.html"
             },
             {
                 "title": "模型-平移旋转",
@@ -207,7 +292,7 @@ vueApp.examples = [
                 "url": "./earth-pin-editing.html"
             },
             {
-                "title": "Pin-div",
+                "title": "Pin-gif",
                 "url": "./earth-pin-gif.html"
             },
             {
@@ -267,7 +352,7 @@ vueApp.examples = [
                 "url": "./earth-scaneline-play.html"
             },
             {
-                "title": "扫描线-播放",
+                "title": "扫描线-点击",
                 "url": "./earth-scaneline-show.html"
             },
             {
@@ -281,6 +366,10 @@ vueApp.examples = [
             {
                 "title": "地形-中国14级",
                 "url": "./earth-terrain-china14.html"
+            },
+            {
+                "title": "3dtiles强制双面显示",
+                "url": "./earth-tileset-forceDoubleSide.html"
             },
             {
                 "title": "视图-多视口",
@@ -305,6 +394,19 @@ vueApp.examples = [
             {
                 "title": "路径-pin",
                 "url": "./eath-path-pin.html"
+            }
+        ]
+    },
+    {
+        "title": "Earth案例",
+        "list": [
+            {
+                "title": "数字城市",
+                "url": "./earth-digitalCity.html"
+            },
+            {
+                "title": "数字工厂",
+                "url": "./earth-digitalFactory.html"
             }
         ]
     },

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Cesium示例"></meta>
+    <title>Cesium创建立方体</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function startup() {
+            earth = new XE.Earth('earthContainer');
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "默认离线影像",
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "createTileMapServiceImageryProvider": {
+                                    "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    "fileExtension": 'jpg',
+                                },
+                                "type": "createTileMapServiceImageryProvider"
+                            }
+                        }
+                    },
+                ]
+            };
+
+            const viewer = earth.czm.viewer;
+
+            var boxLength = 100000.0;
+            var position = Cesium.Cartesian3.fromDegrees(116.39, 39.9, 0.5*boxLength);
+            var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(position);
+            // 0 立方体顶点位置标号，以及坐标系示意图
+            // 立方体
+            //    v6----- v5
+            //   /|      /|
+            //  v1------v0|
+            //  | |     | |
+            //  | |v7---|-|v4
+            //  |/      |/
+            //  v2------v3
+            // 坐标系
+            //  z
+            //  | /y
+            //  |/
+            //  o------x
+            // 1 定义位置数组
+            var v0 = [0.5, -0.5, 0.5];
+            var v1 = [-0.5, -0.5, 0.5];
+            var v2 = [-0.5, -0.5, -0.5];
+            var v3 = [0.5, -0.5, -0.5];
+            var v4 = [0.5, 0.5, -0.5];
+            var v5 = [0.5, 0.5, 0.5];
+            var v6 = [-0.5, 0.5, 0.5];
+            var v7 = [-0.5, 0.5, -0.5];
+            var rawVertex = [
+                // 下 -z
+                ...v2, ...v3, ...v4, ...v7,
+                // 前 -y
+                ...v2, ...v3, ...v0, ...v1,
+                // 后 +y
+                ...v4, ...v7, ...v6, ...v5,
+                // 左 -x
+                ...v7, ...v2, ...v1, ...v6,
+                // 右 +x
+                ...v3, ...v4, ...v5, ...v0,
+                // 上 +z
+                ...v1, ...v0, ...v5, ...v6,
+            ];
+            // 乘上box的长度
+            var boxVertex = rawVertex.map(function(v) {
+                return v * boxLength;
+            });
+            var positions = new Float64Array(boxVertex);
+            // 2 定义法向数组
+            var npx = [1, 0, 0];
+            var nnx = [-1, 0, 0];
+            var npy = [0, 1, 0];
+            var nny = [0, -1, 0];
+            var npz = [0, 0, 1];
+            var nnz = [0, 0, -1];
+            var normals = new Float32Array([
+                // 下 -z
+                ...nnz, ...nnz, ...nnz, ...nnz,
+                // 前 -y
+                ...nny, ...nny, ...nny, ...nny,
+                // 后 +y
+                ...npy, ...npy, ...npy, ...npy,
+                // 左 -x
+                ...nnx, ...nnx, ...nnx, ...nnx,
+                // 右 +x
+                ...npx, ...npx, ...npx, ...npx,
+                // 上 +z
+                ...npz, ...npz, ...npz, ...npz,
+            ]);
+            // 3 定义纹理数组
+            var sts = new Float32Array([
+                0, 0, 1, 0, 1, 1, 0, 1,
+                0, 0, 1, 0, 1, 1, 0, 1,
+                0, 0, 1, 0, 1, 1, 0, 1,
+                0, 0, 1, 0, 1, 1, 0, 1,
+                0, 0, 1, 0, 1, 1, 0, 1,
+                0, 0, 1, 0, 1, 1, 0, 1,
+            ]);
+            // 4 定义索引
+            var indices = new Uint16Array([
+                0, 1, 2, 0, 2, 3,
+                4, 5, 6, 4, 6, 7,
+                8, 9, 10, 8, 10, 11,
+                12, 13, 14, 12, 14, 15,
+                16, 17, 18, 16, 18, 19,
+                20, 21, 22, 20, 22, 23,
+            ]);
+            // 5 创建Primitive
+            var myBox = viewer.scene.primitives.add(new Cesium.Primitive({
+                geometryInstances: new Cesium.GeometryInstance({
+                    geometry: new Cesium.Geometry({
+                        attributes: {
+                            position: new Cesium.GeometryAttribute({
+                                componentDatatype: Cesium.ComponentDatatype.DOUBLE,
+                                componentsPerAttribute: 3,
+                                values: positions
+                            }),
+                            normal: new Cesium.GeometryAttribute({
+                                componentDatatype: Cesium.ComponentDatatype.FLOAT,
+                                componentsPerAttribute: 3,
+                                values: normals
+                            }),
+                            st: new Cesium.GeometryAttribute({
+                                componentDatatype: Cesium.ComponentDatatype.FLOAT,
+                                componentsPerAttribute: 2,
+                                values: sts
+                            }),
+                        },
+                        indices: indices,
+                        primitiveType: Cesium.PrimitiveType.TRIANGLES,
+                        boundingSphere: Cesium.BoundingSphere.fromVertices(positions)
+                    }),
+                    // attributes : {
+                    //     color : Cesium.ColorGeometryInstanceAttribute.fromColor(new Cesium.Color(1.0, 1.0, 0.0, 1.0))
+                    // }
+                }),
+                // appearance: new Cesium.PerInstanceColorAppearance({
+                //     flat : true,
+                //     translucent : false
+                // }),
+                appearance: new Cesium.MaterialAppearance({
+                    material: Cesium.Material.fromType('Image', {
+                        image: './images/earth.png'
+                    }),
+                    //faceForward : true // 当绘制的三角面片法向不能朝向视点时，自动翻转法向，从而避免法向计算后发黑等问题
+                    closed: true // 是否为封闭体，实际上执行的是是否进行背面裁剪
+                }),
+                modelMatrix: modelMatrix,
+                asynchronous: false
+            }));
+            viewer.camera.flyToBoundingSphere(new Cesium.BoundingSphere(position, 100000));            
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);            
+    </script>
+</body>
+
+</html>

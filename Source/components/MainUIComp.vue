@@ -71,9 +71,15 @@ import ModelTool from "./viztools/ModelTool";
 import PolylineTool from "./viztools/PolylineTool";
 import GeoCurveArrow from "./viztools/GeoCurveArrow";
 import GeoDoubleArrow from "./viztools/GeoDoubleArrow";
+import GeoCircle from "./viztools/GeoCircle";
+import GeoRectangle from "./viztools/GeoRectangle";
+import GeoCurveFlag from "./viztools/GeoCurveFlag";
+import GeoRightAngleFlag from "./viztools/GeoRightAngleFlag";
 import GeoPolygon from "./viztools/GeoPolygon";
 import GeoSectorSearch from "./viztools/GeoSectorSearch";
 import GeoPolylineArrow from "./viztools/GeoPolylineArrow";
+import GeoPolyline from "./viztools/GeoPolyline";
+import GeoArc from "./viztools/GeoArc";
 import GeoTriFlag from "./viztools/GeoTriFlag";
 import ScanlineTool from "./viztools/ScanlineTool";
 
@@ -88,6 +94,7 @@ import GlobalColorPicker from "./common/GlobalColorPicker";
 import InformationBox from "./utils/InformationBox";
 
 import ModelTreeTool from "./tools/ModelTreeTool";
+import EntityMoreTool from "./tools/EntityMoreTool";
 
 export default {
   components: {
@@ -112,9 +119,15 @@ export default {
     PolylineTool,
     GeoCurveArrow,
     GeoDoubleArrow,
+    GeoCircle,
+    GeoRectangle,
+    GeoCurveFlag,
+    GeoRightAngleFlag,
     GeoPolygon,
     GeoSectorSearch,
     GeoPolylineArrow,
+    GeoPolyline,
+    GeoArc,
     GeoTriFlag,
     ScanlineTool,
 
@@ -133,7 +146,8 @@ export default {
     TilesetStyleEditor,
     GlobalColorPicker,
     InformationBox,
-    ModelTreeTool
+    ModelTreeTool,
+    EntityMoreTool
   },
   data: function() {
     return {
@@ -156,8 +170,14 @@ export default {
         GeoCurveArrow: "GeoCurveArrow",
         GeoSectorSearch: "GeoSectorSearch",
         GeoPolylineArrow: "GeoPolylineArrow",
+        GeoPolyline: "GeoPolyline",
+        GeoArc: "GeoArc",
         GeoTriFlag: "GeoTriFlag",
         GeoDoubleArrow: "GeoDoubleArrow",
+        GeoCircle: "GeoCircle",
+        GeoRectangle: "GeoRectangle",
+        GeoCurveFlag: "GeoCurveFlag",
+        GeoRightAngleFlag: "GeoRightAngleFlag",
         GeoPolygon: "GeoPolygon",
         ["CameraView.View"]: "CameraViewPrp"
       },
@@ -209,6 +229,10 @@ export default {
         {
           component: "ModelTreeTool",
           ref: "modelTreeTool"
+        },
+        {
+          component: "EntityMoreTool",
+          ref: "entitymoreTool"
         }
       ],
       infos: [],

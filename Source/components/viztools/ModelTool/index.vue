@@ -108,6 +108,12 @@
           </div>
         </div>
       </div>
+      <div class="flatten">
+        <label>{{lang.material}}</label>
+        <div class="field">
+          <XbsjSlider :min="0" :max="5.0" :step="0.02" v-model.number="model.luminanceAtZenith"></XbsjSlider>
+        </div>
+      </div>
     </div>
   </Window>
 </template>
@@ -136,7 +142,8 @@ export default {
         xbsjRotation: [0, 0, 0],
         maximumScale: 0,
         minimumPixelSize: 0,
-        attachedPathGuid: ""
+        attachedPathGuid: "",
+        luminanceAtZenith: 0
       },
       pinstyletype: true,
       langs: languagejs
@@ -162,7 +169,8 @@ export default {
         xbsjPosition: "model.xbsjPosition",
         maximumScale: "model.maximumScale",
         minimumPixelSize: "model.minimumPixelSize",
-        attachedPathGuid: "model.attachedPathGuid"
+        attachedPathGuid: "model.attachedPathGuid",
+        luminanceAtZenith: "model.luminanceAtZenith"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {

@@ -101,8 +101,8 @@
                     far: 0,
                     fovH: 0,
                     fovV: 0,
-                    videoUrl:'',
-                    showHelper:true,
+                    videoUrl: '',
+                    showHelper: true,
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                 };
             },
@@ -119,42 +119,43 @@
                                 "title": "项目2",
                                 "isSelected": true,
                                 "children": [{
-                                        "czmObject": {
-                                            "xbsjType": "Tileset",
-                                            "xbsjGuid": "b4137394-d346-4434-a01e-5b2d3730ec9f",
-                                            "name": "三维瓦片1x",
-                                            "url": "//lab.earthsdk.com/model/f15b9e90ac2d11e99dbd8fd044883638/tileset.json",
-                                            "lightColor": null,
-                                            "specularEnvironmentMaps": null,
-                                            "xbsjPosition": [
-                                                1.9016974701882112,
-                                                0.5972325152147303,
-                                                425.8641913624607
-                                            ],
-                                            "xbsjFlattenGuid": "93916e9b-82dd-4a56-b15e-27303b08e781",
-                                            "xbsjClippingPlanes": {}
-                                        }
-                                    },
-                                    {
-                                        "ref": "cameravideo",
-                                        "czmObject": {
-                                            "xbsjType": "CameraVideo",
-                                            "xbsjGuid": "19e84dea-2faa-4949-95c2-8d333a03e0c7",
-                                            "name": "视频融合1",
-                                            "videoUrl": "//www.earthsdk.com/v/last/XbsjEarthUI/assets/demo.mp4",
-                                            "position": [
-                                                1.9017043698837766,
-                                                0.5972379094016695,
-                                                446.2499351617626
-                                            ],
-                                            "rotation": [
-                                                0.07413323656963833,
-                                                -0.933639537288121,
-                                                0.0003900191769634631
-                                            ],
-                                            "far": 50
-                                        }
+                                    "czmObject": {
+                                        "xbsjType": "Tileset",
+                                        "xbsjGuid": "b4137394-d346-4434-a01e-5b2d3730ec9f",
+                                        "name": "三维瓦片1x",
+                                        "url": "//lab.earthsdk.com/model/f15b9e90ac2d11e99dbd8fd044883638/tileset.json",
+                                        "lightColor": null,
+                                        "specularEnvironmentMaps": null,
+                                        "xbsjPosition": [
+                                            1.9016974701882112,
+                                            0.5972325152147303,
+                                            425.8641913624607
+                                        ],
+                                        "xbsjFlattenGuid": "93916e9b-82dd-4a56-b15e-27303b08e781",
+                                        "xbsjClippingPlanes": {},
+                                        "skipLevelOfDetail": false
                                     }
+                                },
+                                {
+                                    "ref": "cameravideo",
+                                    "czmObject": {
+                                        "xbsjType": "CameraVideo",
+                                        "xbsjGuid": "19e84dea-2faa-4949-95c2-8d333a03e0c7",
+                                        "name": "视频融合1",
+                                        "videoUrl": "//www.earthsdk.com/v/last/XbsjEarthUI/assets/demo.mp4",
+                                        "position": [
+                                            1.9017043698837766,
+                                            0.5972379094016695,
+                                            446.2499351617626
+                                        ],
+                                        "rotation": [
+                                            0.07413323656963833,
+                                            -0.933639537288121,
+                                            0.0003900191769634631
+                                        ],
+                                        "far": 50
+                                    }
+                                }
                                 ]
                             }]
                         }

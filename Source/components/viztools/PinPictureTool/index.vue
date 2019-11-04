@@ -330,6 +330,7 @@ export default {
       }
       this.close();
       const pinToolObj = this._czmObj;
+      pinToolObj.editing = false;
       if (!pinToolObj) {
         return;
       }

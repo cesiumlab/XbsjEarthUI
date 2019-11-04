@@ -20,7 +20,7 @@
             padding: 0px;
         }
 
-        .box span{
+        .box span {
             display: block;
             margin-top: 10px;
         }
@@ -93,6 +93,7 @@
                             "xbsjType": "Tileset",
                             "url": '../assets/dayanta/tileset.json',
                             "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
                         },
                     }, {
                         "ref": 'path1',
@@ -157,8 +158,8 @@
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position =  [1.9017581050561334,0.5971620000864428,902.9488013429717];
-                earth.camera.rotation = [5.68519760929593,-0.6384030801215013,6.280994248737583];
+                earth.camera.position = [1.9017581050561334, 0.5971620000864428, 902.9488013429717];
+                earth.camera.rotation = [5.68519760929593, -0.6384030801215013, 6.280994248737583];
 
                 var tileset = earth.sceneTree.$refs.tileset.czmObject;
                 var path1 = earth.sceneTree.$refs.path1.czmObject;

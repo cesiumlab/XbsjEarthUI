@@ -28,7 +28,7 @@
             display: inline-block;
             cursor: pointer;
         }
-        
+
         .shadowbox {
             width: 20px;
             height: 16px;
@@ -58,7 +58,6 @@
             color: #fff;
             border: 1px solid #1E9FFF;
         }
-
     </style>
 </head>
 
@@ -112,21 +111,22 @@
                             "xbsjType": "Tileset",
                             "url": '../assets/dayanta/tileset.json',
                             "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
                         },
                     }, {
-                            "czmObject": {
-                                "name": '离线影像',
-                                "xbsjType": "Imagery",
-                                "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
-                            }
+                        "czmObject": {
+                            "name": '离线影像',
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
                         }
+                    }
                     ]
                 }
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position = [1.901703278961517,0.5971775186512027,804.7994518114391];
-                earth.camera.rotation = [1.5898393712632242e-13,-0.7855880281448457,1.0658141036401503e-14];
+                earth.camera.position = [1.901703278961517, 0.5971775186512027, 804.7994518114391];
+                earth.camera.rotation = [1.5898393712632242e-13, -0.7855880281448457, 1.0658141036401503e-14];
 
                 // 1.1.3 数据绑定
                 this._enabledUnbind = XE.MVVM.bind(this, 'enabled', earth.effect.shadow, 'enabled');

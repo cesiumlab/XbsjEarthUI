@@ -32,7 +32,11 @@
           <span class="xbsj-item-name">{{lang.path}}</span>
         </div>
         <!-- 折线 -->
-        <div class="xbsj-item-btnbox" @click="polylinebtn" title="折线">
+        <!-- <div class="xbsj-item-btnbox" @click="polylinebtn" title="折线">
+          <div class="xbsj-item-btn linebutton"></div>
+          <span class="xbsj-item-name">{{lang.line}}</span>
+        </div>-->
+        <div class="xbsj-item-btnbox" @click="Polyline">
           <div class="xbsj-item-btn linebutton"></div>
           <span class="xbsj-item-name">{{lang.line}}</span>
         </div>
@@ -67,6 +71,11 @@
         <div class="xbsj-item-btnbox" @click="Polygon">
           <div class="xbsj-item-btn facebutton"></div>
           <span class="xbsj-item-name">{{lang.face}}</span>
+        </div>
+        <!-- 标绘更多 -->
+        <div class="xbsj-item-btnbox" @click="EntityMoreShow=!EntityMoreShow">
+          <div class="xbsj-item-btn more"></div>
+          <span class="xbsj-item-name">{{lang.more}}</span>
         </div>
 
         <!-- <div class="xbsj-item-btnbox">
@@ -184,20 +193,29 @@ export default {
       selectlist: false,
       lang: {},
       langs: languagejs,
-      PlottingShow: false
+      PlottingShow: false,
+      EntityMoreShow: false
     };
   },
   created() {},
   mounted() {},
   methods: {
     // 多边形
-    Polygon(){
+    Polygon() {
       var Polygon = new XE.Obj.Plots.GeoPolygon(this.$root.$earth);
-      console.log(Polygon);
+      // console.log(Polygon);
       Polygon.creating = true;
       Polygon.isCreating = true;
       Polygon.name = "多边形";
       this.$root.$earthUI.showPropertyWindow(Polygon);
+    },
+    // 圆弧
+    Arc() {
+      var Arc = new XE.Obj.Plots.GeoArc(this.$root.$earth);
+      Arc.creating = true;
+      Arc.isCreating = true;
+      Arc.name = "圆弧";
+      this.$root.$earthUI.showPropertyWindow(Arc);
     },
     //双箭头
     DoubleArrow() {
@@ -225,6 +243,15 @@ export default {
       SectorSearch.isCreating = true;
       SectorSearch.name = "扇形搜索";
       this.$root.$earthUI.showPropertyWindow(SectorSearch);
+    },
+    // 打开折线弹窗
+    Polyline() {
+      var Polyline = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+      // console.log(Polyline);
+      Polyline.creating = true;
+      Polyline.isCreating = true;
+      Polyline.name = "折线";
+      this.$root.$earthUI.showPropertyWindow(Polyline);
     },
     // 打开折线箭头弹窗
     PolylineArrow() {

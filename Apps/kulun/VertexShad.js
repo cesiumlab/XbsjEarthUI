@@ -77,7 +77,7 @@ function createVertexShad() {
 
             function customShader(tileset, attribNum = 3) {
                 if (attribNum > 32) {
-                    throw new Error('attribNum不能大于8！');
+                    throw new Error('attribNum不能大于32！');
                 }
 
                 //注意这个大小和下面必须一致
@@ -119,7 +119,7 @@ function createVertexShad() {
                     ${fsComp}
                     float xbsjvv = smoothstep(u_xbsjCustomParams.x, u_xbsjCustomParams.y, xbsjv);
                     vec4 color = texture2D(u_xbsjCustomTexture, vec2(xbsjvv, u_xbsjCustomParams.w)); 
-                    gl_FragColor = vec4(color.xyz, 1.0); 
+                    gl_FragColor *= vec4(color.xyz, 1.0); 
                 `;
 
                 tileset._xbsjCustomTexture = t;
@@ -128,7 +128,7 @@ function createVertexShad() {
             }
 
 
-           var unBind =   XE.MVVM.watch(czmObject, 'ready', () => {
+           var unBind = XE.MVVM.watch(czmObject, 'ready', () => {
                 customShader(czmObject._tileset, this.nodeDatas.length);
                 this.setTexture();
                 this.setParam();
