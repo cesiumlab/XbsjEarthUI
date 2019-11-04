@@ -29,7 +29,7 @@
             margin: 5px 0;
             cursor: pointer;
         }
-        
+
         .fly {
             width: 20px;
             height: 16px;
@@ -112,10 +112,10 @@
                 var height = 560;
                 var us = setInterval(() => {
                     height += 2;
-                if (height > 580) {
-                    height = 560;
-                }
-                path1.positions.forEach(e => e[2] = height);
+                    if (height > 580) {
+                        height = 560;
+                    }
+                    path1.positions.forEach(e => e[2] = height);
                 }, 100);
 
                 // 1.1.2 场景配置
@@ -129,6 +129,7 @@
                             "xbsjType": "Tileset",
                             "url": '../assets/dayanta/tileset.json',
                             "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
                         },
                     }, {
                         "ref": 'path1',
@@ -208,7 +209,7 @@
 
                 // 1.1.3 跟踪 
                 // 单向绑定的属性，pin将跟踪path1，但pin发生变化path1并不会跟踪！
-                this._pinUnbind = XE.MVVM.track(pin, 'position' , path1 , 'currentPosition');
+                this._pinUnbind = XE.MVVM.track(pin, 'position', path1, 'currentPosition');
 
                 this._earth = earth;
 

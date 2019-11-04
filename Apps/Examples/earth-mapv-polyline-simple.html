@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>mapv-简单折线</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/jquery.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        function startup() {
+            const earth = new XE.Earth('earthContainer');
+
+            var viewer = earth.czm.viewer;
+            viewer.imageryLayers.addImageryProvider(new Cesium.UrlTemplateImageryProvider({
+                url: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                subdomains: ['a', 'b', 'c', 'd', 'e'],
+            }));
+            // 设置相机位置
+            // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
+            earth.camera.position = [1.8629330726292823, 0.5744384857362217, 4999994.869554926];
+            earth.camera.rotation = [6.283185307179586, -1.5705418329961636, 0];
+
+            var randomCount = 1000;
+            var data = [];
+
+            var citys = ["北京", "天津", "上海", "重庆", "石家庄", "太原", "呼和浩特", "哈尔滨", "长春", "沈阳", "济南", "南京", "合肥", "杭州", "南昌", "福州", "郑州", "武汉", "长沙", "广州", "南宁", "西安", "银川", "兰州", "西宁", "乌鲁木齐", "成都", "贵阳", "昆明", "拉萨", "海口"];
+
+            // 构造数据
+            while (randomCount--) {
+                var cityCenter1 = mapv.utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
+                var cityCenter2 = mapv.utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
+                data.push({
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: [[cityCenter1.lng - 1 + Math.random() * 1, cityCenter1.lat - 1 + Math.random() * 1], [cityCenter2.lng - 1 + Math.random() * 1, cityCenter2.lat - 1 + Math.random() * 1]]
+                    },
+                    count: 30 * Math.random()
+                });
+            }
+
+            var dataSet = new mapv.DataSet(data);
+
+            var options = {
+                strokeStyle: 'rgba(255, 250, 50, 0.3)',
+                shadowColor: 'rgba(255, 250, 50, 1)',
+                shadowBlur: 20,
+                lineWidth: 0.7,
+                draw: 'simple'
+            }
+            var mapvLayer = XE.mixins.mapVLayer(viewer, dataSet, options);
+
+
+            // only for Debug
+            window.earth = earth;
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(() => XE.HTML.loadMapV()).then(startup);
+    </script>
+</body>
+
+</html>

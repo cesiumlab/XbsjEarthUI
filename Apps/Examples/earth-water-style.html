@@ -20,7 +20,7 @@
             padding: 0px;
         }
 
-        .box span{
+        .box span {
             display: inline-block;
             margin-top: 10px;
         }
@@ -84,8 +84,8 @@
             data() {
                 return {
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
-                    baseWaterColor: [0,0,0,0],
-                    blendColor: [0,0,0,0]
+                    baseWaterColor: [0, 0, 0, 0],
+                    blendColor: [0, 0, 0, 0]
                 };
             },
             // 1.1 资源创建
@@ -99,15 +99,15 @@
                     "isSelected": true,
                     "children": [{
                         "czmObject": {
-                        "xbsjType": "Imagery",
-                        "enabled": true,
-                        "name": "谷歌影像",
-                        "show": true,
-                        "xbsjImageryProvider": {
-                            "XbsjImageryProvider": {
-                            "url": "//www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}",
+                            "xbsjType": "Imagery",
+                            "enabled": true,
+                            "name": "谷歌影像",
+                            "show": true,
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}",
+                                }
                             }
-                        }
                         }
                     },
                     {
@@ -119,28 +119,29 @@
                                 1.9016974701882112,
                                 0.5972325152147303,
                                 0
-                            ],                            
+                            ],
                             "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
                         },
                         "ref": 'tileset'
                     },
                     {
-                            "ref": 'water1',
-                            "czmObject": {
-                                "xbsjType": "Water",
-                                "positions": [
-                                    1.90168174313679,
-                                    0.5972732924673276,
-                                    1.9017230593134629,
-                                    0.5972734968580539,
-                                    1.9017177812531605,
-                                    0.5972242141220793,
-                                    1.90168212565758,
-                                    0.5972259534519064
-                                ],
-                                height: 0.24
-                            }
+                        "ref": 'water1',
+                        "czmObject": {
+                            "xbsjType": "Water",
+                            "positions": [
+                                1.90168174313679,
+                                0.5972732924673276,
+                                1.9017230593134629,
+                                0.5972734968580539,
+                                1.9017177812531605,
+                                0.5972242141220793,
+                                1.90168212565758,
+                                0.5972259534519064
+                            ],
+                            height: 0.24
                         }
+                    }
                     ]
                 };
 
@@ -148,8 +149,8 @@
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position =  [1.9017005861053253,0.5972203009968811,286.26848737110424];
-                earth.camera.rotation = [0.053155606800175725,-1.0733469123234674,0.0003493379109942296];
+                earth.camera.position = [1.9017005861053253, 0.5972203009968811, 286.26848737110424];
+                earth.camera.rotation = [0.053155606800175725, -1.0733469123234674, 0.0003493379109942296];
 
                 // 1.1.5 数据绑定
                 this._baseWaterColorUnbind = XE.MVVM.bind(this, 'baseWaterColor', water1, 'baseWaterColor');

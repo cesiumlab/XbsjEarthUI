@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
     <title>路径-室内漫游</title>
     <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
@@ -499,7 +500,8 @@
                                 0.6965069903408323,
                                 9.831644570475259
                             ],
-                            "xbsjClippingPlanes": {}
+                            "xbsjClippingPlanes": {},
+                            "skipLevelOfDetail": false
                         }
                     },
                     {
@@ -526,7 +528,7 @@
                 path.currentSpeed = 2;
                 // 开始播放
                 // path.playing = true;
-                
+
                 // 当前相机是否可见 
                 // 当前相机指位于currentPosition处的一个相机。
                 // 此属性，主要用来显示当前播放的位置，方便调试。
@@ -546,6 +548,7 @@
                 // only for Debug
                 window.earth = earth;
                 window.path = path;
+                window.bim = bim;
             },
             filters: {
                 numFilter(value) {

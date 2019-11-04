@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>3dtiles强制双面显示</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width:100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                </div>
+            `,
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                };
+            },
+            // 1.1 资源加载
+            mounted() {
+                // 1.2.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+                // 强制双面，注意此属性不能影响已加载进来的模型，一旦设置，之后所有加载进来的模型都将以双面显示。
+                Cesium.Model.xbsjDebugForceDoubleSided = true;
+
+                // 1.2.3 创建Tileset
+                earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "czmObject": {
+                                "name": "默认离线影像",
+                                "xbsjType": "Imagery",
+                                "xbsjImageryProvider": {
+                                    "createTileMapServiceImageryProvider": {
+                                        "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                        "fileExtension": 'jpg',
+                                    },
+                                    "type": "createTileMapServiceImageryProvider"
+                                }
+                            }
+                        },
+                        {
+                            "czmObject": {
+                                "name": "三维瓦片数据", // 可以不填写
+                                "xbsjType": "Tileset", // 必填项
+                                "url": "../assets/dayanta/tileset.json", // 必填项
+                                "xbsjPosition": [ // 可以不填写
+                                    1.9016974701882112,
+                                    0.5972325152147303,
+                                    425.8641913624607
+                                ],
+                                "xbsjUseOriginTransform": false, // 可以不填写
+                                "skipLevelOfDetail": false
+                            }
+                        },
+                    ]
+                };
+
+                // 路径和上述json配置保持一致
+                const tileset = earth.sceneTree.root.children[1].czmObject;
+
+                // 1.2.4 数据双向绑定
+                // disposers 用来收集资源销毁函数，并在析构时自动调用！
+                this._disposers = [];
+
+                // 当url发生变动时，自动飞入3dtiles数据处
+                this._disposers.push(XE.MVVM.watch(tileset, 'ready', ready => (ready && tileset.flyTo())));
+
+                // 1.2.5 变量记录
+                this._earth = earth;
+                this._tileset = tileset;
+
+                // only for Debug
+                window.earth = earth;
+                window.tileset = tileset;
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._disposers.forEach(d => d());
+                this._disposers.length = 0;
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+
+            // only for Debug
+            window.app = app;
+        });
+    </script>
+
+
+</body>
+
+</html>

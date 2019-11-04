@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
     <title>编辑互斥</title>
     <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
@@ -19,7 +20,7 @@
             padding: 0px;
         }
 
-        .box span{
+        .box span {
             display: block;
             margin-top: 10px;
         }
@@ -95,7 +96,8 @@
                             "name": '大雁塔',
                             "xbsjType": "Tileset",
                             "url": '../assets/dayanta/tileset.json',
-                            "xbsjUseOriginTransform": false,                    
+                            "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
                         },
                     }, {
                         "czmObject": {
@@ -103,7 +105,8 @@
                             "xbsjType": "Tileset",
                             "url": '../assets/dayanta/tileset.json',
                             "xbsjPosition": [1.901764255186154, 0.5972325152147303, 425.8641913624607],
-                            "xbsjUseOriginTransform": false,                      
+                            "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
                         },
                     }, {
                         "czmObject": {
@@ -116,7 +119,7 @@
 
                 var tileset1 = earth.sceneTree.root.children[0].czmObject;
                 var tileset2 = earth.sceneTree.root.children[1].czmObject;
-                
+
                 // only for Debug
                 window.earth = earth;
                 window.tileset1 = tileset1;

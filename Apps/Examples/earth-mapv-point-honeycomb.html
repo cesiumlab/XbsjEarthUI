@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>mapv-蜂窝状</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        function startup() {
+            const earth = new XE.Earth('earthContainer');
+
+            var viewer = earth.czm.viewer;
+            viewer.imageryLayers.addImageryProvider(new Cesium.UrlTemplateImageryProvider({
+                url: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                subdomains: ['a', 'b', 'c', 'd', 'e'],
+            }));
+            viewer.camera.setView({
+                destination: Cesium.Cartesian3.fromDegrees(-102.17609405517578, 34.41583177128595, 5000000)
+            });
+
+            var randomCount = 100;
+            var data = [];
+            while (randomCount--) {
+                data.push({
+                    // 点数据
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [-125.8 + Math.random() * 50, 30.3 + Math.random() * 20]
+                    },
+                    count: 30 * Math.random()
+                });
+            }
+
+            var dataSet = new mapv.DataSet(data);
+
+            var options = {
+                fillStyle: 'rgba(55, 50, 250, 0.8)', // 填充颜色
+                shadowColor: 'rgba(255, 250, 50, 1)', // 投影颜色
+                shadowBlur: 20, // 投影模糊级数
+                max: 100, // 数值最大值范围
+                size: 50, // 大小值
+                label: { // 是否显示文字标签
+                    show: true,
+                    fillStyle: 'white', // 填充颜色
+                    // shadowColor: 'yellow',
+                    // font: '20px Arial',
+                    // shadowBlur: 10,
+                },
+                globalAlpha: 0.5, // 透明度
+                gradient: { 0.25: "rgb(0,0,255)", 0.55: "rgb(0,255,0)", 0.85: "yellow", 1.0: "rgb(255,0,0)" }, // 渐变色
+                draw: 'honeycomb' // 蜂窝状展示
+            }
+
+            var mapvLayer = XE.mixins.mapVLayer(viewer, dataSet, options);
+
+
+            // only for Debug
+            window.earth = earth;
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(() => XE.HTML.loadMapV()).then(startup);
+    </script>
+</body>
+
+</html>

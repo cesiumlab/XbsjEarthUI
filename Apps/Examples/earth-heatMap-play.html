@@ -28,7 +28,7 @@
             display: inline-block;
             cursor: pointer;
         }
-        
+
         .play {
             width: 20px;
             height: 16px;
@@ -62,6 +62,7 @@
         .colorbox {
             width: 50px;
         }
+
         .inputbox {
             background-color: white;
             font-size: 12px;
@@ -74,6 +75,7 @@
             margin-bottom: 0;
             width: 346px;
         }
+
         .input {
             font-size: 14px;
             border: none;
@@ -91,6 +93,7 @@
             margin: 2px;
             line-height: 30px;
         }
+
         .arrbox {
             border-radius: 6px;
             margin-bottom: 10px;
@@ -98,6 +101,7 @@
             text-align: left;
             font-size: 0;
         }
+
         .spanbox {
             line-height: 30px;
             margin: 2px;
@@ -113,9 +117,11 @@
             overflow: hidden;
             transition: 0.25s linear;
         }
+
         .spanbox:hover {
             padding: 0px 17px 0 3px;
         }
+
         .spanclose {
             color: white;
             padding: 0 10px 0 0;
@@ -134,12 +140,14 @@
             transition: opacity 0.25s linear;
             font-style: normal;
         }
+
         .spanbox:hover .spanclose {
             padding: 0 10px 5px 0;
             opacity: 1;
             -webkit-filter: none;
             filter: none;
         }
+
         .spanclose:after {
             content: "x";
             -webkit-font-smoothing: antialiased;
@@ -208,15 +216,15 @@
                     "isSelected": true,
                     "children": [{
                         "czmObject": {
-                        "xbsjType": "Imagery",
-                        "enabled": true,
-                        "name": "谷歌影像",
-                        "show": true,
-                        "xbsjImageryProvider": {
-                            "XbsjImageryProvider": {
-                            "url": "//www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}",
+                            "xbsjType": "Imagery",
+                            "enabled": true,
+                            "name": "谷歌影像",
+                            "show": true,
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}",
+                                }
                             }
-                        }
                         }
                     },
                     {
@@ -228,22 +236,23 @@
                                 1.9016974701882112,
                                 0.5972325152147303,
                                 58.352576160356152
-                            ],                            
+                            ],
                             "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
                         },
                         "ref": 'tileset'
                     }, {
-                            "ref": 'heatMap1',
-                            "czmObject": {
-                                "xbsjType": "HeatMap",
-                                "position": [
-                                    1.9017007449558452,
-                                    0.5972456941664638,
-                                    63.031468750219
-                                ],
-                                "playing": true
-                            }
+                        "ref": 'heatMap1',
+                        "czmObject": {
+                            "xbsjType": "HeatMap",
+                            "position": [
+                                1.9017007449558452,
+                                0.5972456941664638,
+                                63.031468750219
+                            ],
+                            "playing": true
                         }
+                    }
                     ]
                 };
 
@@ -252,12 +261,12 @@
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position =  [1.901698836771133,0.5971822607273302,501.17684409661535];
-                earth.camera.rotation = [0.03593315314102252,-0.7634808012756493,0.00015558788214686814];
+                earth.camera.position = [1.901698836771133, 0.5971822607273302, 501.17684409661535];
+                earth.camera.rotation = [0.03593315314102252, -0.7634808012756493, 0.00015558788214686814];
 
                 // 设置初始值
-                this.labelarr=["./images/baidu.png","./images/logo.png","./images/sougou.jpg"];
-                heatMap1.imageUrls=["./images/baidu.png","./images/logo.png","./images/sougou.jpg"];
+                this.labelarr = ["./images/baidu.png", "./images/logo.png", "./images/sougou.jpg"];
+                heatMap1.imageUrls = ["./images/baidu.png", "./images/logo.png", "./images/sougou.jpg"];
 
                 // 1.1.5 数据绑定
                 this._playingUnbind = XE.MVVM.bind(this, 'playing', heatMap1, 'playing');
@@ -274,22 +283,22 @@
             },
             methods: {
                 // 移除标签
-                removeitem (index, item) {
+                removeitem(index, item) {
                     this.labelarr.splice(index, 1);
                     heatMap1.imageUrls = this.labelarr;
                 },
                 // input回车加入labelarr中
-                addlabel () {
+                addlabel() {
                     this.labelarr.push(this.currentval);
                     this.currentval = ''
                     if (this.labelarr.length > 0) {
-                        this.imageUrls=[];
+                        this.imageUrls = [];
                         for (let i = 0; i < this.labelarr.length; i++) {
-                            if(this.labelarr[i] !== "") {
+                            if (this.labelarr[i] !== "") {
                                 this.imageUrls.push(this.labelarr[i]);
                             } else {
                                 return;
-                            }       
+                            }
                         }
                     }
                     heatMap1.imageUrls = this.imageUrls;

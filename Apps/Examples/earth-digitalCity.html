@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth案例"></meta>
+    <title>数字城市</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function startup() {
+            earth = new XE.Earth('earthContainer');
+
+            earth.weather.atmosphere.enabled = false;
+
+            const bloom = earth.postProcess.bloom;
+            bloom.enabled = true;
+            bloom.glowOnly = false;
+            bloom.contrast = 119;
+            bloom.brightness = -0.4;
+            bloom.delta = 0.9;
+            bloom.sigma = 3.78;
+            bloom.stepSize = 5;
+            bloom.isSelected = false;
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "xbsjGuid": "0a74da9f-bff6-4eab-af64-d8cf95978145",
+                            "name": "谷歌影像",
+                            "brightness": 0.2,
+                            "rectangle": null,
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}",
+                                    "srcCoordType": "GCJ02",
+                                    "dstCoordType": "WGS84",
+                                    "maximumLevel": 21,
+                                },
+                                "UrlTemplateImageryProvider": {
+                                    "rectangle": null
+                                },
+                                "WebMapTileServiceImageryProvider": {
+                                    "rectangle": null
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "ref": "tileset",
+                        "czmObject": {
+                            "xbsjType": "Tileset",
+                            "xbsjGuid": "094b1984-4aae-4ac3-bb35-86d84e6a8204",
+                            "name": "白模测试2",
+                            "url": "https://lab.earthsdk.com/model/702aa950d03c11e99f7ddd77cbe22fea/tileset.json",
+                            "xbsjPosition": [
+                                2.120577669988032,
+                                0.545203009169497,
+                                9.313225746154785e-10
+                            ],
+                            "xbsjStyle": "var style = {\n    color: \"vec4(0, 0.5, 1.0,1)\"\n}",
+                            "xbsjClippingPlanes": {},
+                            "xbsjCustomShader": {
+                                "fsBody": "\nfloat vtxf_a12 = v_elevationPos.z / 60.0;\ngl_FragColor *= vec4(vtxf_a12, vtxf_a12, vtxf_a12, 1.0);\n"
+                            }
+                        }
+                    },
+                    {
+                        "ref": "scaneline",
+                        "czmObject": {
+                            "xbsjType": "Scanline",
+                            "xbsjGuid": "c827bdc1-c14b-4452-81de-7b2ce427b786",
+                            "name": "扫描线",
+                            "position": [2.1205517451368254, 0.5452257256914523, 0],
+                            "radius": 5000,
+                            "timeDuration": "3",
+                            "currentTime": 0,
+                            "color": [0.5, 0.8, 1.0, 1.0],
+                        }
+                    }
+                ]
+            };
+
+            var tileset = earth.sceneTree.$refs.tileset.czmObject;
+            var scaneline = earth.sceneTree.$refs.scaneline.czmObject;
+            window.tileset = tileset;
+            window.scaneline = scaneline;
+
+            tileset.xbsjCustomShader.fsBody = `
+            float vtxf_a11 = fract(czm_frameNumber / 120.0) * 3.14159265 * 2.0;
+            float vtxf_a12 = v_elevationPos.z / 60.0 + sin(vtxf_a11) * 0.1;
+            gl_FragColor *= vec4(vtxf_a12, vtxf_a12, vtxf_a12, 1.0);
+
+            float vtxf_a13 = fract(czm_frameNumber / 360.0);
+            float vtxf_h = clamp(v_elevationPos.z / 300.0, 0.0, 1.0);
+            vtxf_a13 = abs(vtxf_a13 - 0.5) * 2.0;
+            float vtxf_diff = step(0.005, abs(vtxf_h - vtxf_a13));
+            gl_FragColor.rgb += gl_FragColor.rgb * (1.0 - vtxf_diff);
+            `;
+
+            scaneline.playing = true;
+
+            earth.camera.position = [2.1210391698749964, 0.544944336488856, 822.8789229124824];
+            earth.camera.rotation = [5.190679265289419, -0.41493986255762305, 6.280299562599916];
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);            
+    </script>
+</body>
+
+</html>

@@ -29,7 +29,7 @@
             margin: 5px 0;
             cursor: pointer;
         }
-        
+
         .fly {
             width: 20px;
             height: 16px;
@@ -105,6 +105,7 @@
                             "xbsjType": "Tileset",
                             "url": '../assets/dayanta/tileset.json',
                             "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
                         },
                     }, {
                         "ref": 'path1',
@@ -184,7 +185,7 @@
                 // 1.1.4 跟踪 
                 // 单向绑定的属性，pin将跟踪path1，但pin发生变化path1并不会跟踪！
                 // currentPosition 当前相机位置，形式如：[0, 0, 0] 该数组中的元素分别表示经度（单位弧度）、纬度（单位弧度）、高度（单位米）。 注意该属性，为只读属性！
-                 this._pinUnbind = XE.MVVM.track(pin, 'position' , path1 , 'currentPosition');
+                this._pinUnbind = XE.MVVM.track(pin, 'position', path1, 'currentPosition');
 
                 this._earth = earth;
 
@@ -204,7 +205,7 @@
                 cameraAttachedClick() {
                     this.cameraAttached = !this.cameraAttached;
                     // 飞回原始位置
-                    earth.camera.flyTo([1.9017007350831854,0.5971922118633656,852.1812706303504], 0, [1.794120407794253e-13,-0.7863066183499514,6.283185307179586]);
+                    earth.camera.flyTo([1.9017007350831854, 0.5971922118633656, 852.1812706303504], 0, [1.794120407794253e-13, -0.7863066183499514, 6.283185307179586]);
                 }
             },
             // 1.2 资源销毁

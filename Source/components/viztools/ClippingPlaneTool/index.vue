@@ -65,7 +65,7 @@
               class="attitudeEditMouseButton"
               :class="attribute.creating ? 'attitudeEditMouseButtonActive' : ''"
               @click="attribute.creating =! attribute.creating"
-            >{{lang.creating}}</button>
+            >{{lang.positionPicking}}</button>
           </div>
           <div class="attitudeEditRotationDiv">
             <button
@@ -267,6 +267,7 @@ export default {
         return;
       }
       clippingPlane.positionEditing = false;
+      clippingPlane.rotationEditing = false;
       clippingPlane.twoPostionsEditing = false;
       if (clippingPlane.isCreating) {
         clippingPlane.isCreating = false;
@@ -342,11 +343,11 @@ export default {
 }
 .attitudeEdit .attitudeEditMouseDiv {
   width: 92px;
-  margin-left: 20px;
+  /* margin-left: 20px; */
 }
 .attitudeEdit .attitudeEditRotationDiv {
   width: 92px;
-  margin-left: 12px;
+  margin-left: 15px;
 }
 .mouseTooltip {
   left: -45px;

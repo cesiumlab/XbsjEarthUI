@@ -199,7 +199,7 @@ export default {
     标记文字
     </div>`;
 
-    console.log(this._czmObj.defaultImgUrl())
+      console.log(this._czmObj.defaultImgUrl());
     }
   },
   beforeDestroy() {
@@ -274,6 +274,7 @@ export default {
     ok() {
       this.close();
       const pinToolObj = this._czmObj;
+      pinToolObj.editing = false;
       if (!pinToolObj) {
         return;
       }

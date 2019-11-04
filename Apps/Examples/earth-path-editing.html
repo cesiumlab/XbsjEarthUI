@@ -50,23 +50,29 @@
             color: #fff;
             border: 1px solid #1E9FFF;
         }
+
         select {
             font-size: 20px;
         }
+
         .setbox span:nth-child(1) {
             font-weight: bold;
             display: inline-block;
             margin: 5px 0;
         }
+
         .ivu-tooltip-popper {
             left: 20px !important;
         }
+
         .ivu-select-selection {
             border-radius: 0;
         }
+
         .ivu-select-multiple .ivu-tag span:not(.ivu-select-max-tag) {
             margin-top: 0px;
         }
+
         button {
             width: 200px;
             background: transparent;
@@ -77,6 +83,7 @@
             font-size: 30px;
             cursor: pointer;
         }
+
         .ivu-select-multiple .ivu-select-selection .ivu-select-placeholder {
             height: 20px;
             line-height: 20px;
@@ -85,14 +92,17 @@
             font-size: 20px;
             font-weight: normal;
         }
+
         .ivu-select-single .ivu-select-selection .ivu-select-selected-value {
             height: 20px;
             line-height: 20px;
             font-size: 20px;
         }
+
         .ivu-tag {
             font-size: 20px;
         }
+
         .ivu-select-item {
             font-size: 20px !important;
         }
@@ -188,6 +198,7 @@
                             "xbsjType": "Tileset",
                             "url": '../assets/dayanta/tileset.json',
                             "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
                         },
                     }, {
                         "ref": 'path1',
@@ -320,15 +331,15 @@
                 })
 
                 var cameraLength = path1.positions.length;
-                for(var i=0; i<cameraLength; i++) {
+                for (var i = 0; i < cameraLength; i++) {
                     this.previousArr.push(i);
                     this.nextArr.push(i);
                 }
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position =  [1.901703273472499,0.5971739421771012,965.6307343927805];
-                earth.camera.rotation = [1.758593271006248e-13,-0.7854502059287727,6.283185307179586];
+                earth.camera.position = [1.901703273472499, 0.5971739421771012, 965.6307343927805];
+                earth.camera.rotation = [1.758593271006248e-13, -0.7854502059287727, 6.283185307179586];
 
                 // 1.1.5 数据绑定
                 this._creatingUnbind = XE.MVVM.bind(this, 'creating', path1, 'creating');
@@ -358,7 +369,7 @@
                     path1.addHeight(-10);
                 },
                 alongThePath() {
-                    if(this.selectArr1.length === 0) {
+                    if (this.selectArr1.length === 0) {
                         // directionAlongThePath(includeIndex)
                         // 自动沿路径计算关键点的姿态
                         // 注意：如果不设置参数，从修改所有关键点的姿态
@@ -367,7 +378,7 @@
                     } else {
                         // var selectNumArr1 = this.selectArr1.map(Number);
                         path1.directionAlongThePath(this.selectArr1);
-                    }                   
+                    }
                 },
                 set() {
                     // directionLerpBetween(first, last)
@@ -377,7 +388,7 @@
                 },
                 ok() {
                     this.position = [...pin.position];
-                    if(this.arr.length === 0) {
+                    if (this.arr.length === 0) {
                         // targetTo(target, includeIndex)
                         // 将所有关键点的方向指向target所在位置
                         // target用来表示观察位置，包含三个元素的数组，分别表示经度、纬度、高度
@@ -386,7 +397,7 @@
                     } else {
                         // var arrnum = this.arr.map(Number);
                         path1.targetTo(this.position, this.arr);
-                    }  
+                    }
                 },
                 setdirection() {
                     pin.creating = true;

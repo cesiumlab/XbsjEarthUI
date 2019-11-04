@@ -70,6 +70,7 @@
                                 0.545203009169497,
                                 9.313225746154785e-10
                             ],
+                            "skipLevelOfDetail": false
                         },
                     }, {
                         "ref": 'scanline1',
@@ -90,7 +91,10 @@
                             "xbsjType": "Imagery",
                             "xbsjImageryProvider": {
                                 "XbsjImageryProvider": {
-                                    "url": "//mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali"
+                                    "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}",
+                                    "srcCoordType": "GCJ02",
+                                    "dstCoordType": "WGS84",
+                                    "maximumLevel": 21,
                                 },
                             }
                         },
@@ -102,8 +106,8 @@
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position =  [2.120534085472877,0.5445599473813671,3486.259508603404];
-                earth.camera.rotation = [6.283185307179578,-0.7863374047795091,1.0658141036401503e-14];
+                earth.camera.position = [2.120534085472877, 0.5445599473813671, 3486.259508603404];
+                earth.camera.rotation = [6.283185307179578, -0.7863374047795091, 1.0658141036401503e-14];
 
                 // 1.1.5 数据绑定
                 this._currentTimeUnbind = XE.MVVM.bind(this, 'currentTime', scanline1, 'currentTime');

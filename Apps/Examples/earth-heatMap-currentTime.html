@@ -61,15 +61,15 @@
                     "isSelected": true,
                     "children": [{
                         "czmObject": {
-                        "xbsjType": "Imagery",
-                        "enabled": true,
-                        "name": "谷歌影像",
-                        "show": true,
-                        "xbsjImageryProvider": {
-                            "XbsjImageryProvider": {
-                            "url": "//www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}",
+                            "xbsjType": "Imagery",
+                            "enabled": true,
+                            "name": "谷歌影像",
+                            "show": true,
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}",
+                                }
                             }
-                        }
                         }
                     },
                     {
@@ -81,22 +81,23 @@
                                 1.9016974701882112,
                                 0.5972325152147303,
                                 58.352576160356152
-                            ],                            
+                            ],
                             "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
                         },
                         "ref": 'tileset'
                     }, {
-                            "ref": 'heatMap1',
-                            "czmObject": {
-                                "xbsjType": "HeatMap",
-                                "position": [
-                                    1.9017007449558452,
-                                    0.5972456941664638,
-                                    63.031468750219
-                                ],
-                                "currentTime": 0.4
-                            }
+                        "ref": 'heatMap1',
+                        "czmObject": {
+                            "xbsjType": "HeatMap",
+                            "position": [
+                                1.9017007449558452,
+                                0.5972456941664638,
+                                63.031468750219
+                            ],
+                            "currentTime": 0.4
                         }
+                    }
                     ]
                 };
 
@@ -105,11 +106,11 @@
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position =  [1.9017007825090926,0.5971781640070272,560.8409616524489];
-                earth.camera.rotation = [0.01840316159516142,-0.9757898491558104,0.00010288720237294768];
+                earth.camera.position = [1.9017007825090926, 0.5971781640070272, 560.8409616524489];
+                earth.camera.rotation = [0.01840316159516142, -0.9757898491558104, 0.00010288720237294768];
 
                 // 设置初始值
-                heatMap1.imageUrls=["./images/baidu.png","./images/logo.png","./images/sougou.jpg"];
+                heatMap1.imageUrls = ["./images/baidu.png", "./images/logo.png", "./images/sougou.jpg"];
 
                 // 1.1.5 数据绑定
                 this._currentTimeUnbind = XE.MVVM.bind(this, 'currentTime', heatMap1, 'currentTime');
