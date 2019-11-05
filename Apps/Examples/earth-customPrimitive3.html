@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <title>自定义图元3</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #canvas-container {
+            width: 600px;
+            height: 600px;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function startup() {
+            earth = new XE.Earth('earthContainer');
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "默认离线影像",
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "createTileMapServiceImageryProvider": {
+                                    "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    "fileExtension": 'jpg',
+                                },
+                                "type": "createTileMapServiceImageryProvider"
+                            }
+                        }
+                    },
+                ]
+            };
+
+            var p = new XE.Obj.CustomPrimitive(earth)
+            p.flyTo();
+            p.positions = [0,0,0,10,0,0,10,10,0,0,10,0,];
+            // p.normals = [0,0,1,0,0,1,0,0,1,0,0,1];
+            p.sts = [0,0, 1,0, 1,1, 0,1, ];
+            // p.colors = [1,1,0,1, 1,1,1,1, 1,1,1,1, 1,1,1,1];
+            p.indices = [0, 1, 2, 0, 2, 3];
+            // p.rotation = [0, 1.57, 0];
+            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+
+            // var imageUri = './images/earth.png';
+            // Cesium.Resource.createIfNeeded(imageUri).fetchImage().then(image => {
+            //     p.texture = XE.Obj.CustomPrimitive.createTextureFromImage(earth.czm.scene.context, image);
+            // });
+
+            p.canvasWidth = 256;
+            p.canvasHeight = 256;
+            p.drawCanvas(ctx => {
+                ctx.strokeStyle = "rgb(0, 0, 0)"; 
+                ctx.strokeRect (0, 0, 256, 256);
+
+                ctx.font = "24px Microsoft YaHei";
+                ctx.fillStyle = "rgb(256,0,0)";
+                ctx.fillText("Hello world", 10, 50);
+            });
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);          
+    </script>
+</body>
+
+</html>
