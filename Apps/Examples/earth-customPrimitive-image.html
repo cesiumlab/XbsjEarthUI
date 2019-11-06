@@ -67,32 +67,35 @@
             p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
 
             var imageUri = './images/circle.png';
+
+            // 方式1：直接设置texture属性
+            // Cesium.Resource.createIfNeeded(imageUri).fetchImage().then(function(image) {
+            //     console.log('image loaded!');
+            //     var vtxfTexture;
+            //     var context = earth.czm.scene.context;
+            //     if (Cesium.defined(image.internalFormat)) {
+            //         vtxfTexture = new Cesium.Texture({
+            //             context: context,
+            //             pixelFormat: image.internalFormat,
+            //             width: image.width,
+            //             height: image.height,
+            //             source: {
+            //                 arrayBufferView: image.bufferView
+            //             }
+            //         });
+            //     } else {
+            //         vtxfTexture = new Cesium.Texture({
+            //             context: context,
+            //             source: image
+            //         });
+            //     }
+
+            //     p.texture = vtxfTexture;
+            // }); 
+
+            // 方式2：canvas中绘制image
             Cesium.Resource.createIfNeeded(imageUri).fetchImage().then(function(image) {
                 console.log('image loaded!');
-
-                // 方式1：直接设置texture属性
-                // var vtxfTexture;
-                // var context = earth.czm.scene.context;
-                // if (Cesium.defined(image.internalFormat)) {
-                //     vtxfTexture = new Cesium.Texture({
-                //         context: context,
-                //         pixelFormat: image.internalFormat,
-                //         width: image.width,
-                //         height: image.height,
-                //         source: {
-                //             arrayBufferView: image.bufferView
-                //         }
-                //     });
-                // } else {
-                //     vtxfTexture = new Cesium.Texture({
-                //         context: context,
-                //         source: image
-                //     });
-                // }
-
-                // p.texture = vtxfTexture;
-
-                // 方式2：canvas中绘制image
                 p.canvasWidth = 512;
                 p.canvasHeight = 512;
 
