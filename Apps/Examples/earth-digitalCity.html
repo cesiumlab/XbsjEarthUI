@@ -111,7 +111,8 @@
 
             scaneline.playing = true;
 
-            createCircle(earth);
+            // createCircle(earth);
+            createGroundCircle(earth);
 
             earth.camera.position = [2.1210391698749964, 0.544944336488856, 822.8789229124824];
             earth.camera.rotation = [5.190679265289419, -0.41493986255762305, 6.280299562599916];
@@ -176,6 +177,52 @@
                     angle = 0.0;
                 }
                 p.rotation[0] = angle / 180.0 * Math.PI;
+            });
+        }
+
+        function createGroundCircle(earth) {
+            var p = new XE.Obj.CustomGroundRectangle(earth)
+            window.p = p; // 方便调试
+            p.position = [2.120341374483383, 0.5449576199476812, 88.98131461014495];
+            p.width = 1000;
+            p.height= 1000;
+            p.canvasWidth = 512;
+            p.canvasHeight = 512;
+            p.color = [0.5, 0.8, 1, 2];
+            
+            let ctx_image = undefined;
+            Cesium.Resource.createIfNeeded('./images/circle.png').fetchImage().then(function(image) {
+                console.log('image loaded!');
+                ctx_image = image;
+            });
+
+            let angle = 0.0;
+            earth.czm.scene.preUpdate.addEventListener(() => {
+                angle -= 1.0;
+                if (angle > 360.0) {
+                    angle = 0.0;
+                }
+                const rotation = angle / 180.0 * Math.PI;
+
+                p.drawCanvas(ctx => {
+                    ctx.clearRect(0, 0, 512, 512);
+
+                    ctx.beginPath();
+                    ctx.strokeStyle = "rgb(128, 128, 128)"; 
+                    // ctx.setLineDash([8, 8]);
+                    ctx.lineWidth = 1;
+                    ctx.arc(256, 256, 250, 0, Math.PI*2, true);
+                    ctx.stroke();
+
+                    if (ctx_image) {
+                        ctx.save();
+                        ctx.translate(256, 256);
+                        ctx.rotate(rotation);
+                        ctx.translate(-256, -256);
+                        ctx.drawImage(ctx_image, 0, 0);
+                        ctx.restore();
+                    }
+                });                
             });
         }
 
