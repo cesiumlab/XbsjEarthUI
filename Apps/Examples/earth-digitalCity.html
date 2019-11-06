@@ -146,7 +146,20 @@
                 ctx.fillStyle = "rgb(0, 155, 255)"; 
                 ctx.fill();
                 ctx.restore();                
+            });    
+            
+            
+            
+
+            let angle = 0.0;
+            earth.czm.scene.preUpdate.addEventListener(() => {
+                angle += 1.0;
+                if (angle > 360.0) {
+                    angle = 0.0;
+                }
+                p.rotation[0] = angle / 180.0 * Math.PI;
             });
+
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
