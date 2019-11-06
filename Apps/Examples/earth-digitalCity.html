@@ -123,9 +123,13 @@
             window.p = p; // 方便调试
             p.position = [2.120341374483383, 0.5449576199476812, 88.98131461014495];
             p.scale = [1000, 1000, 1];
-            p.positions = [-1,-1,0,1,-1,0,1,1,0,-1,1,0,];
-            p.sts = [0,0, 1,0, 1,1, 0,1, ];
-            p.indices = [0, 1, 2, 0, 2, 3];
+            // p.positions = [-1,-1,0,1,-1,0,1,1,0,-1,1,0,];
+            // p.sts = [0,0, 1,0, 1,1, 0,1, ];
+            // p.indices = [0, 1, 2, 0, 2, 3];
+            p.positions = XE.Obj.CustomPrimitive.Geometry.unitSquare.positions;
+            p.sts = XE.Obj.CustomPrimitive.Geometry.unitSquare.sts;
+            p.indices = XE.Obj.CustomPrimitive.Geometry.unitSquare.indices;
+
             p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
 
             p.canvasWidth = 512;
@@ -184,8 +188,8 @@
             var p = new XE.Obj.CustomGroundRectangle(earth)
             window.p = p; // 方便调试
             p.position = [2.120341374483383, 0.5449576199476812, 88.98131461014495];
-            p.width = 1000;
-            p.height= 1000;
+            p.width = 2000;
+            p.height= 2000;
             p.canvasWidth = 512;
             p.canvasHeight = 512;
             p.color = [0.5, 0.8, 1, 2];
