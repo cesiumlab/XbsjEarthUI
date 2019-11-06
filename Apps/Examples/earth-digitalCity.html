@@ -69,12 +69,6 @@
                                     "srcCoordType": "GCJ02",
                                     "dstCoordType": "WGS84",
                                     "maximumLevel": 21,
-                                },
-                                "UrlTemplateImageryProvider": {
-                                    "rectangle": null
-                                },
-                                "WebMapTileServiceImageryProvider": {
-                                    "rectangle": null
                                 }
                             }
                         }
@@ -100,6 +94,7 @@
                             "xbsjGuid": "c827bdc1-c14b-4452-81de-7b2ce427b786",
                             "name": "扫描线",
                             "position": [2.1205517451368254, 0.5452257256914523, 0],
+                            "show": true,
                             "radius": 5000,
                             "timeDuration": "3",
                             "currentTime": 0,
@@ -116,8 +111,42 @@
 
             scaneline.playing = true;
 
+            createCircle(earth);
+
             earth.camera.position = [2.1210391698749964, 0.544944336488856, 822.8789229124824];
             earth.camera.rotation = [5.190679265289419, -0.41493986255762305, 6.280299562599916];
+        }
+
+        function createCircle(earth) {
+            var p = new XE.Obj.CustomPrimitive(earth)
+            window.p = p; // 方便调试
+            p.position = [2.1205517451368254, 0.5452257256914523, 0];
+            p.scale = [1000, 1000, 1];
+            p.positions = [-1,-1,0,1,-1,0,1,1,0,-1,1,0,];
+            p.sts = [0,0, 1,0, 1,1, 0,1, ];
+            p.indices = [0, 1, 2, 0, 2, 3];
+            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+
+            p.canvasWidth = 512;
+            p.canvasHeight = 512;
+
+            p.drawCanvas(ctx => {
+                ctx.clearRect(0, 0, 512, 512);
+                ctx.save();
+                ctx.beginPath();
+                ctx.strokeStyle = "rgb(255, 255, 0)"; 
+                ctx.setLineDash([8, 8]);
+                ctx.lineWidth = 3;
+                ctx.arc(256, 256, 250, 0, Math.PI*2, true);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.arc(256, 256, 120, 0, Math.PI*2, true);
+                ctx.stroke();
+                ctx.fillStyle = "rgb(0, 155, 255)"; 
+                ctx.fill();
+                ctx.restore();                
+            });
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
