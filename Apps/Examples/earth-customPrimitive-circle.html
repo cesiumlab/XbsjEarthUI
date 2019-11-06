@@ -58,7 +58,6 @@
 
             var p = new XE.Obj.CustomPrimitive(earth)
             window.p = p; // 方便调试
-            p.flyTo();
             p.positions = [0,0,0,10,0,0,10,10,0,0,10,0,];
             // p.normals = [0,0,1,0,0,1,0,0,1,0,0,1];
             p.sts = [0,0, 1,0, 1,1, 0,1, ];
@@ -144,6 +143,8 @@
                     ctx.restore();
                 });
             });
+
+            p.flyTo();
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
