@@ -112,7 +112,11 @@
             scaneline.playing = true;
 
             // createCircle(earth);
-            createGroundCircle(earth);
+            var c = createCylinder(earth);
+            var gc = createGroundCircle(earth);
+
+            window.c = c;
+            window.gc = gc;
 
             earth.camera.position = [2.1210391698749964, 0.544944336488856, 822.8789229124824];
             earth.camera.rotation = [5.190679265289419, -0.41493986255762305, 6.280299562599916];
@@ -120,7 +124,6 @@
 
         function createCircle(earth) {
             var p = new XE.Obj.CustomPrimitive(earth)
-            window.p = p; // 方便调试
             p.position = [2.120341374483383, 0.5449576199476812, 88.98131461014495];
             p.scale = [1000, 1000, 1];
             // p.positions = [-1,-1,0,1,-1,0,1,1,0,-1,1,0,];
@@ -182,11 +185,88 @@
                 }
                 p.rotation[0] = angle / 180.0 * Math.PI;
             });
+
+            return p;
         }
+
+        function createCylinder(earth) {
+            var p = new XE.Obj.CustomPrimitive(earth)
+            window.p = p; // 方便调试
+            p.position = [2.120341374483383, 0.5449576199476812, 88.98131461014495];
+            p.scale = [1000, 1000, 2000];
+            // p.positions = [-1,-1,0,1,-1,0,1,1,0,-1,1,0,];
+            // p.sts = [0,0, 1,0, 1,1, 0,1, ];
+            // p.indices = [0, 1, 2, 0, 2, 3];
+
+            var cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(1.0, 1.0, 1.0, 30);
+            p.positions = cylinder.positions;
+            p.sts = cylinder.sts;
+            p.indices = cylinder.indices;
+            // p.indices = [0, 1, 2];
+
+            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+            p.renderState.cull.enabled = false;
+
+            p.canvasWidth = 512;
+            p.canvasHeight = 512;
+
+            // p.drawCanvas(ctx => {
+            //     ctx.clearRect(0, 0, 512, 512);
+            //     ctx.save();
+            //     ctx.beginPath();
+            //     ctx.strokeStyle = "rgb(255, 255, 0)"; 
+            //     ctx.setLineDash([8, 8]);
+            //     ctx.lineWidth = 3;
+            //     ctx.arc(256, 256, 250, 0, Math.PI*2, true);
+            //     ctx.stroke();
+
+            //     ctx.beginPath();
+            //     ctx.arc(256, 256, 120, 0, Math.PI*2, true);
+            //     ctx.stroke();
+            //     ctx.fillStyle = "rgb(0, 155, 255)"; 
+            //     ctx.fill();
+            //     ctx.restore();                
+            // });
+            
+            Cesium.Resource.createIfNeeded('./images/circle.png').fetchImage().then(function(image) {
+                console.log('image loaded!');
+                p.canvasWidth = 512;
+                p.canvasHeight = 512;
+
+                p.drawCanvas(ctx => {
+                    ctx.clearRect(0, 0, 512, 512);
+
+                    ctx.beginPath();
+                    ctx.strokeStyle = "rgb(128, 128, 128)"; 
+                    // ctx.setLineDash([8, 8]);
+                    ctx.lineWidth = 1;
+                    ctx.arc(256, 256, 250, 0, Math.PI*2, true);
+                    ctx.stroke();
+                    // ctx.fillStyle = 'rgb(255, 255, 0)';
+                    // ctx.fill();
+
+                    // ctx.fillRect(0, 0, 512, 521);
+
+                    ctx.drawImage(image, 0, 0);
+                });
+
+                p.color = [0.5, 0.8, 1, 2];
+            });
+
+            let angle = 0.0;
+            earth.czm.scene.preUpdate.addEventListener(() => {
+                angle -= 1.0;
+                if (angle > 360.0) {
+                    angle = 0.0;
+                }
+                p.rotation[0] = angle / 180.0 * Math.PI;
+            });
+
+            return p;
+        }        
 
         function createGroundCircle(earth) {
             var p = new XE.Obj.CustomGroundRectangle(earth)
-            window.p = p; // 方便调试
             p.position = [2.120341374483383, 0.5449576199476812, 88.98131461014495];
             p.width = 2000;
             p.height= 2000;
@@ -228,6 +308,8 @@
                     }
                 });                
             });
+
+            return p;
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
