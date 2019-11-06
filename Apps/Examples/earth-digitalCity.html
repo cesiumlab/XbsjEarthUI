@@ -120,7 +120,7 @@
         function createCircle(earth) {
             var p = new XE.Obj.CustomPrimitive(earth)
             window.p = p; // 方便调试
-            p.position = [2.1205517451368254, 0.5452257256914523, 0];
+            p.position = [2.120341374483383, 0.5449576199476812, 88.98131461014495];
             p.scale = [1000, 1000, 1];
             p.positions = [-1,-1,0,1,-1,0,1,1,0,-1,1,0,];
             p.sts = [0,0, 1,0, 1,1, 0,1, ];
@@ -148,18 +148,25 @@
                 ctx.restore();                
             });    
             
-            
-            
+            Cesium.Resource.createIfNeeded('./images/circle.png').fetchImage().then(function(image) {
+                console.log('image loaded!');
+                p.canvasWidth = 512;
+                p.canvasHeight = 512;
+
+                p.drawCanvas(ctx => {
+                    ctx.clearRect(0, 0, 512, 512);
+                    ctx.drawImage(image, 0, 0);
+                });
+            });
 
             let angle = 0.0;
             earth.czm.scene.preUpdate.addEventListener(() => {
-                angle += 1.0;
+                angle -= 1.0;
                 if (angle > 360.0) {
                     angle = 0.0;
                 }
                 p.rotation[0] = angle / 180.0 * Math.PI;
             });
-
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
