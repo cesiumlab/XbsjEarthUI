@@ -64,7 +64,6 @@
         .divnotClick input {
             background: gray;
             border: none;
-            padding: 3px 2px;
         }
     </style>
 </head>
@@ -86,9 +85,10 @@
                             <span :class="enabled ? '': 'notClick'" @click="useCameraPos = !useCameraPos" style="cursor: pointer;"><input :disabled="!enabled" class="poyline" type="checkbox" style="width: 14px; cursor: pointer;" v-model="useCameraPos">相机方向</span><br/>
                             <div :class="enabled && !useCameraPos ? '': 'divnotClick'">
                                 <span>强制光照位置</span><br/>
-                                <span>经度：</span><input type="text" v-model="position[0].toFixed(5)">。<br/>
-                                <span>纬度：</span><input type="text" v-model="position[1].toFixed(5)">。<br/>
-                                <span>高度：</span><input type="text" v-model="position[2].toFixed(2)">m<br/>
+                                <span>经度: {{ position[0] | numFilter }}°</span><br/>
+                                <span><input type="range" min="-180" max="180" step="1" v-model.number="position[0]"></span><br/>
+                                <span>纬度: {{ position[1] | numFilter }}°</span><br/>
+                                <span><input type="range" min="-90" max="90" step="1" v-model.number="position[1]"></span><br/>
                             </div>
                         </div>
                 </div>
@@ -165,6 +165,13 @@
                 // window.tileset = tileset;
                 window.feiji = feiji;
                 window.earth = earth;
+            },
+            filters: {
+                numFilter(value) {
+                    // 截取当前数据到小数点后两位
+                    let realVal = value.toFixed(5)
+                    return realVal
+                }
             },
             // 1.2 资源销毁
             beforeDestroy() {
