@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="xbsj-labels" content="Earth示例"></meta>
-    <title>自定义图元2</title>
+    <title>自定义图元-毛笔字</title>
     <!-- 0 引入js文件 -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <style>
@@ -60,7 +60,6 @@
             };
 
             var p = new XE.Obj.CustomPrimitive(earth)
-            p.flyTo();
             p.positions = [0,0,0,10,0,0,10,10,0,0,10,0,];
             // p.normals = [0,0,1,0,0,1,0,0,1,0,0,1];
             p.sts = [0,0, 1,0, 1,1, 0,1, ];
@@ -90,6 +89,8 @@
             earth.czm.scene.preUpdate.addEventListener(() => {
                 p.texture.copyFrom(canvas);
             });
+
+            p.flyTo();
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
