@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+### 1.2.5 - 2019-11-6
+
+##### Fixes :wrench:
+* 修复registerPolygonCreatingWithHeight带来的属性变化问题
+* 完善数字工厂的示例
+* 完善自定义图元示例
+
 ### 1.2.4 - 2019-11-2
 
 ##### Additions :tada:
