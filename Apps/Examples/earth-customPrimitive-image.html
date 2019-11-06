@@ -101,8 +101,14 @@
 
                 p.drawCanvas(ctx => {
                     ctx.clearRect(0, 0, 512, 512);
-                    // ctx.fillStyle = 'rgb(255, 255, 0)';
-                    // ctx.fillRect(0, 0, 256, 256);
+
+                    ctx.beginPath();
+                    ctx.strokeStyle = "rgb(255, 255, 255)"; 
+                    ctx.setLineDash([8, 8]);
+                    ctx.lineWidth = 3;
+                    ctx.arc(256, 256, 250, 0, Math.PI*2, true);
+                    ctx.stroke();
+
                     ctx.drawImage(image, 0, 0);
                 });
             }); 

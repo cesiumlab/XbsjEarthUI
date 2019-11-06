@@ -155,8 +155,18 @@
 
                 p.drawCanvas(ctx => {
                     ctx.clearRect(0, 0, 512, 512);
+
+                    ctx.beginPath();
+                    ctx.strokeStyle = "rgb(128, 128, 128)"; 
+                    // ctx.setLineDash([8, 8]);
+                    ctx.lineWidth = 1;
+                    ctx.arc(256, 256, 250, 0, Math.PI*2, true);
+                    ctx.stroke();
+
                     ctx.drawImage(image, 0, 0);
                 });
+
+                p.color = [0.5, 0.8, 1, 2];
             });
 
             let angle = 0.0;
