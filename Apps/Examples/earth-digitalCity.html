@@ -112,11 +112,11 @@
             scaneline.playing = true;
 
             var c = createCircle(earth);
-            // var cl = createCylinder(earth);
+            var cl = createCylinder(earth);
             var gc = createGroundCircle(earth);
 
             window.c = c;
-            // window.cl = cl;
+            window.cl = cl;
             window.gc = gc;
 
             earth.camera.position = [2.1210391698749964, 0.544944336488856, 822.8789229124824];
@@ -194,8 +194,8 @@
         function createCylinder(earth) {
             var p = new XE.Obj.CustomPrimitive(earth)
             window.p = p; // 方便调试
-            p.position = [2.120608456717405, 0.5451864399019342, 33.1840714927981];
-            p.scale = [100, 100, 200];
+            p.position = [2.1206125026580582,0.545178729438238,14.721614698023599];
+            p.scale = [200, 200, 200];
             // p.positions = [-1,-1,0,1,-1,0,1,1,0,-1,1,0,];
             // p.sts = [0,0, 1,0, 1,1, 0,1, ];
             // p.indices = [0, 1, 2, 0, 2, 3];
@@ -229,25 +229,13 @@
             //     ctx.fill();
             //     ctx.restore();                
             // });
-            Cesium.Resource.createIfNeeded('./images/ht/circular_03.png').fetchImage().then(function(image) {
+            Cesium.Resource.createIfNeeded('./images/city/circular2.png').fetchImage().then(function(image) {
                 console.log('image loaded!');
                 p.canvasWidth = 512;
-                p.canvasHeight = 512;
+                p.canvasHeight = 256;
 
                 p.drawCanvas(ctx => {
-                    ctx.clearRect(0, 0, 512, 512);
-
-                    ctx.beginPath();
-                    ctx.strokeStyle = "rgb(128, 128, 128)"; 
-                    // ctx.setLineDash([8, 8]);
-                    ctx.lineWidth = 1;
-                    ctx.arc(256, 256, 250, 0, Math.PI*2, true);
-                    ctx.stroke();
-                    // ctx.fillStyle = 'rgb(255, 255, 0)';
-                    // ctx.fill();
-
-                    // ctx.fillRect(0, 0, 512, 521);
-
+                    ctx.clearRect(0, 0, 512, 256);
                     ctx.drawImage(image, 0, 0);
                 });
 
