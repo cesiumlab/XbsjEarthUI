@@ -111,11 +111,12 @@
 
             scaneline.playing = true;
 
-            // createCircle(earth);
-            var c = createCylinder(earth);
+            var c = createCircle(earth);
+            // var cl = createCylinder(earth);
             var gc = createGroundCircle(earth);
 
             window.c = c;
+            // window.cl = cl;
             window.gc = gc;
 
             earth.camera.position = [2.1210391698749964, 0.544944336488856, 822.8789229124824];
@@ -124,8 +125,9 @@
 
         function createCircle(earth) {
             var p = new XE.Obj.CustomPrimitive(earth)
-            p.position = [2.120341374483383, 0.5449576199476812, 88.98131461014495];
-            p.scale = [1000, 1000, 1];
+            // p.position = [2.1206125026580582,0.5451708901585235,14.721614698023599];
+            p.position = [2.1206125026580582,0.545178729438238,14.721614698023599];
+            p.scale = [500, 500, 1];
             // p.positions = [-1,-1,0,1,-1,0,1,1,0,-1,1,0,];
             // p.sts = [0,0, 1,0, 1,1, 0,1, ];
             // p.indices = [0, 1, 2, 0, 2, 3];
@@ -156,7 +158,7 @@
                 ctx.restore();                
             });    
             
-            Cesium.Resource.createIfNeeded('./images/circle.png').fetchImage().then(function(image) {
+            Cesium.Resource.createIfNeeded('./images/ht/circular_03.png').fetchImage().then(function(image) {
                 console.log('image loaded!');
                 p.canvasWidth = 512;
                 p.canvasHeight = 512;
@@ -192,8 +194,8 @@
         function createCylinder(earth) {
             var p = new XE.Obj.CustomPrimitive(earth)
             window.p = p; // 方便调试
-            p.position = [2.120341374483383, 0.5449576199476812, 88.98131461014495];
-            p.scale = [1000, 1000, 2000];
+            p.position = [2.120608456717405, 0.5451864399019342, 33.1840714927981];
+            p.scale = [100, 100, 200];
             // p.positions = [-1,-1,0,1,-1,0,1,1,0,-1,1,0,];
             // p.sts = [0,0, 1,0, 1,1, 0,1, ];
             // p.indices = [0, 1, 2, 0, 2, 3];
@@ -227,8 +229,7 @@
             //     ctx.fill();
             //     ctx.restore();                
             // });
-            
-            Cesium.Resource.createIfNeeded('./images/circle.png').fetchImage().then(function(image) {
+            Cesium.Resource.createIfNeeded('./images/ht/circular_03.png').fetchImage().then(function(image) {
                 console.log('image loaded!');
                 p.canvasWidth = 512;
                 p.canvasHeight = 512;
@@ -267,9 +268,9 @@
 
         function createGroundCircle(earth) {
             var p = new XE.Obj.CustomGroundRectangle(earth)
-            p.position = [2.120341374483383, 0.5449576199476812, 88.98131461014495];
-            p.width = 2000;
-            p.height= 2000;
+            p.position = [2.1208980215153845, 0.5450726579947579, 41.369588015024185];
+            p.width = 1000;
+            p.height= 1000;
             p.canvasWidth = 512;
             p.canvasHeight = 512;
             p.color = [0.5, 0.8, 1, 2];
