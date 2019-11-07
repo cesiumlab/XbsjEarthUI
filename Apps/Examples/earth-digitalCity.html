@@ -116,12 +116,14 @@
             var cl = createCylinder(earth);
             var cl2 = createCylinder2(earth);
             var gc = createGroundCircle(earth);
+            var t = createTetrahedron(earth);
 
             window.c = c;
             window.b = b;
             window.cl = cl;
             window.cl2 = cl2;
             window.gc = gc;
+            window.t = t;
 
             earth.camera.position = [2.1210391698749964, 0.544944336488856, 822.8789229124824];
             earth.camera.rotation = [5.190679265289419, -0.41493986255762305, 6.280299562599916];
@@ -225,9 +227,47 @@
             return p;
         }        
 
+        function createTetrahedron(earth) {
+            var p = new XE.Obj.CustomPrimitive(earth)
+            p.position = [2.120597930315031, 0.5451624300822016, 400];
+            p.scale = [15, 15, 15];
+            p.positions = [1,0,1.5, 0,1,1.5, -1,0,1.5, 0,-1,1.5, 0, 0, 0];
+            p.indices = [0, 1, 4, 1, 2, 4, 2, 3, 4, 3, 0, 4];
+            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+            p.color = [0.5, 0.8, 1, 0.5];
+
+            var p2 = new XE.Obj.CustomPrimitive(earth)
+            p2.position = [2.120597930315031, 0.5451624300822016, 400];
+            p2.scale = [15, 15, 15];
+            p2.positions = [1,0,1.5, 0,1,1.5, -1,0,1.5, 0,-1,1.5, 0, 0, 0];
+            p2.indices = [0, 1, 1, 2, 2, 3, 3, 0, 0, 4, 1, 4, 2, 4, 3, 4];
+            p2.primitiveType = Cesium.PrimitiveType.LINES;
+            p2.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+            p2.color = [1.0, 1.0, 0.0, 5];
+
+            let angle = 0.0;
+            let t = 0.0;
+            earth.czm.scene.preUpdate.addEventListener(() => {
+                angle += 10.0;
+                if (angle > 360.0) {
+                    angle = 0.0;
+                }
+                p.rotation[0] = angle / 180.0 * Math.PI;
+                p2.rotation[0] = angle / 180.0 * Math.PI;
+                
+
+                t += 0.01;
+                if (t > 1.0) t = 0.0;
+                
+                p.position[2] = 400 + 10 * Math.sin(t*Math.PI*2.0);
+                p2.position[2] = 400 + 10 * Math.sin(t*Math.PI*2.0);
+            });
+
+            return p;       
+        }
+
         function createCylinder(earth) {
             var p = new XE.Obj.CustomPrimitive(earth)
-            window.p = p; // 方便调试
             p.position = [2.120597930315031, 0.5451624300822016, 150];
             p.scale = [100, 100, 314];
 
