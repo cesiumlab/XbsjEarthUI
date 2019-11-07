@@ -283,14 +283,18 @@
                 ctx.fillRect(0, 0, 1, 256);
             });
 
-            // let angle = 0.0;
-            // earth.czm.scene.preUpdate.addEventListener(() => {
-            //     angle -= 1.0;
-            //     if (angle > 360.0) {
-            //         angle = 0.0;
-            //     }
-            //     p.rotation[0] = angle / 180.0 * Math.PI;
-            // });
+            let t = 0.0;
+            earth.czm.scene.preUpdate.addEventListener(() => {
+                t += 0.01 * 0.3;
+                if (t > 1.0) {
+                    t = 0.0;
+                }
+
+                const b = (1.0-Math.cos(t*Math.PI*2.0))*0.5;
+                p.scale[0] = p.scale[1] = 1000 * (1.0-Math.cos(t*Math.PI))*0.5;
+                p.scale[2] = 200 * b;
+                p.color[3] = 2.0 * b;
+            });
 
             return p;
         }                   
