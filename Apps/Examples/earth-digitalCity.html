@@ -377,23 +377,6 @@
                 uniform vec4 u_color;
                 void main()
                 {
-                    // vec3 positionToEyeEC = -v_positionEC;
-                    // vec3 normalEC = normalize(v_normalEC);
-                    // normalEC = faceforward(normalEC, vec3(0.0, 0.0, 1.0), -normalEC);
-
-                    // vec4 imageColor = texture2D(u_image, v_st);
-
-                    // vec3 diffuse = imageColor.rgb;
-                    // float alpha = imageColor.a;
-
-                    // diffuse *= v_color.rgb;
-                    // alpha *= v_color.a;
-
-                    // diffuse *= u_color.rgb;
-                    // alpha *= u_color.a;
-
-                    // gl_FragColor = vec4(diffuse, alpha);
-
                     float powerRatio = fract(czm_frameNumber / 30.0) + 1.0;
                     float alpha = pow(1.0 - v_st.t, powerRatio);
                     gl_FragColor = vec4(u_color.rgb, alpha*u_color.a);
@@ -403,7 +386,80 @@
                 p.fragmentShaderSource = vtxfFragmentShader;
             }
 
-            return p;       
+            // particles.png
+
+            {
+                var p = new XE.Obj.CustomPrimitive(earth)
+                p.position = [...position];
+                p.scale = [3, 3, 300];
+
+                var cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(4.0, 4.0, 1.0, 6);
+                p.positions = cylinder.positions;
+                p.sts = cylinder.sts;
+                p.indices = cylinder.indices;
+                // p.indices = [0, 1, 2];
+
+                p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+                p.renderState.cull.enabled = false;
+
+                p.color = [0.5, 0.8, 1, 2];            
+                p.canvasWidth = 32;
+                p.canvasHeight = 256;
+
+                p.drawCanvas(ctx => {
+                    ctx.clearRect(0, 0, 32, 256);
+                });
+
+                Cesium.Resource.createIfNeeded('./images/city/particles.png').fetchImage().then(function(image) {
+                    p.drawCanvas(ctx => {
+                        ctx.clearRect(0, 0, 32, 512);
+                        ctx.drawImage(image, 0, 0);
+                    });
+                });
+
+                var vtxfFragmentShader =
+                `
+                varying vec3 v_positionEC;
+                varying vec3 v_normalEC;
+                varying vec2 v_st;
+                varying vec4 v_color;
+                uniform sampler2D u_image;
+                uniform vec4 u_color;
+                void main()
+                {
+                    vec3 positionToEyeEC = -v_positionEC;
+                    vec3 normalEC = normalize(v_normalEC);
+                    normalEC = faceforward(normalEC, vec3(0.0, 0.0, 1.0), -normalEC);
+
+                    float dt = fract(czm_frameNumber / 90.0);
+                    vec2 st = fract(vec2(1.0) + v_st - vec2(dt, dt));
+                    vec4 imageColor = texture2D(u_image, st);
+
+                    vec3 diffuse = imageColor.rgb;
+                    float alpha = imageColor.a;
+
+                    diffuse *= v_color.rgb;
+                    alpha *= v_color.a;
+
+                    diffuse *= u_color.rgb;
+                    alpha *= u_color.a;
+
+                    gl_FragColor = vec4(diffuse, alpha * pow(1.0 - v_st.t, 2.0));
+                }
+                `;
+
+                p.fragmentShaderSource = vtxfFragmentShader;
+
+                // let angle = 0.0;
+                // let t = 0.01;
+                // earth.czm.scene.preUpdate.addEventListener(() => {
+                //     angle += 10.0;
+                //     if (angle > 360.0) {
+                //         angle = 0.0;
+                //     }
+                //     p.rotation[0] = angle / 180.0 * Math.PI;                
+                // });
+            }
         }        
 
         function createCylinder(earth) {
