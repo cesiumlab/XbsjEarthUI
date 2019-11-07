@@ -112,11 +112,13 @@
             scaneline.playing = true;
 
             var c = createCircle(earth);
+            var b = createBillboard(earth);
             var cl = createCylinder(earth);
             var cl2 = createCylinder2(earth);
             var gc = createGroundCircle(earth);
 
             window.c = c;
+            window.b = b;
             window.cl = cl;
             window.cl2 = cl2;
             window.gc = gc;
@@ -193,6 +195,36 @@
             return p;
         }
 
+        function createBillboard(earth) {
+            var p = new XE.Obj.CustomPrimitive(earth)
+            p.position = [2.1206401172802556,0.5451803047331054,302.99853825804723];
+            p.scale = [1, 100, 50];
+            p.positions = XE.Obj.CustomPrimitive.Geometry.unitBillboard.positions;
+            p.sts = XE.Obj.CustomPrimitive.Geometry.unitBillboard.sts;
+            p.indices = XE.Obj.CustomPrimitive.Geometry.unitBillboard.indices;
+
+            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+            p.renderState.cull.enabled = false;
+
+            p.canvasWidth = 512;
+            p.canvasHeight = 256;
+
+            Cesium.Resource.createIfNeeded('./images/city/billboard.png').fetchImage().then(function(image) {
+                console.log('image loaded!');
+                p.canvasWidth = 512;
+                p.canvasHeight = 256;
+
+                p.drawCanvas(ctx => {
+                    ctx.clearRect(0, 0, 512, 512);
+                    ctx.drawImage(image, 0, 0);
+                });
+
+                p.color = [0.5, 0.8, 1, 2];
+            });
+
+            return p;
+        }        
+
         function createCylinder(earth) {
             var p = new XE.Obj.CustomPrimitive(earth)
             window.p = p; // 方便调试
@@ -211,23 +243,6 @@
             p.canvasWidth = 512;
             p.canvasHeight = 512;
 
-            // p.drawCanvas(ctx => {
-            //     ctx.clearRect(0, 0, 512, 512);
-            //     ctx.save();
-            //     ctx.beginPath();
-            //     ctx.strokeStyle = "rgb(255, 255, 0)"; 
-            //     ctx.setLineDash([8, 8]);
-            //     ctx.lineWidth = 3;
-            //     ctx.arc(256, 256, 250, 0, Math.PI*2, true);
-            //     ctx.stroke();
-
-            //     ctx.beginPath();
-            //     ctx.arc(256, 256, 120, 0, Math.PI*2, true);
-            //     ctx.stroke();
-            //     ctx.fillStyle = "rgb(0, 155, 255)"; 
-            //     ctx.fill();
-            //     ctx.restore();                
-            // });
             Cesium.Resource.createIfNeeded('./images/city/circular2.png').fetchImage().then(function(image) {
                 console.log('image loaded!');
                 p.canvasWidth = 512;
