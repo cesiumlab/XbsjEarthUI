@@ -113,10 +113,12 @@
 
             var c = createCircle(earth);
             var cl = createCylinder(earth);
+            var cl2 = createCylinder2(earth);
             var gc = createGroundCircle(earth);
 
             window.c = c;
             window.cl = cl;
+            window.cl2 = cl2;
             window.gc = gc;
 
             earth.camera.position = [2.1210391698749964, 0.544944336488856, 822.8789229124824];
@@ -194,11 +196,8 @@
         function createCylinder(earth) {
             var p = new XE.Obj.CustomPrimitive(earth)
             window.p = p; // 方便调试
-            p.position = [2.1206125026580582,0.545178729438238,14.721614698023599];
-            p.scale = [200, 200, 200];
-            // p.positions = [-1,-1,0,1,-1,0,1,1,0,-1,1,0,];
-            // p.sts = [0,0, 1,0, 1,1, 0,1, ];
-            // p.indices = [0, 1, 2, 0, 2, 3];
+            p.position = [2.120597930315031, 0.5451624300822016, 150];
+            p.scale = [100, 100, 314];
 
             var cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(1.0, 1.0, 1.0, 30);
             p.positions = cylinder.positions;
@@ -252,7 +251,49 @@
             });
 
             return p;
-        }        
+        }     
+
+        function createCylinder2(earth) {
+            var p = new XE.Obj.CustomPrimitive(earth)
+            window.p = p; // 方便调试
+            p.position = [2.1206125026580582,0.545178729438238,14.721614698023599];
+            p.scale = [500, 500, 100];
+
+            var cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(1.0, 1.0, 1.0, 30);
+            p.positions = cylinder.positions;
+            p.sts = cylinder.sts;
+            p.indices = cylinder.indices;
+            // p.indices = [0, 1, 2];
+
+            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+            p.renderState.cull.enabled = false;
+
+            p.canvasWidth = 1;
+            p.canvasHeight = 256;
+            p.color = [0.5, 0.8, 1, 2];            
+
+            p.drawCanvas(ctx => {
+                ctx.clearRect(0, 0, 1, 256);
+
+                var lingrad2 = ctx.createLinearGradient(0,0,0,256);
+                lingrad2.addColorStop(0, 'rgba(255,255,255,0)');
+                lingrad2.addColorStop(1, 'rgba(255,255,255,1)');
+
+                ctx.fillStyle = lingrad2;
+                ctx.fillRect(0, 0, 1, 256);
+            });
+
+            // let angle = 0.0;
+            // earth.czm.scene.preUpdate.addEventListener(() => {
+            //     angle -= 1.0;
+            //     if (angle > 360.0) {
+            //         angle = 0.0;
+            //     }
+            //     p.rotation[0] = angle / 180.0 * Math.PI;
+            // });
+
+            return p;
+        }                   
 
         function createGroundCircle(earth) {
             var p = new XE.Obj.CustomGroundRectangle(earth)
