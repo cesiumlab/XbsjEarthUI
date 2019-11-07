@@ -338,7 +338,70 @@
                 p2.scale[1] = 50 * t;
             });
 
-            
+            {
+                var p = new XE.Obj.CustomPrimitive(earth)
+                p.position = [...position];
+                p.scale = [3, 3, 300];
+
+                var cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(0.3, 2.0, 1.0, 6);
+                p.positions = cylinder.positions;
+                p.sts = cylinder.sts;
+                p.indices = cylinder.indices;
+                // p.indices = [0, 1, 2];
+
+                p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+                p.renderState.cull.enabled = false;
+
+                p.color = [0.5, 0.8, 1, 2];            
+                p.canvasWidth = 1;
+                // p.canvasHeight = 256;
+
+                // p.drawCanvas(ctx => {
+                //     ctx.clearRect(0, 0, 1, 256);
+
+                //     var lingrad2 = ctx.createLinearGradient(0,0,0,256);
+                //     lingrad2.addColorStop(0, 'rgba(255,255,255,0)');
+                //     lingrad2.addColorStop(1, 'rgba(255,255,255,1)');
+
+                //     ctx.fillStyle = lingrad2;
+                //     ctx.fillRect(0, 0, 1, 256);
+                // });
+
+                var vtxfFragmentShader =
+                `
+                varying vec3 v_positionEC;
+                varying vec3 v_normalEC;
+                varying vec2 v_st;
+                varying vec4 v_color;
+                uniform sampler2D u_image;
+                uniform vec4 u_color;
+                void main()
+                {
+                    // vec3 positionToEyeEC = -v_positionEC;
+                    // vec3 normalEC = normalize(v_normalEC);
+                    // normalEC = faceforward(normalEC, vec3(0.0, 0.0, 1.0), -normalEC);
+
+                    // vec4 imageColor = texture2D(u_image, v_st);
+
+                    // vec3 diffuse = imageColor.rgb;
+                    // float alpha = imageColor.a;
+
+                    // diffuse *= v_color.rgb;
+                    // alpha *= v_color.a;
+
+                    // diffuse *= u_color.rgb;
+                    // alpha *= u_color.a;
+
+                    // gl_FragColor = vec4(diffuse, alpha);
+
+                    float powerRatio = fract(czm_frameNumber / 30.0) + 1.0;
+                    float alpha = pow(1.0 - v_st.t, powerRatio);
+                    gl_FragColor = vec4(u_color.rgb, alpha*u_color.a);
+                }
+                `;
+
+                p.fragmentShaderSource = vtxfFragmentShader;
+            }
 
             return p;       
         }        
