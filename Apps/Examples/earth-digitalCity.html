@@ -144,8 +144,10 @@
             window.gc = gc;
             window.t = t;
 
-            earth.camera.position = [2.1210391698749964, 0.544944336488856, 822.8789229124824];
-            earth.camera.rotation = [5.190679265289419, -0.41493986255762305, 6.280299562599916];
+            // earth.camera.position = [2.1210391698749964, 0.544944336488856, 822.8789229124824];
+            // earth.camera.rotation = [5.190679265289419, -0.41493986255762305, 6.280299562599916];
+            // 环绕飞行
+            earth.camera.flyAround([2.1206125026580582,0.545178729438238,15], 3000, [0, -Math.PI / 5, 0], 0, 3.14/50);
         }
 
         function createCircle(earth) {
@@ -511,7 +513,7 @@
         function createCylinder2(earth) {
             var p = new XE.Obj.CustomPrimitive(earth)
             window.p = p; // 方便调试
-            p.position = [2.1206125026580582,0.545178729438238,14.721614698023599];
+            p.position = [2.1206125026580582,0.545178729438238,15];
             p.scale = [500, 500, 100];
 
             var cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(1.0, 1.0, 1.0, 30);
