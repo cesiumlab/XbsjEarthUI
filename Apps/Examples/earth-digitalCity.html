@@ -144,7 +144,8 @@
             window.gc = gc;
             window.t = t;
 
-            window.l = createLabel(earth);
+            // window.l = createLabel(earth);
+            window.l = createLabel2(earth);
 
             // earth.camera.position = [2.1210391698749964, 0.544944336488856, 822.8789229124824];
             // earth.camera.rotation = [5.190679265289419, -0.41493986255762305, 6.280299562599916];
@@ -778,6 +779,83 @@
                 labelDiv.style.bottom = `${winPos[1]}px`;
             });
         }
+
+        function createLabel2(earth) {
+            let p = new XE.Obj.Pin(earth);
+            p.position = [2.1204918655649285,0.5452743468087804,209.94294540636682];
+            p.show = false;
+
+            const labelDiv = document.createElement('div');
+            labelDiv.style = `
+                // background: grey;
+                width: 300px;
+                height: 200px;
+                position: absolute;
+                pointer-events: none;
+            `;
+            earth.czm.viewer.container.appendChild(labelDiv);
+
+            const labelCanvas = document.createElement('canvas');
+            labelCanvas.style = `
+                width: 100%;
+                height: 100%;
+            `;
+
+            labelCanvas.width = 300;
+            labelCanvas.height = 200;
+            labelDiv.appendChild(labelCanvas);
+
+            const ctx = labelCanvas.getContext('2d');
+
+            function draw(w) {
+                ctx.clearRect(0, 0, 300, 200);
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.rect((w-1)*300, 0, 300, 200);
+                ctx.clip();
+
+                ctx.strokeStyle = 'rgb(255, 255, 0)';
+                ctx.beginPath();
+                ctx.lineTo(0, 200);
+                ctx.lineTo(100, 100);
+                ctx.lineTo(250, 100);
+                ctx.stroke();
+                ctx.font = "16px console";
+                // ctx.textBaseline = "middle";
+                ctx.fillStyle = 'rgb(255, 255, 0)';
+                ctx.fillText('西部世界总部基地', 110, 90);
+                ctx.restore();
+            }
+
+            let d = 0;
+            let c = 0;
+            draw(c);
+            earth.czm.scene.preUpdate.addEventListener(() => {
+                if (d !== c) {
+                    c += (d - c) * 0.1;
+                    if (Math.abs(c - d) < 0.1) {
+                        c = d;
+                    }
+                    draw(c);
+                }
+            });
+
+            const container = earth.czm.viewer.container;
+
+            XE.MVVM.watch(() => [...p.winPos], winPos => {
+                // console.log(`winPos: ${winPos.toString()}`);
+                labelDiv.style.left = `${winPos[0]}px`;
+                labelDiv.style.bottom = `${winPos[1]}px`;
+
+                if (winPos[0] > container.offsetWidth * 0.3 && winPos[0] < container.offsetWidth * 0.7 && 
+                    winPos[1] > container.offsetHeight * 0.3 && winPos[1] < container.offsetHeight * 0.7) {
+                    d = 1.0;
+                } else {
+                    d = 0.0;
+                }
+            });
+        }        
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
         XE.ready().then(startup);            
