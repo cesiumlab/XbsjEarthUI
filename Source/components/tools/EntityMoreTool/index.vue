@@ -31,6 +31,8 @@
             <li @click="PolylineArrow">{{lang.polylinearrow}}</li>
             <li @click="SectorSearch">{{lang.sectorsearch}}</li>
             <li @click="Arc">{{lang.arc}}</li>
+            <li @click="Bezier2">{{lang.bezier2}}</li>
+            <li @click="Bezier3">{{lang.bezier3}}</li>
           </ul>
         </div>
         <div>
@@ -72,6 +74,8 @@ export default {
           polylinearrow: "折线箭头",
           sectorsearch: "扇形搜索",
           arc: "圆弧",
+          bezier2: "贝塞尔2次曲线",
+          bezier3: "贝塞尔3次曲线",
           circle: "圆",
           triflag: "三角旗标",
           curveflag: "曲面旗标",
@@ -95,6 +99,8 @@ export default {
           polylinearrow: "polylinearrow",
           sectorsearch: "sectorsearch",
           arc: "arc",
+          bezier2: "bezier2",
+          bezier3: "bezier3",
           circle: "circle",
           triflag: "triflag",
           curveflag: "curveflag",
@@ -240,6 +246,22 @@ export default {
       Arc.name = "圆弧";
       this.$root.$earthUI.showPropertyWindow(Arc);
     },
+    // 贝塞尔2次曲线
+    Bezier2() {
+      var Bezier2 = new XE.Obj.Plots.GeoBezier2(this.$root.$earth);
+      Bezier2.creating = true;
+      Bezier2.isCreating = true;
+      Bezier2.name = "贝塞尔2次曲线";
+      this.$root.$earthUI.showPropertyWindow(Bezier2);
+    },
+    // 贝塞尔3次曲线
+    Bezier3() {
+      var Bezier3 = new XE.Obj.Plots.GeoBezier3(this.$root.$earth);
+      Bezier3.creating = true;
+      Bezier3.isCreating = true;
+      Bezier3.name = "贝塞尔3次曲线";
+      this.$root.$earthUI.showPropertyWindow(Bezier3);
+    },
     // 圆
     Circle() {
       var Circle = new XE.Obj.Plots.GeoCircle(this.$root.$earth);
@@ -311,7 +333,7 @@ export default {
 li {
   list-style: none;
   float: left;
-  width: 70px;
+  width: 82px;
   height: 30px;
   line-height: 30px;
   text-align: center;
