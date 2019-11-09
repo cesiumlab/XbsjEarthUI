@@ -60,12 +60,13 @@
             };
 
             var p = new XE.Obj.CustomPrimitive(earth)
-            p.positions = [0,0,0,10,0,0,10,10,0,0,10,0,];
-            // p.normals = [0,0,1,0,0,1,0,0,1,0,0,1];
-            p.sts = [0,0, 1,0, 1,1, 0,1, ];
-            // p.colors = [1,1,0,1, 1,1,1,1, 1,1,1,1, 1,1,1,1];
-            p.indices = [0, 1, 2, 0, 2, 3];
-            // p.rotation = [0, 1.57, 0];
+            
+            p.position = [116.39, 39.9, 10.0].xeptr;
+            p.positions = XE.Obj.CustomPrimitive.Geometry.unitSquare.positions;
+            p.sts = XE.Obj.CustomPrimitive.Geometry.unitSquare.sts;
+            p.indices = XE.Obj.CustomPrimitive.Geometry.unitSquare.indices;
+            p.scale = [100, 100, 1];
+
             p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
 
             p.vertexShaderSource = '#define FLAT\n' + p.vertexShaderSource;

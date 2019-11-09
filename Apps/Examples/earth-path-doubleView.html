@@ -98,7 +98,6 @@
             mounted() {
                 // 1.1.1 创建地球
                 var earth = new XE.Earth(this.$refs.earthContainer);
-                var earth2 = new XE.Earth(this.$refs.earthContainer2);
 
                 // 1.1.2 场景配置
                 earth.sceneTree.root = {
@@ -180,6 +179,32 @@
                     }]
                 };
 
+                var tileset = earth.sceneTree.$refs.tileset.czmObject;
+                var path1 = earth.sceneTree.$refs.path1.czmObject;
+
+                // 1.1.3 设置相机位置
+                earth.camera.position = [1.9017007350831856, 0.5971509194979703, 1114.6983194890267];
+                earth.camera.rotation = [6.283185307179421, -0.7855578455379368, 6.283185307179586];
+
+                // 定义一个pin用来跟踪路径
+                const pin1 = new XE.Obj.Pin(earth);
+
+                // 1.1.4 跟踪 
+                // 单向绑定的属性，pin将跟踪path1，但pin发生变化path1并不会跟踪！
+                // currentPosition 当前相机位置，形式如：[0, 0, 0] 该数组中的元素分别表示经度（单位弧度）、纬度（单位弧度）、高度（单位米）。 注意该属性，为只读属性！
+                this._pin1Unbind = XE.MVVM.track(pin1, 'position', path1, 'currentPosition');
+
+                this._earth = earth;
+
+                // only for Debug
+                window.tileset = tileset;
+                window.path1 = path1;
+                window.earth = earth;
+
+                // 2.1.1 创建地球
+                var earth2 = new XE.Earth(this.$refs.earthContainer2);
+
+                // 2.1.2 场景配置
                 earth2.sceneTree.root = {
                     "expand": true,
                     "title": "预览场景",
@@ -259,48 +284,31 @@
                     }]
                 };
 
-                var tileset = earth.sceneTree.$refs.tileset.czmObject;
-                var path1 = earth.sceneTree.$refs.path1.czmObject;
                 var tileset2 = earth2.sceneTree.$refs.tileset2.czmObject;
                 var path2 = earth2.sceneTree.$refs.path2.czmObject;
 
-                // 1.1.3 设置相机位置
+                // 2.1.3 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position = [1.9017007350831856, 0.5971509194979703, 1114.6983194890267];
-                earth.camera.rotation = [6.283185307179421, -0.7855578455379368, 6.283185307179586];
                 earth2.camera.position = [1.9017007350831856, 0.5971509194979703, 1114.6983194890267];
                 earth2.camera.rotation = [6.283185307179421, -0.7855578455379368, 6.283185307179586];
 
                 // 定义一个pin用来跟踪路径
-                const pin1 = new XE.Obj.Pin(earth);
                 const pin2 = new XE.Obj.Pin(earth2);
 
-                // 1.1.4 跟踪 
+                // 2.1.4 跟踪 
                 // 单向绑定的属性，pin将跟踪path1，但pin发生变化path1并不会跟踪！
                 // currentPosition 当前相机位置，形式如：[0, 0, 0] 该数组中的元素分别表示经度（单位弧度）、纬度（单位弧度）、高度（单位米）。 注意该属性，为只读属性！
-                this._pin1Unbind = XE.MVVM.track(pin1, 'position', path1, 'currentPosition');
                 this._pin2Unbind = XE.MVVM.track(pin2, 'position', path2, 'currentPosition');
 
                 // 绑定相机
                 path2.cameraAttached = true;
 
-                this._earth = earth;
                 this._earth2 = earth2;
 
                 // only for Debug
-                window.tileset = tileset;
-                window.path1 = path1;
-                window.earth = earth;
                 window.tileset2 = tileset2;
                 window.path2 = path2;
                 window.earth2 = earth2;
-            },
-            filters: {
-                numFilter(value) {
-                    // 截取当前数据到小数点后两位
-                    let realVal = parseFloat(value).toFixed(2)
-                    return realVal
-                }
             },
             // 1.2 资源销毁
             beforeDestroy() {

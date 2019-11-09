@@ -57,13 +57,13 @@
             };
 
             var p = new XE.Obj.CustomPrimitive(earth)
-            window.p = p; // 方便调试
             p.positions = [0,0,0,10,0,0,10,10,0,0,10,0,];
             // p.normals = [0,0,1,0,0,1,0,0,1,0,0,1];
             p.sts = [0,0, 1,0, 1,1, 0,1, ];
             // p.colors = [1,1,0,1, 1,1,1,1, 1,1,1,1, 1,1,1,1];
             p.indices = [0, 1, 2, 0, 2, 3];
             // p.rotation = [0, 1.57, 0];
+
             p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
 
             p.canvasWidth = 256;
@@ -86,6 +86,8 @@
             });
 
             p.flyTo();
+
+            window.p = p; // 方便调试
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。

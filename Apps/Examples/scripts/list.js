@@ -68,12 +68,20 @@ vueApp.examples = [
                 "url": "./earth-camera-firstpersion.html"
             },
             {
+                "title": "自定义贴地矩形-image",
+                "url": "./earth-customGroundRectangle-image.html"
+            },
+            {
                 "title": "自定义图元-毛笔字",
                 "url": "./earth-customPrimitive-character.html"
             },
             {
                 "title": "自定义图元-圆",
                 "url": "./earth-customPrimitive-circle.html"
+            },
+            {
+                "title": "自定义图元-image",
+                "url": "./earth-customPrimitive-image.html"
             },
             {
                 "title": "自定义图元-SVG",

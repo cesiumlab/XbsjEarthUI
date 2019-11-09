@@ -9,9 +9,22 @@
 
     <div :class="!useCameraPos ? '': 'divnotClick'">
       <div class="row">
-        <label class="label" @click="useCameraPos=false">{{lang.position}}</label>
+        <label class="label" @click="useCameraPos=false">{{lang.jingdu}}</label>
         <div class="field">
-          <XbsjLngLatHeight v-model="position"></XbsjLngLatHeight>
+          <!-- <XbsjLngLatHeight v-model="position"></XbsjLngLatHeight> -->
+          <XbsjSlider
+            :min="-180"
+            :max="180"
+            :step="1"
+            showTip="always"
+            v-model.number="position[0]"
+          ></XbsjSlider>
+        </div>
+      </div>
+      <div class="row">
+        <label class="label" @click="useCameraPos=false">{{lang.weidu}}</label>
+        <div class="field">
+          <XbsjSlider :min="-90" :max="90" :step="1" showTip="always" v-model.number="position[1]"></XbsjSlider>
         </div>
       </div>
     </div>
@@ -25,11 +38,15 @@ export default {
       langs: {
         zh: {
           usecamerapos: "相机方向",
-          position: "位置"
+          position: "位置",
+          jingdu: "经度",
+          weidu: "纬度"
         },
         en: {
           usecamerapos: "cameraposition",
-          position: "position"
+          position: "position",
+          jingdu: "jingdu",
+          weidu: "weidu"
         }
       },
       lang: undefined,
@@ -41,6 +58,8 @@ export default {
   mounted() {
     this.bind("useCameraPos");
     this.bind("position");
+    this.position[0] = (this.position[0] * 180) / Math.PI;
+    this.position[1] = (this.position[1] * 180) / Math.PI;
   },
   methods: {
     bind(prp) {
