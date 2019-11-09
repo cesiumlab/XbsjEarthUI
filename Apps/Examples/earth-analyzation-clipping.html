@@ -162,8 +162,8 @@
                     this._disposers = [];
                     this._disposers.push(XE.MVVM.bind(this, 'positionEditing', clippingPlane, 'positionEditing'));
                     this._disposers.push(XE.MVVM.bind(this, 'rotationEditing', clippingPlane, 'rotationEditing'));
-                    this._disposers.push(XE.MVVM.bind(this, 'position', clippingPlane, 'position'));
-                    this._disposers.push(XE.MVVM.bind(this, 'rotation', clippingPlane, 'rotation'));
+                    this._disposers.push(XE.MVVM.bindPosition(this, 'position', clippingPlane, 'position'));
+                    this._disposers.push(XE.MVVM.bindRotation(this, 'rotation', clippingPlane, 'rotation'));
                 }
 
                 this.positionEditing = true; // 默认状态开启位置编辑
