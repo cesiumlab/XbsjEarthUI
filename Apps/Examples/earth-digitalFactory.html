@@ -41,7 +41,7 @@
             vtxf_a13 = abs(vtxf_a13 - 0.5) * 2.0;
             float vtxf_diff = step(0.005, abs(vtxf_h - vtxf_a13));
             gl_FragColor.rgb += gl_FragColor.rgb * (1.0 - vtxf_diff);
-            `;            
+            `;
 
         function startup() {
             earth = new XE.Earth('earthContainer');
@@ -56,7 +56,7 @@
             bloom.delta = 0.9;
             bloom.sigma = 3.78;
             bloom.stepSize = 5;
-            bloom.isSelected = false;            
+            bloom.isSelected = false;
 
             earth.sceneTree.root = {
                 "children": [
@@ -150,14 +150,58 @@
             window.tileset3 = tileset3;
             window.scaneline = scaneline;
 
-            scaneline.playing = true;       
+            scaneline.playing = true;
 
             earth.camera.position = [2.03164809508113, 0.6966244295326638, 1040.2661065255693];
             earth.camera.rotation = [3.972507149093452, -0.5205829134298061, 6.28037637077842];
+
+            createDynamicWall();
+        }
+
+        function createDynamicWall() {
+            const positions = [
+                [2.0315193182543485, 0.6963069713474035, 0.0],
+                [2.031208054060137, 0.6963058641803516, 0.0],
+                [2.0312082890850296, 0.6964532955295221, 0.0],
+                [2.0315193182543485, 0.6963069713474035, 50.0],
+                [2.031208054060137, 0.6963058641803516, 50.0],
+                [2.0312082890850296, 0.6964532955295221, 50.0],                
+            ];
+            const [localPositions, center] = XE.Obj.CustomPrimitive.Geometry.getLocalPositions(positions);
+
+            let p = new XE.Obj.CustomPrimitive(earth)
+            p.position = center;
+            p.positions = [...localPositions];
+            p.sts = [0.0, 0.0, 0.5, 0.0, 1.0, 0.0, 0.0, 1.0, 0.5, 1.0, 1.0, 1.0];
+            p.indices = [0, 1, 4, 0, 4, 3, 1, 2, 5, 1, 5, 4];
+            p.color = [0.5, 0.8, 1.0, 1.0];
+
+            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+            p.renderState.cull.enabled = false;
+
+            p.canvasWidth = 1;
+
+            let vtxfFragmentShader =
+            `
+            varying vec3 v_positionEC;
+            varying vec3 v_normalEC;
+            varying vec2 v_st;
+            varying vec4 v_color;
+            uniform sampler2D u_image;
+            uniform vec4 u_color;
+            void main()
+            {
+                float powerRatio = fract(czm_frameNumber / 30.0) + 1.0;
+                float alpha = pow(1.0 - v_st.t, powerRatio);
+                gl_FragColor = vec4(u_color.rgb, alpha*u_color.a);
+            }
+            `;
+
+            p.fragmentShaderSource = vtxfFragmentShader;
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
-        XE.ready().then(startup);            
+        XE.ready().then(startup);
     </script>
 </body>
 
