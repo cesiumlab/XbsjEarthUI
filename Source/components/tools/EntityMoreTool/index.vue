@@ -44,6 +44,7 @@
             <li @click="RightAngleFlag">{{lang.rightangleflag}}</li>
             <li @click="DoubleArrow">{{lang.doublearrow}}</li>
             <li @click="Polygon">{{lang.polygon}}</li>
+            <li @click="Sector">{{lang.sector}}</li>
           </ul>
         </div>
       </div>
@@ -52,6 +53,8 @@
 </template>
 
 <script>
+import languagejs from "./locale";
+
 export default {
   data() {
     return {
@@ -60,59 +63,8 @@ export default {
       lineShow: false,
       surfaceShow: false,
       tree: [],
-      langs: {
-        zh: {
-          dot: "点",
-          line: "线",
-          surface: "面",
-          pin: "内置图标",
-          pinpicturebtn: "外置图标",
-          pindivbtn: "div图标",
-          path: "路径",
-          polyline: "折线",
-          curvearrow: "曲线箭头",
-          polylinearrow: "折线箭头",
-          sectorsearch: "扇形搜索",
-          arc: "圆弧",
-          bezier2: "贝塞尔2次曲线",
-          bezier3: "贝塞尔3次曲线",
-          circle: "圆",
-          triflag: "三角旗标",
-          curveflag: "曲面旗标",
-          rectangle: "矩形",
-          rightangleflag: "直角旗标",
-          doublearrow: "双箭头",
-          polygon: "多边形",
-          title: "标绘",
-          entityclassic: "标绘类型"
-        },
-        en: {
-          dot: "dot",
-          line: "line",
-          surface: "surface",
-          pin: "Built icon",
-          pinpicturebtn: "External Icon",
-          pindivbtn: "div icon",
-          path: "path",
-          polyline: "polyline",
-          curvearrow: "curvearrow",
-          polylinearrow: "polylinearrow",
-          sectorsearch: "sectorsearch",
-          arc: "arc",
-          bezier2: "bezier2",
-          bezier3: "bezier3",
-          circle: "circle",
-          triflag: "triflag",
-          curveflag: "curveflag",
-          rectangle: "rectangle",
-          rightangleflag: "rightangleflag",
-          doublearrow: "doublearrow",
-          polygon: "polygon",
-          title: "Entity",
-          entityclassic: "EntityClassic"
-        }
-      },
-      lang: undefined
+      lang: {},
+      langs: languagejs
     };
   },
   created() {},
@@ -319,6 +271,14 @@ export default {
       Polygon.isCreating = true;
       Polygon.name = "多边形";
       this.$root.$earthUI.showPropertyWindow(Polygon);
+    },
+    // 扇形
+    Sector() {
+      var Sector = new XE.Obj.Plots.GeoSector(this.$root.$earth);
+      Sector.creating = true;
+      Sector.isCreating = true;
+      Sector.name = "扇形";
+      this.$root.$earthUI.showPropertyWindow(Sector);
     }
   }
 };

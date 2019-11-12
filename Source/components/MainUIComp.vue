@@ -83,6 +83,7 @@ import GeoArc from "./viztools/GeoArc";
 import GeoBezier2 from "./viztools/GeoBezier2";
 import GeoBezier3 from "./viztools/GeoBezier3";
 import GeoTriFlag from "./viztools/GeoTriFlag";
+import GeoSector from "./viztools/GeoSector";
 import ScanlineTool from "./viztools/ScanlineTool";
 
 import CamerVideoTool from "./viztools/CamerVideoTool";
@@ -133,6 +134,7 @@ export default {
     GeoBezier2,
     GeoBezier3,
     GeoTriFlag,
+    GeoSector,
     ScanlineTool,
 
     CamerVideoTool,
@@ -185,6 +187,7 @@ export default {
         GeoCurveFlag: "GeoCurveFlag",
         GeoRightAngleFlag: "GeoRightAngleFlag",
         GeoPolygon: "GeoPolygon",
+        GeoSector: "GeoSector",
         ["CameraView.View"]: "CameraViewPrp"
       },
       tools: [
