@@ -123,7 +123,7 @@
                         },
                         "ref": 'tileset'
                     }, {
-                        "ref": 'heatMap1',
+                        "ref": 'groundImage1',
                         "czmObject": {
                             "xbsjType": "GroundImage",
                             "position": [
@@ -137,7 +137,7 @@
                 };
 
                 var tileset = earth.sceneTree.$refs.tileset.czmObject;
-                var heatMap1 = earth.sceneTree.$refs.heatMap1.czmObject;
+                var groundImage1 = earth.sceneTree.$refs.groundImage1.czmObject;
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
@@ -145,17 +145,17 @@
                 earth.camera.rotation = [0.03593315314102252, -0.7634808012756493, 0.00015558788214686814];
 
                 // 1.1.5 数据绑定
-                this._creatingUnbind = XE.MVVM.bind(this, 'creating', heatMap1, 'creating');
-                this._editingUnbind = XE.MVVM.bind(this, 'editing', heatMap1, 'editing');
-                this._showUnbind = XE.MVVM.bind(this, 'show', heatMap1, 'show');
-                this._widthUnbind = XE.MVVM.bind(this, 'width', heatMap1, 'width');
-                this._heightUnbind = XE.MVVM.bind(this, 'height', heatMap1, 'height');
+                this._creatingUnbind = XE.MVVM.bind(this, 'creating', groundImage1, 'creating');
+                this._editingUnbind = XE.MVVM.bind(this, 'editing', groundImage1, 'editing');
+                this._showUnbind = XE.MVVM.bind(this, 'show', groundImage1, 'show');
+                this._widthUnbind = XE.MVVM.bind(this, 'width', groundImage1, 'width');
+                this._heightUnbind = XE.MVVM.bind(this, 'height', groundImage1, 'height');
 
                 this._earth = earth;
 
                 // only for Debug
                 window.tileset = tileset;
-                window.heatMap1 = heatMap1;
+                window.groundImage1 = groundImage1;
                 window.earth = earth;
             },
             // 1.2 资源销毁
