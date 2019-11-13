@@ -28,7 +28,12 @@
         var bgImagery;
 
         function startup() {
-            earth = new XE.Earth('earthContainer');
+            // earth = new XE.Earth('earthContainer');
+            earth = new XE.Earth('earthContainer', {
+                // 这里设置Viewer的配置，和new Viewer(container, options)中的options一致
+                homeButton: true,
+                timeline: true,
+            });
 
             earth.sceneTree.root = {
                 "children": [
