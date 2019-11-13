@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="内部测试"></meta>
+    <title>环绕地球</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function startup() {
+            // earth = new XE.Earth('earthContainer');
+            earth = new XE.Earth('earthContainer', {
+                // 这里设置Viewer的配置，和new Viewer(container, options)中的options一致
+                homeButton: true,
+                timeline: true,
+            });
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "默认离线影像",
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "createTileMapServiceImageryProvider": {
+                                    "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    "fileExtension": 'jpg',
+                                },
+                                "type": "createTileMapServiceImageryProvider"
+                            }
+                        }
+                    },
+                ]
+            };
+
+            const scene = earth.czm.scene;
+
+            Cesium.xbsjRotateEarth(scene, 1e7, 0.5);
+            scene.xbsjEarthRotatingSpeed = Math.PI / 20;
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);            
+    </script>
+</body>
+
+</html>

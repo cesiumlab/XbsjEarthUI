@@ -532,6 +532,10 @@ vueApp.examples = [
         "title": "内部测试",
         "list": [
             {
+                "title": "环绕地球",
+                "url": "./test-earthRotating.html"
+            },
+            {
                 "title": "多选-框选&任意选择",
                 "url": "./test-polygonPicking.html"
             }
