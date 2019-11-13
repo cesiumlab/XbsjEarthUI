@@ -124,16 +124,16 @@ vueApp.examples = [
                 "url": "./earth-forceSunPos.html"
             },
             {
-                "title": "热力图-currentTime",
-                "url": "./earth-heatMap-currentTime.html"
+                "title": "贴地图像-currentTime",
+                "url": "./earth-groundImage-currentTime.html"
             },
             {
-                "title": "热力图-编辑",
-                "url": "./earth-heatMap-editing.html"
+                "title": "贴地图像-编辑",
+                "url": "./earth-groundImage-editing.html"
             },
             {
-                "title": "热力图-播放",
-                "url": "./earth-heatMap-play.html"
+                "title": "贴地图像-播放",
+                "url": "./earth-groundImage-play.html"
             },
             {
                 "title": "影像-百度",
