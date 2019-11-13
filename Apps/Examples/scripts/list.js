@@ -527,5 +527,14 @@ vueApp.examples = [
                 "url": "./startup-tileset.html"
             }
         ]
+    },
+    {
+        "title": "内部测试",
+        "list": [
+            {
+                "title": "多选-框选&任意选择",
+                "url": "./test-polygonPicking.html"
+            }
+        ]
     }
 ]

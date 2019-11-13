@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="内部测试"></meta>
+    <title>多选-框选&任意选择</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function startup() {
+            // earth = new XE.Earth('earthContainer');
+            earth = new XE.Earth('earthContainer', {
+                // 这里设置Viewer的配置，和new Viewer(container, options)中的options一致
+                homeButton: true,
+                timeline: true,
+            });
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "默认离线影像",
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "createTileMapServiceImageryProvider": {
+                                    "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    "fileExtension": 'jpg',
+                                },
+                                "type": "createTileMapServiceImageryProvider"
+                            }
+                        }
+                    },
+                ]
+            };
+
+            const viewer = earth.czm.viewer;
+
+            alert('按住alt键进行任意多选测试！');
+
+            // 1 poi点准备
+            var favLongitude = Cesium.Math.toDegrees(2.0937754841837863);
+            var favLatitude = Cesium.Math.toDegrees(0.5305995567057125);
+
+            Cesium.GeoJsonDataSource.markerSize = 48;
+            Cesium.GeoJsonDataSource.crsNames['vtxfcrs'] = function (coordinates) {
+                return Cesium.Cartesian3.fromDegrees(coordinates[0]*0.005 + favLongitude - 0.005, coordinates[1]*0.005 + favLatitude + 0.002, 50.0);
+            }
+
+            var markerDataSourceUrl = './assets/simplestyles.geojson';
+            createMarkerDataSource(viewer, markerDataSourceUrl, 'vtxfcrs').then(function (dataSource) {
+                viewer.zoomTo(dataSource);
+            });
+
+            // 2 拾取操作设置(测试用)
+            viewer.xbsjBoxPickAction.enabled = true;
+            viewer.xbsjBoxPickAction.objectsPicked.addEventListener(objects => {
+                console.log(`objectsPicked: ${objects.length}`);
+                alert(`objectsPicked: ${objects.length}`);
+            });
+            viewer.xbsjBoxPickAction.mode = 'polygon'; // 任意选择
+            // xbpa.mode = 'rect'; // 框选
+            // xbpa.pickStart.addEventListener(() => {
+            //     console.log('boxPick start!');
+            // });
+            // xbpa.pickEnd.addEventListener(() => {
+            //     console.log('boxPick end!');
+            // });
+
+            // 3 直接调用的方法：
+            // 3.1 框选 参数为屏幕坐标下的起始点和终点
+            // var pickedObjects = viewer.scene.xbsjBoxPick({x: 0, y: 0}, {x: 100, y: 100});
+            // 3.2 多边形选择 参数屏幕坐标下的多个点[x0, y0, x1, y1, x2, y2, ...]
+            // var pickedObjects = viewer.scene.xbsjPolygonPick([0, 0, 100, 100, 50, 200, 200, 50]);
+        }
+
+        function createMarkerDataSource(viewer, markerDataSourceUrl, crsString) {
+            var markerDataSource;
+
+            var geoJsonObjectPromise = Cesium.Resource.fetchJson({
+                url: markerDataSourceUrl
+            });
+
+            return geoJsonObjectPromise.then(function (geoJsonObject) {
+                geoJsonObject.crs = {
+                    type: 'name',
+                    properties: {
+                        name: crsString
+                    }
+                };
+                markerDataSource = new Cesium.GeoJsonDataSource('markerDataSource');
+                var promise = markerDataSource.load(geoJsonObject);
+                viewer.dataSources.add(markerDataSource);
+
+                var distanceDisplayCondition = new Cesium.DistanceDisplayCondition(0.0, 1000000.0);
+                var translucencyByDistance = new Cesium.NearFarScalar(500000, 1.0, 1000000, 0.0);
+
+                return promise.then(function (dataSource) {
+                    dataSource.entities.values.forEach(function (entity) {
+                        entity.point = new Cesium.PointGraphics({
+                            pixelSize: 5.0,
+                            color: Cesium.Color.YELLOW,
+                            outlineColor: Cesium.Color.BLACK,
+                            outlineWidth: 1.0,
+                            distanceDisplayCondition: distanceDisplayCondition,
+                            translucencyByDistance: translucencyByDistance,
+                        });
+                        entity.billboard.show = false;
+                        entity.billboard.distanceDisplayCondition = distanceDisplayCondition;
+                        entity.billboard.translucencyByDistance = translucencyByDistance;
+                        entity.billboard.scale = 0.001;
+                        entity.poi = true;
+                    });
+
+                    return dataSource;
+                });
+            });
+        }        
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);            
+    </script>
+</body>
+
+</html>
