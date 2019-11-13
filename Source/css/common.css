@@ -784,3 +784,10 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+.xbsj-input-number-input {
+  background: rgba(0, 0, 0, 0.5);
+}
+.xbsj-input-number-handler-wrap, .xbsj-input-number-handler {
+  background: none;
+}

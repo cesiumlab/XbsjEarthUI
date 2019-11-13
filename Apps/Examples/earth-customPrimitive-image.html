@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <title>自定义图元-image</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #canvas-container {
+            width: 600px;
+            height: 600px;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function startup() {
+            earth = new XE.Earth('earthContainer');
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "默认离线影像",
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "createTileMapServiceImageryProvider": {
+                                    "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    "fileExtension": 'jpg',
+                                },
+                                "type": "createTileMapServiceImageryProvider"
+                            }
+                        }
+                    },
+                ]
+            };
+
+            var p = new XE.Obj.CustomPrimitive(earth)
+
+            p.position = [116.39, 39.9, 10.0].xeptr;
+            p.positions = XE.Obj.CustomPrimitive.Geometry.unitSquare.positions;
+            p.sts = XE.Obj.CustomPrimitive.Geometry.unitSquare.sts;
+            p.indices = XE.Obj.CustomPrimitive.Geometry.unitSquare.indices;
+            p.scale = [100, 100, 1];
+
+            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+
+            var imageUri = './images/circle.png';
+
+            // 方式1：直接设置texture属性
+            // Cesium.Resource.createIfNeeded(imageUri).fetchImage().then(function(image) {
+            //     console.log('image loaded!');
+            //     var vtxfTexture;
+            //     var context = earth.czm.scene.context;
+            //     if (Cesium.defined(image.internalFormat)) {
+            //         vtxfTexture = new Cesium.Texture({
+            //             context: context,
+            //             pixelFormat: image.internalFormat,
+            //             width: image.width,
+            //             height: image.height,
+            //             source: {
+            //                 arrayBufferView: image.bufferView
+            //             }
+            //         });
+            //     } else {
+            //         vtxfTexture = new Cesium.Texture({
+            //             context: context,
+            //             source: image
+            //         });
+            //     }
+
+            //     p.texture = vtxfTexture;
+            // }); 
+
+            // 方式2：canvas中绘制image
+            Cesium.Resource.createIfNeeded(imageUri).fetchImage().then(function(image) {
+                console.log('image loaded!');
+                p.canvasWidth = 512;
+                p.canvasHeight = 512;
+
+                p.drawCanvas(ctx => {
+                    ctx.clearRect(0, 0, 512, 512);
+
+                    ctx.beginPath();
+                    ctx.strokeStyle = "rgb(255, 255, 255)"; 
+                    ctx.setLineDash([8, 8]);
+                    ctx.lineWidth = 3;
+                    ctx.arc(256, 256, 250, 0, Math.PI*2, true);
+                    ctx.stroke();
+
+                    ctx.drawImage(image, 0, 0);
+                });
+            }); 
+
+            p.flyTo();
+            window.p = p; // 方便调试
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);
+    </script>
+</body>
+
+</html>

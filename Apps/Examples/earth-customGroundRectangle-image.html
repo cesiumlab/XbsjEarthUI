@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <title>自定义贴地矩形-image</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #canvas-container {
+            width: 600px;
+            height: 600px;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function startup() {
+            earth = new XE.Earth('earthContainer');
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "谷歌影像",
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}",
+                                    "srcCoordType": "GCJ02",
+                                    "dstCoordType": "WGS84",
+                                    "maximumLevel": 21,
+                                },
+                            }
+                        },
+                    }, {
+                        "czmObject": {
+                            "xbsjType": "Terrain",
+                            "name": "中国14级（测试）",
+                            "xbsjTerrainProvider": {
+                                "type": "XbsjCesiumTerrainProvider",
+                                "XbsjCesiumTerrainProvider": {
+                                    "url": "//lab.earthsdk.com/terrain/577fd5b0ac1f11e99dbd8fd044883638",
+                                    "requestVertexNormals": true,
+                                    "requestWaterMask": true
+                                }
+                            }
+                        }
+                    }
+                ]
+            };
+
+            var p = createGroundCircle(earth);
+
+            p.flyTo();
+
+            window.p = p; // 方便调试
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);
+
+        function createGroundCircle(earth) {
+            var p = new XE.Obj.CustomGroundRectangle(earth)
+            p.position = [2.02729390339372, 0.6980810742548738, 755.036813823199];
+            p.width = 3000;
+            p.height= 3000;
+            p.canvasWidth = 512;
+            p.canvasHeight = 512;
+            // p.color = [0.5, 0.8, 1, 2];
+            
+            let ctx_image = undefined;
+            Cesium.Resource.createIfNeeded('./images/circle.png').fetchImage().then(function(image) {
+                console.log('image loaded!');
+                ctx_image = image;
+            });
+
+            let angle = 0.0;
+            earth.czm.scene.preUpdate.addEventListener(() => {
+                angle -= 1.0;
+                if (angle > 360.0) {
+                    angle = 0.0;
+                }
+                const rotation = angle / 180.0 * Math.PI;
+
+                p.drawCanvas(ctx => {
+                    ctx.clearRect(0, 0, 512, 512);
+
+                    ctx.beginPath();
+                    ctx.strokeStyle = "rgb(128, 128, 128)"; 
+                    // ctx.setLineDash([8, 8]);
+                    ctx.lineWidth = 1;
+                    ctx.arc(256, 256, 250, 0, Math.PI*2, true);
+                    ctx.stroke();
+
+                    if (ctx_image) {
+                        ctx.save();
+                        ctx.translate(256, 256);
+                        ctx.rotate(rotation);
+                        ctx.translate(-256, -256);
+                        ctx.drawImage(ctx_image, 0, 0);
+                        ctx.restore();
+                    }
+                });                
+            });
+
+            return p;
+        }        
+    </script>
+</body>
+
+</html>

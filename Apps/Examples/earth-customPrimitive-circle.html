@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <title>自定义图元-圆</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #canvas-container {
+            width: 600px;
+            height: 600px;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function startup() {
+            earth = new XE.Earth('earthContainer');
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "默认离线影像",
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "createTileMapServiceImageryProvider": {
+                                    "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    "fileExtension": 'jpg',
+                                },
+                                "type": "createTileMapServiceImageryProvider"
+                            }
+                        }
+                    },
+                ]
+            };
+
+            var p = new XE.Obj.CustomPrimitive(earth)
+
+            p.position = [116.39, 39.9, 10.0].xeptr;
+            p.positions = XE.Obj.CustomPrimitive.Geometry.unitSquare.positions;
+            p.sts = XE.Obj.CustomPrimitive.Geometry.unitSquare.sts;
+            p.indices = XE.Obj.CustomPrimitive.Geometry.unitSquare.indices;
+            p.scale = [100, 100, 1];
+
+            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+
+            // var imageUri = './images/earth.png';
+            // Cesium.Resource.createIfNeeded(imageUri).fetchImage().then(image => {
+            //     p.texture = XE.Obj.CustomPrimitive.createTextureFromImage(earth.czm.scene.context, image);
+            // });
+
+            p.canvasWidth = 256;
+            p.canvasHeight = 256;
+
+            let height = 50;
+
+            var rectangle = new Path2D();
+            rectangle.rect(10, 10, 50, 50); 
+
+            // var svg = new Path2D("M10 10 h 80 v 80 h -80 Z");
+            // var svg2 = new Path2D("M504.832 144h24.08c6.608 0 11.952 4.48 11.952 9.984v80.208c0 5.504-5.344 9.984-11.952 9.984h-24.08c-6.608 0-11.968-4.48-11.968-9.984V153.984c0-5.52 5.36-9.984 11.968-9.984z m263.248 99.072l17.024 17.024c4.672 4.672 5.28 11.632 1.376 15.536L729.6 332.512c-3.904 3.904-10.864 3.296-15.52-1.376l-17.04-17.024c-4.672-4.672-5.28-11.632-1.376-15.552l56.88-56.864c3.904-3.92 10.864-3.296 15.52 1.376z m110.528 261.76v24.08c0 6.608-4.48 11.952-9.984 11.952h-80.208c-5.504 0-9.984-5.344-9.984-11.952v-24.08c0-6.608 4.48-11.968 9.984-11.968h80.208c5.52 0 9.984 5.36 9.984 11.968z m-93.504 257.68l-17.024 17.024c-4.672 4.672-11.632 5.28-15.536 1.376l-56.88-56.864c-3.904-3.92-3.296-10.88 1.376-15.536l17.024-17.04c4.672-4.672 11.632-5.28 15.536-1.376l56.88 56.88c3.92 3.904 3.296 10.88-1.376 15.536z m-256.192 116.096h-24.08c-6.608 0-11.968-4.48-11.968-9.984v-80.208c0-5.504 5.36-9.984 11.968-9.984h24.08c6.608 0 11.952 4.48 11.952 9.984v80.208c0 5.52-5.344 9.984-11.952 9.984z m-268.528-100.448l-14.272-14.272a10.016 10.016 0 0 1 0-14.16l56.88-56.88a10.016 10.016 0 0 1 14.16 0l14.272 14.272a10.016 10.016 0 0 1 0 14.176l-56.864 56.864a10.016 10.016 0 0 1-14.176 0zM144 528.912v-24.08c0-6.608 4.48-11.968 9.984-11.968h80.208c5.504 0 9.984 5.36 9.984 11.968v24.08c0 6.608-4.48 11.952-9.984 11.952H153.984c-5.52 0-9.984-5.344-9.984-11.952z m104.64-268.8l17.024-17.04c4.672-4.672 11.632-5.28 15.536-1.376l56.88 56.864c3.904 3.92 3.296 10.88-1.376 15.552l-17.04 17.024c-4.672 4.672-11.616 5.28-15.52 1.376l-56.88-56.88c-3.92-3.904-3.296-10.88 1.36-15.52zM515.12 685.92c96.432 0 174.608-78.176 174.608-174.608 0-96.448-78.176-174.624-174.608-174.624S340.528 414.88 340.528 511.312c0 96.432 78.176 174.608 174.608 174.608z m0 48c-122.944 0-222.608-99.68-222.608-222.608 0-122.944 99.664-222.624 222.608-222.624s222.608 99.68 222.608 222.624c0 122.928-99.68 222.608-222.608 222.608zM478.288 427.52a82.8 82.8 0 0 0-1.68 16.64c0 43.936 34.32 79.552 76.64 79.552a74.624 74.624 0 0 0 48.544-17.984c4.544-3.872 14.72-2.4 15.392 3.184 0.592 4.848 0.896 9.792 0.896 14.8 0 64.224-50.144 116.272-112 116.272s-112-52.048-112-116.272c0-48.064 28.096-89.312 68.176-107.024 6.976-3.088 17.312 4.576 16.032 10.832z");
+            // earth.czm.scene.preUpdate.addEventListener(() => {
+            //     height += 1;
+            //     if (height > 256) {
+            //         height = 0;
+            //     }
+            //     p.drawCanvas(ctx => {
+            //         ctx.clearRect(0, 0, 256, 256);
+            //         ctx.strokeStyle = "rgb(0, 0, 0)"; 
+            //         ctx.strokeRect(0, 0, 256, 256);
+
+            //         ctx.font = "24px Microsoft YaHei";
+            //         ctx.fillStyle = "rgb(256,0,0)";
+            //         ctx.fillText("Hello world", 10, height);
+
+            //         ctx.fillStyle = "rgb(256,256,0)";
+            //         ctx.fill(rectangle);
+
+            //         ctx.save();
+            //         ctx.translate(0, 128);
+            //         ctx.scale(128/1024, 128/1024);
+            //         ctx.fillStyle = "rgb(256, 256, 0)"; 
+            //         ctx.fill(svg2);
+            //         ctx.restore();
+            //     });
+            // });
+
+            let angle = 0;
+            earth.czm.scene.preUpdate.addEventListener(() => {
+                angle += 1;
+                if (angle > 360.0) {
+                    angle = 0.0;
+                }
+
+                p.drawCanvas(ctx => {
+                    ctx.clearRect(0, 0, 256, 256);
+
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.strokeStyle = "rgb(255, 255, 0)"; 
+                    ctx.setLineDash([8, 8]);
+                    ctx.lineWidth = 3;
+                    ctx.arc(128, 128, 120, 0, Math.PI*2, true);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.arc(128, 128, 64, 0, Math.PI*2, true);
+                    ctx.stroke();
+                    ctx.restore();
+
+                    ctx.save();
+                    ctx.translate(128, 128);
+                    ctx.rotate(-angle * Math.PI / 180.0);
+
+                    drawArrow(ctx, 0, 0, 120, 0, 30, 10, 3, "rgb(255, 255, 0)");
+
+                    ctx.font = "12px Microsoft YaHei";
+                    ctx.fillStyle = "rgb(256, 255, 0)";
+                    ctx.fillText("5公里", 40, -5);
+
+                    ctx.restore();
+                });
+            });
+
+            p.flyTo();
+
+            window.p = p; // 方便调试
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);     
+
+        
+        // ctx：Canvas绘图环境
+        // fromX, fromY：起点坐标（也可以换成p1，只不过它是一个数组）
+        // toX, toY：终点坐标 (也可以换成p2，只不过它是一个数组)
+        // theta：三角斜边一直线夹角
+        // headlen：三角斜边长度
+        // width：箭头线宽度
+        // color：箭头颜色
+        function drawArrow(ctx, fromX, fromY, toX, toY, theta, headlen, width, color) {
+
+            theta = typeof (theta) != 'undefined' ? theta : 30;
+            headlen = typeof (theta) != 'undefined' ? headlen : 10;
+            width = typeof (width) != 'undefined' ? width : 1;
+            color = typeof (color) != 'color' ? color : '#000';
+
+            // 计算各角度和对应的P2,P3坐标
+            var angle = Math.atan2(fromY - toY, fromX - toX) * 180 / Math.PI,
+                angle1 = (angle + theta) * Math.PI / 180,
+                angle2 = (angle - theta) * Math.PI / 180,
+                topX = headlen * Math.cos(angle1),
+                topY = headlen * Math.sin(angle1),
+                botX = headlen * Math.cos(angle2),
+                botY = headlen * Math.sin(angle2);
+
+            ctx.save();
+            ctx.beginPath();
+
+            var arrowX = fromX - topX,
+                arrowY = fromY - topY;
+
+            ctx.moveTo(arrowX, arrowY);
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            arrowX = toX + topX;
+            arrowY = toY + topY;
+            ctx.moveTo(arrowX, arrowY);
+            ctx.lineTo(toX, toY);
+            arrowX = toX + botX;
+            arrowY = toY + botY;
+            ctx.lineTo(arrowX, arrowY);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
+            ctx.stroke();
+            ctx.restore();
+        }
+        
+        function drawDoubleArrow(ctx, fromX, fromY, toX, toY, theta, headlen, width, color) {
+            theta = typeof(theta) != 'undefined' ? theta : 30;
+            headlen = typeof(theta) != 'undefined' ? headlen : 10;
+            width = typeof(width) != 'undefined' ? width : 1;
+            color = typeof(color) != 'color' ? color : '#000';
+        
+            var angle = Math.atan2(fromY - toY, fromX - toX) * 180 / Math.PI,
+                angle1 = (angle + theta) * Math.PI / 180,
+                angle2 = (angle - theta) * Math.PI / 180,
+                topX = headlen * Math.cos(angle1),
+                topY = headlen * Math.sin(angle1),
+                botX = headlen * Math.cos(angle2),
+                botY = headlen * Math.sin(angle2);
+        
+        
+            ctx.save();
+            ctx.beginPath();
+        
+            var arrowX = fromX - topX,
+                arrowY = fromY - topY;
+            ctx.moveTo(arrowX, arrowY);
+            ctx.lineTo(fromX, fromY);
+            arrowX = fromX - botX;
+            arrowY = fromY - botY;
+            ctx.lineTo(arrowX, arrowY);
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+        
+            // Reverse length on the other side
+            arrowX = toX + topX;
+            arrowY = toY + topY;
+            ctx.moveTo(arrowX, arrowY);
+            ctx.lineTo(toX, toY);
+            arrowX = toX + botX;
+            arrowY = toY + botY;
+            ctx.lineTo(arrowX, arrowY);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
+            ctx.stroke();
+            ctx.restore();
+        }
+
+    </script>
+</body>
+
+</html>

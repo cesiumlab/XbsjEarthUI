@@ -68,12 +68,24 @@ vueApp.examples = [
                 "url": "./earth-camera-firstpersion.html"
             },
             {
-                "title": "自定义图元",
-                "url": "./earth-customPrimitive.html"
+                "title": "自定义贴地矩形-image",
+                "url": "./earth-customGroundRectangle-image.html"
             },
             {
-                "title": "自定义图元2",
-                "url": "./earth-customPrimitive2.html"
+                "title": "自定义图元-毛笔字",
+                "url": "./earth-customPrimitive-character.html"
+            },
+            {
+                "title": "自定义图元-圆",
+                "url": "./earth-customPrimitive-circle.html"
+            },
+            {
+                "title": "自定义图元-image",
+                "url": "./earth-customPrimitive-image.html"
+            },
+            {
+                "title": "自定义图元-SVG",
+                "url": "./earth-customPrimitive-svg.html"
             },
             {
                 "title": "圆柱体集群",
@@ -112,16 +124,16 @@ vueApp.examples = [
                 "url": "./earth-forceSunPos.html"
             },
             {
-                "title": "热力图-currentTime",
-                "url": "./earth-heatMap-currentTime.html"
+                "title": "贴地图像-currentTime",
+                "url": "./earth-groundImage-currentTime.html"
             },
             {
-                "title": "热力图-编辑",
-                "url": "./earth-heatMap-editing.html"
+                "title": "贴地图像-编辑",
+                "url": "./earth-groundImage-editing.html"
             },
             {
-                "title": "热力图-播放",
-                "url": "./earth-heatMap-play.html"
+                "title": "贴地图像-播放",
+                "url": "./earth-groundImage-play.html"
             },
             {
                 "title": "影像-百度",
@@ -513,6 +525,19 @@ vueApp.examples = [
             {
                 "title": "3dtiles数据加载",
                 "url": "./startup-tileset.html"
+            }
+        ]
+    },
+    {
+        "title": "内部测试",
+        "list": [
+            {
+                "title": "环绕地球",
+                "url": "./test-earthRotating.html"
+            },
+            {
+                "title": "多选-框选&任意选择",
+                "url": "./test-polygonPicking.html"
             }
         ]
     }

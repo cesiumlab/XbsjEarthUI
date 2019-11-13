@@ -18,20 +18,33 @@
       <div class="rightbox">
         <div>
           <ul v-show="dotShow">
-            <li>{{lang.dot}}</li>
+            <li @click="Pinbtn">{{lang.pin}}</li>
+            <li @click="Pinpicturebtn">{{lang.pinpicturebtn}}</li>
+            <li @click="Pindivbtn">{{lang.pindivbtn}}</li>
           </ul>
         </div>
         <div>
           <ul v-show="lineShow">
+            <li @click="Path">{{lang.path}}</li>
+            <li @click="Polyline">{{lang.polyline}}</li>
+            <li @click="CurveArrow">{{lang.curvearrow}}</li>
+            <li @click="PolylineArrow">{{lang.polylinearrow}}</li>
+            <li @click="SectorSearch">{{lang.sectorsearch}}</li>
             <li @click="Arc">{{lang.arc}}</li>
+            <li @click="Bezier2">{{lang.bezier2}}</li>
+            <li @click="Bezier3">{{lang.bezier3}}</li>
           </ul>
         </div>
         <div>
           <ul v-show="surfaceShow">
             <li @click="Circle">{{lang.circle}}</li>
             <li @click="Rectangle">{{lang.rectangle}}</li>
+            <li @click="TriFlag">{{lang.triflag}}</li>
             <li @click="CurveFlag">{{lang.curveflag}}</li>
             <li @click="RightAngleFlag">{{lang.rightangleflag}}</li>
+            <li @click="DoubleArrow">{{lang.doublearrow}}</li>
+            <li @click="Polygon">{{lang.polygon}}</li>
+            <li @click="Sector">{{lang.sector}}</li>
           </ul>
         </div>
       </div>
@@ -40,6 +53,8 @@
 </template>
 
 <script>
+import languagejs from "./locale";
+
 export default {
   data() {
     return {
@@ -48,33 +63,8 @@ export default {
       lineShow: false,
       surfaceShow: false,
       tree: [],
-      langs: {
-        zh: {
-          dot: "点",
-          line: "线",
-          surface: "面",
-          arc: "圆弧",
-          circle: "圆",
-          curveflag: "曲面旗标",
-          rectangle: "矩形",
-          rightangleflag: "直角旗标",
-          title: "标绘",
-          entityclassic: "标绘类型"
-        },
-        en: {
-          dot: "dot",
-          line: "line",
-          surface: "surface",
-          arc: "arc",
-          circle: "circle",
-          curveflag: "curveflag",
-          rectangle: "rectangle",
-          rightangleflag: "rightangleflag",
-          title: "Entity",
-          entityclassic: "EntityClassic"
-        }
-      },
-      lang: undefined
+      lang: {},
+      langs: languagejs
     };
   },
   created() {},
@@ -129,6 +119,77 @@ export default {
         this.surfaceShow = true;
       }
     },
+    // 内置图标
+    Pinbtn() {
+      var Pin = new XE.Obj.Pin(this.$root.$earth);
+      Pin.ctrtype = "PinTool";
+      Pin.name = "内置图标";
+      Pin.positionPicking = true;
+      Pin.isCreating = true;
+      Pin.creating = true;
+      this.$root.$earthUI.showPropertyWindow(Pin);
+    },
+    // 外置图标
+    Pinpicturebtn() {
+      var PinPictureTool = new XE.Obj.Pin(this.$root.$earth);
+      PinPictureTool.ctrtype = "PinPictureTool";
+      PinPictureTool.name = "外置图标";
+      PinPictureTool.positionPicking = true;
+      PinPictureTool.isCreating = true;
+      PinPictureTool.creating = true;
+      this.$root.$earthUI.showPropertyWindow(PinPictureTool);
+    },
+    // div图标
+    Pindivbtn() {
+      var PinDivTool = new XE.Obj.Plots.GeoPin(this.$root.$earth);
+      PinDivTool.ctrtype = "PinDivTool";
+      PinDivTool.name = "div图标";
+      PinDivTool.isCreating = true;
+      PinDivTool.creating = true;
+      PinDivTool._pin.show = false;
+      this.$root.$earthUI.showPropertyWindow(PinDivTool);
+    },
+    // 路径
+    Path() {
+      var Path = new XE.Obj.Path(this.$root.$earth);
+      Path.name = "路径";
+      Path.positionPicking = true;
+      Path.isCreating = true;
+      Path.creating = true;
+      this.$root.$earthUI.showPropertyWindow(Path);
+    },
+    // 折线
+    Polyline() {
+      var Polyline = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+      Polyline.creating = true;
+      Polyline.isCreating = true;
+      Polyline.name = "折线";
+      this.$root.$earthUI.showPropertyWindow(Polyline);
+    },
+    // 曲线箭头
+    CurveArrow() {
+      var GeoCurveArrow = new XE.Obj.Plots.GeoCurveArrow(this.$root.$earth);
+      GeoCurveArrow.creating = true;
+      GeoCurveArrow.isCreating = true;
+      GeoCurveArrow.name = "曲线箭头";
+      this.$root.$earthUI.showPropertyWindow(GeoCurveArrow);
+    },
+    // 折线箭头
+    PolylineArrow() {
+      var PolylineArrow = new XE.Obj.Plots.GeoPolylineArrow(this.$root.$earth);
+      PolylineArrow.creating = true;
+      PolylineArrow.isCreating = true;
+      PolylineArrow.name = "折线箭头";
+      this.$root.$earthUI.showPropertyWindow(PolylineArrow);
+    },
+    // 扇形搜索
+    SectorSearch() {
+      var SectorSearch = new XE.Obj.Plots.GeoSectorSearch(this.$root.$earth);
+      SectorSearch.creating = true;
+      SectorSearch.isCreating = true;
+      SectorSearch.name = "扇形搜索";
+      this.$root.$earthUI.showPropertyWindow(SectorSearch);
+    },
     // 圆弧
     Arc() {
       var Arc = new XE.Obj.Plots.GeoArc(this.$root.$earth);
@@ -136,6 +197,22 @@ export default {
       Arc.isCreating = true;
       Arc.name = "圆弧";
       this.$root.$earthUI.showPropertyWindow(Arc);
+    },
+    // 贝塞尔2次曲线
+    Bezier2() {
+      var Bezier2 = new XE.Obj.Plots.GeoBezier2(this.$root.$earth);
+      Bezier2.creating = true;
+      Bezier2.isCreating = true;
+      Bezier2.name = "贝塞尔2次曲线";
+      this.$root.$earthUI.showPropertyWindow(Bezier2);
+    },
+    // 贝塞尔3次曲线
+    Bezier3() {
+      var Bezier3 = new XE.Obj.Plots.GeoBezier3(this.$root.$earth);
+      Bezier3.creating = true;
+      Bezier3.isCreating = true;
+      Bezier3.name = "贝塞尔3次曲线";
+      this.$root.$earthUI.showPropertyWindow(Bezier3);
     },
     // 圆
     Circle() {
@@ -152,6 +229,14 @@ export default {
       Rectangle.isCreating = true;
       Rectangle.name = "矩形";
       this.$root.$earthUI.showPropertyWindow(Rectangle);
+    },
+    // 三角旗标
+    TriFlag() {
+      var TriFlag = new XE.Obj.Plots.GeoTriFlag(this.$root.$earth);
+      TriFlag.creating = true;
+      TriFlag.isCreating = true;
+      TriFlag.name = "三角旗标";
+      this.$root.$earthUI.showPropertyWindow(TriFlag);
     },
     // 曲面旗标
     CurveFlag() {
@@ -170,6 +255,30 @@ export default {
       RightAngleFlag.isCreating = true;
       RightAngleFlag.name = "直角旗标";
       this.$root.$earthUI.showPropertyWindow(RightAngleFlag);
+    },
+    // 双箭头
+    DoubleArrow() {
+      var DoubleArrow = new XE.Obj.Plots.GeoDoubleArrow(this.$root.$earth);
+      DoubleArrow.creating = true;
+      DoubleArrow.isCreating = true;
+      DoubleArrow.name = "双箭头";
+      this.$root.$earthUI.showPropertyWindow(DoubleArrow);
+    },
+    // 多边形
+    Polygon() {
+      var Polygon = new XE.Obj.Plots.GeoPolygon(this.$root.$earth);
+      Polygon.creating = true;
+      Polygon.isCreating = true;
+      Polygon.name = "多边形";
+      this.$root.$earthUI.showPropertyWindow(Polygon);
+    },
+    // 扇形
+    Sector() {
+      var Sector = new XE.Obj.Plots.GeoSector(this.$root.$earth);
+      Sector.creating = true;
+      Sector.isCreating = true;
+      Sector.name = "扇形";
+      this.$root.$earthUI.showPropertyWindow(Sector);
     }
   }
 };
@@ -184,7 +293,7 @@ export default {
 li {
   list-style: none;
   float: left;
-  width: 70px;
+  width: 82px;
   height: 30px;
   line-height: 30px;
   text-align: center;

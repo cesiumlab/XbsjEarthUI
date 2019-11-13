@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="xbsj-labels" content="Earth起步"></meta>
-    <title>创建地球</title>
+    <meta name="xbsj-labels" content="内部测试"></meta>
+    <title>环绕地球</title>
     <!-- 0 引入js文件 -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <style>
@@ -52,6 +52,11 @@
                     },
                 ]
             };
+
+            const scene = earth.czm.scene;
+
+            Cesium.xbsjRotateEarth(scene, 1e7, 0.5);
+            scene.xbsjEarthRotatingSpeed = Math.PI / 20;
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
