@@ -27,6 +27,10 @@
           <ul v-show="lineShow">
             <li @click="Path">{{lang.path}}</li>
             <li @click="Polyline">{{lang.polyline}}</li>
+            <li @click="SolidLine">{{lang.solidline}}</li>
+            <li @click="DotLine">{{lang.dotline}}</li>
+            <li @click="ArrowLine">{{lang.arrowline}}</li>
+            <li @click="ODLine">{{lang.odline}}</li>
             <li @click="CurveArrow">{{lang.curvearrow}}</li>
             <li @click="PolylineArrow">{{lang.polylinearrow}}</li>
             <li @click="SectorSearch">{{lang.sectorsearch}}</li>
@@ -164,6 +168,45 @@ export default {
       Polyline.creating = true;
       Polyline.isCreating = true;
       Polyline.name = "折线";
+      this.$root.$earthUI.showPropertyWindow(Polyline);
+    },
+    // 实线
+    SolidLine() {
+      var Polyline = new XE.Obj.Polyline(this.$root.$earth);
+      Polyline.name = "实线";
+      Polyline.positionPicking = true;
+      Polyline.isCreating = true;
+      Polyline.creating = true;
+      this.$root.$earthUI.showPropertyWindow(Polyline);
+    },
+    // 虚线
+    DotLine() {
+      var Polyline = new XE.Obj.Polyline(this.$root.$earth);
+      Polyline.name = "虚线";
+      Polyline.material.type = "XbsjPolylineDashMaterial";
+      Polyline.positionPicking = true;
+      Polyline.isCreating = true;
+      Polyline.creating = true;
+      this.$root.$earthUI.showPropertyWindow(Polyline);
+    },
+    // 箭头线
+    ArrowLine() {
+      var Polyline = new XE.Obj.Polyline(this.$root.$earth);
+      Polyline.name = "箭头线";
+      Polyline.material.type = "XbsjPolylineArrowMaterial";
+      Polyline.positionPicking = true;
+      Polyline.isCreating = true;
+      Polyline.creating = true;
+      this.$root.$earthUI.showPropertyWindow(Polyline);
+    },
+    // OD线
+    ODLine() {
+      var Polyline = new XE.Obj.Polyline(this.$root.$earth);
+      Polyline.name = "OD线";
+      Polyline.material.type = "XbsjODLineMaterial";
+      Polyline.positionPicking = true;
+      Polyline.isCreating = true;
+      Polyline.creating = true;
       this.$root.$earthUI.showPropertyWindow(Polyline);
     },
     // 曲线箭头

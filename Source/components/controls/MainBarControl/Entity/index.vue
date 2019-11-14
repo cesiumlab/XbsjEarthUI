@@ -350,14 +350,14 @@ export default {
       this.$root.$earthUI.showPropertyWindow(PinPictureTool);
     },
     // 打开polyLine折线
-    polylinebtn() {
-      var Polyline = new XE.Obj.Polyline(this.$root.$earth);
-      Polyline.name = "折线";
-      Polyline.positionPicking = true;
-      Polyline.isCreating = true;
-      Polyline.creating = true;
-      this.$root.$earthUI.showPropertyWindow(Polyline);
-    },
+    // polylinebtn() {
+    //   var Polyline = new XE.Obj.Polyline(this.$root.$earth);
+    //   Polyline.name = "折线";
+    //   Polyline.positionPicking = true;
+    //   Polyline.isCreating = true;
+    //   Polyline.creating = true;
+    //   this.$root.$earthUI.showPropertyWindow(Polyline);
+    // },
     //打开扫描线-动画
     scanLineBtn() {
       var Scanline = new XE.Obj.Scanline(this.$root.$earth);
