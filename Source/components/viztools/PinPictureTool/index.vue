@@ -206,8 +206,7 @@ export default {
       this.makiIconObj = XE.Obj.Pin.MakiIcon;
       this.makiIconObj.null = "";
       if (this._czmObj.isCreating) {
-        this.pin.imageUrl =
-          "http://localhost:9530/Apps/Examples/images/earth.png";
+        this.pin.imageUrl = "../../Examples/images/earth.png";
       }
 
       this._czmObj.far = 1073741824;
