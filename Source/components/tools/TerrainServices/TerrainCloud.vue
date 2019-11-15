@@ -58,7 +58,7 @@
 import languagejs from "./terrain_locale";
 export default {
   components: {},
-  data () {
+  data() {
     return {
       show: false,
       services: [],
@@ -73,12 +73,10 @@ export default {
       langs: languagejs
     };
   },
-  created () {
-
-  },
-  mounted () { },
+  created() {},
+  mounted() {},
   methods: {
-    _updateServerThumbnail (server, thumbnail) {
+    _updateServerThumbnail(server, thumbnail) {
       var labServer = this.$root.$earthUI.labServer;
       labServer
         .updateLayerThumbnail("terrains", server._id, thumbnail)
@@ -90,7 +88,7 @@ export default {
           this.$root.$earthUI.promptInfo(this.error, "error");
         });
     },
-    onContexMenu (server, event) {
+    onContexMenu(server, event) {
       //弹出菜单
       this.$root.$earthUI.contextMenu.pop([
         {
@@ -112,14 +110,14 @@ export default {
         }
       ]);
     },
-    select (s) {
+    select(s) {
       this.selected = s;
       this.selectedUrls = this.serverUrl(s);
       this.selectedMaxzoom = this.selected.maxzoom;
       this.contentShow = true;
       this.error = "";
     },
-    _addServices (s) {
+    _addServices(s) {
       //添加到列表中，并且按照天进行分组
       let day = s.date.substr(0, 10);
 
@@ -136,19 +134,19 @@ export default {
       };
       this.dayItems.push(newDays);
     },
-    query () {
+    query() {
       var labServer = this.$root.$earthUI.labServer;
 
       this.dayItems = [];
       labServer
         .cloudlayers("terrain")
         .then(services => {
-          this.services = services
+          this.services = services;
           for (var i = 0; i < this.services.length; i++) {
-            this.services[i].west = this.services[i].west * 180 / Math.PI
-            this.services[i].east = this.services[i].east * 180 / Math.PI
-            this.services[i].south = this.services[i].south * 180 / Math.PI
-            this.services[i].north = this.services[i].north * 180 / Math.PI
+            this.services[i].west = (this.services[i].west * 180) / Math.PI;
+            this.services[i].east = (this.services[i].east * 180) / Math.PI;
+            this.services[i].south = (this.services[i].south * 180) / Math.PI;
+            this.services[i].north = (this.services[i].north * 180) / Math.PI;
           }
         })
         .catch(err => {
@@ -156,14 +154,14 @@ export default {
           this.$root.$earthUI.promptInfo(this.error, "error");
         });
     },
-    serverUrl (server) {
+    serverUrl(server) {
       return (
         this.$root.$earthUI.labServer.cloudServiceUrl +
         "/api/wmts/terrain/" +
         server._id
       );
     },
-    ok () {
+    ok() {
       if (!this.selected) {
         this.error = this.lang.selectservice;
         this.$root.$earthUI.promptInfo(this.error, "error");
@@ -198,8 +196,8 @@ export default {
   },
   computed: {},
   filters: {
-    f_day (day) { },
-    f_range (item) {
+    f_day(day) {},
+    f_range(item) {
       return (
         item.west.toFixed(5) +
         ", " +
@@ -211,14 +209,14 @@ export default {
       );
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     if (this.unbind) {
       this.unbind();
       this.unbind = undefined;
     }
   },
   watch: {
-    show (v) {
+    show(v) {
       if (v) {
         this.query();
       }
@@ -233,7 +231,8 @@ export default {
 }
 .xbsj-localTerrain .contentDiv {
   overflow: auto;
-  height: calc(100% - 29px);
+  height: calc(100% - 39px);
+  margin-top: 10px;
 }
 .xbsj-localTerrain .contentsDiv {
   height: calc(100% - 142px);
@@ -347,5 +346,21 @@ export default {
   border: none;
   color: #ffffff;
   cursor: pointer;
+}
+table {
+  border: solid black;
+  border-width: 0px 1px 1px 0px;
+  width: 100%;
+}
+table td {
+  border: solid black;
+  border-width: 1px 0px 0px 1px;
+  text-align: center;
+}
+table th {
+  border: solid black;
+  border-width: 1px 0px 0px 1px;
+  text-align: center;
+  font-size: 14px;
 }
 </style>

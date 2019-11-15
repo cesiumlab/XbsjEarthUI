@@ -55,7 +55,7 @@
 import languagejs from "./imagery_locale";
 export default {
   components: {},
-  data () {
+  data() {
     return {
       show: false,
       services: [],
@@ -70,12 +70,10 @@ export default {
       langs: languagejs
     };
   },
-  created () {
-
-  },
-  mounted () { },
+  created() {},
+  mounted() {},
   methods: {
-    select (s) {
+    select(s) {
       this.selected = s;
       // console.log(this.selected);
       this.selectedUrl = this.serverUrl(s);
@@ -83,19 +81,19 @@ export default {
       this.contentShow = true;
       this.error = "";
     },
-    query () {
+    query() {
       var labServer = this.$root.$earthUI.labServer;
 
       this.dayItems = [];
       labServer
         .cloudlayers("image")
         .then(services => {
-          this.services = services
+          this.services = services;
           for (var i = 0; i < this.services.length; i++) {
-            this.services[i].west = this.services[i].west * 180 / Math.PI
-            this.services[i].east = this.services[i].east * 180 / Math.PI
-            this.services[i].south = this.services[i].south * 180 / Math.PI
-            this.services[i].north = this.services[i].north * 180 / Math.PI
+            this.services[i].west = (this.services[i].west * 180) / Math.PI;
+            this.services[i].east = (this.services[i].east * 180) / Math.PI;
+            this.services[i].south = (this.services[i].south * 180) / Math.PI;
+            this.services[i].north = (this.services[i].north * 180) / Math.PI;
           }
         })
         .catch(err => {
@@ -103,7 +101,7 @@ export default {
           this.$root.$earthUI.promptInfo(this.error, "error");
         });
     },
-    serverUrl (server) {
+    serverUrl(server) {
       return (
         this.$root.$earthUI.labServer.cloudServiceUrl +
         "/api/wmts/gettile/" +
@@ -111,7 +109,7 @@ export default {
         "/{z}/{x}/{y}"
       );
     },
-    ok () {
+    ok() {
       if (!this.selected) {
         this.error = this.lang.selectservice;
         this.$root.$earthUI.promptInfo(this.error, "error");
@@ -153,8 +151,8 @@ export default {
   },
   computed: {},
   filters: {
-    f_day (day) { },
-    f_range (item) {
+    f_day(day) {},
+    f_range(item) {
       return (
         item.west.toFixed(5) +
         ", " +
@@ -166,14 +164,14 @@ export default {
       );
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     if (this.unbind) {
       this.unbind();
       this.unbind = undefined;
     }
   },
   watch: {
-    show (v) {
+    show(v) {
       if (v) {
         this.query();
       }
@@ -312,5 +310,21 @@ export default {
 }
 .xbsj-localImage .flexul li .localImageName:hover .localImageToolTip {
   visibility: visible;
+}
+table {
+  border: solid black;
+  border-width: 0px 1px 1px 0px;
+  width: 100%;
+}
+table td {
+  border: solid black;
+  border-width: 1px 0px 0px 1px;
+  text-align: center;
+}
+table th {
+  border: solid black;
+  border-width: 1px 0px 0px 1px;
+  text-align: center;
+  font-size: 14px;
 }
 </style>
