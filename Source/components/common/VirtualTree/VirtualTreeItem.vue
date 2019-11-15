@@ -22,6 +22,7 @@
         :indeterminate="item.checkStatus === 'indeterminate'"
         :disabled="item.checkStatus === 'ignored'"
         @on-change="toggleChecked(item, $event)"
+        v-show="checkBoxShow"
       ></XbsjCheckBox>
       <!-- <XbsjIcon :type="itemIconType" @click="onContexMenu(item, $event)"/> -->
       <XbsjIcon :type="itemIconType" @click="onContexMenu(item, $event)" />
@@ -56,7 +57,8 @@ export default {
     item: Object,
     onToggleExpand: Function,
     onToggleChecked: Function,
-    canmove: Boolean
+    canmove: Boolean,
+    checkBoxShow: Boolean
   },
 
   mounted() {
@@ -95,7 +97,10 @@ export default {
       source.addEventListener(
         "dragstart",
         function(event) {
-          event.dataTransfer.setData('obj', JSON.stringify(item._inner.sn.czmObject)); //兼容火狐浏览器，拖动时候必须携带数据否则没效果
+          event.dataTransfer.setData(
+            "obj",
+            JSON.stringify(item._inner.sn.czmObject)
+          ); //兼容火狐浏览器，拖动时候必须携带数据否则没效果
           self.$emit("on-item-move", { item, vueObject: self, $event });
         },
         false

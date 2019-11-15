@@ -13,7 +13,12 @@
   >
     <div class="containbox">
       <div class="leftbox">
-        <XbsjVirtualTree ref="vtree" :tree="tree" @on-click="itemClick"></XbsjVirtualTree>
+        <XbsjVirtualTree
+          ref="vtree"
+          :tree="tree"
+          @on-click="itemClick"
+          :checkBoxShow="checkBoxShow"
+        ></XbsjVirtualTree>
       </div>
       <div class="rightbox">
         <div>
@@ -68,7 +73,8 @@ export default {
       surfaceShow: false,
       tree: [],
       lang: {},
-      langs: languagejs
+      langs: languagejs,
+      checkBoxShow: false
     };
   },
   created() {},

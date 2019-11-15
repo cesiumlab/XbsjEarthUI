@@ -15,6 +15,7 @@
       ref="vtree"
       :tree="tree"
       :canmove="canmove"
+      :checkBoxShow="checkBoxShow"
       :on-toggle-expand="toggleExpand"
       :on-toggle-checked="toggleChecked"
       @on-context-menu="contextMenu"
@@ -142,6 +143,7 @@ export default {
       show: true,
       tree: [],
       canmove: true,
+      checkBoxShow: true,
       langs: {
         zh: {
           confirm: "确认删除图层?",
@@ -422,7 +424,7 @@ export default {
                   const tilesetCzmObject = item._inner.sn.czmObject;
                   const code = getCzmCode(tilesetCzmObject);
                   const url = getCodeUrl(code);
-                  this.$root.$earthUI.openURL(url);                  
+                  this.$root.$earthUI.openURL(url);
                 }
               }
             ]
@@ -459,7 +461,7 @@ export default {
     itemDoubleClick({ item, vueObject }) {
       const czmObject = item._inner.sn.czmObject;
       if (czmObject) {
-        console.log(czmObject)
+        console.log(czmObject);
         czmObject.flyTo();
 
         let t = czmObject.xbsjType;

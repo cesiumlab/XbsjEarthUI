@@ -5,6 +5,7 @@
       :index="index"
       :item="item"
       :canmove="canmove"
+      :checkBoxShow="checkBoxShow"
       :key="typeof item.id !== 'undefined' ? item.id : index"
       :onToggleExpand="toggleExpand"
       :onToggleChecked="toggleChecked"
@@ -40,18 +41,19 @@ export default {
     this.updateData();
   },
   props: {
-    onToggleExpand:{
-      type:Function,
-      default:(treeItem)=>{
-         treeItem.expand = !treeItem.expand;
+    onToggleExpand: {
+      type: Function,
+      default: treeItem => {
+        treeItem.expand = !treeItem.expand;
       }
     },
-    onToggleChecked:{
-      type:Function,
-      default:()=>{}
+    onToggleChecked: {
+      type: Function,
+      default: () => {}
     },
     tree: Array,
-    canmove: Boolean
+    canmove: Boolean,
+    checkBoxShow: Boolean
   },
   data() {
     return {
