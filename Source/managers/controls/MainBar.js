@@ -8,7 +8,7 @@ class MainBar {
     constructor(root) {
         this._root = root;
         this._comp = root._comp.$refs.mainBarControl;
-
+   
         XE.MVVM.extend(this, {
 
             /**
@@ -27,6 +27,24 @@ class MainBar {
             * @memberof MainBar
             */
             page: "navigate",
+
+            /**
+            * 是否显示加载云服务数据的按钮
+            * @type {boolean}
+            * @default false 
+            * @instance
+            * @memberof MainBar
+            */
+            cloudServiceUI: false,
+
+            /**
+            * 是否显示加载cesiumlab数据的按钮
+            * @type {boolean}
+            * @default true 
+            * @instance
+            * @memberof MainBar
+            */
+           labServiceUI: true,
         });
 
         this.unbind1 = XE.MVVM.bind(
@@ -41,6 +59,20 @@ class MainBar {
             "page",
             this,
             "page"
+        );
+
+        this.unbind3 = XE.MVVM.bind(
+            this._comp,
+            "cloudServiceUI",
+            this,
+            "cloudServiceUI"
+        );
+
+        this.unbind4 = XE.MVVM.bind(
+            this._comp,
+            "labServiceUI",
+            this,
+            "labServiceUI"
         );
 
         //监控show的改变
@@ -66,6 +98,8 @@ class MainBar {
     destroy() {
         this.unbind1 = this.unbind1 && this.unbind1();
         this.unbind2 = this.unbind2 && this.unbind2();
+        this.unbind3 = this.unbind3 && this.unbind3();
+        this.unbind4 = this.unbind4 && this.unbind4();
     }
 
     /**

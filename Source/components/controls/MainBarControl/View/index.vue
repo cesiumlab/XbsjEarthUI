@@ -37,6 +37,12 @@
           <div class="xbsj-item-btn scenebutton" :class="{highlight :modelTreeShow}"></div>
           <span class="xbsj-item-name">{{lang.modelTree}}</span>
         </div>
+
+        <!-- Symbol标绘 -->
+        <div class="xbsj-item-btnbox" @click="SymbolShow=!SymbolShow">
+          <div class="xbsj-item-btn more"></div>
+          <span class="xbsj-item-name">{{lang.symbol}}</span>
+        </div>
         <!--
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn attributebutton"></div>
@@ -174,7 +180,8 @@ export default {
         }
       },
       baseColor: [0, 0, 0.5, 1],
-      langs: languagejs
+      langs: languagejs,
+      SymbolShow: false
     };
   },
   created() {

@@ -18,13 +18,21 @@
           ></div>
           <span class="xbsj-item-name">{{lang.online}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
+        <div class="xbsj-item-btnbox" v-show="labServiceUI">
           <div
             class="xbsj-item-btn localhostbutton"
             @click="modelLab=!modelLab"
             :class="{highlight:modelLab}"
           ></div>
           <span class="xbsj-item-name">{{lang.localhost}}</span>
+        </div>
+        <div class="xbsj-item-btnbox" v-show="cloudServiceUI">
+          <div
+            class="xbsj-item-btn localhostbutton"
+            @click="modelCloud=!modelCloud"
+            :class="{highlight:modelCloud}"
+          ></div>
+          <span class="xbsj-item-name">{{lang.cloudhost}}</span>
         </div>
       </div>
 
@@ -226,6 +234,7 @@
 import languagejs from "./index_locale";
 
 export default {
+  props:["labServiceUI","cloudServiceUI"],
   data() {
     return {
       showTip: "never",
@@ -245,6 +254,7 @@ export default {
       xbsjRightTopView: false,
       xbsjRightBottomView: false,
       modelLab: false,
+      modelCloud: false,
       modelOnline: false,
       flattings: [],
       positionEditing: false,

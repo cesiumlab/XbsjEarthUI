@@ -47,12 +47,15 @@ import ViewportLine from "./controls/ViewportLine";
 
 import SceneTreeTool from "./tools/SceneTreeTool";
 import ImageryLab from "./tools/ImageryServices/ImageryLab.vue";
+import ImageryCloud from "./tools/ImageryServices/ImageryCloud.vue";
 import ImageryOnline from "./tools/ImageryServices/ImageryOnline.vue";
 import ImageryWMTS from "./tools/ImageryServices/ImageryWMTS.vue";
 
 import ModelLab from "./tools/ModelServices/ModelLab.vue";
+import ModelCloud from "./tools/ModelServices/ModelCloud.vue";
 import ModelOnline from "./tools/ModelServices/ModelOnline.vue";
 import TerrainLab from "./tools/TerrainServices/TerrainLab.vue";
+import TerrainCloud from "./tools/TerrainServices/TerrainCloud.vue";
 import TerrainOnline from "./tools/TerrainServices/TerrainOnline.vue";
 import CameraViewManager from "./tools/CameraViewManager";
 import CutFillComputing from "./tools/CutFillComputing";
@@ -98,6 +101,7 @@ import InformationBox from "./utils/InformationBox";
 
 import ModelTreeTool from "./tools/ModelTreeTool";
 import EntityMoreTool from "./tools/EntityMoreTool";
+import SymbolTool from "./tools/SymbolTool"
 
 export default {
   components: {
@@ -141,11 +145,14 @@ export default {
     ViewshedTool,
 
     ImageryLab,
+    ImageryCloud,
     ImageryOnline,
     ImageryWMTS,
     ModelLab,
+    ModelCloud,
     ModelOnline,
     TerrainLab,
+    TerrainCloud,
     TerrainOnline,
     PropertyWindow,
     CameraViewPrp,
@@ -153,7 +160,8 @@ export default {
     GlobalColorPicker,
     InformationBox,
     ModelTreeTool,
-    EntityMoreTool
+    EntityMoreTool,
+    SymbolTool
   },
   data: function() {
     return {
@@ -200,6 +208,10 @@ export default {
           ref: "imageryLab"
         },
         {
+          component: "ImageryCloud",
+          ref: "ImageryCloud"
+        },
+        {
           component: "ImageryOnline",
           ref: "imageryOnline"
         },
@@ -212,12 +224,20 @@ export default {
           ref: "modelLab"
         },
         {
+          component: "ModelCloud",
+          ref: "modelCloud"
+        },
+        {
           component: "ModelOnline",
           ref: "modelOnline"
         },
         {
           component: "TerrainLab",
           ref: "terrainLab"
+        },
+        {
+          component: "TerrainCloud",
+          ref: "terrainCloud"
         },
         {
           component: "TerrainOnline",
@@ -242,6 +262,10 @@ export default {
         {
           component: "EntityMoreTool",
           ref: "entitymoreTool"
+        },
+        {
+          component: "SymbolTool",
+          ref: "symbolTool"
         }
       ],
       infos: [],

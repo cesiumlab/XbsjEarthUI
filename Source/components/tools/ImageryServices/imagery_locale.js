@@ -27,6 +27,7 @@ const zh = {
 
   selectinput: "请选择或者输入服务地址",
   localtitle: "CesiumLab本机服务",
+  cloudtitle: "云服务",
   search: "查询",
   maxzoom: "最大级别",
   dilifanwei: "地理范围",
@@ -52,6 +53,7 @@ const en = {
   gaodeimage: "gaodeimage",
   selectinput: "Please select or enter the service address",
   localtitle: "CesiumLab Local Service",
+  cloudtitle: "Cloud Service",
   search: "Search",
   maxzoom: "MaxZoom",
   dilifanwei: "Rectangle",

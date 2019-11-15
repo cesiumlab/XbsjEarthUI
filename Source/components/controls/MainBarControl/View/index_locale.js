@@ -17,7 +17,8 @@ const zh = {
   dtilesdebug: "瓦片调试",
   capture: "场景截图",
   earthColor:'地球颜色',
-  modelTree:'模型结构'
+  modelTree:'模型结构',
+  symbol: '标绘'
 };
 
 const en = {
@@ -39,7 +40,8 @@ const en = {
   dtilesdebug: "3dtiles",
   capture: "Capture",
   earthColor:'GlobeClr',
-  modelTree:'ModelScene'
+  modelTree:'ModelScene',
+  symbol: 'Symbol'
 };
 
 export default { zh, en };

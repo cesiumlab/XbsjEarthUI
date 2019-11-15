@@ -21,22 +21,31 @@ class LabServer {
       * @memberof LabServer
       */
       server: '//localhost:9000/',
-          /**
-      * CesiumLab在线服务服务地址
-      * @type {string}
-      * @default '//lab2.cesiumlab.com/' 
-      * @instance
-      * @memberof LabServer
-      */
-     serverOnline: '//lab2.cesiumlab.com/',
+      /**
+  * CesiumLab在线服务服务地址
+  * @type {string}
+  * @default '//lab2.cesiumlab.com/' 
+  * @instance
+  * @memberof LabServer
+  */
+      serverOnline: '//lab2.cesiumlab.com/',
+
+      /**
+     * CesiumLab在线服务服务地址
+     * @type {string}
+     * @default '' 
+     * @instance
+     * @memberof LabServer
+     */
+      cloudServiceUrl: '',
     });
   }
 
-  isDestroyed() {
+  isDestroyed () {
     return false;
   }
 
-  destroy() {
+  destroy () {
 
   }
   /**
@@ -44,7 +53,7 @@ class LabServer {
    * @param {String} key 查询关键字
    * @returns {Promise} 
    */
-  geocoder(key) {
+  geocoder (key) {
 
     return new Promise((resolve, reject) => {
       axios
@@ -62,7 +71,7 @@ class LabServer {
     });
   }
 
-  _layers(type, key, sortfield, sortorder) {
+  _layers (type, key, sortfield, sortorder) {
     if (!sortfield)
       sortfield = 'date';
     if (!sortorder)
@@ -83,12 +92,57 @@ class LabServer {
         });
     });
   }
+
+  cloudlayers (type, page, skip, sortfield, sortorder, minend, maxend) {
+    if (!sortfield)
+      sortfield = 'date';
+    if (!sortorder)
+      sortorder = 'desc';
+    return new Promise((resolve, reject) => {
+      axios
+        .get(this.cloudServiceUrl + "/api/result/datalist?minend=" + (minend ? minend : '')
+          + "&maxend=" + (maxend ? maxend : '') + "&datatype=" + type)
+        .then(res => {
+          if (res.status === 200 && res.data.status === "ok") {
+            resolve(res.data.result);
+          } else {
+            reject(res.data.result);
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  cloud3dtiles (type, page, skip, sortfield, sortorder, minend, maxend) {
+    if (!sortfield)
+      sortfield = 'date';
+    if (!sortorder)
+      sortorder = 'desc';
+    return new Promise((resolve, reject) => {
+      axios
+        .get(this.cloudServiceUrl + "/api/3dtiles/" + type + "?st=" + (minend ? minend : '')
+          + "&et=" + (maxend ? maxend : '') + "&order=" + sortfield)
+        .then(res => {
+          if (res.status === 200 && res.data.status === "ok") {
+            resolve(res.data.result);
+          } else {
+            reject(res.data.result);
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
   /**
    * 查询列出影像服务
    * @param {String} key 查询关键字
    * @returns {Promise}  
    */
-  imageLayers(key) {
+  imageLayers (key) {
     return this._layers('image', key);
   }
   /**
@@ -96,7 +150,7 @@ class LabServer {
    * @param {String} key 查询关键字
    * @returns {Promise}  
    */
-  terrainLayers(key) {
+  terrainLayers (key) {
     return this._layers('terrain', key);
   }
   /**
@@ -104,7 +158,7 @@ class LabServer {
     * @param {String} key 查询关键字
     * @returns {Promise}  
     */
-  modelLayers(key) {
+  modelLayers (key) {
     return this._layers('model', key);
   }
   /**
@@ -114,7 +168,7 @@ class LabServer {
     * @param {String} img 缩略图地址
     * @returns {Promise}  
     */
-  updateLayerThumbnail(type, id, img) {
+  updateLayerThumbnail (type, id, img) {
     return new Promise((resolve, reject) => {
       axios
         .put(this.server + "other/thumbnail/" + type + "/" + id, QS.stringify({ thumbnail: img }))
@@ -137,7 +191,7 @@ class LabServer {
     * @param {String} key 查询关键字 
     * @returns {Promise}  
     */
-  styles(key) {
+  styles (key) {
     return this._layers('style', key, 'date', 'asc');
   }
   /**
@@ -147,7 +201,7 @@ class LabServer {
       * @param {String} thumbnail 样式缩略图
     * @returns {Promise}  
     */
-  newStyle(name, code, thumbnail) {
+  newStyle (name, code, thumbnail) {
     return new Promise((resolve, reject) => {
       axios
         .post(this.server + "style", QS.stringify({ name: name, code: code, thumbnail: thumbnail }))
@@ -170,7 +224,7 @@ class LabServer {
      * @param {String} id 样式id  
      * @returns {Promise}  
      */
-  deleteStyle(id) {
+  deleteStyle (id) {
     return new Promise((resolve, reject) => {
       axios
         .delete(this.server + "style/" + id)
@@ -196,7 +250,7 @@ class LabServer {
       * @param {String} name  对象新名称
      * @returns {Promise}  
      */
-  rename(type, id, name) {
+  rename (type, id, name) {
     return new Promise((resolve, reject) => {
       axios
         .put(this.server + "other/rename/" + type + "/" + id, QS.stringify({ name: name }))
@@ -220,7 +274,7 @@ class LabServer {
     * @param {String} id  场景id 
     * @returns {Promise}  
     */
-  queryScene(id) {
+  queryScene (id) {
     return new Promise((resolve, reject) => {
       axios
         .get(this.server + "scene/?_id=" + id)
@@ -245,7 +299,7 @@ class LabServer {
       * @param {String} content  场景内容
   * @returns {Promise}  
   */
-  addScene(name, content) {
+  addScene (name, content) {
     return new Promise((resolve, reject) => {
       axios
         .post(this.server + "scene", QS.stringify({ name: name, content: content }))
@@ -271,7 +325,7 @@ class LabServer {
 * @param {String} content  场景内容
 * @returns {Promise}  
 */
-  updateScene(id, content) {
+  updateScene (id, content) {
     return new Promise((resolve, reject) => {
       axios
         .put(this.server + "scene/" + id, QS.stringify({ content: content }))
@@ -290,6 +344,51 @@ class LabServer {
     });
   }
 
+  /**
+   * 获取标绘符号
+   * @param {String} id 
+   */
+  getSymbol (id) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(this.server + "symbol/group", {
+          id: id
+        })
+        .then(res => {
+          if (res.status === 200) {
+            resolve(res.data);
+          } else {
+            reject(res.data);
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  /**
+   * 获取标绘符号
+   * @param {String} ids 符号id列表，用逗号隔开
+   */
+  getSymbols (ids) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(this.server + "symbol/list", QS.stringify({
+          ids: ids
+        }))
+        .then(res => {
+          if (res.status === 200) {
+            resolve(res.data);
+          } else {
+            reject(res.data);
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 }
 
 
