@@ -3,8 +3,12 @@ Change Log
 
 ### 1.2.8
 
+##### Additions :tada:
+* EarthUI和EarthSDK增加了pin里面的extText相关属性
+
 ##### Fixes :wrench:
 * 修复强制光照经度、纬度不对的问题
+* 修复外置图标打开看不见的问题
 
 ### 1.2.7 - 2019-11-9
 

@@ -707,6 +707,7 @@ export default {
       if (!polyLineToolObj) {
         return;
       }
+      polyLineToolObj.editing = false;
       polyLineToolObj.positionEditing = false;
       if (polyLineToolObj.isCreating) {
         polyLineToolObj.isCreating = false;
