@@ -138,8 +138,8 @@ class XbsjBoxPickAction {
     constructor(viewer) {
         this._viewer = viewer;
 
-        // this._mode = 'rect'; // 'polygon' // polygon表示任意多边形
-        this._mode = 'polygon';
+        this._mode = 'rect'; // 'polygon' // polygon表示任意多边形
+        // this._mode = 'polygon';
 
         // 创建canvasManager
         this._canvasManager = new CanvasManager(viewer);
@@ -379,13 +379,16 @@ Object.defineProperties(XbsjBoxPickAction.prototype, {
             });
 
             // 2 拾取操作设置(测试用)
-            var xbsjBoxPickAction = new Cesium.XbsjBoxPickAction(viewer);
+            // var xbsjBoxPickAction = new Cesium.XbsjBoxPickAction(viewer);
+            var xbsjBoxPickAction = new XbsjBoxPickAction(viewer);
             xbsjBoxPickAction.enabled = true;
             xbsjBoxPickAction.objectsPicked.addEventListener(objects => {
                 console.log(`objectsPicked: ${objects.length}`);
                 alert(`objectsPicked: ${objects.length}`);
             });
-            xbsjBoxPickAction.mode = 'polygon'; // 任意选择
+            // xbsjBoxPickAction.mode = 'polygon'; // 任意选择
+
+            window.xbsjBoxPickAction = xbsjBoxPickAction;
             // xbpa.mode = 'rect'; // 框选
             // xbpa.pickStart.addEventListener(() => {
             //     console.log('boxPick start!');
