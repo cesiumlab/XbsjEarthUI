@@ -489,43 +489,49 @@
         }
 
         function createCylinder(earth) {
-            var p = new XE.Obj.CustomPrimitive(earth)
-            p.position = [2.120597930315031, 0.5451624300822016, 150];
-            p.scale = [100, 100, 314];
-
-            var cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(1.0, 1.0, 1.0, 30);
-            p.positions = cylinder.positions;
-            p.sts = cylinder.sts;
-            p.indices = cylinder.indices;
-            // p.indices = [0, 1, 2];
-
-            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-            p.renderState.cull.enabled = false;
-
-            p.canvasWidth = 512;
-            p.canvasHeight = 512;
-
-            Cesium.Resource.createIfNeeded('./images/city/circular2.png').fetchImage().then(function(image) {
-                console.log('image loaded!');
+            const renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+            renderState.cull.enabled = false;
+            const cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(1.0, 1.0, 1.0, 30);
+            const evalString = `
                 p.canvasWidth = 512;
-                p.canvasHeight = 256;
+                p.canvasHeight = 512;
+                Cesium.Resource.createIfNeeded('./images/city/circular2.png').fetchImage().then(function(image) {
+                    console.log('image loaded!');
+                    p.canvasWidth = 512;
+                    p.canvasHeight = 256;
 
-                p.drawCanvas(ctx => {
-                    ctx.clearRect(0, 0, 512, 256);
-                    ctx.drawImage(image, 0, 0);
+                    p.drawCanvas(ctx => {
+                        ctx.clearRect(0, 0, 512, 256);
+                        ctx.drawImage(image, 0, 0);
+                    });
+
+                    p.color = [0.5, 0.8, 1, 2];
                 });
+            `;
 
-                p.color = [0.5, 0.8, 1, 2];
-            });
-
-            let angle = 0.0;
-            earth.czm.scene.preUpdate.addEventListener(() => {
-                angle -= 1.0;
-                if (angle > 360.0) {
-                    angle = 0.0;
+            const preUpdateEvalString = `
+                if (typeof p.dAngle === 'undefined') p.dAngle = 360.0;
+                p.dAngle -= 1.0;
+                if (p.dAngle < 0.0) {
+                    p.dAngle = 360.0;
                 }
-                p.rotation[0] = angle / 180.0 * Math.PI;
-            });
+                p.rotation[0] = p.dAngle / 180.0 * Math.PI;
+            `;
+
+            const config = {
+                evalString,
+                preUpdateEvalString,
+                position: [2.120597930315031, 0.5451624300822016, 150],
+                scale: [100, 100, 314],
+                positions: cylinder.positions,
+                sts: cylinder.sts,
+                indices: cylinder.indices,
+                renderState,
+                canvasWidth: 512,
+                canvasHeight: 512,
+            };
+            const p = new XE.Obj.CustomPrimitive(earth);
+            p.xbsjFromJSON(config);
 
             return p;
         }
