@@ -269,22 +269,22 @@
                 renderState: XE.Obj.CustomPrimitive.getRenderState(true, true),  
             };
 
-            const config1 = {
+            const config1 = Object.assign({}, baseConfig, {
                 indices: [0, 1, 4, 1, 2, 4, 2, 3, 4, 3, 0, 4],
                 color: [0.5, 0.8, 1, 0.5],
-            }
+            });
 
-            const config2 = {
+            const config2 = Object.assign({}, baseConfig, {
                 indices: [0, 1, 1, 2, 2, 3, 3, 0, 0, 4, 1, 4, 2, 4, 3, 4],
                 primitiveType: Cesium.PrimitiveType.LINES,
                 color: [1.0, 1.0, 0.0, 5],
-            }
+            });
 
             var p = new XE.Obj.CustomPrimitive(earth);
-            p.xbsjFromJSON(Object.assign({}, baseConfig, config1));
+            p.xbsjFromJSON(config1);
 
             var p2 = new XE.Obj.CustomPrimitive(earth);
-            p2.xbsjFromJSON(Object.assign({}, baseConfig, config2));
+            p2.xbsjFromJSON(config2);
 
             return p;       
         }
