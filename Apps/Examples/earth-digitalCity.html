@@ -154,23 +154,7 @@
         }
 
         function createCircle(earth) {
-            var p = new XE.Obj.CustomPrimitive(earth)
-            // p.position = [2.1206125026580582,0.5451708901585235,14.721614698023599];
-            p.position = [2.1206125026580582,0.545178729438238,14.721614698023599];
-            p.scale = [500, 500, 1];
-            // p.positions = [-1,-1,0,1,-1,0,1,1,0,-1,1,0,];
-            // p.sts = [0,0, 1,0, 1,1, 0,1, ];
-            // p.indices = [0, 1, 2, 0, 2, 3];
-            p.positions = XE.Obj.CustomPrimitive.Geometry.unitSquare.positions;
-            p.sts = XE.Obj.CustomPrimitive.Geometry.unitSquare.sts;
-            p.indices = XE.Obj.CustomPrimitive.Geometry.unitSquare.indices;
-
-            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-
-            p.canvasWidth = 512;
-            p.canvasHeight = 512;
-
-            p.evalString = `
+            const evalString = `
                 Cesium.Resource.createIfNeeded('./images/ht/circular_03.png').fetchImage().then(function(image) {
                     console.log('image loaded!');
                     p.canvasWidth = 512;
@@ -193,11 +177,7 @@
                 });
             `;
 
-            // evalString中有三个内置变量:
-            // p 代表 当前的自定义图元
-            // scene 代表 Cesium的scene对象
-            // time 代表当前时间 JulianDate
-            p.preUpdateEvalString = `
+            const preUpdateEvalString = `
                 if (typeof p.xxxAngle === 'undefined') p.xxxAngle = 360.0;
                 p.xxxAngle -= 1.0;
                 if (p.xxxAngle < 0) {
@@ -205,6 +185,28 @@
                 }
                 p.rotation[0] = p.xxxAngle / 180.0 * Math.PI;
             `;
+
+            // p.positions = XE.Obj.CustomPrimitive.Geometry.unitSquare.positions;
+            // p.sts = XE.Obj.CustomPrimitive.Geometry.unitSquare.sts;
+            // p.indices = XE.Obj.CustomPrimitive.Geometry.unitSquare.indices;
+
+            const config = {
+                // xbsjType: "CustomPrimitive",
+                evalString,
+                preUpdateEvalString,
+                position: [ 2.1206125026580582, 0.545178729438238, 14.721614698023599 ],
+                scale: [ 500, 500, 1 ],
+                positions: [ -1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0 ],
+                sts: [ 0, 0, 1, 0, 1, 1, 0, 1 ],
+                indices: [ 0, 1, 2, 0, 2, 3 ],
+                renderState: XE.Obj.CustomPrimitive.getRenderState(true, true),
+                color: [ 0.5, 0.8, 1, 2 ],
+                canvasWidth: 512,
+                canvasHeight: 512,
+            }   
+            
+            var p = new XE.Obj.CustomPrimitive(earth);
+            p.xbsjFromJSON(config);
 
             return p;
         }
