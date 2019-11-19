@@ -61,61 +61,64 @@ export default {
     checkBoxShow: Boolean
   },
 
-  mounted() {
+  mounted () {
     this.movetreeitem(this.item);
     // console.log(this.item)
   },
-  data() {
+  data () {
     return {
       titleEditable: false, // 'static'
       xbsjitemover: false
     };
   },
   methods: {
-    toggleExpand(item) {
+    toggleExpand (item) {
       this.onToggleExpand(item);
     },
-    toggleChecked(item, checked) {
+    toggleChecked (item, checked) {
       // item.checkStatus === 'unchecked' 或者'indeterminate'时，应该设置为true
       // item.checkStatus === 'checked'，应该置为false
       this.onToggleChecked(item, item.checkStatus !== "checked");
     },
-    onContexMenu(item, $event) {
+    onContexMenu (item, $event) {
       this.$emit("on-context-menu", { item, vueObject: this, $event });
     },
-    onDoubleClick(item, $event) {
+    onDoubleClick (item, $event) {
       this.$emit("on-double-click", { item, vueObject: this, $event });
     },
-    onClick(item, $event) {
+    onClick (item, $event) {
       this.$emit("on-click", { item, vueObject: this, $event });
     },
-    movetreeitem(item, $event) {
+    movetreeitem (item, $event) {
       let self = this;
       let source = this.$refs.treeitem;
       // 按下鼠标键并开始移动鼠标时，会在被拖放的元素上触发dragstart事件。
       // 此时光标变成“不能放”符号(圆环中有一条反斜线)，表示不能把元素放到自己上面
       source.addEventListener(
         "dragstart",
-        function(event) {
-          event.dataTransfer.setData(
-            "obj",
-            JSON.stringify(item._inner.sn.czmObject)
-          ); //兼容火狐浏览器，拖动时候必须携带数据否则没效果
+        function (event) {
+          try {
+            event.dataTransfer.setData(
+              "obj",
+              JSON.stringify(item._inner.sn.czmObject)
+            ); //兼容火狐浏览器，拖动时候必须携带数据否则没效果
+          } catch (e) {
+          }
           self.$emit("on-item-move", { item, vueObject: self, $event });
         },
         false
       );
 
       // 触发dragstart事件后，随即会触发drag事件，而且在元素被拖动期间会持续触发该事件
-      source.addEventListener("drag", function(event) {}, false);
+      source.addEventListener("drag", function (event) { }, false);
 
       // 当拖动停止时(无论是把元素放到了有效的放置目标，还是放到了无效的放置目标上)，会触发dragend事件
-      source.addEventListener("dragend", function(event) {}, false);
+      source.addEventListener("dragend", function (event) { }, false);
 
       //只要有元素被拖动到放置目标上，触发dragenter事件
       source.addEventListener(
         "dragenter",
-        function(event) {
+        function (event) {
           event.preventDefault();
           self.$emit("on-item-canmove", { item, vueObject: self, $event });
         },
@@ -124,7 +127,7 @@ export default {
       //被拖动的元素在放置目标的范围内移动时，持续触发dragover事件
       source.addEventListener(
         "dragover",
-        function(event) {
+        function (event) {
           if (self.canmove) {
             event.preventDefault();
             self.xbsjitemover = true;
@@ -136,7 +139,7 @@ export default {
       // 如果元素被拖出了放置目标，触发dragleave事件
       source.addEventListener(
         "dragleave",
-        function(event) {
+        function (event) {
           self.xbsjitemover = false;
           event.preventDefault();
         },
@@ -146,7 +149,7 @@ export default {
       // 如果元素被放到了放置目标中，触发drop事件
       source.addEventListener(
         "drop",
-        function(event) {
+        function (event) {
           self.$emit("on-item-drop", { item, vueObject: self, $event });
           self.xbsjitemover = false;
           event.preventDefault();
@@ -159,13 +162,13 @@ export default {
   directives: {
     focus: {
       // 指令的定义
-      inserted: function(el) {
+      inserted: function (el) {
         // el.__vue__ && el.__vue__.focus();
       }
     }
   },
   computed: {
-    itemIconType() {
+    itemIconType () {
       if (!this.onItemIconTypeCallback) {
         if (
           this.item.type === "XbsjTerrain" ||

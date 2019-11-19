@@ -349,6 +349,7 @@ class LabServer {
    * @param {String} id 
    */
   getSymbol (id) {
+    var self = this
     return new Promise((resolve, reject) => {
       axios
         .get(this.server + "symbol/group", {
@@ -356,6 +357,11 @@ class LabServer {
         })
         .then(res => {
           if (res.status === 200) {
+            if (res.data.symbols.rows.length === 1) {
+              var group = res.data.symbols.rows[0]
+              self.symbolGroupId = group._id
+              self.symbolContent = JSON.parse(group.content)
+            }
             resolve(res.data);
           } else {
             reject(res.data);
@@ -377,6 +383,137 @@ class LabServer {
         .post(this.server + "symbol/list", QS.stringify({
           ids: ids
         }))
+        .then(res => {
+          if (res.status === 200) {
+            resolve(res.data);
+          } else {
+            reject(res.data);
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  /**
+   * 添加标绘符号
+   * @param {String} id groupSymbolId
+   * @param {String} symbol 
+   */
+  addSymbol (symbol) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(this.server + "symbol", QS.stringify({
+          name: symbol.name,
+          type: symbol.type,
+          content: symbol.content,
+          image: symbol.image
+        }))
+        .then(res => {
+          if (res.status === 200) {
+            resolve(res.data);
+          } else {
+            reject(res.data);
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  }
+
+  
+  /**
+   * 修改符号
+   * @param {String} id symbolId
+   * @param {String} group 
+   */
+  updateSymbol (id, options) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(this.server + "symbol/" + id, QS.stringify({
+          name: options.name,
+          content: options.content
+        }))
+        .then(res => {
+          if (res.status === 200) {
+            resolve(res.data);
+          } else {
+            reject(res.data);
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+
+  /**
+   * 修改符号组
+   * @param {String} id groupSymbolId
+   * @param {String} group 
+   */
+  updateSymbolGroup () {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(this.server + "symbol/group/" + this.symbolGroupId, QS.stringify({
+          name: this.symbolContent.name,
+          content: JSON.stringify(this.symbolContent)
+        }))
+        .then(res => {
+          if (res.status === 200) {
+            resolve(res.data);
+          } else {
+            reject(res.data);
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  addToSymbolGroup (symbol) {
+    var objJson = symbol.toJSON()
+    if(symbol.imageUrl){
+      objJson.image = symbol.imageUrl
+    }
+    else if (symbol.imageUrls.length > 0) {
+      objJson.image = symbol.imageUrls[0]
+    }
+    delete objJson.xbsjGuid
+    var content = JSON.stringify(objJson)
+    var self = this
+    this.addSymbol({ name: objJson.name, type: objJson.xbsjType, content: content, image: objJson.image })
+      .then(result => {
+        if (result.status === 'ok') {
+          self.symbolContent.symbols.push(result.id)
+          self.updateSymbolGroup()
+            .then(result => {
+              if (result.status === 'ok') {
+                self._root.promptInfo("添加成功！", "info")
+                self._root._comp.$refs.symbolTool[0].itemClick();
+              }
+            })
+            .catch(err => {
+              this.error = err;
+            });
+        }
+      })
+      .catch(err => {
+        this.error = err;
+      });
+  }
+
+  /**
+   * 创建Guid
+   */
+  createGuid () {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(this.server + "other/createGuid")
         .then(res => {
           if (res.status === 200) {
             resolve(res.data);

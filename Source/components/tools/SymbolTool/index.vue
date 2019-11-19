@@ -11,27 +11,35 @@
     :top="138"
     :title="lang.title"
   >
-    <div class="containbox">
-      <div class="leftbox">
-        <XbsjVirtualTree ref="vtree" :tree="tree" @on-click="itemClick"></XbsjVirtualTree>
+    <div class="containbox" style="overflow-y: hidden;">
+      <div class="leftbox" style="overflow-y: auto;">
+        <XbsjVirtualTree
+          ref="vtree"
+          :tree="tree"
+          @on-click="itemClick"
+          @on-context-menu="treeContextMenu"
+          @on-change-title="changeTitle"
+          :canmove="canmove"
+          @on-item-move="moveItem"
+          @on-item-drop="dropItem"
+          @on-item-canmove="canMoveItem"
+        ></XbsjVirtualTree>
       </div>
-      <div class="rightbox">
+      <div class="rightbox" style="overflow-y: auto;">
         <div>
           <ul>
             <li
               v-for="(symbol,index) in symbols"
-              style="width:64px;height:64px;"
+              style="width:64px;height:76px;"
               @click="createGroundImage(symbol)"
-              :key='index'
+              :key="index"
+              @mousedown="movetreeitem(symbol,$event)"
+              @contextmenu.prevent="symbolsContextMenu(symbol, $event)"
             >
               <div class="backimg">
-                <img
-                  :src="symbol.base64"
-                  class="itemimg"
-                  style="width:40px;height:40px;background-color: #fff;"
-                />
+                <img :src="symbol.image" class="itemimg" />
               </div>
-              <div style="line-height:0;">
+              <div style="line-height:1;">
                 <span>{{symbol.name}}</span>
               </div>
             </li>
@@ -43,18 +51,36 @@
 </template>
 
 <script>
+import GroundImageTool from '../../viztools/GroundImageTool'
+import { parse } from 'path';
 export default {
   data () {
     return {
-      show: true,
+      canmove: true,
+      show: false,
       tree: [],
       symbols: [],
+      currentSelectedTreeNode: null,
       langs: {
         zh: {
-          title: "标绘"
+          title: "标绘库",
+          save: "添加到库",
+          saveSuccess: "添加成功！",
+          addGroup: "添加文件夹",
+          newGroup: "新的文件夹",
+          rename: "重命名",
+          modify: "修改",
+          delete: "删除"
         },
         en: {
-          title: "Symbol"
+          title: "Symbol store",
+          save: "Save",
+          saveSuccess: "Save success!",
+          addGroup: "Add Group",
+          newGroup: "New Group",
+          rename: "Rename",
+          modify: "Modify",
+          delete: "Delete"
         }
       },
       lang: undefined
@@ -65,30 +91,270 @@ export default {
     this.initSymbol()
   },
   methods: {
-    createGroundImage (symbol) {
-      if (symbol.content === null || symbol.content === '') {
-        var groundImage = new XE.Obj.GroundImage(this.$root.$earth)
-        groundImage.editing = true
-        
-        if (symbol.image.indexOf('data') !== 0) {
-          console.log(symbol.image)
-          var base64Str = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(symbol.image)))
-          groundImage.imageUrls = [base64Str]
+    symbolsContextMenu (item, vueObject) {
+      var self = this
+      var labServer = this.$root.$labServer;
+      const baseItems = [
+        {
+          text: this.lang.modify,
+          func: () => {
+            self.modifyingSymbol = item
+            self.modifyGroundImage(item)
+          }
+        },
+        {
+          text: this.lang.delete,
+          func: () => {
+            const index = self.currentSelectedTreeNode.content.symbols.indexOf(item._id);
+            self.currentSelectedTreeNode.content.symbols.splice(index, 1);
+
+            const symbolIndex = self.symbols.indexOf(item)
+            self.symbols.splice(symbolIndex, 1)
+            self.updateSymbolGroup()
+          }
         }
-        else {
-          groundImage.imageUrls = [symbol.base64]
+      ];
+      this.$root.$earthUI.contextMenu.pop(baseItems);
+    },
+    treeContextMenu ({ item, vueObject }) {
+      var self = this
+      var labServer = this.$root.$labServer;
+      const baseItems = [
+        {
+          text: this.lang.addGroup,
+          func: () => {
+            labServer
+              .createGuid()
+              .then(result => {
+                if (result.status === 'ok') {
+                  var dataNode = {
+                    _id: result.id,
+                    name: self.lang.newGroup,
+                    symbols: [],
+                    children: []
+                  }
+                  var treeNode = {
+                    id: result.id,
+                    expand: true,
+                    title: self.lang.newGroup,
+                    children: [],
+                    content: dataNode
+                  }
+                  item.children.push(treeNode);
+                  item.content.children.push(dataNode)
+                  self.updateSymbolGroup()
+                }
+              })
+              .catch(err => {
+                this.error = err;
+              });
+          }
+        },
+        {
+          text: this.lang.rename,
+          func: () => {
+            vueObject.titleEditable = true;
+          }
+        },
+        {
+          text: this.lang.delete,
+          func: () => {
+            const index = item.parent.children.indexOf(item);
+            item.parent.children.splice(index, 1);
+
+            const indexContent = item.parent.content.children.indexOf(item.content);
+            item.parent.content.children.splice(indexContent, 1)
+            self.updateSymbolGroup()
+          }
         }
-        this.$root.$earthUI.showPropertyWindow(groundImage)
-        if (symbol.image.indexOf('data') !== 0) {
-          console.log(symbol.image)
-          var base64Str = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(symbol.image)))
-          groundImage.imageUrls = [base64Str]
-        }
-        else {
-          groundImage.imageUrls = [symbol.imageUrls]
-        }
-        window.groundImage = groundImage
+      ];
+      this.$root.$earthUI.contextMenu.pop(baseItems);
+    },
+    updateSymbolGroup () {
+      var self = this
+      this.$root.$labServer.updateSymbolGroup()
+        .then(result => {
+        })
+        .catch(err => {
+          this.error = err;
+        });
+    },
+    isChildren (parent, children) {
+      if (parent.children === undefined || parent.children.length === 0) {
+        return false
       }
+      var isChildren = parent.children.indexOf(children)
+      if (isChildren < 0) {
+        for (var i = 0; i < parent.children.length; i++) {
+          if (this.isChildren(parent.children[i], children)) {
+            break
+          }
+        }
+      }
+      return isChildren >= 0
+    },
+    movetreeitem (item, $event) {
+      let self = this;
+      let source = $event.currentTarget;
+      // 按下鼠标键并开始移动鼠标时，会在被拖放的元素上触发dragstart事件。
+      // 此时光标变成“不能放”符号(圆环中有一条反斜线)，表示不能把元素放到自己上面
+      source.addEventListener(
+        "dragstart",
+        function (event) {
+          event.dataTransfer.setData(
+            "obj",
+            JSON.stringify(item)
+          ); //兼容火狐浏览器，拖动时候必须携带数据否则没效果
+          self.moveItem({ item, vueObject: self, $event });
+        },
+        false
+      );
+
+      // 触发dragstart事件后，随即会触发drag事件，而且在元素被拖动期间会持续触发该事件
+      source.addEventListener("drag", function (event) { }, false);
+
+      // 当拖动停止时(无论是把元素放到了有效的放置目标，还是放到了无效的放置目标上)，会触发dragend事件
+      source.addEventListener("dragend", function (event) { }, false);
+
+      //只要有元素被拖动到放置目标上，触发dragenter事件
+      source.addEventListener(
+        "dragenter",
+        function (event) {
+          event.preventDefault();
+          // self.moveItem({ item, vueObject: self, $event });
+        },
+        false
+      );
+      //被拖动的元素在放置目标的范围内移动时，持续触发dragover事件
+      source.addEventListener(
+        "dragover",
+        function (event) {
+          if (self.canmove) {
+            event.preventDefault();
+            self.xbsjitemover = true;
+          }
+        },
+        false
+      );
+
+      // 如果元素被拖出了放置目标，触发dragleave事件
+      source.addEventListener(
+        "dragleave",
+        function (event) {
+          self.xbsjitemover = false;
+          event.preventDefault();
+        },
+        false
+      );
+
+      // 如果元素被放到了放置目标中，触发drop事件
+      source.addEventListener(
+        "drop",
+        function (event) {
+          self.xbsjitemover = false;
+          event.preventDefault();
+        },
+        false
+      );
+    },
+    moveItem ({ item, vueObject }) {
+      //拖拽移动的时候保存当前拖动的item
+      this.canmove = true;
+      this._currentDropNode = item;
+      var sceneTree = this.$root.$refs.mainUI.$refs.sceneTreeTool[0];
+      sceneTree._currentSceneNode = undefined
+    },
+    canMoveItem ({ item, vueObject }) {
+      //判断放置目标是否是源目标的子节点
+      if (this._currentDropNode && item !== this._currentDropNode) {
+        if (this.isChildren(this._currentDropNode, item)) {
+          this.canmove = false;
+        } else {
+          this.canmove = true;
+        }
+      } else {
+        this.canmove = false;
+      }
+    },
+    dropItem ({ item, vueObject }) {
+      //放置源目标到放置目标位置
+      if (this._currentDropNode) {
+        if (this._currentDropNode.type === "GroundImage" || this._currentDropNode.type === "Pin") {
+          var index = this.currentSelectedTreeNode.content.symbols.indexOf(this._currentDropNode._id)
+          this.currentSelectedTreeNode.content.symbols.splice(index, 1)
+          vueObject.item.content.symbols.push(this._currentDropNode._id)
+          var symbolsIndex = this.symbols.indexOf(this._currentDropNode)
+          this.symbols.splice(symbolsIndex, 1)
+          this.updateSymbolGroup()
+        }
+        else if (this._currentDropNode && item !== this._currentDropNode) {
+          this._currentDropNode.parent &&
+            this.moveToItem(this._currentDropNode, vueObject.item)
+        }
+      }
+      this.$forceUpdate()
+      this._currentDropNode = undefined;
+    },
+    moveToItem (srcItem, dstItem) {
+      if (srcItem.parent) {
+        if (srcItem.parent.content) {
+          var contentIndex = srcItem.parent.content.children.indexOf(srcItem.content)
+          srcItem.parent.content.children.splice(contentIndex, 1)
+
+          var index = srcItem.parent.children.indexOf(srcItem)
+          srcItem.parent.children.splice(index, 1)
+
+          this.$nextTick(() => {
+            dstItem.content.children.push(srcItem.content)
+            dstItem.children.push(srcItem)
+            this.updateSymbolGroup()
+            dstItem.expand = true
+          })
+        }
+      }
+    },
+    changeTitle (options) {
+      const treeItem = options.item;
+      const newTitle = options.title;
+      treeItem && (treeItem.title = newTitle);
+      treeItem.content.name = newTitle
+      this.updateSymbolGroup()
+    },
+    createGroundImage (symbol) {
+      if (this.symbol) { // 新创建的，没确定之前，又选择了其他图标
+        this.symbol.destroy()
+      }
+      if (symbol.type === 'GroundImage') {
+        this.symbol = new XE.Obj.GroundImage(this.$root.$earth);
+      } else {
+        this.symbol = new XE.Obj.Pin(this.$root.$earth);
+      }
+      this.symbol.isCreating = true;
+      this.symbol.creating = true;
+      this.symbol.xbsjFromJSON(JSON.parse(symbol.content))
+      this.$root.$earthUI.showPropertyWindow(this.symbol);
+      window.symbol = this.symbol
+    },
+    modifyGroundImage (symbol) {
+      var groundImage = new XE.Obj.GroundImage(this.$root.$earth);
+      groundImage.creating = true
+      groundImage.xbsjFromJSON(JSON.parse(symbol.content));
+      groundImage.modifyEnd = this.modifyGroundImageEnd
+      this.$root.$earthUI.showPropertyWindow(groundImage);
+    },
+    modifyGroundImageEnd (ok, groundImage) { // 修改后点击 取消 或 确定 时触发
+      if (ok) {
+        var objJson = groundImage.toJSON()
+        if (groundImage.imageUrls.length > 0) {
+          objJson.image = groundImage.imageUrls[0]
+        }
+        delete objJson.xbsjGuid
+        this.modifyingSymbol.name = groundImage.name
+        this.modifyingSymbol.content = JSON.stringify(objJson)
+        this.$root.$labServer.updateSymbol(this.modifyingSymbol._id, this.modifyingSymbol)
+      }
+      this.modifyingSymbol = null
+      groundImage.destroy()
     },
     initSymbol (id) {
       var labServer = this.$root.$labServer;
@@ -97,9 +363,11 @@ export default {
         .getSymbol(id)
         .then(result => {
           if (result.status === 'ok' && result.symbols.rows.length === 1) {
-            self.tree = []
-            var content = JSON.parse(result.symbols.rows[0].content)
-            self.tree.push(self.initTreeNode(content))
+            var group = result.symbols.rows[0]
+            var treeRoot = self.initTreeNode(labServer.symbolContent)
+            treeRoot.expand = true
+            self.tree = [treeRoot]
+            // self.$forceUpdate()
           }
         })
         .catch(err => {
@@ -109,11 +377,10 @@ export default {
     initTreeNode (node) {
       var self = this
       var treeNode = {
-        id: node._id,
-        expand: true,
+        expand: false,
         title: node.name,
-        symbols: node.symbols,
-        children: []
+        children: [],
+        content: node
       }
       if (node.children.length > 0) {
         for (var i = 0; i < node.children.length; i++) {
@@ -123,78 +390,48 @@ export default {
       return treeNode
     },
     itemClick (item) {
-      item = item.item
-      // console.log(item);
-      if (item.symbols.length > 0) {
+      if (item && item.item) {
+        this.currentSelectedTreeNode = item.item
+      }
+      if (this.currentSelectedTreeNode && this.currentSelectedTreeNode.content.symbols.length > 0) {
         var labServer = this.$root.$labServer;
         var self = this
-        var ids = item.symbols.join(',').replace('\"', '')
+        var ids = this.currentSelectedTreeNode.content.symbols.join(',').replace('\"', '')
         labServer
           .getSymbols(ids)
           .then(result => {
             if (result.status === 'ok') {
               self.symbols = result.symbols.rows
-              self.symbols.forEach((symbol) => {
-                if (symbol.image.indexOf('data') !== 0) {
-                  symbol.base64 = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(symbol.image)))
-                } else {
-                  symbol.base64 = symbol.image
-                }
-              })
+              // self.symbols.forEach((symbol) => {
+              //   symbol.domType = "symbol"
+                // if (symbol.image.indexOf('data') !== 0) {
+                //   symbol.base64 = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(symbol.image)))
+                // } else {
+                //   symbol.base64 = symbol.image
+                // }
+              // })
             }
           })
           .catch(err => {
             this.error = err;
           });
+      } else {
+        this.symbols = []
       }
-    },
-    // 圆弧
-    Arc () {
-      var Arc = new XE.Obj.Plots.GeoArc(this.$root.$earth);
-      Arc.creating = true;
-      Arc.isCreating = true;
-      Arc.name = "圆弧";
-      this.$root.$earthUI.showPropertyWindow(Arc);
-    },
-    // 圆
-    Circle () {
-      var Circle = new XE.Obj.Plots.GeoCircle(this.$root.$earth);
-      Circle.creating = true;
-      Circle.isCreating = true;
-      Circle.name = "圆";
-      this.$root.$earthUI.showPropertyWindow(Circle);
-    },
-    // 矩形
-    Rectangle () {
-      var Rectangle = new XE.Obj.Plots.GeoRectangle(this.$root.$earth);
-      Rectangle.creating = true;
-      Rectangle.isCreating = true;
-      Rectangle.name = "矩形";
-      this.$root.$earthUI.showPropertyWindow(Rectangle);
-    },
-    // 曲面旗标
-    CurveFlag () {
-      var CurveFlag = new XE.Obj.Plots.GeoCurveFlag(this.$root.$earth);
-      CurveFlag.creating = true;
-      CurveFlag.isCreating = true;
-      CurveFlag.name = "曲面旗标";
-      this.$root.$earthUI.showPropertyWindow(CurveFlag);
-    },
-    // 直角旗标
-    RightAngleFlag () {
-      var RightAngleFlag = new XE.Obj.Plots.GeoRightAngleFlag(
-        this.$root.$earth
-      );
-      RightAngleFlag.creating = true;
-      RightAngleFlag.isCreating = true;
-      RightAngleFlag.name = "直角旗标";
-      this.$root.$earthUI.showPropertyWindow(RightAngleFlag);
     }
   }
 };
 </script>
 
 <style scoped>
+.backimg {
+  height: 50px;
+}
+.itemimg {
+  width: 48px;
+  height: 48px;
+  background: rgba(200, 200, 200, 0.5);
+}
 .containbox {
   display: flex;
   width: 100%;

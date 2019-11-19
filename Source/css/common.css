@@ -598,7 +598,7 @@
    overflow: hidden;
    cursor: default;
    border-color: rgba(71, 71, 71, 1);
-   margin-top: 28px;
+   /* margin-top: 28px; */
  }
 
  .xbsj-input-number-handler-wrap {

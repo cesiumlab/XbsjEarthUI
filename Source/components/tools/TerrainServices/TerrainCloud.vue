@@ -12,11 +12,6 @@
     :title="lang.cloudtitle"
     class="xbsj-localTerrain"
   >
-    <div class="localTerrainSeaarch">
-      <input v-model="key" @keyup.enter="query" />
-      <button @click="query" class="localTerrainSeaarchButton">{{lang.search}}</button>
-      <!-- <label v-show="error!=''" class="error">{{error}}</label> -->
-    </div>
     <div v-if="selected!=null" class="localTerrainDiv">
       <div>
         <!-- <label>服务地址:{{serverUrl(selected)}}</label> -->

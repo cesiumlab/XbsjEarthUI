@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="535"
+    :height="420"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -14,35 +14,14 @@
       <!-- 名字 -->
       <div class="flatten">
         <label>{{lang.name}}</label>
-        <input style="float:left;" type="text" v-model="pin.name" />
-      </div>
-
-      <!-- 近远裁 -->
-      <div class="flatten" style="margin-top:20px;display:flex;">
-        <label>{{lang.nearfar}}</label>
-        <div class="field">
-          <XbsjSlider range :min="0" :max="30" :step="0.1" v-model="nearfar" ref="glowFactor"></XbsjSlider>
-        </div>
-      </div>
-      <!-- 近远裁 -->
-      <div class="flatten">
-        <label></label>
-        <div class="flatten-box">
-          <input v-model="pin.near" placeholder="lang.near" style="width: 25%;" type="text" />
-          <input
-            v-model="pin.far"
-            placeholder="lang.far"
-            style="width: 25%;margin-left:5%;"
-            type="text"
-          />
-        </div>
+        <input style="float:left;" type="text" v-model="ground.name" />
       </div>
 
       <!-- 位置 -->
       <div class="flatten">
         <label>{{lang.weizhi}}</label>
         <div class="flatten-box">
-          <XbsjLngLatHeight v-model="pin.position"></XbsjLngLatHeight>
+          <XbsjLngLatHeight v-model="ground.position"></XbsjLngLatHeight>
         </div>
       </div>
 
@@ -53,65 +32,76 @@
           <div>
             <button
               class="attitudeEditCameraButton"
-              @click="pin.creating =!pin.creating"
-              :class="pin.creating?'btncoloron':''"
+              @click="ground.creating =!ground.creating"
+              :class="ground.creating?'btncoloron':''"
             >{{lang.creating}}</button>
           </div>
           <div>
             <button
               class="attitudeEditCameraButton"
-              @click="pin.editing =!pin.editing"
-              :class="pin.editing?'btncoloron':''"
+              @click="ground.editing =!ground.editing"
+              :class="ground.editing?'btncoloron':''"
             >{{lang.editing}}</button>
           </div>
         </div>
       </div>
 
-      <!-- pin自定义外部图标 -->
+      <!-- ground自定义外部图标 -->
       <div class="flatten">
-        <label>{{lang.imageUrl}}</label>
-        <input style="float:left;" type="text" v-model="pin.imageUrl" />
+        <label>{{lang.imageUrls}}</label>
+        <input style="float:left;" type="text" v-model="ground.imageUrls" />
       </div>
 
-      <!-- 缩放 -->
-      <div class="flatten" style="margin-top:20px;">
-        <label>{{lang.scale}}</label>
-        <!-- <input style="float:left;" type="text" v-model="pin.scale" /> -->
-        <div class="field">
-          <XbsjSlider
-            :min="0.05"
-            :max="2"
-            :step="0.01"
-            showTip="always"
-            v-model="pin.scale"
-            ref="glowFactor"
-          ></XbsjSlider>
+      <!-- 原点 -->
+      <div class="flatten" style="display:flex;">
+        <div>
+          <label>{{lang.origin.x}}</label>
+          <XbsjInputNumber
+            v-model="ground.origin[0]"
+            style="float:left;"
+            :step="0.1"
+            :min="0"
+            :max="1"
+          ></XbsjInputNumber>
+        </div>
+        <div>
+          <label>{{lang.origin.y}}</label>
+          <XbsjInputNumber
+            v-model="ground.origin[1]"
+            style="float:left;"
+            :step="0.1"
+            :min="0"
+            :max="1"
+          ></XbsjInputNumber>
         </div>
       </div>
 
+      <!-- 宽高 -->
       <div class="flatten" style="display:flex;">
         <div>
           <label></label>
-          <XbsjCheckBox v-model="pin.isDivImage">{{lang.isDivImage}}</XbsjCheckBox>
+          <XbsjCheckBox v-model="ground.autoWidth">{{lang.autoWidth}}</XbsjCheckBox>
+        </div>
+        <div>
+          <label></label>
+          <XbsjCheckBox v-model="ground.autoHeight">{{lang.autoHeight}}</XbsjCheckBox>
+        </div>
+      </div>
+      <div class="flatten" style="display:flex;">
+        <div>
+          <label>{{lang.width}}</label>
+          <input style="float:left;" type="text" v-model.number="ground.width" />
+        </div>
+        <div>
+          <label>{{lang.height}}</label>
+          <input style="float:left;" type="text" v-model.number="ground.height" />
         </div>
       </div>
 
       <div class="flatten">
-        <div style="position: relative;">
-          <label>{{lang.pathAnimation}}</label>
-          <input
-            type="text"
-            v-model="pin.attachedPathGuid"
-            @click="pinselectinput"
-            readonly
-            style="cursor: pointer;"
-          />
-          <button class="selectButton"></button>
-          <div class="cutselectbox" v-show="pinshowPinSelect" style="overflow:scroll;height:100px;">
-            <div @click="pinoptionssure(c)" v-for="(c,index) in pathGuidarr" :key="index">
-              <span>{{c.name}}</span>
-            </div>
-          </div>
+        <div>
+          <label>{{lang.rotation}}</label>
+          <XbsjInputNumber v-model.number="rotation" :step="1"></XbsjInputNumber>
         </div>
       </div>
     </div>
@@ -121,33 +111,34 @@
 <script>
 import { copyobj } from "../../utils/tools";
 import languagejs from "./index_locale";
+import XbsjInputNumber from "../../common/Slider/input-number";
 
 export default {
   props: {
     getBind: Function
   },
-  data() {
+  components: {
+    XbsjInputNumber
+  },
+  data () {
     return {
-      lang: {},
-      showPinSelect: false,
-      pinshowPinSelect: false,
-      makiIconObj: {},
-      pin: {
+      showGroundSelect: false,
+      groundshowGroundSelect: false,
+      groundClone: {},
+      ground: {
         name: "",
         creating: true,
-        enabled: true,
         editing: false,
-        far: 25000000,
-        near: 100,
         imageUrl: "",
-        isDivImage: true,
-        scale: 1,
+        width: 100,
+        height: 100,
+        autoWidth: false,
+        autoHeight: true,
+        origin: [0.5, 0.5],
+        rotation: 0,
         show: true,
-        position: [0, 0, 0],
-        pinBuilder: {},
-        attachedPathGuid: ""
+        position: [0, 0, 0]
       },
-      pinstyletype: true,
       bgbaseColorUI: {
         rgba: {
           r: 0,
@@ -170,11 +161,12 @@ export default {
       dighole: false,
       connections: [],
       connectedTileset: "",
-      pathGuidarr: []
+      pathGuidarr: [],
+      lang: {}
     };
   },
-  created() {},
-  mounted() {
+  created () { },
+  mounted () {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
@@ -182,115 +174,97 @@ export default {
     if (czmObj) {
       this._czmObj = czmObj;
       const bindData = {
-        name: "pin.name",
-        creating: "pin.creating",
-        editing: "pin.editing",
-        far: "pin.far",
-        near: "pin.near",
-        imageUrl: "pin.imageUrl",
-        show: "pin.show",
-        position: "pin.position",
-        scale: "pin.scale",
-        enabled: "pin.enabled",
-        pinBuilder: "pin.pinBuilder",
-        attachedPathGuid: "pin.attachedPathGuid",
-        isDivImage: "pin.isDivImage"
+        name: "ground.name",
+        creating: "ground.creating",
+        editing: "ground.editing",
+        imageUrls: "ground.imageUrls",
+        show: "ground.show",
+        origin: "ground.origin",
+        position: "ground.position",
+        width: "ground.width",
+        height: "ground.height",
+        rotation: "ground.rotation",
+        autoWidth: "ground.autoWidth",
+        autoHeight: "ground.autoHeight"
       };
 
-      Object.entries(bindData).forEach(([sm, vm]) => {
-        if (typeof vm === "string") {
-          this._disposers.push(XE.MVVM.bind(this, vm, czmObj, sm));
+      for (var prop in bindData) {
+        if (typeof bindData[prop] === "string") {
+          this._disposers.push(XE.MVVM.bind(this, bindData[prop], this._czmObj, prop));
         } else {
-          this._disposers.push(vm.handler(this, vm.prop, czmObj, sm));
+          this._disposers.push(vm.handler(this, bindData[prop], this._czmObj, prop));
         }
-      });
-
-      this._disposers.push(
-        XE.MVVM.bind(this, "bgbaseColor", czmObj, "pinBuilder.fillColor")
-      );
-      this._disposers.push(
-        XE.MVVM.bind(this, "borderbaseColor", czmObj, "pinBuilder.outlineColor")
-      );
-
-      this.makiIconObj = XE.Obj.Pin.MakiIcon;
-      this.makiIconObj.null = "";
-      if (this._czmObj.isCreating && !this.pin.imageUrl) {
-        this.pin.imageUrl = "../../Examples/images/earth.png";
       }
 
-      this._czmObj.far = 1073741824;
+      for (var prop in this.ground) {
+        this.groundClone[prop] = this.ground[prop]
+      }
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers = this._disposers && this._disposers();
+    // this._disposers = this._disposers && this._disposers();
   },
   computed: {
-    name() {
-      return this.pin.name;
+    name () {
+      return this.ground.name;
     },
-    guid() {
+    guid () {
       return this.getBind().guid;
     },
-    nearfar: {
-      get() {
-        return [0, 30];
+    "ground.width": {
+      get () {
+        return this.getBind().width;
       },
-      set(newValue) {
-        this.pin.near = Math.round(Math.pow(2, newValue[0]));
-        this.pin.far = Math.round(Math.pow(2, newValue[1]));
+      set (newValue) {
+        this.ground.height = this.getBind().height;
+      }
+    },
+    "ground.height": {
+      get () {
+        return this.getBind().height;
+      },
+      set (newValue) {
+        this.ground.width = this.getBind().width;
+      }
+    },
+    rotation: {
+      get () {
+        return Math.round(this.ground.rotation * 180 / Math.PI, 0)
+      },
+      set (v) {
+        this.ground.rotation = v * Math.PI / 180
       }
     }
   },
   watch: {
-    "pin.pinBuilder.text"(e) {
-      if (e !== "") {
-        this.pin.pinBuilder.makiIcon = "";
+    "ground.width" (e) {
+      if (e !== "" && this.ground.autoHeight) {
+        this.ground.height = this.getBind().height;
       }
     },
-    bgbaseColorUI(color) {
-      let v = color.rgba;
-
-      var cc = [v.r / 255.0, v.g / 255.0, v.b / 255.0, v.a];
-      if (!this.bgbaseColor.every((c, index) => c === cc[index])) {
-        this.bgbaseColor = cc;
+    "ground.height" (e) {
+      if (e !== "" && this.ground.autoWidth) {
+        this.ground.width = this.getBind().width;
       }
     },
-    bgbaseColor(c) {
-      this.bgbaseColorUI = {
-        rgba: {
-          r: c[0] * 255,
-          g: c[1] * 255,
-          b: c[2] * 255,
-          a: c[3]
-        }
-      };
-    },
-    borderbaseColorUI(color) {
-      let v = color.rgba;
-
-      var cc = [v.r / 255.0, v.g / 255.0, v.b / 255.0, v.a];
-      if (!this.borderbaseColor.every((c, index) => c === cc[index])) {
-        this.borderbaseColor = cc;
+    "ground.autoWidth" (e) {
+      if (e === true) {
+        this.ground.autoHeight = false
       }
     },
-    borderbgbaseColor(c) {
-      this.borderbaseColorUI = {
-        rgba: {
-          r: c[0] * 255,
-          g: c[1] * 255,
-          b: c[2] * 255,
-          a: c[3]
-        }
-      };
+    "ground.autoHeight" (e) {
+      if (e === true) {
+        this.ground.autoWidth = false
+      }
     }
   },
   methods: {
-    pinoptionssure(c) {
-      this.pin.attachedPathGuid = c.guid;
-      this.pinshowPinSelect = !this.pinshowPinSelect;
+    groundoptionssure (c) {
+      this.ground.attachedPathGuid = c.guid;
+      this.groundshowGroundSelect = !this.groundshowGroundSelect;
     },
-    pinselectinput() {
+    groundselectinput () {
       this.pathGuidarr = [];
       let guidobj = {};
       this.pathGuidarr.push({ name: "空", guid: "" });
@@ -306,60 +280,67 @@ export default {
         );
         return;
       }
-      this.pinshowPinSelect = !this.pinshowPinSelect;
+      this.groundshowGroundSelect = !this.groundshowGroundSelect;
     },
-    optionssure(c) {
-      this.pin.pinBuilder.makiIcon = c;
-      this.showPinSelect = !this.showPinSelect;
+    optionssure (c) {
+      this.ground.groundBuilder.makiIcon = c;
+      this.showGroundSelect = !this.showGroundSelect;
     },
-    selectinput() {
-      this.showPinSelect = !this.showPinSelect;
+    selectinput () {
+      this.showGroundSelect = !this.showGroundSelect;
       // console.log(this.showSelect);
     },
-    close() {
+    close () {
       this.$parent.destroyTool(this);
     },
-    cancel() {
+    cancel () {
+      for (var prop in this.groundClone) {
+        this._czmObj[prop] = this.groundClone[prop]
+      }
       this.close();
-      const pinToolObj = this._czmObj;
-      if (!pinToolObj) {
+      const groundToolObj = this._czmObj;
+      if (!groundToolObj) {
         return;
       }
-      pinToolObj.positionEditing = false;
-      if (pinToolObj.isCreating) {
-        pinToolObj.isCreating = false;
-        pinToolObj.destroy();
+
+      groundToolObj.editing = false;
+      groundToolObj.creating = false;
+      if (groundToolObj.isCreating) {
+        groundToolObj.destroy();
+      }
+
+      if (groundToolObj.modifyEnd) {
+        groundToolObj.modifyEnd(false, groundToolObj)
       }
     },
-    ok() {
-      if (this.pin.imageUrl === "") {
+    ok () {
+      if (this.ground.imageUrls === "") {
         this.$root.$earthUI.promptInfo("请输入图片地址！", "error");
         return;
       }
       this.close();
-      const pinToolObj = this._czmObj;
-      pinToolObj.editing = false;
-      if (!pinToolObj) {
+      const groundToolObj = this._czmObj;
+      if (!groundToolObj) {
         return;
       }
-      pinToolObj.positionEditing = false;
-      pinToolObj.twoPostionsEditing = false;
-      pinToolObj.imageUrl = this.pin.imageUrl;
-      if (pinToolObj.isCreating) {
-        pinToolObj.isCreating = false;
-
-        const sceneObject = new XE.SceneTree.Leaf(pinToolObj);
+      groundToolObj.editing = false;
+      // groundToolObj.imageUrls = this.ground.imageUrls;
+      if (groundToolObj.isCreating) {
+        groundToolObj.isCreating = false;
+        const sceneObject = new XE.SceneTree.Leaf(groundToolObj);
         this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+      }
+      groundToolObj.editing = false;
+      groundToolObj.creating = false;
+
+      if (groundToolObj.modifyEnd) {
+        groundToolObj.modifyEnd(true, groundToolObj)
       }
     },
 
-    flyto(index) {
+    flyto (index) {
       this._czmObj.polygons[index].flyTo();
     }
-  },
-  beforeDestroy() {
-    //销毁监控
-    // this.disAutorun();
   }
 };
 </script>

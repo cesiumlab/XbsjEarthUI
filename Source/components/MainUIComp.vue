@@ -68,6 +68,7 @@ import ClippingPlaneTool from "./viztools/ClippingPlaneTool";
 import WaterTool from "./viztools/WaterTool";
 import PinTool from "./viztools/PinTool";
 import PinPictureTool from "./viztools/PinPictureTool";
+import GroundImageTool from "./viztools/GroundImageTool";
 import PinDivTool from "./viztools/PinDivTool";
 import PathTool from "./viztools/PathTool";
 import ModelTool from "./viztools/ModelTool";
@@ -120,6 +121,7 @@ export default {
     WaterTool,
     PinTool,
     PinPictureTool,
+    GroundImageTool,
     PinDivTool,
     PathTool,
     ModelTool,
@@ -140,7 +142,6 @@ export default {
     GeoTriFlag,
     GeoSector,
     ScanlineTool,
-
     CamerVideoTool,
     ViewshedTool,
 
@@ -176,7 +177,7 @@ export default {
         Water: "WaterTool",
         PinTool: "PinTool",
         PinDivTool: "PinDivTool",
-        PinPictureTool: "PinPictureTool",
+        Pin: "PinPictureTool",
         Path: "PathTool",
         Scanline: "ScanlineTool",
         Model: "ModelTool",
@@ -196,7 +197,8 @@ export default {
         GeoRightAngleFlag: "GeoRightAngleFlag",
         GeoPolygon: "GeoPolygon",
         GeoSector: "GeoSector",
-        ["CameraView.View"]: "CameraViewPrp"
+        ["CameraView.View"]: "CameraViewPrp",
+        GroundImage:"GroundImageTool",
       },
       tools: [
         {

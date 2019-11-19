@@ -18,7 +18,7 @@ const zh = {
   capture: "场景截图",
   earthColor:'地球颜色',
   modelTree:'模型结构',
-  symbol: '标绘'
+  symbol: '标绘库'
 };
 
 const en = {
@@ -41,7 +41,7 @@ const en = {
   capture: "Capture",
   earthColor:'GlobeClr',
   modelTree:'ModelScene',
-  symbol: 'Symbol'
+  symbol: 'Symbol store'
 };
 
 export default { zh, en };

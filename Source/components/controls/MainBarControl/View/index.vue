@@ -39,8 +39,8 @@
         </div>
 
         <!-- Symbol标绘 -->
-        <div class="xbsj-item-btnbox" @click="SymbolShow=!SymbolShow">
-          <div class="xbsj-item-btn more"></div>
+        <div class="xbsj-item-btnbox" @click="SymbolShow=!SymbolShow" v-show="show">
+          <div class="xbsj-item-btn scenebutton" :class="{highlight: SymbolShow}"></div>
           <span class="xbsj-item-name">{{lang.symbol}}</span>
         </div>
         <!--
@@ -157,6 +157,7 @@ export default {
       scalecontrolShow: true,
       statecontrolShow: true,
       modelTreeShow: false,
+      show: true,
       selectlist: false,
       splitX: 1.0,
       splitY: 1.0,

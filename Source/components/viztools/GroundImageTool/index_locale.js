@@ -1,16 +1,19 @@
 const zh = {
-  title:'图标属性',
+  title:'标绘设置',
   name:'名称',
   creating:'鼠标点选',
   editing:'修改位置',
-  nearfar:'近远裁',
-  far:'Far',
-  near:'Near',
-  imageUrl:'图标',
-  isDivImage: 'Div图标',
-  scale:'缩放',
+  imageUrls:'图标',
+  width: '宽',
+  height: '高',
+  autoWidth: '自动宽度',
+  autoHeight: '自动高度',
+  rotation: '角度',
   show:'显示',
-  pinstyletype:'内置样式',
+  origin: {
+    x: "原点X",
+    y: "原点Y"
+  },
   position:{
     longitude:'经度',
     latitude:'纬度',
@@ -25,22 +28,25 @@ const zh = {
     pinstyle:'图标'
   },
   weizhi:"位置",
-  eidtbtn:"编辑按钮",
-  pathAnimation:'路径动画'
+  eidtbtn:"编辑按钮"
 }
 
 const en = {
-  title:'Pin Property',
+  title:'Symbol Settings',
   name:'Name',
   creating:'Creat',
   editing:'Edit',
-  far:'Far',
-  near:'Near',
-  imageUrl:'ImageUrl',
-  isDivImage: 'Div Image',
-  scale:'Scale',
+  imageUrls:'ImageUrl',
+  width: 'width',
+  height: 'height',
+  autoWidth: 'autoWidth',
+  autoHeight: 'autoHeight',
+  rotation: 'rotation',
+  origin: {
+    x: "originX",
+    y: "originY"
+  },
   show:'Show',
-  pinstyletype:'PinstyleType',
   position:{
     longitude:'Longitude',
     latitude:'Latitude',
@@ -55,8 +61,7 @@ const en = {
     pinstyle:'Pinstyle'
   },
   weizhi:"weizhi",
-  eidtbtn:"eidt btn",
-  pathAnimation:'pathAnimation'
+  eidtbtn:"eidt btn"
 }
 
 export default { zh, en }
