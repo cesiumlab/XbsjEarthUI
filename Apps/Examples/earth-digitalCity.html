@@ -215,15 +215,10 @@
             const evalString = `
                 Cesium.Resource.createIfNeeded('./images/city/billboard.png').fetchImage().then(function(image) {
                     console.log('image loaded!');
-                    p.canvasWidth = 512;
-                    p.canvasHeight = 256;
-
                     p.drawCanvas(ctx => {
-                        ctx.clearRect(0, 0, 512, 512);
+                        ctx.clearRect(0, 0, 512, 256);
                         ctx.drawImage(image, 0, 0);
                     });
-
-                    p.color = [0.5, 0.8, 1, 2];
                 });
             `;
 
