@@ -119,19 +119,21 @@
             var t = createTetrahedron(earth);
             // var bp = createBasePoint(earth, [2.1208228652896737,0.545141073908163,1.4957427559874568], [1, 1, 0, 2]);
 
+            debugger;
             [
                 [[2.1202907282192385, 0.5450835546419367, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
-                [[2.120125294340532, 0.5453135338319917, 1.5], [1, 1, 0, 2], [60, 60, 1.2]],
-                [[2.120593634919066, 0.5455039098638930, 1.5], [0.4, 0.9, 1, 2], [40, 40, 0.8]],
-                [[2.120633904525988, 0.54481413672139860, 1.5], [0.3, 1, 1, 2], [50, 50, 1.5]],
-                [[2.1208228652896737, 0.545141073908163, 1.5], [1, 1, 0, 2], [50, 50, 1.0]],
-                [[2.120461948038486, 0.5451830324218808, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
-                [[2.1204975918398317, 0.5452978537884561, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
-                [[2.1207024221200843, 0.5453525660588958, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
-                [[2.1207404597752664, 0.5451854942212021, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
+                // [[2.120125294340532, 0.5453135338319917, 1.5], [1, 1, 0, 2], [60, 60, 1.2]],
+                // [[2.120593634919066, 0.5455039098638930, 1.5], [0.4, 0.9, 1, 2], [40, 40, 0.8]],
+                // [[2.120633904525988, 0.54481413672139860, 1.5], [0.3, 1, 1, 2], [50, 50, 1.5]],
+                // [[2.1208228652896737, 0.545141073908163, 1.5], [1, 1, 0, 2], [50, 50, 1.0]],
+                // [[2.120461948038486, 0.5451830324218808, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
+                // [[2.1204975918398317, 0.5452978537884561, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
+                // [[2.1207024221200843, 0.5453525660588958, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
+                // [[2.1207404597752664, 0.5451854942212021, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
             ].forEach(([p, c, s]) => {
                 createBasePoint(earth, p, c, s);
             });
+            debugger;
 
             createODLines(earth);
             createODLines2(earth);
@@ -296,35 +298,44 @@
 
             // 底面
             {
-                let p = new XE.Obj.CustomPrimitive(earth)
-                p.position = [...position];
-                p.scale = [...scale];
-                p.positions = XE.Obj.CustomPrimitive.Geometry.unitSquare.positions;
-                p.sts = XE.Obj.CustomPrimitive.Geometry.unitSquare.sts;
-                p.indices = XE.Obj.CustomPrimitive.Geometry.unitSquare.indices;
-                p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-                p.color = [...color];
+                const evalString = `
+                    // debugger;
+                    p.canvasWidth = 512;
+                    p.canvasHeight = 512;
+                    p.drawCanvas(ctx => {
+                        var gradient = ctx.createRadialGradient(256, 256, 0, 256, 256, 256);
+                        gradient.addColorStop(0.1, "rgba(255, 255, 255, 1.0)");
+                        gradient.addColorStop(0.2, "rgba(255, 255, 255, 0.0)");
+                        gradient.addColorStop(0.3, "rgba(255, 255, 255, 0.9)");
+                        gradient.addColorStop(0.5, "rgba(255, 255, 255, 0.0)");
+                        gradient.addColorStop(0.9, "rgba(255, 255, 255, 0.2)");
+                        gradient.addColorStop(1.0, "rgba(255, 255, 255, 1.0)");
 
-                p.canvasWidth = 512;
-                p.canvasHeight = 512;
+                        ctx.clearRect(0, 0, 512, 512);
+                        ctx.beginPath();
+                        ctx.arc(256, 256, 256, 0, Math.PI * 2, true);
+                        // ctx.fillStyle = "rgb(0, 155, 255)";
+                        ctx.fillStyle = gradient;
+                        ctx.fill();
+                        ctx.restore();
+                    });
+                `;
 
-                p.drawCanvas(ctx => {
-                    let gradient = ctx.createRadialGradient(256, 256, 0, 256, 256, 256);
-                    gradient.addColorStop(0.1, "rgba(255, 255, 255, 1.0)");
-                    gradient.addColorStop(0.2, "rgba(255, 255, 255, 0.0)");
-                    gradient.addColorStop(0.3, "rgba(255, 255, 255, 0.9)");
-                    gradient.addColorStop(0.5, "rgba(255, 255, 255, 0.0)");
-                    gradient.addColorStop(0.9, "rgba(255, 255, 255, 0.2)");
-                    gradient.addColorStop(1.0, "rgba(255, 255, 255, 1.0)");
+                const config = {
+                    evalString,
+                    position: [...position],
+                    scale: [...scale],
+                    positions: [...XE.Obj.CustomPrimitive.Geometry.unitSquare.positions],
+                    sts: [...XE.Obj.CustomPrimitive.Geometry.unitSquare.sts],
+                    indices: [...XE.Obj.CustomPrimitive.Geometry.unitSquare.indices],
+                    renderState: XE.Obj.CustomPrimitive.getRenderState(true, true),
+                    color: [...color],
+                    canvasWidth: 512,
+                    canvasHeight: 512,
+                };
 
-                    ctx.clearRect(0, 0, 512, 512);
-                    ctx.beginPath();
-                    ctx.arc(256, 256, 256, 0, Math.PI * 2, true);
-                    // ctx.fillStyle = "rgb(0, 155, 255)";
-                    ctx.fillStyle = gradient;
-                    ctx.fill();
-                    ctx.restore();
-                });
+                let p = new XE.Obj.CustomPrimitive(earth);
+                p.xbsjFromJSON(config);    
             }
 
             // 底面动态辐射波
