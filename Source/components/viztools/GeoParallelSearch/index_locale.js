@@ -1,5 +1,5 @@
 const zh = {
-  title: '贝塞尔2次曲线',
+  title: '平行搜寻区',
   name: '名称',
   show: '显示',
   creating: '创建',
@@ -10,7 +10,7 @@ const zh = {
 };
 
 const en = {
-  title: 'GeoBezier2',
+  title: 'GeoParallelSearch',
   name: 'name',
   show: 'show',
   creating: 'creating',
