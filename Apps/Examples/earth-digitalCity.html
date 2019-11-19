@@ -119,21 +119,19 @@
             var t = createTetrahedron(earth);
             // var bp = createBasePoint(earth, [2.1208228652896737,0.545141073908163,1.4957427559874568], [1, 1, 0, 2]);
 
-            debugger;
             [
                 [[2.1202907282192385, 0.5450835546419367, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
-                // [[2.120125294340532, 0.5453135338319917, 1.5], [1, 1, 0, 2], [60, 60, 1.2]],
-                // [[2.120593634919066, 0.5455039098638930, 1.5], [0.4, 0.9, 1, 2], [40, 40, 0.8]],
-                // [[2.120633904525988, 0.54481413672139860, 1.5], [0.3, 1, 1, 2], [50, 50, 1.5]],
-                // [[2.1208228652896737, 0.545141073908163, 1.5], [1, 1, 0, 2], [50, 50, 1.0]],
-                // [[2.120461948038486, 0.5451830324218808, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
-                // [[2.1204975918398317, 0.5452978537884561, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
-                // [[2.1207024221200843, 0.5453525660588958, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
-                // [[2.1207404597752664, 0.5451854942212021, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
+                [[2.120125294340532, 0.5453135338319917, 1.5], [1, 1, 0, 2], [60, 60, 1.2]],
+                [[2.120593634919066, 0.5455039098638930, 1.5], [0.4, 0.9, 1, 2], [40, 40, 0.8]],
+                [[2.120633904525988, 0.54481413672139860, 1.5], [0.3, 1, 1, 2], [50, 50, 1.5]],
+                [[2.1208228652896737, 0.545141073908163, 1.5], [1, 1, 0, 2], [50, 50, 1.0]],
+                [[2.120461948038486, 0.5451830324218808, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
+                [[2.1204975918398317, 0.5452978537884561, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
+                [[2.1207024221200843, 0.5453525660588958, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
+                [[2.1207404597752664, 0.5451854942212021, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
             ].forEach(([p, c, s]) => {
                 createBasePoint(earth, p, c, s);
             });
-            debugger;
 
             createODLines(earth);
             createODLines2(earth);
@@ -340,44 +338,89 @@
 
             // 底面动态辐射波
             {
-                let p = new XE.Obj.CustomPrimitive(earth)
-                p.position = [...position];
-                // p.scale = [...scale];
-                p.scale = [50, 50, 1];
-                p.positions = XE.Obj.CustomPrimitive.Geometry.unitSquare.positions;
-                p.sts = XE.Obj.CustomPrimitive.Geometry.unitSquare.sts;
-                p.indices = XE.Obj.CustomPrimitive.Geometry.unitSquare.indices;
-                p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-                p.color = [...color];
+                // let p = new XE.Obj.CustomPrimitive(earth)
+                // p.position = [...position];
+                // p.scale = [50, 50, 1];
+                // p.positions = XE.Obj.CustomPrimitive.Geometry.unitSquare.positions;
+                // p.sts = XE.Obj.CustomPrimitive.Geometry.unitSquare.sts;
+                // p.indices = XE.Obj.CustomPrimitive.Geometry.unitSquare.indices;
+                // p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+                // p.color = [...color];
 
-                p.canvasWidth = 512;
-                p.canvasHeight = 512;
+                // p.canvasWidth = 512;
+                // p.canvasHeight = 512;
 
-                p.drawCanvas(ctx => {
-                    ctx.clearRect(0, 0, 512, 512);
+                // p.drawCanvas(ctx => {
+                //     ctx.clearRect(0, 0, 512, 512);
 
-                    ctx.strokeStyle = "rgb(255, 255, 255)";
-                    ctx.setLineDash([80, 80]);
-                    ctx.lineWidth = 30;
-                    ctx.arc(256, 256, 241, 0, Math.PI * 2, true);
-                    ctx.stroke();
-                });
+                //     ctx.strokeStyle = "rgb(255, 255, 255)";
+                //     ctx.setLineDash([80, 80]);
+                //     ctx.lineWidth = 30;
+                //     ctx.arc(256, 256, 241, 0, Math.PI * 2, true);
+                //     ctx.stroke();
+                // });
 
-                let angle = 0.0;
-                let t = 0.01;
-                earth.czm.scene.preUpdate.addEventListener(() => {
-                    angle += 10.0;
-                    if (angle > 360.0) {
-                        angle = 0.0;
+                // let angle = 0.0;
+                // let t = 0.01;
+                // earth.czm.scene.preUpdate.addEventListener(() => {
+                //     angle += 10.0;
+                //     if (angle > 360.0) {
+                //         angle = 0.0;
+                //     }
+                //     p.rotation[0] = angle / 180.0 * Math.PI;
+
+                //     t += 0.02;
+                //     if (t > 1.0) t = 0.01;
+
+                //     p.scale[0] = 50 * t;
+                //     p.scale[1] = 50 * t;
+                // });
+
+                const evalString = `
+                    p.drawCanvas(ctx => {
+                        ctx.clearRect(0, 0, 512, 512);
+
+                        ctx.strokeStyle = "rgb(255, 255, 255)";
+                        ctx.setLineDash([80, 80]);
+                        ctx.lineWidth = 30;
+                        ctx.arc(256, 256, 241, 0, Math.PI * 2, true);
+                        ctx.stroke();
+                    });
+                `;
+
+                const preUpdateEvalString = `
+                    if (typeof p.dAngle === 'undefined') p.dAngle = 0.0;
+                    if (typeof p.dt === 'undefined') p.dt = 0.01;
+
+                    p.dAngle += 10.0;
+                    if (p.dAngle > 360.0) {
+                        p.dAngle = 0.0;
                     }
-                    p.rotation[0] = angle / 180.0 * Math.PI;
+                    p.rotation[0] = p.dAngle / 180.0 * Math.PI;
 
-                    t += 0.02;
-                    if (t > 1.0) t = 0.01;
+                    p.dt += 0.02;
+                    if (p.dt > 1.0) p.dt = 0.01;
 
-                    p.scale[0] = 50 * t;
-                    p.scale[1] = 50 * t;
-                });
+                    p.scale[0] = 50 * p.dt;
+                    p.scale[1] = 50 * p.dt;
+                `;
+
+                const config = {
+                    evalString,
+                    preUpdateEvalString,
+                    position: [...position],
+                    scale: [50, 50, 1],
+                    positions: [...XE.Obj.CustomPrimitive.Geometry.unitSquare.positions],
+                    sts: [...XE.Obj.CustomPrimitive.Geometry.unitSquare.sts],
+                    indices: [...XE.Obj.CustomPrimitive.Geometry.unitSquare.indices],
+                    renderState: XE.Obj.CustomPrimitive.getRenderState(true, true),
+                    color: [...color],
+                    canvasWidth: 512,
+                    canvasHeight: 512,
+                };
+
+                let p = new XE.Obj.CustomPrimitive(earth);
+                p.xbsjFromJSON(config);    
             }
 
             // 柱体
