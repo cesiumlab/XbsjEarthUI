@@ -170,53 +170,41 @@
             p.canvasWidth = 512;
             p.canvasHeight = 512;
 
-            p.drawCanvas(ctx => {
-                ctx.clearRect(0, 0, 512, 512);
-                ctx.save();
-                ctx.beginPath();
-                ctx.strokeStyle = "rgb(255, 255, 0)"; 
-                ctx.setLineDash([8, 8]);
-                ctx.lineWidth = 3;
-                ctx.arc(256, 256, 250, 0, Math.PI*2, true);
-                ctx.stroke();
+            p.evalString = `
+                Cesium.Resource.createIfNeeded('./images/ht/circular_03.png').fetchImage().then(function(image) {
+                    console.log('image loaded!');
+                    p.canvasWidth = 512;
+                    p.canvasHeight = 512;
 
-                ctx.beginPath();
-                ctx.arc(256, 256, 120, 0, Math.PI*2, true);
-                ctx.stroke();
-                ctx.fillStyle = "rgb(0, 155, 255)"; 
-                ctx.fill();
-                ctx.restore();                
-            });    
-            
-            Cesium.Resource.createIfNeeded('./images/ht/circular_03.png').fetchImage().then(function(image) {
-                console.log('image loaded!');
-                p.canvasWidth = 512;
-                p.canvasHeight = 512;
+                    p.drawCanvas(ctx => {
+                        ctx.clearRect(0, 0, 512, 512);
 
-                p.drawCanvas(ctx => {
-                    ctx.clearRect(0, 0, 512, 512);
+                        ctx.beginPath();
+                        ctx.strokeStyle = "rgb(128, 128, 128)"; 
+                        // ctx.setLineDash([8, 8]);
+                        ctx.lineWidth = 1;
+                        ctx.arc(256, 256, 250, 0, Math.PI*2, true);
+                        ctx.stroke();
 
-                    ctx.beginPath();
-                    ctx.strokeStyle = "rgb(128, 128, 128)"; 
-                    // ctx.setLineDash([8, 8]);
-                    ctx.lineWidth = 1;
-                    ctx.arc(256, 256, 250, 0, Math.PI*2, true);
-                    ctx.stroke();
+                        ctx.drawImage(image, 0, 0);
+                    });
 
-                    ctx.drawImage(image, 0, 0);
+                    p.color = [0.5, 0.8, 1, 2];
                 });
+            `;
 
-                p.color = [0.5, 0.8, 1, 2];
-            });
-
-            let angle = 0.0;
-            earth.czm.scene.preUpdate.addEventListener(() => {
-                angle -= 1.0;
-                if (angle > 360.0) {
-                    angle = 0.0;
+            // evalString中有三个内置变量:
+            // p 代表 当前的自定义图元
+            // scene 代表 Cesium的scene对象
+            // time 代表当前时间 JulianDate
+            p.preUpdateEvalString = `
+                if (typeof p.xxxAngle === 'undefined') p.xxxAngle = 360.0;
+                p.xxxAngle -= 1.0;
+                if (p.xxxAngle < 0) {
+                    p.xxxAngle = 360.0;
                 }
-                p.rotation[0] = angle / 180.0 * Math.PI;
-            });
+                p.rotation[0] = p.xxxAngle / 180.0 * Math.PI;
+            `;
 
             return p;
         }
