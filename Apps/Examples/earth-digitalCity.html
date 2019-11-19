@@ -483,7 +483,7 @@
                     renderState,
                 };
 
-                let p = new XE.Obj.CustomPrimitive(earth);
+                const p = new XE.Obj.CustomPrimitive(earth);
                 p.xbsjFromJSON(config);
             }
         }
@@ -531,47 +531,53 @@
         }
 
         function createCylinder2(earth) {
-            var p = new XE.Obj.CustomPrimitive(earth)
-            window.p = p; // 方便调试
-            p.position = [2.1206125026580582,0.545178729438238,15];
-            p.scale = [500, 500, 100];
+            const cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(1.0, 1.0, 1.0, 30);
+            const renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+            renderState.cull.enabled = false;
+            const evalString = `
+                p.canvasWidth = 1;
+                p.canvasHeight = 256;
+                p.drawCanvas(ctx => {
+                    ctx.clearRect(0, 0, 1, 256);
 
-            var cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(1.0, 1.0, 1.0, 30);
-            p.positions = cylinder.positions;
-            p.sts = cylinder.sts;
-            p.indices = cylinder.indices;
-            // p.indices = [0, 1, 2];
+                    var lingrad2 = ctx.createLinearGradient(0,0,0,256);
+                    lingrad2.addColorStop(0, 'rgba(255,255,255,0)');
+                    lingrad2.addColorStop(1, 'rgba(255,255,255,1)');
 
-            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-            p.renderState.cull.enabled = false;
+                    ctx.fillStyle = lingrad2;
+                    ctx.fillRect(0, 0, 1, 256);
+                }); 
+            `;
 
-            p.canvasWidth = 1;
-            p.canvasHeight = 256;
-            p.color = [0.5, 0.8, 1, 2];
-
-            p.drawCanvas(ctx => {
-                ctx.clearRect(0, 0, 1, 256);
-
-                var lingrad2 = ctx.createLinearGradient(0,0,0,256);
-                lingrad2.addColorStop(0, 'rgba(255,255,255,0)');
-                lingrad2.addColorStop(1, 'rgba(255,255,255,1)');
-
-                ctx.fillStyle = lingrad2;
-                ctx.fillRect(0, 0, 1, 256);
-            });
-
-            let t = 0.0;
-            earth.czm.scene.preUpdate.addEventListener(() => {
-                t += 0.01 * 0.3;
-                if (t > 1.0) {
-                    t = 0.0;
+            const preUpdateEvalString = `
+                if (typeof p.dt === 'undefined') p.dt = 0.0;
+                p.dt += 0.01 * 0.3;
+                if (p.dt > 1.0) {
+                    p.dt = 0.0;
                 }
 
-                const b = (1.0-Math.cos(t*Math.PI*2.0))*0.5;
-                p.scale[0] = p.scale[1] = 1000 * (1.0-Math.cos(t*Math.PI))*0.5;
+                const b = (1.0-Math.cos(p.dt*Math.PI*2.0))*0.5;
+                p.scale[0] = p.scale[1] = 1000 * (1.0-Math.cos(p.dt*Math.PI))*0.5;
                 p.scale[2] = 200 * b;
                 p.color[3] = 2.0 * b;
-            });
+            `;
+
+            const config = {
+                evalString,
+                preUpdateEvalString,
+                position: [2.1206125026580582,0.545178729438238,15],
+                scale: [500, 500, 100],
+                positions: cylinder.positions,
+                sts: cylinder.sts,
+                indices: cylinder.indices,
+                renderState: renderState,
+                canvasWidth: 1,
+                canvasHeight: 256,
+                color: [0.5, 0.8, 1, 2],
+            }
+
+            const p = new XE.Obj.CustomPrimitive(earth);
+            p.xbsjFromJSON(config);
 
             return p;
         }
