@@ -5,6 +5,8 @@ Change Log
 
 ##### Additions :tada:
 * EarthUI和EarthSDK增加了pin里面的extText相关属性
+* EarthUI增加了控制图层树checkbox显隐的属性
+* EarthUI标绘增加了平行搜寻区功能
 
 ##### Fixes :wrench:
 * 修复强制光照经度、纬度不对的问题

@@ -85,6 +85,7 @@ import GeoPolyline from "./viztools/GeoPolyline";
 import GeoArc from "./viztools/GeoArc";
 import GeoBezier2 from "./viztools/GeoBezier2";
 import GeoBezier3 from "./viztools/GeoBezier3";
+import GeoParallelSearch from "./viztools/GeoParallelSearch";
 import GeoTriFlag from "./viztools/GeoTriFlag";
 import GeoSector from "./viztools/GeoSector";
 import ScanlineTool from "./viztools/ScanlineTool";
@@ -101,7 +102,7 @@ import InformationBox from "./utils/InformationBox";
 
 import ModelTreeTool from "./tools/ModelTreeTool";
 import EntityMoreTool from "./tools/EntityMoreTool";
-import SymbolTool from "./tools/SymbolTool"
+import SymbolTool from "./tools/SymbolTool";
 
 export default {
   components: {
@@ -137,6 +138,7 @@ export default {
     GeoArc,
     GeoBezier2,
     GeoBezier3,
+    GeoParallelSearch,
     GeoTriFlag,
     GeoSector,
     ScanlineTool,
@@ -188,6 +190,7 @@ export default {
         GeoArc: "GeoArc",
         GeoBezier2: "GeoBezier2",
         GeoBezier3: "GeoBezier3",
+        GeoParallelSearch: "GeoParallelSearch",
         GeoTriFlag: "GeoTriFlag",
         GeoDoubleArrow: "GeoDoubleArrow",
         GeoCircle: "GeoCircle",
