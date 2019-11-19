@@ -246,39 +246,45 @@
         }        
 
         function createTetrahedron(earth) {
-            var p = new XE.Obj.CustomPrimitive(earth)
-            p.position = [2.120597930315031, 0.5451624300822016, 400];
-            p.scale = [15, 15, 15];
-            p.positions = [1,0,1.5, 0,1,1.5, -1,0,1.5, 0,-1,1.5, 0, 0, 0];
-            p.indices = [0, 1, 4, 1, 2, 4, 2, 3, 4, 3, 0, 4];
-            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-            p.color = [0.5, 0.8, 1, 0.5];
-
-            var p2 = new XE.Obj.CustomPrimitive(earth)
-            p2.position = [2.120597930315031, 0.5451624300822016, 400];
-            p2.scale = [15, 15, 15];
-            p2.positions = [1,0,1.5, 0,1,1.5, -1,0,1.5, 0,-1,1.5, 0, 0, 0];
-            p2.indices = [0, 1, 1, 2, 2, 3, 3, 0, 0, 4, 1, 4, 2, 4, 3, 4];
-            p2.primitiveType = Cesium.PrimitiveType.LINES;
-            p2.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-            p2.color = [1.0, 1.0, 0.0, 5];
-
-            let angle = 0.0;
-            let t = 0.0;
-            earth.czm.scene.preUpdate.addEventListener(() => {
-                angle += 10.0;
-                if (angle > 360.0) {
-                    angle = 0.0;
+            const preUpdateEvalString = `
+                if (typeof p.dAngle === 'undefined') p.dAngle = 0.0;
+                p.dAngle += 10.0;
+                if (p.dAngle > 360.0) {
+                    p.dAngle = 0.0;
                 }
-                p.rotation[0] = angle / 180.0 * Math.PI;
-                p2.rotation[0] = angle / 180.0 * Math.PI;
+                p.rotation[0] = p.dAngle / 180.0 * Math.PI;
 
-                t += 0.01;
-                if (t > 1.0) t = 0.0;
-                
-                p.position[2] = 400 + 10 * Math.sin(t*Math.PI*2.0);
-                p2.position[2] = 400 + 10 * Math.sin(t*Math.PI*2.0);
-            });
+                if (typeof p.dt === 'undefined') p.dt = 0.0;
+                p.dt += 0.01;
+                if (p.dt > 1.0) p.dt = 0.0;
+                p.position[2] = 400 + 10 * Math.sin(p.dt*Math.PI*2.0);
+            `;
+            
+            const baseConfig = {
+                preUpdateEvalString,   
+                position: [2.120597930315031, 0.5451624300822016, 400],
+                scale: [15, 15, 15],
+                positions: [1,0,1.5, 0,1,1.5, -1,0,1.5, 0,-1,1.5, 0, 0, 0],
+                indices: [0, 1, 1, 2, 2, 3, 3, 0, 0, 4, 1, 4, 2, 4, 3, 4],
+                renderState: XE.Obj.CustomPrimitive.getRenderState(true, true),  
+            };
+
+            const config1 = {
+                indices: [0, 1, 4, 1, 2, 4, 2, 3, 4, 3, 0, 4],
+                color: [0.5, 0.8, 1, 0.5],
+            }
+
+            const config2 = {
+                indices: [0, 1, 1, 2, 2, 3, 3, 0, 0, 4, 1, 4, 2, 4, 3, 4],
+                primitiveType: Cesium.PrimitiveType.LINES,
+                color: [1.0, 1.0, 0.0, 5],
+            }
+
+            var p = new XE.Obj.CustomPrimitive(earth);
+            p.xbsjFromJSON(Object.assign({}, baseConfig, config1));
+
+            var p2 = new XE.Obj.CustomPrimitive(earth);
+            p2.xbsjFromJSON(Object.assign({}, baseConfig, config2));
 
             return p;       
         }
