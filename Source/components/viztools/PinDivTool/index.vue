@@ -129,7 +129,7 @@ export default {
         show: true,
         position: [0, 0, 0],
         pinBuilder: {},
-        winPos: [0, 0],
+        winPos: [0, 0, 0, 0],
         attachedPathGuid: ""
       },
       pinstyletype: true,
