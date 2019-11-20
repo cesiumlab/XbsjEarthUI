@@ -817,19 +817,16 @@
         }
 
         function createLabel2(earth) {
-            let p = new XE.Obj.Pin(earth);
-            p.position = [2.1204918655649285,0.5452743468087804,209.94294540636682];
-            p.show = false;
-
+            const evalString = `
             function createLabelCanvas(p) {
                 const labelDiv = document.createElement('div');
-                labelDiv.style = `
+                labelDiv.style = \`
                     // background: grey;
                     width: 300px;
                     height: 200px;
                     position: absolute;
                     pointer-events: none;
-                `;
+                \`;
                 p._earth.czm.viewer.container.appendChild(labelDiv);
                 p._labelDiv = labelDiv;
                 // p.disposers是一堆会调用函数的数组，会在对象销毁时按照后进先出的顺序调用。
@@ -841,10 +838,10 @@
                 });
 
                 const labelCanvas = document.createElement('canvas');
-                labelCanvas.style = `
+                labelCanvas.style = \`
                     width: 100%;
                     height: 100%;
-                `;
+                \`;
 
                 labelCanvas.width = 300;
                 labelCanvas.height = 200;
@@ -885,7 +882,7 @@
             let d = 0;
             let c = 0;
             p._dDraw(c);
-            earth.czm.scene.preUpdate.addEventListener(() => {
+            const preUpdateListener = earth.czm.scene.preUpdate.addEventListener(() => {
                 if (d !== c) {
                     c += (d - c) * 0.1;
                     if (Math.abs(c - d) < 0.1) {
@@ -894,13 +891,14 @@
                     p._dDraw(c);
                 }
             });
+            p.disposers.push(() => preUpdateListener && preUpdateListener());
 
-            const container = earth.czm.viewer.container;
-
-            XE.MVVM.watch(() => [...p.winPos], winPos => {
-                // console.log(`winPos: ${winPos.toString()}`);
-                labelDiv.style.left = `${winPos[0]}px`;
-                labelDiv.style.bottom = `${winPos[3]}px`;
+            const container = p._earth.czm.viewer.container;
+            const unwatch = XE.MVVM.watch(() => [...p.winPos], winPos => {
+                if (p._labelDiv) {
+                    p._labelDiv.style.left = \`\${winPos[0]}px\`;
+                    p._labelDiv.style.bottom = \`\${winPos[3]}px\`;
+                }
 
                 // winPos 为一个包含4个元素的数组，分别代表 [left, top, right, bottom]
                 if (winPos[0] > container.offsetWidth * 0.3 && winPos[0] < container.offsetWidth * 0.7 &&
@@ -910,6 +908,21 @@
                     d = 0.0;
                 }
             });
+            p.disposers.push(() => { unwatch && unwatch(); });
+            `;
+
+            // let p = new XE.Obj.Pin(earth);
+            // p.position = [2.1204918655649285,0.5452743468087804,209.94294540636682];
+            // p.show = false;
+            // p.evalString = evalString;
+
+            const p = new XE.Obj.Pin(earth);
+            const config = {
+                position: [2.1204918655649285,0.5452743468087804,209.94294540636682],
+                show: false,
+                evalString: evalString,
+            };
+            p.xbsjFromJSON(config);
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
