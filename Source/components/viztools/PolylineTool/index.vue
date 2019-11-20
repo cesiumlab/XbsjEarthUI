@@ -660,25 +660,21 @@ export default {
       this.materialName = c.name;
       this.materialType = c.type;
       if (c.type === "XbsjColorMaterial") {
-        this.polyline.width = 2;
         this.colorMaterialBox = true;
         this.dashMaterialBox = false;
         this.arrowMaterialBox = false;
         this.oDLineMaterialBox = false;
       } else if (c.type === "XbsjPolylineDashMaterial") {
-        this.polyline.width = 6;
         this.colorMaterialBox = false;
         this.dashMaterialBox = true;
         this.arrowMaterialBox = false;
         this.oDLineMaterialBox = false;
       } else if (c.type === "XbsjPolylineArrowMaterial") {
-        this.polyline.width = 20;
         this.colorMaterialBox = false;
         this.dashMaterialBox = false;
         this.arrowMaterialBox = true;
         this.oDLineMaterialBox = false;
       } else {
-        this.polyline.width = 2;
         this.colorMaterialBox = false;
         this.dashMaterialBox = false;
         this.arrowMaterialBox = false;

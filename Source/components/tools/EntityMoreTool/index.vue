@@ -181,7 +181,7 @@ export default {
     SolidLine() {
       var Polyline = new XE.Obj.Polyline(this.$root.$earth);
       Polyline.name = "实线";
-      Polyline.positionPicking = true;
+      Polyline.allowPicking = true;
       Polyline.isCreating = true;
       Polyline.creating = true;
       this.$root.$earthUI.showPropertyWindow(Polyline);
@@ -191,7 +191,7 @@ export default {
       var Polyline = new XE.Obj.Polyline(this.$root.$earth);
       Polyline.name = "虚线";
       Polyline.material.type = "XbsjPolylineDashMaterial";
-      Polyline.positionPicking = true;
+      Polyline.allowPicking = true;
       Polyline.isCreating = true;
       Polyline.creating = true;
       this.$root.$earthUI.showPropertyWindow(Polyline);
@@ -201,7 +201,7 @@ export default {
       var Polyline = new XE.Obj.Polyline(this.$root.$earth);
       Polyline.name = "箭头线";
       Polyline.material.type = "XbsjPolylineArrowMaterial";
-      Polyline.positionPicking = true;
+      Polyline.allowPicking = true;
       Polyline.isCreating = true;
       Polyline.creating = true;
       this.$root.$earthUI.showPropertyWindow(Polyline);
@@ -211,7 +211,7 @@ export default {
       var Polyline = new XE.Obj.Polyline(this.$root.$earth);
       Polyline.name = "OD线";
       Polyline.material.type = "XbsjODLineMaterial";
-      Polyline.positionPicking = true;
+      Polyline.allowPicking = true;
       Polyline.isCreating = true;
       Polyline.creating = true;
       this.$root.$earthUI.showPropertyWindow(Polyline);

@@ -353,7 +353,7 @@ export default {
     // polylinebtn() {
     //   var Polyline = new XE.Obj.Polyline(this.$root.$earth);
     //   Polyline.name = "折线";
-    //   Polyline.positionPicking = true;
+    //   Polyline.allowPicking = true;
     //   Polyline.isCreating = true;
     //   Polyline.creating = true;
     //   this.$root.$earthUI.showPropertyWindow(Polyline);
