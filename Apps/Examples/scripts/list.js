@@ -423,6 +423,27 @@ vueApp.examples = [
         ]
     },
     {
+        "title": "内部测试",
+        "list": [
+            {
+                "title": "模型-环境贴图",
+                "url": "./earth-model-envirement.html"
+            },
+            {
+                "title": "3dtiles环境贴图",
+                "url": "./earth-tileset-envirements.html"
+            },
+            {
+                "title": "环绕地球",
+                "url": "./test-earthRotating.html"
+            },
+            {
+                "title": "多选-框选&任意选择",
+                "url": "./test-polygonPicking.html"
+            }
+        ]
+    },
+    {
         "title": "EarthUI示例",
         "list": [
             {
@@ -525,19 +546,6 @@ vueApp.examples = [
             {
                 "title": "3dtiles数据加载",
                 "url": "./startup-tileset.html"
-            }
-        ]
-    },
-    {
-        "title": "内部测试",
-        "list": [
-            {
-                "title": "环绕地球",
-                "url": "./test-earthRotating.html"
-            },
-            {
-                "title": "多选-框选&任意选择",
-                "url": "./test-polygonPicking.html"
             }
         ]
     }
