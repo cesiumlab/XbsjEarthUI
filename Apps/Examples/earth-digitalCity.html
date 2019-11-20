@@ -808,6 +808,7 @@
             ctx.fillStyle = 'rgb(255, 255, 0)';
             ctx.fillText('西部世界总部基地', 110, 90);
 
+            // p.winPos 为一个含有4个元素的数组，分别表示[left, top, right, bottom]
             XE.MVVM.watch(() => [...p.winPos], winPos => {
                 // console.log(`winPos: ${winPos.toString()}`);
                 labelDiv.style.left = `${winPos[0]}px`;
@@ -820,59 +821,77 @@
             p.position = [2.1204918655649285,0.5452743468087804,209.94294540636682];
             p.show = false;
 
-            const labelDiv = document.createElement('div');
-            labelDiv.style = `
-                // background: grey;
-                width: 300px;
-                height: 200px;
-                position: absolute;
-                pointer-events: none;
-            `;
-            earth.czm.viewer.container.appendChild(labelDiv);
+            function createLabelCanvas(p) {
+                const labelDiv = document.createElement('div');
+                labelDiv.style = `
+                    // background: grey;
+                    width: 300px;
+                    height: 200px;
+                    position: absolute;
+                    pointer-events: none;
+                `;
+                p._earth.czm.viewer.container.appendChild(labelDiv);
+                p._labelDiv = labelDiv;
+                // p.disposers是一堆会调用函数的数组，会在对象销毁时按照后进先出的顺序调用。
+                p.disposers.push(() => {
+                    if (p._labelDiv) {
+                        p._earth.czm.viewer.container.removeChild(p._labelDiv);
+                        p._labelDiv = undefined;
+                    }
+                });
 
-            const labelCanvas = document.createElement('canvas');
-            labelCanvas.style = `
-                width: 100%;
-                height: 100%;
-            `;
+                const labelCanvas = document.createElement('canvas');
+                labelCanvas.style = `
+                    width: 100%;
+                    height: 100%;
+                `;
 
-            labelCanvas.width = 300;
-            labelCanvas.height = 200;
-            labelDiv.appendChild(labelCanvas);
+                labelCanvas.width = 300;
+                labelCanvas.height = 200;
+                labelDiv.appendChild(labelCanvas);
 
-            const ctx = labelCanvas.getContext('2d');
-
-            function draw(w) {
-                ctx.clearRect(0, 0, 300, 200);
-
-                ctx.save();
-                ctx.beginPath();
-                ctx.rect((w-1)*300, 0, 300, 200);
-                ctx.clip();
-
-                ctx.strokeStyle = 'rgb(255, 255, 0)';
-                ctx.beginPath();
-                ctx.lineTo(0, 200);
-                ctx.lineTo(100, 100);
-                ctx.lineTo(250, 100);
-                ctx.stroke();
-                ctx.font = "16px console";
-                // ctx.textBaseline = "middle";
-                ctx.fillStyle = 'rgb(255, 255, 0)';
-                ctx.fillText('西部世界总部基地', 110, 90);
-                ctx.restore();
+                return labelCanvas;
             }
+
+            function createDrawFunc(p) {
+                const labelCanvas = createLabelCanvas(p);
+                const ctx = labelCanvas.getContext('2d');
+                function draw(w) {
+                    ctx.clearRect(0, 0, 300, 200);
+
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.rect((w-1)*300, 0, 300, 200);
+                    ctx.clip();
+
+                    ctx.strokeStyle = 'rgb(255, 255, 0)';
+                    ctx.beginPath();
+                    ctx.lineTo(0, 200);
+                    ctx.lineTo(100, 100);
+                    ctx.lineTo(250, 100);
+                    ctx.stroke();
+                    ctx.font = "16px console";
+                    // ctx.textBaseline = "middle";
+                    ctx.fillStyle = 'rgb(255, 255, 0)';
+                    ctx.fillText('西部世界总部基地', 110, 90);
+                    ctx.restore();
+                }
+
+                p._dDraw = draw;
+            }
+
+            createDrawFunc(p);
 
             let d = 0;
             let c = 0;
-            draw(c);
+            p._dDraw(c);
             earth.czm.scene.preUpdate.addEventListener(() => {
                 if (d !== c) {
                     c += (d - c) * 0.1;
                     if (Math.abs(c - d) < 0.1) {
                         c = d;
                     }
-                    draw(c);
+                    p._dDraw(c);
                 }
             });
 
