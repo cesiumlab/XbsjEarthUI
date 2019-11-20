@@ -589,27 +589,20 @@
         }
 
         function createGroundCircle(earth) {
-            var p = new XE.Obj.CustomGroundRectangle(earth)
-            p.position = [2.1208980215153845, 0.5450726579947579, 41.369588015024185];
-            p.width = 1000;
-            p.height= 1000;
-            p.canvasWidth = 512;
-            p.canvasHeight = 512;
-            p.color = [0.5, 0.8, 1, 2];
+            const evalString = `
+                Cesium.Resource.createIfNeeded('./images/circle.png').fetchImage().then(function(image) {
+                    console.log('image loaded!');
+                    p._ctx_image = image;
+                });
+            `;
 
-            let ctx_image = undefined;
-            Cesium.Resource.createIfNeeded('./images/circle.png').fetchImage().then(function(image) {
-                console.log('image loaded!');
-                ctx_image = image;
-            });
-
-            let angle = 0.0;
-            earth.czm.scene.preUpdate.addEventListener(() => {
-                angle -= 1.0;
-                if (angle > 360.0) {
-                    angle = 0.0;
+            const preUpdateEvalString = `
+                if (typeof p.dAngle === 'undefined') p.dAngle = 360.0;
+                p.dAngle -= 1.0;
+                if (p.dAngle < 0.0) {
+                    p.dAngle = 360.0;
                 }
-                const rotation = angle / 180.0 * Math.PI;
+                const rotation = p.dAngle / 180.0 * Math.PI;
 
                 p.drawCanvas(ctx => {
                     ctx.clearRect(0, 0, 512, 512);
@@ -621,16 +614,29 @@
                     ctx.arc(256, 256, 250, 0, Math.PI*2, true);
                     ctx.stroke();
 
-                    if (ctx_image) {
+                    if (p._ctx_image) {
                         ctx.save();
                         ctx.translate(256, 256);
                         ctx.rotate(rotation);
                         ctx.translate(-256, -256);
-                        ctx.drawImage(ctx_image, 0, 0);
+                        ctx.drawImage(p._ctx_image, 0, 0);
                         ctx.restore();
                     }
                 });
-            });
+            `;
+
+            const config = {
+                evalString,
+                preUpdateEvalString,
+                position: [2.1208980215153845, 0.5450726579947579, 41.369588015024185],
+                width: 1000,
+                height: 1000,
+                canvasWidth: 512,
+                canvasHeight: 512,
+                color: [0.5, 0.8, 1, 2],
+            };
+            const p = new XE.Obj.CustomGroundRectangle(earth);
+            p.xbsjFromJSON(config);
 
             return p;
         }
