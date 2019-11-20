@@ -739,6 +739,13 @@
 
             var positionsCollection = p.map(e => {
                 const toDegree = 180.0 / Math.PI;
+                // Cesium.xbsjCreateTransmitPolyline 根据 首末端点生成弧线，
+                // 参数有：
+                // startPosition, 端点1
+                // endPosition, 端点2
+                // minDistance, 计算出的线段的最小间隔距离
+                // heightRatio=1.0 弧线高度抬升程度，值越大，抬高得越明显
+                // 返回值是cartesian类型的坐标数组
                 const cartesians = Cesium.xbsjCreateTransmitPolyline(e[0], e[1], 50.0, 5.0);
                 const poss = cartesians.map(ee => {
                     const carto = Cesium.Cartographic.fromCartesian(ee);
