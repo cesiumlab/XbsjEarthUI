@@ -238,7 +238,13 @@ export default {
       treeItem._inner.sn.expand = !treeItem.expand;
     },
     toggleChecked (treeItem, checked) {
-      treeItem._inner.sn.enabled = checked;
+      if (treeItem._inner.sn instanceof XE.SceneTree.Group) {
+        treeItem._inner.sn.setAllChildrenEnabled(checked);
+      } else if (treeItem._inner.sn instanceof XE.SceneTree.Leaf) {
+        treeItem._inner.sn.enabled = checked;
+      } else {
+        console.error('toggleChecked got error!');
+      }
     },
     popContextMenu ({ item, vueObject }) {
       //右键之后设置当前node
