@@ -22,8 +22,10 @@ const zh = {
     fillColor: '图标背景',
     outlineColor: '边框/文字',
     pinstyle: '图标',
-    exttext: '文本内容',
-    exttextfont: '字体样式'
+    exttext: '扩展文本',
+    exttextfont: '字体样式',
+    lroffset: '左右偏移',
+    tboffset: '上下偏移'
   },
   weizhi: "位置",
   eidtbtn: "编辑按钮",
@@ -55,7 +57,9 @@ const en = {
     outlineColor: 'OutlineColor',
     pinstyle: 'Pinstyle',
     exttext: 'extText',
-    exttextfont: 'extTextFont'
+    exttextfont: 'extTextFont',
+    lroffset: 'lroffset',
+    tboffset: 'tboffset'
   },
   weizhi: "weizhi",
   eidtbtn: "eidt btn",

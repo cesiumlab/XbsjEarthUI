@@ -55,7 +55,7 @@
                         <span><input type="range" min="1" max="100" step="1" v-model.number="size"></span><br/>
                         <span>pin填充颜色：</span><input class="colorbox" type="color" value="#ffffff" @input=colorchangeinner(event)><br/>
                         <span>pin边框和文字颜色：</span><input class="colorbox" type="color" value="#007F00" @input=colorchangeouter(event)><br/>
-                        <span>pin文本内容: </span><input style="width: 204px;" class='text' type="text" v-model="extText"><br/>
+                        <span>pin扩展文本: </span><input style="width: 204px;" class='text' type="text" v-model="extText"><br/>
                         <span>pin文本内容字体样式: </span><input style="width: 108px;" class='text' type="text" v-model="extTextFont"><br/>
                         <span>pin文本内容左右偏移: </span><input style="width: 108px;" class='text' type="number" v-model.number="extTextPixelOffset[0]"><br/>
                         <span>pin文本内容上下偏移: </span><input style="width: 108px;" class='text' type="number" v-model.number="extTextPixelOffset[1]"><br/>

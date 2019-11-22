@@ -140,12 +140,12 @@
       <div class="flatten" style="display:flex;">
         <!-- 左右偏移 -->
         <div>
-          <label>{{lang.pinBuilder.exttext}}</label>
+          <label>{{lang.pinBuilder.lroffset}}</label>
           <XbsjInputNumber v-model="extTextPixelOffset[0]"></XbsjInputNumber>
         </div>
         <!-- 上下偏移 -->
         <div>
-          <label>{{lang.pinBuilder.exttextfont}}</label>
+          <label>{{lang.pinBuilder.tboffset}}</label>
           <XbsjInputNumber v-model="extTextPixelOffset[1]"></XbsjInputNumber>
         </div>
       </div>
