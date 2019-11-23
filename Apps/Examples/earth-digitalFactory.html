@@ -169,19 +169,10 @@
             ];
             const [localPositions, center] = XE.Obj.CustomPrimitive.Geometry.getLocalPositions(positions);
 
-            let p = new XE.Obj.CustomPrimitive(earth)
-            p.position = center;
-            p.positions = [...localPositions];
-            p.sts = [0.0, 0.0, 0.5, 0.0, 1.0, 0.0, 0.0, 1.0, 0.5, 1.0, 1.0, 1.0];
-            p.indices = [0, 1, 4, 0, 4, 3, 1, 2, 5, 1, 5, 4];
-            p.color = [0.5, 0.8, 1.0, 1.0];
+            const renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+            renderState.cull.enabled = false;
 
-            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-            p.renderState.cull.enabled = false;
-
-            p.canvasWidth = 1;
-
-            let vtxfFragmentShader =
+            const fragmentShaderSource =
             `
             varying vec3 v_positionEC;
             varying vec3 v_normalEC;
@@ -197,7 +188,19 @@
             }
             `;
 
-            p.fragmentShaderSource = vtxfFragmentShader;
+            const config = {
+                position: center,
+                positions: [...localPositions],
+                sts: [0.0, 0.0, 0.5, 0.0, 1.0, 0.0, 0.0, 1.0, 0.5, 1.0, 1.0, 1.0],
+                indices: [0, 1, 4, 0, 4, 3, 1, 2, 5, 1, 5, 4],
+                color: [0.5, 0.8, 1.0, 1.0],
+                renderState,
+                canvasWidth: 1,
+                fragmentShaderSource,
+            };
+
+            const p = new XE.Obj.CustomPrimitive(earth);
+            p.xbsjFromJSON(config);
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
