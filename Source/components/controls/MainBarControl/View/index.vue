@@ -40,7 +40,7 @@
 
         <!-- Symbol标绘 -->
         <div class="xbsj-item-btnbox" @click="SymbolShow=!SymbolShow" v-show="show">
-          <div class="xbsj-item-btn scenebutton" :class="{highlight: SymbolShow}"></div>
+          <div class="xbsj-item-btn symbolbutton" :class="{highlight: SymbolShow}"></div>
           <span class="xbsj-item-name">{{lang.symbol}}</span>
         </div>
         <!--
@@ -396,6 +396,17 @@ export default {
 .scenebutton.highlight,
 .scenebutton:hover {
   background: url(../../../../images/scene_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.symbolbutton {
+  background: url(../../../../images/symbol.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.symbolbutton.highlight,
+.symbolbutton:hover {
+  background: url(../../../../images/symbol_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }

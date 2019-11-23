@@ -37,7 +37,7 @@
               @contextmenu.prevent="symbolsContextMenu(symbol, $event)"
             >
               <div class="backimg">
-                <img :src="symbol.image" class="itemimg" />
+                <img :src="symbol.thumbnail" class="itemimg" />
               </div>
               <div style="line-height:1;">
                 <span>{{symbol.name}}</span>
@@ -88,7 +88,7 @@ export default {
   },
   created () { },
   mounted () {
-    this.initSymbol()
+    // this.initSymbol()
   },
   methods: {
     symbolsContextMenu (item, vueObject) {
@@ -321,7 +321,7 @@ export default {
       this.updateSymbolGroup()
     },
     createGroundImage (symbol) {
-      if (this.symbol) { // 新创建的，没确定之前，又选择了其他图标
+      if (this.symbol && this.symbol.isCreating) { // 新创建的，没确定之前，又选择了其他图标
         this.symbol.destroy()
       }
       if (symbol.type === 'GroundImage') {
@@ -417,6 +417,13 @@ export default {
           });
       } else {
         this.symbols = []
+      }
+    }
+  },
+  watch: {
+    show (val) {
+      if (val) {
+        this.initSymbol()
       }
     }
   }

@@ -160,6 +160,16 @@ module.exports = {
         port: 9530,
         host: '0.0.0.0',
         hot: true,
+        proxy: {
+            '/api': {
+                target: 'http://localhost:8070/api',
+                changeOrigin: true,
+                ws: true,
+                pathRewrite: {
+                    '^/api': ''
+                }
+            }
+        }
     }
 }
 
@@ -192,7 +202,7 @@ module.exports.plugins = (module.exports.plugins || []).concat([
             from: 'Static/assets',
             to: 'XbsjEarthUI/assets',
             toType: 'dir'
-        }, 
+        },
         {
             from: 'Apps',
             to: 'Apps',
@@ -201,7 +211,7 @@ module.exports.plugins = (module.exports.plugins || []).concat([
                 if (!path.endsWith('.html')) {
                     return content;
                 }
-    
+
                 var cs = content.toString('utf8');
                 if (process.env.NODE_ENV === 'xbsjDebug') {
                     // cs = cs.replace(/\/\/xbsjDebug\b/g, '');
