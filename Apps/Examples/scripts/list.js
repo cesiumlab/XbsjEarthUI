@@ -88,6 +88,10 @@ vueApp.examples = [
                 "url": "./earth-customPrimitive-svg.html"
             },
             {
+                "title": "自定义图元-tube",
+                "url": "./earth-customPrimitive-tube.html"
+            },
+            {
                 "title": "圆柱体集群",
                 "url": "./earth-cylinders.html"
             },

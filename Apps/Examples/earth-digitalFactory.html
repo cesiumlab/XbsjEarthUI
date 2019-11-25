@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="xbsj-labels" content="Earth案例"></meta>
+    <meta name="xbsj-labels" content="Earth案例">
+    </meta>
     <title>数字工厂</title>
     <!-- 0 引入js文件 -->
     <script src="https://cdn.bootcss.com/three.js/r83/three.js"></script>
@@ -157,9 +158,6 @@
             earth.camera.rotation = [3.972507149093452, -0.5205829134298061, 6.28037637077842];
 
             createDynamicWall();
-            //debugger;
-            createTube();
-            //debugger;
         }
 
         function createDynamicWall() {
@@ -169,7 +167,7 @@
                 [2.0312082890850296, 0.6964532955295221, 0.0],
                 [2.0315193182543485, 0.6963069713474035, 50.0],
                 [2.031208054060137, 0.6963058641803516, 50.0],
-                [2.0312082890850296, 0.6964532955295221, 50.0],                
+                [2.0312082890850296, 0.6964532955295221, 50.0],
             ];
             const [localPositions, center] = XE.Obj.CustomPrimitive.Geometry.getLocalPositions(positions);
 
@@ -177,7 +175,7 @@
             renderState.cull.enabled = false;
 
             const fragmentShaderSource =
-            `
+                `
             varying vec3 v_positionEC;
             varying vec3 v_normalEC;
             varying vec2 v_st;
@@ -201,110 +199,6 @@
                 renderState,
                 canvasWidth: 1,
                 fragmentShaderSource,
-            };
-
-            const p = new XE.Obj.CustomPrimitive(earth);
-            p.xbsjFromJSON(config);
-        }
-
-        function createTube() {
-            let path;
-            let center;
-
-            {
-                const positions = [
-                    [2.0315193182543485, 0.6963069713474035, 50.0],
-                    [2.031208054060137, 0.6963058641803516, 50.0],
-                    [2.0312082890850296, 0.6964532955295221, 50.0],              
-                ];
-                const [localPositions, centerL] = XE.Obj.CustomPrimitive.Geometry.getLocalPositions(positions);
-                center = centerL;
-
-                const ll = localPositions.length / 3 | 0;
-                const vectors = [];
-                for (let i=0; i<ll; ++i) {
-                    vectors.push(new THREE.Vector3(localPositions[i*3+0], localPositions[i*3+1], localPositions[i*3+2]));
-                }
-                path = new THREE.CatmullRomCurve3(vectors);
-            }
-
-            // 借助THREE来
-            var geometry = new THREE.TubeGeometry(path, 50, 4, 18, false);
-
-            var positions = geometry.faces.flatMap(e => {
-                const va = geometry.vertices[e.a];
-                const vb = geometry.vertices[e.b];
-                const vc = geometry.vertices[e.c];
-                return [va.x, va.y, va.z, vb.x, vb.y, vb.z, vc.x, vc.y, vc.z];
-            });
-
-            var sts = geometry.faceVertexUvs[0].flatMap(e => {
-                return [e[0].x, e[0].y, e[1].x, e[1].y, e[2].x, e[2].y];
-            });
-
-            var normals = geometry.faces.flatMap(e => {
-                const va = e.vertexNormals[0];
-                const vb = e.vertexNormals[1];
-                const vc = e.vertexNormals[2];
-                return [va.x, va.y, va.z, vb.x, vb.y, vb.z, vc.x, vc.y, vc.z];
-            });
-          
-            var indices = [];
-            {
-                const fl = geometry.faces.length;
-                for (let i=0; i<fl; ++i) {
-                    indices.push(i*3+0, i*3+1, i*3+2);
-                    // 如果画线的话，就再重复一次
-                    // indices.push(i*3+0, i*3+1, i*3+2);
-                }
-            }
-            const renderState = XE.Obj.CustomPrimitive.getRenderState(true, false);
-
-            const fragmentShaderSource =
-            `
-            varying vec3 v_positionEC;
-            varying vec3 v_normalEC;
-            varying vec2 v_st;
-            varying vec4 v_color;
-            uniform sampler2D u_image;
-            uniform vec4 u_color;
-            uniform vec4 u_customParams;
-            void main()
-            {
-                float time = czm_frameNumber / 30.0;
-                float s = fract(u_customParams.x * time + v_st.s);
-                float t = fract(u_customParams.y * time + v_st.t);
-                // gl_FragColor = vec4(s, t, 0.0, 0.9);
-                vec4 imageColor = texture2D(u_image, vec2(s, t));
-                gl_FragColor = imageColor;
-
-                // gl_FragColor = vec4(v_st, 0.0, 1.0);
-            }
-            `;
-
-            const evalString = `
-                Cesium.Resource.createIfNeeded('./images/ht/meteor_01.png').fetchImage().then(function(image) {
-                    p.canvasWidth = image.width;
-                    p.canvasHeight = image.height;
-                    p.drawCanvas(ctx => {
-                        ctx.clearRect(0, 0, p.canvasWidth, p.canvasHeight);
-                        ctx.drawImage(image, 0, 0);
-                    });
-                });      
-            `;       
-
-            const config = {
-                position: center,
-                positions,
-                sts,
-                indices,
-                color: [0.5, 0.8, 1.0, 1.0],
-                customParams: [1.0, 1.0, 1.0, 1.0],
-                renderState,
-                // primitiveType: WebGL2RenderingContext.LINES,
-                fragmentShaderSource,
-                pass: Cesium.Pass.TRANSLUCENT,
-                evalString,
             };
 
             const p = new XE.Obj.CustomPrimitive(earth);
