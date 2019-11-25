@@ -211,35 +211,6 @@
             let path;
             let center;
 
-            // {
-            //     function CustomSinCurve(scale) {
-            //         THREE.Curve.call(this);
-            //         this.scale = (scale === undefined) ? 1 : scale;
-            //     }
-
-            //     CustomSinCurve.prototype = Object.create(THREE.Curve.prototype);
-            //     CustomSinCurve.prototype.constructor = CustomSinCurve;
-
-            //     CustomSinCurve.prototype.getPoint = function (t) {
-            //         var tx = t * 3 - 1.5;
-            //         var ty = Math.sin(2 * Math.PI * t);
-            //         var tz = 0;
-            //         return new THREE.Vector3(tx, ty, tz).multiplyScalar(this.scale);
-            //     };
-
-            //     path = new CustomSinCurve(10);
-            // }
-
-            // {
-            //     path = new THREE.CatmullRomCurve3( [
-            //         new THREE.Vector3( -10, 0, 10 ),
-            //         new THREE.Vector3( -5, 5, 5 ),
-            //         new THREE.Vector3( 0, 0, 0 ),
-            //         new THREE.Vector3( 5, -5, 5 ),
-            //         new THREE.Vector3( 10, 0, 10 )
-            //     ]);
-            // }
-
             {
                 const positions = [
                     [2.0315193182543485, 0.6963069713474035, 50.0],
@@ -254,20 +225,11 @@
                 for (let i=0; i<ll; ++i) {
                     vectors.push(new THREE.Vector3(localPositions[i*3+0], localPositions[i*3+1], localPositions[i*3+2]));
                 }
-
-                // path = new THREE.CatmullRomCurve3( [
-                //     new THREE.Vector3( -10, 0, 10 ),
-                //     new THREE.Vector3( -5, 5, 5 ),
-                //     new THREE.Vector3( 0, 0, 0 ),
-                //     new THREE.Vector3( 5, -5, 5 ),
-                //     new THREE.Vector3( 10, 0, 10 )
-                // ]);
                 path = new THREE.CatmullRomCurve3(vectors);
             }
 
             // 借助THREE来
             var geometry = new THREE.TubeGeometry(path, 50, 4, 18, false);
-            // console.log(geometry);
 
             var positions = geometry.faces.flatMap(e => {
                 const va = geometry.vertices[e.a];
@@ -286,21 +248,17 @@
                 const vc = e.vertexNormals[2];
                 return [va.x, va.y, va.z, vb.x, vb.y, vb.z, vc.x, vc.y, vc.z];
             });
-
-            // var indices = [...new Array(geometry.faces.length).keys()];
-            
+          
             var indices = [];
             {
                 const fl = geometry.faces.length;
                 for (let i=0; i<fl; ++i) {
                     indices.push(i*3+0, i*3+1, i*3+2);
-                    indices.push(i*3+0, i*3+1, i*3+2);
+                    // 如果画线的话，就再重复一次
+                    // indices.push(i*3+0, i*3+1, i*3+2);
                 }
             }
-
             const renderState = XE.Obj.CustomPrimitive.getRenderState(true, false);
-            // renderState.cull.enabled = false;
-            // renderState.depthMask = true;
 
             const fragmentShaderSource =
             `
@@ -340,12 +298,9 @@
                 positions,
                 sts,
                 indices,
-                // scale: [10.0, 10.0, 10.0],
                 color: [0.5, 0.8, 1.0, 1.0],
                 customParams: [1.0, 1.0, 1.0, 1.0],
                 renderState,
-                // canvasWidth: 1,
-                // fragmentShaderSource,
                 // primitiveType: WebGL2RenderingContext.LINES,
                 fragmentShaderSource,
                 pass: Cesium.Pass.TRANSLUCENT,
