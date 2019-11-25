@@ -242,9 +242,9 @@
 
             {
                 const positions = [
-                    [2.0315193182543485, 0.6963069713474035, 0.0],
-                    [2.031208054060137, 0.6963058641803516, 0.0],
-                    [2.0312082890850296, 0.6964532955295221, 0.0],              
+                    [2.0315193182543485, 0.6963069713474035, 50.0],
+                    [2.031208054060137, 0.6963058641803516, 50.0],
+                    [2.0312082890850296, 0.6964532955295221, 50.0],              
                 ];
                 const [localPositions, centerL] = XE.Obj.CustomPrimitive.Geometry.getLocalPositions(positions);
                 center = centerL;
@@ -298,8 +298,9 @@
                 }
             }
 
-            const renderState = XE.Obj.CustomPrimitive.getRenderState(false, true);
-            renderState.cull.enabled = false;
+            const renderState = XE.Obj.CustomPrimitive.getRenderState(true, false);
+            // renderState.cull.enabled = false;
+            // renderState.depthMask = true;
 
             const fragmentShaderSource =
             `
@@ -314,10 +315,25 @@
                 float time = czm_frameNumber / 30.0;
                 float s = fract(time + v_st.s);
                 float t = fract(time + v_st.t);
-                gl_FragColor = vec4(s, t, 0.0, 1.0);
+                // gl_FragColor = vec4(s, t, 0.0, 0.9);
+                vec4 imageColor = texture2D(u_image, vec2(s, t));
+                gl_FragColor = imageColor;
+
                 // gl_FragColor = vec4(v_st, 0.0, 1.0);
             }
             `;
+
+            // const evalString = `
+            //     p.canvasWidth = 32;
+            //     p.canvasHeight = 256;
+            //     Cesium.Resource.createIfNeeded('./images/city/particles.png').fetchImage().then(function(image) {
+            //         p.drawCanvas(ctx => {
+            //             ctx.clearRect(0, 0, 32, 256);
+            //             debugger;
+            //             ctx.drawImage(image, 0, 0);
+            //         });
+            //     });
+            // `;            
 
             const config = {
                 position: center,
@@ -331,10 +347,21 @@
                 // fragmentShaderSource,
                 // primitiveType: WebGL2RenderingContext.LINES,
                 fragmentShaderSource,
+                pass: Cesium.Pass.TRANSLUCENT,
+                // evalString,
             };
 
             const p = new XE.Obj.CustomPrimitive(earth);
             p.xbsjFromJSON(config);
+
+            p.canvasWidth = 256;
+            p.canvasHeight = 64;
+            Cesium.Resource.createIfNeeded('./images/ht/meteor_01.png').fetchImage().then(function(image) {
+                p.drawCanvas(ctx => {
+                    ctx.clearRect(0, 0, 256, 64);
+                    ctx.drawImage(image, 0, 0);
+                });
+            });            
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
