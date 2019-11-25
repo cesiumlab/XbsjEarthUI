@@ -199,6 +199,12 @@ module.exports.plugins = (module.exports.plugins || []).concat([
             toType: 'dir'
         },
         {
+            // from: 'Static/XbsjEarth-Plugins',
+            from: process.env.XBSJ_IMPORT !== 'external' ? './node_modules/earthsdk-custom-primitive/dist/XbsjEarth-Plugins/customPrimitive' : 'Static/XbsjEarth-Plugins/customPrimitive',
+            to: 'XbsjEarth-Plugins/customPrimitive',
+            toType: 'dir'
+        },
+        {
             from: 'Static/assets',
             to: 'XbsjEarthUI/assets',
             toType: 'dir'
