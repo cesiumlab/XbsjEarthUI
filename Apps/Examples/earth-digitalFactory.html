@@ -310,11 +310,12 @@
             varying vec4 v_color;
             uniform sampler2D u_image;
             uniform vec4 u_color;
+            uniform vec4 u_customParams;
             void main()
             {
                 float time = czm_frameNumber / 30.0;
-                float s = fract(time + v_st.s);
-                float t = fract(time + v_st.t);
+                float s = fract(u_customParams.x * time + v_st.s);
+                float t = fract(u_customParams.y * time + v_st.t);
                 // gl_FragColor = vec4(s, t, 0.0, 0.9);
                 vec4 imageColor = texture2D(u_image, vec2(s, t));
                 gl_FragColor = imageColor;
@@ -323,17 +324,16 @@
             }
             `;
 
-            // const evalString = `
-            //     p.canvasWidth = 32;
-            //     p.canvasHeight = 256;
-            //     Cesium.Resource.createIfNeeded('./images/city/particles.png').fetchImage().then(function(image) {
-            //         p.drawCanvas(ctx => {
-            //             ctx.clearRect(0, 0, 32, 256);
-            //             debugger;
-            //             ctx.drawImage(image, 0, 0);
-            //         });
-            //     });
-            // `;            
+            const evalString = `
+                Cesium.Resource.createIfNeeded('./images/ht/meteor_01.png').fetchImage().then(function(image) {
+                    p.canvasWidth = image.width;
+                    p.canvasHeight = image.height;
+                    p.drawCanvas(ctx => {
+                        ctx.clearRect(0, 0, p.canvasWidth, p.canvasHeight);
+                        ctx.drawImage(image, 0, 0);
+                    });
+                });      
+            `;       
 
             const config = {
                 position: center,
@@ -342,26 +342,18 @@
                 indices,
                 // scale: [10.0, 10.0, 10.0],
                 color: [0.5, 0.8, 1.0, 1.0],
+                customParams: [1.0, 1.0, 1.0, 1.0],
                 renderState,
                 // canvasWidth: 1,
                 // fragmentShaderSource,
                 // primitiveType: WebGL2RenderingContext.LINES,
                 fragmentShaderSource,
                 pass: Cesium.Pass.TRANSLUCENT,
-                // evalString,
+                evalString,
             };
 
             const p = new XE.Obj.CustomPrimitive(earth);
             p.xbsjFromJSON(config);
-
-            p.canvasWidth = 256;
-            p.canvasHeight = 64;
-            Cesium.Resource.createIfNeeded('./images/ht/meteor_01.png').fetchImage().then(function(image) {
-                p.drawCanvas(ctx => {
-                    ctx.clearRect(0, 0, 256, 64);
-                    ctx.drawImage(image, 0, 0);
-                });
-            });            
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
