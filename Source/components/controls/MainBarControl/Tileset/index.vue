@@ -234,7 +234,7 @@
 import languagejs from "./index_locale";
 
 export default {
-  props:["labServiceUI","cloudServiceUI"],
+  props: ["labServiceUI", "cloudServiceUI"],
   data() {
     return {
       showTip: "never",
@@ -681,7 +681,7 @@ export default {
   border: none;
   outline: none;
   position: absolute;
-  left: 11px;
+  left: 16px;
 }
 .righttopButton:disabled {
   background: url(../../../../images/view_disabled.png) no-repeat;
@@ -701,7 +701,7 @@ export default {
   outline: none;
   position: absolute;
   top: 38px;
-  left: -7px;
+  left: -2px;
 }
 .leftbottomButton:disabled {
   background: url(../../../../images/view_disabled.png) no-repeat;
@@ -721,7 +721,7 @@ export default {
   outline: none;
   position: absolute;
   top: 38px;
-  left: 11px;
+  left: 16px;
 }
 .rightbottomButton:disabled {
   background: url(../../../../images/view_disabled.png) no-repeat;

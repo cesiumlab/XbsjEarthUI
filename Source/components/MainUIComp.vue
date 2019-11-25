@@ -90,6 +90,7 @@ import GeoParallelSearch from "./viztools/GeoParallelSearch";
 import GeoTriFlag from "./viztools/GeoTriFlag";
 import GeoSector from "./viztools/GeoSector";
 import ScanlineTool from "./viztools/ScanlineTool";
+import CustomPrimitiveTool from "./viztools/CustomPrimitiveTool";
 
 import CamerVideoTool from "./viztools/CamerVideoTool";
 import ViewshedTool from "./viztools/ViewshedTool";
@@ -144,6 +145,7 @@ export default {
     GeoTriFlag,
     GeoSector,
     ScanlineTool,
+    CustomPrimitiveTool,
     CamerVideoTool,
     ViewshedTool,
 
@@ -182,6 +184,7 @@ export default {
         Pin: "PinPictureTool",
         Path: "PathTool",
         Scanline: "ScanlineTool",
+        CustomPrimitive: "CustomPrimitiveTool",
         Model: "ModelTool",
         Polyline: "PolylineTool",
         GeoCurveArrow: "GeoCurveArrow",
@@ -201,7 +204,7 @@ export default {
         GeoPolygon: "GeoPolygon",
         GeoSector: "GeoSector",
         ["CameraView.View"]: "CameraViewPrp",
-        GroundImage:"GroundImageTool",
+        GroundImage: "GroundImageTool"
       },
       tools: [
         {

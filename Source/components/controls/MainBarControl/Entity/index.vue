@@ -135,9 +135,15 @@
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{lang.animation}}</span>
+        <!-- 扫描线 -->
         <div class="xbsj-item-btnbox ml20" @click="scanLineBtn">
           <div class="xbsj-item-btn radarbutton"></div>
           <span class="xbsj-item-name">{{lang.Scanline}}</span>
+        </div>
+        <!-- 自定义图元 -->
+        <div class="xbsj-item-btnbox ml20" @click="customPrimitiveBtn">
+          <div class="xbsj-item-btn radarbutton"></div>
+          <span class="xbsj-item-name">{{lang.CustomPrimitive}}</span>
         </div>
         <!-- <div class="xbsj-item-btnbox ml20">
           <div class="xbsj-item-btn odbutton"></div>
@@ -367,6 +373,16 @@ export default {
       Scanline.playing = true;
       // console.log(Scanline);
       this.$root.$earthUI.showPropertyWindow(Scanline);
+    },
+    //打开自定义图元-动画
+    customPrimitiveBtn() {
+      var CustomPrimitive = new XE.Obj.CustomPrimitive(this.$root.$earth);
+      CustomPrimitive.name = "自定义图元";
+      // CustomPrimitive.creating = true;
+      CustomPrimitive.isCreating = true;
+      // CustomPrimitive.playing = true;
+      console.log(CustomPrimitive);
+      this.$root.$earthUI.showPropertyWindow(CustomPrimitive);
     },
     startMove(event) {
       //如果事件的目标不是本el 返回
