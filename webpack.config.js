@@ -193,14 +193,14 @@ module.exports.plugins = (module.exports.plugins || []).concat([
             toType: 'dir'
         },
         {
-            // from: 'Static/XbsjEarth-Plugins',
             from: process.env.XBSJ_IMPORT !== 'external' ? './node_modules/earthsdk-plotting-symbol/dist/XbsjEarth-Plugins/plottingSymbol' : 'Static/XbsjEarth-Plugins/plottingSymbol',
             to: 'XbsjEarth-Plugins/plottingSymbol',
             toType: 'dir'
         },
         {
-            // from: 'Static/XbsjEarth-Plugins',
-            from: process.env.XBSJ_IMPORT !== 'external' ? './node_modules/earthsdk-custom-primitive/dist/XbsjEarth-Plugins/customPrimitive' : 'Static/XbsjEarth-Plugins/customPrimitive',
+            // TODO(vtxf): 暂时不从node_modules读取
+            // from: process.env.XBSJ_IMPORT !== 'external' ? './node_modules/earthsdk-custom-primitive/dist/XbsjEarth-Plugins/customPrimitive' : 'Static/XbsjEarth-Plugins/customPrimitive',
+            from: 'Static/XbsjEarth-Plugins/customPrimitive',
             to: 'XbsjEarth-Plugins/customPrimitive',
             toType: 'dir'
         },
