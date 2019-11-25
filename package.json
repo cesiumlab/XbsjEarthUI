@@ -10,18 +10,23 @@
   ],
   "author": "xbsj",
   "scripts": {
+    "dev-comment": "使用node-modules中的xbsjCesium、xbsjEarth、标绘插件、自定义图元扩展插件进行调试",
     "dev": "cross-env NODE_ENV=development webpack-dev-server",
+    "dev2-comment": "使用static目录中的xbsjCesium、xbsjEarth、标绘插件、自定义图元扩展插件进行调试",
     "dev2": "cross-env NODE_ENV=development XBSJ_IMPORT=external webpack-dev-server",
-    "xbsjDebug": "cross-env NODE_ENV=xbsjDebug webpack-dev-server",
-    "xbsjDebug2": "cross-env NODE_ENV=xbsjDebug2 webpack-dev-server",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "build2": "cross-env NODE_ENV=production XBSJ_IMPORT=external webpack --progress --hide-modules && npm run postbuild",
     "postbuild": "npm run doc",
     "doc": "jsdoc --configure Tools/jsdoc/conf.json",
     "login": "npm adduser --registry http://registry.npmjs.org",
     "publish": "npm publish --registry http://registry.npmjs.org",
+    "gallery-comment": "如果示例发生变化，需要手动执行此命令，已重新生成示例列表",
+    "gallery": "node Tools/examples/gallery.js",
     "deprecate": "npm deprecate --registry http://registry.npmjs.org",
-    "gallery": "node Tools/examples/gallery.js"
+    "xbsjDebug-comment": "底层代码调试，只调试xbsjEarth，不调试cesium和xbsjCesium",
+    "xbsjDebug": "cross-env NODE_ENV=xbsjDebug webpack-dev-server",
+    "xbsjDebug2-comment": "底层代码调试，同时调试cesium、xbsjCesium和xbsjEarth",
+    "xbsjDebug2": "cross-env NODE_ENV=xbsjDebug2 webpack-dev-server"   
   },
   "dependencies": {
     "iview": "^3.1.3",
