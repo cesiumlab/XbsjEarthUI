@@ -404,12 +404,7 @@ class LabServer {
   addSymbol (symbol) {
     return new Promise((resolve, reject) => {
       axios
-        .post(this.server + "symbol", QS.stringify({
-          name: symbol.name,
-          type: symbol.type,
-          content: symbol.content,
-          image: symbol.image
-        }))
+        .post(this.server + "symbol", QS.stringify(symbol))
         .then(res => {
           if (res.status === 200) {
             resolve(res.data);
@@ -423,7 +418,7 @@ class LabServer {
     })
   }
 
-  
+
   /**
    * 修改符号
    * @param {String} id symbolId
@@ -432,10 +427,7 @@ class LabServer {
   updateSymbol (id, options) {
     return new Promise((resolve, reject) => {
       axios
-        .post(this.server + "symbol/" + id, QS.stringify({
-          name: options.name,
-          content: options.content
-        }))
+        .post(this.server + "symbol/" + id, QS.stringify(options))
         .then(res => {
           if (res.status === 200) {
             resolve(res.data);
@@ -475,18 +467,13 @@ class LabServer {
     });
   }
 
-  addToSymbolGroup (symbol) {
+  addToSymbolGroup (symbol, img) {
     var objJson = symbol.toJSON()
-    if(symbol.imageUrl){
-      objJson.image = symbol.imageUrl
-    }
-    else if (symbol.imageUrls.length > 0) {
-      objJson.image = symbol.imageUrls[0]
-    }
     delete objJson.xbsjGuid
     var content = JSON.stringify(objJson)
     var self = this
-    this.addSymbol({ name: objJson.name, type: objJson.xbsjType, content: content, image: objJson.image })
+
+    this.addSymbol({ name: objJson.name, type: objJson.xbsjType, content: content, thumbnail: img })
       .then(result => {
         if (result.status === 'ok') {
           self.symbolContent.symbols.push(result.id)

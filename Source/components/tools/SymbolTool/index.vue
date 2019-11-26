@@ -40,7 +40,22 @@
                 <img :src="symbol.thumbnail" class="itemimg" />
               </div>
               <div style="line-height:1;">
-                <span>{{symbol.name}}</span>
+                <span
+                  v-if="!symbolNameEditable[symbol._id]"
+                  style="white-space: nowrap;font-size: 14px;line-height: 30px;padding: 0 5px; user-select:none;"
+                  class="color-dddddd"
+                >{{symbol.name}}</span>
+                <XbsjInput
+                  v-else
+                  v-focus
+                  autofocus
+                  ref="symbolNameEditor"
+                  :value="symbol.name"
+                  @on-enter="$event => (symbolChange(symbol, {name: $event.target.value}), symbolNameEditable[symbol._id] = false)"
+                  placeholder="请输入..."
+                  style="width: 70px"
+                  @on-blur="$event => (symbolChange(symbol, {name: $event.target.value}), symbolNameEditable[symbol._id] = false)"
+                ></XbsjInput>
               </div>
             </li>
           </ul>
@@ -61,6 +76,7 @@ export default {
       tree: [],
       symbols: [],
       currentSelectedTreeNode: null,
+      symbolNameEditable: {},
       langs: {
         zh: {
           title: "标绘库",
@@ -69,6 +85,7 @@ export default {
           addGroup: "添加文件夹",
           newGroup: "新的文件夹",
           rename: "重命名",
+          thumbnail: "更新缩略图",
           modify: "修改",
           delete: "删除"
         },
@@ -79,6 +96,7 @@ export default {
           addGroup: "Add Group",
           newGroup: "New Group",
           rename: "Rename",
+          thumbnail: "Update thumbnail",
           modify: "Modify",
           delete: "Delete"
         }
@@ -96,10 +114,25 @@ export default {
       var labServer = this.$root.$labServer;
       const baseItems = [
         {
-          text: this.lang.modify,
+          text: this.lang.rename,
           func: () => {
-            self.modifyingSymbol = item
-            self.modifyGroundImage(item)
+            self.symbolNameEditable[item._id] = true
+            self.$forceUpdate()
+            // self.modifyingSymbol = item
+            // self.modifyGroundImage(item)
+          }
+        },
+        {
+          text: this.lang.thumbnail,
+          func: () => {
+            self.$root.$earth
+              .capture(64, 64)
+              .then(img => {
+                self.symbolChange(item, { thumbnail: img })
+              })
+              .catch(err => {
+                console.log(err);
+              });
           }
         },
         {
@@ -324,10 +357,31 @@ export default {
       if (this.symbol && this.symbol.isCreating) { // 新创建的，没确定之前，又选择了其他图标
         this.symbol.destroy()
       }
-      if (symbol.type === 'GroundImage') {
-        this.symbol = new XE.Obj.GroundImage(this.$root.$earth);
-      } else {
-        this.symbol = new XE.Obj.Pin(this.$root.$earth);
+      switch (symbol.type) {
+        case 'GroundImage': this.symbol = new XE.Obj.GroundImage(this.$root.$earth); break;
+        case 'Pin': this.symbol = new XE.Obj.Pin(this.$root.$earth); break;
+        case 'GeoPin': this.symbol = new XE.Obj.Plots.GeoPin(this.$root.$earth); break;
+        case 'Path': this.symbol = new XE.Obj.Path(this.$root.$earth); break;
+        case 'GeoPolyline': this.symbol = new XE.Obj.Plots.GeoPolyline(this.$root.$earth); break;
+        case 'Polyline': this.symbol = new XE.Obj.Polyline(this.$root.$earth); break;
+        case 'GeoSectorSearch': this.symbol = new XE.Obj.Plots.GeoSectorSearch(this.$root.$earth); break;
+        case 'GeoPolylineArrow': this.symbol = new XE.Obj.Plots.GeoPolylineArrow(this.$root.$earth); break;
+        case 'GeoCurveArrow': this.symbol = new XE.Obj.Plots.GeoCurveArrow(this.$root.$earth); break;
+        case 'GeoArc': this.symbol = new XE.Obj.Plots.GeoArc(this.$root.$earth); break;
+        case 'GeoBezier2': this.symbol = new XE.Obj.Plots.GeoBezier2(this.$root.$earth); break;
+        case 'GeoBezier3': this.symbol = new XE.Obj.Plots.GeoBezier3(this.$root.$earth); break;
+        case 'GeoParallelSearch': this.symbol = new XE.Obj.Plots.GeoParallelSearch(this.$root.$earth); break;
+        case 'GeoCircle': this.symbol = new XE.Obj.Plots.GeoCircle(this.$root.$earth); break;
+        case 'GeoRectangle': this.symbol = new XE.Obj.Plots.GeoRectangle(this.$root.$earth); break;
+        case 'GeoTriFlag': this.symbol = new XE.Obj.Plots.GeoTriFlag(this.$root.$earth); break;
+        case 'GeoCurveFlag': this.symbol = new XE.Obj.Plots.GeoCurveFlag(this.$root.$earth); break;
+        case 'GeoRightAngleFlag': this.symbol = new XE.Obj.Plots.GeoRightAngleFlag(this.$root.$earth); break;
+        case 'GeoDoubleArrow': this.symbol = new XE.Obj.Plots.GeoDoubleArrow(this.$root.$earth); break;
+        case 'GeoPolygon': this.symbol = new XE.Obj.Plots.GeoPolygon(this.$root.$earth); break;
+        case 'GeoSector': this.symbol = new XE.Obj.Plots.GeoSector(this.$root.$earth); break;
+        case 'Scanline': this.symbol = new XE.Obj.Scanline(this.$root.$earth); break;
+        case 'Model': this.symbol = new XE.Obj.Model(this.$root.$earth); break;
+        default: return;
       }
       this.symbol.isCreating = true;
       this.symbol.creating = true;
@@ -335,27 +389,33 @@ export default {
       this.$root.$earthUI.showPropertyWindow(this.symbol);
       window.symbol = this.symbol
     },
-    modifyGroundImage (symbol) {
-      var groundImage = new XE.Obj.GroundImage(this.$root.$earth);
-      groundImage.creating = true
-      groundImage.xbsjFromJSON(JSON.parse(symbol.content));
-      groundImage.modifyEnd = this.modifyGroundImageEnd
-      this.$root.$earthUI.showPropertyWindow(groundImage);
+    symbolChange (item, options) {
+      var self = this
+      this.$root.$labServer.updateSymbol(item._id, options).then(res => {
+        self.itemClick({ item: self.currentSelectedTreeNode })
+      })
     },
-    modifyGroundImageEnd (ok, groundImage) { // 修改后点击 取消 或 确定 时触发
-      if (ok) {
-        var objJson = groundImage.toJSON()
-        if (groundImage.imageUrls.length > 0) {
-          objJson.image = groundImage.imageUrls[0]
-        }
-        delete objJson.xbsjGuid
-        this.modifyingSymbol.name = groundImage.name
-        this.modifyingSymbol.content = JSON.stringify(objJson)
-        this.$root.$labServer.updateSymbol(this.modifyingSymbol._id, this.modifyingSymbol)
-      }
-      this.modifyingSymbol = null
-      groundImage.destroy()
-    },
+    // modifyGroundImage (symbol) {
+    //   var groundImage = new XE.Obj.GroundImage(this.$root.$earth);
+    //   groundImage.creating = true
+    //   groundImage.xbsjFromJSON(JSON.parse(symbol.content));
+    //   groundImage.modifyEnd = this.modifyGroundImageEnd
+    //   this.$root.$earthUI.showPropertyWindow(groundImage);
+    // },
+    // modifyGroundImageEnd (item, groundImage) { // 修改后点击 取消 或 确定 时触发
+    //   if (ok) {
+    //     var objJson = groundImage.toJSON()
+    //     if (groundImage.imageUrls.length > 0) {
+    //       objJson.image = groundImage.imageUrls[0]
+    //     }
+    //     delete objJson.xbsjGuid
+    //     this.modifyingSymbol.name = groundImage.name
+    //     this.modifyingSymbol.content = JSON.stringify(objJson)
+    //     this.$root.$labServer.updateSymbol(this.modifyingSymbol._id, this.modifyingSymbol)
+    //   }
+    //   this.modifyingSymbol = null
+    //   groundImage.destroy()
+    // },
     initSymbol (id) {
       var labServer = this.$root.$labServer;
       var self = this
@@ -404,11 +464,11 @@ export default {
               self.symbols = result.symbols.rows
               // self.symbols.forEach((symbol) => {
               //   symbol.domType = "symbol"
-                // if (symbol.image.indexOf('data') !== 0) {
-                //   symbol.base64 = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(symbol.image)))
-                // } else {
-                //   symbol.base64 = symbol.image
-                // }
+              // if (symbol.image.indexOf('data') !== 0) {
+              //   symbol.base64 = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(symbol.image)))
+              // } else {
+              //   symbol.base64 = symbol.image
+              // }
               // })
             }
           })
@@ -417,6 +477,14 @@ export default {
           });
       } else {
         this.symbols = []
+      }
+    }
+  },
+  directives: {
+    focus: {
+      // 指令的定义
+      inserted: function (el) {
+        // el.__vue__ && el.__vue__.focus();
       }
     }
   },

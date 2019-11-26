@@ -142,6 +142,29 @@ export default {
     return {
       show: true,
       tree: [],
+      symbolObjTypes: [
+        "GroundImage", 
+        "Pin", 
+        "GeoPin",
+        "Path",
+        "GeoPolyline",
+        "Polyline",
+        "GeoSectorSearch",
+        "GeoPolylineArrow",
+        "GeoCurveArrow",
+        "GeoArc",
+        "GeoBezier2", 
+        "GeoBezier3", 
+        "GeoParallelSearch", 
+        "GeoCircle", 
+        "GeoRectangle", 
+        "GeoTriFlag", 
+        "GeoRightAngleFlag", 
+        "GeoDoubleArrow", 
+        "GeoPolygon", 
+        "GeoSector", 
+        "Scanline",
+        "Model"],
       canmove: true,
       checkBoxShow: true,
       langs: {
@@ -440,13 +463,19 @@ export default {
         }
 
         //如果有GroundImage类型，就添加一个GroundImage绑定菜单
-        if (item._inner.sn.czmObject.xbsjType === "GroundImage" || item._inner.sn.czmObject.xbsjType === "Pin") {
+        if (this.symbolObjTypes.indexOf(item._inner.sn.czmObject.xbsjType) >= 0) {
           baseItems.push(
             ...[
               {
                 text: this.lang.addToSymbol,
                 func: () => {
-                  this.$root.$labServer.addToSymbolGroup(item._inner.sn.czmObject)
+                  var self = this
+                  this.$root.$earth
+                    .capture(64, 64)
+                    .then(img => {
+                      self.$root.$labServer.addToSymbolGroup(item._inner.sn.czmObject, img)
+                    })
+
                 }
               }
             ]

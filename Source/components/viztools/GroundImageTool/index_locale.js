@@ -1,5 +1,5 @@
 const zh = {
-  title:'标绘设置',
+  title:'标绘属性',
   name:'名称',
   creating:'鼠标点选',
   editing:'修改位置',
@@ -32,7 +32,7 @@ const zh = {
 }
 
 const en = {
-  title:'Symbol Settings',
+  title:'GroundImage Property',
   name:'Name',
   creating:'Creat',
   editing:'Edit',

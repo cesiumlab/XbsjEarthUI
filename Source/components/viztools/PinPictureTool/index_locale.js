@@ -1,5 +1,5 @@
 const zh = {
-  title:'图标属性',
+  title:'标绘属性',
   name:'名称',
   creating:'鼠标点选',
   editing:'修改位置',
