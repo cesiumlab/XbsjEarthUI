@@ -145,6 +145,11 @@
           <div class="xbsj-item-btn radarbutton"></div>
           <span class="xbsj-item-name">{{lang.CustomPrimitive}}</span>
         </div>
+        <!-- 管道 -->
+        <div class="xbsj-item-btnbox ml20" @click="tubeBtn">
+          <div class="xbsj-item-btn radarbutton"></div>
+          <span class="xbsj-item-name">{{lang.tube}}</span>
+        </div>
         <!-- <div class="xbsj-item-btnbox ml20">
           <div class="xbsj-item-btn odbutton"></div>
           <span class="xbsj-item-name">{{lang.od}}</span>
@@ -371,7 +376,7 @@ export default {
       Scanline.creating = true;
       Scanline.isCreating = true;
       Scanline.playing = true;
-      // console.log(Scanline);
+      console.log(Scanline);
       this.$root.$earthUI.showPropertyWindow(Scanline);
     },
     //打开自定义图元-动画
@@ -380,9 +385,18 @@ export default {
       CustomPrimitive.name = "自定义图元";
       // CustomPrimitive.creating = true;
       CustomPrimitive.isCreating = true;
-      // CustomPrimitive.playing = true;
       console.log(CustomPrimitive);
       this.$root.$earthUI.showPropertyWindow(CustomPrimitive);
+    },
+    //打开管道-动画
+    tubeBtn() {
+      var Tube = new XE.Obj.CustomPrimitiveExt.Tube(this.$root.$earth);
+      Tube.name = "管道";
+      Tube.isCreating = true;
+      Tube.registerEditing();
+      // Tube.creating = true;
+      console.log(Tube);
+      this.$root.$earthUI.showPropertyWindow(Tube);
     },
     startMove(event) {
       //如果事件的目标不是本el 返回

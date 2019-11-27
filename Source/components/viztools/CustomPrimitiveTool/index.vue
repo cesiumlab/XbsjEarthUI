@@ -59,20 +59,15 @@
         <!-- 宽度  -->
         <label>{{lang.width}}</label>
         <div class="flatten-box">
-          <input
-            style="float:left; width: calc(50% - 100px);"
-            type="text"
-            v-model.number="model.canvasWidth"
-          />
+          <XbsjInputNumber style="float:left; width: calc(50% - 87px);" v-model="model.canvasWidth"></XbsjInputNumber>
         </div>
         <!-- 高度  -->
         <label>{{lang.height}}</label>
         <div class="flatten-box">
-          <input
-            style="float:left; width: calc(50% - 100px);"
-            type="text"
-            v-model.number="model.canvasHeight"
-          />
+          <XbsjInputNumber
+            style="float:left; width: calc(50% - 87px);"
+            v-model="model.canvasHeight"
+          ></XbsjInputNumber>
         </div>
       </div>
 
@@ -219,8 +214,8 @@ export default {
         name: "",
         show: true,
         // editing: false,
-        canvasWidth: Number,
-        canvasHeight: Number,
+        canvasWidth: 0,
+        canvasHeight: 0,
         // creating: true,
         position: [0, 0, 0],
         rotation: [0, 0, 0],
@@ -919,5 +914,9 @@ textarea {
 }
 .footbox button:hover {
   color: #1fffff;
+}
+.xbsj-input-number {
+  border-radius: 4px;
+  border: none;
 }
 </style>

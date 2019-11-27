@@ -91,6 +91,7 @@ import GeoTriFlag from "./viztools/GeoTriFlag";
 import GeoSector from "./viztools/GeoSector";
 import ScanlineTool from "./viztools/ScanlineTool";
 import CustomPrimitiveTool from "./viztools/CustomPrimitiveTool";
+import TubeTool from "./viztools/TubeTool";
 
 import CamerVideoTool from "./viztools/CamerVideoTool";
 import ViewshedTool from "./viztools/ViewshedTool";
@@ -146,6 +147,7 @@ export default {
     GeoSector,
     ScanlineTool,
     CustomPrimitiveTool,
+    TubeTool,
     CamerVideoTool,
     ViewshedTool,
 
@@ -185,6 +187,7 @@ export default {
         Path: "PathTool",
         Scanline: "ScanlineTool",
         CustomPrimitive: "CustomPrimitiveTool",
+        CustomPrimitiveExt_Tube: "TubeTool",
         Model: "ModelTool",
         Polyline: "PolylineTool",
         GeoCurveArrow: "GeoCurveArrow",

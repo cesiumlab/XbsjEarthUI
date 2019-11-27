@@ -156,14 +156,10 @@
 <script>
 import { copyobj } from "../../utils/tools";
 import languagejs from "./index_locale";
-import XbsjInputNumber from "../../common/Slider/input-number";
 
 export default {
   props: {
     getBind: Function
-  },
-  components: {
-    XbsjInputNumber
   },
   data() {
     return {

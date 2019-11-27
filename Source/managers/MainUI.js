@@ -8,6 +8,7 @@ import XbsjSelect from "../components/common/Select";
 import XbsjInput from "../components/common/Input";
 import XbsjSwitch from "../components/common/Switch";
 import XbsjSlider from "../components/common/Slider";
+import XbsjInputNumber from "../components/common/Slider/input-number";
 import XbsjIcon from "../components/common/Icon";
 import XbsjRampSelect from "../components/common/RampSelect";
 import XbsjLngLatHeight from "../components/common/LngLatHeight";
@@ -28,6 +29,7 @@ Vue.component("XbsjSelect", XbsjSelect); // 全局注册组件
 Vue.component("XbsjInput", XbsjInput); // 全局注册组件
 Vue.component("XbsjSwitch", XbsjSwitch); // 全局注册组件
 Vue.component("XbsjSlider", XbsjSlider); // 全局注册组件
+Vue.component("XbsjInputNumber", XbsjInputNumber); // 全局注册组件
 Vue.component("XbsjIcon", XbsjIcon); // 全局注册组件y 
 Vue.component("XbsjRampSelect", XbsjRampSelect); // 全局注册组件y
 Vue.component('XbsjLngLatHeight', XbsjLngLatHeight);
@@ -143,12 +145,12 @@ class MainUI {
       data: {
         language: 'zh'
       },
-      created () {
+      created() {
         this.$earth = earth;
         this.$earthUI = mainUI;
         this.$labServer = labServer;
       },
-      mounted () {
+      mounted() {
 
       },
       watch: {
@@ -193,7 +195,7 @@ class MainUI {
           * @instance
           * @memberof ControlsCollection
           */
-          get statusBar () {
+          get statusBar() {
             return mainUI._statusBar;
           },
           // get navigator() {
@@ -206,7 +208,7 @@ class MainUI {
           * @instance
           * @memberof ControlsCollection
           */
-          get mainBar () {
+          get mainBar() {
             return mainUI._mainbar;
           }
         };
@@ -262,7 +264,7 @@ class MainUI {
           * @instance
           * @memberof ToolsCollection
           */
-          get sceneTree () {
+          get sceneTree() {
             return mainUI._sceneTree;
           },
           /**
@@ -272,7 +274,7 @@ class MainUI {
           * @instance
           * @memberof ToolsCollection
           */
-          get imageryLab () {
+          get imageryLab() {
             return mainUI._imageryLab;
           },
 
@@ -283,7 +285,7 @@ class MainUI {
           * @instance
           * @memberof ToolsCollection
           */
-          get imageryLabCloud () {
+          get imageryLabCloud() {
             return mainUI._imageryCloud;
           },
 
@@ -294,7 +296,7 @@ class MainUI {
           * @instance
           * @memberof ToolsCollection
           */
-          get modelCloud () {
+          get modelCloud() {
             return mainUI._modelCloud;
           },
 
@@ -305,7 +307,7 @@ class MainUI {
            * @instance
            * @memberof ToolsCollection
            */
-          get terrainCloud () {
+          get terrainCloud() {
             return mainUI._terrainCloud;
           },
 
@@ -316,7 +318,7 @@ class MainUI {
           * @instance
           * @memberof ToolsCollection
           */
-          get imageryOnline () {
+          get imageryOnline() {
             return mainUI._imageryOnline;
           },
           /**
@@ -326,7 +328,7 @@ class MainUI {
           * @instance
           * @memberof ToolsCollection
           */
-          get imageryWMTS () {
+          get imageryWMTS() {
             return mainUI._imageryWMTS;
           },
           /**
@@ -336,7 +338,7 @@ class MainUI {
           * @instance
           * @memberof ToolsCollection
           */
-          get modelLab () {
+          get modelLab() {
             return mainUI._modelLab;
           },
           /**
@@ -346,7 +348,7 @@ class MainUI {
           * @instance
           * @memberof ToolsCollection
           */
-          get modelOnline () {
+          get modelOnline() {
             return mainUI._modelOnline;
           },
           /**
@@ -356,7 +358,7 @@ class MainUI {
           * @instance
           * @memberof ToolsCollection
           */
-          get terrainLab () {
+          get terrainLab() {
             return mainUI._terrainLab;
           },
           /**
@@ -366,7 +368,7 @@ class MainUI {
           * @instance
           * @memberof ToolsCollection
           */
-          get terrainOnline () {
+          get terrainOnline() {
             return mainUI._terrainOnline;
           },
           /**
@@ -376,7 +378,7 @@ class MainUI {
           * @instance
           * @memberof ToolsCollection
           */
-          get cameraViewManager () {
+          get cameraViewManager() {
             return mainUI._cameraViewManager;
           },
           /**
@@ -386,7 +388,7 @@ class MainUI {
           * @instance
           * @memberof ToolsCollection
           */
-          get cutFillComputing () {
+          get cutFillComputing() {
             return mainUI._cutFillComputing;
           },
           /**
@@ -396,7 +398,7 @@ class MainUI {
           * @instance
           * @memberof ToolsCollection
           */
-          get featureProperty () {
+          get featureProperty() {
             return mainUI._featureProperty;
           },
           /**
@@ -406,7 +408,7 @@ class MainUI {
           * @instance
           * @memberof ToolsCollection
           */
-          get modelTree () {
+          get modelTree() {
             return mainUI._modelTree;
           },
           /**
@@ -416,7 +418,7 @@ class MainUI {
           * @instance
           * @memberof ToolsCollection
           */
-          get entitymore () {
+          get entitymore() {
             return mainUI._entitymore;
           },
 
@@ -427,7 +429,7 @@ class MainUI {
           * @instance
           * @memberof ToolsCollection
           */
-          get symbol () {
+          get symbol() {
             return mainUI._symbol;
           }
         };
@@ -540,7 +542,7 @@ class MainUI {
     });
   }
 
-  get earth () {
+  get earth() {
     return this._earth;
   }
 
@@ -550,7 +552,7 @@ class MainUI {
   * @param {Function} ok 点击确定按钮后的回调
   * @param {Function} cancel 点击取消按钮后的回调
   */
-  confirm (info, ok, cancel) {
+  confirm(info, ok, cancel) {
     this._vm.$refs.mainUI.confirm(info, ok, cancel);
   }
 
@@ -559,12 +561,12 @@ class MainUI {
   * @param {Object} czmObject 需要显示属性的对象
   * @param {Object} options 其他参数，详细请见示例 
   */
-  showPropertyWindow (czmObject, options) {
+  showPropertyWindow(czmObject, options) {
     this._vm.$refs.mainUI.showPropertyWindow(czmObject, options);
   }
 
 
-  destroy () {
+  destroy() {
     this._czmObjectOpsEventDisposer =
       this._czmObjectOpsEventDisposer && this._czmObjectOpsEventDisposer();
     this._vm.$destroy();
@@ -579,7 +581,7 @@ class MainUI {
   * @param {Number} height 截图高度
   * @param {String} filename 需要保存的文件名
   */
-  saveScreenToFile (width, height, filename) {
+  saveScreenToFile(width, height, filename) {
     this._earth
       .capture(width, height)
       .then(img => {
@@ -599,10 +601,10 @@ class MainUI {
   * @instance
   * @type {String} 
   */
-  get language () {
+  get language() {
     return this._vm.language;
   }
-  set language (lang) {
+  set language(lang) {
     if (lang == "zh" || lang == "en") {
       {
         this._vm.language = lang;
@@ -617,7 +619,7 @@ class MainUI {
    * @param {String} info 需要提示的内容
    * @param {String} type 提示类型，分三种  'info','warning','error'
    */
-  promptInfo (info, type) {
+  promptInfo(info, type) {
     this._vm.$refs.mainUI.promptInfo(info, type);
   }
 
@@ -625,7 +627,7 @@ class MainUI {
    * 打开外部地址
    * @param {String} url 地址链接 
    */
-  openURL (url) {
+  openURL(url) {
     if (typeof this._openURLCB == 'function') {
       this._openURLCB(url);
     }
@@ -640,10 +642,10 @@ class MainUI {
  * @instance
  * @type {Function} 
  */
-  get openURLCB () {
+  get openURLCB() {
     return this._openURLCB;
   }
-  set openURLCB (cb) {
+  set openURLCB(cb) {
     this._openURLCB = cb;
   }
 }

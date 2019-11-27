@@ -35,7 +35,8 @@ const zh = {
   TriFlag: '三角旗帜',
   DoubleArrow: '双箭头',
   Scanline: '扫描线',
-  CustomPrimitive: '自定义图元'
+  CustomPrimitive: '自定义图元',
+  tube: '管道'
 };
 
 const en = {
@@ -75,7 +76,8 @@ const en = {
   TriFlag: 'TriFlag',
   DoubleArrow: 'DoubleArrow',
   Scanline: 'Scanline',
-  CustomPrimitive: 'CustomPrimitive'
+  CustomPrimitive: 'CustomPrimitive',
+  tube: 'Tube'
 };
 
 export default { zh, en };
