@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+### 1.2.9
+
+* 修复地形开启半透明以后，导致拾取时模型闪烁的问题
+
+
 ### 1.2.8 - 2019-11-26
 
 ##### Major Announcements :loudspeaker:
