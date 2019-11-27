@@ -260,10 +260,6 @@ export default {
     btn.addEventListener("dragover", handleDragOver, false);
     btn.addEventListener("drop", handleFileSelect, false);
   },
-  beforeDestroy() {
-    this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers = this._disposers && this._disposers();
-  },
   computed: {
     name() {
       return this.path.name;
@@ -358,8 +354,10 @@ export default {
     }
   },
   beforeDestroy() {
-    //销毁监控
-    // this.disAutorun();
+    // 解绑数据关联
+    this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
+    this._disposers.forEach(e => e());
+    this._disposers.length = 0;
   }
 };
 </script>

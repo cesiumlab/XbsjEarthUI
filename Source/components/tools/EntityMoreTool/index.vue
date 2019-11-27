@@ -42,7 +42,7 @@
             <li @click="Arc">{{lang.arc}}</li>
             <li @click="Bezier2">{{lang.bezier2}}</li>
             <li @click="Bezier3">{{lang.bezier3}}</li>
-            <li @click="ParallelSearch">{{lang.parallelsearch}}</li>
+            <!-- <li @click="ParallelSearch">{{lang.parallelsearch}}</li> -->
           </ul>
         </div>
         <div>
@@ -265,15 +265,15 @@ export default {
       this.$root.$earthUI.showPropertyWindow(Bezier3);
     },
     // 平行搜寻区
-    ParallelSearch() {
-      var ParallelSearch = new XE.Obj.Plots.GeoParallelSearch(
-        this.$root.$earth
-      );
-      ParallelSearch.creating = true;
-      ParallelSearch.isCreating = true;
-      ParallelSearch.name = "平行搜寻区";
-      this.$root.$earthUI.showPropertyWindow(ParallelSearch);
-    },
+    // ParallelSearch() {
+    //   var ParallelSearch = new XE.Obj.Plots.GeoParallelSearch(
+    //     this.$root.$earth
+    //   );
+    //   ParallelSearch.creating = true;
+    //   ParallelSearch.isCreating = true;
+    //   ParallelSearch.name = "平行搜寻区";
+    //   this.$root.$earthUI.showPropertyWindow(ParallelSearch);
+    // },
     // 圆
     Circle() {
       var Circle = new XE.Obj.Plots.GeoCircle(this.$root.$earth);

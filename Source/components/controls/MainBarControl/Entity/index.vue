@@ -376,7 +376,7 @@ export default {
       Scanline.creating = true;
       Scanline.isCreating = true;
       Scanline.playing = true;
-      console.log(Scanline);
+      // console.log(Scanline);
       this.$root.$earthUI.showPropertyWindow(Scanline);
     },
     //打开自定义图元-动画
@@ -394,7 +394,7 @@ export default {
       Tube.name = "管道";
       Tube.isCreating = true;
       Tube.registerEditing();
-      // Tube.creating = true;
+      Tube.creating = true;
       console.log(Tube);
       this.$root.$earthUI.showPropertyWindow(Tube);
     },
