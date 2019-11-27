@@ -56,6 +56,14 @@
         </div>
       </div>
 
+      <!-- 半径 -->
+      <div class="flatten">
+        <label>{{lang.radius}}</label>
+        <div class="flatten-box">
+          <XbsjInputNumber style="float:left; width: calc(50% - 87px);" v-model="model.radius"></XbsjInputNumber>
+        </div>
+      </div>
+
       <!-- 速度 -->
       <div class="flatten">
         <!-- 移动速度 -->
@@ -119,6 +127,7 @@ export default {
         editing: false,
         enabled: true,
         imageUrl: "",
+        radius: 0,
         speed: [1, 1],
         radialSegments: 18,
         tubularSegments: 50,
@@ -142,6 +151,7 @@ export default {
         // show: "model.show",
         editing: "model.editing",
         imageUrl: "model.imageUrl",
+        radius: "model.radius",
         speed: "model.speed",
         radialSegments: "model.radialSegments",
         tubularSegments: "model.tubularSegments",
@@ -158,11 +168,7 @@ export default {
       if (this._czmObj.isCreating && !this.model.imageUrl) {
         this.model.imageUrl = "../../assets/ht/meteor_01.png";
       }
-      // this._czmObj.positions = [
-      //   [2.0315193182543485, 0.6963069713474035, 50.0],
-      //   [2.031208054060137, 0.6963058641803516, 50.0],
-      //   [2.0312082890850296, 0.6964532955295221, 50.0]
-      // ];
+      this._czmObj.radius = 30000;
     }
   },
 
