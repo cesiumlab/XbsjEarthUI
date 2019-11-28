@@ -168,7 +168,6 @@ export default {
       if (this._czmObj.isCreating && !this.model.imageUrl) {
         this.model.imageUrl = "../../assets/ht/meteor_01.png";
       }
-      this._czmObj.radius = 30000;
     }
   },
 
