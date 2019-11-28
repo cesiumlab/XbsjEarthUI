@@ -26,7 +26,8 @@ const zh = {
   spritsshader: '片元shader',
   renderstats: '渲染状态',
   editing: '正在编辑',
-  apply: '应用'
+  apply: '应用',
+  tipcontent: '请填入顶点坐标和indices'
 };
 
 const en = {
@@ -57,7 +58,8 @@ const en = {
   spritsshader: 'spritsshader',
   renderstats: 'renderstats',
   editing: 'editing',
-  apply: 'apply'
+  apply: 'apply',
+  tipcontent: 'Please fill in vertex coordinates and indices'
 };
 
 export default {

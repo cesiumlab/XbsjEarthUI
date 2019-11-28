@@ -10,7 +10,7 @@
     :footervisible="true"
     @showclick="showSelect=false"
   >
-    <div class="xbsj-flatten">
+    <div class="xbsj-flatten" ref="customPrimitive">
       <!-- 名称 -->
       <div class="flatten">
         <label>{{lang.name}}</label>
@@ -142,7 +142,7 @@
           ></XbsjVirtualTree>
         </div>
         <div class="rightbox">
-          <textarea v-show="geometryShow"></textarea>
+          <textarea v-show="geometryShow" v-model="obj"></textarea>
           <textarea v-show="createcodeShow" v-model="evalString"></textarea>
           <textarea v-show="framecodeShow" v-model="preUpdateEvalString"></textarea>
           <textarea v-show="destorycodeShow" v-model="destroyEvalString"></textarea>
@@ -180,6 +180,7 @@ export default {
       spritsshaderShow: false,
       renderstatsShow: false,
       checkBoxShow: false,
+      obj: "",
       evalString: "",
       preUpdateEvalString: "",
       destroyEvalString: "",
@@ -326,6 +327,46 @@ export default {
       });
       this._disposers.push(XE.MVVM.bind(this, "bgbaseColor", czmObj, "color"));
     }
+    this.obj = this.objData();
+
+    let customPrimitive = this.$refs.customPrimitive;
+    let that = this;
+
+    function handleDragOver(e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    // 读取文件内容信息
+    function handleFileSelect(e) {
+      // e.stopPropagation();
+      e.preventDefault();
+      let item = e.dataTransfer;
+
+      var files = [];
+      [].forEach.call(
+        e.dataTransfer.files,
+        function(file) {
+          files.push(file);
+        },
+        false
+      );
+
+      for (var f of files) {
+        var reader = new FileReader();
+        reader.readAsText(f);
+        //读取文件的内容
+        reader.onload = function() {
+          that.obj = this.result;
+
+          // that.objToArr();
+        };
+      }
+    }
+
+    // 监听拖拽
+    customPrimitive.addEventListener("dragover", handleDragOver, false);
+    customPrimitive.addEventListener("drop", handleFileSelect, false);
   },
   computed: {
     name() {
@@ -384,6 +425,7 @@ export default {
         this.spritsshaderShow = false;
         this.renderstatsShow = false;
         this.topTitle = this.lang.geometry;
+        this.obj = this.objData();
       }
       if (item.item.createcodeShows) {
         this.geometryShow = false;
@@ -453,6 +495,9 @@ export default {
       }
     },
     apply() {
+      if (this.obj) {
+        this.objToArr();
+      }
       if (this.evalString) {
         this._czmObj.evalString = this.evalString;
       }
@@ -470,7 +515,218 @@ export default {
       }
       if (this.renderState) {
         this._czmObj.renderState = JSON.parse(this.renderState);
-        console.log(this._czmObj.renderState);
+        // console.log(this._czmObj.renderState);
+      }
+    },
+    // 将数组分割成每三个一组
+    splitArray(arr) {
+      var result = [];
+      for (var i = 0; i < arr.length; i += 3) {
+        result.push(arr.slice(i, i + 3));
+      }
+      return result;
+    },
+    // 将数组分割成每两个一组
+    splitArray2(data) {
+      var result2 = [];
+      for (var i = 0; i < data.length; i += 2) {
+        result2.push(data.slice(i, i + 2));
+      }
+      return result2;
+    },
+    // 获取obj文件信息
+    objData() {
+      var pos = this.splitArray(this._czmObj.positions),
+        color = [],
+        vn = [],
+        f = this.splitArray(this._czmObj.indices),
+        vt = [],
+        v = [],
+        v1 = "",
+        v2 = "",
+        vt2 = "",
+        vn2 = "",
+        f2 = "";
+      if (this._czmObj.colors !== undefined) {
+        color = this.splitArray(this._czmObj.colors);
+        for (var i = 0; i < pos.length; i++) {
+          v.push(pos[i].concat(color[i]));
+        }
+      } else {
+        for (var j = 0; j < pos.length; j++) {
+          v.push(pos[j]);
+        }
+      }
+      if (this._czmObj.sts !== undefined) {
+        vt = this.splitArray2(this._czmObj.sts);
+        for (var x = 0; x < vt.length; x++) {
+          vt[x][0] = vt[x][0].toFixed(6);
+          vt[x][1] = vt[x][1].toFixed(6);
+          vt2 += "vt" + " " + vt[x].join(" ") + "\n";
+        }
+      }
+      if (this._czmObj.normals !== undefined) {
+        vn = this.splitArray(this._czmObj.normals);
+        for (var y = 0; y < vn.length; y++) {
+          vn2 += "vn" + " " + vn[y].join(" ") + "\n";
+        }
+      }
+      for (var k = 0; k < v.length; k++) {
+        v[k][0] = v[k][0].toFixed(6);
+        v[k][1] = v[k][1].toFixed(6);
+        v[k][2] = v[k][2].toFixed(6);
+        v1 += "v" + " " + v[k].join(" ") + "\n";
+      }
+      for (var z = 0; z < f.length; z++) {
+        f[z][0] =
+          Number(f[z][0] + 1) +
+          "/" +
+          Number(f[z][0] + 1) +
+          "/" +
+          Number(f[z][0] + 1);
+        f[z][1] =
+          Number(f[z][1] + 1) +
+          "/" +
+          Number(f[z][1] + 1) +
+          "/" +
+          Number(f[z][1] + 1);
+        f[z][2] =
+          Number(f[z][2] + 1) +
+          "/" +
+          Number(f[z][2] + 1) +
+          "/" +
+          Number(f[z][2] + 1);
+        f2 += "f" + " " + f[z].join("/ ") + "\n";
+      }
+      return v1 + vt2 + vn2 + f2;
+    },
+    // 去掉字符串中的空格
+    removeExtraSpace(sentence) {
+      //获得当前字符串的长度
+      var length = sentence.length;
+
+      //去掉字符串前面的空格
+      for (var i = 0; i < length; i++) {
+        if (sentence[i] != " ") {
+          sentence = sentence.substring(i, length);
+          break;
+        }
+      }
+
+      //去掉字符串前面空格的字符串长度
+      length = sentence.length;
+      //去掉字符串后面的空格
+      for (var i = length - 1; i >= 0; i--) {
+        if (sentence[i] != " ") {
+          sentence = sentence.substring(0, i + 1);
+          break;
+        }
+      }
+
+      length = sentence.length;
+      //去掉字符串中间的空格
+      for (var i = 0; i < length; i++) {
+        if (sentence[i] == " ") {
+          if (sentence[i + 1] == " ") {
+            var buffer1 = sentence.substring(0, i);
+            var buffer2 = sentence.substring(i + 1, sentence.length);
+            sentence = buffer1 + buffer2;
+            i--;
+          }
+        }
+      }
+      return sentence;
+    },
+    // 将obj文件信息转化为数组
+    objToArr() {
+      var arr = [];
+      arr = this.obj.split("\n");
+      var l = arr.length,
+        arr2 = [],
+        arr3 = [],
+        arr4 = [],
+        arr5 = [],
+        positions = [],
+        colors = [],
+        sts = [],
+        normals = [],
+        indices = [];
+      for (var i = 0; i < l; i++) {
+        var removeSpaceString = this.removeExtraSpace(arr[i]);
+        arr2 = removeSpaceString.split(" ");
+        if (arr2[0] == "v") {
+          if (
+            arr2[1] !== undefined &&
+            arr2[2] !== undefined &&
+            arr2[3] !== undefined
+          ) {
+            positions.push(Number(arr2[1]));
+            positions.push(Number(arr2[2]));
+            positions.push(Number(arr2[3]));
+          }
+
+          if (
+            arr2[4] !== undefined &&
+            arr2[5] !== undefined &&
+            arr2[6] !== undefined
+          ) {
+            colors.push(Number(arr2[4]));
+            colors.push(Number(arr2[5]));
+            colors.push(Number(arr2[6]));
+            colors.push(Number(1));
+          }
+        } else if (arr2[0] == "vt") {
+          if (arr2[1] !== undefined && arr2[2] !== undefined) {
+            sts.push(Number(arr2[1]));
+            sts.push(Number(arr2[2]));
+          }
+        } else if (arr2[0] == "vn") {
+          if (
+            arr2[1] !== undefined &&
+            arr2[2] !== undefined &&
+            arr2[3] !== undefined
+          ) {
+            normals.push(Number(arr2[1]));
+            normals.push(Number(arr2[2]));
+            normals.push(Number(arr2[3]));
+          }
+        } else if (arr2[0] == "f") {
+          if (
+            arr2[1] !== undefined &&
+            arr2[2] !== undefined &&
+            arr2[3] !== undefined
+          ) {
+            arr3 = arr2[1].split("/");
+            arr4 = arr2[2].split("/");
+            arr5 = arr2[3].split("/");
+            indices.push(Number(arr3[0]) - 1);
+            indices.push(Number(arr4[0]) - 1);
+            indices.push(Number(arr5[0]) - 1);
+          }
+        }
+      }
+      if (positions.length === 0 || indices.length === 0) {
+        //弹出确认
+        this.$root.$earthUI.confirm(this.lang.tipcontent, () => {});
+        return;
+      } else {
+        this._czmObj.positions = positions;
+        this._czmObj.indices = indices;
+        if (colors.length / 4 !== positions.length / 3) {
+          this._czmObj.colors = undefined;
+        } else {
+          this._czmObj.colors = colors;
+        }
+        if (sts.length / 2 !== positions.length / 3) {
+          this._czmObj.sts = undefined;
+        } else {
+          this._czmObj.sts = sts;
+        }
+        if (normals.length !== positions.length) {
+          this._czmObj.normals = undefined;
+        } else {
+          this._czmObj.normals = normals;
+        }
       }
     },
     close() {
