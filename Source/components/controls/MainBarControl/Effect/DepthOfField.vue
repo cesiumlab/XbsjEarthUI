@@ -15,14 +15,14 @@
     </div>
 
     <div class="row">
-      <label class="label" @click="delta=1">sigma:</label>
+      <label class="label" @click="sigma=3.78">sigma:</label>
       <div class="field">
         <XbsjSlider :min="0" :max="5" :step="0.1" showTip="always" v-model="sigma"></XbsjSlider>
       </div>
     </div>
 
     <div class="row">
-      <label class="label" @click="delta=1">stepSize:</label>
+      <label class="label" @click="stepSize=2.46">stepSize:</label>
       <div class="field">
         <XbsjSlider :min="1" :max="10" :step="0.1" showTip="always" v-model="stepSize"></XbsjSlider>
       </div>
@@ -30,9 +30,8 @@
   </div>
 </template>
 
-<script> 
+<script>
 export default {
- 
   data() {
     return {
       langs: {
@@ -50,11 +49,8 @@ export default {
       stepSize: 2.46
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
-  
     this.bind("focalDistance");
     this.bind("delta");
     this.bind("sigma");
@@ -64,12 +60,7 @@ export default {
     bind(prp) {
       this._viewUnbinds = this._viewUnbinds || [];
       this._viewUnbinds.push(
-        XE.MVVM.bind(
-          this,
-          prp,
-          this.$root.$earth.postProcess.depthOfField,
-          prp
-        )
+        XE.MVVM.bind(this, prp, this.$root.$earth.postProcess.depthOfField, prp)
       );
     }
   },
