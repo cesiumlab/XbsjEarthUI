@@ -16,13 +16,22 @@
           ></div>
           <span class="xbsj-item-name">{{lang.online}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
+        <div class="xbsj-item-btnbox" v-show="labServiceUI">
           <div
             class="xbsj-item-btn localhostbutton"
             @click="imageryLab=!imageryLab"
             :class="{highlight:imageryLab}"
           ></div>
           <span class="xbsj-item-name">{{lang.localhost}}</span>
+        </div>
+
+        <div class="xbsj-item-btnbox" v-show="cloudServiceUI">
+          <div
+            class="xbsj-item-btn localhostbutton"
+            @click="imageryCloud=!imageryCloud"
+            :class="{highlight:imageryCloud}"
+          ></div>
+          <span class="xbsj-item-name">{{lang.cloud}}</span>
         </div>
 
          <div class="xbsj-item-btnbox">
@@ -160,12 +169,14 @@
 <script>
 import languagejs from "./index_locale"; 
 export default {
+  props:["labServiceUI","cloudServiceUI"],
   data() {
     return {
       showTip: "never",
       selectlist: false,
       lang: {},
       imageryLab: false,
+      imageryCloud: false,      
       imageryOnline: false,
       imageryWMTS:false,
       alpha: 1,
@@ -187,9 +198,9 @@ export default {
   
     //绑定
     this.$nextTick(() => {
-    
 
-      //监控树状控件的当前选择节点
+
+//监控树状控件的当前选择节点
       this.unAutorun = XE.MVVM.watch(() => {
         const csn = this.$root.$earth.sceneTree.currentSelectedNode;
         if (

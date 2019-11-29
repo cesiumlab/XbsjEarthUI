@@ -57,15 +57,24 @@ export default {
   created() {},
   mounted() {
     this.bind("useCameraPos");
-    this.bind("position");
-    this.position[0] = (this.position[0] * 180) / Math.PI;
-    this.position[1] = (this.position[1] * 180) / Math.PI;
+    this.bindpos("position");
   },
   methods: {
     bind(prp) {
       this._viewUnbinds = this._viewUnbinds || [];
       this._viewUnbinds.push(
         XE.MVVM.bind(this, prp, this.$root.$earth.effect.forceSunPos, prp)
+      );
+    },
+    bindpos(pos) {
+      this._viewUnbinds = this._viewUnbinds || [];
+      this._viewUnbinds.push(
+        XE.MVVM.bindPosition(
+          this,
+          pos,
+          this.$root.$earth.effect.forceSunPos,
+          pos
+        )
       );
     }
   },

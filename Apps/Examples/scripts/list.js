@@ -88,6 +88,10 @@ vueApp.examples = [
                 "url": "./earth-customPrimitive-svg.html"
             },
             {
+                "title": "自定义图元-tube",
+                "url": "./earth-customPrimitive-tube.html"
+            },
+            {
                 "title": "圆柱体集群",
                 "url": "./earth-cylinders.html"
             },
@@ -124,16 +128,16 @@ vueApp.examples = [
                 "url": "./earth-forceSunPos.html"
             },
             {
-                "title": "热力图-currentTime",
-                "url": "./earth-heatMap-currentTime.html"
+                "title": "贴地图像-currentTime",
+                "url": "./earth-groundImage-currentTime.html"
             },
             {
-                "title": "热力图-编辑",
-                "url": "./earth-heatMap-editing.html"
+                "title": "贴地图像-编辑",
+                "url": "./earth-groundImage-editing.html"
             },
             {
-                "title": "热力图-播放",
-                "url": "./earth-heatMap-play.html"
+                "title": "贴地图像-播放",
+                "url": "./earth-groundImage-play.html"
             },
             {
                 "title": "影像-百度",
@@ -419,6 +423,27 @@ vueApp.examples = [
             {
                 "title": "数字工厂",
                 "url": "./earth-digitalFactory.html"
+            }
+        ]
+    },
+    {
+        "title": "内部测试",
+        "list": [
+            {
+                "title": "模型-环境贴图（勿用）",
+                "url": "./earth-model-envirement.html"
+            },
+            {
+                "title": "3dtiles环境贴图（勿用）",
+                "url": "./earth-tileset-envirements.html"
+            },
+            {
+                "title": "环绕地球",
+                "url": "./test-earthRotating.html"
+            },
+            {
+                "title": "多选-框选&任意选择",
+                "url": "./test-polygonPicking.html"
             }
         ]
     },

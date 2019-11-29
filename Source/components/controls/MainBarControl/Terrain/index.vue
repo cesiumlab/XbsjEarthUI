@@ -18,13 +18,21 @@
           ></div>
           <span class="xbsj-item-name">{{lang.online}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
+        <div class="xbsj-item-btnbox" v-show="labServiceUI">
           <div
             class="xbsj-item-btn localhostbutton"
             @click="terrainLab=!terrainLab"
             :class="{highlight:terrainLab}"
           ></div>
           <span class="xbsj-item-name">{{lang.localhost}}</span>
+        </div>
+        <div class="xbsj-item-btnbox" v-show="cloudServiceUI">
+          <div
+            class="xbsj-item-btn localhostbutton"
+            @click="terrainCloud=!terrainCloud"
+            :class="{highlight:terrainCloud}"
+          ></div>
+          <span class="xbsj-item-name">{{lang.cloudhost}}</span>
         </div>
       </div>
       <div class="xbsj-list-item">
@@ -189,6 +197,7 @@ import Tailoring from "./Tailoring";
 import { addOutterEventListener } from "../../../utils/xbsjUtil";
 
 export default {
+  props:["labServiceUI","cloudServiceUI"],
   components: {
     Elevation,
     Slope,
@@ -196,11 +205,12 @@ export default {
     Contour,
     Tailoring
   },
-  data() {
+  data () {
     return {
       showTip: "never",
       lang: {},
       terrainLab: false,
+      terrainCloud: false,
       terrainOnline: false,
       shadeType: "",
       popup: "",
@@ -216,8 +226,8 @@ export default {
       enableLighting: false
     };
   },
-  created() {},
-  mounted() {
+  created () {},
+  mounted () {
     //给所有popup的el上添加外部事件
     Object.keys(this.$refs).forEach(key => {
       addOutterEventListener(this.$refs[key].$el, "mousedown", el => {
@@ -317,13 +327,13 @@ export default {
     });
 
     let tailoringbutton = this.$refs.tailoringbutton;
-    function handleDragOver(e) {
+    function handleDragOver (e) {
       e.stopPropagation();
       e.preventDefault();
     }
 
     var that = this;
-    function handleFileSelect(e) {
+    function handleFileSelect (e) {
       // e.stopPropagation();
       e.preventDefault();
       let obj = e.dataTransfer.getData("obj");
@@ -335,7 +345,7 @@ export default {
         arr[j].pop();
       }
       arr = arr.toString().split(",");
-      arr = arr.map(function(el) {
+      arr = arr.map(function (el) {
         return +el;
       });
 
@@ -348,11 +358,11 @@ export default {
     tailoringbutton.addEventListener("drop", handleFileSelect, false);
   },
   methods: {
-    contoure() {
+    contoure () {
       this.$root.$earth.terrainEffect.contour.enabled = !this.$root.$earth
         .terrainEffect.contour.enabled;
     },
-    elevationRamp() {
+    elevationRamp () {
       let te = this.$root.$earth.terrainEffect;
       if (te.shading && te.shading != te.elevation) {
         te.shading.enabled = false;
@@ -361,7 +371,7 @@ export default {
         te.elevation.enabled = !te.elevation.enabled;
       }
     },
-    slopeRamp() {
+    slopeRamp () {
       let te = this.$root.$earth.terrainEffect;
       if (te.shading && te.shading != te.slope) {
         te.shading.enabled = false;
@@ -370,7 +380,7 @@ export default {
         te.slope.enabled = !te.slope.enabled;
       }
     },
-    aspectRamp() {
+    aspectRamp () {
       let te = this.$root.$earth.terrainEffect;
       if (te.shading && te.shading != te.aspect) {
         te.shading.enabled = false;
@@ -379,21 +389,21 @@ export default {
         te.aspect.enabled = !te.aspect.enabled;
       }
     },
-    getPopupComp() {
+    getPopupComp () {
       if (this.$refs.hasOwnProperty(this.popup)) {
         return this.$refs[this.popup];
       } else {
         return undefined;
       }
     },
-    showPopup(v) {
+    showPopup (v) {
       let comp = this.getPopupComp();
       if (comp && typeof comp.show == "function") {
         comp.show(v);
       }
       return comp;
     },
-    togglePopup(p, event) {
+    togglePopup (p, event) {
       //调用上一个组件的隐藏
       this.showPopup(false);
 
@@ -420,7 +430,7 @@ export default {
         console.log(ex);
       }
     },
-    startMove(event) {
+    startMove (event) {
       //如果事件的目标不是本el 返回
       if (event.target.parentElement !== this.$refs.container) {
         this.moving = false;
@@ -428,7 +438,7 @@ export default {
       }
       this.moving = true;
     },
-    onMoving(event) {
+    onMoving (event) {
       //获取鼠标和为开始位置的插值，滚动滚动条
       if (!this.moving) return;
 
@@ -438,11 +448,11 @@ export default {
         dom.scrollLeft = wleft;
       }
     },
-    endMove(envent) {
+    endMove (envent) {
       this.moving = false;
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     for (let i = 0; i < this.unbind.length; i++) {
       var ud = this.unbind[i];
       ud();

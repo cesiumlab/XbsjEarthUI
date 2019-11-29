@@ -44,11 +44,11 @@
     </Modal> -->
     <!-- 七大组件部分 -->
     <div>
-      <NavigateComp ref="navigate" v-show="page=='navigate'"></NavigateComp>
+      <NavigateComp ref="navigate" v-show="page=='navigate'" :labServiceUI="labServiceUI"></NavigateComp>
       <XbsjViewComp ref="view" v-show="page=='view'"></XbsjViewComp>
-      <ImageryComp ref="imagery" v-show="page=='imagery'"></ImageryComp>
-      <TilesetComp ref="model" v-show="page=='model'"></TilesetComp>
-      <TerrainComp ref="terrain" v-show="page=='terrain'"></TerrainComp>
+      <ImageryComp ref="imagery" v-show="page=='imagery'" :cloudServiceUI="cloudServiceUI" :labServiceUI="labServiceUI"></ImageryComp>
+      <TilesetComp ref="model" v-show="page=='model'" :cloudServiceUI="cloudServiceUI" :labServiceUI="labServiceUI"></TilesetComp>
+      <TerrainComp ref="terrain" v-show="page=='terrain'" :cloudServiceUI="cloudServiceUI" :labServiceUI="labServiceUI"></TerrainComp>
       <AnalysisComp ref="analysis" v-show="page=='analysis'"></AnalysisComp>
       <EffectComp ref="effect" v-show="page=='effect'"></EffectComp>
       <EntityComp ref="entity" v-show="page=='entity'"></EntityComp>
@@ -84,6 +84,8 @@ export default {
       page: "navigate", //当前显示的页面
       lang: {},
       visible:false,
+      labServiceUI: true,
+      cloudServiceUI: false,
       langs:languagejs
     };
   },

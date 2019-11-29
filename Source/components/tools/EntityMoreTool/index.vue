@@ -13,7 +13,12 @@
   >
     <div class="containbox">
       <div class="leftbox">
-        <XbsjVirtualTree ref="vtree" :tree="tree" @on-click="itemClick"></XbsjVirtualTree>
+        <XbsjVirtualTree
+          ref="vtree"
+          :tree="tree"
+          @on-click="itemClick"
+          :checkBoxShow="checkBoxShow"
+        ></XbsjVirtualTree>
       </div>
       <div class="rightbox">
         <div>
@@ -27,12 +32,17 @@
           <ul v-show="lineShow">
             <li @click="Path">{{lang.path}}</li>
             <li @click="Polyline">{{lang.polyline}}</li>
+            <li @click="SolidLine">{{lang.solidline}}</li>
+            <li @click="DotLine">{{lang.dotline}}</li>
+            <li @click="ArrowLine">{{lang.arrowline}}</li>
+            <li @click="ODLine">{{lang.odline}}</li>
             <li @click="CurveArrow">{{lang.curvearrow}}</li>
             <li @click="PolylineArrow">{{lang.polylinearrow}}</li>
             <li @click="SectorSearch">{{lang.sectorsearch}}</li>
             <li @click="Arc">{{lang.arc}}</li>
             <li @click="Bezier2">{{lang.bezier2}}</li>
             <li @click="Bezier3">{{lang.bezier3}}</li>
+            <!-- <li @click="ParallelSearch">{{lang.parallelsearch}}</li> -->
           </ul>
         </div>
         <div>
@@ -44,6 +54,7 @@
             <li @click="RightAngleFlag">{{lang.rightangleflag}}</li>
             <li @click="DoubleArrow">{{lang.doublearrow}}</li>
             <li @click="Polygon">{{lang.polygon}}</li>
+            <li @click="Sector">{{lang.sector}}</li>
           </ul>
         </div>
       </div>
@@ -52,6 +63,8 @@
 </template>
 
 <script>
+import languagejs from "./locale";
+
 export default {
   data() {
     return {
@@ -60,59 +73,9 @@ export default {
       lineShow: false,
       surfaceShow: false,
       tree: [],
-      langs: {
-        zh: {
-          dot: "点",
-          line: "线",
-          surface: "面",
-          pin: "内置图标",
-          pinpicturebtn: "外置图标",
-          pindivbtn: "div图标",
-          path: "路径",
-          polyline: "折线",
-          curvearrow: "曲线箭头",
-          polylinearrow: "折线箭头",
-          sectorsearch: "扇形搜索",
-          arc: "圆弧",
-          bezier2: "贝塞尔2次曲线",
-          bezier3: "贝塞尔3次曲线",
-          circle: "圆",
-          triflag: "三角旗标",
-          curveflag: "曲面旗标",
-          rectangle: "矩形",
-          rightangleflag: "直角旗标",
-          doublearrow: "双箭头",
-          polygon: "多边形",
-          title: "标绘",
-          entityclassic: "标绘类型"
-        },
-        en: {
-          dot: "dot",
-          line: "line",
-          surface: "surface",
-          pin: "Built icon",
-          pinpicturebtn: "External Icon",
-          pindivbtn: "div icon",
-          path: "path",
-          polyline: "polyline",
-          curvearrow: "curvearrow",
-          polylinearrow: "polylinearrow",
-          sectorsearch: "sectorsearch",
-          arc: "arc",
-          bezier2: "bezier2",
-          bezier3: "bezier3",
-          circle: "circle",
-          triflag: "triflag",
-          curveflag: "curveflag",
-          rectangle: "rectangle",
-          rightangleflag: "rightangleflag",
-          doublearrow: "doublearrow",
-          polygon: "polygon",
-          title: "Entity",
-          entityclassic: "EntityClassic"
-        }
-      },
-      lang: undefined
+      lang: {},
+      langs: languagejs,
+      checkBoxShow: false
     };
   },
   created() {},
@@ -180,7 +143,6 @@ export default {
     // 外置图标
     Pinpicturebtn() {
       var PinPictureTool = new XE.Obj.Pin(this.$root.$earth);
-      PinPictureTool.ctrtype = "PinPictureTool";
       PinPictureTool.name = "外置图标";
       PinPictureTool.positionPicking = true;
       PinPictureTool.isCreating = true;
@@ -212,6 +174,45 @@ export default {
       Polyline.creating = true;
       Polyline.isCreating = true;
       Polyline.name = "折线";
+      this.$root.$earthUI.showPropertyWindow(Polyline);
+    },
+    // 实线
+    SolidLine() {
+      var Polyline = new XE.Obj.Polyline(this.$root.$earth);
+      Polyline.name = "实线";
+      Polyline.allowPicking = true;
+      Polyline.isCreating = true;
+      Polyline.creating = true;
+      this.$root.$earthUI.showPropertyWindow(Polyline);
+    },
+    // 虚线
+    DotLine() {
+      var Polyline = new XE.Obj.Polyline(this.$root.$earth);
+      Polyline.name = "虚线";
+      Polyline.material.type = "XbsjPolylineDashMaterial";
+      Polyline.allowPicking = true;
+      Polyline.isCreating = true;
+      Polyline.creating = true;
+      this.$root.$earthUI.showPropertyWindow(Polyline);
+    },
+    // 箭头线
+    ArrowLine() {
+      var Polyline = new XE.Obj.Polyline(this.$root.$earth);
+      Polyline.name = "箭头线";
+      Polyline.material.type = "XbsjPolylineArrowMaterial";
+      Polyline.allowPicking = true;
+      Polyline.isCreating = true;
+      Polyline.creating = true;
+      this.$root.$earthUI.showPropertyWindow(Polyline);
+    },
+    // OD线
+    ODLine() {
+      var Polyline = new XE.Obj.Polyline(this.$root.$earth);
+      Polyline.name = "OD线";
+      Polyline.material.type = "XbsjODLineMaterial";
+      Polyline.allowPicking = true;
+      Polyline.isCreating = true;
+      Polyline.creating = true;
       this.$root.$earthUI.showPropertyWindow(Polyline);
     },
     // 曲线箭头
@@ -262,6 +263,16 @@ export default {
       Bezier3.name = "贝塞尔3次曲线";
       this.$root.$earthUI.showPropertyWindow(Bezier3);
     },
+    // 平行搜寻区
+    // ParallelSearch() {
+    //   var ParallelSearch = new XE.Obj.Plots.GeoParallelSearch(
+    //     this.$root.$earth
+    //   );
+    //   ParallelSearch.creating = true;
+    //   ParallelSearch.isCreating = true;
+    //   ParallelSearch.name = "平行搜寻区";
+    //   this.$root.$earthUI.showPropertyWindow(ParallelSearch);
+    // },
     // 圆
     Circle() {
       var Circle = new XE.Obj.Plots.GeoCircle(this.$root.$earth);
@@ -319,6 +330,14 @@ export default {
       Polygon.isCreating = true;
       Polygon.name = "多边形";
       this.$root.$earthUI.showPropertyWindow(Polygon);
+    },
+    // 扇形
+    Sector() {
+      var Sector = new XE.Obj.Plots.GeoSector(this.$root.$earth);
+      Sector.creating = true;
+      Sector.isCreating = true;
+      Sector.name = "扇形";
+      this.$root.$earthUI.showPropertyWindow(Sector);
     }
   }
 };

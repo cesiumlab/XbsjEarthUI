@@ -70,7 +70,7 @@
 
  .xbsj-item-btnbox {
    height: 72px;
-   width: 50px;
+   width: 60px;
    /* border: 1px solid red; */
    float: left;
    margin-top: 5px;
@@ -598,7 +598,7 @@
    overflow: hidden;
    cursor: default;
    border-color: rgba(71, 71, 71, 1);
-   margin-top: 28px;
+   /* margin-top: 28px; */
  }
 
  .xbsj-input-number-handler-wrap {
@@ -783,4 +783,11 @@
   padding: 5px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.xbsj-input-number-input {
+  background: rgba(0, 0, 0, 0.5);
+}
+.xbsj-input-number-handler-wrap, .xbsj-input-number-handler {
+  background: none;
 }

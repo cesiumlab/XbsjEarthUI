@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="xbsj-labels" content="Earth示例">
     </meta>
-    <title>热力图-播放</title>
+    <title>贴地图像-播放</title>
     <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <script src="./scripts/vue.min.js"></script>
@@ -242,9 +242,9 @@
                         },
                         "ref": 'tileset'
                     }, {
-                        "ref": 'heatMap1',
+                        "ref": 'groundImage1',
                         "czmObject": {
-                            "xbsjType": "HeatMap",
+                            "xbsjType": "GroundImage",
                             "position": [
                                 1.9017007449558452,
                                 0.5972456941664638,
@@ -257,7 +257,7 @@
                 };
 
                 var tileset = earth.sceneTree.$refs.tileset.czmObject;
-                var heatMap1 = earth.sceneTree.$refs.heatMap1.czmObject;
+                var groundImage1 = earth.sceneTree.$refs.groundImage1.czmObject;
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
@@ -266,26 +266,26 @@
 
                 // 设置初始值
                 this.labelarr = ["./images/baidu.png", "./images/logo.png", "./images/sougou.jpg"];
-                heatMap1.imageUrls = ["./images/baidu.png", "./images/logo.png", "./images/sougou.jpg"];
+                groundImage1.imageUrls = ["./images/baidu.png", "./images/logo.png", "./images/sougou.jpg"];
 
                 // 1.1.5 数据绑定
-                this._playingUnbind = XE.MVVM.bind(this, 'playing', heatMap1, 'playing');
-                this._loopPlayUnbind = XE.MVVM.bind(this, 'loopPlay', heatMap1, 'loopPlay');
-                this._timeDurationUnbind = XE.MVVM.bind(this, 'timeDuration', heatMap1, 'timeDuration');
-                this._currentTimeUnbind = XE.MVVM.bind(this, 'currentTime', heatMap1, 'currentTime');
+                this._playingUnbind = XE.MVVM.bind(this, 'playing', groundImage1, 'playing');
+                this._loopPlayUnbind = XE.MVVM.bind(this, 'loopPlay', groundImage1, 'loopPlay');
+                this._timeDurationUnbind = XE.MVVM.bind(this, 'timeDuration', groundImage1, 'timeDuration');
+                this._currentTimeUnbind = XE.MVVM.bind(this, 'currentTime', groundImage1, 'currentTime');
 
                 this._earth = earth;
 
                 // only for Debug
                 window.tileset = tileset;
-                window.heatMap1 = heatMap1;
+                window.groundImage1 = groundImage1;
                 window.earth = earth;
             },
             methods: {
                 // 移除标签
                 removeitem(index, item) {
                     this.labelarr.splice(index, 1);
-                    heatMap1.imageUrls = this.labelarr;
+                    groundImage1.imageUrls = this.labelarr;
                 },
                 // input回车加入labelarr中
                 addlabel() {
@@ -301,7 +301,7 @@
                             }
                         }
                     }
-                    heatMap1.imageUrls = this.imageUrls;
+                    groundImage1.imageUrls = this.imageUrls;
                 }
             },
             // 1.2 资源销毁

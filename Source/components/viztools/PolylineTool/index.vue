@@ -505,10 +505,7 @@ export default {
       }
     }
   },
-  beforeDestroy() {
-    this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers = this._disposers && this._disposers();
-  },
+
   computed: {
     name() {
       return this.polyline.name;
@@ -660,25 +657,21 @@ export default {
       this.materialName = c.name;
       this.materialType = c.type;
       if (c.type === "XbsjColorMaterial") {
-        this.polyline.width = 2;
         this.colorMaterialBox = true;
         this.dashMaterialBox = false;
         this.arrowMaterialBox = false;
         this.oDLineMaterialBox = false;
       } else if (c.type === "XbsjPolylineDashMaterial") {
-        this.polyline.width = 6;
         this.colorMaterialBox = false;
         this.dashMaterialBox = true;
         this.arrowMaterialBox = false;
         this.oDLineMaterialBox = false;
       } else if (c.type === "XbsjPolylineArrowMaterial") {
-        this.polyline.width = 20;
         this.colorMaterialBox = false;
         this.dashMaterialBox = false;
         this.arrowMaterialBox = true;
         this.oDLineMaterialBox = false;
       } else {
-        this.polyline.width = 2;
         this.colorMaterialBox = false;
         this.dashMaterialBox = false;
         this.arrowMaterialBox = false;
@@ -707,6 +700,7 @@ export default {
       if (!polyLineToolObj) {
         return;
       }
+      polyLineToolObj.editing = false;
       polyLineToolObj.positionEditing = false;
       if (polyLineToolObj.isCreating) {
         polyLineToolObj.isCreating = false;
@@ -721,8 +715,10 @@ export default {
     }
   },
   beforeDestroy() {
-    //销毁监控
-    // this.disAutorun();
+    // 解绑数据关联
+    this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
+    this._disposers.forEach(e => e());
+    this._disposers.length = 0;
   }
 };
 </script>

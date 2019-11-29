@@ -1,6 +1,47 @@
 Change Log
 ==========
 
+### 1.2.9 - 2019-11-29
+
+##### Additions :tada:
+
+* 折线和多边形类型增加depthTest属性，当地表透明时建议开启
+* 折线和多边形增加拾取响应
+
+##### Fixes :wrench:
+* 修复地形开启半透明以后，导致拾取时模型闪烁的问题
+* 修复对非draco顶点压缩模式模型和3dtiles数据进行加载时显示错乱的问题，但是进行模型压平时仍然会有问题
+* 完善CzmObject对象的说明文档
+
+### 1.2.8 - 2019-11-26
+
+##### Major Announcements :loudspeaker:
+* HeatMap类变更为GroundImage
+* Pin的winPos属性从2个元素的数组变成4个元素的数组，即从[left, bottom]变成[left, top, right, bottom]，需要把之前winPos[1]改成winPos[3]
+* SceneTree.Group类增加setAllChildrenEnabled方法，以替代enabled这个只写属性，目的是避免把enabled当成响应式属性来使用
+* 通过3dtiles的style设置偏移量的功能，需要使用EarthSDK自带的Cesium，如果替换Cesium，此功能将不可用
+
+##### Additions :tada:
+* EarthUI和EarthSDK增加了pin里面的extText相关属性
+* EarthUI增加了控制图层树checkbox显隐的属性
+* EarthUI标绘增加了平行搜寻区功能
+* 增加任意多边形框选功能
+* 3dtiles的style可以设置部件偏移
+* Pin中增加extText、isDivImage属性，改造winPos属性
+* czmObject类型增加evalString、preUpdateEvalString等属性
+* tileset和model可以设置环境贴图
+* 进一步完善标绘的编辑功能，目前编辑时不会出现黄线
+* 自定义图元类增加registerEditing方法，调用之后可进行编辑
+
+##### Fixes :wrench:
+* 修复强制光照经度、纬度不对的问题
+* 修复外置图标打开看不见的问题
+* 修复销毁地球时，有对象清理不掉的问题
+* 修复Pin的enable属性不起作用等问题
+* 修复场景树节点中ref属性不能保存的问题
+* 修复odlines中enabled属性不起作用的问题
+* 修复自定义图元移动后消失的问题
+
 ### 1.2.7 - 2019-11-9
 
 ##### Fixes :wrench:

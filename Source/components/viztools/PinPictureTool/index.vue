@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="535"
+    :height="480"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -89,6 +89,13 @@
         </div>
       </div>
 
+      <div class="flatten" style="display:flex;">
+        <div>
+          <label></label>
+          <XbsjCheckBox v-model="pin.isDivImage">{{lang.isDivImage}}</XbsjCheckBox>
+        </div>
+      </div>
+
       <div class="flatten">
         <div style="position: relative;">
           <label>{{lang.pathAnimation}}</label>
@@ -133,6 +140,7 @@ export default {
         far: 25000000,
         near: 100,
         imageUrl: "",
+        isDivImage: true,
         scale: 1,
         show: true,
         position: [0, 0, 0],
@@ -185,7 +193,8 @@ export default {
         scale: "pin.scale",
         enabled: "pin.enabled",
         pinBuilder: "pin.pinBuilder",
-        attachedPathGuid: "pin.attachedPathGuid"
+        attachedPathGuid: "pin.attachedPathGuid",
+        isDivImage: "pin.isDivImage"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -205,17 +214,12 @@ export default {
 
       this.makiIconObj = XE.Obj.Pin.MakiIcon;
       this.makiIconObj.null = "";
-      if (this._czmObj.isCreating) {
-        this.pin.imageUrl =
-          "http://localhost:9530/Apps/Examples/images/earth.png";
+      if (this._czmObj.isCreating && !this.pin.imageUrl) {
+        this.pin.imageUrl = "../../assets/earth.png";
       }
 
       this._czmObj.far = 1073741824;
     }
-  },
-  beforeDestroy() {
-    this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers = this._disposers && this._disposers();
   },
   computed: {
     name() {
@@ -350,8 +354,10 @@ export default {
     }
   },
   beforeDestroy() {
-    //销毁监控
-    // this.disAutorun();
+    // 解绑数据关联
+    this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
+    this._disposers.forEach(e => e());
+    this._disposers.length = 0;
   }
 };
 </script>

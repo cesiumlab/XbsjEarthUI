@@ -15,6 +15,7 @@
       ref="vtree"
       :tree="tree"
       :canmove="canmove"
+      :checkBoxShow="checkBoxShow"
       :on-toggle-expand="toggleExpand"
       :on-toggle-checked="toggleChecked"
       @on-context-menu="contextMenu"
@@ -32,7 +33,7 @@
 <script>
 import { getCodeUrl, getCode, getCzmCode } from "./code";
 
-function destroyVueNode(ivuNode, parent) {
+function destroyVueNode (ivuNode, parent) {
   if (ivuNode._inner.disposer) {
     ivuNode._inner.disposer.basicPropDisposer &&
       ivuNode._inner.disposer.basicPropDisposer();
@@ -55,7 +56,7 @@ function destroyVueNode(ivuNode, parent) {
 
 let vueItemTotal = 0;
 
-function createVueNode(xbsjSceneNode) {
+function createVueNode (xbsjSceneNode) {
   const ivuNode = {};
   ivuNode.id = vueItemTotal++;
   ivuNode._inner = Object.freeze({ sn: xbsjSceneNode, disposer: {} });
@@ -137,11 +138,35 @@ function createVueNode(xbsjSceneNode) {
 }
 
 export default {
-  data() {
+  data () {
     return {
       show: true,
       tree: [],
+      symbolObjTypes: [
+        "GroundImage", 
+        "Pin", 
+        "GeoPin",
+        "Path",
+        "GeoPolyline",
+        "Polyline",
+        "GeoSectorSearch",
+        "GeoPolylineArrow",
+        "GeoCurveArrow",
+        "GeoArc",
+        "GeoBezier2", 
+        "GeoBezier3", 
+        "GeoParallelSearch", 
+        "GeoCircle", 
+        "GeoRectangle", 
+        "GeoTriFlag", 
+        "GeoRightAngleFlag", 
+        "GeoDoubleArrow", 
+        "GeoPolygon", 
+        "GeoSector", 
+        "Scanline",
+        "Model"],
       canmove: true,
+      checkBoxShow: true,
       langs: {
         zh: {
           confirm: "确认删除图层?",
@@ -160,7 +185,8 @@ export default {
           viewSource: "查看加载代码",
           viewCzmSource: "查看Cesium加载代码",
           config: "控制台打印JSON配置",
-          cameraAttached: "相机绑定"
+          cameraAttached: "相机绑定",
+          addToSymbol: "添加到标注库"
         },
         en: {
           confirm: "confirm to delete the layer?",
@@ -179,18 +205,19 @@ export default {
           viewSource: "View Source",
           viewCzmSource: "View Cesium's Source",
           config: "Console Print JSON Config",
-          cameraAttached: "cameraAttached"
+          cameraAttached: "cameraAttached",
+          addToSymbol: "Add To Symbol"
         }
       },
       lang: undefined
     };
   },
-  created() {},
-  mounted() {
+  created () { },
+  mounted () {
     this.setSceneTree(this.$root.$earth.sceneTree);
   },
   methods: {
-    onContexMenu() {
+    onContexMenu () {
       const baseItems = [
         {
           text: this.lang.addFolder,
@@ -205,20 +232,20 @@ export default {
       ];
       this.$root.$earthUI.contextMenu.pop(baseItems);
     },
-    playClick() {
+    playClick () {
       this.playShow = !this.playShow;
     },
-    cameraClick() {
+    cameraClick () {
       this.cameraShow = !this.cameraShow;
     },
-    mouseClick() {
+    mouseClick () {
       this.mouseShow = !this.mouseShow;
     },
-    rotationClick() {
+    rotationClick () {
       this.rotationShow = !this.rotationShow;
     },
 
-    setSceneTree(sceneTree) {
+    setSceneTree (sceneTree) {
       if (this._vueTree) {
         destroyVueNode(this._vueTree, undefined);
         this._vueTree = undefined;
@@ -230,13 +257,19 @@ export default {
       this._vueTree = createVueNode(this._sceneTree.root);
       this.tree = this._vueTree.children;
     },
-    toggleExpand(treeItem) {
+    toggleExpand (treeItem) {
       treeItem._inner.sn.expand = !treeItem.expand;
     },
-    toggleChecked(treeItem, checked) {
-      treeItem._inner.sn.enabled = checked;
+    toggleChecked (treeItem, checked) {
+      if (treeItem._inner.sn instanceof XE.SceneTree.Group) {
+        treeItem._inner.sn.setAllChildrenEnabled(checked);
+      } else if (treeItem._inner.sn instanceof XE.SceneTree.Leaf) {
+        treeItem._inner.sn.enabled = checked;
+      } else {
+        console.error('toggleChecked got error!');
+      }
     },
-    popContextMenu({ item, vueObject }) {
+    popContextMenu ({ item, vueObject }) {
       //右键之后设置当前node
       item._inner.sn.isSelected = true;
       //console.log(this);
@@ -422,7 +455,27 @@ export default {
                   const tilesetCzmObject = item._inner.sn.czmObject;
                   const code = getCzmCode(tilesetCzmObject);
                   const url = getCodeUrl(code);
-                  this.$root.$earthUI.openURL(url);                  
+                  this.$root.$earthUI.openURL(url);
+                }
+              }
+            ]
+          );
+        }
+
+        //如果有GroundImage类型，就添加一个GroundImage绑定菜单
+        if (this.symbolObjTypes.indexOf(item._inner.sn.czmObject.xbsjType) >= 0) {
+          baseItems.push(
+            ...[
+              {
+                text: this.lang.addToSymbol,
+                func: () => {
+                  var self = this
+                  this.$root.$earth
+                    .capture(64, 64)
+                    .then(img => {
+                      self.$root.$labServer.addToSymbolGroup(item._inner.sn.czmObject, img)
+                    })
+
                 }
               }
             ]
@@ -448,18 +501,18 @@ export default {
       }
       this.$root.$earthUI.contextMenu.pop(baseItems);
     },
-    contextMenu({ item, vueObject }) {
+    contextMenu ({ item, vueObject }) {
       this.popContextMenu({ item, vueObject });
     },
-    changeTitle(options) {
+    changeTitle (options) {
       const treeItem = options.item;
       const newTitle = options.title;
       treeItem._inner.sn && (treeItem._inner.sn.title = newTitle);
     },
-    itemDoubleClick({ item, vueObject }) {
+    itemDoubleClick ({ item, vueObject }) {
       const czmObject = item._inner.sn.czmObject;
       if (czmObject) {
-        console.log(czmObject)
+        console.log(czmObject);
         czmObject.flyTo();
 
         let t = czmObject.xbsjType;
@@ -472,17 +525,17 @@ export default {
           this.$root.$earthUI.controls.mainBar.showPage("terrain");
       }
     },
-    itemClick({ item, vueObject }) {
+    itemClick ({ item, vueObject }) {
       // 会给双击带来问题， TODO(vtxf): 需要想办法处理！
       // item._inner.sn.isSelected = !item._inner.sn.isSelected;
       item._inner.sn.isSelected = true;
     },
-    moveItem({ item, vueObject }) {
+    moveItem ({ item, vueObject }) {
       //拖拽移动的时候保存当前拖动的item
       this.canmove = true;
       this._currentSceneNode = item._inner.sn;
     },
-    canMoveItem({ item, vueObject }) {
+    canMoveItem ({ item, vueObject }) {
       //判断放置目标是否是源目标的子节点
       const sn = item._inner.sn;
       if (this._currentSceneNode && sn !== this._currentSceneNode) {
@@ -499,9 +552,11 @@ export default {
           //   this.canmove = false;
           // }
         }
+      } else {
+        this.canmove = false
       }
     },
-    dropItem({ item, vueObject }) {
+    dropItem ({ item, vueObject }) {
       //放置源目标到放置目标位置
       const sn = item._inner.sn;
       if (this._currentSceneNode && sn !== this._currentSceneNode) {
@@ -519,7 +574,7 @@ export default {
     }
   },
   computed: {
-    progressStyle() {
+    progressStyle () {
       const { horizonAngle } = this;
       // console.log(horizonAngle);
       return {
@@ -527,7 +582,7 @@ export default {
         height: "4px"
       };
     },
-    progressStyle2() {
+    progressStyle2 () {
       const { verticalAngle } = this;
       // console.log(verticalAngle);
       return {
@@ -536,7 +591,7 @@ export default {
       };
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     if (this.unbind) {
       this.unbind();
       this.unbind = undefined;

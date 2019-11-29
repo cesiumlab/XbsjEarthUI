@@ -129,7 +129,7 @@ export default {
         show: true,
         position: [0, 0, 0],
         pinBuilder: {},
-        winPos: [0, 0],
+        winPos: [0, 0, 0, 0],
         attachedPathGuid: ""
       },
       pinstyletype: true,
@@ -201,10 +201,6 @@ export default {
 
       console.log(this._czmObj.defaultImgUrl());
     }
-  },
-  beforeDestroy() {
-    this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers = this._disposers && this._disposers();
   },
   computed: {
     name() {
@@ -298,8 +294,10 @@ export default {
     }
   },
   beforeDestroy() {
-    //销毁监控
-    // this.disAutorun();
+    // 解绑数据关联
+    this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
+    this._disposers.forEach(e => e());
+    this._disposers.length = 0;
   }
 };
 </script>

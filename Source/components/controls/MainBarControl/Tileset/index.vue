@@ -18,13 +18,21 @@
           ></div>
           <span class="xbsj-item-name">{{lang.online}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
+        <div class="xbsj-item-btnbox" v-show="labServiceUI">
           <div
             class="xbsj-item-btn localhostbutton"
             @click="modelLab=!modelLab"
             :class="{highlight:modelLab}"
           ></div>
           <span class="xbsj-item-name">{{lang.localhost}}</span>
+        </div>
+        <div class="xbsj-item-btnbox" v-show="cloudServiceUI">
+          <div
+            class="xbsj-item-btn localhostbutton"
+            @click="modelCloud=!modelCloud"
+            :class="{highlight:modelCloud}"
+          ></div>
+          <span class="xbsj-item-name">{{lang.cloudhost}}</span>
         </div>
       </div>
 
@@ -226,6 +234,7 @@
 import languagejs from "./index_locale";
 
 export default {
+  props: ["labServiceUI", "cloudServiceUI"],
   data() {
     return {
       showTip: "never",
@@ -245,6 +254,7 @@ export default {
       xbsjRightTopView: false,
       xbsjRightBottomView: false,
       modelLab: false,
+      modelCloud: false,
       modelOnline: false,
       flattings: [],
       positionEditing: false,
@@ -671,7 +681,7 @@ export default {
   border: none;
   outline: none;
   position: absolute;
-  left: 11px;
+  left: 16px;
 }
 .righttopButton:disabled {
   background: url(../../../../images/view_disabled.png) no-repeat;
@@ -691,7 +701,7 @@ export default {
   outline: none;
   position: absolute;
   top: 38px;
-  left: -7px;
+  left: -2px;
 }
 .leftbottomButton:disabled {
   background: url(../../../../images/view_disabled.png) no-repeat;
@@ -711,7 +721,7 @@ export default {
   outline: none;
   position: absolute;
   top: 38px;
-  left: 11px;
+  left: 16px;
 }
 .rightbottomButton:disabled {
   background: url(../../../../images/view_disabled.png) no-repeat;

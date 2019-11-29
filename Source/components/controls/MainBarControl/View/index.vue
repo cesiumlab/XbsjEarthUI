@@ -37,6 +37,12 @@
           <div class="xbsj-item-btn scenebutton" :class="{highlight :modelTreeShow}"></div>
           <span class="xbsj-item-name">{{lang.modelTree}}</span>
         </div>
+
+        <!-- Symbol标绘 -->
+        <div class="xbsj-item-btnbox" @click="SymbolShow=!SymbolShow" v-show="show">
+          <div class="xbsj-item-btn symbolbutton" :class="{highlight: SymbolShow}"></div>
+          <span class="xbsj-item-name">{{lang.symbol}}</span>
+        </div>
         <!--
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn attributebutton"></div>
@@ -151,6 +157,7 @@ export default {
       scalecontrolShow: true,
       statecontrolShow: true,
       modelTreeShow: false,
+      show: true,
       selectlist: false,
       splitX: 1.0,
       splitY: 1.0,
@@ -174,7 +181,8 @@ export default {
         }
       },
       baseColor: [0, 0, 0.5, 1],
-      langs: languagejs
+      langs: languagejs,
+      SymbolShow: false
     };
   },
   created() {
@@ -388,6 +396,17 @@ export default {
 .scenebutton.highlight,
 .scenebutton:hover {
   background: url(../../../../images/scene_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.symbolbutton {
+  background: url(../../../../images/symbol.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.symbolbutton.highlight,
+.symbolbutton:hover {
+  background: url(../../../../images/symbol_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }

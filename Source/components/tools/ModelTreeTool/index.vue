@@ -18,6 +18,7 @@
         :tree="tree"
         :on-toggle-checked="toggleChecked"
         @on-double-click="itemDoubleClick"
+        :checkBoxShow="checkBoxShow"
       ></XbsjVirtualTree>
     </div>
   </Window>
@@ -40,11 +41,11 @@ export default {
           restore: "Restore Style"
         }
       },
-      lang: undefined
+      lang: undefined,
+      checkBoxShow: true
     };
   },
   created() {
-    
     this._styles = [];
     this._testedUrl = [];
 
@@ -95,7 +96,7 @@ export default {
   },
   methods: {
     evaluateShow(feature) {
-      if(!feature) return true;
+      if (!feature) return true;
       if (!feature.hasProperty("id")) return true;
       var fid = feature.getProperty("id");
       //获取tileset
@@ -114,7 +115,7 @@ export default {
       return true;
     },
     evaluateColor(feature, result) {
-      if(!feature) return ;
+      if (!feature) return;
       if (!feature.hasProperty("id")) return;
       var fid = feature.getProperty("id");
       //获取tileset

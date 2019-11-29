@@ -114,6 +114,20 @@ function createVertexShad() {
                 };
 
                 cs.fsBody = `
+                    // sun light
+                    vec3 positionToEyeEC = -v_positionEC;
+                    vec3 normalEC = normalize(v_normal);
+                    
+                    czm_materialInput materialInput;
+                    materialInput.normalEC = normalEC;
+                    materialInput.positionToEyeEC = positionToEyeEC;               
+                    materialInput.st = vec2(0, 0);
+                    czm_material material = czm_getDefaultMaterial(materialInput);
+                    material.diffuse = vec3(1.0);
+                    material.specular = 0.0;
+                    gl_FragColor = czm_phong(normalize(positionToEyeEC), material);
+
+                    // custom color
                     float xbsji = u_xbsjCustomParams.z; 
                     float xbsjv = 0.0;
                     ${fsComp}

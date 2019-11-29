@@ -8,7 +8,7 @@
       @mousemove="onMoving($event)"
       @mouseup="endMove($event)"
     >
-      <div class="xbsj-list-item">
+      <div class="xbsj-list-item" v-show="labServiceUI">
         <span class="xbsj-list-name">{{lang.scene}}</span>
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn savebutton" @click="saveScene"></div>
@@ -202,6 +202,7 @@ import SceneComp from "./Scene";
 import TrackComp from "./Track";
 import { addOutterEventListener } from "../../../utils/xbsjUtil";
 export default {
+  props:["labServiceUI"],
   components: {
     SearchComp,
     RotateGlobeComp,

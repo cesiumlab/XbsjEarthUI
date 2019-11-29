@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="row">
-      <label class="label" @click="startScale=1">{{lang.zxld}}:</label>
+      <label class="label" @click="minimumBrightness=0.1">{{lang.zxld}}:</label>
       <div class="field">
         <XbsjSlider :min="0" :max="1" :step="0.01" showTip="always" v-model="minimumBrightness"></XbsjSlider>
       </div>
@@ -15,9 +15,8 @@
   </div>
 </template>
 
-<script> 
+<script>
 export default {
-   
   data() {
     return {
       langs: {
@@ -36,12 +35,8 @@ export default {
       screenSpaceErrorFactor: 2.0
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
-   
-
     this.bind("density");
     this.bind("minimumBrightness");
     this.bind("screenSpaceErrorFactor");
@@ -50,12 +45,7 @@ export default {
     bind(prp) {
       this._viewUnbinds = this._viewUnbinds || [];
       this._viewUnbinds.push(
-        XE.MVVM.bind(
-          this,
-          prp,
-          this.$root.$earth.weather.fog,
-          prp
-        )
+        XE.MVVM.bind(this, prp, this.$root.$earth.weather.fog, prp)
       );
     }
   },

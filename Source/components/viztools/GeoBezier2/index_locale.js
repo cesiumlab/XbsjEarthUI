@@ -1,5 +1,5 @@
 const zh = {
-  title: '折线',
+  title: '贝塞尔2次曲线',
   name: '名称',
   show: '显示',
   creating: '创建',
@@ -10,7 +10,7 @@ const zh = {
 };
 
 const en = {
-  title: 'GeoPolyline',
+  title: 'GeoBezier2',
   name: 'name',
   show: 'show',
   creating: 'creating',

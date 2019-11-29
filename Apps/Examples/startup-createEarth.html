@@ -7,6 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="xbsj-labels" content="Earth起步"></meta>
     <title>创建地球</title>
+
+    <!-- 强制提前加载Cesium.js，其中Cesium相关路径可以换成自定义的 -->
+    <!-- <script src="../../XbsjCesium/Cesium.js"></script> -->
+    <!-- <link rel="stylesheet" href="../../XbsjCesium/Widgets/Widgets.css"> -->
+
     <!-- 0 引入js文件 -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <style>
@@ -28,7 +33,12 @@
         var bgImagery;
 
         function startup() {
-            earth = new XE.Earth('earthContainer');
+            // earth = new XE.Earth('earthContainer');
+            earth = new XE.Earth('earthContainer', {
+                // 这里设置Viewer的配置，和new Viewer(container, options)中的options一致
+                homeButton: true,
+                timeline: true,
+            });
 
             earth.sceneTree.root = {
                 "children": [

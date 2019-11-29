@@ -8,6 +8,7 @@ import XbsjSelect from "../components/common/Select";
 import XbsjInput from "../components/common/Input";
 import XbsjSwitch from "../components/common/Switch";
 import XbsjSlider from "../components/common/Slider";
+import XbsjInputNumber from "../components/common/Slider/input-number";
 import XbsjIcon from "../components/common/Icon";
 import XbsjRampSelect from "../components/common/RampSelect";
 import XbsjLngLatHeight from "../components/common/LngLatHeight";
@@ -28,6 +29,7 @@ Vue.component("XbsjSelect", XbsjSelect); // 全局注册组件
 Vue.component("XbsjInput", XbsjInput); // 全局注册组件
 Vue.component("XbsjSwitch", XbsjSwitch); // 全局注册组件
 Vue.component("XbsjSlider", XbsjSlider); // 全局注册组件
+Vue.component("XbsjInputNumber", XbsjInputNumber); // 全局注册组件
 Vue.component("XbsjIcon", XbsjIcon); // 全局注册组件y 
 Vue.component("XbsjRampSelect", XbsjRampSelect); // 全局注册组件y
 Vue.component('XbsjLngLatHeight', XbsjLngLatHeight);
@@ -46,12 +48,15 @@ import ContextMenu from "./ContextMenu";
 import MainBar from "./controls/MainBar";
 
 import ImageryLab from "./tools/ImageryLab";
+import ImageryCloud from "./tools/ImageryCloud";
 import ImageryOnline from "./tools/ImageryOnline";
 import ImageryWMTS from "./tools/ImageryWMTS";
 import LabServer from "./LabServer";
 import ModelLab from "./tools/ModelLab";
+import ModelCloud from "./tools/ModelCloud";
 import ModelOnline from "./tools/ModelOnline";
 import TerrainLab from "./tools/TerrainLab";
+import TerrainCloud from "./tools/TerrainCloud";
 import TerrainOnline from "./tools/TerrainOnline";
 import CameraViewManager from "./tools/CameraViewManager";
 import CutFillComputing from "./tools/CutFillComputing";
@@ -61,6 +66,7 @@ import LabScene from "./LabScene"
 
 import ModelTree from "./tools/ModelTree";
 import EntityMore from "./tools/EntityMore";
+import Symbol from "./tools/Symbol"
 
 /**
  * EarthUI根管理器
@@ -215,16 +221,20 @@ class MainUI {
     //模型结构
     this._modelTree = new ModelTree(this);
     this._entitymore = new EntityMore(this);
+    this._symbol = new Symbol(this);
     //其他工具
     this._imageryLab = new ImageryLab(this);
+    this._imageryCloud = new ImageryCloud(this);
     this._imageryOnline = new ImageryOnline(this);
     this._imageryWMTS = new ImageryWMTS(this);
     //其他工具
     this._modelLab = new ModelLab(this);
+    this._modelCloud = new ModelCloud(this);
     this._modelOnline = new ModelOnline(this);
 
     //其他工具
     this._terrainLab = new TerrainLab(this);
+    this._terrainCloud = new TerrainCloud(this);
     this._terrainOnline = new TerrainOnline(this);
 
     this._cameraViewManager = new CameraViewManager(this);
@@ -267,6 +277,40 @@ class MainUI {
           get imageryLab() {
             return mainUI._imageryLab;
           },
+
+          /**
+          * 来自云平台的影像数据源选择器
+          * @readonly
+          * @type {ImageryLabCloud} 
+          * @instance
+          * @memberof ToolsCollection
+          */
+          get imageryLabCloud() {
+            return mainUI._imageryCloud;
+          },
+
+          /**
+          * 来自云平台的瓦片数据源选择器
+          * @readonly
+          * @type {ModelCloud} 
+          * @instance
+          * @memberof ToolsCollection
+          */
+          get modelCloud() {
+            return mainUI._modelCloud;
+          },
+
+          /**
+           * 来自云平台的地形数据源选择器
+           * @readonly
+           * @type {terrainCloud} 
+           * @instance
+           * @memberof ToolsCollection
+           */
+          get terrainCloud() {
+            return mainUI._terrainCloud;
+          },
+
           /**
           * 在线的影像数据源选择器
           * @readonly
@@ -376,6 +420,17 @@ class MainUI {
           */
           get entitymore() {
             return mainUI._entitymore;
+          },
+
+          /**
+          * 符号标绘
+          * @readonly
+          * @type {Symbol} 
+          * @instance
+          * @memberof ToolsCollection
+          */
+          get symbol() {
+            return mainUI._symbol;
           }
         };
       }

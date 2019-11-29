@@ -81,14 +81,14 @@
                     <div 
                         v-show="showInfo" 
                         class="dialog"
-                        :style="{ left: (winPos1[0]) + 'px', bottom: (winPos1[1] - 11) + 'px' }"
+                        :style="{ left: (winPos1[0]) + 'px', bottom: (winPos1[3] - 11) + 'px' }"
                     >
                         <span>3dtiles数据</span>
                     </div>
                     <div 
                         v-show="showTip" 
                         class="tip"
-                        :style="{ left: (winPos2[0]) + 'px', bottom: (winPos2[1] - 11) + 'px' }"
+                        :style="{ left: (winPos2[0]) + 'px', bottom: (winPos2[3] - 11) + 'px' }"
                     >
                         <span>地形影像</span>
                     </div>
@@ -102,8 +102,8 @@
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                     showInfo: true,
                     showTip: true,
-                    winPos1: [0, 0],
-                    winPos2: [0, 0],
+                    winPos1: [0, 0, 0, 0], // left top right bottom
+                    winPos2: [0, 0, 0, 0], // left top right bottom
                 };
             },
             // 1.1 资源创建

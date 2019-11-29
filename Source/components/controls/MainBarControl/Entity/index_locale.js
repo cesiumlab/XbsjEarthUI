@@ -34,7 +34,9 @@ const zh = {
   SectorSearch: '扇形搜索',
   TriFlag: '三角旗帜',
   DoubleArrow: '双箭头',
-  Scanline: '扫描线'
+  Scanline: '扫描线',
+  CustomPrimitive: '自定义图元',
+  tube: '管道'
 };
 
 const en = {
@@ -73,7 +75,9 @@ const en = {
   SectorSearch: 'SectorSearch',
   TriFlag: 'TriFlag',
   DoubleArrow: 'DoubleArrow',
-  Scanline: 'Scanline'
+  Scanline: 'Scanline',
+  CustomPrimitive: 'CustomPrimitive',
+  tube: 'Tube'
 };
 
 export default { zh, en };

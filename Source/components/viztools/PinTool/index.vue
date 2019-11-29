@@ -123,6 +123,32 @@
           </div>
         </div>
       </div>
+
+      <div class="flatten" style="display:flex;">
+        <!-- pin文本内容 -->
+        <div>
+          <label>{{lang.pinBuilder.exttext}}</label>
+          <input style="float:left;" type="text" v-model="pin.pinBuilder.extText" />
+        </div>
+        <!-- pin文本内容字体样式 -->
+        <div>
+          <label>{{lang.pinBuilder.exttextfont}}</label>
+          <input style="float:left;" type="text" v-model="pin.pinBuilder.extTextFont" />
+        </div>
+      </div>
+      <!-- 文本内容偏移 -->
+      <div class="flatten" style="display:flex;">
+        <!-- 左右偏移 -->
+        <div>
+          <label>{{lang.pinBuilder.lroffset}}</label>
+          <XbsjInputNumber v-model="extTextPixelOffset[0]"></XbsjInputNumber>
+        </div>
+        <!-- 上下偏移 -->
+        <div>
+          <label>{{lang.pinBuilder.tboffset}}</label>
+          <XbsjInputNumber v-model="extTextPixelOffset[1]"></XbsjInputNumber>
+        </div>
+      </div>
     </div>
   </Window>
 </template>
@@ -179,7 +205,8 @@ export default {
       dighole: false,
       connections: [],
       connectedTileset: "",
-      pathGuidarr: []
+      pathGuidarr: [],
+      extTextPixelOffset: []
     };
   },
   created() {},
@@ -220,16 +247,21 @@ export default {
       this._disposers.push(
         XE.MVVM.bind(this, "borderbaseColor", czmObj, "pinBuilder.outlineColor")
       );
+      this._disposers.push(
+        XE.MVVM.bind(
+          this,
+          "extTextPixelOffset",
+          czmObj,
+          "pinBuilder.extTextPixelOffset"
+        )
+      );
 
       this.makiIconObj = XE.Obj.Pin.MakiIcon;
       this.makiIconObj.null = "";
       this._czmObj.far = 1073741824;
     }
   },
-  beforeDestroy() {
-    this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers = this._disposers && this._disposers();
-  },
+
   computed: {
     name() {
       return this.pin.name;
@@ -359,15 +391,17 @@ export default {
     }
   },
   beforeDestroy() {
-    //销毁监控
-    // this.disAutorun();
+    // 解绑数据关联
+    this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
+    this._disposers.forEach(e => e());
+    this._disposers.length = 0;
   }
 };
 </script>
 
 <style scoped>
 .field {
-  margin-top: 20px;
+  margin-top: 11px;
   padding-left: 4px;
   display: inline-block;
   width: 220px;
@@ -665,5 +699,13 @@ button:focus {
 }
 .btncoloron {
   color: #1fffff !important;
+}
+.xbsj-input-number {
+  width: 143px;
+  height: 32px;
+  margin-top: 0px;
+  border: 0;
+  border-radius: 4px;
+  margin-right: 19px;
 }
 </style>

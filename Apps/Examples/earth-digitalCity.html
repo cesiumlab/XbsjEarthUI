@@ -21,7 +21,7 @@
 </head>
 
 <body>
-    <div id="earthContainer" style="width: 100%; height: 100%; background: grey; overflow: hidden;">    
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey; overflow: hidden; position: relative;">
     </div>
     <script>
         var earth;
@@ -154,140 +154,139 @@
         }
 
         function createCircle(earth) {
-            var p = new XE.Obj.CustomPrimitive(earth)
-            // p.position = [2.1206125026580582,0.5451708901585235,14.721614698023599];
-            p.position = [2.1206125026580582,0.545178729438238,14.721614698023599];
-            p.scale = [500, 500, 1];
-            // p.positions = [-1,-1,0,1,-1,0,1,1,0,-1,1,0,];
-            // p.sts = [0,0, 1,0, 1,1, 0,1, ];
-            // p.indices = [0, 1, 2, 0, 2, 3];
-            p.positions = XE.Obj.CustomPrimitive.Geometry.unitSquare.positions;
-            p.sts = XE.Obj.CustomPrimitive.Geometry.unitSquare.sts;
-            p.indices = XE.Obj.CustomPrimitive.Geometry.unitSquare.indices;
+            const evalString = `
+                Cesium.Resource.createIfNeeded('./images/ht/circular_03.png').fetchImage().then(function(image) {
+                    console.log('image loaded!');
+                    p.canvasWidth = 512;
+                    p.canvasHeight = 512;
 
-            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+                    p.drawCanvas(ctx => {
+                        ctx.clearRect(0, 0, 512, 512);
 
-            p.canvasWidth = 512;
-            p.canvasHeight = 512;
+                        ctx.beginPath();
+                        ctx.strokeStyle = "rgb(128, 128, 128)";
+                        // ctx.setLineDash([8, 8]);
+                        ctx.lineWidth = 1;
+                        ctx.arc(256, 256, 250, 0, Math.PI*2, true);
+                        ctx.stroke();
 
-            p.drawCanvas(ctx => {
-                ctx.clearRect(0, 0, 512, 512);
-                ctx.save();
-                ctx.beginPath();
-                ctx.strokeStyle = "rgb(255, 255, 0)"; 
-                ctx.setLineDash([8, 8]);
-                ctx.lineWidth = 3;
-                ctx.arc(256, 256, 250, 0, Math.PI*2, true);
-                ctx.stroke();
+                        ctx.drawImage(image, 0, 0);
+                    });
 
-                ctx.beginPath();
-                ctx.arc(256, 256, 120, 0, Math.PI*2, true);
-                ctx.stroke();
-                ctx.fillStyle = "rgb(0, 155, 255)"; 
-                ctx.fill();
-                ctx.restore();                
-            });    
-            
-            Cesium.Resource.createIfNeeded('./images/ht/circular_03.png').fetchImage().then(function(image) {
-                console.log('image loaded!');
-                p.canvasWidth = 512;
-                p.canvasHeight = 512;
-
-                p.drawCanvas(ctx => {
-                    ctx.clearRect(0, 0, 512, 512);
-
-                    ctx.beginPath();
-                    ctx.strokeStyle = "rgb(128, 128, 128)"; 
-                    // ctx.setLineDash([8, 8]);
-                    ctx.lineWidth = 1;
-                    ctx.arc(256, 256, 250, 0, Math.PI*2, true);
-                    ctx.stroke();
-
-                    ctx.drawImage(image, 0, 0);
+                    p.color = [0.5, 0.8, 1, 2];
                 });
+            `;
 
-                p.color = [0.5, 0.8, 1, 2];
-            });
-
-            let angle = 0.0;
-            earth.czm.scene.preUpdate.addEventListener(() => {
-                angle -= 1.0;
-                if (angle > 360.0) {
-                    angle = 0.0;
+            const preUpdateEvalString = `
+                if (typeof p.xxxAngle === 'undefined') p.xxxAngle = 360.0;
+                p.xxxAngle -= 1.0;
+                if (p.xxxAngle < 0) {
+                    p.xxxAngle = 360.0;
                 }
-                p.rotation[0] = angle / 180.0 * Math.PI;
-            });
+                p.rotation[0] = p.xxxAngle / 180.0 * Math.PI;
+            `;
+
+            // p.positions = XE.Obj.CustomPrimitive.Geometry.unitSquare.positions;
+            // p.sts = XE.Obj.CustomPrimitive.Geometry.unitSquare.sts;
+            // p.indices = XE.Obj.CustomPrimitive.Geometry.unitSquare.indices;
+
+            const config = {
+                // xbsjType: "CustomPrimitive",
+                evalString,
+                preUpdateEvalString,
+                position: [ 2.1206125026580582, 0.545178729438238, 14.721614698023599 ],
+                scale: [ 500, 500, 1 ],
+                positions: [ -1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0 ],
+                sts: [ 0, 0, 1, 0, 1, 1, 0, 1 ],
+                indices: [ 0, 1, 2, 0, 2, 3 ],
+                renderState: XE.Obj.CustomPrimitive.getRenderState(true, true),
+                color: [ 0.5, 0.8, 1, 2 ],
+                canvasWidth: 512,
+                canvasHeight: 512,
+            }
+
+            var p = new XE.Obj.CustomPrimitive(earth);
+            p.xbsjFromJSON(config);
 
             return p;
         }
 
         function createBillboard(earth) {
-            var p = new XE.Obj.CustomPrimitive(earth)
-            p.position = [2.1206401172802556,0.5451803047331054,302.99853825804723];
-            p.scale = [1, 100, 50];
-            p.positions = XE.Obj.CustomPrimitive.Geometry.unitBillboard.positions;
-            p.sts = XE.Obj.CustomPrimitive.Geometry.unitBillboard.sts;
-            p.indices = XE.Obj.CustomPrimitive.Geometry.unitBillboard.indices;
-
-            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-            p.renderState.cull.enabled = false;
-
-            p.canvasWidth = 512;
-            p.canvasHeight = 256;
-
-            Cesium.Resource.createIfNeeded('./images/city/billboard.png').fetchImage().then(function(image) {
-                console.log('image loaded!');
-                p.canvasWidth = 512;
-                p.canvasHeight = 256;
-
-                p.drawCanvas(ctx => {
-                    ctx.clearRect(0, 0, 512, 512);
-                    ctx.drawImage(image, 0, 0);
+            const evalString = `
+                Cesium.Resource.createIfNeeded('./images/city/billboard.png').fetchImage().then(function(image) {
+                    console.log('image loaded!');
+                    p.drawCanvas(ctx => {
+                        ctx.clearRect(0, 0, 512, 256);
+                        ctx.drawImage(image, 0, 0);
+                    });
                 });
+            `;
 
-                p.color = [0.5, 0.8, 1, 2];
-            });
+            // p.positions = XE.Obj.CustomPrimitive.Geometry.unitBillboard.positions;
+            // p.sts = XE.Obj.CustomPrimitive.Geometry.unitBillboard.sts;
+            // p.indices = XE.Obj.CustomPrimitive.Geometry.unitBillboard.indices;
+
+            const config = {
+                evalString,
+                position: [ 2.1206401172802556, 0.5451803047331054, 302.99853825804723 ],
+                scale: [ 1, 100, 50 ],
+                positions: [ 0, -1, 0, 0, 1, 0, 0, 1, 2, 0, -1, 2 ],
+                sts: [ 0, 0, 1, 0, 1, 1, 0, 1 ],
+                indices: [ 0, 1, 2, 0, 2, 3 ],
+                renderState: XE.Obj.CustomPrimitive.getRenderState(true, true),
+                color: [ 0.5, 0.8, 1, 2 ],
+                canvasWidth: 512,
+                canvasHeight: 256,
+            };
+
+            var p = new XE.Obj.CustomPrimitive(earth);
+            p.xbsjFromJSON(config);
 
             return p;
-        }        
+        }
 
         function createTetrahedron(earth) {
-            var p = new XE.Obj.CustomPrimitive(earth)
-            p.position = [2.120597930315031, 0.5451624300822016, 400];
-            p.scale = [15, 15, 15];
-            p.positions = [1,0,1.5, 0,1,1.5, -1,0,1.5, 0,-1,1.5, 0, 0, 0];
-            p.indices = [0, 1, 4, 1, 2, 4, 2, 3, 4, 3, 0, 4];
-            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-            p.color = [0.5, 0.8, 1, 0.5];
-
-            var p2 = new XE.Obj.CustomPrimitive(earth)
-            p2.position = [2.120597930315031, 0.5451624300822016, 400];
-            p2.scale = [15, 15, 15];
-            p2.positions = [1,0,1.5, 0,1,1.5, -1,0,1.5, 0,-1,1.5, 0, 0, 0];
-            p2.indices = [0, 1, 1, 2, 2, 3, 3, 0, 0, 4, 1, 4, 2, 4, 3, 4];
-            p2.primitiveType = Cesium.PrimitiveType.LINES;
-            p2.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-            p2.color = [1.0, 1.0, 0.0, 5];
-
-            let angle = 0.0;
-            let t = 0.0;
-            earth.czm.scene.preUpdate.addEventListener(() => {
-                angle += 10.0;
-                if (angle > 360.0) {
-                    angle = 0.0;
+            const preUpdateEvalString = `
+                if (typeof p.dAngle === 'undefined') p.dAngle = 0.0;
+                p.dAngle += 10.0;
+                if (p.dAngle > 360.0) {
+                    p.dAngle = 0.0;
                 }
-                p.rotation[0] = angle / 180.0 * Math.PI;
-                p2.rotation[0] = angle / 180.0 * Math.PI;
-                
+                p.rotation[0] = p.dAngle / 180.0 * Math.PI;
 
-                t += 0.01;
-                if (t > 1.0) t = 0.0;
-                
-                p.position[2] = 400 + 10 * Math.sin(t*Math.PI*2.0);
-                p2.position[2] = 400 + 10 * Math.sin(t*Math.PI*2.0);
+                if (typeof p.dt === 'undefined') p.dt = 0.0;
+                p.dt += 0.01;
+                if (p.dt > 1.0) p.dt = 0.0;
+                p.position[2] = 400 + 10 * Math.sin(p.dt*Math.PI*2.0);
+            `;
+
+            const baseConfig = {
+                preUpdateEvalString,
+                position: [2.120597930315031, 0.5451624300822016, 400],
+                scale: [15, 15, 15],
+                positions: [1,0,1.5, 0,1,1.5, -1,0,1.5, 0,-1,1.5, 0, 0, 0],
+                indices: [0, 1, 1, 2, 2, 3, 3, 0, 0, 4, 1, 4, 2, 4, 3, 4],
+                renderState: XE.Obj.CustomPrimitive.getRenderState(true, true),
+            };
+
+            const config1 = Object.assign({}, baseConfig, {
+                indices: [0, 1, 4, 1, 2, 4, 2, 3, 4, 3, 0, 4],
+                color: [0.5, 0.8, 1, 0.5],
             });
 
-            return p;       
+            const config2 = Object.assign({}, baseConfig, {
+                indices: [0, 1, 1, 2, 2, 3, 3, 0, 0, 4, 1, 4, 2, 4, 3, 4],
+                primitiveType: Cesium.PrimitiveType.LINES,
+                color: [1.0, 1.0, 0.0, 5],
+            });
+
+            var p = new XE.Obj.CustomPrimitive(earth);
+            p.xbsjFromJSON(config1);
+
+            var p2 = new XE.Obj.CustomPrimitive(earth);
+            p2.xbsjFromJSON(config2);
+
+            return p;
         }
 
         function createBasePoint(earth, position, color=[0.5, 0.8, 1, 2], scale=[50, 50, 1]) {
@@ -297,98 +296,99 @@
 
             // 底面
             {
-                let p = new XE.Obj.CustomPrimitive(earth)
-                p.position = [...position];
-                p.scale = [...scale];
-                p.positions = XE.Obj.CustomPrimitive.Geometry.unitSquare.positions;
-                p.sts = XE.Obj.CustomPrimitive.Geometry.unitSquare.sts;
-                p.indices = XE.Obj.CustomPrimitive.Geometry.unitSquare.indices;
-                p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-                p.color = [...color];
+                const evalString = `
+                    p.canvasWidth = 512;
+                    p.canvasHeight = 512;
+                    p.drawCanvas(ctx => {
+                        var gradient = ctx.createRadialGradient(256, 256, 0, 256, 256, 256);
+                        gradient.addColorStop(0.1, "rgba(255, 255, 255, 1.0)");
+                        gradient.addColorStop(0.2, "rgba(255, 255, 255, 0.0)");
+                        gradient.addColorStop(0.3, "rgba(255, 255, 255, 0.9)");
+                        gradient.addColorStop(0.5, "rgba(255, 255, 255, 0.0)");
+                        gradient.addColorStop(0.9, "rgba(255, 255, 255, 0.2)");
+                        gradient.addColorStop(1.0, "rgba(255, 255, 255, 1.0)");
 
-                p.canvasWidth = 512;
-                p.canvasHeight = 512;
+                        ctx.clearRect(0, 0, 512, 512);
+                        ctx.beginPath();
+                        ctx.arc(256, 256, 256, 0, Math.PI * 2, true);
+                        // ctx.fillStyle = "rgb(0, 155, 255)";
+                        ctx.fillStyle = gradient;
+                        ctx.fill();
+                        ctx.restore();
+                    });
+                `;
 
-                p.drawCanvas(ctx => {
-                    let gradient = ctx.createRadialGradient(256, 256, 0, 256, 256, 256);
-                    gradient.addColorStop(0.1, "rgba(255, 255, 255, 1.0)");
-                    gradient.addColorStop(0.2, "rgba(255, 255, 255, 0.0)");
-                    gradient.addColorStop(0.3, "rgba(255, 255, 255, 0.9)");
-                    gradient.addColorStop(0.5, "rgba(255, 255, 255, 0.0)");
-                    gradient.addColorStop(0.9, "rgba(255, 255, 255, 0.2)");
-                    gradient.addColorStop(1.0, "rgba(255, 255, 255, 1.0)");
+                const config = {
+                    evalString,
+                    position: [...position],
+                    scale: [...scale],
+                    positions: [...XE.Obj.CustomPrimitive.Geometry.unitSquare.positions],
+                    sts: [...XE.Obj.CustomPrimitive.Geometry.unitSquare.sts],
+                    indices: [...XE.Obj.CustomPrimitive.Geometry.unitSquare.indices],
+                    renderState: XE.Obj.CustomPrimitive.getRenderState(true, true),
+                    color: [...color],
+                    canvasWidth: 512,
+                    canvasHeight: 512,
+                };
 
-                    ctx.clearRect(0, 0, 512, 512);
-                    ctx.beginPath();
-                    ctx.arc(256, 256, 256, 0, Math.PI * 2, true);
-                    // ctx.fillStyle = "rgb(0, 155, 255)";
-                    ctx.fillStyle = gradient;
-                    ctx.fill();
-                    ctx.restore();
-                });
+                let p = new XE.Obj.CustomPrimitive(earth);
+                p.xbsjFromJSON(config);
             }
 
             // 底面动态辐射波
             {
-                let p = new XE.Obj.CustomPrimitive(earth)
-                p.position = [...position];
-                // p.scale = [...scale];
-                p.scale = [50, 50, 1];
-                p.positions = XE.Obj.CustomPrimitive.Geometry.unitSquare.positions;
-                p.sts = XE.Obj.CustomPrimitive.Geometry.unitSquare.sts;
-                p.indices = XE.Obj.CustomPrimitive.Geometry.unitSquare.indices;
-                p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-                p.color = [...color];
+                const evalString = `
+                    p.canvasWidth = 512;
+                    p.canvasHeight = 512;
+                    p.drawCanvas(ctx => {
+                        ctx.clearRect(0, 0, 512, 512);
 
-                p.canvasWidth = 512;
-                p.canvasHeight = 512;
+                        ctx.strokeStyle = "rgb(255, 255, 255)";
+                        ctx.setLineDash([80, 80]);
+                        ctx.lineWidth = 30;
+                        ctx.arc(256, 256, 241, 0, Math.PI * 2, true);
+                        ctx.stroke();
+                    });
+                `;
 
-                p.drawCanvas(ctx => {
-                    ctx.clearRect(0, 0, 512, 512);
+                const preUpdateEvalString = `
+                    if (typeof p.dAngle === 'undefined') p.dAngle = 0.0;
+                    if (typeof p.dt === 'undefined') p.dt = 0.01;
 
-                    ctx.strokeStyle = "rgb(255, 255, 255)";
-                    ctx.setLineDash([80, 80]);
-                    ctx.lineWidth = 30;
-                    ctx.arc(256, 256, 241, 0, Math.PI * 2, true);
-                    ctx.stroke();
-                });
-
-                let angle = 0.0;
-                let t = 0.01;
-                earth.czm.scene.preUpdate.addEventListener(() => {
-                    angle += 10.0;
-                    if (angle > 360.0) {
-                        angle = 0.0;
+                    p.dAngle += 10.0;
+                    if (p.dAngle > 360.0) {
+                        p.dAngle = 0.0;
                     }
-                    p.rotation[0] = angle / 180.0 * Math.PI;
+                    p.rotation[0] = p.dAngle / 180.0 * Math.PI;
 
-                    t += 0.02;
-                    if (t > 1.0) t = 0.01;
+                    p.dt += 0.02;
+                    if (p.dt > 1.0) p.dt = 0.01;
 
-                    p.scale[0] = 50 * t;
-                    p.scale[1] = 50 * t;
-                });
+                    p.scale[0] = 50 * p.dt;
+                    p.scale[1] = 50 * p.dt;
+                `;
+
+                const config = {
+                    evalString,
+                    preUpdateEvalString,
+                    position: [...position],
+                    scale: [50, 50, 1],
+                    positions: [...XE.Obj.CustomPrimitive.Geometry.unitSquare.positions],
+                    sts: [...XE.Obj.CustomPrimitive.Geometry.unitSquare.sts],
+                    indices: [...XE.Obj.CustomPrimitive.Geometry.unitSquare.indices],
+                    renderState: XE.Obj.CustomPrimitive.getRenderState(true, true),
+                    color: [...color],
+                    canvasWidth: 512,
+                    canvasHeight: 512,
+                };
+
+                let p = new XE.Obj.CustomPrimitive(earth);
+                p.xbsjFromJSON(config);
             }
 
             // 柱体
             {
-                let p = new XE.Obj.CustomPrimitive(earth)
-                p.position = [...position];
-                p.scale = [3/50*scale[0], 3/50*scale[1], 300*scale[2]];
-
-                let cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(0.3, 2.0, 1.0, 6);
-                p.positions = cylinder.positions;
-                p.sts = cylinder.sts;
-                p.indices = cylinder.indices;
-                // p.indices = [0, 1, 2];
-
-                p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-                p.renderState.cull.enabled = false;
-
-                p.color = [...color];    
-                p.canvasWidth = 1;
-
-                let vtxfFragmentShader =
+                const fragmentShaderSource =
                 `
                 varying vec3 v_positionEC;
                 varying vec3 v_normalEC;
@@ -403,40 +403,28 @@
                     gl_FragColor = vec4(u_color.rgb, alpha*u_color.a);
                 }
                 `;
+                const renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+                renderState.cull.enabled = false;
+                const cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(0.3, 2.0, 1.0, 6);
+                const config = {
+                    position: [...position],
+                    scale: [3/50*scale[0], 3/50*scale[1], 300*scale[2]],
+                    positions: cylinder.positions,
+                    sts: cylinder.sts,
+                    indices: cylinder.indices,
+                    renderState,
+                    color: [...color],
+                    canvasWidth: 1.0,
+                    fragmentShaderSource,
+                };
 
-                p.fragmentShaderSource = vtxfFragmentShader;
+                let p = new XE.Obj.CustomPrimitive(earth);
+                p.xbsjFromJSON(config);
             }
 
             // 柱体粒子
             {
-                let p = new XE.Obj.CustomPrimitive(earth)
-                p.position = [...position];
-                p.scale = [3/50*scale[0], 3/50*scale[1], 300*scale[2]];
-
-                let cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(4.0, 4.0, 1.0, 6);
-                p.positions = cylinder.positions;
-                p.sts = cylinder.sts;
-                p.indices = cylinder.indices;
-
-                p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-                p.renderState.cull.enabled = false;
-
-                p.color = [...color];            
-                p.canvasWidth = 32;
-                p.canvasHeight = 256;
-
-                p.drawCanvas(ctx => {
-                    ctx.clearRect(0, 0, 32, 256);
-                });
-
-                Cesium.Resource.createIfNeeded('./images/city/particles.png').fetchImage().then(function(image) {
-                    p.drawCanvas(ctx => {
-                        ctx.clearRect(0, 0, 32, 512);
-                        ctx.drawImage(image, 0, 0);
-                    });
-                });
-
-                let vtxfFragmentShader =
+                const fragmentShaderSource =
                 `
                 varying vec3 v_positionEC;
                 varying vec3 v_normalEC;
@@ -467,141 +455,188 @@
                 }
                 `;
 
-                p.fragmentShaderSource = vtxfFragmentShader;
+                const evalString = `
+                    p.canvasWidth = 32;
+                    p.canvasHeight = 256;
+                    Cesium.Resource.createIfNeeded('./images/city/particles.png').fetchImage().then(function(image) {
+                        p.drawCanvas(ctx => {
+                            ctx.clearRect(0, 0, 32, 256);
+                            ctx.drawImage(image, 0, 0);
+                        });
+                    });
+                `;
+
+                const renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+                renderState.cull.enabled = false;
+                const cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(4.0, 4.0, 1.0, 6);
+                const config = {
+                    fragmentShaderSource,
+                    evalString,
+                    position: [...position],
+                    scale: [3/50*scale[0], 3/50*scale[1], 300*scale[2]],
+                    positions: cylinder.positions,
+                    sts: cylinder.sts,
+                    indices: cylinder.indices,
+                    color: [...color],
+                    canvasWidth: 32,
+                    canvasHeight: 256,
+                    renderState,
+                };
+
+                const p = new XE.Obj.CustomPrimitive(earth);
+                p.xbsjFromJSON(config);
             }
         }
 
         function createCylinder(earth) {
-            var p = new XE.Obj.CustomPrimitive(earth)
-            p.position = [2.120597930315031, 0.5451624300822016, 150];
-            p.scale = [100, 100, 314];
-
-            var cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(1.0, 1.0, 1.0, 30);
-            p.positions = cylinder.positions;
-            p.sts = cylinder.sts;
-            p.indices = cylinder.indices;
-            // p.indices = [0, 1, 2];
-
-            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-            p.renderState.cull.enabled = false;
-
-            p.canvasWidth = 512;
-            p.canvasHeight = 512;
-
-            Cesium.Resource.createIfNeeded('./images/city/circular2.png').fetchImage().then(function(image) {
-                console.log('image loaded!');
+            const renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+            renderState.cull.enabled = false;
+            const cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(1.0, 1.0, 1.0, 30);
+            const evalString = `
                 p.canvasWidth = 512;
-                p.canvasHeight = 256;
+                p.canvasHeight = 512;
+                Cesium.Resource.createIfNeeded('./images/city/circular2.png').fetchImage().then(function(image) {
+                    console.log('image loaded!');
+                    p.canvasWidth = 512;
+                    p.canvasHeight = 256;
 
-                p.drawCanvas(ctx => {
-                    ctx.clearRect(0, 0, 512, 256);
-                    ctx.drawImage(image, 0, 0);
+                    p.drawCanvas(ctx => {
+                        ctx.clearRect(0, 0, 512, 256);
+                        ctx.drawImage(image, 0, 0);
+                    });
+
+                    p.color = [0.5, 0.8, 1, 2];
                 });
+            `;
 
-                p.color = [0.5, 0.8, 1, 2];
-            });
-
-            let angle = 0.0;
-            earth.czm.scene.preUpdate.addEventListener(() => {
-                angle -= 1.0;
-                if (angle > 360.0) {
-                    angle = 0.0;
+            const preUpdateEvalString = `
+                if (typeof p.dAngle === 'undefined') p.dAngle = 360.0;
+                p.dAngle -= 1.0;
+                if (p.dAngle < 0.0) {
+                    p.dAngle = 360.0;
                 }
-                p.rotation[0] = angle / 180.0 * Math.PI;
-            });
+                p.rotation[0] = p.dAngle / 180.0 * Math.PI;
+            `;
+
+            const config = {
+                evalString,
+                preUpdateEvalString,
+                position: [2.120597930315031, 0.5451624300822016, 150],
+                scale: [100, 100, 314],
+                positions: cylinder.positions,
+                sts: cylinder.sts,
+                indices: cylinder.indices,
+                renderState,
+                canvasWidth: 512,
+                canvasHeight: 512,
+            };
+            const p = new XE.Obj.CustomPrimitive(earth);
+            p.xbsjFromJSON(config);
 
             return p;
-        }     
+        }
 
         function createCylinder2(earth) {
-            var p = new XE.Obj.CustomPrimitive(earth)
-            window.p = p; // 方便调试
-            p.position = [2.1206125026580582,0.545178729438238,15];
-            p.scale = [500, 500, 100];
+            const cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(1.0, 1.0, 1.0, 30);
+            const renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+            renderState.cull.enabled = false;
+            const evalString = `
+                p.canvasWidth = 1;
+                p.canvasHeight = 256;
+                p.drawCanvas(ctx => {
+                    ctx.clearRect(0, 0, 1, 256);
 
-            var cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(1.0, 1.0, 1.0, 30);
-            p.positions = cylinder.positions;
-            p.sts = cylinder.sts;
-            p.indices = cylinder.indices;
-            // p.indices = [0, 1, 2];
+                    var lingrad2 = ctx.createLinearGradient(0,0,0,256);
+                    lingrad2.addColorStop(0, 'rgba(255,255,255,0)');
+                    lingrad2.addColorStop(1, 'rgba(255,255,255,1)');
 
-            p.renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-            p.renderState.cull.enabled = false;
+                    ctx.fillStyle = lingrad2;
+                    ctx.fillRect(0, 0, 1, 256);
+                }); 
+            `;
 
-            p.canvasWidth = 1;
-            p.canvasHeight = 256;
-            p.color = [0.5, 0.8, 1, 2];            
-
-            p.drawCanvas(ctx => {
-                ctx.clearRect(0, 0, 1, 256);
-
-                var lingrad2 = ctx.createLinearGradient(0,0,0,256);
-                lingrad2.addColorStop(0, 'rgba(255,255,255,0)');
-                lingrad2.addColorStop(1, 'rgba(255,255,255,1)');
-
-                ctx.fillStyle = lingrad2;
-                ctx.fillRect(0, 0, 1, 256);
-            });
-
-            let t = 0.0;
-            earth.czm.scene.preUpdate.addEventListener(() => {
-                t += 0.01 * 0.3;
-                if (t > 1.0) {
-                    t = 0.0;
+            const preUpdateEvalString = `
+                if (typeof p.dt === 'undefined') p.dt = 0.0;
+                p.dt += 0.01 * 0.3;
+                if (p.dt > 1.0) {
+                    p.dt = 0.0;
                 }
 
-                const b = (1.0-Math.cos(t*Math.PI*2.0))*0.5;
-                p.scale[0] = p.scale[1] = 1000 * (1.0-Math.cos(t*Math.PI))*0.5;
+                const b = (1.0-Math.cos(p.dt*Math.PI*2.0))*0.5;
+                p.scale[0] = p.scale[1] = 1000 * (1.0-Math.cos(p.dt*Math.PI))*0.5;
                 p.scale[2] = 200 * b;
                 p.color[3] = 2.0 * b;
-            });
+            `;
+
+            const config = {
+                evalString,
+                preUpdateEvalString,
+                position: [2.1206125026580582,0.545178729438238,15],
+                scale: [500, 500, 100],
+                positions: cylinder.positions,
+                sts: cylinder.sts,
+                indices: cylinder.indices,
+                renderState: renderState,
+                canvasWidth: 1,
+                canvasHeight: 256,
+                color: [0.5, 0.8, 1, 2],
+            }
+
+            const p = new XE.Obj.CustomPrimitive(earth);
+            p.xbsjFromJSON(config);
 
             return p;
-        }                   
+        }
 
         function createGroundCircle(earth) {
-            var p = new XE.Obj.CustomGroundRectangle(earth)
-            p.position = [2.1208980215153845, 0.5450726579947579, 41.369588015024185];
-            p.width = 1000;
-            p.height= 1000;
-            p.canvasWidth = 512;
-            p.canvasHeight = 512;
-            p.color = [0.5, 0.8, 1, 2];
-            
-            let ctx_image = undefined;
-            Cesium.Resource.createIfNeeded('./images/circle.png').fetchImage().then(function(image) {
-                console.log('image loaded!');
-                ctx_image = image;
-            });
+            const evalString = `
+                Cesium.Resource.createIfNeeded('./images/circle.png').fetchImage().then(function(image) {
+                    console.log('image loaded!');
+                    p._ctx_image = image;
+                });
+            `;
 
-            let angle = 0.0;
-            earth.czm.scene.preUpdate.addEventListener(() => {
-                angle -= 1.0;
-                if (angle > 360.0) {
-                    angle = 0.0;
+            const preUpdateEvalString = `
+                if (typeof p.dAngle === 'undefined') p.dAngle = 360.0;
+                p.dAngle -= 1.0;
+                if (p.dAngle < 0.0) {
+                    p.dAngle = 360.0;
                 }
-                const rotation = angle / 180.0 * Math.PI;
+                const rotation = p.dAngle / 180.0 * Math.PI;
 
                 p.drawCanvas(ctx => {
                     ctx.clearRect(0, 0, 512, 512);
 
                     ctx.beginPath();
-                    ctx.strokeStyle = "rgb(128, 128, 128)"; 
+                    ctx.strokeStyle = "rgb(128, 128, 128)";
                     // ctx.setLineDash([8, 8]);
                     ctx.lineWidth = 1;
                     ctx.arc(256, 256, 250, 0, Math.PI*2, true);
                     ctx.stroke();
 
-                    if (ctx_image) {
+                    if (p._ctx_image) {
                         ctx.save();
                         ctx.translate(256, 256);
                         ctx.rotate(rotation);
                         ctx.translate(-256, -256);
-                        ctx.drawImage(ctx_image, 0, 0);
+                        ctx.drawImage(p._ctx_image, 0, 0);
                         ctx.restore();
                     }
-                });                
-            });
+                });
+            `;
+
+            const config = {
+                evalString,
+                preUpdateEvalString,
+                position: [2.1208980215153845, 0.5450726579947579, 41.369588015024185],
+                width: 1000,
+                height: 1000,
+                canvasWidth: 512,
+                canvasHeight: 512,
+                color: [0.5, 0.8, 1, 2],
+            };
+            const p = new XE.Obj.CustomGroundRectangle(earth);
+            p.xbsjFromJSON(config);
 
             return p;
         }
@@ -640,10 +675,10 @@
 
             odlines.data = busLines;
             odlines.timeDuration = timeDuration;
-            odlines.playing = true;            
+            odlines.playing = true;
 
             return odlines;
-        } 
+        }
 
         function createODLines2(earth) {
             const odlines = new XE.Obj.ODLines(earth);
@@ -679,10 +714,10 @@
 
             odlines.data = busLines;
             odlines.timeDuration = timeDuration;
-            odlines.playing = true;            
+            odlines.playing = true;
 
             return odlines;
-        } 
+        }
 
         function createODLines3(earth) {
             const odlines = new XE.Obj.ODLines(earth);
@@ -704,7 +739,14 @@
 
             var positionsCollection = p.map(e => {
                 const toDegree = 180.0 / Math.PI;
-                const cartesians = Cesium.xbsjCreateTransmitPolyline(e[0], e[1], 50.0, 5.0);    
+                // Cesium.xbsjCreateTransmitPolyline 根据 首末端点生成弧线，
+                // 参数有：
+                // startPosition, 端点1
+                // endPosition, 端点2
+                // minDistance, 计算出的线段的最小间隔距离
+                // heightRatio=1.0 弧线高度抬升程度，值越大，抬高得越明显
+                // 返回值是cartesian类型的坐标数组
+                const cartesians = Cesium.xbsjCreateTransmitPolyline(e[0], e[1], 50.0, 5.0);
                 const poss = cartesians.map(ee => {
                     const carto = Cesium.Cartographic.fromCartesian(ee);
                     return [carto.longitude, carto.latitude, carto.height];
@@ -731,10 +773,10 @@
 
             odlines.data = busLines;
             odlines.timeDuration = timeDuration;
-            odlines.playing = true;            
+            odlines.playing = true;
 
             return odlines;
-        } 
+        }
 
         function createLabel(earth) {
             let p = new XE.Obj.Pin(earth);
@@ -773,92 +815,125 @@
             ctx.fillStyle = 'rgb(255, 255, 0)';
             ctx.fillText('西部世界总部基地', 110, 90);
 
+            // p.winPos 为一个含有4个元素的数组，分别表示[left, top, right, bottom]
             XE.MVVM.watch(() => [...p.winPos], winPos => {
                 // console.log(`winPos: ${winPos.toString()}`);
                 labelDiv.style.left = `${winPos[0]}px`;
-                labelDiv.style.bottom = `${winPos[1]}px`;
+                labelDiv.style.bottom = `${winPos[3]}px`;
             });
         }
 
         function createLabel2(earth) {
-            let p = new XE.Obj.Pin(earth);
-            p.position = [2.1204918655649285,0.5452743468087804,209.94294540636682];
-            p.show = false;
+            const evalString = `
+            function createLabelCanvas(p) {
+                const labelDiv = document.createElement('div');
+                labelDiv.style = \`
+                    // background: grey;
+                    width: 300px;
+                    height: 200px;
+                    position: absolute;
+                    pointer-events: none;
+                \`;
+                p._earth.czm.viewer.container.appendChild(labelDiv);
+                p._labelDiv = labelDiv;
+                // p.disposers是一堆会调用函数的数组，会在对象销毁时按照后进先出的顺序调用。
+                p.disposers.push(() => {
+                    if (p._labelDiv) {
+                        p._earth.czm.viewer.container.removeChild(p._labelDiv);
+                        p._labelDiv = undefined;
+                    }
+                });
 
-            const labelDiv = document.createElement('div');
-            labelDiv.style = `
-                // background: grey;
-                width: 300px;
-                height: 200px;
-                position: absolute;
-                pointer-events: none;
-            `;
-            earth.czm.viewer.container.appendChild(labelDiv);
+                const labelCanvas = document.createElement('canvas');
+                labelCanvas.style = \`
+                    width: 100%;
+                    height: 100%;
+                \`;
 
-            const labelCanvas = document.createElement('canvas');
-            labelCanvas.style = `
-                width: 100%;
-                height: 100%;
-            `;
+                labelCanvas.width = 300;
+                labelCanvas.height = 200;
+                labelDiv.appendChild(labelCanvas);
 
-            labelCanvas.width = 300;
-            labelCanvas.height = 200;
-            labelDiv.appendChild(labelCanvas);
-
-            const ctx = labelCanvas.getContext('2d');
-
-            function draw(w) {
-                ctx.clearRect(0, 0, 300, 200);
-
-                ctx.save();
-                ctx.beginPath();
-                ctx.rect((w-1)*300, 0, 300, 200);
-                ctx.clip();
-
-                ctx.strokeStyle = 'rgb(255, 255, 0)';
-                ctx.beginPath();
-                ctx.lineTo(0, 200);
-                ctx.lineTo(100, 100);
-                ctx.lineTo(250, 100);
-                ctx.stroke();
-                ctx.font = "16px console";
-                // ctx.textBaseline = "middle";
-                ctx.fillStyle = 'rgb(255, 255, 0)';
-                ctx.fillText('西部世界总部基地', 110, 90);
-                ctx.restore();
+                return labelCanvas;
             }
+
+            function createDrawFunc(p) {
+                const labelCanvas = createLabelCanvas(p);
+                const ctx = labelCanvas.getContext('2d');
+                function draw(w) {
+                    ctx.clearRect(0, 0, 300, 200);
+
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.rect((w-1)*300, 0, 300, 200);
+                    ctx.clip();
+
+                    ctx.strokeStyle = 'rgb(255, 255, 0)';
+                    ctx.beginPath();
+                    ctx.lineTo(0, 200);
+                    ctx.lineTo(100, 100);
+                    ctx.lineTo(250, 100);
+                    ctx.stroke();
+                    ctx.font = "16px console";
+                    // ctx.textBaseline = "middle";
+                    ctx.fillStyle = 'rgb(255, 255, 0)';
+                    ctx.fillText('西部世界总部基地', 110, 90);
+                    ctx.restore();
+                }
+
+                p._dDraw = draw;
+            }
+
+            createDrawFunc(p);
 
             let d = 0;
             let c = 0;
-            draw(c);
-            earth.czm.scene.preUpdate.addEventListener(() => {
+            p._dDraw(c);
+            const preUpdateListener = earth.czm.scene.preUpdate.addEventListener(() => {
                 if (d !== c) {
                     c += (d - c) * 0.1;
                     if (Math.abs(c - d) < 0.1) {
                         c = d;
                     }
-                    draw(c);
+                    p._dDraw(c);
                 }
             });
+            p.disposers.push(() => preUpdateListener && preUpdateListener());
 
-            const container = earth.czm.viewer.container;
+            const container = p._earth.czm.viewer.container;
+            const unwatch = XE.MVVM.watch(() => [...p.winPos], winPos => {
+                if (p._labelDiv) {
+                    p._labelDiv.style.left = \`\${winPos[0]}px\`;
+                    p._labelDiv.style.bottom = \`\${winPos[3]}px\`;
+                }
 
-            XE.MVVM.watch(() => [...p.winPos], winPos => {
-                // console.log(`winPos: ${winPos.toString()}`);
-                labelDiv.style.left = `${winPos[0]}px`;
-                labelDiv.style.bottom = `${winPos[1]}px`;
-
-                if (winPos[0] > container.offsetWidth * 0.3 && winPos[0] < container.offsetWidth * 0.7 && 
-                    winPos[1] > container.offsetHeight * 0.3 && winPos[1] < container.offsetHeight * 0.7) {
+                // winPos 为一个包含4个元素的数组，分别代表 [left, top, right, bottom]
+                if (winPos[0] > container.offsetWidth * 0.3 && winPos[0] < container.offsetWidth * 0.7 &&
+                    winPos[3] > container.offsetHeight * 0.3 && winPos[3] < container.offsetHeight * 0.7) {
                     d = 1.0;
                 } else {
                     d = 0.0;
                 }
             });
-        }        
+            p.disposers.push(() => { unwatch && unwatch(); });
+            `;
+
+            // let p = new XE.Obj.Pin(earth);
+            // p.position = [2.1204918655649285,0.5452743468087804,209.94294540636682];
+            // p.show = false;
+            // p.evalString = evalString;
+
+            const p = new XE.Obj.Pin(earth);
+            const config = {
+                position: [2.1204918655649285,0.5452743468087804,209.94294540636682],
+                show: false,
+                evalString: evalString,
+            };
+            p.xbsjFromJSON(config);
+        }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
-        XE.ready().then(startup);            
+        XE.ready().then(startup);
     </script>
 </body>
 

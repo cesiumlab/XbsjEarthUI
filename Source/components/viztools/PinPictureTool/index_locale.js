@@ -1,5 +1,5 @@
 const zh = {
-  title:'图标属性',
+  title:'标绘属性',
   name:'名称',
   creating:'鼠标点选',
   editing:'修改位置',
@@ -7,6 +7,7 @@ const zh = {
   far:'Far',
   near:'Near',
   imageUrl:'图标',
+  isDivImage: 'Div图标',
   scale:'缩放',
   show:'显示',
   pinstyletype:'内置样式',
@@ -36,6 +37,7 @@ const en = {
   far:'Far',
   near:'Near',
   imageUrl:'ImageUrl',
+  isDivImage: 'Div Image',
   scale:'Scale',
   show:'Show',
   pinstyletype:'PinstyleType',

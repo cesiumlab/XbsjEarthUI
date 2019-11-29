@@ -135,9 +135,20 @@
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{lang.animation}}</span>
+        <!-- 扫描线 -->
         <div class="xbsj-item-btnbox ml20" @click="scanLineBtn">
           <div class="xbsj-item-btn radarbutton"></div>
           <span class="xbsj-item-name">{{lang.Scanline}}</span>
+        </div>
+        <!-- 自定义图元 -->
+        <div class="xbsj-item-btnbox ml20" @click="customPrimitiveBtn">
+          <div class="xbsj-item-btn radarbutton"></div>
+          <span class="xbsj-item-name">{{lang.CustomPrimitive}}</span>
+        </div>
+        <!-- 管道 -->
+        <div class="xbsj-item-btnbox ml20" @click="tubeBtn">
+          <div class="xbsj-item-btn radarbutton"></div>
+          <span class="xbsj-item-name">{{lang.tube}}</span>
         </div>
         <!-- <div class="xbsj-item-btnbox ml20">
           <div class="xbsj-item-btn odbutton"></div>
@@ -297,6 +308,7 @@ export default {
     // 创建飞机模型
     createPlane() {
       var Model = new XE.Obj.Model(this.$root.$earth);
+      // console.log(Model);
       Model.url = "./assets/feiji.glb";
       Model.creating = true;
       Model.isCreating = true;
@@ -342,7 +354,7 @@ export default {
     },
     pinpicturebtn() {
       var PinPictureTool = new XE.Obj.Pin(this.$root.$earth);
-      PinPictureTool.ctrtype = "PinPictureTool";
+      // PinPictureTool.ctrtype = "PinPictureTool";
       PinPictureTool.name = "外置图标";
       PinPictureTool.positionPicking = true;
       PinPictureTool.isCreating = true;
@@ -350,14 +362,14 @@ export default {
       this.$root.$earthUI.showPropertyWindow(PinPictureTool);
     },
     // 打开polyLine折线
-    polylinebtn() {
-      var Polyline = new XE.Obj.Polyline(this.$root.$earth);
-      Polyline.name = "折线";
-      Polyline.positionPicking = true;
-      Polyline.isCreating = true;
-      Polyline.creating = true;
-      this.$root.$earthUI.showPropertyWindow(Polyline);
-    },
+    // polylinebtn() {
+    //   var Polyline = new XE.Obj.Polyline(this.$root.$earth);
+    //   Polyline.name = "折线";
+    //   Polyline.allowPicking = true;
+    //   Polyline.isCreating = true;
+    //   Polyline.creating = true;
+    //   this.$root.$earthUI.showPropertyWindow(Polyline);
+    // },
     //打开扫描线-动画
     scanLineBtn() {
       var Scanline = new XE.Obj.Scanline(this.$root.$earth);
@@ -367,6 +379,26 @@ export default {
       Scanline.playing = true;
       // console.log(Scanline);
       this.$root.$earthUI.showPropertyWindow(Scanline);
+    },
+    //打开自定义图元-动画
+    customPrimitiveBtn() {
+      var CustomPrimitive = new XE.Obj.CustomPrimitive(this.$root.$earth);
+      CustomPrimitive.name = "自定义图元";
+      CustomPrimitive.autoRegisterEditing = true;
+
+      CustomPrimitive.isCreating = true;
+      CustomPrimitive.creating = true;
+      console.log(CustomPrimitive);
+      this.$root.$earthUI.showPropertyWindow(CustomPrimitive);
+    },
+    //打开管道-动画
+    tubeBtn() {
+      var Tube = new XE.Obj.CustomPrimitiveExt.Tube(this.$root.$earth);
+      Tube.name = "管道";
+      Tube.isCreating = true;
+      Tube.creating = true;
+      console.log(Tube);
+      this.$root.$earthUI.showPropertyWindow(Tube);
     },
     startMove(event) {
       //如果事件的目标不是本el 返回

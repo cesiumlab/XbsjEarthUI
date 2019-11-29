@@ -160,6 +160,16 @@ module.exports = {
         port: 9530,
         host: '0.0.0.0',
         hot: true,
+        proxy: {
+            '/api': {
+                target: 'http://localhost:8070/api',
+                changeOrigin: true,
+                ws: true,
+                pathRewrite: {
+                    '^/api': ''
+                }
+            }
+        }
     }
 }
 
@@ -183,16 +193,22 @@ module.exports.plugins = (module.exports.plugins || []).concat([
             toType: 'dir'
         },
         {
-            // from: 'Static/XbsjEarth-Plugins',
             from: process.env.XBSJ_IMPORT !== 'external' ? './node_modules/earthsdk-plotting-symbol/dist/XbsjEarth-Plugins/plottingSymbol' : 'Static/XbsjEarth-Plugins/plottingSymbol',
             to: 'XbsjEarth-Plugins/plottingSymbol',
+            toType: 'dir'
+        },
+        {
+            // TODO(vtxf): 暂时不从node_modules读取
+            from: process.env.XBSJ_IMPORT !== 'external' ? './node_modules/earthsdk-custom-primitive/dist/XbsjEarth-Plugins/customPrimitive' : 'Static/XbsjEarth-Plugins/customPrimitive',
+            // from: 'Static/XbsjEarth-Plugins/customPrimitive',
+            to: 'XbsjEarth-Plugins/customPrimitive',
             toType: 'dir'
         },
         {
             from: 'Static/assets',
             to: 'XbsjEarthUI/assets',
             toType: 'dir'
-        }, 
+        },
         {
             from: 'Apps',
             to: 'Apps',
@@ -201,7 +217,7 @@ module.exports.plugins = (module.exports.plugins || []).concat([
                 if (!path.endsWith('.html')) {
                     return content;
                 }
-    
+
                 var cs = content.toString('utf8');
                 if (process.env.NODE_ENV === 'xbsjDebug') {
                     // cs = cs.replace(/\/\/xbsjDebug\b/g, '');
