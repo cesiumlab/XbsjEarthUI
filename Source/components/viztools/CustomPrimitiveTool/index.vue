@@ -29,9 +29,15 @@
             <button
               style="margin-left:20px;"
               class="attitudeEditCameraButton"
-              @click="model.editing =!model.editing"
-              :class="model.editing?'btncoloron':''"
-            >{{lang.edit}}</button>
+              @click="model.positionEditing =!model.positionEditing"
+              :class="model.positionEditing?'btncoloron':''"
+            >{{lang.positionEditing}}</button>
+            <button
+              style="margin-left:20px;"
+              class="attitudeEditCameraButton"
+              @click="model.rotationEditing =!model.rotationEditing"
+              :class="model.rotationEditing?'btncoloron':''"
+            >{{lang.rotationEditing}}</button>
             <button
               style="margin-left:20px;"
               class="attitudeEditCameraButton"
@@ -309,7 +315,8 @@ export default {
         name: "model.name",
         creating: "model.creating",
         // show: "model.show",
-        editing: "model.editing",
+        positionEditing: "model.positionEditing",
+        rotationEditing: "model.rotationEditing",
         position: "model.position",
         rotation: "model.rotation",
         canvasWidth: "model.canvasWidth",
@@ -751,7 +758,8 @@ export default {
     ok() {
       this.close();
       const modelToolObj = this._czmObj;
-      modelToolObj.editing = false;
+      modelToolObj.positionEditing = false;
+      modelToolObj.rotationEditing = false;
       if (!modelToolObj) {
         return;
       }
