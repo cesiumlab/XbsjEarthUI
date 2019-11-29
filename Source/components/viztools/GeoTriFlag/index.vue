@@ -204,7 +204,7 @@ export default {
         this.borderbaseColor = cc;
       }
     },
-    borderbgbaseColor(c) {
+    borderbaseColor(c) {
       this.borderbaseColorUI = {
         rgba: {
           r: c[0] * 255,

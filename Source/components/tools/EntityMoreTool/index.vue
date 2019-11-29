@@ -143,7 +143,6 @@ export default {
     // 外置图标
     Pinpicturebtn() {
       var PinPictureTool = new XE.Obj.Pin(this.$root.$earth);
-      PinPictureTool.ctrtype = "PinPictureTool";
       PinPictureTool.name = "外置图标";
       PinPictureTool.positionPicking = true;
       PinPictureTool.isCreating = true;
