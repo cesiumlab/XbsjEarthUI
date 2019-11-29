@@ -220,7 +220,8 @@ export default {
       model: {
         name: "",
         show: true,
-        editing: false,
+        positionEditing: false,
+        rotationEditing: false,
         canvasWidth: 0,
         canvasHeight: 0,
         creating: true,
@@ -750,6 +751,7 @@ export default {
         return;
       }
       modelToolObj.positionEditing = false;
+      modelToolObj.rotationEditing = false;
       if (modelToolObj.isCreating) {
         modelToolObj.isCreating = false;
         modelToolObj.destroy();
