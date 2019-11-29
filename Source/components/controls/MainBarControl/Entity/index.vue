@@ -385,9 +385,8 @@ export default {
       var CustomPrimitive = new XE.Obj.CustomPrimitive(this.$root.$earth);
       CustomPrimitive.name = "自定义图元";
       CustomPrimitive.autoRegisterEditing = true;
-      // CustomPrimitive.creating = true;
+
       CustomPrimitive.isCreating = true;
-      // CustomPrimitive.registerEditing();
       CustomPrimitive.creating = true;
       console.log(CustomPrimitive);
       this.$root.$earthUI.showPropertyWindow(CustomPrimitive);
@@ -396,9 +395,7 @@ export default {
     tubeBtn() {
       var Tube = new XE.Obj.CustomPrimitiveExt.Tube(this.$root.$earth);
       Tube.name = "管道";
-      Tube.autoRegisterEditing = true;
       Tube.isCreating = true;
-      // Tube.registerEditing();
       Tube.creating = true;
       console.log(Tube);
       this.$root.$earthUI.showPropertyWindow(Tube);
