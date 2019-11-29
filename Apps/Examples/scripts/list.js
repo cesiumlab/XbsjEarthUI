@@ -430,11 +430,11 @@ vueApp.examples = [
         "title": "内部测试",
         "list": [
             {
-                "title": "模型-环境贴图",
+                "title": "模型-环境贴图（勿用）",
                 "url": "./earth-model-envirement.html"
             },
             {
-                "title": "3dtiles环境贴图",
+                "title": "3dtiles环境贴图（勿用）",
                 "url": "./earth-tileset-envirements.html"
             },
             {
