@@ -32,11 +32,11 @@
               @click="model.editing =!model.editing"
               :class="model.editing?'btncoloron':''"
             >{{lang.edit}}</button>
-            <!-- <button
+            <button
               style="margin-left:20px;"
               class="attitudeEditCameraButton"
               @click="flyto"
-            >{{lang.flyto}}</button>-->
+            >{{lang.flyto}}</button>
           </div>
         </div>
       </div>
@@ -59,13 +59,13 @@
         <!-- 宽度  -->
         <label>{{lang.width}}</label>
         <div class="flatten-box">
-          <XbsjInputNumber style="float:left; width: calc(50% - 87px);" v-model="model.canvasWidth"></XbsjInputNumber>
+          <XbsjInputNumber style="float:left; width: calc(50% - 90px);" v-model="model.canvasWidth"></XbsjInputNumber>
         </div>
         <!-- 高度  -->
         <label>{{lang.height}}</label>
         <div class="flatten-box">
           <XbsjInputNumber
-            style="float:left; width: calc(50% - 87px);"
+            style="float:left; width: calc(50% - 90px);"
             v-model="model.canvasHeight"
           ></XbsjInputNumber>
         </div>
@@ -214,10 +214,10 @@ export default {
       model: {
         name: "",
         show: true,
-        // editing: false,
+        editing: false,
         canvasWidth: 0,
         canvasHeight: 0,
-        // creating: true,
+        creating: true,
         position: [0, 0, 0],
         rotation: [0, 0, 0],
         primitiveType: Number,
@@ -307,9 +307,9 @@ export default {
       this._czmObj = czmObj;
       const bindData = {
         name: "model.name",
-        // creating: "model.creating",
+        creating: "model.creating",
         // show: "model.show",
-        // editing: "model.editing",
+        editing: "model.editing",
         position: "model.position",
         rotation: "model.rotation",
         canvasWidth: "model.canvasWidth",
@@ -491,7 +491,11 @@ export default {
         this.spritsshaderShow = false;
         this.renderstatsShow = true;
         this.topTitle = this.lang.renderstats;
-        this.renderState = JSON.stringify(this._czmObj.renderState);
+        this.renderState = JSON.stringify(
+          this._czmObj.renderState,
+          undefined,
+          " "
+        );
       }
     },
     apply() {

@@ -385,6 +385,8 @@ export default {
       CustomPrimitive.name = "自定义图元";
       // CustomPrimitive.creating = true;
       CustomPrimitive.isCreating = true;
+      CustomPrimitive.registerEditing();
+      CustomPrimitive.creating = true;
       console.log(CustomPrimitive);
       this.$root.$earthUI.showPropertyWindow(CustomPrimitive);
     },
