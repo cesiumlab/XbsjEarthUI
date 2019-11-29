@@ -308,6 +308,7 @@ export default {
     // 创建飞机模型
     createPlane() {
       var Model = new XE.Obj.Model(this.$root.$earth);
+      // console.log(Model);
       Model.url = "./assets/feiji.glb";
       Model.creating = true;
       Model.isCreating = true;

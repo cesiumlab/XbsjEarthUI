@@ -21,6 +21,11 @@
         <label>{{lang.url}}</label>
         <input style="float:left;" type="text" v-model="model.url" />
       </div>
+      <!-- 环境贴图 -->
+      <div class="flatten">
+        <label>{{lang.environmentmaps}}</label>
+        <input style="float:left;" type="text" v-model="model.specularEnvironmentMaps" />
+      </div>
       <div class="flatten-flex">
         <!-- 鼠标点选 -->
         <div class="flatten">
@@ -136,6 +141,7 @@ export default {
         show: true,
         creating: true,
         url: "",
+        specularEnvironmentMaps: undefined,
         positionEditing: false,
         rotationEditing: false,
         xbsjPosition: [0, 0, 0],
@@ -163,6 +169,7 @@ export default {
         creating: "model.creating",
         show: "model.show",
         url: "model.url",
+        specularEnvironmentMaps: "model.specularEnvironmentMaps",
         positionEditing: "model.positionEditing",
         rotationEditing: "model.rotationEditing",
         xbsjRotation: "model.xbsjRotation",
