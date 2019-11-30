@@ -12,6 +12,7 @@ const zh = {
   creating: '创建',
   editing: '编辑',
   flyto: '定位',
+  colorintensity: '颜色强度'
 };
 
 const en = {
@@ -28,6 +29,7 @@ const en = {
   creating: 'creating',
   editing: 'edit',
   flyto: 'flyto',
+  colorintensity: 'colorintensity'
 };
 
 export default {

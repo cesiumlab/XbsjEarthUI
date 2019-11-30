@@ -2,7 +2,7 @@
   <Window
     :width="490"
     :minWidth="490"
-    :height="370"
+    :height="406"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -96,6 +96,13 @@
           ></XbsjInputNumber>
         </div>
       </div>
+      <!-- 颜色强度 -->
+      <div class="flatten">
+        <label>{{lang.colorintensity}}</label>
+        <div class="field">
+          <XbsjSlider :min="0" :max="10" :step="1" v-model="model.color[3]"></XbsjSlider>
+        </div>
+      </div>
       <div class="flatten">
         <!-- 闭合 -->
         <label>{{lang.closed}}</label>
@@ -131,7 +138,8 @@ export default {
         speed: [1, 1],
         radialSegments: 18,
         tubularSegments: 50,
-        closed: false
+        closed: false,
+        color: [1, 1, 1, 1]
       },
       langs: languagejs
     };
@@ -155,7 +163,8 @@ export default {
         speed: "model.speed",
         radialSegments: "model.radialSegments",
         tubularSegments: "model.tubularSegments",
-        closed: "model.closed"
+        closed: "model.closed",
+        color: "model.color"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
