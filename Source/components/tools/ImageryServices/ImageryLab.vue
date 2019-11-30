@@ -67,7 +67,7 @@
 import languagejs from "./imagery_locale";
 export default {
   components: {},
-  data() {
+  data () {
     return {
       show: false,
       key: "",
@@ -81,12 +81,12 @@ export default {
       langs: languagejs
     };
   },
-  created() {
-    
+  created () {
+
   },
-  mounted() {},
+  mounted () { },
   methods: {
-    _updateServerThumbnail(server, thumbnail) {
+    _updateServerThumbnail (server, thumbnail) {
       var labServer = this.$root.$earthUI.labServer;
       labServer
         .updateLayerThumbnail("images", server._id, thumbnail)
@@ -98,7 +98,7 @@ export default {
           this.$root.$earthUI.promptInfo(this.error, "error");
         });
     },
-    onContexMenu(server, event) {
+    onContexMenu (server, event) {
       //弹出菜单
       this.$root.$earthUI.contextMenu.pop([
         {
@@ -120,7 +120,7 @@ export default {
         }
       ]);
     },
-    select(s) {
+    select (s) {
       this.selected = s;
       // console.log(this.selected);
       this.selectedUrl = this.serverUrl(s);
@@ -128,7 +128,7 @@ export default {
       this.contentShow = true;
       this.error = "";
     },
-    _addServices(s) {
+    _addServices (s) {
       //添加到列表中，并且按照天进行分组
       let day = s.date.substr(0, 10);
 
@@ -145,7 +145,7 @@ export default {
       };
       this.dayItems.push(newDays);
     },
-    query() {
+    query () {
       var labServer = this.$root.$earthUI.labServer;
 
       this.dayItems = [];
@@ -163,15 +163,15 @@ export default {
           this.$root.$earthUI.promptInfo(this.error, "error");
         });
     },
-    serverUrl(server) {
-      return (
-        this.$root.$earthUI.labServer.server +
+    serverUrl (server) {
+      var a = document.createElement('A');
+      a.href = this.$root.$earthUI.labServer.server +
         "image/" +
         server._id +
-        "/{z}/{x}/{y}"
-      );
+        "/{z}/{x}/{y}";
+      return a.href;
     },
-    ok() {
+    ok () {
       if (!this.selected) {
         this.error = this.lang.selectservice;
         this.$root.$earthUI.promptInfo(this.error, "error");
@@ -213,8 +213,8 @@ export default {
   },
   computed: {},
   filters: {
-    f_day(day) {},
-    f_range(item) {
+    f_day (day) { },
+    f_range (item) {
       return (
         item.west.toFixed(5) +
         ", " +
@@ -226,14 +226,14 @@ export default {
       );
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     if (this.unbind) {
       this.unbind();
       this.unbind = undefined;
     }
   },
   watch: {
-    show(v) {
+    show (v) {
       if (v) {
         this.query();
       }

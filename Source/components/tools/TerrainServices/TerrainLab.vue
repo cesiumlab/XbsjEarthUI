@@ -162,7 +162,9 @@ export default {
         });
     },
     serverUrl(server) {
-      return this.$root.$earthUI.labServer.server + "terrain/" + server._id;
+      var a = document.createElement('A');
+      a.href = this.$root.$earthUI.labServer.server + "terrain/" + server._id;
+      return a.href;
     },
     ok() {
       if (!this.selected) {

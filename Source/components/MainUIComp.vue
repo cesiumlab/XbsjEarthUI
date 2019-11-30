@@ -36,6 +36,32 @@
 
     <!-- 只有一个 Modal 对话框 方便调用 -->
     <Modal :visible="modal" @cancel="modalCancel" @confirm="modalConfirm">{{confirmInfo}}</Modal>
+
+    <Window
+      :footervisible="true"
+      @cancel="loadGeoJSONShow=false"
+      @ok="confirmLoadGeoJson"
+      v-show="loadGeoJSONShow"
+      :width="250"
+      :minWidth="200"
+      :height="500"
+      :left="500"
+      :top="138"
+      :title="lang.title"
+    >
+      <div class="group">
+        <ul>
+          <li
+            v-for="(p,index) in types"
+            @click="selectType(index, p)"
+            :class="{active:categoryIndex==index}"
+          >
+            <label class="liname">{{p.name}}</label>
+            <label class="livalue">{{p.typeName}}</label>
+          </li>
+        </ul>
+      </div>
+    </Window>
   </div>
 </template>
 
@@ -170,7 +196,7 @@ export default {
     EntityMoreTool,
     SymbolTool
   },
-  data: function() {
+  data: function () {
     return {
       modal: false,
       confirmInfo: "",
@@ -280,19 +306,23 @@ export default {
         }
       ],
       infos: [],
-      jsontext: ""
+      jsontext: "",
+      loadGeoJSONShow: false,
+      types: null,
+      categoryIndex: 0,
+      selectedType: null
     };
   },
-  mounted() {
+  mounted () {
     let xbsjcesium = this.$refs.xbsjcesium;
     let that = this;
 
-    function handleDragOver(e) {
+    function handleDragOver (e) {
       e.stopPropagation();
       e.preventDefault();
     }
 
-    function handleFileSelect(e) {
+    function handleFileSelect (e) {
       // e.stopPropagation();
       e.preventDefault();
       let item = e.dataTransfer;
@@ -300,7 +330,7 @@ export default {
       var files = [];
       [].forEach.call(
         e.dataTransfer.files,
-        function(file) {
+        function (file) {
           files.push(file);
         },
         false
@@ -310,7 +340,7 @@ export default {
         var reader = new FileReader();
         reader.readAsText(f);
         //读取文件的内容
-        reader.onload = function() {
+        reader.onload = function () {
           that.jsontext = JSON.parse(this.result);
           that.analysisJson();
         };
@@ -319,14 +349,32 @@ export default {
 
     xbsjcesium.addEventListener("dragover", handleDragOver, false);
     xbsjcesium.addEventListener("drop", handleFileSelect, false);
+
+    this.types = [{
+      name: "线",
+      typeName: "Plots.GeoPolyline",
+      getObj: function (earth) {
+        return new XE.Obj.Plots.GeoPolyline(earth)
+      }
+    },{
+      name: "管道",
+      typeName: "CustomPrimitiveExt.Tube",
+      getObj: function (earth) {
+        var tube = new XE.Obj.CustomPrimitiveExt.Tube(earth)
+        tube.imageUrl = '../../assets/ht/meteor_01.png';
+        tube.radius = 0.5;
+        tube.speed = [0.2,0.2]
+        return tube;
+      }
+    }]
   },
   computed: {
-    type() {
+    type () {
       return this.viewporttype;
     }
   },
   methods: {
-    analysisJson() {
+    confirmLoadGeoJson () {
       if (this.jsontext.type != "") {
         const g0 = new XE.SceneTree.Group(this.$root.$earth);
         g0.title = "图形组合文件夹";
@@ -353,14 +401,39 @@ export default {
             const obj = new XE.SceneTree.Leaf(Polygon);
             selected.children.push(obj);
           }
+          else if (arr[j].geometry.type === "LineString") {
+            //如果类型为Polygon
+            // var polylin = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+            var polylin = this.selectedType.getObj(this.$root.$earth);
+            polylin.name = arr[j].properties && arr[j].properties.name;
+            var positionarr = arr[j].geometry.coordinates;
+            for (let k = 0; k < positionarr.length; k++) {
+              positionarr[k][0] = (Math.PI / 180) * positionarr[k][0];
+              positionarr[k][1] = (Math.PI / 180) * positionarr[k][1];
+              positionarr[k][2] = 0;
+            }
+            // π/180×角度
+            polylin.positions = positionarr;
+            var selected = this.$root.$earth.sceneTree.currentSelectedNode;
+            const obj = new XE.SceneTree.Leaf(polylin);
+            selected.children.push(obj);
+          }
         }
       }
+      this.loadGeoJSONShow = false
     },
-    _getToolID(tool) {
+    analysisJson () {
+      this.loadGeoJSONShow = true
+    },
+    selectType (index, item) {
+      this.categoryIndex = index
+      this.selectedType = item
+    },
+    _getToolID (tool) {
       if (!tool.guid) {
         tool.guid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
           /[xy]/g,
-          function(c) {
+          function (c) {
             var r = (Math.random() * 16) | 0;
             var v = c === "x" ? r : (r & 0x3) | 0x8;
             return v.toString(16);
@@ -369,19 +442,19 @@ export default {
       }
       return tool.guid;
     },
-    confirm(info, ok, cancel) {
+    confirm (info, ok, cancel) {
       this.confirmInfo = info;
       this.modal = true;
       this._ok = ok;
       this._cancel = cancel;
     },
-    modalCancel() {
+    modalCancel () {
       this.modal = false;
       if (typeof this._cancel == "function") {
         this._ok();
       }
     },
-    modalConfirm() {
+    modalConfirm () {
       this.modal = false;
       if (typeof this._ok == "function") {
         this._ok();
@@ -389,7 +462,7 @@ export default {
     },
 
     //显示对象的属性窗口
-    showPropertyWindow(czmObject, options) {
+    showPropertyWindow (czmObject, options) {
       //一个对象可以弹出若干种不同类型的属性窗口,判定是哪种component
 
       //用于判断是否弹出属性面板--mrq
@@ -470,18 +543,18 @@ export default {
         nextczm: options && options.jsonSchema
       });
     },
-    _topWindow(index) {
+    _topWindow (index) {
       if (index < 0 && index == this.tools.length - 1) return;
 
       const tool = this.tools[index];
       this.tools.splice(index, 1);
       this.tools.push(tool);
     },
-    topWindow(window) {
+    topWindow (window) {
       const index = window.$parent.$attrs._toolIndex;
       this._topWindow(index);
     },
-    destroyTool(tool) {
+    destroyTool (tool) {
       const index = tool.$attrs._toolIndex;
       if (index !== -1) {
         //const tool = this.tools[index];
@@ -489,7 +562,7 @@ export default {
       }
     },
 
-    promptInfo(info, type) {
+    promptInfo (info, type) {
       var _info = {
         info,
         type,
@@ -515,5 +588,8 @@ export default {
   width: 100%;
   height: calc(100% - 137px);
   position: relative;
+}
+.active {
+  background: rgba(200,200,200,0.5)
 }
 </style>
