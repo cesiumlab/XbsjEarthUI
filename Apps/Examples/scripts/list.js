@@ -423,6 +423,10 @@ vueApp.examples = [
             {
                 "title": "数字工厂",
                 "url": "./earth-digitalFactory.html"
+            },
+            {
+                "title": "测试",
+                "url": "./earth-test.html"
             }
         ]
     },

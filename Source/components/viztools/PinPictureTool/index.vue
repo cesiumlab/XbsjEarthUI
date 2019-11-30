@@ -215,7 +215,7 @@ export default {
       this.makiIconObj = XE.Obj.Pin.MakiIcon;
       this.makiIconObj.null = "";
       if (this._czmObj.isCreating && !this.pin.imageUrl) {
-        this.pin.imageUrl = "../../assets/earth.png";
+        this.pin.imageUrl = "./assets/earth.png";
       }
 
       this._czmObj.far = 1073741824;

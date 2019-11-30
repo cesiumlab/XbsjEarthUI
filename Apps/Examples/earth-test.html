@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth案例">
+    </meta>
+    <title>测试</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey; overflow: hidden; position: relative;">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        var fsBody = `
+            float vtxf_a11 = fract(czm_frameNumber / 120.0) * 3.14159265 * 2.0;
+            float vtxf_a12 = v_elevationPos.z / 60.0 + sin(vtxf_a11) * 0.1;
+            gl_FragColor *= vec4(vtxf_a12, vtxf_a12, vtxf_a12, 1.0);
+
+            float vtxf_a13 = fract(czm_frameNumber / 360.0);
+            float vtxf_h = clamp(v_elevationPos.z / 300.0, 0.0, 1.0);
+            vtxf_a13 = abs(vtxf_a13 - 0.5) * 2.0;
+            float vtxf_diff = step(0.005, abs(vtxf_h - vtxf_a13));
+            gl_FragColor.rgb += gl_FragColor.rgb * (1.0 - vtxf_diff);
+            `;
+
+        function startup() {
+            earth = new XE.Earth('earthContainer');
+
+            earth.weather.atmosphere.enabled = false;
+
+            const bloom = earth.postProcess.bloom;
+            bloom.enabled = true;
+            bloom.glowOnly = false;
+            bloom.contrast = 119;
+            bloom.brightness = -0.4;
+            bloom.delta = 0.9;
+            bloom.sigma = 3.78;
+            bloom.stepSize = 5;
+            bloom.isSelected = false;
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "xbsjGuid": "0a74da9f-bff6-4eab-af64-d8cf95978145",
+                            "name": "谷歌影像",
+                            "brightness": 0.2,
+                            "rectangle": null,
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}",
+                                    "srcCoordType": "GCJ02",
+                                    "dstCoordType": "WGS84",
+                                    "maximumLevel": 21,
+                                }
+                            }
+                        }
+                    },
+                    // {
+                    //     "ref": "tileset",
+                    //     "czmObject": {
+                    //         "xbsjType": "Tileset",
+                    //         "xbsjGuid": "094b1984-4aae-4ac3-bb35-86d84e6a8204",
+                    //         "name": "白模测试2",
+                    //         "url": "https://lab.earthsdk.com/model/702aa950d03c11e99f7ddd77cbe22fea/tileset.json",
+                    //         "xbsjStyle": "var style = {\n    color: \"vec4(0, 0.5, 1.0,1)\"\n}",
+                    //         "xbsjClippingPlanes": {},
+                    //         "xbsjCustomShader": {
+                    //             "fsBody": fsBody,
+                    //         }
+                    //     }
+                    // },
+                    // {
+                    //     "ref": "scaneline",
+                    //     "czmObject": {
+                    //         "xbsjType": "Scanline",
+                    //         "xbsjGuid": "c827bdc1-c14b-4452-81de-7b2ce427b786",
+                    //         "name": "扫描线",
+                    //         "position": [2.1201528021066163, 0.5451706303633767, 0],
+                    //         "show": true,
+                    //         "radius": 1000,
+                    //         "timeDuration": "3",
+                    //         "currentTime": 0,
+                    //         "color": [0.5, 0.8, 1.0, 1.0],
+                    //     }
+                    // }
+                ]
+            };
+
+            // var tileset = earth.sceneTree.$refs.tileset.czmObject;
+            // var scaneline = earth.sceneTree.$refs.scaneline.czmObject;
+            // window.tileset = tileset;
+            // window.scaneline = scaneline;
+
+            // scaneline.playing = true;
+
+            var c = createCircle(earth);
+            // var b = createBillboard(earth);
+            // var cl = createCylinder(earth);
+            // var cl2 = createCylinder2(earth);
+            // var gc = createGroundCircle(earth);
+            // var t = createTetrahedron(earth);
+            // var bp = createBasePoint(earth, [2.1208228652896737,0.545141073908163,1.4957427559874568], [1, 1, 0, 2]);
+
+            // [
+            //     [[2.1202907282192385, 0.5450835546419367, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
+            //     [[2.120125294340532, 0.5453135338319917, 1.5], [1, 1, 0, 2], [60, 60, 1.2]],
+            //     [[2.120593634919066, 0.5455039098638930, 1.5], [0.4, 0.9, 1, 2], [40, 40, 0.8]],
+            //     [[2.120633904525988, 0.54481413672139860, 1.5], [0.3, 1, 1, 2], [50, 50, 1.5]],
+            //     [[2.1208228652896737, 0.545141073908163, 1.5], [1, 1, 0, 2], [50, 50, 1.0]],
+            //     [[2.120461948038486, 0.5451830324218808, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
+            //     [[2.1204975918398317, 0.5452978537884561, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
+            //     [[2.1207024221200843, 0.5453525660588958, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
+            //     [[2.1207404597752664, 0.5451854942212021, 1.5], [0.5, 0.8, 1, 2], [50, 50, 1]],
+            // ].forEach(([p, c, s]) => {
+            //     createBasePoint(earth, p, c, s);
+            // });
+
+            // createODLines(earth);
+            // createODLines2(earth);
+            // createODLines3(earth);
+
+            window.c = c;
+            // window.b = b;
+            // window.cl = cl;
+            // window.cl2 = cl2;
+            // window.gc = gc;
+            // window.t = t;
+
+            // window.l = createLabel(earth);
+            // window.l = createLabel2(earth);
+
+            // earth.camera.position = [2.1210391698749964, 0.544944336488856, 822.8789229124824];
+            // earth.camera.rotation = [5.190679265289419, -0.41493986255762305, 6.280299562599916];
+            // 环绕飞行
+            earth.camera.flyAround([2.1206125026580582, 0.545178729438238, 15], 3000, [0, -Math.PI / 5, 0], 0, 3.14 / 50);
+        }
+
+        function createCircle(earth) {
+            const evalString = `
+                Cesium.Resource.createIfNeeded('./images/ht/circular_03.png').fetchImage().then(function(image) {
+                    console.log('image loaded!');
+                    p.canvasWidth = 512;
+                    p.canvasHeight = 512;
+
+                    p.drawCanvas(ctx => {
+                        ctx.clearRect(0, 0, 512, 512);
+
+                        ctx.beginPath();
+                        ctx.strokeStyle = "rgb(128, 128, 128)";
+                        // ctx.setLineDash([8, 8]);
+                        ctx.lineWidth = 1;
+                        ctx.arc(256, 256, 250, 0, Math.PI*2, true);
+                        ctx.stroke();
+
+                        ctx.drawImage(image, 0, 0);
+                    });
+
+                    p.color = [0.5, 0.8, 1, 2];
+                });
+            `;
+
+            const preUpdateEvalString = `
+                if (typeof p.xxxAngle === 'undefined') p.xxxAngle = 360.0;
+                p.xxxAngle -= 1.0;
+                if (p.xxxAngle < 0) {
+                    p.xxxAngle = 360.0;
+                }
+                p.rotation[0] = p.xxxAngle / 180.0 * Math.PI;
+            `;
+
+            // p.positions = XE.Obj.CustomPrimitive.Geometry.unitSquare.positions;
+            // p.sts = XE.Obj.CustomPrimitive.Geometry.unitSquare.sts;
+            // p.indices = XE.Obj.CustomPrimitive.Geometry.unitSquare.indices;
+
+            const config = {
+                // xbsjType: "CustomPrimitive",
+                evalString,
+                preUpdateEvalString,
+                position: [2.1206125026580582, 0.545178729438238, 14.721614698023599],
+                scale: [500, 500, 1],
+                positions: [-1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0],
+                sts: [0, 0, 1, 0, 1, 1, 0, 1],
+                indices: [0, 1, 2, 0, 2, 3],
+                renderState: XE.Obj.CustomPrimitive.getRenderState(true, true),
+                color: [0.5, 0.8, 1, 2],
+                canvasWidth: 512,
+                canvasHeight: 512,
+            }
+
+            var p = new XE.Obj.CustomPrimitive(earth);
+            p.xbsjFromJSON(config);
+
+            return p;
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);
+    </script>
+</body>
+
+</html>
