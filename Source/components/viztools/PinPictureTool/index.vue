@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="480"
+    :height="518"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -71,6 +71,17 @@
       <div class="flatten">
         <label>{{lang.imageUrl}}</label>
         <input style="float:left;" type="text" v-model="pin.imageUrl" />
+      </div>
+
+      <!-- 锚点  -->
+      <div class="flatten">
+        <label>{{lang.origion}}</label>
+        <input
+          type="text"
+          style="float:left; width: 25%; margin-right: 20px;"
+          v-model="pin.origin[0]"
+        />
+        <input type="text" style="float:left; width: 25%;" v-model="pin.origin[1]" />
       </div>
 
       <!-- 缩放 -->
@@ -145,7 +156,8 @@ export default {
         show: true,
         position: [0, 0, 0],
         pinBuilder: {},
-        attachedPathGuid: ""
+        attachedPathGuid: "",
+        origin: [0, 0]
       },
       pinstyletype: true,
       bgbaseColorUI: {
@@ -194,7 +206,8 @@ export default {
         enabled: "pin.enabled",
         pinBuilder: "pin.pinBuilder",
         attachedPathGuid: "pin.attachedPathGuid",
-        isDivImage: "pin.isDivImage"
+        isDivImage: "pin.isDivImage",
+        origin: "pin.origin"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {

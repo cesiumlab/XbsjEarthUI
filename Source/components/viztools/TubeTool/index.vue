@@ -96,6 +96,20 @@
           ></XbsjInputNumber>
         </div>
       </div>
+
+      <div class="flatten">
+        <!-- 横向重复 -->
+        <label>{{lang.repeatX}}</label>
+        <div class="flatten-box">
+          <XbsjInputNumber style="float:left; width: calc(50% - 87px);" v-model="model.repeat[0]"></XbsjInputNumber>
+        </div>
+        <!-- 纵向重复 -->
+        <label>{{lang.repeatY}}</label>
+        <div class="flatten-box">
+          <XbsjInputNumber style="float:left; width: calc(50% - 87px);" v-model="model.repeat[1]"></XbsjInputNumber>
+        </div>
+      </div>
+
       <!-- 颜色强度 -->
       <div class="flatten">
         <label>{{lang.colorintensity}}</label>
@@ -139,7 +153,8 @@ export default {
         radialSegments: 18,
         tubularSegments: 50,
         closed: false,
-        color: [1, 1, 1, 1]
+        color: [1, 1, 1, 1],
+        repeat: [0, 0]
       },
       langs: languagejs
     };
@@ -164,7 +179,8 @@ export default {
         radialSegments: "model.radialSegments",
         tubularSegments: "model.tubularSegments",
         closed: "model.closed",
-        color: "model.color"
+        color: "model.color",
+        repeat: "model.repeat"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {

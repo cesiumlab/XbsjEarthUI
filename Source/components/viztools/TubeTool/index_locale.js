@@ -12,7 +12,9 @@ const zh = {
   creating: '创建',
   editing: '编辑',
   flyto: '定位',
-  colorintensity: '颜色强度'
+  colorintensity: '颜色强度',
+  repeatX: '横向重复',
+  repeatY: '纵向重复'
 };
 
 const en = {
@@ -29,7 +31,9 @@ const en = {
   creating: 'creating',
   editing: 'edit',
   flyto: 'flyto',
-  colorintensity: 'colorintensity'
+  colorintensity: 'colorintensity',
+  repeatX: 'repeatX',
+  repeatY: 'repeatY'
 };
 
 export default {
