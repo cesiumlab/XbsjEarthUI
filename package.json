@@ -51,7 +51,7 @@
     "cross-env": "^5.1.3",
     "css-loader": "^0.28.11",
     "earthsdk": "1.2.10",
-    "earthsdk-custom-primitive": "1.0.2",
+    "earthsdk-custom-primitive": "1.0.3",
     "earthsdk-plotting-symbol": "1.0.12",
     "file-loader": "^1.1.6",
     "globby": "^10.0.1",
