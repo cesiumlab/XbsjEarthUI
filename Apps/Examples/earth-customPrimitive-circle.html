@@ -121,21 +121,24 @@
                     ctx.clearRect(0, 0, 256, 256);
 
                     ctx.save();
-                    ctx.beginPath();
+
+                    ctx.translate(128, 128);
+                    ctx.rotate(-angle * Math.PI / 180.0);
+
+                    // 状态设置
                     ctx.strokeStyle = "rgb(255, 255, 0)"; 
                     ctx.setLineDash([8, 8]);
                     ctx.lineWidth = 3;
-                    ctx.arc(128, 128, 120, 0, Math.PI*2, true);
-                    ctx.stroke();
-
+                    
+                    // 大圆
                     ctx.beginPath();
-                    ctx.arc(128, 128, 64, 0, Math.PI*2, true);
+                    ctx.arc(0, 0, 120, 0, Math.PI*2, true);
                     ctx.stroke();
-                    ctx.restore();
 
-                    ctx.save();
-                    ctx.translate(128, 128);
-                    ctx.rotate(-angle * Math.PI / 180.0);
+                    // 小圆
+                    // ctx.beginPath();
+                    // ctx.arc(0, 0, 64, 0, Math.PI*2, true);
+                    // ctx.stroke();
 
                     p._drawArrow(ctx, 0, 0, 120, 0, 30, 10, 3, "rgb(255, 255, 0)");
 
