@@ -113,10 +113,10 @@
             scaneline.playing = true;
 
             // var c = createCircle(earth);
-            var b = createBillboard(earth);
+            // var b = createBillboard(earth);
             // var cl = createCylinder(earth);
-            // var cl2 = createCylinder2(earth);
-            // var gc = createGroundCircle(earth);
+            var cl2 = createCylinder2(earth);
+            var gc = createGroundCircle(earth);
             // var t = createTetrahedron(earth);
             // var bp = createBasePoint(earth, [2.1208228652896737,0.545141073908163,1.4957427559874568], [1, 1, 0, 2]);
 
@@ -139,10 +139,10 @@
             // createODLines3(earth);
 
             // window.c = c;
-            window.b = b;
+            // window.b = b;
             // window.cl = cl;
-            // window.cl2 = cl2;
-            // window.gc = gc;
+            window.cl2 = cl2;
+            window.gc = gc;
             // window.t = t;
 
             // window.l = createLabel(earth);
@@ -212,35 +212,188 @@
         //     return p;
         // }
 
-        function createBillboard(earth) {
+        // function createBillboard(earth) {
+        //     const evalString = `
+        //         Cesium.Resource.createIfNeeded('./images/city/billboard.png').fetchImage().then(function(image) {
+        //             console.log('image loaded!');
+        //             p.drawCanvas(ctx => {
+        //                 ctx.clearRect(0, 0, 512, 256);
+        //                 ctx.drawImage(image, 0, 0);
+        //             });
+        //         });
+        //     `;
+
+        //     // p.positions = XE.Obj.CustomPrimitive.Geometry.unitBillboard.positions;
+        //     // p.sts = XE.Obj.CustomPrimitive.Geometry.unitBillboard.sts;
+        //     // p.indices = XE.Obj.CustomPrimitive.Geometry.unitBillboard.indices;
+
+        //     const config = {
+        //         evalString,
+        //         position: [2.1206401172802556, 0.5451803047331054, 302.99853825804723],
+        //         scale: [1, 100, 50],
+        //         positions: [0, -1, 0, 0, 1, 0, 0, 1, 2, 0, -1, 2],
+        //         sts: [0, 0, 1, 0, 1, 1, 0, 1],
+        //         indices: [0, 1, 2, 0, 2, 3],
+        //         renderState: XE.Obj.CustomPrimitive.getRenderState(true, true),
+        //         color: [0.5, 0.8, 1, 2],
+        //         canvasWidth: 512,
+        //         canvasHeight: 256,
+        //     };
+
+        //     var p = new XE.Obj.CustomPrimitive(earth);
+        //     p.xbsjFromJSON(config);
+
+        //     return p;
+        // }
+
+        // function createCylinder(earth) {
+        //     const renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+        //     renderState.cull.enabled = false;
+        //     const cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(1.0, 1.0, 1.0, 30);
+        //     const evalString = `
+        //         p.canvasWidth = 512;
+        //         p.canvasHeight = 512;
+        //         Cesium.Resource.createIfNeeded('./images/city/circular2.png').fetchImage().then(function(image) {
+        //             console.log('image loaded!');
+        //             p.canvasWidth = 512;
+        //             p.canvasHeight = 256;
+
+        //             p.drawCanvas(ctx => {
+        //                 ctx.clearRect(0, 0, 512, 256);
+        //                 ctx.drawImage(image, 0, 0);
+        //             });
+
+        //             p.color = [0.5, 0.8, 1, 2];
+        //         });
+        //     `;
+
+        //     const preUpdateEvalString = `
+        //         if (typeof p.dAngle === 'undefined') p.dAngle = 360.0;
+        //         p.dAngle -= 1.0;
+        //         if (p.dAngle < 0.0) {
+        //             p.dAngle = 360.0;
+        //         }
+        //         p.rotation[0] = p.dAngle / 180.0 * Math.PI;
+        //     `;
+
+        //     const config = {
+        //         evalString,
+        //         preUpdateEvalString,
+        //         position: [2.120597930315031, 0.5451624300822016, 150],
+        //         scale: [100, 100, 314],
+        //         positions: cylinder.positions,
+        //         sts: cylinder.sts,
+        //         indices: cylinder.indices,
+        //         renderState,
+        //         canvasWidth: 512,
+        //         canvasHeight: 512,
+        //     };
+        //     const p = new XE.Obj.CustomPrimitive(earth);
+        //     p.xbsjFromJSON(config);
+
+        //     return p;
+        // }
+
+        function createCylinder2(earth) {
+            const cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(1.0, 1.0, 1.0, 30);
+            const renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+            renderState.cull.enabled = false;
             const evalString = `
-                Cesium.Resource.createIfNeeded('./images/city/billboard.png').fetchImage().then(function(image) {
-                    console.log('image loaded!');
-                    p.drawCanvas(ctx => {
-                        ctx.clearRect(0, 0, 512, 256);
-                        ctx.drawImage(image, 0, 0);
-                    });
-                });
+                p.canvasWidth = 1;
+                p.canvasHeight = 256;
+                p.drawCanvas(ctx => {
+                    ctx.clearRect(0, 0, 1, 256);
+
+                    var lingrad2 = ctx.createLinearGradient(0,0,0,256);
+                    lingrad2.addColorStop(0, 'rgba(255,255,255,0)');
+                    lingrad2.addColorStop(1, 'rgba(255,255,255,1)');
+
+                    ctx.fillStyle = lingrad2;
+                    ctx.fillRect(0, 0, 1, 256);
+                }); 
             `;
 
-            // p.positions = XE.Obj.CustomPrimitive.Geometry.unitBillboard.positions;
-            // p.sts = XE.Obj.CustomPrimitive.Geometry.unitBillboard.sts;
-            // p.indices = XE.Obj.CustomPrimitive.Geometry.unitBillboard.indices;
+            const preUpdateEvalString = `
+                if (typeof p.dt === 'undefined') p.dt = 0.0;
+                p.dt += 0.01 * 0.3;
+                if (p.dt > 1.0) {
+                    p.dt = 0.0;
+                }
+
+                const b = (1.0-Math.cos(p.dt*Math.PI*2.0))*0.5;
+                p.scale[0] = p.scale[1] = 1000 * (1.0-Math.cos(p.dt*Math.PI))*0.5;
+                p.scale[2] = 200 * b;
+                p.color[3] = 2.0 * b;
+            `;
 
             const config = {
                 evalString,
-                position: [2.1206401172802556, 0.5451803047331054, 302.99853825804723],
-                scale: [1, 100, 50],
-                positions: [0, -1, 0, 0, 1, 0, 0, 1, 2, 0, -1, 2],
-                sts: [0, 0, 1, 0, 1, 1, 0, 1],
-                indices: [0, 1, 2, 0, 2, 3],
-                renderState: XE.Obj.CustomPrimitive.getRenderState(true, true),
-                color: [0.5, 0.8, 1, 2],
-                canvasWidth: 512,
+                preUpdateEvalString,
+                position: [2.1206125026580582, 0.545178729438238, 15],
+                scale: [500, 500, 100],
+                positions: cylinder.positions,
+                sts: cylinder.sts,
+                indices: cylinder.indices,
+                renderState: renderState,
+                canvasWidth: 1,
                 canvasHeight: 256,
-            };
+                color: [0.5, 0.8, 1, 2],
+            }
 
-            var p = new XE.Obj.CustomPrimitive(earth);
+            const p = new XE.Obj.CustomPrimitive(earth);
+            p.xbsjFromJSON(config);
+
+            return p;
+        }
+
+        function createGroundCircle(earth) {
+            const evalString = `
+                Cesium.Resource.createIfNeeded('./images/circle.png').fetchImage().then(function(image) {
+                    console.log('image loaded!');
+                    p._ctx_image = image;
+                });
+            `;
+
+            const preUpdateEvalString = `
+                if (typeof p.dAngle === 'undefined') p.dAngle = 360.0;
+                p.dAngle -= 1.0;
+                if (p.dAngle < 0.0) {
+                    p.dAngle = 360.0;
+                }
+                const rotation = p.dAngle / 180.0 * Math.PI;
+
+                p.drawCanvas(ctx => {
+                    ctx.clearRect(0, 0, 512, 512);
+
+                    ctx.beginPath();
+                    ctx.strokeStyle = "rgb(128, 128, 128)";
+                    // ctx.setLineDash([8, 8]);
+                    ctx.lineWidth = 1;
+                    ctx.arc(256, 256, 250, 0, Math.PI*2, true);
+                    ctx.stroke();
+
+                    if (p._ctx_image) {
+                        ctx.save();
+                        ctx.translate(256, 256);
+                        ctx.rotate(rotation);
+                        ctx.translate(-256, -256);
+                        ctx.drawImage(p._ctx_image, 0, 0);
+                        ctx.restore();
+                    }
+                });
+            `;
+
+            const config = {
+                evalString,
+                preUpdateEvalString,
+                position: [2.1208980215153845, 0.5450726579947579, 41.369588015024185],
+                width: 1000,
+                height: 1000,
+                canvasWidth: 512,
+                canvasHeight: 512,
+                color: [0.5, 0.8, 1, 2],
+            };
+            const p = new XE.Obj.CustomGroundRectangle(earth);
             p.xbsjFromJSON(config);
 
             return p;

@@ -124,14 +124,19 @@
           <label>{{lang.predefined}}</label>
           <input
             type="text"
+            v-model="primitiveName"
             @click="selectPredefinedinput"
             readonly
             style="cursor: pointer; width: 380px;"
           />
           <button class="selectButton"></button>
           <div class="cutselectbox" v-show="showPredefinedSelect" style="width: 389px; left: 84px;">
-            <div>
-              <span></span>
+            <div
+              @click="primitiveoptions(index)"
+              v-for="(item,index) in primitiveData"
+              :key="index"
+            >
+              <span>{{item.name}}</span>
             </div>
           </div>
         </div>
@@ -167,6 +172,7 @@
 <script>
 import { copyobj } from "../../utils/tools";
 import languagejs from "./index_locale";
+import axios from "axios";
 
 export default {
   props: {
@@ -240,7 +246,10 @@ export default {
           a: 1
         }
       },
-      bgbaseColor: [0, 0, 0.5, 1]
+      bgbaseColor: [0, 0, 0.5, 1],
+      primitiveData: [],
+      primitiveName: "默认",
+      index: Number
     };
   },
   created() {},
@@ -375,6 +384,8 @@ export default {
     // 监听拖拽
     customPrimitive.addEventListener("dragover", handleDragOver, false);
     customPrimitive.addEventListener("drop", handleFileSelect, false);
+
+    this.geDatainfo();
   },
   computed: {
     name() {
@@ -405,6 +416,20 @@ export default {
     }
   },
   methods: {
+    geDatainfo() {
+      var primitiveServer = this.$root.$labServer;
+      let url = primitiveServer.server + "primitive/list";
+      axios
+        .post(url)
+        .then(res => {
+          if (res.data.status === "ok") {
+            this.primitiveData = res.data.primitives.rows;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     selectinput() {
       this.showTypeSelect = !this.showTypeSelect;
     },
@@ -421,6 +446,19 @@ export default {
     },
     selectPredefinedinput() {
       this.showPredefinedSelect = !this.showPredefinedSelect;
+    },
+    primitiveoptions(index) {
+      this.index = index;
+      this.primitiveName = this.primitiveData[index].name;
+      // console.log(this.primitiveName);
+      this.showPredefinedSelect = !this.showPredefinedSelect;
+      var customPrimitives = new XE.Obj.CustomPrimitive(this.$root.$earth);
+      var allJson = customPrimitives.toAllJSON();
+      var position = [...this._czmObj.position];
+      this._czmObj.xbsjFromJSON(allJson);
+      this._czmObj.xbsjFromJSON(JSON.parse(this.primitiveData[index].content));
+      this.obj = this.objData();
+      this._czmObj.position = position;
     },
     itemClick(item) {
       // console.log(item);
