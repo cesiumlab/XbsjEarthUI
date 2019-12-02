@@ -159,13 +159,13 @@ export default {
         path = path.substr(idx1 + 1);
       }
 
-      return (
-        this.$root.$earthUI.labServer.server +
+      var a = document.createElement('A');
+      a.href = this.$root.$earthUI.labServer.server +
         "model/" +
         server._id +
         "/" +
-        path
-      );
+        path;
+      return a.href;
     },
     ok() {
       if (!this.selected) {

@@ -2,7 +2,7 @@
   <Window
     :width="490"
     :minWidth="490"
-    :height="370"
+    :height="406"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -96,6 +96,27 @@
           ></XbsjInputNumber>
         </div>
       </div>
+
+      <div class="flatten">
+        <!-- 横向重复 -->
+        <label>{{lang.repeatX}}</label>
+        <div class="flatten-box">
+          <XbsjInputNumber style="float:left; width: calc(50% - 87px);" v-model="model.repeat[0]"></XbsjInputNumber>
+        </div>
+        <!-- 纵向重复 -->
+        <label>{{lang.repeatY}}</label>
+        <div class="flatten-box">
+          <XbsjInputNumber style="float:left; width: calc(50% - 87px);" v-model="model.repeat[1]"></XbsjInputNumber>
+        </div>
+      </div>
+
+      <!-- 颜色强度 -->
+      <div class="flatten">
+        <label>{{lang.colorintensity}}</label>
+        <div class="field">
+          <XbsjSlider :min="0" :max="10" :step="1" v-model="model.color[3]"></XbsjSlider>
+        </div>
+      </div>
       <div class="flatten">
         <!-- 闭合 -->
         <label>{{lang.closed}}</label>
@@ -131,7 +152,9 @@ export default {
         speed: [1, 1],
         radialSegments: 18,
         tubularSegments: 50,
-        closed: false
+        closed: false,
+        color: [1, 1, 1, 1],
+        repeat: [0, 0]
       },
       langs: languagejs
     };
@@ -155,7 +178,9 @@ export default {
         speed: "model.speed",
         radialSegments: "model.radialSegments",
         tubularSegments: "model.tubularSegments",
-        closed: "model.closed"
+        closed: "model.closed",
+        color: "model.color",
+        repeat: "model.repeat"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -166,7 +191,7 @@ export default {
         }
       });
       if (this._czmObj.isCreating && !this.model.imageUrl) {
-        this.model.imageUrl = "../../assets/ht/meteor_01.png";
+        this.model.imageUrl = "./assets/ht/meteor_01.png";
       }
     }
   },

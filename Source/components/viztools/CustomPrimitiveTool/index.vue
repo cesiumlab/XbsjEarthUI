@@ -510,15 +510,9 @@ export default {
       if (this.obj) {
         this.objToArr();
       }
-      if (this.evalString) {
-        this._czmObj.evalString = this.evalString;
-      }
-      if (this.preUpdateEvalString) {
-        this._czmObj.preUpdateEvalString = this.preUpdateEvalString;
-      }
-      if (this.destroyEvalString) {
-        this._czmObj.destroyEvalString = this.destroyEvalString;
-      }
+      this._czmObj.evalString = this.evalString;
+      this._czmObj.preUpdateEvalString = this.preUpdateEvalString;
+      this._czmObj.destroyEvalString = this.destroyEvalString;
       if (this.vertexShaderSource) {
         this._czmObj.vertexShaderSource = this.vertexShaderSource;
       }
@@ -590,25 +584,42 @@ export default {
         v1 += "v" + " " + v[k].join(" ") + "\n";
       }
       for (var z = 0; z < f.length; z++) {
-        f[z][0] =
-          Number(f[z][0] + 1) +
-          "/" +
-          Number(f[z][0] + 1) +
-          "/" +
-          Number(f[z][0] + 1);
-        f[z][1] =
-          Number(f[z][1] + 1) +
-          "/" +
-          Number(f[z][1] + 1) +
-          "/" +
-          Number(f[z][1] + 1);
-        f[z][2] =
-          Number(f[z][2] + 1) +
-          "/" +
-          Number(f[z][2] + 1) +
-          "/" +
-          Number(f[z][2] + 1);
-        f2 += "f" + " " + f[z].join("/ ") + "\n";
+        if (
+          this._czmObj.normals !== undefined &&
+          this._czmObj.sts !== undefined
+        ) {
+          f[z][0] =
+            Number(f[z][0] + 1) +
+            "/" +
+            Number(f[z][0] + 1) +
+            "/" +
+            Number(f[z][0] + 1);
+          f[z][1] =
+            Number(f[z][1] + 1) +
+            "/" +
+            Number(f[z][1] + 1) +
+            "/" +
+            Number(f[z][1] + 1);
+          f[z][2] =
+            Number(f[z][2] + 1) +
+            "/" +
+            Number(f[z][2] + 1) +
+            "/" +
+            Number(f[z][2] + 1);
+        } else if (
+          this._czmObj.normals === undefined &&
+          this._czmObj.sts === undefined
+        ) {
+          f[z][0] = Number(f[z][0] + 1);
+          f[z][1] = Number(f[z][1] + 1);
+          f[z][2] = Number(f[z][2] + 1);
+        } else {
+          f[z][0] = Number(f[z][0] + 1) + "/" + Number(f[z][0] + 1);
+          f[z][1] = Number(f[z][1] + 1) + "/" + Number(f[z][1] + 1);
+          f[z][2] = Number(f[z][2] + 1) + "/" + Number(f[z][2] + 1);
+        }
+
+        f2 += "f" + " " + f[z].join(" ") + "\n";
       }
       return v1 + vt2 + vn2 + f2;
     },

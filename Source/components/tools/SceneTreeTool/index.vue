@@ -178,6 +178,7 @@ export default {
           locate: "定位",
           property: "属性",
           addFolder: "添加文件夹",
+          saveScene: "保存场景",
           style: "样式",
           moving: "拖拽移动",
           newFolder: "新建文件夹",
@@ -198,6 +199,7 @@ export default {
           locate: "locate",
           property: "property",
           addFolder: "add folder",
+          saveScene: "save SceneJSON",
           style: "style",
           moving: "drag",
           newFolder: "new folder",
@@ -227,6 +229,13 @@ export default {
             g0.title = this.lang.newFolder;
             const xbsjSceneTree = this.$root.$earth.sceneTree;
             xbsjSceneTree.root.children.push(g0);
+          }
+        },
+        {
+          text: this.lang.saveScene,
+          keys: "",
+          func: () => {
+            this.$root.$earthUI.saveSceneJSONToFile("scene.json");
           }
         }
       ];
