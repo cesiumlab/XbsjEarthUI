@@ -356,14 +356,14 @@ export default {
       getObj: function (earth) {
         return new XE.Obj.Plots.GeoPolyline(earth)
       }
-    },{
+    }, {
       name: "管道",
       typeName: "CustomPrimitiveExt.Tube",
       getObj: function (earth) {
         var tube = new XE.Obj.CustomPrimitiveExt.Tube(earth)
         tube.imageUrl = '../../assets/ht/meteor_01.png';
         tube.radius = 0.5;
-        tube.speed = [0.2,0.2]
+        tube.speed = [0.2, 0.2]
         return tube;
       }
     }]
@@ -423,7 +423,11 @@ export default {
       this.loadGeoJSONShow = false
     },
     analysisJson () {
-      this.loadGeoJSONShow = true
+      if (this.jsontext.sceneTree) {
+        this.$root.$earth.xbsjFromJSON(this.jsontext)
+      } else {
+        this.loadGeoJSONShow = true
+      }
     },
     selectType (index, item) {
       this.categoryIndex = index
@@ -590,6 +594,6 @@ export default {
   position: relative;
 }
 .active {
-  background: rgba(200,200,200,0.5)
+  background: rgba(200, 200, 200, 0.5);
 }
 </style>
