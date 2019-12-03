@@ -598,11 +598,10 @@ class MainUI {
 
   /**
 * 保存当前场景json
+* @param {String} content 需要保存的内容
 * @param {String} filename 需要保存的文件名
 */
-  saveSceneJSONToFile (filename) {
-    var content = JSON.stringify(this._earth.toJSON());
-    // img = "data:image/octet-stream;base64," + img;
+  saveContentToFile (content, filename) {
     var link = document.createElement("a");
     var blob = new Blob([content]);
     link.href = URL.createObjectURL(blob);

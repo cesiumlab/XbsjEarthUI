@@ -143,8 +143,8 @@ export default {
       show: true,
       tree: [],
       symbolObjTypes: [
-        "GroundImage", 
-        "Pin", 
+        "GroundImage",
+        "Pin",
         "GeoPin",
         "Path",
         "GeoPolyline",
@@ -153,16 +153,16 @@ export default {
         "GeoPolylineArrow",
         "GeoCurveArrow",
         "GeoArc",
-        "GeoBezier2", 
-        "GeoBezier3", 
-        "GeoParallelSearch", 
-        "GeoCircle", 
-        "GeoRectangle", 
-        "GeoTriFlag", 
-        "GeoRightAngleFlag", 
-        "GeoDoubleArrow", 
-        "GeoPolygon", 
-        "GeoSector", 
+        "GeoBezier2",
+        "GeoBezier3",
+        "GeoParallelSearch",
+        "GeoCircle",
+        "GeoRectangle",
+        "GeoTriFlag",
+        "GeoRightAngleFlag",
+        "GeoDoubleArrow",
+        "GeoPolygon",
+        "GeoSector",
         "Scanline",
         "Model"],
       canmove: true,
@@ -178,7 +178,8 @@ export default {
           locate: "定位",
           property: "属性",
           addFolder: "添加文件夹",
-          saveScene: "保存场景",
+          saveScene: "下载场景JSON",
+          saveSceneNode: "下载JSON配置",
           style: "样式",
           moving: "拖拽移动",
           newFolder: "新建文件夹",
@@ -199,7 +200,8 @@ export default {
           locate: "locate",
           property: "property",
           addFolder: "add folder",
-          saveScene: "save SceneJSON",
+          saveScene: "download SceneJSON",
+          saveSceneNode: "download JSON Config",
           style: "style",
           moving: "drag",
           newFolder: "new folder",
@@ -235,7 +237,8 @@ export default {
           text: this.lang.saveScene,
           keys: "",
           func: () => {
-            this.$root.$earthUI.saveSceneJSONToFile("scene.json");
+            var content = JSON.stringify(this._earth.toJSON());
+            this.$root.$earthUI.saveContentToFile(content, "scene.json");
           }
         }
       ];
@@ -354,6 +357,14 @@ export default {
           func: () => {
             const jsonStr = item._inner.sn.toJSONStr();
             console.log(jsonStr); // 控制台打印json配置信息，不要删！ vtxf 20191016
+          }
+        },
+        {
+          text: this.lang.saveSceneNode,
+          keys: "",
+          func: () => {
+            var content = item._inner.sn.toJSONStr();
+            this.$root.$earthUI.saveContentToFile(content, item._inner.sn.title + ".json");
           }
         }
       ];

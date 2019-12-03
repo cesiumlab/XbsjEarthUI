@@ -42,7 +42,7 @@
       @cancel="loadGeoJSONShow=false"
       @ok="confirmLoadGeoJson"
       v-show="loadGeoJSONShow"
-      :width="250"
+      :width="300"
       :minWidth="200"
       :height="500"
       :left="500"
@@ -350,7 +350,7 @@ export default {
     xbsjcesium.addEventListener("dragover", handleDragOver, false);
     xbsjcesium.addEventListener("drop", handleFileSelect, false);
 
-    this.types = [{
+    this.polylineTypes = [{
       name: "线",
       typeName: "Plots.GeoPolyline",
       getObj: function (earth) {
@@ -366,7 +366,14 @@ export default {
         tube.speed = [0.2, 0.2]
         return tube;
       }
-    }]
+    }],
+      this.polygonTypes = [{
+        name: "面",
+        typeName: "Plots.GeoPolygon",
+        getObj: function (earth) {
+          return new XE.Obj.Plots.GeoPolygon(earth)
+        }
+      }]
   },
   computed: {
     type () {
@@ -382,8 +389,13 @@ export default {
         const xbsjSceneTree = this.$root.$earth.sceneTree;
         xbsjSceneTree.root.children.push(g0);
       }
-      if (this.jsontext.features.length > 0) {
-        let arr = this.jsontext.features;
+      let arr;
+      if (this.jsontext.features && this.jsontext.features.length > 0) {
+        arr = this.jsontext.features;
+      } else if (this.jsontext.geometrys && this.jsontext.geometrys.length > 0) {
+        arr = this.jsontext.geometrys;
+      }
+      if (arr && arr.length > 0) {
         for (let j = 0, len = arr.length; j < len; j++) {
           if (arr[j].geometry.type === "Polygon") {
             //如果类型为Polygon
@@ -425,8 +437,28 @@ export default {
     analysisJson () {
       if (this.jsontext.sceneTree) {
         this.$root.$earth.xbsjFromJSON(this.jsontext)
+      } else if (this.jsontext.czmObject) {
+        this.$root.$earth.sceneTree.root.children.push(this.jsontext)
+      } else if (this.jsontext.children && this.jsontext.children.length >= 0) {
+        this.$root.$earth.sceneTree.root.children.push(this.jsontext)
       } else {
-        this.loadGeoJSONShow = true
+        let arr;
+        if (this.jsontext.features && this.jsontext.features.length > 0) {
+          arr = this.jsontext.features;
+        } else if (this.jsontext.geometrys && this.jsontext.geometrys.length > 0) {
+          arr = this.jsontext.geometrys;
+        }
+        if (arr && arr.length > 0) {
+          if (arr.length > 0) {
+            if (arr[0].geometry.type === "Polygon") {
+              this.types = this.polygonTypes
+              this.loadGeoJSONShow = true
+            } else if (arr[0].geometry.type === "LineString") {
+              this.types = this.polylineTypes
+              this.loadGeoJSONShow = true
+            }
+          }
+        }
       }
     },
     selectType (index, item) {
