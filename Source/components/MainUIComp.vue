@@ -439,6 +439,10 @@ export default {
         this.$root.$earth.xbsjFromJSON(this.jsontext)
       } else if (this.jsontext.czmObject) {
         this.$root.$earth.sceneTree.root.children.push(this.jsontext)
+      } else if(this.jsontext.xbsjType){
+        var czmObject = {};
+        czmObject.czmObject = this.jsontext;
+        this.$root.$earth.sceneTree.root.children.push(czmObject)
       } else if (this.jsontext.children && this.jsontext.children.length >= 0) {
         this.$root.$earth.sceneTree.root.children.push(this.jsontext)
       } else {
