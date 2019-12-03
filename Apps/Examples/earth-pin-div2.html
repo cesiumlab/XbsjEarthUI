@@ -39,8 +39,8 @@
                     <div ref="earthContainer" style="width: 100%; height: 100%">
                     </div>
                     <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:210px; font-size:24px; font-family: 宋体;">
-                        <span>左边距离:{{winPos[0] | numFilter}}米</span><br/>
-                        <span>底部距离:{{winPos[3] | numFilter}}米</span>
+                        <span>左边距离:{{winPos[0] | numFilter}}px</span><br/>
+                        <span>底部距离:{{winPos[3] | numFilter}}px</span>
                     </div>
                 </div>
             `,
@@ -80,10 +80,10 @@
                 };
 
                 var tileset = earth.sceneTree.$refs.tileset.czmObject;
-
                 this._earth = earth;
 
                 const pin1 = createPin(earth);
+                XE.MVVM.track(this, 'winPos', pin1, 'winPos');
 
                 // only for Debug
                 window.earth = earth;
