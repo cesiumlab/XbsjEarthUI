@@ -99,7 +99,7 @@
         <!-- 速度 -->
         <div class="flatten">
           <label>{{lang.currentSpeed}}</label>
-          <input style="width:62px" v-model="path.currentSpeed" type="text" /> m/s
+          <input style="width:62px" v-model.number="path.currentSpeed" type="text" /> m/s
         </div>
       </div>
       <!-- 播放进度 -->
@@ -109,8 +109,8 @@
           <XbsjSlider
             :min="0"
             :max="path.length"
-            :step="1"
-            v-model="path.currentD"
+            :step="0.00001"
+            v-model.number="path.currentD"
             ref="glowFactor"
           ></XbsjSlider>
         </div>
