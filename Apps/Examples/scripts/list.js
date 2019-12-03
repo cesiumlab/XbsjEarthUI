@@ -72,6 +72,10 @@ vueApp.examples = [
                 "url": "./earth-customGroundRectangle-image.html"
             },
             {
+                "title": "自定义贴地矩形-文字",
+                "url": "./earth-customGroundRectangle-text.html"
+            },
+            {
                 "title": "自定义图元-毛笔字",
                 "url": "./earth-customPrimitive-character.html"
             },
@@ -304,6 +308,14 @@ vueApp.examples = [
                 "url": "./earth-pin-div.html"
             },
             {
+                "title": "Pin-div2",
+                "url": "./earth-pin-div2.html"
+            },
+            {
+                "title": "Pin-div3",
+                "url": "./earth-pin-div3.html"
+            },
+            {
                 "title": "Pin-编辑",
                 "url": "./earth-pin-editing.html"
             },
@@ -423,10 +435,6 @@ vueApp.examples = [
             {
                 "title": "数字工厂",
                 "url": "./earth-digitalFactory.html"
-            },
-            {
-                "title": "测试",
-                "url": "./earth-test.html"
             }
         ]
     },
