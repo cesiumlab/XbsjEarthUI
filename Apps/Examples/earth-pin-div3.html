@@ -90,14 +90,6 @@
                 window.tileset = tileset;
                 window.pin1 = pin1;
             },
-            methods: {
-                fly() {
-                    console.log('即将飞入大雁塔！');
-                    const position = [1.901729390218574, 0.5972202012953493, 594.3184362850787];
-                    const rotation = [5.538756509291041, -0.5562768563795704, 6.280692859184528];
-                    this._earth.camera.flyTo(position, 0, rotation);
-                }
-            },
             filters: {
                 numFilter(value) {
                     // 截取当前数据到小数点后两位
@@ -135,16 +127,17 @@
                 const div = document.createElement('div');
                 div.style.cssText = \`
                     position: absolute;
-                    width: 80px;
-                    min-height: 60px;
+                    width: auto;
                     color: white;
-                    background-image: url("./images/dialog.png");
-                    background-size: 100% 100%;
                     padding: 5px;
                     border-radius: 5px;
                     cursor: pointer;
+                    background: rgba(0, 0, 0, 0.5);
                 \`;
-                div.innerHTML = '<span>点击飞入大雁塔！</span>';
+                div.innerHTML = \`
+                    <span style="font-size: 20px;">西安大雁塔！</span><br/>
+                    <span>xian dayanta</span>
+                \`;
                 div.onclick = () => {
                     console.log('即将飞入大雁塔！');
                     const position = [1.901729390218574, 0.5972202012953493, 594.3184362850787];
@@ -164,7 +157,7 @@
 
                 // 动态修改div的位置
                 p.disposers.push(XE.MVVM.watch(() => [...p.winPos], () => {
-                    div.style.left = (p.winPos[0] - 62) + 'px';
+                    div.style.left = (p.winPos[0] - div.clientWidth * 0.5) + 'px';
                     div.style.bottom = (p.winPos[3]) + 'px';
                 }));
 

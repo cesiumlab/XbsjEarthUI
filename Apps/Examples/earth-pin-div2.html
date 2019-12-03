@@ -90,14 +90,6 @@
                 window.tileset = tileset;
                 window.pin1 = pin1;
             },
-            methods: {
-                fly() {
-                    console.log('即将飞入大雁塔！');
-                    const position = [1.901729390218574, 0.5972202012953493, 594.3184362850787];
-                    const rotation = [5.538756509291041, -0.5562768563795704, 6.280692859184528];
-                    this._earth.camera.flyTo(position, 0, rotation);
-                }
-            },
             filters: {
                 numFilter(value) {
                     // 截取当前数据到小数点后两位
