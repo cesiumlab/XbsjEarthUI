@@ -113,7 +113,7 @@
                     EarthComp,
                 },
             });
-        });
+        }); 
 
         function createPin(earth) {
             const evalString = `
@@ -162,14 +162,17 @@
                 }));
 
                 // pin距离相机太近则隐藏
-                p.disposers.push(XE.MVVM.watch(earth.camera, 'position', () => {
+                p.disposers.push(XE.MVVM.watch(() => ({
+                    enabled: p.enabled,
+                    position: [...earth.camera.position],
+                }), () => {
                     // xepd: xepositionDistance的缩写
                     // pin1.position.xepd(earth.camera.position): 计算相机和pin之间的距离
                     const d = p.position.xepd(earth.camera.position);
-                    if (d < 100) {
-                        div.style.display = 'none';
-                    } else {
+                    if (d > 100 && p.enabled) {
                         div.style.display = 'block';
+                    } else {
+                        div.style.display = 'none';
                     }
                 }));
             `;
