@@ -24,7 +24,7 @@
         </div>
         <div class="xbsj-item-btnbox">
           <div
-            class="xbsj-item-btn wmsbutton"
+            class="xbsj-item-btn symbolbutton"
             @click="SymbolShow=!SymbolShow"
             :class="{highlight:SymbolShow}"
           ></div>
@@ -871,14 +871,14 @@ export default {
   background-size: contain;
   cursor: pointer;
 }
-.wmsbutton {
-  background: url(../../../../images/wms.png) no-repeat;
+.symbolbutton {
+  background: url(../../../../images/symbol.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
-.wmsbutton.highlight,
-.wmsbutton:hover {
-  background: url(../../../../images/wms_on.png) no-repeat;
+.symbolbutton.highlight,
+.symbolbutton:hover {
+  background: url(../../../../images/symbol_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
