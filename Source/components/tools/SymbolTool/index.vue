@@ -386,6 +386,7 @@ export default {
         default: return;
       }
       this.symbol.isCreating = true;
+
       var czmObject = JSON.parse(symbol.content);
       if (czmObject.czmObject) {
         czmObject = czmObject.czmObject;

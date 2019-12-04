@@ -110,7 +110,7 @@ export default {
   props: {
     getBind: Function
   },
-  data() {
+  data () {
     return {
       lang: {},
       showPinSelect: false,
@@ -158,8 +158,8 @@ export default {
       pathGuidarr: []
     };
   },
-  created() {},
-  mounted() {
+  created () { },
+  mounted () {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
@@ -186,34 +186,39 @@ export default {
         }
       });
 
-      this._czmObj.far = 1073741824;
-      this._czmObj.innerHTML =
-        `<div
+      if (!this._czmObj.far) {
+        this._czmObj.far = 1073741824;
+      }
+      if (!this._czmObj.innerHTML) {
+        this._czmObj.innerHTML =
+          `<div
         style="height:50px;width:100px;left:-76px;
         bottom:0px;position: absolute;color: white;
         background-size: 100% 100%;padding: 5px;
         border-radius: 5px;cursor:pointer;
         background-image:url('` +
-        this._czmObj.defaultImgUrl() +
-        `');">
+          this._czmObj.defaultImgUrl() +
+          `');">
     标记文字
     </div>`;
+      }
+
 
       console.log(this._czmObj.defaultImgUrl());
     }
   },
   computed: {
-    name() {
+    name () {
       return this.pin.name;
     },
-    guid() {
+    guid () {
       return this.getBind().guid;
     },
     nearfar: {
-      get() {
+      get () {
         return [0, 30];
       },
-      set(newValue) {
+      set (newValue) {
         this.pin.near = Math.round(Math.pow(2, newValue[0]));
         this.pin.far = Math.round(Math.pow(2, newValue[1]));
       }
@@ -221,12 +226,12 @@ export default {
   },
   watch: {},
   methods: {
-    pinoptionssure(c) {
+    pinoptionssure (c) {
       this.pin.attachedPathGuid = c.guid;
       // console.log(this._czmObj)
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
-    pinselectinput() {
+    pinselectinput () {
       this.pathGuidarr = [];
       let guidobj = {};
       this.pathGuidarr.push({ name: "空", guid: "" });
@@ -244,17 +249,17 @@ export default {
       }
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
-    optionssure(c) {
+    optionssure (c) {
       this.pin.pinBuilder.makiIcon = c;
       this.showPinSelect = !this.showPinSelect;
     },
-    selectinput() {
+    selectinput () {
       this.showPinSelect = !this.showPinSelect;
     },
-    close() {
+    close () {
       this.$parent.destroyTool(this);
     },
-    cancel() {
+    cancel () {
       this.close();
 
       const pinToolObj = this._czmObj;
@@ -267,7 +272,7 @@ export default {
         pinToolObj.destroy();
       }
     },
-    ok() {
+    ok () {
       this.close();
       const pinToolObj = this._czmObj;
       pinToolObj.editing = false;
@@ -284,16 +289,16 @@ export default {
         pinToolObj.innerHTML = this.divcontent;
       }
     },
-    apply() {
+    apply () {
       const pinToolObj = this._czmObj;
       //修改pindiv操作
       pinToolObj.innerHTML = this.divcontent;
     },
-    flyto(index) {
+    flyto (index) {
       this._czmObj.polygons[index].flyTo();
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
     this._disposers.forEach(e => e());

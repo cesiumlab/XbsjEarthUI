@@ -233,7 +233,8 @@ export default {
         GeoPolygon: "GeoPolygon",
         GeoSector: "GeoSector",
         ["CameraView.View"]: "CameraViewPrp",
-        GroundImage: "GroundImageTool"
+        GroundImage: "GroundImageTool",
+        GeoPin: "PinDivTool",
       },
       tools: [
         {
