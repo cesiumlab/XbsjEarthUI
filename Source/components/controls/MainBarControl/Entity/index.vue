@@ -18,15 +18,15 @@
           ></div>
           <span class="xbsj-item-name">{{lang.online}}</span>
         </div>
-        <div class="xbsj-item-btnbox" @click="plotLab=!plotLab">
-          <div class="xbsj-item-btn localhostbutton" :class="{highlight:plotLab}"></div>
+        <div class="xbsj-item-btnbox" @click="LabSymbolShow=!LabSymbolShow">
+          <div class="xbsj-item-btn localhostbutton" :class="{highlight:LabSymbolShow}"></div>
           <span class="xbsj-item-name">{{lang.localhost}}</span>
         </div>
         <div class="xbsj-item-btnbox">
           <div
             class="xbsj-item-btn symbolbutton"
-            @click="SymbolShow=!SymbolShow"
-            :class="{highlight:SymbolShow}"
+            @click="CustomSymbolShow=!CustomSymbolShow"
+            :class="{highlight:CustomSymbolShow}"
           ></div>
           <span class="xbsj-item-name">{{lang.custom}}</span>
         </div>
@@ -280,9 +280,8 @@ export default {
       PlottingShow: false,
       EntityMoreShow: false,
       plotOnline: false,
-      plotLab: false,
-      plotCustom: false,
-      SymbolShow: true,
+      LabSymbolShow: false,
+      CustomSymbolShow: false,
       show: true
     };
   },

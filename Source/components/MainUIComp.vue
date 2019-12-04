@@ -131,7 +131,8 @@ import InformationBox from "./utils/InformationBox";
 
 import ModelTreeTool from "./tools/ModelTreeTool";
 import EntityMoreTool from "./tools/EntityMoreTool";
-import SymbolTool from "./tools/SymbolTool";
+import CustomSymbol from "./tools/SymbolTool/CustomSymbol";
+import LabSymbol from "./tools/SymbolTool/LabSymbol";
 
 export default {
   components: {
@@ -194,7 +195,8 @@ export default {
     InformationBox,
     ModelTreeTool,
     EntityMoreTool,
-    SymbolTool
+    CustomSymbol,
+    LabSymbol
   },
   data: function () {
     return {
@@ -302,8 +304,12 @@ export default {
           ref: "entitymoreTool"
         },
         {
-          component: "SymbolTool",
-          ref: "symbolTool"
+          component: "CustomSymbol",
+          ref: "customSymbol"
+        },
+        {
+          component: "LabSymbol",
+          ref: "labSymbol"
         }
       ],
       infos: [],
