@@ -66,13 +66,13 @@
 
         <!-- 矩形 -->
         <div class="xbsj-item-btnbox" @click="rectangle">
-          <div class="xbsj-item-btn curvedarrow"></div>
+          <div class="xbsj-item-btn rectanglebutton"></div>
           <span class="xbsj-item-name">{{lang.rectangle}}</span>
         </div>
 
         <!-- 圆 -->
         <div class="xbsj-item-btnbox" @click="circle">
-          <div class="xbsj-item-btn curvedarrow"></div>
+          <div class="xbsj-item-btn circlebutton"></div>
           <span class="xbsj-item-name">{{lang.circle}}</span>
         </div>
 
@@ -143,12 +143,12 @@
         <span class="xbsj-list-name">{{lang.solid}}</span>
         <!-- 立方体 -->
         <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn planebutton"></div>
+          <div class="xbsj-item-btn cubebutton"></div>
           <span class="xbsj-item-name">{{lang.cube}}</span>
         </div>
         <!-- 球体 -->
         <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn treebutton"></div>
+          <div class="xbsj-item-btn spherebutton"></div>
           <span class="xbsj-item-name">{{lang.sphere}}</span>
         </div>
         <!-- 模型 -->
@@ -195,7 +195,7 @@
         </div>
         <!-- 带杆文字 -->
         <div class="xbsj-item-btnbox" title="带杆文字">
-          <div class="xbsj-item-btn pathbutton"></div>
+          <div class="xbsj-item-btn barwritebutton"></div>
           <span class="xbsj-item-name">{{lang.barwrite}}</span>
         </div>
         <!-- 扩散面 -->
@@ -205,7 +205,7 @@
         </div>
         <!-- OD线 -->
         <div class="xbsj-item-btnbox" @click="odLine" title="OD线">
-          <div class="xbsj-item-btn pathbutton"></div>
+          <div class="xbsj-item-btn odbutton"></div>
           <span class="xbsj-item-name">{{lang.odLine}}</span>
         </div>
         <!-- 扫描线 -->
@@ -215,12 +215,12 @@
         </div>
         <!-- 管道 -->
         <div class="xbsj-item-btnbox ml20" @click="tubeBtn">
-          <div class="xbsj-item-btn radarbutton"></div>
+          <div class="xbsj-item-btn tubebutton"></div>
           <span class="xbsj-item-name">{{lang.tube}}</span>
         </div>
         <!-- 自定义图元 -->
         <div class="xbsj-item-btnbox ml20" @click="customPrimitiveBtn">
-          <div class="xbsj-item-btn radarbutton"></div>
+          <div class="xbsj-item-btn customprimitivebutton"></div>
           <span class="xbsj-item-name">{{lang.CustomPrimitive}}</span>
         </div>
         <!-- <div class="xbsj-item-btnbox ml20">
@@ -429,7 +429,7 @@ export default {
     // 打开pin属性窗口
     pinbtn() {
       var Pin = new XE.Obj.Pin(this.$root.$earth);
-      Pin.ctrtype = "PinTool";
+      // Pin.ctrtype = "PinTool";
       Pin.name = "图标点";
       Pin.positionPicking = true;
       Pin.isCreating = true;
@@ -439,7 +439,7 @@ export default {
     },
     pindivbtn() {
       var PinDivTool = new XE.Obj.Plots.GeoPin(this.$root.$earth);
-      PinDivTool.ctrtype = "PinDivTool";
+      // PinDivTool.ctrtype = "PinDivTool";
       PinDivTool.name = "div图标";
       PinDivTool.isCreating = true;
       PinDivTool.creating = true;
@@ -450,6 +450,7 @@ export default {
       var PinPictureTool = new XE.Obj.Pin(this.$root.$earth);
       // PinPictureTool.ctrtype = "PinPictureTool";
       PinPictureTool.name = "图片";
+      PinPictureTool.imageUrl = "./assets/earth.png";
       PinPictureTool.positionPicking = true;
       PinPictureTool.isCreating = true;
       PinPictureTool.creating = true;
@@ -879,6 +880,94 @@ export default {
 .symbolbutton.highlight,
 .symbolbutton:hover {
   background: url(../../../../images/symbol_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.rectanglebutton {
+  background: url(../../../../images/rectangle.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.rectanglebutton.highlight,
+.rectanglebutton:hover {
+  background: url(../../../../images/rectangle_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.circlebutton {
+  background: url(../../../../images/circle.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.circlebutton.highlight,
+.circlebutton:hover {
+  background: url(../../../../images/circle_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.cubebutton {
+  background: url(../../../../images/cube.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.cubebutton.highlight,
+.cubebutton:hover {
+  background: url(../../../../images/cube_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.spherebutton {
+  background: url(../../../../images/sphere.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.spherebutton.highlight,
+.spherebutton:hover {
+  background: url(../../../../images/sphere_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.barwritebutton {
+  background: url(../../../../images/barwrite.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.barwritebutton.highlight,
+.barwritebutton:hover {
+  background: url(../../../../images/barwrite_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.odbutton {
+  background: url(../../../../images/od.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.odbutton.highlight,
+.odbutton:hover {
+  background: url(../../../../images/od_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.tubebutton {
+  background: url(../../../../images/tube.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.tubebutton.highlight,
+.tubebutton:hover {
+  background: url(../../../../images/tube_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.customprimitivebutton {
+  background: url(../../../../images/customprimitive.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.customprimitivebutton.highlight,
+.customprimitivebutton:hover {
+  background: url(../../../../images/customprimitive_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
