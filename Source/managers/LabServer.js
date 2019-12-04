@@ -39,6 +39,7 @@ class LabServer {
      */
       cloudServiceUrl: '',
     });
+    this.getSymbol();
   }
 
   isDestroyed () {

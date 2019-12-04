@@ -178,15 +178,15 @@ export default {
           locate: "定位",
           property: "属性",
           addFolder: "添加文件夹",
-          saveScene: "下载场景JSON",
-          saveSceneNode: "下载JSON配置",
+          saveScene: "下载场景配置",
+          saveSceneNode: "下载配置",
           style: "样式",
           moving: "拖拽移动",
           newFolder: "新建文件夹",
           title: "图层管理",
           viewSource: "查看加载代码",
           viewCzmSource: "查看Cesium加载代码",
-          config: "控制台打印JSON配置",
+          config: "打印配置",
           cameraAttached: "相机绑定",
           addToSymbol: "添加到标注库"
         },
@@ -413,24 +413,12 @@ export default {
           ]
         );
       } else {
-        baseItems.unshift(
-          ...[
-            {
-              text: this.lang.locate,
-              keys: "",
-              func: () => {
-                const czmObject = item._inner.sn.czmObject;
-                czmObject.flyTo();
-              }
-            },
-            {
-              type: "divider"
-            }
-          ]
-        );
+        baseItems.unshift({
+          type: "divider"
+        });
         //如果有cameraAttached属性，就添加一个相机绑定菜单
         if (item._inner.sn.czmObject.cameraAttached !== undefined) {
-          baseItems.push({
+          baseItems.unshift({
             text: this.lang.cameraAttached,
             func: () => {
               item._inner.sn.czmObject.cameraAttached = !item._inner.sn
@@ -438,7 +426,14 @@ export default {
             }
           });
         }
-
+        baseItems.unshift({
+          text: this.lang.locate,
+          keys: "",
+          func: () => {
+            const czmObject = item._inner.sn.czmObject;
+            czmObject.flyTo();
+          }
+        });
         //如果是tileset 那么增加几个属性   样式，移动，分层着色
         if (item._inner.sn.czmObject.xbsjType == "Tileset") {
           baseItems.push(
@@ -483,7 +478,7 @@ export default {
         }
 
         //如果有GroundImage类型，就添加一个GroundImage绑定菜单
-        if (this.symbolObjTypes.indexOf(item._inner.sn.czmObject.xbsjType) >= 0) {
+        if (item._inner.sn.czmObject) {
           baseItems.push(
             ...[
               {
@@ -495,7 +490,6 @@ export default {
                     .then(img => {
                       self.$root.$labServer.addToSymbolGroup(item._inner.sn.czmObject, img)
                     })
-
                 }
               }
             ]
