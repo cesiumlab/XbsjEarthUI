@@ -222,6 +222,7 @@ export default {
   },
   methods: {
     onContexMenu () {
+      let self = this;
       const baseItems = [
         {
           text: this.lang.addFolder,
@@ -237,8 +238,8 @@ export default {
           text: this.lang.saveScene,
           keys: "",
           func: () => {
-            var content = JSON.stringify(this._earth.toJSON());
-            this.$root.$earthUI.saveContentToFile(content, "scene.json");
+            var content = JSON.stringify(self.$root.$earth.toJSON());
+            self.$root.$earthUI.saveContentToFile(content, "scene.json");
           }
         }
       ];
