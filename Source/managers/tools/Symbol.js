@@ -18,7 +18,7 @@ class Symbol {
             show: false,
         });
 
-        var toolbar = root._comp.$refs.mainBarControl.$refs.view;
+        var toolbar = root._comp.$refs.mainBarControl.$refs.entity;
         this.unbind1 = XE.MVVM.bind(
             toolbar,
             "SymbolShow",
@@ -36,11 +36,11 @@ class Symbol {
 
     }
 
-    isDestroyed () {
+    isDestroyed() {
         return false;
     }
 
-    destroy () {
+    destroy() {
         this._showListenerDisposer = this._showListenerDisposer && this._showListenerDisposer();
 
         this.unbind1 = this.unbind1 && this.unbind1();

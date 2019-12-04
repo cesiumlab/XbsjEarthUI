@@ -119,7 +119,7 @@
       </div>
 
       <!-- 预定义 -->
-      <div class="flatten" style="display:flex;">
+      <!-- <div class="flatten" style="display:flex;">
         <div style="position: relative;">
           <label>{{lang.predefined}}</label>
           <input
@@ -140,7 +140,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div>-->
 
       <div class="topbox">{{lang.editing}}{{topTitle}}</div>
       <div class="containbox">
