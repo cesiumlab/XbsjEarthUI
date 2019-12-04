@@ -209,8 +209,8 @@
                     texture = new Cesium.Texture({
                         context : context,
                         pixelFormat : image.internalFormat,
-                        width : image.width,
-                        height : image.height,
+                        width : image.naturalWidth,
+                        height : image.naturalHeight,
                         source : {
                             arrayBufferView : image.bufferView
                         }

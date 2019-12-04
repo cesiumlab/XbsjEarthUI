@@ -231,8 +231,8 @@
                     const p = this._customPrimitive;
                     if (this.imageUrl) {
                         Cesium.Resource.createIfNeeded(this.imageUrl).fetchImage().then(function (image) {
-                            p.canvasWidth = image.width;
-                            p.canvasHeight = image.height;
+                            p.canvasWidth = image.naturalWidth;
+                            p.canvasHeight = image.naturalHeight;
                             p.drawCanvas(ctx => {
                                 ctx.clearRect(0, 0, p.canvasWidth, p.canvasHeight);
                                 ctx.drawImage(image, 0, 0);
