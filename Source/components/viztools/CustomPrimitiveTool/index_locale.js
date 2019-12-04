@@ -28,7 +28,8 @@ const zh = {
   renderstats: '渲染状态',
   editing: '正在编辑',
   apply: '应用',
-  tipcontent: '请填入顶点坐标和indices'
+  tipcontent: '请填入顶点坐标和indices',
+  scale: 'x,y,z缩放值'
 };
 
 const en = {
@@ -61,7 +62,8 @@ const en = {
   renderstats: 'renderstats',
   editing: 'editing',
   apply: 'apply',
-  tipcontent: 'Please fill in vertex coordinates and indices'
+  tipcontent: 'Please fill in vertex coordinates and indices',
+  scale: 'scale'
 };
 
 export default {

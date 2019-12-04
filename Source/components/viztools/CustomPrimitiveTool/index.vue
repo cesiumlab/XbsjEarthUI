@@ -77,6 +77,26 @@
         </div>
       </div>
 
+      <div class="flatten">
+        <!-- x,y,z缩放值  -->
+        <label>{{lang.scale}}</label>
+        <div class="flatten-box">
+          <XbsjInputNumber
+            style="float:left; margin-right: 20px; width: calc(33% - 90px);"
+            v-model="model.scale[0]"
+          ></XbsjInputNumber>
+        </div>
+        <div class="flatten-box">
+          <XbsjInputNumber
+            style="float:left; margin-right: 20px; width: calc(33% - 90px);"
+            v-model="model.scale[1]"
+          ></XbsjInputNumber>
+        </div>
+        <div class="flatten-box">
+          <XbsjInputNumber style="float:left; width: calc(33% - 90px);" v-model="model.scale[2]"></XbsjInputNumber>
+        </div>
+      </div>
+
       <div class="flatten" style="display:flex;">
         <!-- 类型 -->
         <div style="position: relative;">
@@ -234,7 +254,8 @@ export default {
         position: [0, 0, 0],
         rotation: [0, 0, 0],
         primitiveType: Number,
-        pass: Number
+        pass: Number,
+        scale: [0, 0, 0]
       },
       pinstyletype: true,
       langs: languagejs,
@@ -332,7 +353,8 @@ export default {
         canvasWidth: "model.canvasWidth",
         canvasHeight: "model.canvasHeight",
         primitiveType: "model.primitiveType",
-        pass: "model.pass"
+        pass: "model.pass",
+        scale: "model.scale"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
