@@ -358,6 +358,8 @@ export default {
         this.symbol.destroy()
       }
       switch (symbol.type) {
+        case 'CustomPrimitive': this.symbol = new XE.Obj.CustomPrimitive(this.$root.$earth); break;
+        case 'CustomPrimitiveExt_Tube': this.symbol = new XE.Obj.CustomPrimitiveExt.Tube(this.$root.$earth); break;
         case 'GroundImage': this.symbol = new XE.Obj.GroundImage(this.$root.$earth); break;
         case 'Pin': this.symbol = new XE.Obj.Pin(this.$root.$earth); break;
         case 'GeoPin': this.symbol = new XE.Obj.Plots.GeoPin(this.$root.$earth); break;
@@ -384,10 +386,17 @@ export default {
         default: return;
       }
       this.symbol.isCreating = true;
-      this.symbol.creating = true;
-      this.symbol.xbsjFromJSON(JSON.parse(symbol.content))
+      var czmObject = JSON.parse(symbol.content);
+      if (czmObject.czmObject) {
+        czmObject = czmObject.czmObject;
+        if (!czmObject.name) {
+          czmObject.name = symbol.name;
+        }
+      }
+      this.symbol.xbsjFromJSON(czmObject);
       this.$root.$earthUI.showPropertyWindow(this.symbol);
-      window.symbol = this.symbol
+      this.symbol.creating = true;
+      // window.symbol = this.symbol
     },
     symbolChange (item, options) {
       var self = this
