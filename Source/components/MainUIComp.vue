@@ -450,7 +450,7 @@ export default {
     },
     analysisJson() {
       if (this.jsontext.sceneTree) {
-        this.$root.$earth.xbsjFromJSON(this.jsontext);
+        this.$root.$earth.sceneTree.root.children.push(this.jsontext.sceneTree.root);
       } else if (this.jsontext.czmObject) {
         this.$root.$earth.sceneTree.root.children.push(this.jsontext);
       } else if (this.jsontext.xbsjType) {
