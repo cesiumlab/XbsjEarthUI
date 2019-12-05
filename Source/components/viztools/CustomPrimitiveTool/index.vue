@@ -82,18 +82,18 @@
         <label>{{lang.scale}}</label>
         <div class="flatten-box">
           <XbsjInputNumber
-            style="float:left; margin-right: 20px; width: calc(33% - 90px);"
+            style="float:left; margin-right: 20px; width: calc(33% - 56px);"
             v-model="model.scale[0]"
           ></XbsjInputNumber>
         </div>
         <div class="flatten-box">
           <XbsjInputNumber
-            style="float:left; margin-right: 20px; width: calc(33% - 90px);"
+            style="float:left; margin-right: 20px; width: calc(33% - 56px);"
             v-model="model.scale[1]"
           ></XbsjInputNumber>
         </div>
         <div class="flatten-box">
-          <XbsjInputNumber style="float:left; width: calc(33% - 90px);" v-model="model.scale[2]"></XbsjInputNumber>
+          <XbsjInputNumber style="float:left; width: calc(33% - 56px);" v-model="model.scale[2]"></XbsjInputNumber>
         </div>
       </div>
 
