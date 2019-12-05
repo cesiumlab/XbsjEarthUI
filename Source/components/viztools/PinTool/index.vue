@@ -209,7 +209,7 @@
       </div>
       <div class="xbsj-flatten" style="height: calc(100% - 38px);" v-show="secondShow">
         <div style="height: 100%">
-          <label>{{lang.pinBuilder.exttextfont}}</label>
+          <label>{{lang.evalstring}}</label>
           <textarea v-model="pin.evalString"></textarea>
           <div class="footbox">
             <button @click="apply">{{lang.apply}}</button>

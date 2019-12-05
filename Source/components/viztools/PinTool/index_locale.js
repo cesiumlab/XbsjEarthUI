@@ -34,7 +34,8 @@ const zh = {
   isDivImage: 'Div图标',
   apply: '应用',
   firstpage: '第一页',
-  secondpage: '第二页'
+  secondpage: '第二页',
+  evalstring: '创建代码'
 }
 
 const en = {
@@ -72,7 +73,8 @@ const en = {
   isDivImage: 'Div Image',
   apply: 'apply',
   firstpage: 'FirstPage',
-  secondpage: 'SecondPage'
+  secondpage: 'SecondPage',
+  evalstring: 'evalstring'
 }
 
 export default { zh, en }

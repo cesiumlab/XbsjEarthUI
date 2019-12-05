@@ -2,9 +2,11 @@
   <!-- 编辑提示框 -->
   <Window
     :title="lang.title"
-    :width="450"
+    :width="470"
     :minWidth="450"
-    :height="300"
+    :height="388"
+    :top="210"
+    :left="590"
     @ok="ok"
     @cancel="cancel"
     :footervisible="true"
@@ -30,11 +32,11 @@
     </div>
     <div class="camera">
       <div class="camera-item">
-        <label class="xbsj-label">{{lang.position}}</label>
+        <label class="xbsj-label" style="margin-right: 5px;">{{lang.position}}</label>
         <XbsjLngLatHeight style="width: 100%;" v-model="editing.position"></XbsjLngLatHeight>
       </div>
       <div class="camera-item">
-        <label class="xbsj-label">{{lang.rotation}}</label>
+        <label class="xbsj-label" style="margin-right: 5px;">{{lang.rotation}}</label>
         <XbsjHeadingPitchRoll style="width: 100%;" v-model="editing.rotation"></XbsjHeadingPitchRoll>
       </div>
 
@@ -85,16 +87,14 @@ export default {
     };
   },
   created() {
-   // var lang = this.$root.language;
-   // this.lang = this.langs[lang];
+    // var lang = this.$root.language;
+    // this.lang = this.langs[lang];
   },
   mounted() {
     //获取绑定的view
     let view = this.getBind();
 
     this.editing = this.fromView(view);
-
-   
   },
   methods: {
     fromView(view) {
@@ -194,7 +194,7 @@ textarea {
   border-radius: 5px;
   cursor: pointer;
   position: absolute;
-  margin-left: 75px;
+  margin-left: 60px;
   margin-top: 20px;
 }
 .camera {
