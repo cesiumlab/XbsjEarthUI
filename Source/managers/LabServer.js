@@ -482,20 +482,11 @@ class LabServer {
     var content = JSON.stringify(objJson)
     var self = this
 
-    this.addSymbol({ name: objJson.name, type: objJson.xbsjType, content: content, thumbnail: img })
+    this.addSymbol({ groupId: this.symbolGroupId, name: objJson.name, type: objJson.xbsjType, content: content, thumbnail: img })
       .then(result => {
         if (result.status === 'ok') {
-          self.symbolContent.symbols.push(result.id)
-          self.updateSymbolGroup()
-            .then(result => {
-              if (result.status === 'ok') {
-                self._root.promptInfo("添加成功！", "info")
-                self._root._comp.$refs.symbolTool[0].itemClick();
-              }
-            })
-            .catch(err => {
-              this.error = err;
-            });
+          self._root.promptInfo("添加成功！", "info")
+          self._root._comp.$refs.customSymbol[0].itemClick();
         }
       })
       .catch(err => {
