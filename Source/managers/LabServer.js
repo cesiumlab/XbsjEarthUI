@@ -48,7 +48,7 @@ class LabServer {
       */
       symbolGroupId: 'custom_symbols',
     });
-    this.getSymbol(this.symbolGroupId);
+    // this.getSymbol(this.symbolGroupId);
   }
 
   isDestroyed () {
