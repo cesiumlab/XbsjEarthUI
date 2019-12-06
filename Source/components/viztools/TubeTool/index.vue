@@ -101,12 +101,12 @@
         <!-- 横向重复 -->
         <label>{{lang.repeatX}}</label>
         <div class="flatten-box">
-          <XbsjInputNumber style="float:left; width: calc(50% - 87px);" v-model="model.repeat[0]"></XbsjInputNumber>
+          <XbsjInputNumber style="float:left; width: calc(50% - 87px);" v-model="model.textureSize[0]"></XbsjInputNumber>
         </div>
         <!-- 纵向重复 -->
         <label>{{lang.repeatY}}</label>
         <div class="flatten-box">
-          <XbsjInputNumber style="float:left; width: calc(50% - 87px);" v-model="model.repeat[1]"></XbsjInputNumber>
+          <XbsjInputNumber style="float:left; width: calc(50% - 87px);" v-model="model.textureSize[1]"></XbsjInputNumber>
         </div>
       </div>
 
@@ -154,7 +154,7 @@ export default {
         tubularSegments: 50,
         closed: false,
         color: [1, 1, 1, 1],
-        repeat: [0, 0]
+        textureSize: [0, 0]
       },
       langs: languagejs
     };
@@ -180,7 +180,7 @@ export default {
         tubularSegments: "model.tubularSegments",
         closed: "model.closed",
         color: "model.color",
-        repeat: "model.repeat"
+        textureSize: "model.textureSize"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
