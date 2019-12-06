@@ -325,7 +325,7 @@ vueApp.examples = [
             },
             {
                 "title": "Pin-外部图像",
-                "url": "./earth-pin-imagerUrl.html"
+                "url": "./earth-pin-imageUrl.html"
             },
             {
                 "title": "Pin-可见范围",
