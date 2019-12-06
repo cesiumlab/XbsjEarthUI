@@ -1,6 +1,6 @@
 {
   "name": "xbsj-earthui",
-  "version": "1.2.9",
+  "version": "1.2.18",
   "description": "xbsj-earthui",
   "main": "index.js",
   "keywords": [
@@ -50,9 +50,9 @@
     "copy-webpack-plugin": "^4.5.2",
     "cross-env": "^5.1.3",
     "css-loader": "^0.28.11",
-    "earthsdk": "1.2.17",
-    "earthsdk-custom-primitive": "1.0.4",
-    "earthsdk-plotting-symbol": "1.0.12",
+    "earthsdk": "1.2.18",
+    "earthsdk-custom-primitive": "1.0.6",
+    "earthsdk-plotting-symbol": "1.0.13",
     "file-loader": "^1.1.6",
     "globby": "^10.0.1",
     "history": "^4.7.2",
