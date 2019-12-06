@@ -13,8 +13,8 @@ const zh = {
   editing: '编辑',
   flyto: '定位',
   colorintensity: '颜色强度',
-  repeatX: '横向重复',
-  repeatY: '纵向重复'
+  repeatX: '纹理实际宽度',
+  repeatY: '纹理实际高度'
 };
 
 const en = {
@@ -32,8 +32,8 @@ const en = {
   editing: 'edit',
   flyto: 'flyto',
   colorintensity: 'colorintensity',
-  repeatX: 'repeatX',
-  repeatY: 'repeatY'
+  repeatX: 'textureWidth',
+  repeatY: 'textureHeight'
 };
 
 export default {
