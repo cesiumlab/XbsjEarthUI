@@ -411,7 +411,9 @@ export default {
           if (arr[j].geometry.type === "Polygon") {
             //如果类型为Polygon
             var Polygon = new XE.Obj.Plots.GeoPolygon(this.$root.$earth);
-            Polygon.name = arr[j].properties.name;
+            if (arr[j].properties.name) {
+              Polygon.name = arr[j].properties.name;
+            }
             var positionarr = arr[j].geometry.coordinates[0];
             for (let k = 0; k < positionarr.length; k++) {
               positionarr[k][0] = (Math.PI / 180) * positionarr[k][0];
@@ -427,7 +429,9 @@ export default {
             //如果类型为Polygon
             // var polylin = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
             var polylin = this.selectedType.getObj(this.$root.$earth);
-            polylin.name = arr[j].properties && arr[j].properties.name;
+            if (arr[j].properties && arr[j].properties.name) {
+              polylin.name = arr[j].properties && arr[j].properties.name;
+            }
             var positionarr = arr[j].geometry.coordinates;
             for (let k = 0; k < positionarr.length; k++) {
               positionarr[k][0] = (Math.PI / 180) * positionarr[k][0];
