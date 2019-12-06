@@ -10,18 +10,21 @@
     >
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.plotlibrary}}</span>
-        <div class="xbsj-item-btnbox ml20">
+        <!-- 在线 -->
+        <!-- <div class="xbsj-item-btnbox ml20">
           <div
             class="xbsj-item-btn onlinebutton"
             @click="plotOnline=!plotOnline"
             :class="{highlight:plotOnline}"
           ></div>
           <span class="xbsj-item-name">{{lang.online}}</span>
-        </div>
+        </div>-->
+        <!-- Lab内置 -->
         <div class="xbsj-item-btnbox" @click="LabSymbolShow=!LabSymbolShow">
           <div class="xbsj-item-btn localhostbutton" :class="{highlight:LabSymbolShow}"></div>
           <span class="xbsj-item-name">{{lang.localhost}}</span>
         </div>
+        <!-- 自定义 -->
         <div class="xbsj-item-btnbox">
           <div
             class="xbsj-item-btn symbolbutton"
@@ -75,6 +78,12 @@
           <div class="xbsj-item-btn circlebutton"></div>
           <span class="xbsj-item-name">{{lang.circle}}</span>
         </div>
+
+        <!-- 曲线 -->
+        <!-- <div class="xbsj-item-btnbox" @click="curvebtn">
+          <div class="xbsj-item-btn curvedarrow"></div>
+          <span class="xbsj-item-name">{{lang.curve}}</span>
+        </div>-->
 
         <!-- 曲线箭头 -->
         <!-- <div class="xbsj-item-btnbox" @click="curvedarrowbtn">
@@ -142,15 +151,15 @@
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.solid}}</span>
         <!-- 立方体 -->
-        <div class="xbsj-item-btnbox">
+        <!-- <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn cubebutton"></div>
           <span class="xbsj-item-name">{{lang.cube}}</span>
-        </div>
+        </div>-->
         <!-- 球体 -->
-        <div class="xbsj-item-btnbox">
+        <!-- <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn spherebutton"></div>
           <span class="xbsj-item-name">{{lang.sphere}}</span>
-        </div>
+        </div>-->
         <!-- 模型 -->
         <div class="xbsj-item-btnbox" @click="createPlane">
           <div class="xbsj-item-btn modelbutton"></div>
@@ -194,15 +203,15 @@
           <span class="xbsj-item-name">{{lang.path}}</span>
         </div>
         <!-- 带杆文字 -->
-        <div class="xbsj-item-btnbox" title="带杆文字">
+        <!-- <div class="xbsj-item-btnbox" title="带杆文字">
           <div class="xbsj-item-btn barwritebutton"></div>
           <span class="xbsj-item-name">{{lang.barwrite}}</span>
-        </div>
+        </div>-->
         <!-- 扩散面 -->
-        <div class="xbsj-item-btnbox" title="扩散面">
+        <!-- <div class="xbsj-item-btnbox" title="扩散面">
           <div class="xbsj-item-btn pathbutton"></div>
           <span class="xbsj-item-name">{{lang.diffusionsurface}}</span>
-        </div>
+        </div>-->
         <!-- OD线 -->
         <div class="xbsj-item-btnbox" @click="odLine" title="OD线">
           <div class="xbsj-item-btn odbutton"></div>
@@ -365,6 +374,15 @@ export default {
       Circle.isCreating = true;
       Circle.name = "圆";
       this.$root.$earthUI.showPropertyWindow(Circle);
+    },
+    //打开曲线弹窗
+    curvebtn() {
+      var GeoCurve = new XE.Obj.Plots.GeoCurve(this.$root.$earth);
+      // console.log(GeoCurveArrow);
+      GeoCurve.creating = true;
+      GeoCurve.isCreating = true;
+      GeoCurve.name = "曲线";
+      this.$root.$earthUI.showPropertyWindow(GeoCurve);
     },
     //打开曲线箭头弹窗
     curvedarrowbtn() {
