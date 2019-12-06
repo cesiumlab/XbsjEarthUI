@@ -9,7 +9,7 @@
     :min-width="396"
     :left="500"
     :top="138"
-    :title="lang.title"
+    :title="lang.customtitle"
   >
     <div class="containbox" style="overflow-y: hidden;">
       <div class="leftbox" style="overflow-y: auto;">
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import GroundImageTool from '../../viztools/GroundImageTool'
+import languagejs from "./locale";
 import { parse } from 'path';
 export default {
   data () {
@@ -77,36 +77,13 @@ export default {
       symbols: [],
       currentSelectedTreeNode: null,
       symbolNameEditable: {},
-      langs: {
-        zh: {
-          title: "标绘库",
-          save: "添加到库",
-          saveSuccess: "添加成功！",
-          addGroup: "添加文件夹",
-          newGroup: "新的文件夹",
-          rename: "重命名",
-          thumbnail: "更新缩略图",
-          modify: "修改",
-          delete: "删除"
-        },
-        en: {
-          title: "Symbol store",
-          save: "Save",
-          saveSuccess: "Save success!",
-          addGroup: "Add Group",
-          newGroup: "New Group",
-          rename: "Rename",
-          thumbnail: "Update thumbnail",
-          modify: "Modify",
-          delete: "Delete"
-        }
-      },
-      lang: undefined
+      langs: languagejs,
+      lang: undefined,
+      symbolGroupId: "custom_symbols"
     };
   },
   created () { },
   mounted () {
-    // this.initSymbol()
   },
   methods: {
     symbolsContextMenu (item, vueObject) {
@@ -358,6 +335,8 @@ export default {
         this.symbol.destroy()
       }
       switch (symbol.type) {
+        case 'CustomPrimitive': this.symbol = new XE.Obj.CustomPrimitive(this.$root.$earth); break;
+        case 'CustomPrimitiveExt_Tube': this.symbol = new XE.Obj.CustomPrimitiveExt.Tube(this.$root.$earth); break;
         case 'GroundImage': this.symbol = new XE.Obj.GroundImage(this.$root.$earth); break;
         case 'Pin': this.symbol = new XE.Obj.Pin(this.$root.$earth); break;
         case 'GeoPin': this.symbol = new XE.Obj.Plots.GeoPin(this.$root.$earth); break;
@@ -384,10 +363,18 @@ export default {
         default: return;
       }
       this.symbol.isCreating = true;
-      this.symbol.creating = true;
-      this.symbol.xbsjFromJSON(JSON.parse(symbol.content))
+
+      var czmObject = JSON.parse(symbol.content);
+      if (czmObject.czmObject) {
+        czmObject = czmObject.czmObject;
+        if (!czmObject.name) {
+          czmObject.name = symbol.name;
+        }
+      }
+      this.symbol.xbsjFromJSON(czmObject);
       this.$root.$earthUI.showPropertyWindow(this.symbol);
-      window.symbol = this.symbol
+      this.symbol.creating = true;
+      // window.symbol = this.symbol
     },
     symbolChange (item, options) {
       var self = this
@@ -423,8 +410,8 @@ export default {
         .getSymbol(id)
         .then(result => {
           if (result.status === 'ok' && result.symbols.rows.length === 1) {
-            var group = result.symbols.rows[0]
-            var treeRoot = self.initTreeNode(labServer.symbolContent)
+            var group = JSON.parse(result.symbols.rows[0].content);
+            var treeRoot = self.initTreeNode(group)
             treeRoot.expand = true
             self.tree = [treeRoot]
             // self.$forceUpdate()
@@ -491,7 +478,7 @@ export default {
   watch: {
     show (val) {
       if (val) {
-        this.initSymbol()
+        this.initSymbol(this.symbolGroupId)
       }
     }
   }

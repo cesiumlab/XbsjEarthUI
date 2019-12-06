@@ -82,7 +82,7 @@
                 var pin1 = earth.sceneTree.$refs.pin1.czmObject;
     
                 // 1.1.5 数据绑定
-                this._imagerUrlUnbind = XE.MVVM.bind(this, 'imageUrl', pin1, 'imageUrl');
+                this._imageUrlUnbind = XE.MVVM.bind(this, 'imageUrl', pin1, 'imageUrl');
                 this._scaleUnbind = XE.MVVM.bind(this, 'scale', pin1, 'scale');
 
                 // 设置初始值
@@ -105,7 +105,7 @@
             // 1.2 资源销毁
             beforeDestroy() {
                 // vue程序销毁时，需要清理相关资源
-                this._imagerUrlUnbind = this._imagerUrlUnbind && this._imagerUrlUnbind();
+                this._imageUrlUnbind = this._imageUrlUnbind && this._imageUrlUnbind();
                 this._scaleUnbind = this._scaleUnbind && this._scaleUnbind();
                 this._earth = this._earth && this._earth.destroy();
             },

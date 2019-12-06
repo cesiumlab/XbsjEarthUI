@@ -63,15 +63,11 @@ export default {
       selected: [],
       lang: {},
       canMultiSelected: false,
-      langs:languagejs
+      langs: languagejs
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
-   
-
     this.cvm = this.$root.$earth.cameraViewManager;
 
     this.autorunDisposer = XE.MVVM.watch(() => {
@@ -159,7 +155,9 @@ export default {
       //弹出待修改的对象
       let view = this.cvm.views[index];
 
-      this.$root.$earthUI.showPropertyWindow(view);
+      this.$root.$earthUI.showPropertyWindow(view, {
+        component: "CameraViewPrp"
+      });
     },
     edit() {
       if (this.selected.length == 1) {

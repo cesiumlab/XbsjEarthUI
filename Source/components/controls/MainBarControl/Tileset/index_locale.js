@@ -17,7 +17,8 @@ const zh = {
   mirror: "镜面强度",
   direct: "光照强度",
   yapingzu: "压平组",
-  custom:'自定义'
+  custom: '自定义',
+  techonlogy: '科技感'
 };
 
 const en = {
@@ -39,7 +40,8 @@ const en = {
   mirror: "Specular",
   direct: "direct",
   yapingzu: "yapingzu",
-  custom:'Custom'
+  custom: 'Custom',
+  techonlogy: 'techonlogy'
 };
 
 export default { zh, en };

@@ -131,6 +131,17 @@
           </div>
           <span class="xbsj-item-name">{{lang.view}}</span>
         </div>
+        <div class="xbsj-item-btnbox">
+          <div class="xbsj-item-btn">
+            <button
+              class="rotatebutton"
+              :class="{highlight:technologyShader}"
+              :disabled="!enabled"
+              @click="toggleTechnology"
+            ></button>
+          </div>
+          <span class="xbsj-item-name">{{lang.techonlogy}}</span>
+        </div>
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{lang.visible}}</span>
@@ -262,7 +273,8 @@ export default {
       xbsjUseOriginTransform: false,
       selectshow: false,
       langs: languagejs,
-      customBtns: []
+      customBtns: [],
+      technologyShader: false
     };
   },
   created() {},
@@ -403,6 +415,18 @@ export default {
     rightbottomClick() {
       if (this._tileset) {
         this.rightbottomShow = !this.rightbottomShow;
+      }
+    },
+    toggleTechnology() {
+      if (this._tileset) {
+        if (this._tileset.xbsjCustomShader.fsBody === "") {
+          this._tileset.xbsjCustomShader.fsBody =
+            XE.Obj.Tileset.xbsjCustomShader.builtinFsBody1;
+          this.technologyShader = true;
+        } else {
+          this._tileset.xbsjCustomShader.fsBody = "";
+          this.technologyShader = false;
+        }
       }
     },
     _bind(prp) {

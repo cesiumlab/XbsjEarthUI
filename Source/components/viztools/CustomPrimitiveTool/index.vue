@@ -77,6 +77,26 @@
         </div>
       </div>
 
+      <div class="flatten">
+        <!-- x,y,z缩放值  -->
+        <label>{{lang.scale}}</label>
+        <div class="flatten-box">
+          <XbsjInputNumber
+            style="float:left; margin-right: 20px; width: calc(33% - 56px);"
+            v-model="model.scale[0]"
+          ></XbsjInputNumber>
+        </div>
+        <div class="flatten-box">
+          <XbsjInputNumber
+            style="float:left; margin-right: 20px; width: calc(33% - 56px);"
+            v-model="model.scale[1]"
+          ></XbsjInputNumber>
+        </div>
+        <div class="flatten-box">
+          <XbsjInputNumber style="float:left; width: calc(33% - 56px);" v-model="model.scale[2]"></XbsjInputNumber>
+        </div>
+      </div>
+
       <div class="flatten" style="display:flex;">
         <!-- 类型 -->
         <div style="position: relative;">
@@ -119,23 +139,28 @@
       </div>
 
       <!-- 预定义 -->
-      <div class="flatten" style="display:flex;">
+      <!-- <div class="flatten" style="display:flex;">
         <div style="position: relative;">
           <label>{{lang.predefined}}</label>
           <input
             type="text"
+            v-model="primitiveName"
             @click="selectPredefinedinput"
             readonly
             style="cursor: pointer; width: 380px;"
           />
           <button class="selectButton"></button>
           <div class="cutselectbox" v-show="showPredefinedSelect" style="width: 389px; left: 84px;">
-            <div>
-              <span></span>
+            <div
+              @click="primitiveoptions(index)"
+              v-for="(item,index) in primitiveData"
+              :key="index"
+            >
+              <span>{{item.name}}</span>
             </div>
           </div>
         </div>
-      </div>
+      </div>-->
 
       <div class="topbox">{{lang.editing}}{{topTitle}}</div>
       <div class="containbox">
@@ -167,6 +192,7 @@
 <script>
 import { copyobj } from "../../utils/tools";
 import languagejs from "./index_locale";
+import axios from "axios";
 
 export default {
   props: {
@@ -228,7 +254,8 @@ export default {
         position: [0, 0, 0],
         rotation: [0, 0, 0],
         primitiveType: Number,
-        pass: Number
+        pass: Number,
+        scale: [0, 0, 0]
       },
       pinstyletype: true,
       langs: languagejs,
@@ -240,7 +267,10 @@ export default {
           a: 1
         }
       },
-      bgbaseColor: [0, 0, 0.5, 1]
+      bgbaseColor: [0, 0, 0.5, 1],
+      primitiveData: [],
+      primitiveName: "默认",
+      index: Number
     };
   },
   created() {},
@@ -323,7 +353,8 @@ export default {
         canvasWidth: "model.canvasWidth",
         canvasHeight: "model.canvasHeight",
         primitiveType: "model.primitiveType",
-        pass: "model.pass"
+        pass: "model.pass",
+        scale: "model.scale"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -375,6 +406,8 @@ export default {
     // 监听拖拽
     customPrimitive.addEventListener("dragover", handleDragOver, false);
     customPrimitive.addEventListener("drop", handleFileSelect, false);
+
+    this.geDatainfo();
   },
   computed: {
     name() {
@@ -405,6 +438,20 @@ export default {
     }
   },
   methods: {
+    geDatainfo() {
+      var primitiveServer = this.$root.$labServer;
+      let url = primitiveServer.server + "primitive/list";
+      axios
+        .post(url)
+        .then(res => {
+          if (res.data.status === "ok") {
+            this.primitiveData = res.data.primitives.rows;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     selectinput() {
       this.showTypeSelect = !this.showTypeSelect;
     },
@@ -421,6 +468,19 @@ export default {
     },
     selectPredefinedinput() {
       this.showPredefinedSelect = !this.showPredefinedSelect;
+    },
+    primitiveoptions(index) {
+      this.index = index;
+      this.primitiveName = this.primitiveData[index].name;
+      // console.log(this.primitiveName);
+      this.showPredefinedSelect = !this.showPredefinedSelect;
+      var customPrimitives = new XE.Obj.CustomPrimitive(this.$root.$earth);
+      var allJson = customPrimitives.toAllJSON();
+      var position = [...this._czmObj.position];
+      this._czmObj.xbsjFromJSON(allJson);
+      this._czmObj.xbsjFromJSON(JSON.parse(this.primitiveData[index].content));
+      this.obj = this.objData();
+      this._czmObj.position = position;
     },
     itemClick(item) {
       // console.log(item);

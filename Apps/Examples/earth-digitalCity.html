@@ -844,6 +844,11 @@
                     }
                 });
 
+                // 由enabled来控制可见性！
+                p.disposers.push(XE.MVVM.watch(() => p.enabled, () => {
+                    p._labelDiv.style.display = p.enabled ? 'block' : 'none';
+                }));
+
                 const labelCanvas = document.createElement('canvas');
                 labelCanvas.style = \`
                     width: 100%;
@@ -930,6 +935,8 @@
                 evalString: evalString,
             };
             p.xbsjFromJSON(config);
+
+            return p;
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。

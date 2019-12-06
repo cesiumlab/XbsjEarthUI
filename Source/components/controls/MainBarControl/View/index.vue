@@ -39,10 +39,10 @@
         </div>
 
         <!-- Symbol标绘 -->
-        <div class="xbsj-item-btnbox" @click="SymbolShow=!SymbolShow" v-show="show">
+        <!-- <div class="xbsj-item-btnbox" @click="SymbolShow=!SymbolShow" v-show="show">
           <div class="xbsj-item-btn symbolbutton" :class="{highlight: SymbolShow}"></div>
           <span class="xbsj-item-name">{{lang.symbol}}</span>
-        </div>
+        </div>-->
         <!--
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn attributebutton"></div>
@@ -185,9 +185,7 @@ export default {
       SymbolShow: false
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
     //console.log(this.$root.$earth);
 

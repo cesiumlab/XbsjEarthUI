@@ -38,7 +38,17 @@ class LabServer {
      * @memberof LabServer
      */
       cloudServiceUrl: '',
+
+      /**
+      * 自定义标绘库id
+      * @type {string}
+      * @default '' 
+      * @instance
+      * @memberof LabServer
+      */
+      symbolGroupId: 'custom_symbols',
     });
+    // this.getSymbol(this.symbolGroupId);
   }
 
   isDestroyed () {
@@ -352,15 +362,14 @@ class LabServer {
     var self = this
     return new Promise((resolve, reject) => {
       axios
-        .get(this.server + "symbol/group", {
-          id: id
-        })
+        .get(this.server + "symbol/group?id=" + id)
         .then(res => {
           if (res.status === 200) {
             if (res.data.symbols.rows.length === 1) {
               var group = res.data.symbols.rows[0]
-              self.symbolGroupId = group._id
-              self.symbolContent = JSON.parse(group.content)
+              if (id === this.symbolGroupId) {
+                self.symbolContent = JSON.parse(group.content)
+              }
             }
             resolve(res.data);
           } else {
@@ -473,20 +482,11 @@ class LabServer {
     var content = JSON.stringify(objJson)
     var self = this
 
-    this.addSymbol({ name: objJson.name, type: objJson.xbsjType, content: content, thumbnail: img })
+    this.addSymbol({ groupId: this.symbolGroupId, name: objJson.name, type: objJson.xbsjType, content: content, thumbnail: img })
       .then(result => {
         if (result.status === 'ok') {
-          self.symbolContent.symbols.push(result.id)
-          self.updateSymbolGroup()
-            .then(result => {
-              if (result.status === 'ok') {
-                self._root.promptInfo("添加成功！", "info")
-                self._root._comp.$refs.symbolTool[0].itemClick();
-              }
-            })
-            .catch(err => {
-              this.error = err;
-            });
+          self._root.promptInfo("添加成功！", "info")
+          self._root._comp.$refs.customSymbol[0].itemClick();
         }
       })
       .catch(err => {

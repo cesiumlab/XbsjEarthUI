@@ -6,8 +6,8 @@ const zh = {
   nearfar: '近远裁',
   far: 'Far',
   near: 'Near',
-  imageUrl: '图标',
-  scale: '缩放',
+  imageUrl: '图片路径',
+  scale: '图片缩放',
   show: '显示',
   pinstyletype: '内置样式',
   position: {
@@ -30,7 +30,12 @@ const zh = {
   weizhi: "位置",
   eidtbtn: "编辑按钮",
   pathAnimation: '路径动画',
-
+  origin: '锚点',
+  isDivImage: 'Div图标',
+  apply: '应用',
+  firstpage: '第一页',
+  secondpage: '第二页',
+  evalstring: '创建代码'
 }
 
 const en = {
@@ -64,7 +69,12 @@ const en = {
   weizhi: "weizhi",
   eidtbtn: "eidt btn",
   pathAnimation: 'pathAnimation',
-
+  origin: 'origin',
+  isDivImage: 'Div Image',
+  apply: 'apply',
+  firstpage: 'FirstPage',
+  secondpage: 'SecondPage',
+  evalstring: 'evalstring'
 }
 
 export default { zh, en }

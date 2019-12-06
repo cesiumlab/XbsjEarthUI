@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>Pin-div3</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .checkbox {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative; overflow: hidden;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%;">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:210px; font-size:24px; font-family: 宋体;">
+                        <span>左边距离:{{winPos[0] | numFilter}}px</span><br/>
+                        <span>底部距离:{{winPos[3] | numFilter}}px</span>
+                    </div>
+                </div>
+            `,
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    showInfo: true,
+                    winPos: [0, 0, 0, 0], // left top right bottom
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+                earth.interaction.picking.enabled = true;
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "expand": true,
+                    "title": "预览场景",
+                    "children": [{
+                        "ref": 'tileset',
+                        "czmObject": {
+                            "name": '大雁塔',
+                            "xbsjType": "Tileset",
+                            "url": '../assets/dayanta/tileset.json',
+                            "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
+                        },
+                    }, {
+                        "czmObject": {
+                            "name": '默认影像',
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
+                        },
+                    }]
+                };
+
+                var tileset = earth.sceneTree.$refs.tileset.czmObject;
+                this._earth = earth;
+
+                const pin1 = createPin(earth);
+                XE.MVVM.track(this, 'winPos', pin1, 'winPos');
+
+                // only for Debug
+                window.earth = earth;
+                window.tileset = tileset;
+                window.pin1 = pin1;
+            },
+            filters: {
+                numFilter(value) {
+                    // 截取当前数据到小数点后两位
+                    let realVal = parseFloat(value).toFixed(2)
+                    return realVal
+                }
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        }); 
+
+        function createPin(earth) {
+            const evalString = `
+                if (p._div) {
+                    return;
+                }
+
+                const earth = p.earth;
+
+                // 创建div
+                const div = document.createElement('div');
+                div.style.cssText = \`
+                    position: absolute;
+                    width: auto;
+                    color: white;
+                    padding: 5px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    background: rgba(0, 0, 0, 0.5);
+                \`;
+                div.innerHTML = \`
+                    <span style="font-size: 20px;">西安大雁塔！</span><br/>
+                    <span>xian dayanta</span>
+                \`;
+                div.onclick = () => {
+                    console.log('即将飞入大雁塔！');
+                    const position = [1.901729390218574, 0.5972202012953493, 594.3184362850787];
+                    const rotation = [5.538756509291041, -0.5562768563795704, 6.280692859184528];
+                    earth.camera.flyTo(position, 0, rotation);
+                };
+                const container = earth.czm.viewer.container;
+                container.appendChild(div);
+                p._div = div;
+
+                // 自动删除div
+                // disposers数组会在p销毁时执行，从而销毁Pin所附带的资源，避免内存泄露
+                p.disposers.push(() => {
+                    container.removeChild(div);
+                    p._div = undefined;
+                });
+
+                // 动态修改div的位置
+                p.disposers.push(XE.MVVM.watch(() => [...p.winPos], () => {
+                    div.style.left = (p.winPos[0] - div.clientWidth * 0.5) + 'px';
+                    div.style.bottom = (p.winPos[3]) + 'px';
+                }));
+
+                // pin距离相机太近则隐藏
+                p.disposers.push(XE.MVVM.watch(() => ({
+                    enabled: p.enabled,
+                    position: [...earth.camera.position],
+                }), () => {
+                    // xepd: xepositionDistance的缩写
+                    // pin1.position.xepd(earth.camera.position): 计算相机和pin之间的距离
+                    const d = p.position.xepd(earth.camera.position);
+                    if (d > 100 && p.enabled) {
+                        div.style.display = 'block';
+                    } else {
+                        div.style.display = 'none';
+                    }
+                }));
+            `;
+
+            // 节点创建方法1：
+            {
+                const leafConfig = {
+                    "ref": 'pin1',
+                    "czmObject": {
+                        "name": 'Pin1',
+                        "xbsjType": "Pin",
+                        "position": [1.9017005694855162, 0.5972477268978722, 488.7695178987821],
+                        "near": 300,
+                        "show": false,
+                        evalString,
+                    },
+                };
+                earth.sceneTree.root.children.push(leafConfig);
+                var pin = earth.sceneTree.$refs.pin1.czmObject;
+
+                return pin;
+            }
+
+            // 节点创建方法2：
+            // {
+            //     const objConfig = {
+            //         "name": 'Pin1',
+            //         "xbsjType": "Pin",
+            //         "position": [1.9017005694855162, 0.5972477268978722, 488.7695178987821],
+            //         "near": 300,
+            //         "show": false,
+            //         evalString,
+            //     };
+            //     const pin = new XE.Obj.Pin(earth);  
+            //     pin.xbsjFromJSON(objConfig);
+            //     earth.sceneTree.root.children.push(new XE.SceneTree.Leaf(pin));
+
+            //     return pin;
+            // }
+        }
+    </script>
+</body>
+
+</html>

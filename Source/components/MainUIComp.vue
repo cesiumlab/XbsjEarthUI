@@ -42,7 +42,7 @@
       @cancel="loadGeoJSONShow=false"
       @ok="confirmLoadGeoJson"
       v-show="loadGeoJSONShow"
-      :width="250"
+      :width="300"
       :minWidth="200"
       :height="500"
       :left="500"
@@ -100,6 +100,7 @@ import PathTool from "./viztools/PathTool";
 import ModelTool from "./viztools/ModelTool";
 import PolylineTool from "./viztools/PolylineTool";
 import GeoCurveArrow from "./viztools/GeoCurveArrow";
+import GeoCurve from "./viztools/GeoCurve";
 import GeoDoubleArrow from "./viztools/GeoDoubleArrow";
 import GeoCircle from "./viztools/GeoCircle";
 import GeoRectangle from "./viztools/GeoRectangle";
@@ -131,7 +132,8 @@ import InformationBox from "./utils/InformationBox";
 
 import ModelTreeTool from "./tools/ModelTreeTool";
 import EntityMoreTool from "./tools/EntityMoreTool";
-import SymbolTool from "./tools/SymbolTool";
+import CustomSymbol from "./tools/SymbolTool/CustomSymbol";
+import LabSymbol from "./tools/SymbolTool/LabSymbol";
 
 export default {
   components: {
@@ -156,6 +158,7 @@ export default {
     ModelTool,
     PolylineTool,
     GeoCurveArrow,
+    GeoCurve,
     GeoDoubleArrow,
     GeoCircle,
     GeoRectangle,
@@ -194,7 +197,8 @@ export default {
     InformationBox,
     ModelTreeTool,
     EntityMoreTool,
-    SymbolTool
+    CustomSymbol,
+    LabSymbol
   },
   data: function () {
     return {
@@ -207,9 +211,9 @@ export default {
         Viewshed: "ViewshedTool",
         ClippingPlane: "ClippingPlaneTool",
         Water: "WaterTool",
-        PinTool: "PinTool",
+        Pin: "PinTool",
         PinDivTool: "PinDivTool",
-        Pin: "PinPictureTool",
+        // Pin: "PinPictureTool",
         Path: "PathTool",
         Scanline: "ScanlineTool",
         CustomPrimitive: "CustomPrimitiveTool",
@@ -217,6 +221,7 @@ export default {
         Model: "ModelTool",
         Polyline: "PolylineTool",
         GeoCurveArrow: "GeoCurveArrow",
+        GeoCurve: "GeoCurve",
         GeoSectorSearch: "GeoSectorSearch",
         GeoPolylineArrow: "GeoPolylineArrow",
         GeoPolyline: "GeoPolyline",
@@ -233,7 +238,8 @@ export default {
         GeoPolygon: "GeoPolygon",
         GeoSector: "GeoSector",
         ["CameraView.View"]: "CameraViewPrp",
-        GroundImage: "GroundImageTool"
+        GroundImage: "GroundImageTool",
+        GeoPin: "PinDivTool"
       },
       tools: [
         {
@@ -301,8 +307,12 @@ export default {
           ref: "entitymoreTool"
         },
         {
-          component: "SymbolTool",
-          ref: "symbolTool"
+          component: "CustomSymbol",
+          ref: "customSymbol"
+        },
+        {
+          component: "LabSymbol",
+          ref: "labSymbol"
         }
       ],
       infos: [],
@@ -350,23 +360,35 @@ export default {
     xbsjcesium.addEventListener("dragover", handleDragOver, false);
     xbsjcesium.addEventListener("drop", handleFileSelect, false);
 
-    this.types = [{
-      name: "线",
-      typeName: "Plots.GeoPolyline",
-      getObj: function (earth) {
-        return new XE.Obj.Plots.GeoPolyline(earth)
+    (this.polylineTypes = [
+      {
+        name: "线",
+        typeName: "Plots.GeoPolyline",
+        getObj: function (earth) {
+          return new XE.Obj.Plots.GeoPolyline(earth);
+        }
+      },
+      {
+        name: "管道",
+        typeName: "CustomPrimitiveExt.Tube",
+        getObj: function (earth) {
+          var tube = new XE.Obj.CustomPrimitiveExt.Tube(earth);
+          tube.imageUrl = "../../assets/ht/meteor_01.png";
+          tube.radius = 0.5;
+          tube.speed = [0.2, 0.2];
+          return tube;
+        }
       }
-    }, {
-      name: "管道",
-      typeName: "CustomPrimitiveExt.Tube",
-      getObj: function (earth) {
-        var tube = new XE.Obj.CustomPrimitiveExt.Tube(earth)
-        tube.imageUrl = '../../assets/ht/meteor_01.png';
-        tube.radius = 0.5;
-        tube.speed = [0.2, 0.2]
-        return tube;
-      }
-    }]
+    ]),
+      (this.polygonTypes = [
+        {
+          name: "面",
+          typeName: "Plots.GeoPolygon",
+          getObj: function (earth) {
+            return new XE.Obj.Plots.GeoPolygon(earth);
+          }
+        }
+      ]);
   },
   computed: {
     type () {
@@ -382,8 +404,9 @@ export default {
         const xbsjSceneTree = this.$root.$earth.sceneTree;
         xbsjSceneTree.root.children.push(g0);
       }
-      if (this.jsontext.features.length > 0) {
-        let arr = this.jsontext.features;
+      let arr;
+      if (this.jsontext.features && this.jsontext.features.length > 0) {
+        arr = this.jsontext.features;
         for (let j = 0, len = arr.length; j < len; j++) {
           if (arr[j].geometry.type === "Polygon") {
             //如果类型为Polygon
@@ -400,8 +423,7 @@ export default {
             var selected = this.$root.$earth.sceneTree.currentSelectedNode;
             const obj = new XE.SceneTree.Leaf(Polygon);
             selected.children.push(obj);
-          }
-          else if (arr[j].geometry.type === "LineString") {
+          } else if (arr[j].geometry.type === "LineString") {
             //如果类型为Polygon
             // var polylin = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
             var polylin = this.selectedType.getObj(this.$root.$earth);
@@ -420,18 +442,60 @@ export default {
           }
         }
       }
-      this.loadGeoJSONShow = false
+      this.loadGeoJSONShow = false;
     },
     analysisJson () {
       if (this.jsontext.sceneTree) {
-        this.$root.$earth.xbsjFromJSON(this.jsontext)
+        let self = this;
+        this.confirm(
+          "是否替换当前场景？",
+          () => {
+            self.$root.$earth.xbsjFromJSON(this.jsontext);
+          },
+          () => {
+            self.$root.$earth.sceneTree.root.children.push(
+              this.jsontext.sceneTree.root
+            );
+          }
+        );
+      } else if (this.jsontext.czmObject) {
+        this.$root.$earth.sceneTree.root.children.push(this.jsontext);
+      } else if (this.jsontext.xbsjType) {
+        var czmObject = {};
+        czmObject.czmObject = this.jsontext;
+        this.$root.$earth.sceneTree.root.children.push(czmObject);
+      } else if (this.jsontext.children && this.jsontext.children.length >= 0) {
+        this.$root.$earth.sceneTree.root.children.push(this.jsontext);
       } else {
-        this.loadGeoJSONShow = true
+        let arr;
+        if (this.jsontext.features && this.jsontext.features.length > 0) {
+          arr = this.jsontext.features;
+        } else if (
+          this.jsontext.geometries &&
+          this.jsontext.geometries.length > 0
+        ) {
+          arr = [];
+          for (var i = 0; i < this.jsontext.geometries.length; i++) {
+            arr.push({ geometry: this.jsontext.geometries[i] })
+          }
+          this.jsontext.features = arr;
+        }
+        if (arr && arr.length > 0) {
+          if (arr.length > 0) {
+            if (arr[0].geometry.type === "Polygon") {
+              this.types = this.polygonTypes;
+              this.loadGeoJSONShow = true;
+            } else if (arr[0].geometry.type === "LineString") {
+              this.types = this.polylineTypes;
+              this.loadGeoJSONShow = true;
+            }
+          }
+        }
       }
     },
     selectType (index, item) {
-      this.categoryIndex = index
-      this.selectedType = item
+      this.categoryIndex = index;
+      this.selectedType = item;
     },
     _getToolID (tool) {
       if (!tool.guid) {

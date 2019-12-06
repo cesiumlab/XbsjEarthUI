@@ -38,9 +38,7 @@ export default {
       image: ""
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
     this.image = this.value;
   },
@@ -78,7 +76,7 @@ export default {
 .right {
   width: 70px;
   margin-left: 12px;
-  position:relative;
+  position: relative;
 }
 img {
   width: 64px;
@@ -118,6 +116,7 @@ textarea:focus {
   position: absolute;
   bottom: 0;
   left: 0;
+  cursor: pointer;
 }
 </style>
 
