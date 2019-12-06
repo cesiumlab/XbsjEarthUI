@@ -13,8 +13,8 @@ const zh = {
   editing: '编辑',
   flyto: '定位',
   colorintensity: '颜色强度',
-  repeatX: '纹理实际宽度',
-  repeatY: '纹理实际高度'
+  repeatX: '纹理宽度',
+  repeatY: '纹理高度'
 };
 
 const en = {
