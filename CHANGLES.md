@@ -5,7 +5,7 @@ Change Log
 
 ##### Additions :tada:
 * 自定义图元扩展中的管道增加repeat属性
-* 自定义图元扩展中的管道增加imageUrl属性
+* 自定义图元、自定义贴地矩形增加imageUrl属性
 
 ##### Fixes :wrench:
 * 修复开启路径面板后低速运动时不能前进的问题
