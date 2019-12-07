@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="540"
+    :height="558"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -113,11 +113,17 @@
           </div>
         </div>
       </div>
+      <!-- 当前位置 -->
       <div class="flatten">
-        <label>{{lang.material}}</label>
+        <label @click="model.luminanceAtZenith=0.2">{{lang.material}}</label>
         <div class="field">
           <XbsjSlider :min="0" :max="5.0" :step="0.02" v-model.number="model.luminanceAtZenith"></XbsjSlider>
         </div>
+      </div>
+      <!-- 颜色 -->
+      <div class="flatten">
+        <label>{{lang.color}}</label>
+        <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
       </div>
     </div>
   </Window>
@@ -149,10 +155,19 @@ export default {
         maximumScale: 0,
         minimumPixelSize: 0,
         attachedPathGuid: "",
-        luminanceAtZenith: 0
+        luminanceAtZenith: 0.2
       },
       pinstyletype: true,
-      langs: languagejs
+      langs: languagejs,
+      bgbaseColorUI: {
+        rgba: {
+          r: 255,
+          g: 255,
+          b: 255,
+          a: 1
+        }
+      },
+      bgbaseColor: [1, 1, 1, 1]
     };
   },
   created() {},
@@ -187,6 +202,7 @@ export default {
           this._disposers.push(vm.handler(this, vm.prop, czmObj, sm));
         }
       });
+      this._disposers.push(XE.MVVM.bind(this, "bgbaseColor", czmObj, "color"));
     }
   },
   computed: {
@@ -197,7 +213,26 @@ export default {
       return this.getBind().guid;
     }
   },
-  watch: {},
+  watch: {
+    bgbaseColorUI(color) {
+      let v = color.rgba;
+
+      var cc = [v.r / 255.0, v.g / 255.0, v.b / 255.0, v.a];
+      if (!this.bgbaseColor.every((c, index) => c === cc[index])) {
+        this.bgbaseColor = cc;
+      }
+    },
+    bgbaseColor(c) {
+      this.bgbaseColorUI = {
+        rgba: {
+          r: c[0] * 255,
+          g: c[1] * 255,
+          b: c[2] * 255,
+          a: c[3]
+        }
+      };
+    }
+  },
   methods: {
     optionssure(c) {
       this.model.attachedPathGuid = c.guid;
