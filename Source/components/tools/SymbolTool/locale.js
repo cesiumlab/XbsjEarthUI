@@ -8,7 +8,8 @@ const zh = {
   rename: "重命名",
   thumbnail: "更新缩略图",
   modify: "修改",
-  delete: "删除"
+  delete: "删除",
+  conformdelete: "确认删除该标绘？"
 };
 
 const en = {
@@ -21,7 +22,8 @@ const en = {
   rename: "Rename",
   thumbnail: "Update thumbnail",
   modify: "Modify",
-  delete: "Delete"
+  delete: "Delete",
+  conformdelete: "Confirm delete the entity？"
 }
 
 export default { zh, en };

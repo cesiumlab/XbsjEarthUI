@@ -67,9 +67,9 @@
 
 <script>
 import languagejs from "./locale";
-import { parse } from 'path';
+import { parse } from "path";
 export default {
-  data () {
+  data() {
     return {
       canmove: true,
       show: false,
@@ -82,19 +82,18 @@ export default {
       symbolGroupId: "custom_symbols"
     };
   },
-  created () { },
-  mounted () {
-  },
+  created() {},
+  mounted() {},
   methods: {
-    symbolsContextMenu (item, vueObject) {
-      var self = this
+    symbolsContextMenu(item, vueObject) {
+      var self = this;
       var labServer = this.$root.$labServer;
       const baseItems = [
         {
           text: this.lang.rename,
           func: () => {
-            self.symbolNameEditable[item._id] = true
-            self.$forceUpdate()
+            self.symbolNameEditable[item._id] = true;
+            self.$forceUpdate();
             // self.modifyingSymbol = item
             // self.modifyGroundImage(item)
           }
@@ -105,7 +104,7 @@ export default {
             self.$root.$earth
               .capture(64, 64)
               .then(img => {
-                self.symbolChange(item, { thumbnail: img })
+                self.symbolChange(item, { thumbnail: img });
               })
               .catch(err => {
                 console.log(err);
@@ -115,19 +114,31 @@ export default {
         {
           text: this.lang.delete,
           func: () => {
-            const index = self.currentSelectedTreeNode.content.symbols.indexOf(item._id);
-            self.currentSelectedTreeNode.content.symbols.splice(index, 1);
+            // const index = self.currentSelectedTreeNode.content.symbols.indexOf(
+            //   item._id
+            // );
+            // self.currentSelectedTreeNode.content.symbols.splice(index, 1);
 
-            const symbolIndex = self.symbols.indexOf(item)
-            self.symbols.splice(symbolIndex, 1)
-            self.updateSymbolGroup()
+            // const symbolIndex = self.symbols.indexOf(item);
+            // self.symbols.splice(symbolIndex, 1);
+            // self.updateSymbolGroup();
+            this.$root.$earthUI.confirm(this.lang.conformdelete, () => {
+              const index = self.currentSelectedTreeNode.content.symbols.indexOf(
+                item._id
+              );
+              self.currentSelectedTreeNode.content.symbols.splice(index, 1);
+
+              const symbolIndex = self.symbols.indexOf(item);
+              self.symbols.splice(symbolIndex, 1);
+              self.updateSymbolGroup();
+            });
           }
         }
       ];
       this.$root.$earthUI.contextMenu.pop(baseItems);
     },
-    treeContextMenu ({ item, vueObject }) {
-      var self = this
+    treeContextMenu({ item, vueObject }) {
+      var self = this;
       var labServer = this.$root.$labServer;
       const baseItems = [
         {
@@ -136,23 +147,23 @@ export default {
             labServer
               .createGuid()
               .then(result => {
-                if (result.status === 'ok') {
+                if (result.status === "ok") {
                   var dataNode = {
                     _id: result.id,
                     name: self.lang.newGroup,
                     symbols: [],
                     children: []
-                  }
+                  };
                   var treeNode = {
                     id: result.id,
                     expand: true,
                     title: self.lang.newGroup,
                     children: [],
                     content: dataNode
-                  }
+                  };
                   item.children.push(treeNode);
-                  item.content.children.push(dataNode)
-                  self.updateSymbolGroup()
+                  item.content.children.push(dataNode);
+                  self.updateSymbolGroup();
                 }
               })
               .catch(err => {
@@ -172,64 +183,63 @@ export default {
             const index = item.parent.children.indexOf(item);
             item.parent.children.splice(index, 1);
 
-            const indexContent = item.parent.content.children.indexOf(item.content);
-            item.parent.content.children.splice(indexContent, 1)
-            self.updateSymbolGroup()
+            const indexContent = item.parent.content.children.indexOf(
+              item.content
+            );
+            item.parent.content.children.splice(indexContent, 1);
+            self.updateSymbolGroup();
           }
         }
       ];
       this.$root.$earthUI.contextMenu.pop(baseItems);
     },
-    updateSymbolGroup () {
-      var self = this
-      this.$root.$labServer.updateSymbolGroup()
-        .then(result => {
-        })
+    updateSymbolGroup() {
+      var self = this;
+      this.$root.$labServer
+        .updateSymbolGroup()
+        .then(result => {})
         .catch(err => {
           this.error = err;
         });
     },
-    isChildren (parent, children) {
+    isChildren(parent, children) {
       if (parent.children === undefined || parent.children.length === 0) {
-        return false
+        return false;
       }
-      var isChildren = parent.children.indexOf(children)
+      var isChildren = parent.children.indexOf(children);
       if (isChildren < 0) {
         for (var i = 0; i < parent.children.length; i++) {
           if (this.isChildren(parent.children[i], children)) {
-            break
+            break;
           }
         }
       }
-      return isChildren >= 0
+      return isChildren >= 0;
     },
-    movetreeitem (item, $event) {
+    movetreeitem(item, $event) {
       let self = this;
       let source = $event.currentTarget;
       // 按下鼠标键并开始移动鼠标时，会在被拖放的元素上触发dragstart事件。
       // 此时光标变成“不能放”符号(圆环中有一条反斜线)，表示不能把元素放到自己上面
       source.addEventListener(
         "dragstart",
-        function (event) {
-          event.dataTransfer.setData(
-            "obj",
-            JSON.stringify(item)
-          ); //兼容火狐浏览器，拖动时候必须携带数据否则没效果
+        function(event) {
+          event.dataTransfer.setData("obj", JSON.stringify(item)); //兼容火狐浏览器，拖动时候必须携带数据否则没效果
           self.moveItem({ item, vueObject: self, $event });
         },
         false
       );
 
       // 触发dragstart事件后，随即会触发drag事件，而且在元素被拖动期间会持续触发该事件
-      source.addEventListener("drag", function (event) { }, false);
+      source.addEventListener("drag", function(event) {}, false);
 
       // 当拖动停止时(无论是把元素放到了有效的放置目标，还是放到了无效的放置目标上)，会触发dragend事件
-      source.addEventListener("dragend", function (event) { }, false);
+      source.addEventListener("dragend", function(event) {}, false);
 
       //只要有元素被拖动到放置目标上，触发dragenter事件
       source.addEventListener(
         "dragenter",
-        function (event) {
+        function(event) {
           event.preventDefault();
           // self.moveItem({ item, vueObject: self, $event });
         },
@@ -238,7 +248,7 @@ export default {
       //被拖动的元素在放置目标的范围内移动时，持续触发dragover事件
       source.addEventListener(
         "dragover",
-        function (event) {
+        function(event) {
           if (self.canmove) {
             event.preventDefault();
             self.xbsjitemover = true;
@@ -250,7 +260,7 @@ export default {
       // 如果元素被拖出了放置目标，触发dragleave事件
       source.addEventListener(
         "dragleave",
-        function (event) {
+        function(event) {
           self.xbsjitemover = false;
           event.preventDefault();
         },
@@ -260,21 +270,21 @@ export default {
       // 如果元素被放到了放置目标中，触发drop事件
       source.addEventListener(
         "drop",
-        function (event) {
+        function(event) {
           self.xbsjitemover = false;
           event.preventDefault();
         },
         false
       );
     },
-    moveItem ({ item, vueObject }) {
+    moveItem({ item, vueObject }) {
       //拖拽移动的时候保存当前拖动的item
       this.canmove = true;
       this._currentDropNode = item;
       var sceneTree = this.$root.$refs.mainUI.$refs.sceneTreeTool[0];
-      sceneTree._currentSceneNode = undefined
+      sceneTree._currentSceneNode = undefined;
     },
-    canMoveItem ({ item, vueObject }) {
+    canMoveItem({ item, vueObject }) {
       //判断放置目标是否是源目标的子节点
       if (this._currentDropNode && item !== this._currentDropNode) {
         if (this.isChildren(this._currentDropNode, item)) {
@@ -286,81 +296,139 @@ export default {
         this.canmove = false;
       }
     },
-    dropItem ({ item, vueObject }) {
+    dropItem({ item, vueObject }) {
       //放置源目标到放置目标位置
       if (this._currentDropNode) {
-        if (this._currentDropNode.type === "GroundImage" || this._currentDropNode.type === "Pin") {
-          var index = this.currentSelectedTreeNode.content.symbols.indexOf(this._currentDropNode._id)
-          this.currentSelectedTreeNode.content.symbols.splice(index, 1)
-          vueObject.item.content.symbols.push(this._currentDropNode._id)
-          var symbolsIndex = this.symbols.indexOf(this._currentDropNode)
-          this.symbols.splice(symbolsIndex, 1)
-          this.updateSymbolGroup()
-        }
-        else if (this._currentDropNode && item !== this._currentDropNode) {
+        if (
+          this._currentDropNode.type === "GroundImage" ||
+          this._currentDropNode.type === "Pin"
+        ) {
+          var index = this.currentSelectedTreeNode.content.symbols.indexOf(
+            this._currentDropNode._id
+          );
+          this.currentSelectedTreeNode.content.symbols.splice(index, 1);
+          vueObject.item.content.symbols.push(this._currentDropNode._id);
+          var symbolsIndex = this.symbols.indexOf(this._currentDropNode);
+          this.symbols.splice(symbolsIndex, 1);
+          this.updateSymbolGroup();
+        } else if (this._currentDropNode && item !== this._currentDropNode) {
           this._currentDropNode.parent &&
-            this.moveToItem(this._currentDropNode, vueObject.item)
+            this.moveToItem(this._currentDropNode, vueObject.item);
         }
       }
-      this.$forceUpdate()
+      this.$forceUpdate();
       this._currentDropNode = undefined;
     },
-    moveToItem (srcItem, dstItem) {
+    moveToItem(srcItem, dstItem) {
       if (srcItem.parent) {
         if (srcItem.parent.content) {
-          var contentIndex = srcItem.parent.content.children.indexOf(srcItem.content)
-          srcItem.parent.content.children.splice(contentIndex, 1)
+          var contentIndex = srcItem.parent.content.children.indexOf(
+            srcItem.content
+          );
+          srcItem.parent.content.children.splice(contentIndex, 1);
 
-          var index = srcItem.parent.children.indexOf(srcItem)
-          srcItem.parent.children.splice(index, 1)
+          var index = srcItem.parent.children.indexOf(srcItem);
+          srcItem.parent.children.splice(index, 1);
 
           this.$nextTick(() => {
-            dstItem.content.children.push(srcItem.content)
-            dstItem.children.push(srcItem)
-            this.updateSymbolGroup()
-            dstItem.expand = true
-          })
+            dstItem.content.children.push(srcItem.content);
+            dstItem.children.push(srcItem);
+            this.updateSymbolGroup();
+            dstItem.expand = true;
+          });
         }
       }
     },
-    changeTitle (options) {
+    changeTitle(options) {
       const treeItem = options.item;
       const newTitle = options.title;
       treeItem && (treeItem.title = newTitle);
-      treeItem.content.name = newTitle
-      this.updateSymbolGroup()
+      treeItem.content.name = newTitle;
+      this.updateSymbolGroup();
     },
-    createGroundImage (symbol) {
-      if (this.symbol && this.symbol.isCreating) { // 新创建的，没确定之前，又选择了其他图标
-        this.symbol.destroy()
+    createGroundImage(symbol) {
+      if (this.symbol && this.symbol.isCreating) {
+        // 新创建的，没确定之前，又选择了其他图标
+        this.symbol.destroy();
       }
       switch (symbol.type) {
-        case 'CustomPrimitive': this.symbol = new XE.Obj.CustomPrimitive(this.$root.$earth); break;
-        case 'CustomPrimitiveExt_Tube': this.symbol = new XE.Obj.CustomPrimitiveExt.Tube(this.$root.$earth); break;
-        case 'GroundImage': this.symbol = new XE.Obj.GroundImage(this.$root.$earth); break;
-        case 'Pin': this.symbol = new XE.Obj.Pin(this.$root.$earth); break;
-        case 'GeoPin': this.symbol = new XE.Obj.Plots.GeoPin(this.$root.$earth); break;
-        case 'Path': this.symbol = new XE.Obj.Path(this.$root.$earth); break;
-        case 'GeoPolyline': this.symbol = new XE.Obj.Plots.GeoPolyline(this.$root.$earth); break;
-        case 'Polyline': this.symbol = new XE.Obj.Polyline(this.$root.$earth); break;
-        case 'GeoSectorSearch': this.symbol = new XE.Obj.Plots.GeoSectorSearch(this.$root.$earth); break;
-        case 'GeoPolylineArrow': this.symbol = new XE.Obj.Plots.GeoPolylineArrow(this.$root.$earth); break;
-        case 'GeoCurveArrow': this.symbol = new XE.Obj.Plots.GeoCurveArrow(this.$root.$earth); break;
-        case 'GeoArc': this.symbol = new XE.Obj.Plots.GeoArc(this.$root.$earth); break;
-        case 'GeoBezier2': this.symbol = new XE.Obj.Plots.GeoBezier2(this.$root.$earth); break;
-        case 'GeoBezier3': this.symbol = new XE.Obj.Plots.GeoBezier3(this.$root.$earth); break;
-        case 'GeoParallelSearch': this.symbol = new XE.Obj.Plots.GeoParallelSearch(this.$root.$earth); break;
-        case 'GeoCircle': this.symbol = new XE.Obj.Plots.GeoCircle(this.$root.$earth); break;
-        case 'GeoRectangle': this.symbol = new XE.Obj.Plots.GeoRectangle(this.$root.$earth); break;
-        case 'GeoTriFlag': this.symbol = new XE.Obj.Plots.GeoTriFlag(this.$root.$earth); break;
-        case 'GeoCurveFlag': this.symbol = new XE.Obj.Plots.GeoCurveFlag(this.$root.$earth); break;
-        case 'GeoRightAngleFlag': this.symbol = new XE.Obj.Plots.GeoRightAngleFlag(this.$root.$earth); break;
-        case 'GeoDoubleArrow': this.symbol = new XE.Obj.Plots.GeoDoubleArrow(this.$root.$earth); break;
-        case 'GeoPolygon': this.symbol = new XE.Obj.Plots.GeoPolygon(this.$root.$earth); break;
-        case 'GeoSector': this.symbol = new XE.Obj.Plots.GeoSector(this.$root.$earth); break;
-        case 'Scanline': this.symbol = new XE.Obj.Scanline(this.$root.$earth); break;
-        case 'Model': this.symbol = new XE.Obj.Model(this.$root.$earth); break;
-        default: return;
+        case "CustomPrimitive":
+          this.symbol = new XE.Obj.CustomPrimitive(this.$root.$earth);
+          break;
+        case "CustomPrimitiveExt_Tube":
+          this.symbol = new XE.Obj.CustomPrimitiveExt.Tube(this.$root.$earth);
+          break;
+        case "GroundImage":
+          this.symbol = new XE.Obj.GroundImage(this.$root.$earth);
+          break;
+        case "Pin":
+          this.symbol = new XE.Obj.Pin(this.$root.$earth);
+          break;
+        case "GeoPin":
+          this.symbol = new XE.Obj.Plots.GeoPin(this.$root.$earth);
+          break;
+        case "Path":
+          this.symbol = new XE.Obj.Path(this.$root.$earth);
+          break;
+        case "GeoPolyline":
+          this.symbol = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+          break;
+        case "Polyline":
+          this.symbol = new XE.Obj.Polyline(this.$root.$earth);
+          break;
+        case "GeoSectorSearch":
+          this.symbol = new XE.Obj.Plots.GeoSectorSearch(this.$root.$earth);
+          break;
+        case "GeoPolylineArrow":
+          this.symbol = new XE.Obj.Plots.GeoPolylineArrow(this.$root.$earth);
+          break;
+        case "GeoCurveArrow":
+          this.symbol = new XE.Obj.Plots.GeoCurveArrow(this.$root.$earth);
+          break;
+        case "GeoArc":
+          this.symbol = new XE.Obj.Plots.GeoArc(this.$root.$earth);
+          break;
+        case "GeoBezier2":
+          this.symbol = new XE.Obj.Plots.GeoBezier2(this.$root.$earth);
+          break;
+        case "GeoBezier3":
+          this.symbol = new XE.Obj.Plots.GeoBezier3(this.$root.$earth);
+          break;
+        case "GeoParallelSearch":
+          this.symbol = new XE.Obj.Plots.GeoParallelSearch(this.$root.$earth);
+          break;
+        case "GeoCircle":
+          this.symbol = new XE.Obj.Plots.GeoCircle(this.$root.$earth);
+          break;
+        case "GeoRectangle":
+          this.symbol = new XE.Obj.Plots.GeoRectangle(this.$root.$earth);
+          break;
+        case "GeoTriFlag":
+          this.symbol = new XE.Obj.Plots.GeoTriFlag(this.$root.$earth);
+          break;
+        case "GeoCurveFlag":
+          this.symbol = new XE.Obj.Plots.GeoCurveFlag(this.$root.$earth);
+          break;
+        case "GeoRightAngleFlag":
+          this.symbol = new XE.Obj.Plots.GeoRightAngleFlag(this.$root.$earth);
+          break;
+        case "GeoDoubleArrow":
+          this.symbol = new XE.Obj.Plots.GeoDoubleArrow(this.$root.$earth);
+          break;
+        case "GeoPolygon":
+          this.symbol = new XE.Obj.Plots.GeoPolygon(this.$root.$earth);
+          break;
+        case "GeoSector":
+          this.symbol = new XE.Obj.Plots.GeoSector(this.$root.$earth);
+          break;
+        case "Scanline":
+          this.symbol = new XE.Obj.Scanline(this.$root.$earth);
+          break;
+        case "Model":
+          this.symbol = new XE.Obj.Model(this.$root.$earth);
+          break;
+        default:
+          return;
       }
       this.symbol.isCreating = true;
 
@@ -376,11 +444,11 @@ export default {
       this.symbol.creating = true;
       // window.symbol = this.symbol
     },
-    symbolChange (item, options) {
-      var self = this
+    symbolChange(item, options) {
+      var self = this;
       this.$root.$labServer.updateSymbol(item._id, options).then(res => {
-        self.itemClick({ item: self.currentSelectedTreeNode })
-      })
+        self.itemClick({ item: self.currentSelectedTreeNode });
+      });
     },
     // modifyGroundImage (symbol) {
     //   var groundImage = new XE.Obj.GroundImage(this.$root.$earth);
@@ -403,17 +471,17 @@ export default {
     //   this.modifyingSymbol = null
     //   groundImage.destroy()
     // },
-    initSymbol (id) {
+    initSymbol(id) {
       var labServer = this.$root.$labServer;
-      var self = this
+      var self = this;
       labServer
         .getSymbol(id)
         .then(result => {
-          if (result.status === 'ok' && result.symbols.rows.length === 1) {
+          if (result.status === "ok" && result.symbols.rows.length === 1) {
             var group = JSON.parse(result.symbols.rows[0].content);
-            var treeRoot = self.initTreeNode(group)
-            treeRoot.expand = true
-            self.tree = [treeRoot]
+            var treeRoot = self.initTreeNode(group);
+            treeRoot.expand = true;
+            self.tree = [treeRoot];
             // self.$forceUpdate()
           }
         })
@@ -421,34 +489,39 @@ export default {
           this.error = err;
         });
     },
-    initTreeNode (node) {
-      var self = this
+    initTreeNode(node) {
+      var self = this;
       var treeNode = {
         expand: false,
         title: node.name,
         children: [],
         content: node
-      }
+      };
       if (node.children.length > 0) {
         for (var i = 0; i < node.children.length; i++) {
-          treeNode.children.push(self.initTreeNode(node.children[i]))
+          treeNode.children.push(self.initTreeNode(node.children[i]));
         }
       }
-      return treeNode
+      return treeNode;
     },
-    itemClick (item) {
+    itemClick(item) {
       if (item && item.item) {
-        this.currentSelectedTreeNode = item.item
+        this.currentSelectedTreeNode = item.item;
       }
-      if (this.currentSelectedTreeNode && this.currentSelectedTreeNode.content.symbols.length > 0) {
+      if (
+        this.currentSelectedTreeNode &&
+        this.currentSelectedTreeNode.content.symbols.length > 0
+      ) {
         var labServer = this.$root.$labServer;
-        var self = this
-        var ids = this.currentSelectedTreeNode.content.symbols.join(',').replace('\"', '')
+        var self = this;
+        var ids = this.currentSelectedTreeNode.content.symbols
+          .join(",")
+          .replace('"', "");
         labServer
           .getSymbols(ids)
           .then(result => {
-            if (result.status === 'ok') {
-              self.symbols = result.symbols.rows
+            if (result.status === "ok") {
+              self.symbols = result.symbols.rows;
               // self.symbols.forEach((symbol) => {
               //   symbol.domType = "symbol"
               // if (symbol.image.indexOf('data') !== 0) {
@@ -463,22 +536,22 @@ export default {
             this.error = err;
           });
       } else {
-        this.symbols = []
+        this.symbols = [];
       }
     }
   },
   directives: {
     focus: {
       // 指令的定义
-      inserted: function (el) {
+      inserted: function(el) {
         // el.__vue__ && el.__vue__.focus();
       }
     }
   },
   watch: {
-    show (val) {
+    show(val) {
       if (val) {
-        this.initSymbol(this.symbolGroupId)
+        this.initSymbol(this.symbolGroupId);
       }
     }
   }
