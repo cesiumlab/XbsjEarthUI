@@ -51,12 +51,6 @@
           <div class="xbsj-item-btn pindivbutton"></div>
           <span class="xbsj-item-name">{{lang.pindivbtn}}</span>
         </div>-->
-
-        <!-- 路径 -->
-        <!-- <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
-          <div class="xbsj-item-btn pathbutton"></div>
-          <span class="xbsj-item-name">{{lang.path}}</span>
-        </div>-->
         <!-- 折线 -->
         <!-- <div class="xbsj-item-btnbox" @click="polylinebtn" title="折线">
           <div class="xbsj-item-btn linebutton"></div>
@@ -198,10 +192,10 @@
       <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{lang.senior}}</span>
         <!-- 路径 -->
-        <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
+        <!-- <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
           <div class="xbsj-item-btn pathbutton"></div>
           <span class="xbsj-item-name">{{lang.path}}</span>
-        </div>
+        </div>-->
         <!-- 带杆文字 -->
         <!-- <div class="xbsj-item-btnbox" title="带杆文字">
           <div class="xbsj-item-btn barwritebutton"></div>

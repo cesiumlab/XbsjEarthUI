@@ -18,7 +18,8 @@ const zh = {
   firstperson: "第一人称",
   mouseshiqu: "鼠标拾取",
   scene: "场景",
-  save: "保存"
+  save: "保存",
+  path: "路径动画"
 };
 
 const en = {
@@ -41,7 +42,8 @@ const en = {
   firstperson: "Immerse",
   mouseshiqu: "Pick",
   scene: "Scene",
-  save: "Save"
+  save: "Save",
+  path: "Path"
 };
 
 export default { zh, en };

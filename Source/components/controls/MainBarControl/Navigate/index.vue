@@ -104,6 +104,11 @@
           :class="{highlight:popup == 'rotateCenter'}"
           @click.stop="togglePopup('rotateCenter',$event)"
         ></span>
+        <!-- 路径 -->
+        <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
+          <div class="xbsj-item-btn pathbutton"></div>
+          <span class="xbsj-item-name">{{lang.path}}</span>
+        </div>
         <!--
         <div class="xbsj-item-btnbox">
           <div
@@ -202,7 +207,7 @@ import SceneComp from "./Scene";
 import TrackComp from "./Track";
 import { addOutterEventListener } from "../../../utils/xbsjUtil";
 export default {
-  props:["labServiceUI"],
+  props: ["labServiceUI"],
   components: {
     SearchComp,
     RotateGlobeComp,
@@ -304,6 +309,15 @@ export default {
     }
   },
   methods: {
+    // 打开path属性窗口
+    pathbtn() {
+      var Path = new XE.Obj.Path(this.$root.$earth);
+      Path.name = "路径动画";
+      Path.positionPicking = true;
+      Path.isCreating = true;
+      Path.creating = true;
+      this.$root.$earthUI.showPropertyWindow(Path);
+    },
     saveScene() {
       this.$root.$earthUI.labScene.saveScene();
     },
