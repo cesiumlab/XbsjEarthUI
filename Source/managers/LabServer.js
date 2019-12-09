@@ -456,12 +456,12 @@ class LabServer {
    * @param {String} id groupSymbolId
    * @param {String} group 
    */
-  updateSymbolGroup () {
+  updateSymbolGroup (content) {
     return new Promise((resolve, reject) => {
       axios
         .post(this.server + "symbol/group/" + this.symbolGroupId, QS.stringify({
           name: this.symbolContent.name,
-          content: JSON.stringify(this.symbolContent)
+          content: JSON.stringify(content)
         }))
         .then(res => {
           if (res.status === 200) {

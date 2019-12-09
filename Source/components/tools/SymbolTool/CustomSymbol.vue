@@ -79,7 +79,8 @@ export default {
       symbolNameEditable: {},
       langs: languagejs,
       lang: undefined,
-      symbolGroupId: "custom_symbols"
+      symbolGroupId: "custom_symbols",
+      symbolContent: '',
     };
   },
   created() {},
@@ -196,7 +197,7 @@ export default {
     updateSymbolGroup() {
       var self = this;
       this.$root.$labServer
-        .updateSymbolGroup()
+        .updateSymbolGroup(this.symbolContent)
         .then(result => {})
         .catch(err => {
           this.error = err;
@@ -478,8 +479,8 @@ export default {
         .getSymbol(id)
         .then(result => {
           if (result.status === "ok" && result.symbols.rows.length === 1) {
-            var group = JSON.parse(result.symbols.rows[0].content);
-            var treeRoot = self.initTreeNode(group);
+            self.symbolContent = JSON.parse(result.symbols.rows[0].content);
+            var treeRoot = self.initTreeNode(self.symbolContent);
             treeRoot.expand = true;
             self.tree = [treeRoot];
             // self.$forceUpdate()
