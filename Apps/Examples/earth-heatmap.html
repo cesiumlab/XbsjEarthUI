@@ -92,14 +92,46 @@
             var h = new XE.Obj.HeatMap(earth);
             h.xbsjFromJSON(config);
 
+            // 演示1：设置网格数据
+            // {
+            //     var gridData = new Array(100*100);
+            //     gridData.fill(0);
+            //     // 采样点数组
+            //     const posValues = [[10, 10, 100], [10, 90, 500], [90, 10, 300], [90, 90, 1000]];
+            //     // 通过克里金插值获得网格数组
+            //     XE.Obj.HeatMap.getGridDataFromKriging(posValues, 100, 100, gridData);
+            //     h.setGridData(gridData);
+            // }
+
+            // 演示2：通过插值的方式设置网格数据
             {
-                var gridData = new Array(100*100);
-                gridData.fill(0);
-                // 采样点数组
-                const posValues = [[10, 10, 100], [10, 90, 500], [90, 10, 300], [90, 90, 1000]];
-                // 通过克里金插值获得网格数组
-                XE.Obj.HeatMap.getGridDataFromKriging(posValues, 100, 100, gridData);
-                h.setGridData(gridData);
+                // 采样点数组0
+                var gridData0 = new Array(100*100);
+                gridData0.fill(0);
+                const posValues0 = [[10, 10, 100], [10, 90, 500], [90, 10, 300], [90, 90, 1000]];
+                // 通过克里金插值获得网格数组1
+                XE.Obj.HeatMap.getGridDataFromKriging(posValues0, 100, 100, gridData0);
+
+                var gridData1 = new Array(100*100);
+                gridData1.fill(0);
+                const posValues1 = [[10, 10, 500], [10, 90, 100], [90, 10, 200], [90, 90, 100]];
+                // 通过克里金插值获得网格数组1
+                XE.Obj.HeatMap.getGridDataFromKriging(posValues1, 100, 100, gridData1);
+
+                let ratio = 0;
+                earth.czm.scene.preUpdate.addEventListener(() => {
+                    ratio += 0.02;
+                    if (ratio > 1.0) {
+                        ratio = 0.0;
+                    }
+
+                    var gridData = new Array(100*100);
+                    gridData.fill(0);
+
+                    XE.Obj.HeatMap.interpolateGridData(ratio, gridData0, gridData1, 100*100, gridData);
+
+                    h.setGridData(gridData);
+                })
             }
 
             h.flyTo();
