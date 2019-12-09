@@ -105,9 +105,14 @@
           @click.stop="togglePopup('rotateCenter',$event)"
         ></span>
         <!-- 路径 -->
-        <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
+        <div class="xbsj-item-btnbox" @click="pathbtn">
           <div class="xbsj-item-btn pathbutton"></div>
           <span class="xbsj-item-name">{{lang.path}}</span>
+        </div>
+        <!-- 绑定相机 -->
+        <div class="xbsj-item-btnbox" ref="cameraAttach" @click="cameraattachbtn">
+          <div class="xbsj-item-btn pathbutton" :class=" {  pathbuttonActive : cameraAttachShow }"></div>
+          <span class="xbsj-item-name">{{lang.cameraattach}}</span>
         </div>
         <!--
         <div class="xbsj-item-btnbox">
@@ -235,7 +240,8 @@ export default {
       useCesiumNavigator: false,
       cameraViewManagerShow: false,
       moving: false,
-      langs: languagejs
+      langs: languagejs,
+      cameraAttachShow: false
     };
   },
   created() {},
@@ -301,6 +307,32 @@ export default {
         )
       );
     });
+
+    let cameraAttach = this.$refs.cameraAttach;
+    function handleDragOver(e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    var that = this;
+    function handleFileSelect(e) {
+      // e.stopPropagation();
+      e.preventDefault();
+      let objs = e.dataTransfer.getData("objs");
+      let obj = {};
+      obj = JSON.parse(objs).czmObject;
+      if (that.$root.$earth.sceneTree.currentSelectedNode !== undefined) {
+        var currentSelectedNode =
+          that.$root.$earth.sceneTree.currentSelectedNode.czmObject;
+        if (currentSelectedNode.cameraAttached !== undefined) {
+          currentSelectedNode.cameraAttached = true;
+          that.cameraAttachShow = true;
+        }
+      }
+    }
+
+    cameraAttach.addEventListener("dragover", handleDragOver, false);
+    cameraAttach.addEventListener("drop", handleFileSelect, false);
   },
   beforeDestroy() {
     if (this._disposers) {
@@ -317,6 +349,16 @@ export default {
       Path.isCreating = true;
       Path.creating = true;
       this.$root.$earthUI.showPropertyWindow(Path);
+    },
+    cameraattachbtn() {
+      if (this.$root.$earth.sceneTree.currentSelectedNode !== undefined) {
+        var currentSelectedNode = this.$root.$earth.sceneTree
+          .currentSelectedNode.czmObject;
+        if (currentSelectedNode.cameraAttached !== undefined) {
+          currentSelectedNode.cameraAttached = false;
+          this.cameraAttachShow = false;
+        }
+      }
     },
     saveScene() {
       this.$root.$earthUI.labScene.saveScene();
@@ -692,6 +734,21 @@ export default {
   outline: none;
   border-color: transparent;
   box-shadow: none;
+}
+.pathbutton {
+  background: url(../../../../images/path.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.pathbutton:hover {
+  background: url(../../../../images/path_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.pathbuttonActive {
+  background: url(../../../../images/path_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
 }
 </style>
 

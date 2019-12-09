@@ -19,7 +19,8 @@ const zh = {
   mouseshiqu: "鼠标拾取",
   scene: "场景",
   save: "保存",
-  path: "路径动画"
+  path: "路径动画",
+  cameraattach: "绑定相机"
 };
 
 const en = {
@@ -43,7 +44,8 @@ const en = {
   mouseshiqu: "Pick",
   scene: "Scene",
   save: "Save",
-  path: "Path"
+  path: "Path",
+  cameraattach: "cameraattach"
 };
 
 export default { zh, en };
