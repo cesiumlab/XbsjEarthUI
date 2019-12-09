@@ -91,41 +91,6 @@
      
             // 贴图片方式1：
             // 自定义绘制贴地图片，足够灵活，但代码会写得比较多，比较复杂
-            let ctx_image = undefined;
-            Cesium.Resource.createIfNeeded('./images/circle.png').fetchImage().then(function(image) {
-                console.log('image loaded!');
-                ctx_image = image;
-            });
-
-            let angle = 0.0;
-            earth.czm.scene.preUpdate.addEventListener(() => {
-                angle -= 1.0;
-                if (angle > 360.0) {
-                    angle = 0.0;
-                }
-                const rotation = angle / 180.0 * Math.PI;
-
-                p.drawCanvas(ctx => {
-                    ctx.clearRect(0, 0, 512, 512);
-
-                    ctx.beginPath();
-                    ctx.strokeStyle = "rgb(128, 128, 128)"; 
-                    // ctx.setLineDash([8, 8]);
-                    ctx.lineWidth = 1;
-                    ctx.arc(256, 256, 250, 0, Math.PI*2, true);
-                    ctx.stroke();
-
-                    if (ctx_image) {
-                        ctx.save();
-                        ctx.translate(256, 256);
-                        ctx.rotate(rotation);
-                        ctx.translate(-256, -256);
-                        ctx.drawImage(ctx_image, 0, 0);
-                        ctx.restore();
-                    }
-                });                
-            });
-
             p.preUpdateEvalString = `
                 if (!p._myCircleImageLoading) {
                     p._myCircleImageLoading = true;
@@ -159,7 +124,6 @@
                         ctx.save();
                         ctx.translate(256, 256);
                         ctx.rotate(rotation);
-                        console.log('preUpdate');
                         ctx.translate(-256, -256);
                         ctx.drawImage(p._myCircleImage, 0, 0);
                         ctx.restore();
