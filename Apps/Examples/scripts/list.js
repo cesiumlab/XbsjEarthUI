@@ -144,6 +144,10 @@ vueApp.examples = [
                 "url": "./earth-groundImage-play.html"
             },
             {
+                "title": "热力图",
+                "url": "./earth-heatmap.html"
+            },
+            {
                 "title": "影像-百度",
                 "url": "./earth-imagery-baidu.html"
             },
