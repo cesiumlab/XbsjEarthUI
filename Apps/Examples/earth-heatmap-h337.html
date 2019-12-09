@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <title>热力图-</title>
+
+    <!-- 强制提前加载Cesium.js，其中Cesium相关路径可以换成自定义的 -->
+    <!-- <script src="../../XbsjCesium/Cesium.js"></script> -->
+    <!-- <link rel="stylesheet" href="../../XbsjCesium/Widgets/Widgets.css"> -->
+
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/heatmap.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function startup() {
+            // earth = new XE.Earth('earthContainer');
+            earth = new XE.Earth('earthContainer', {
+                // 这里设置Viewer的配置，和new Viewer(container, options)中的options一致
+                homeButton: true,
+                timeline: true,
+            });
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "默认离线影像",
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "createTileMapServiceImageryProvider": {
+                                    "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    "fileExtension": 'jpg',
+                                },
+                                "type": "createTileMapServiceImageryProvider"
+                            }
+                        }
+                    },
+                ]
+            };
+
+            const config = {
+                "position": [
+                    2.0313527955350708,
+                    0.6964650964888595,
+                    0
+                ],
+                // 在地球上的实际尺寸，单位是米
+                "width": 10000,
+                "height": 10000,
+                // 调色板参数，第一个代码值域，范围在0-1之间，第二个为css颜色字符串
+                "gradient": [
+                    [
+                        0,
+                        "rgba(0, 255, 0, 0.1)"
+                    ],
+                    [
+                        0.2,
+                        "rgba(0, 0, 255, 0.1)"
+                    ],
+                    [
+                        0.6,
+                        "rgba(255, 255, 0, 0.5)"
+                    ],
+                    [
+                        1,
+                        "red"
+                    ]
+                ],
+                "maxValue": 1000,
+                "dataWidth": 400,
+                "dataHeight": 400,
+            }
+
+            var h = new XE.Obj.HeatMap(earth);
+            h.xbsjFromJSON(config);
+
+            // createRandomHeatMapData随机创建热力图数据
+            var heatCount = 20;
+            var heatMin = 0;
+            var heatMax = 10;
+
+            function createRandomHeatMapData(heatMapData) {
+                var width = 400;
+                var height = 400;
+
+                // 初始随机给定热力图
+                var min = heatMin;
+                var max = heatMax;
+                var t = [];
+                for (var i = 0; i < heatCount; i++) {
+                    var x = (Math.random() * width) >> 0;
+                    var y = (Math.random() * height) >> 0;
+                    var c = (Math.random() * (max - min)) + min;
+                    // btw, we can set a radius on a point basis
+                    // var r = (Math.random() * 100) >> 0;
+                    var r = (Math.random() * 99 + 1) >> 0;
+
+                    if (typeof heatMapData !== 'undefined') {
+                        x = heatMapData[i].x;
+                        y = heatMapData[i].y;
+                        r = heatMapData[i].r; // 半径不能随便增加，可能会到值内存暴增而崩溃
+                    }
+
+                    // add to dataset
+                    t.push({
+                        x: x,
+                        y: y,
+                        value: c,
+                        radius: r
+                    });
+                }
+
+                return t;
+            }
+
+            // 创建实例
+            const h337Instance = h337.create({
+                container: document.createElement('div'),
+                //maxOpacity: 0.5,
+                radius: 100,
+                blur: 0.9,
+                width: 400, // 必须设置宽高，否则h337的创建会有问题
+                height: 400,
+                backgroundColor: 'rgba(0, 0, 58, 0.96)'
+            });
+
+            // 演示1：直接拷贝Canvas
+            // {
+            //     const resultHeatMapData = createRandomHeatMapData();
+            //     h337Instance.setData({
+            //         min: heatMin,
+            //         max: heatMax,
+            //         data: resultHeatMapData,
+            //     });                
+            //     // copyfromOtherCanvas函数可以直接拷贝别的canvas中的内容，前提是需要保证canvas尺寸一致！
+            //     h.copyfromOtherCanvas(h337Instance._renderer.canvas);
+            // }
+
+            // 演示2：通过插值的方式设置网格数据
+            {
+                function lerpHeatMapData(start, end, t, result) {
+                    for (var i=0; i < heatCount; i++) {
+                        result[i] = {
+                            x: start[i].x,
+                            y: start[i].y,
+                            value: start[i].value * (1 - t) + end[i].value * t,
+                            radius: start[i].radius,
+                        }
+                    }
+                }
+
+                const heatMapData0 = createRandomHeatMapData();
+                const heatMapData1 = createRandomHeatMapData();
+                const resultHeatMapData = createRandomHeatMapData();
+
+                let ratio = 0;
+                earth.czm.scene.preUpdate.addEventListener(() => {
+                    ratio += 0.003;
+                    if (ratio > 1.0) {
+                        ratio = 0.0;
+                    }
+
+                    var gridData = new Array(100*100);
+                    gridData.fill(0);
+
+                    lerpHeatMapData(heatMapData0, heatMapData1, ratio, resultHeatMapData);
+                    h337Instance.setData({
+                        min: heatMin,
+                        max: heatMax,
+                        data: resultHeatMapData,
+                    });
+
+                    // copyfromOtherCanvas函数可以直接拷贝别的canvas中的内容，前提是需要保证canvas尺寸一致！
+                    h.copyfromOtherCanvas(h337Instance._renderer.canvas);
+                });
+            }
+
+            h.flyTo();
+
+            window.heatmap = h;
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);            
+    </script>
+</body>
+
+</html>
