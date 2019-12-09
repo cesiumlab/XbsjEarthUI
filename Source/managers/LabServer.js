@@ -382,6 +382,28 @@ class LabServer {
     });
   }
 
+    /**
+   * 删除标绘符号
+   * @param {String} id 
+   */
+  deleteSymbol (id) {
+    var self = this
+    return new Promise((resolve, reject) => {
+      axios
+        .delete(this.server + "symbol/" + id)
+        .then(res => {
+          if (res.status === 200) {
+            resolve(res);
+          } else {
+            reject(res);
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
   /**
    * 获取标绘符号
    * @param {String} ids 符号id列表，用逗号隔开
@@ -486,6 +508,7 @@ class LabServer {
       .then(result => {
         if (result.status === 'ok') {
           self._root.promptInfo("添加成功！", "info")
+          self._root._comp.$refs.customSymbol[0].addSymbolToRoot(result.id);
           self._root._comp.$refs.customSymbol[0].itemClick();
         }
       })

@@ -69,7 +69,7 @@
 import languagejs from "./locale";
 import { parse } from "path";
 export default {
-  data() {
+  data () {
     return {
       canmove: true,
       show: false,
@@ -80,13 +80,13 @@ export default {
       langs: languagejs,
       lang: undefined,
       symbolGroupId: "custom_symbols",
-      symbolContent: '',
+      symbolContent: null,
     };
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {
-    symbolsContextMenu(item, vueObject) {
+    symbolsContextMenu (item, vueObject) {
       var self = this;
       var labServer = this.$root.$labServer;
       const baseItems = [
@@ -115,14 +115,6 @@ export default {
         {
           text: this.lang.delete,
           func: () => {
-            // const index = self.currentSelectedTreeNode.content.symbols.indexOf(
-            //   item._id
-            // );
-            // self.currentSelectedTreeNode.content.symbols.splice(index, 1);
-
-            // const symbolIndex = self.symbols.indexOf(item);
-            // self.symbols.splice(symbolIndex, 1);
-            // self.updateSymbolGroup();
             this.$root.$earthUI.confirm(this.lang.conformdelete, () => {
               const index = self.currentSelectedTreeNode.content.symbols.indexOf(
                 item._id
@@ -132,13 +124,14 @@ export default {
               const symbolIndex = self.symbols.indexOf(item);
               self.symbols.splice(symbolIndex, 1);
               self.updateSymbolGroup();
+              self.deleteSymbol(item._id);
             });
           }
         }
       ];
       this.$root.$earthUI.contextMenu.pop(baseItems);
     },
-    treeContextMenu({ item, vueObject }) {
+    treeContextMenu ({ item, vueObject }) {
       var self = this;
       var labServer = this.$root.$labServer;
       const baseItems = [
@@ -194,16 +187,19 @@ export default {
       ];
       this.$root.$earthUI.contextMenu.pop(baseItems);
     },
-    updateSymbolGroup() {
+    deleteSymbol (id) {
+      this.$root.$labServer.deleteSymbol(id);
+    },
+    updateSymbolGroup () {
       var self = this;
       this.$root.$labServer
         .updateSymbolGroup(this.symbolContent)
-        .then(result => {})
+        .then(result => { })
         .catch(err => {
           this.error = err;
         });
     },
-    isChildren(parent, children) {
+    isChildren (parent, children) {
       if (parent.children === undefined || parent.children.length === 0) {
         return false;
       }
@@ -217,14 +213,14 @@ export default {
       }
       return isChildren >= 0;
     },
-    movetreeitem(item, $event) {
+    movetreeitem (item, $event) {
       let self = this;
       let source = $event.currentTarget;
       // 按下鼠标键并开始移动鼠标时，会在被拖放的元素上触发dragstart事件。
       // 此时光标变成“不能放”符号(圆环中有一条反斜线)，表示不能把元素放到自己上面
       source.addEventListener(
         "dragstart",
-        function(event) {
+        function (event) {
           event.dataTransfer.setData("obj", JSON.stringify(item)); //兼容火狐浏览器，拖动时候必须携带数据否则没效果
           self.moveItem({ item, vueObject: self, $event });
         },
@@ -232,15 +228,15 @@ export default {
       );
 
       // 触发dragstart事件后，随即会触发drag事件，而且在元素被拖动期间会持续触发该事件
-      source.addEventListener("drag", function(event) {}, false);
+      source.addEventListener("drag", function (event) { }, false);
 
       // 当拖动停止时(无论是把元素放到了有效的放置目标，还是放到了无效的放置目标上)，会触发dragend事件
-      source.addEventListener("dragend", function(event) {}, false);
+      source.addEventListener("dragend", function (event) { }, false);
 
       //只要有元素被拖动到放置目标上，触发dragenter事件
       source.addEventListener(
         "dragenter",
-        function(event) {
+        function (event) {
           event.preventDefault();
           // self.moveItem({ item, vueObject: self, $event });
         },
@@ -249,7 +245,7 @@ export default {
       //被拖动的元素在放置目标的范围内移动时，持续触发dragover事件
       source.addEventListener(
         "dragover",
-        function(event) {
+        function (event) {
           if (self.canmove) {
             event.preventDefault();
             self.xbsjitemover = true;
@@ -261,7 +257,7 @@ export default {
       // 如果元素被拖出了放置目标，触发dragleave事件
       source.addEventListener(
         "dragleave",
-        function(event) {
+        function (event) {
           self.xbsjitemover = false;
           event.preventDefault();
         },
@@ -271,21 +267,21 @@ export default {
       // 如果元素被放到了放置目标中，触发drop事件
       source.addEventListener(
         "drop",
-        function(event) {
+        function (event) {
           self.xbsjitemover = false;
           event.preventDefault();
         },
         false
       );
     },
-    moveItem({ item, vueObject }) {
+    moveItem ({ item, vueObject }) {
       //拖拽移动的时候保存当前拖动的item
       this.canmove = true;
       this._currentDropNode = item;
       var sceneTree = this.$root.$refs.mainUI.$refs.sceneTreeTool[0];
       sceneTree._currentSceneNode = undefined;
     },
-    canMoveItem({ item, vueObject }) {
+    canMoveItem ({ item, vueObject }) {
       //判断放置目标是否是源目标的子节点
       if (this._currentDropNode && item !== this._currentDropNode) {
         if (this.isChildren(this._currentDropNode, item)) {
@@ -297,13 +293,11 @@ export default {
         this.canmove = false;
       }
     },
-    dropItem({ item, vueObject }) {
+    dropItem ({ item, vueObject }) {
       //放置源目标到放置目标位置
       if (this._currentDropNode) {
         if (
-          this._currentDropNode.type === "GroundImage" ||
-          this._currentDropNode.type === "Pin"
-        ) {
+          this._currentDropNode.type) {
           var index = this.currentSelectedTreeNode.content.symbols.indexOf(
             this._currentDropNode._id
           );
@@ -320,7 +314,7 @@ export default {
       this.$forceUpdate();
       this._currentDropNode = undefined;
     },
-    moveToItem(srcItem, dstItem) {
+    moveToItem (srcItem, dstItem) {
       if (srcItem.parent) {
         if (srcItem.parent.content) {
           var contentIndex = srcItem.parent.content.children.indexOf(
@@ -340,14 +334,14 @@ export default {
         }
       }
     },
-    changeTitle(options) {
+    changeTitle (options) {
       const treeItem = options.item;
       const newTitle = options.title;
       treeItem && (treeItem.title = newTitle);
       treeItem.content.name = newTitle;
       this.updateSymbolGroup();
     },
-    createGroundImage(symbol) {
+    createGroundImage (symbol) {
       if (this.symbol && this.symbol.isCreating) {
         // 新创建的，没确定之前，又选择了其他图标
         this.symbol.destroy();
@@ -445,34 +439,13 @@ export default {
       this.symbol.creating = true;
       // window.symbol = this.symbol
     },
-    symbolChange(item, options) {
+    symbolChange (item, options) {
       var self = this;
       this.$root.$labServer.updateSymbol(item._id, options).then(res => {
         self.itemClick({ item: self.currentSelectedTreeNode });
       });
     },
-    // modifyGroundImage (symbol) {
-    //   var groundImage = new XE.Obj.GroundImage(this.$root.$earth);
-    //   groundImage.creating = true
-    //   groundImage.xbsjFromJSON(JSON.parse(symbol.content));
-    //   groundImage.modifyEnd = this.modifyGroundImageEnd
-    //   this.$root.$earthUI.showPropertyWindow(groundImage);
-    // },
-    // modifyGroundImageEnd (item, groundImage) { // 修改后点击 取消 或 确定 时触发
-    //   if (ok) {
-    //     var objJson = groundImage.toJSON()
-    //     if (groundImage.imageUrls.length > 0) {
-    //       objJson.image = groundImage.imageUrls[0]
-    //     }
-    //     delete objJson.xbsjGuid
-    //     this.modifyingSymbol.name = groundImage.name
-    //     this.modifyingSymbol.content = JSON.stringify(objJson)
-    //     this.$root.$labServer.updateSymbol(this.modifyingSymbol._id, this.modifyingSymbol)
-    //   }
-    //   this.modifyingSymbol = null
-    //   groundImage.destroy()
-    // },
-    initSymbol(id) {
+    initSymbol (id) {
       var labServer = this.$root.$labServer;
       var self = this;
       labServer
@@ -490,7 +463,7 @@ export default {
           this.error = err;
         });
     },
-    initTreeNode(node) {
+    initTreeNode (node) {
       var self = this;
       var treeNode = {
         expand: false,
@@ -505,7 +478,12 @@ export default {
       }
       return treeNode;
     },
-    itemClick(item) {
+    addSymbolToRoot (id) {
+      if (this.symbolContent) {
+        this.symbolContent.symbols.push(id);
+      }
+    },
+    itemClick (item) {
       if (item && item.item) {
         this.currentSelectedTreeNode = item.item;
       }
@@ -523,14 +501,6 @@ export default {
           .then(result => {
             if (result.status === "ok") {
               self.symbols = result.symbols.rows;
-              // self.symbols.forEach((symbol) => {
-              //   symbol.domType = "symbol"
-              // if (symbol.image.indexOf('data') !== 0) {
-              //   symbol.base64 = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(symbol.image)))
-              // } else {
-              //   symbol.base64 = symbol.image
-              // }
-              // })
             }
           })
           .catch(err => {
@@ -544,13 +514,13 @@ export default {
   directives: {
     focus: {
       // 指令的定义
-      inserted: function(el) {
+      inserted: function (el) {
         // el.__vue__ && el.__vue__.focus();
       }
     }
   },
   watch: {
-    show(val) {
+    show (val) {
       if (val) {
         this.initSymbol(this.symbolGroupId);
       }
