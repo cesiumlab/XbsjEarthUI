@@ -12,6 +12,8 @@
   "scripts": {
     "dev-comment": "使用node-modules中的xbsjCesium、xbsjEarth、标绘插件、自定义图元扩展插件进行调试",
     "dev": "cross-env NODE_ENV=development webpack-dev-server",
+    "copyToStatic-comment": "把node-modules中的earthsdk的js库拷贝到Static目录下",
+    "copyToStatic": "ncp ./node_modules/earthsdk/dist/XbsjCesium ./Static/XbsjCesium && ncp ./node_modules/earthsdk/dist/XbsjEarth ./Static/XbsjEarth && ncp ./node_modules/earthsdk-plotting-symbol/dist/XbsjEarth-Plugins ./Static/XbsjEarth-Plugins && ncp ./node_modules/earthsdk-custom-primitive/dist/XbsjEarth-Plugins ./Static/XbsjEarth-Plugins",
     "dev2-comment": "使用static目录中的xbsjCesium、xbsjEarth、标绘插件、自定义图元扩展插件进行调试",
     "dev2": "cross-env NODE_ENV=development XBSJ_IMPORT=external webpack-dev-server",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
