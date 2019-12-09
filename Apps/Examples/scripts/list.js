@@ -144,8 +144,8 @@ vueApp.examples = [
                 "url": "./earth-groundImage-play.html"
             },
             {
-                "title": "热力图",
-                "url": "./earth-heatmap.html"
+                "title": "热力图-克里金插值",
+                "url": "./earth-heatmap-kriging.html"
             },
             {
                 "title": "影像-百度",
