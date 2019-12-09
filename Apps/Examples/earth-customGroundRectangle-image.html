@@ -88,7 +88,9 @@
             p.canvasWidth = 512;
             p.canvasHeight = 512;
             // p.color = [0.5, 0.8, 1, 2];
-            
+     
+            // 贴图片方式1：
+            // 自定义绘制贴地图片，足够灵活，但代码会写得比较多，比较复杂
             let ctx_image = undefined;
             Cesium.Resource.createIfNeeded('./images/circle.png').fetchImage().then(function(image) {
                 console.log('image loaded!');
@@ -123,6 +125,58 @@
                     }
                 });                
             });
+
+            p.preUpdateEvalString = `
+                if (!p._myCircleImageLoading) {
+                    p._myCircleImageLoading = true;
+
+                    Cesium.Resource.createIfNeeded('./images/circle.png').fetchImage().then(function(image) {
+                        console.log('image loaded!');
+                        p._myCircleImage = image;
+                    });
+                }
+
+                if (typeof p._myAngle === 'undefined') {
+                    p._myAngle = 0.0;
+                }
+                p._myAngle -= 1.0;
+                if (p._myAngle > 360.0) {
+                    p._myAngle = 0.0;
+                }
+                const rotation = p._myAngle / 180.0 * Math.PI;
+
+                p.drawCanvas(ctx => {
+                    ctx.clearRect(0, 0, 512, 512);
+
+                    ctx.beginPath();
+                    ctx.strokeStyle = "rgb(128, 128, 128)"; 
+                    // ctx.setLineDash([8, 8]);
+                    ctx.lineWidth = 1;
+                    ctx.arc(256, 256, 250, 0, Math.PI*2, true);
+                    ctx.stroke();
+
+                    if (p._myCircleImage) {
+                        ctx.save();
+                        ctx.translate(256, 256);
+                        ctx.rotate(rotation);
+                        console.log('preUpdate');
+                        ctx.translate(-256, -256);
+                        ctx.drawImage(p._myCircleImage, 0, 0);
+                        ctx.restore();
+                    }
+                });
+            `;
+
+            // 贴图片方式2：
+            // 新增imageUrl属性，可以直接设置，使用很简单；
+            // 但缺点是没办法自行drawCanvas，不够灵活
+            // p.imageUrl = './images/circle.png';
+            // p.preUpdateEvalString = `
+            //     p.rotation += 6.0 / 180.0 * Math.PI;
+            //     if (p.rotation > Math.PI * 2.0) {
+            //         p.rotation = 0.0;
+            //     }
+            // `;
 
             return p;
         }        
