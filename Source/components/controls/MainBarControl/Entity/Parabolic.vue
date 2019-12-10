@@ -8,6 +8,9 @@
       <label class="label">{{lang.archeight}}:</label>
       <input type="text" v-model.number="heightRatio" />
     </div>
+    <div class="row">
+      <button class="xbsj-button" @click="ok">{{lang.ok}}</button>
+    </div>
   </div>
 </template>
 
@@ -18,21 +21,28 @@ export default {
       langs: {
         zh: {
           interval: "间隔距离",
-          archeight: "弧线高度"
+          archeight: "弧线高度",
+          ok: "确定"
         },
         en: {
           interval: "Interval",
-          archeight: "Archeight"
+          archeight: "Archeight",
+          ok: "OK"
         }
       },
       lang: undefined,
-      minDistance: 0,
-      heightRatio: 0
+      minDistance: 10,
+      heightRatio: 5,
+      _position0:undefined,
+      _position1:undefined
     };
   },
   created() {},
   mounted() {},
-  methods: {},
+  methods: { 
+    ok() {
+       this.$parent.createParabolic(this.minDistance,this.heightRatio);
+  } },
   beforeDestroy() {}
 };
 </script>

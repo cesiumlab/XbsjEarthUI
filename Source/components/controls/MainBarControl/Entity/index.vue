@@ -266,19 +266,30 @@
       <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{lang.algorithm}}</span>
         <!-- 抛物差值 -->
-        <div class="xbsj-item-btnbox ml20" @click="parabolicBtn">
-          <div class="xbsj-item-btn customprimitivebutton"></div>
+        <div
+          class="xbsj-item-btnbox ml20"
+          ref="parabolicBtn"
+          @click="parabolicBtn"
+          @drop="parabolic_drop($event)"
+          @dragover="parabolic_dragover($event)"
+          @dragleave="parabolic_dragleave($event)"
+        >
+          <div
+            class="xbsj-item-btn parabolicbtn"
+            :class="{highlight:parabolic_over||parabolicShow}"
+          ></div>
           <span class="xbsj-item-name">{{lang.parabolic}}</span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'parabolic'}"
-          @click.stop="togglePopup('parabolic',$event)"
-        ></span>
+
+        <!-- ODLines -->
+        <div class="xbsj-item-btnbox ml20" ref="odlinesbtn" @click="createODlines">
+          <div class="xbsj-item-btn odlinesbtn"></div>
+          <span class="xbsj-item-name">ODLines</span>
+        </div>
       </div>
     </div>
     <PlottingMore ref="plottingMore"></PlottingMore>
-    <Parabolic ref="parabolic" v-show="popup =='parabolic'"></Parabolic>
+    <Parabolic ref="parabolic" v-show="parabolicShow"></Parabolic>
   </div>
 </template>
 
@@ -303,7 +314,10 @@ export default {
       LabSymbolShow: false,
       CustomSymbolShow: false,
       show: true,
-      popup: ""
+      popup: "",
+      parabolicShow: false,
+      parabolic_over: false,
+      odlines_over: false
     };
   },
   created() {},
@@ -545,82 +559,148 @@ export default {
       this.$root.$earthUI.showPropertyWindow(CustomPrimitive);
     },
 
-    parabolicBtn() {
-      if (
-        this.$root.$earth.sceneTree.currentSelectedNode !== undefined &&
-        this.$root.$earth.sceneTree.currentSelectedNode.czmObject !==
-          undefined &&
-        this.$root.$earth.sceneTree.currentSelectedNode.czmObject.positions !==
-          undefined &&
-        this.$root.$earth.sceneTree.currentSelectedNode.czmObject.positions
-          .length > 1
-      ) {
-        var currentSelectedNode = this.$root.$earth.sceneTree
-          .currentSelectedNode.czmObject;
-        // console.log(currentSelectedNode);
-        var p = [];
-        p.push([
-          currentSelectedNode.positions[0],
-          currentSelectedNode.positions[1]
-        ]);
-        this.createparabolic(p);
-      } else {
-        //弹出确认
-        // this.$root.$earthUI.confirm(this.lang.delcontent, () => {});
+    getCzmObjectFromDrag(dataTransfer) {
+      for (let i = 0; i < dataTransfer.types.length; i++) {
+        var t = dataTransfer.types[i];
+        if (!t) continue;
+        if (t.startsWith("_czmobj_")) {
+          let guid = t.substring(8);
+
+          return this.$root.$earth.getObject(guid);
+        }
       }
-      // this.$root.$earthUI.showPropertyWindow(this, {
-      //   component: "Parabolic"
-      // });
+      return undefined;
     },
-    createparabolic(p) {
-      const odlines = new XE.Obj.ODLines(this.$root.$earth);
-      odlines.color = [1, 1, 1, 1];
+    parabolicBtn() {
+      //此按钮只隐藏
+      this.parabolicShow = false;
+      this._czmObj = undefined;
+    },
+    parabolic_dragover(e) {
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions && czmObj.positions.length > 1) {
+        e.dataTransfer.dropEffect = "copy";
+        this.parabolic_over = true;
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    parabolic_dragleave() {
+      this.parabolic_over = false;
+    },
+    parabolic_drop(e) {
+      this.parabolic_over = false;
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions && czmObj.positions.length > 1) {
+        //显示面板
+        var p = this.$refs.parabolicBtn.parentElement;
+        var t = this.$refs.parabolic.$el;
+        t.style.left = p.offsetLeft + 20 + "px";
+        t.style.top = p.offsetTop + 80 + "px";
+        this.parabolicShow = true;
 
-      var busLines = [];
+        this._czmObj = czmObj;
+      }
+    },
+    collectODLines(sn) {
+      let ret = [];
 
-      var positionsCollection = p.map(e => {
-        // Cesium.xbsjCreateTransmitPolyline 根据 首末端点生成弧线，
-        // 参数有：
-        // startPosition, 端点1
-        // endPosition, 端点2
-        // minDistance, 计算出的线段的最小间隔距离
-        // heightRatio=1.0 弧线高度抬升程度，值越大，抬高得越明显
-        // 返回值是cartesian类型的坐标数组
+      let timeDuration = 5.0;
+      let moveBaseDuration = 4.0;
+
+      if (sn == undefined) sn = this.$root.$earth.sceneTree.currentSelectedNode;
+
+      if (!sn) return ret;
+
+      if (sn.czmObject) {
+        let czmobj = sn.czmObject;
+
+        if (czmobj.positions && czmobj.positions.length > 1) {
+          var obj = {
+            posititons: [],
+            color: czmobj.color ? [...czmobj.color] : [1, 1, 0, 1],
+            width: czmobj.width ? czmobj.width : 3,
+            startTime: timeDuration * Math.random(),
+            duration: moveBaseDuration + 1.0 * Math.random()
+          };
+         // var positions=[];
+          czmobj.positions.map(e => {
+            obj.posititons.push([...e]);
+          });
+          //obj.posititons.push(positions);
+          ret.push(obj);
+        }
+      } else if (sn.children) {
+        //递归收集子
+        for (let i = 0; i < sn.children.length; i++) {
+          let c = sn.children[i];
+          let r = this.collectODLines(c);
+          if (r && r.length > 0) {
+            ret = ret.concat(r);
+          }
+        }
+      }
+
+      return ret;
+    },
+    createODlines() {
+      var ret = this.collectODLines();
+      if (!ret || ret.length == 0) {
+        this.$root.$earthUI.promptInfo(
+          "请选中一条折线或者包含折线的目录",
+          "error"
+        );
+        return;
+      }
+      var odlines = new XE.Obj.ODLines(this.$root.$earth);
+      odlines.evalString = "p.playing = true;";
+      odlines.data = ret;
+      odlines.timeDuration = 10;
+      odlines.playing = true;
+      odlines.name = "ODLines";
+      const sceneObject = new XE.SceneTree.Leaf(odlines);
+      this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+    },
+    createParabolic(minDistance, heightRatio) {
+      if (
+        this._czmObj &&
+        this._czmObj.positions &&
+        this._czmObj.positions.length > 1
+      ) {
         const cartesians = Cesium.xbsjCreateTransmitPolyline(
-          e[0],
-          e[1],
-          50.0,
-          5.0
+          [...this._czmObj.positions[0]],
+          [...this._czmObj.positions[1]],
+          minDistance,
+          heightRatio
         );
         const poss = cartesians.map(ee => {
           const carto = Cesium.Cartographic.fromCartesian(ee);
           return [carto.longitude, carto.latitude, carto.height];
         });
 
-        return poss;
-      });
+        var polyline = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
 
-      positionsCollection.push(...positionsCollection);
-      positionsCollection.push(...positionsCollection);
+        polyline.creating = false;
+        polyline.isCreating = false;
+        polyline.name = "抛物线";
+        polyline.positions = poss;
+        polyline.ground = false;
 
-      // let timeDuration = 10.0;
-      // let moveBaseDuration = 4.0;
+        if (this._czmObj.color) {
+          polyline.color = [...this._czmObj.color];
+        }
+        if (this._czmObj.width) {
+          polyline.width = this._czmObj.width;
+        }
 
-      busLines = positionsCollection.map(e => {
-        return {
-          posititons: e
-          // color: [0.5, 0.8, 1.0, 5.0],
-          // width: 3.0,
-          // startTime: timeDuration * Math.random(),
-          // duration: moveBaseDuration + 1.0 * Math.random()
-        };
-      });
+        const sceneObject = new XE.SceneTree.Leaf(polyline);
+        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
 
-      odlines.data = busLines;
-      // odlines.timeDuration = timeDuration;
-      odlines.playing = true;
-
-      return odlines;
+        this._czmObj = undefined;
+        this.parabolicShow = false;
+      }
     },
     //打开管道-动画
     tubeBtn() {
@@ -1135,6 +1215,30 @@ export default {
 }
 .customprimitivebutton.highlight,
 .customprimitivebutton:hover {
+  background: url(../../../../images/customprimitive_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.parabolicbtn {
+  background: url(../../../../images/customprimitive.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.parabolicbtn.highlight {
+  background: url(../../../../images/customprimitive_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.odlinesbtn {
+  background: url(../../../../images/customprimitive.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.odlinesbtn.highlight .odlinesbtn:hover {
   background: url(../../../../images/customprimitive_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
