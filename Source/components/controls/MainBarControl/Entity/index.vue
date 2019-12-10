@@ -189,7 +189,7 @@
           <span class="xbsj-item-name">{{lang.more}}</span>
         </div>
       </div>-->
-      <div class="xbsj-list-item xbsj-list-lastitem">
+      <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.senior}}</span>
         <!-- 路径 -->
         <!-- <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
@@ -263,17 +263,34 @@
           <span class="xbsj-item-name">{{lang.more}}</span>
         </div>-->
       </div>
+      <div class="xbsj-list-item xbsj-list-lastitem">
+        <span class="xbsj-list-name">{{lang.algorithm}}</span>
+        <!-- 抛物差值 -->
+        <div class="xbsj-item-btnbox ml20" @click="parabolicBtn">
+          <div class="xbsj-item-btn customprimitivebutton"></div>
+          <span class="xbsj-item-name">{{lang.parabolic}}</span>
+        </div>
+        <span
+          class="xbsj-select"
+          :class="{highlight:popup == 'parabolic'}"
+          @click.stop="togglePopup('parabolic',$event)"
+        ></span>
+      </div>
     </div>
     <PlottingMore ref="plottingMore"></PlottingMore>
+    <Parabolic ref="parabolic" v-show="popup =='parabolic'"></Parabolic>
   </div>
 </template>
 
 <script>
 import languagejs from "./index_locale";
 import PlottingMore from "./PlottingMore/index";
+import Parabolic from "./Parabolic";
+import { addOutterEventListener } from "../../../utils/xbsjUtil";
 export default {
   components: {
-    PlottingMore
+    PlottingMore,
+    Parabolic
   },
   data() {
     return {
@@ -285,11 +302,31 @@ export default {
       plotOnline: false,
       LabSymbolShow: false,
       CustomSymbolShow: false,
-      show: true
+      show: true,
+      popup: ""
     };
   },
   created() {},
-  mounted() {},
+  mounted() {
+    //给所有popup的el上添加外部事件
+    Object.keys(this.$refs).forEach(key => {
+      addOutterEventListener(this.$refs[key].$el, "mousedown", el => {
+        let comp = this.getPopupComp();
+        if (comp && comp.$el === el) {
+          if (typeof comp.show == "function") {
+            comp.show(false);
+          }
+          this.popup = "";
+        }
+      });
+    });
+
+    //console.log(this.$root.$earthUI);
+    this.$parent.$on("hidePopup", () => {
+      this.showPopup(false);
+      this.popup = "";
+    });
+  },
   methods: {
     // 多边形
     Polygon() {
@@ -504,8 +541,86 @@ export default {
 
       CustomPrimitive.isCreating = true;
       CustomPrimitive.creating = true;
-      console.log(CustomPrimitive);
+      // console.log(CustomPrimitive);
       this.$root.$earthUI.showPropertyWindow(CustomPrimitive);
+    },
+
+    parabolicBtn() {
+      if (
+        this.$root.$earth.sceneTree.currentSelectedNode !== undefined &&
+        this.$root.$earth.sceneTree.currentSelectedNode.czmObject !==
+          undefined &&
+        this.$root.$earth.sceneTree.currentSelectedNode.czmObject.positions !==
+          undefined &&
+        this.$root.$earth.sceneTree.currentSelectedNode.czmObject.positions
+          .length > 1
+      ) {
+        var currentSelectedNode = this.$root.$earth.sceneTree
+          .currentSelectedNode.czmObject;
+        // console.log(currentSelectedNode);
+        var p = [];
+        p.push([
+          currentSelectedNode.positions[0],
+          currentSelectedNode.positions[1]
+        ]);
+        this.createparabolic(p);
+      } else {
+        //弹出确认
+        // this.$root.$earthUI.confirm(this.lang.delcontent, () => {});
+      }
+      // this.$root.$earthUI.showPropertyWindow(this, {
+      //   component: "Parabolic"
+      // });
+    },
+    createparabolic(p) {
+      const odlines = new XE.Obj.ODLines(this.$root.$earth);
+      odlines.color = [1, 1, 1, 1];
+
+      var busLines = [];
+
+      var positionsCollection = p.map(e => {
+        // Cesium.xbsjCreateTransmitPolyline 根据 首末端点生成弧线，
+        // 参数有：
+        // startPosition, 端点1
+        // endPosition, 端点2
+        // minDistance, 计算出的线段的最小间隔距离
+        // heightRatio=1.0 弧线高度抬升程度，值越大，抬高得越明显
+        // 返回值是cartesian类型的坐标数组
+        const cartesians = Cesium.xbsjCreateTransmitPolyline(
+          e[0],
+          e[1],
+          50.0,
+          5.0
+        );
+        const poss = cartesians.map(ee => {
+          const carto = Cesium.Cartographic.fromCartesian(ee);
+          return [carto.longitude, carto.latitude, carto.height];
+        });
+
+        return poss;
+      });
+
+      positionsCollection.push(...positionsCollection);
+      positionsCollection.push(...positionsCollection);
+
+      // let timeDuration = 10.0;
+      // let moveBaseDuration = 4.0;
+
+      busLines = positionsCollection.map(e => {
+        return {
+          posititons: e
+          // color: [0.5, 0.8, 1.0, 5.0],
+          // width: 3.0,
+          // startTime: timeDuration * Math.random(),
+          // duration: moveBaseDuration + 1.0 * Math.random()
+        };
+      });
+
+      odlines.data = busLines;
+      // odlines.timeDuration = timeDuration;
+      odlines.playing = true;
+
+      return odlines;
     },
     //打开管道-动画
     tubeBtn() {
@@ -515,6 +630,48 @@ export default {
       Tube.creating = true;
       console.log(Tube);
       this.$root.$earthUI.showPropertyWindow(Tube);
+    },
+    getPopupComp() {
+      if (this.$refs.hasOwnProperty(this.popup)) {
+        return this.$refs[this.popup];
+      } else {
+        return undefined;
+      }
+    },
+    showPopup(v) {
+      let comp = this.getPopupComp();
+      if (comp && typeof comp.show == "function") {
+        comp.show(v);
+      }
+      return comp;
+    },
+    togglePopup(p, event) {
+      //调用上一个组件的隐藏
+      this.showPopup(false);
+
+      this.popup = this.popup == p ? "" : p;
+
+      //调用当前组件的显示
+      let curComp = this.showPopup(true);
+      if (!curComp) return;
+      if (this.popup == "" || !event) return;
+      try {
+        //基于现在UI结构强行计算的
+        let el = curComp.$el;
+        // el.style.left =
+        //   event.target.offsetLeft +
+        //   event.target.offsetParent.offsetLeft -
+        //   40 +
+        //   "px";
+        el.style.left = event.clientX - 40 + "px";
+        el.style.top =
+          event.target.offsetTop +
+          event.target.offsetParent.offsetTop +
+          44 +
+          "px";
+      } catch (ex) {
+        console.log(ex);
+      }
     },
     startMove(event) {
       //如果事件的目标不是本el 返回

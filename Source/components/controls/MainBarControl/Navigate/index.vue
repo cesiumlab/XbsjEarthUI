@@ -326,9 +326,9 @@ export default {
     var that = this;
 
     function getCzmObjectFromDrag(dataTransfer) {
-      for (let i = 0; i<  dataTransfer.types.length ;i++) {
+      for (let i = 0; i < dataTransfer.types.length; i++) {
         var t = dataTransfer.types[i];
-        if(!t)continue;
+        if (!t) continue;
         if (t.startsWith("_czmobj_")) {
           let guid = t.substring(8);
 
@@ -772,7 +772,7 @@ export default {
   border-color: transparent;
   box-shadow: none;
 }
-.pathbutton {
+/* .pathbutton {
   background: url(../../../../images/path.png) no-repeat;
   background-size: contain;
   cursor: pointer;
@@ -782,6 +782,6 @@ export default {
   background: url(../../../../images/path_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
-}
+} */
 </style>
 
