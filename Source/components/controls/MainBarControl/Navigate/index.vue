@@ -325,22 +325,39 @@ export default {
 
     var that = this;
 
+    function getCzmObjectFromDrag(dataTransfer) {
+      for (let i = 0; i<  dataTransfer.types.length ;i++) {
+        var t = dataTransfer.types[i];
+        if(!t)continue;
+        if (t.startsWith("_czmobj_")) {
+          let guid = t.substring(8);
+
+          return that.$root.$earth.getObject(guid);
+        }
+      }
+      return undefined;
+    }
     //拖拽移动上面
     cameraAttach.addEventListener(
       "dragover",
       e => {
         //e.stopPropagation();
         e.preventDefault();
-        let obj = e.dataTransfer.getData("obj");
-          console.log(obj);
-        if (!obj) return;
-        let jobj = JSON.parse();
-        if (jobj && jobj.xbsjGuid !== undefined) {
-          let czmObj = that.$root.$earth.getObject(jobj.xbsjGuid);
-          if (czmObj && czmObj.cameraAttached !== undefined) {
-            that.cameraAttachOver = true;
-          }
+        let czmObj = getCzmObjectFromDrag(e.dataTransfer);
+        if (czmObj && czmObj.cameraAttached !== undefined) {
+          that.cameraAttachOver = true;
+          e.dataTransfer.dropEffect = "link";
+        } else {
+          e.dataTransfer.dropEffect = "none";
         }
+      },
+      false
+    );
+
+    cameraAttach.addEventListener(
+      "dragleave",
+      e => {
+        that.cameraAttachOver = false;
       },
       false
     );
@@ -351,16 +368,12 @@ export default {
       e => {
         // e.stopPropagation();
         e.preventDefault();
-        let obj = e.dataTransfer.getData("obj");
-        if (!obj) return;
-      
-        let jobj = JSON.parse(obj);
-        if (jobj && jobj.xbsjGuid !== undefined) {
-          let czmObj = that.$root.$earth.getObject(jobj.xbsjGuid);
-          if (czmObj && czmObj.cameraAttached !== undefined) {
-            czmObj.cameraAttached = true;
-          }
+
+        let czmObj = getCzmObjectFromDrag(e.dataTransfer);
+        if (czmObj && czmObj.cameraAttached !== undefined) {
+          czmObj.cameraAttached = true;
         }
+        that.cameraAttachOver = false;
       },
       false
     );

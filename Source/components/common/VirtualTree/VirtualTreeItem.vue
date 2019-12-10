@@ -103,8 +103,17 @@ export default {
               JSON.stringify(item._inner.sn.czmObject)
             ); //兼容火狐浏览器，拖动时候必须携带数据否则没效果
           } catch (e) {}
+
           self.$emit("on-item-move", { item, vueObject: self, $event });
- 
+
+          //为了在dragover里能判定 对象的类型，这里把guid放进去
+          try {
+            event.dataTransfer.setData(
+              "_czmobj_" + item._inner.sn.czmObject.xbsjGuid,
+              JSON.stringify(item._inner.sn.czmObject)
+            );
+          } catch (e) {}
+
           /*
           try {
             event.dataTransfer.setData(
