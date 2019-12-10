@@ -101,10 +101,10 @@
           <span class="xbsj-item-name">{{lang.TriFlag}}</span>
         </div>-->
         <!-- 双箭头 -->
-        <!-- <div class="xbsj-item-btnbox" @click="DoubleArrow">
+        <div class="xbsj-item-btnbox" @click="DoubleArrow">
           <div class="xbsj-item-btn DoubleArrow"></div>
           <span class="xbsj-item-name">{{lang.DoubleArrow}}</span>
-        </div>-->
+        </div>
         <!-- 多边形 -->
         <div class="xbsj-item-btnbox" @click="Polygon">
           <div class="xbsj-item-btn facebutton"></div>
@@ -192,10 +192,10 @@
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.senior}}</span>
         <!-- 路径 -->
-        <!-- <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
+        <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
           <div class="xbsj-item-btn pathbutton"></div>
           <span class="xbsj-item-name">{{lang.path}}</span>
-        </div>-->
+        </div>
         <!-- 带杆文字 -->
         <!-- <div class="xbsj-item-btnbox" title="带杆文字">
           <div class="xbsj-item-btn barwritebutton"></div>
@@ -701,7 +701,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .DoubleArrow {
   background: url(../../../../images/doublearrow.png) no-repeat;
   background-size: contain;
