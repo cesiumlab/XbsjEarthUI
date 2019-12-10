@@ -687,25 +687,14 @@ export default {
         polyline.name = "抛物线";
         polyline.positions = poss;
         polyline.ground = false;
-
-<<<<<<< HEAD
+ 
         if (this._czmObj.color) {
           polyline.color = [...this._czmObj.color];
         }
         if (this._czmObj.width) {
           polyline.width = this._czmObj.width;
         }
-=======
-      busLines = positionsCollection.map(e => {
-        return {
-          positions: e
-          // color: [0.5, 0.8, 1.0, 5.0],
-          // width: 3.0,
-          // startTime: timeDuration * Math.random(),
-          // duration: moveBaseDuration + 1.0 * Math.random()
-        };
-      });
->>>>>>> db0012106d28ca1ae75e9123b17b571537e643f2
+ 
 
         const sceneObject = new XE.SceneTree.Leaf(polyline);
         this.$root.$earth.sceneTree.addSceneObject(sceneObject);
