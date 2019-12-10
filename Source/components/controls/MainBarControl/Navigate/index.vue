@@ -104,11 +104,6 @@
           :class="{highlight:popup == 'rotateCenter'}"
           @click.stop="togglePopup('rotateCenter',$event)"
         ></span>
-        <!-- 路径 -->
-        <div class="xbsj-item-btnbox" @click="pathbtn">
-          <div class="xbsj-item-btn pathbutton"></div>
-          <span class="xbsj-item-name">{{lang.path}}</span>
-        </div>
         <!-- 绑定相机 -->
         <div class="xbsj-item-btnbox" ref="cameraAttach" @click="cameraattachbtn">
           <div
@@ -326,6 +321,8 @@ export default {
     var that = this;
 
     function getCzmObjectFromDrag(dataTransfer) {
+      // console.log(dataTransfer.types);
+      // console.log(dataTransfer.types.length);
       for (let i = 0; i < dataTransfer.types.length; i++) {
         var t = dataTransfer.types[i];
         if (!t) continue;
@@ -385,15 +382,6 @@ export default {
     }
   },
   methods: {
-    // 打开path属性窗口
-    pathbtn() {
-      var Path = new XE.Obj.Path(this.$root.$earth);
-      Path.name = "路径动画";
-      Path.positionPicking = true;
-      Path.isCreating = true;
-      Path.creating = true;
-      this.$root.$earthUI.showPropertyWindow(Path);
-    },
     cameraattachbtn() {
       this.cameraAttached = false;
     },
@@ -772,7 +760,7 @@ export default {
   border-color: transparent;
   box-shadow: none;
 }
-/* .pathbutton {
+.pathbutton {
   background: url(../../../../images/path.png) no-repeat;
   background-size: contain;
   cursor: pointer;
@@ -782,6 +770,6 @@ export default {
   background: url(../../../../images/path_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
-} */
+}
 </style>
 

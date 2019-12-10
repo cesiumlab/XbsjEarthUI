@@ -101,10 +101,10 @@
           <span class="xbsj-item-name">{{lang.TriFlag}}</span>
         </div>-->
         <!-- 双箭头 -->
-        <!-- <div class="xbsj-item-btnbox" @click="DoubleArrow">
+        <div class="xbsj-item-btnbox" @click="DoubleArrow">
           <div class="xbsj-item-btn DoubleArrow"></div>
           <span class="xbsj-item-name">{{lang.DoubleArrow}}</span>
-        </div>-->
+        </div>
         <!-- 多边形 -->
         <div class="xbsj-item-btnbox" @click="Polygon">
           <div class="xbsj-item-btn facebutton"></div>
@@ -192,10 +192,10 @@
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.senior}}</span>
         <!-- 路径 -->
-        <!-- <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
+        <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
           <div class="xbsj-item-btn pathbutton"></div>
           <span class="xbsj-item-name">{{lang.path}}</span>
-        </div>-->
+        </div>
         <!-- 带杆文字 -->
         <!-- <div class="xbsj-item-btnbox" title="带杆文字">
           <div class="xbsj-item-btn barwritebutton"></div>
@@ -688,12 +688,24 @@ export default {
         polyline.positions = poss;
         polyline.ground = false;
 
+<<<<<<< HEAD
         if (this._czmObj.color) {
           polyline.color = [...this._czmObj.color];
         }
         if (this._czmObj.width) {
           polyline.width = this._czmObj.width;
         }
+=======
+      busLines = positionsCollection.map(e => {
+        return {
+          positions: e
+          // color: [0.5, 0.8, 1.0, 5.0],
+          // width: 3.0,
+          // startTime: timeDuration * Math.random(),
+          // duration: moveBaseDuration + 1.0 * Math.random()
+        };
+      });
+>>>>>>> db0012106d28ca1ae75e9123b17b571537e643f2
 
         const sceneObject = new XE.SceneTree.Leaf(polyline);
         this.$root.$earth.sceneTree.addSceneObject(sceneObject);
@@ -781,7 +793,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .DoubleArrow {
   background: url(../../../../images/doublearrow.png) no-repeat;
   background-size: contain;
