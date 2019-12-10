@@ -111,7 +111,10 @@
         </div>
         <!-- 绑定相机 -->
         <div class="xbsj-item-btnbox" ref="cameraAttach" @click="cameraattachbtn">
-          <div class="xbsj-item-btn pathbutton" :class=" {  pathbuttonActive : cameraAttachShow }"></div>
+          <div
+            class="xbsj-item-btn pathbutton"
+            :class=" {  pathbuttonActive : cameraAttached || cameraAttachOver }"
+          ></div>
           <span class="xbsj-item-name">{{lang.cameraattach}}</span>
         </div>
         <!--
@@ -241,7 +244,8 @@ export default {
       cameraViewManagerShow: false,
       moving: false,
       langs: languagejs,
-      cameraAttachShow: false
+      cameraAttached: false,
+      cameraAttachOver: false
     };
   },
   created() {},
@@ -306,33 +310,60 @@ export default {
           "enabled"
         )
       );
+
+      this._disposers.push(
+        XE.MVVM.bind(
+          this,
+          "cameraAttached",
+          this.$root.$earth.camera.tracking,
+          "enabled"
+        )
+      );
     });
 
     let cameraAttach = this.$refs.cameraAttach;
-    function handleDragOver(e) {
-      e.stopPropagation();
-      e.preventDefault();
-    }
 
     var that = this;
-    function handleFileSelect(e) {
-      // e.stopPropagation();
-      e.preventDefault();
-      let objs = e.dataTransfer.getData("objs");
-      let obj = {};
-      obj = JSON.parse(objs).czmObject;
-      if (that.$root.$earth.sceneTree.currentSelectedNode !== undefined) {
-        var currentSelectedNode =
-          that.$root.$earth.sceneTree.currentSelectedNode.czmObject;
-        if (currentSelectedNode.cameraAttached !== undefined) {
-          currentSelectedNode.cameraAttached = true;
-          that.cameraAttachShow = true;
-        }
-      }
-    }
 
-    cameraAttach.addEventListener("dragover", handleDragOver, false);
-    cameraAttach.addEventListener("drop", handleFileSelect, false);
+    //拖拽移动上面
+    cameraAttach.addEventListener(
+      "dragover",
+      e => {
+        //e.stopPropagation();
+        e.preventDefault();
+        let obj = e.dataTransfer.getData("obj");
+          console.log(obj);
+        if (!obj) return;
+        let jobj = JSON.parse();
+        if (jobj && jobj.xbsjGuid !== undefined) {
+          let czmObj = that.$root.$earth.getObject(jobj.xbsjGuid);
+          if (czmObj && czmObj.cameraAttached !== undefined) {
+            that.cameraAttachOver = true;
+          }
+        }
+      },
+      false
+    );
+
+    //拖拽放置
+    cameraAttach.addEventListener(
+      "drop",
+      e => {
+        // e.stopPropagation();
+        e.preventDefault();
+        let obj = e.dataTransfer.getData("obj");
+        if (!obj) return;
+      
+        let jobj = JSON.parse(obj);
+        if (jobj && jobj.xbsjGuid !== undefined) {
+          let czmObj = that.$root.$earth.getObject(jobj.xbsjGuid);
+          if (czmObj && czmObj.cameraAttached !== undefined) {
+            czmObj.cameraAttached = true;
+          }
+        }
+      },
+      false
+    );
   },
   beforeDestroy() {
     if (this._disposers) {
@@ -351,14 +382,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(Path);
     },
     cameraattachbtn() {
-      if (this.$root.$earth.sceneTree.currentSelectedNode !== undefined) {
-        var currentSelectedNode = this.$root.$earth.sceneTree
-          .currentSelectedNode.czmObject;
-        if (currentSelectedNode.cameraAttached !== undefined) {
-          currentSelectedNode.cameraAttached = false;
-          this.cameraAttachShow = false;
-        }
-      }
+      this.cameraAttached = false;
     },
     saveScene() {
       this.$root.$earthUI.labScene.saveScene();
@@ -740,11 +764,7 @@ export default {
   background-size: contain;
   cursor: pointer;
 }
-.pathbutton:hover {
-  background: url(../../../../images/path_on.png) no-repeat;
-  background-size: contain;
-  cursor: pointer;
-}
+
 .pathbuttonActive {
   background: url(../../../../images/path_on.png) no-repeat;
   background-size: contain;

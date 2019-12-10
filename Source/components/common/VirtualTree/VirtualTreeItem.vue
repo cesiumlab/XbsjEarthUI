@@ -104,12 +104,15 @@ export default {
             ); //兼容火狐浏览器，拖动时候必须携带数据否则没效果
           } catch (e) {}
           self.$emit("on-item-move", { item, vueObject: self, $event });
+ 
+          /*
           try {
             event.dataTransfer.setData(
               "objs",
               JSON.stringify(item._inner.sn.toAllJSON())
             ); //兼容火狐浏览器，拖动时候必须携带数据否则没效果
           } catch (e) {}
+          */
         },
         false
       );
