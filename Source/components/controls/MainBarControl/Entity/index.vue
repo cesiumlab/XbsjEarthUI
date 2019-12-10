@@ -608,7 +608,7 @@ export default {
 
       busLines = positionsCollection.map(e => {
         return {
-          posititons: e
+          positions: e
           // color: [0.5, 0.8, 1.0, 5.0],
           // width: 3.0,
           // startTime: timeDuration * Math.random(),

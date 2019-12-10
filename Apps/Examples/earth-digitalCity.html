@@ -665,7 +665,7 @@
 
             busLines = p.map(e => {
                 return {
-                    posititons: e.map(ee => [ee[0], ee[1]]),
+                    positions: e.map(ee => [ee[0], ee[1]]),
                     color: [Math.random() * 0.5 + 0.5, Math.random() * 0.8 + 0.2, 0.0, 1.0],
                     width: 2.0,
                     startTime: timeDuration * Math.random(),
@@ -704,7 +704,7 @@
 
             busLines = p.map(e => {
                 return {
-                    posititons: [e, [e[0], e[1], e[2] + Math.random() * 500.0]],
+                    positions: [e, [e[0], e[1], e[2] + Math.random() * 500.0]],
                     color: [0.5, 0.8, 1.0, 1.0],
                     width: 2.0,
                     startTime: timeDuration * Math.random(),
@@ -763,7 +763,7 @@
 
             busLines = positionsCollection.map(e => {
                 return {
-                    posititons: e,
+                    positions: e,
                     color: [0.5, 0.8, 1.0, 5.0],
                     width: 3.0,
                     startTime: timeDuration * Math.random(),
