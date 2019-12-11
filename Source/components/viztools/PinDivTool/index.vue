@@ -66,6 +66,9 @@
                 :class="pin.editing?'btncoloron':''"
               >{{lang.editing}}</button>
             </div>
+            <div @dragover="dragOver" @drop="drop">
+              <button class="attitudeEditDragButton">{{lang.drag}}</button>
+            </div>
           </div>
         </div>
         <div class="flatten">
@@ -110,7 +113,7 @@ export default {
   props: {
     getBind: Function
   },
-  data () {
+  data() {
     return {
       lang: {},
       showPinSelect: false,
@@ -158,8 +161,8 @@ export default {
       pathGuidarr: []
     };
   },
-  created () { },
-  mounted () {
+  created() {},
+  mounted() {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
@@ -203,22 +206,21 @@ export default {
     </div>`;
       }
 
-
-      console.log(this._czmObj.defaultImgUrl());
+      // console.log(this._czmObj.defaultImgUrl());
     }
   },
   computed: {
-    name () {
+    name() {
       return this.pin.name;
     },
-    guid () {
+    guid() {
       return this.getBind().guid;
     },
     nearfar: {
-      get () {
+      get() {
         return [0, 30];
       },
-      set (newValue) {
+      set(newValue) {
         this.pin.near = Math.round(Math.pow(2, newValue[0]));
         this.pin.far = Math.round(Math.pow(2, newValue[1]));
       }
@@ -226,12 +228,12 @@ export default {
   },
   watch: {},
   methods: {
-    pinoptionssure (c) {
+    pinoptionssure(c) {
       this.pin.attachedPathGuid = c.guid;
       // console.log(this._czmObj)
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
-    pinselectinput () {
+    pinselectinput() {
       this.pathGuidarr = [];
       let guidobj = {};
       this.pathGuidarr.push({ name: "空", guid: "" });
@@ -249,17 +251,17 @@ export default {
       }
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
-    optionssure (c) {
+    optionssure(c) {
       this.pin.pinBuilder.makiIcon = c;
       this.showPinSelect = !this.showPinSelect;
     },
-    selectinput () {
+    selectinput() {
       this.showPinSelect = !this.showPinSelect;
     },
-    close () {
+    close() {
       this.$parent.destroyTool(this);
     },
-    cancel () {
+    cancel() {
       this.close();
 
       const pinToolObj = this._czmObj;
@@ -272,7 +274,7 @@ export default {
         pinToolObj.destroy();
       }
     },
-    ok () {
+    ok() {
       this.close();
       const pinToolObj = this._czmObj;
       pinToolObj.editing = false;
@@ -289,16 +291,56 @@ export default {
         pinToolObj.innerHTML = this.divcontent;
       }
     },
-    apply () {
+    apply() {
       const pinToolObj = this._czmObj;
       //修改pindiv操作
       pinToolObj.innerHTML = this.divcontent;
     },
-    flyto (index) {
+    flyto(index) {
       this._czmObj.polygons[index].flyTo();
+    },
+    getCzmObjectFromDrag(dataTransfer) {
+      for (let i = 0; i < dataTransfer.types.length; i++) {
+        var t = dataTransfer.types[i];
+        if (!t) continue;
+        if (t.startsWith("_czmobj_")) {
+          let guid = t.substring(8);
+
+          return this.$root.$earth.getObject(guid);
+        }
+      }
+      return undefined;
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        (czmObj.positions !== undefined || czmObj.position !== undefined)
+      ) {
+        e.dataTransfer.dropEffect = "copy";
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    //拖拽放置
+    drop(e) {
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        (czmObj.position !== undefined || czmObj.positions !== undefined)
+      ) {
+        if (czmObj.position !== undefined) {
+          czmObj.position = [...this._czmObj.position];
+        } else {
+          czmObj.positions[0] = [...this._czmObj.position];
+        }
+      }
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
     this._disposers.forEach(e => e());
@@ -603,7 +645,8 @@ button:focus {
   border-radius: 3px;
   color: #dddddd;
 }
-.attitudeEditCameraButton {
+.attitudeEditCameraButton,
+.attitudeEditDragButton {
   color: #dddddd;
 }
 .btncoloron {

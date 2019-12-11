@@ -1,5 +1,5 @@
 const zh = {
-  title: '矩形',
+  title: '圆',
   name: '名称',
   show: '显示',
   creating: '创建',
@@ -13,7 +13,7 @@ const zh = {
 };
 
 const en = {
-  title: 'GeoRectangle',
+  title: 'GeoCircle',
   name: 'name',
   show: 'show',
   creating: 'creating',

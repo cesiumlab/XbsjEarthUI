@@ -625,7 +625,7 @@ export default {
             startTime: timeDuration * Math.random(),
             duration: moveBaseDuration + 1.0 * Math.random()
           };
-         // var positions=[];
+          // var positions=[];
           czmobj.positions.map(e => {
             obj.posititons.push([...e]);
           });
@@ -687,14 +687,13 @@ export default {
         polyline.name = "抛物线";
         polyline.positions = poss;
         polyline.ground = false;
- 
+
         if (this._czmObj.color) {
           polyline.color = [...this._czmObj.color];
         }
         if (this._czmObj.width) {
           polyline.width = this._czmObj.width;
         }
- 
 
         const sceneObject = new XE.SceneTree.Leaf(polyline);
         this.$root.$earth.sceneTree.addSceneObject(sceneObject);

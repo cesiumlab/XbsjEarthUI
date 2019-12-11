@@ -321,8 +321,6 @@ export default {
     var that = this;
 
     function getCzmObjectFromDrag(dataTransfer) {
-      // console.log(dataTransfer.types);
-      // console.log(dataTransfer.types.length);
       for (let i = 0; i < dataTransfer.types.length; i++) {
         var t = dataTransfer.types[i];
         if (!t) continue;
