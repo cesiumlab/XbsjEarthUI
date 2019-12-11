@@ -11,7 +11,7 @@
     :footervisible="true"
     @showclick="showSelect=false"
   >
-    <div style="text-align: center; height: 100%;">
+    <div style="height: 100%;">
       <div style="text-align: center;">
         <div class="tab">
           <span @click="firstShow=true, secondShow=false">{{lang.firstpage}}</span>

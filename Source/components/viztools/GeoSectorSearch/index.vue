@@ -33,12 +33,20 @@
             @click="model.editing =!model.editing"
             :class="model.editing?'btncoloron':''"
           >{{lang.editing}}</button>
+          <!-- 拖拽 -->
+          <button
+            @dragover="dragOver"
+            @drop="drop"
+            style="margin-left:20px;"
+            class="attitudeEditCameraButton"
+          >{{lang.drag}}</button>
         </div>
-        <!-- 贴地 -->
-        <div class="flatten">
-          <label>{{lang.ground}}</label>
-          <XbsjSwitch v-model="model.ground"></XbsjSwitch>
-        </div>
+      </div>
+
+      <!-- 贴地 -->
+      <div class="flatten">
+        <label>{{lang.ground}}</label>
+        <XbsjSwitch v-model="model.ground"></XbsjSwitch>
       </div>
 
       <div class="flatten-flex">
@@ -191,6 +199,36 @@ export default {
 
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
+    },
+    getCzmObjectFromDrag(dataTransfer) {
+      for (let i = 0; i < dataTransfer.types.length; i++) {
+        var t = dataTransfer.types[i];
+        if (!t) continue;
+        if (t.startsWith("_czmobj_")) {
+          let guid = t.substring(8);
+
+          return this.$root.$earth.getObject(guid);
+        }
+      }
+      return undefined;
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        e.dataTransfer.dropEffect = "copy";
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    //拖拽放置
+    drop(e) {
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        czmObj.positions = [...this._czmObj.positions];
+      }
     }
   },
   beforeDestroy() {

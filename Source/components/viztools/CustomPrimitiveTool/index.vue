@@ -43,6 +43,13 @@
               class="attitudeEditCameraButton"
               @click="flyto"
             >{{lang.flyto}}</button>
+            <!-- 拖拽 -->
+            <button
+              style="margin-left:20px;"
+              @dragover="dragOver"
+              @drop="drop"
+              class="attitudeEditCameraButton"
+            >{{lang.drag}}</button>
           </div>
         </div>
       </div>
@@ -849,6 +856,46 @@ export default {
     },
     reset() {
       this.model.xbsjRotation = [0, 0, 0];
+    },
+    getCzmObjectFromDrag(dataTransfer) {
+      for (let i = 0; i < dataTransfer.types.length; i++) {
+        var t = dataTransfer.types[i];
+        if (!t) continue;
+        if (t.startsWith("_czmobj_")) {
+          let guid = t.substring(8);
+
+          return this.$root.$earth.getObject(guid);
+        }
+      }
+      return undefined;
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        (czmObj.positions !== undefined || czmObj.position !== undefined)
+      ) {
+        e.dataTransfer.dropEffect = "copy";
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    //拖拽放置
+    drop(e) {
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        (czmObj.position !== undefined || czmObj.positions !== undefined)
+      ) {
+        if (czmObj.position !== undefined) {
+          czmObj.position = [...this._czmObj.position];
+        } else {
+          czmObj.positions[0] = [...this._czmObj.position];
+        }
+      }
     }
   },
   beforeDestroy() {

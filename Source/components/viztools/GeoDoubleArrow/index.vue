@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="355"
+    :height="350"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -32,11 +32,26 @@
             @click="model.editing =!model.editing"
             :class="model.editing?'btncoloron':''"
           >{{lang.editing}}</button>
+          <!-- 拖拽 -->
+          <button
+            @dragover="dragOver"
+            @drop="drop"
+            style="margin-left:20px;"
+            class="attitudeEditCameraButton"
+          >{{lang.drag}}</button>
         </div>
+      </div>
+      <div class="flatten-flex">
         <!-- 贴地 -->
         <div class="flatten">
           <label>{{lang.ground}}</label>
           <XbsjSwitch v-model="model.ground"></XbsjSwitch>
+        </div>
+        <div class="flatten">
+          <div class="flatten">
+            <label>{{lang.outlineShow}}</label>
+            <XbsjSwitch v-model="model.outlineShow"></XbsjSwitch>
+          </div>
         </div>
       </div>
       <!-- 颜色 -->
@@ -44,14 +59,8 @@
         <label>{{lang.color}}</label>
         <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
       </div>
-      <div class="flatten-flex" style="padding-top:10px;">
-        <div class="flatten">
-          <label>{{lang.outlineShow}}</label>
-          <XbsjSwitch v-model="model.outlineShow"></XbsjSwitch>
-        </div>
-      </div>
       <!-- 宽度 -->
-      <div class="flatten" style="margin-top:20px;">
+      <div class="flatten" style="margin-top:30px;">
         <label>{{lang.outlineWidth}}</label>
         <div class="field">
           <XbsjSlider
@@ -247,6 +256,36 @@ export default {
 
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
+    },
+    getCzmObjectFromDrag(dataTransfer) {
+      for (let i = 0; i < dataTransfer.types.length; i++) {
+        var t = dataTransfer.types[i];
+        if (!t) continue;
+        if (t.startsWith("_czmobj_")) {
+          let guid = t.substring(8);
+
+          return this.$root.$earth.getObject(guid);
+        }
+      }
+      return undefined;
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        e.dataTransfer.dropEffect = "copy";
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    //拖拽放置
+    drop(e) {
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        czmObj.positions = [...this._czmObj.positions];
+      }
     }
   },
   beforeDestroy() {

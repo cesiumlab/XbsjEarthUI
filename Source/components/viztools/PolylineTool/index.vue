@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="458"
+    :height="494"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -53,17 +53,27 @@
             @click="polyline.editing =!polyline.editing"
             :class="polyline.editing?'btncoloron':''"
           >{{lang.editing}}</button>
-          <div class="flatten" style="display: inline-block;">
-            <label>{{lang.loop}}</label>
-            <XbsjSwitch v-model="polyline.loop"></XbsjSwitch>
-          </div>
-          <!-- 深度检测 -->
-          <div class="flatten" style="display: inline-block;">
-            <label>{{lang.depthTest}}</label>
-            <XbsjSwitch v-model="polyline.depthTest"></XbsjSwitch>
-          </div>
+          <!-- 拖拽 -->
+          <button
+            @dragover="dragOver"
+            @drop="drop"
+            style="margin-left:20px;"
+            class="attitudeEditCameraButton"
+          >{{lang.drag}}</button>
         </div>
+      </div>
+
+      <div class="flatten">
         <!-- 首尾相连 -->
+        <div class="flatten" style="display: inline-block;">
+          <label>{{lang.loop}}</label>
+          <XbsjSwitch v-model="polyline.loop"></XbsjSwitch>
+        </div>
+        <!-- 深度检测 -->
+        <div class="flatten" style="display: inline-block;">
+          <label>{{lang.depthTest}}</label>
+          <XbsjSwitch v-model="polyline.depthTest"></XbsjSwitch>
+        </div>
       </div>
 
       <!-- 显示辅助线框
@@ -712,6 +722,36 @@ export default {
 
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
+    },
+    getCzmObjectFromDrag(dataTransfer) {
+      for (let i = 0; i < dataTransfer.types.length; i++) {
+        var t = dataTransfer.types[i];
+        if (!t) continue;
+        if (t.startsWith("_czmobj_")) {
+          let guid = t.substring(8);
+
+          return this.$root.$earth.getObject(guid);
+        }
+      }
+      return undefined;
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        e.dataTransfer.dropEffect = "copy";
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    //拖拽放置
+    drop(e) {
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        czmObj.positions = [...this._czmObj.positions];
+      }
     }
   },
   beforeDestroy() {

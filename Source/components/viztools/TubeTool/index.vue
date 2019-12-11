@@ -37,6 +37,13 @@
               class="attitudeEditCameraButton"
               @click="flyto"
             >{{lang.flyto}}</button>
+            <!-- 拖拽 -->
+            <button
+              @dragover="dragOver"
+              @drop="drop"
+              style="margin-left:20px;"
+              class="attitudeEditCameraButton"
+            >{{lang.drag}}</button>
           </div>
         </div>
       </div>
@@ -101,12 +108,18 @@
         <!-- 横向重复 -->
         <label>{{lang.repeatX}}</label>
         <div class="flatten-box">
-          <XbsjInputNumber style="float:left; width: calc(50% - 87px);" v-model="model.textureSize[0]"></XbsjInputNumber>
+          <XbsjInputNumber
+            style="float:left; width: calc(50% - 87px);"
+            v-model="model.textureSize[0]"
+          ></XbsjInputNumber>
         </div>
         <!-- 纵向重复 -->
         <label>{{lang.repeatY}}</label>
         <div class="flatten-box">
-          <XbsjInputNumber style="float:left; width: calc(50% - 87px);" v-model="model.textureSize[1]"></XbsjInputNumber>
+          <XbsjInputNumber
+            style="float:left; width: calc(50% - 87px);"
+            v-model="model.textureSize[1]"
+          ></XbsjInputNumber>
         </div>
       </div>
 
@@ -245,6 +258,36 @@ export default {
     },
     reset() {
       this.model.xbsjRotation = [0, 0, 0];
+    },
+    getCzmObjectFromDrag(dataTransfer) {
+      for (let i = 0; i < dataTransfer.types.length; i++) {
+        var t = dataTransfer.types[i];
+        if (!t) continue;
+        if (t.startsWith("_czmobj_")) {
+          let guid = t.substring(8);
+
+          return this.$root.$earth.getObject(guid);
+        }
+      }
+      return undefined;
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        e.dataTransfer.dropEffect = "copy";
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    //拖拽放置
+    drop(e) {
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        czmObj.positions = [...this._czmObj.positions];
+      }
     }
   },
   beforeDestroy() {

@@ -4,6 +4,7 @@ const zh = {
   show: '显示',
   creating: '创建',
   editing: '编辑',
+  drag: '拖拽',
   ground: '贴地',
   width: '宽度',
   color: '颜色'
@@ -15,6 +16,7 @@ const en = {
   show: 'show',
   creating: 'creating',
   editing: 'editing',
+  drag: 'drag',
   ground: 'ground',
   width: 'width',
   color: 'color'

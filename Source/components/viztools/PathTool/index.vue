@@ -2,7 +2,7 @@
   <Window
     :width="622"
     :minWidth="622"
-    :height="415"
+    :height="450"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -42,14 +42,23 @@
             <div>
               <button id="textbtn" class="attitudeEditCameraButton">{{lang.select}}</button>
             </div>
+            <div>
+              <!-- 拖拽 -->
+              <button
+                @dragover="dragOver"
+                @drop="drop"
+                class="attitudeEditCameraButton"
+              >{{lang.drag}}</button>
+            </div>
           </div>
         </div>
+      </div>
+      <div class="flatten">
         <div>
           <label>{{lang.loop}}</label>
           <XbsjSwitch v-model="path.loop"></XbsjSwitch>
         </div>
       </div>
-
       <div class="flatten-flex">
         <!-- 显示关键点方向 -->
         <div class="flatten">
@@ -351,6 +360,36 @@ export default {
 
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
+    },
+    getCzmObjectFromDrag(dataTransfer) {
+      for (let i = 0; i < dataTransfer.types.length; i++) {
+        var t = dataTransfer.types[i];
+        if (!t) continue;
+        if (t.startsWith("_czmobj_")) {
+          let guid = t.substring(8);
+
+          return this.$root.$earth.getObject(guid);
+        }
+      }
+      return undefined;
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        e.dataTransfer.dropEffect = "copy";
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    //拖拽放置
+    drop(e) {
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        czmObj.positions = [...this._czmObj.positions];
+      }
     }
   },
   beforeDestroy() {
