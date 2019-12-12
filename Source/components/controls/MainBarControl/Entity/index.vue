@@ -11,14 +11,14 @@
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.plotlibrary}}</span>
         <!-- 在线 -->
-        <!-- <div class="xbsj-item-btnbox ml20">
+        <div class="xbsj-item-btnbox ml20">
           <div
             class="xbsj-item-btn onlinebutton"
-            @click="plotOnline=!plotOnline"
-            :class="{highlight:plotOnline}"
+            @click="OnlineSymbolShow=!OnlineSymbolShow"
+            :class="{highlight:OnlineSymbolShow}"
           ></div>
           <span class="xbsj-item-name">{{lang.online}}</span>
-        </div>-->
+        </div>
         <!-- Lab内置 -->
         <div class="xbsj-item-btnbox" @click="LabSymbolShow=!LabSymbolShow">
           <div class="xbsj-item-btn localhostbutton" :class="{highlight:LabSymbolShow}"></div>
@@ -310,7 +310,7 @@ export default {
       langs: languagejs,
       PlottingShow: false,
       EntityMoreShow: false,
-      plotOnline: false,
+      OnlineSymbolShow: false,
       LabSymbolShow: false,
       CustomSymbolShow: false,
       show: true,

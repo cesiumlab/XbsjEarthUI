@@ -1,6 +1,6 @@
 const zh = {
   plotlibrary: '标绘库',
-  online: '在线',
+  online: '在线分享',
   localhost: 'Lab内置',
   custom: '自定义',
   routine: "常规",

@@ -68,15 +68,6 @@ export default {
       var json = JSON.parse(symbol.content).czmObject;
       this.symbol.xbsjFromJSON(json);
       this.symbol.isCreating = true;
-
-      var czmObject = JSON.parse(symbol.content);
-      if (czmObject.czmObject) {
-        czmObject = czmObject.czmObject;
-        if (!czmObject.name) {
-          czmObject.name = symbol.name;
-        }
-      }
-      this.symbol.xbsjFromJSON(czmObject);
       this.$root.$earthUI.showPropertyWindow(this.symbol);
       this.symbol.creating = true;
     },

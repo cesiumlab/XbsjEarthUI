@@ -346,95 +346,19 @@ export default {
         // 新创建的，没确定之前，又选择了其他图标
         this.symbol.destroy();
       }
-      switch (symbol.type) {
-        case "CustomPrimitive":
-          this.symbol = new XE.Obj.CustomPrimitive(this.$root.$earth);
-          break;
-        case "CustomPrimitiveExt_Tube":
-          this.symbol = new XE.Obj.CustomPrimitiveExt.Tube(this.$root.$earth);
-          break;
-        case "GroundImage":
-          this.symbol = new XE.Obj.GroundImage(this.$root.$earth);
-          break;
-        case "Pin":
-          this.symbol = new XE.Obj.Pin(this.$root.$earth);
-          break;
-        case "GeoPin":
-          this.symbol = new XE.Obj.Plots.GeoPin(this.$root.$earth);
-          break;
-        case "Path":
-          this.symbol = new XE.Obj.Path(this.$root.$earth);
-          break;
-        case "GeoPolyline":
-          this.symbol = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
-          break;
-        case "Polyline":
-          this.symbol = new XE.Obj.Polyline(this.$root.$earth);
-          break;
-        case "GeoSectorSearch":
-          this.symbol = new XE.Obj.Plots.GeoSectorSearch(this.$root.$earth);
-          break;
-        case "GeoPolylineArrow":
-          this.symbol = new XE.Obj.Plots.GeoPolylineArrow(this.$root.$earth);
-          break;
-        case "GeoCurveArrow":
-          this.symbol = new XE.Obj.Plots.GeoCurveArrow(this.$root.$earth);
-          break;
-        case "GeoArc":
-          this.symbol = new XE.Obj.Plots.GeoArc(this.$root.$earth);
-          break;
-        case "GeoBezier2":
-          this.symbol = new XE.Obj.Plots.GeoBezier2(this.$root.$earth);
-          break;
-        case "GeoBezier3":
-          this.symbol = new XE.Obj.Plots.GeoBezier3(this.$root.$earth);
-          break;
-        case "GeoParallelSearch":
-          this.symbol = new XE.Obj.Plots.GeoParallelSearch(this.$root.$earth);
-          break;
-        case "GeoCircle":
-          this.symbol = new XE.Obj.Plots.GeoCircle(this.$root.$earth);
-          break;
-        case "GeoRectangle":
-          this.symbol = new XE.Obj.Plots.GeoRectangle(this.$root.$earth);
-          break;
-        case "GeoTriFlag":
-          this.symbol = new XE.Obj.Plots.GeoTriFlag(this.$root.$earth);
-          break;
-        case "GeoCurveFlag":
-          this.symbol = new XE.Obj.Plots.GeoCurveFlag(this.$root.$earth);
-          break;
-        case "GeoRightAngleFlag":
-          this.symbol = new XE.Obj.Plots.GeoRightAngleFlag(this.$root.$earth);
-          break;
-        case "GeoDoubleArrow":
-          this.symbol = new XE.Obj.Plots.GeoDoubleArrow(this.$root.$earth);
-          break;
-        case "GeoPolygon":
-          this.symbol = new XE.Obj.Plots.GeoPolygon(this.$root.$earth);
-          break;
-        case "GeoSector":
-          this.symbol = new XE.Obj.Plots.GeoSector(this.$root.$earth);
-          break;
-        case "Scanline":
-          this.symbol = new XE.Obj.Scanline(this.$root.$earth);
-          break;
-        case "Model":
-          this.symbol = new XE.Obj.Model(this.$root.$earth);
-          break;
-        default:
-          return;
-      }
+      this.symbol = XE.Core.XbsjObject.createObject(symbol.type, this.$root.$earth);
+      var json = JSON.parse(symbol.content).czmObject;
+      this.symbol.xbsjFromJSON(json);
       this.symbol.isCreating = true;
 
-      var czmObject = JSON.parse(symbol.content);
-      if (czmObject.czmObject) {
-        czmObject = czmObject.czmObject;
-        if (!czmObject.name) {
-          czmObject.name = symbol.name;
-        }
-      }
-      this.symbol.xbsjFromJSON(czmObject);
+      // var czmObject = JSON.parse(symbol.content);
+      // if (czmObject.czmObject) {
+      //   czmObject = czmObject.czmObject;
+      //   if (!czmObject.name) {
+      //     czmObject.name = symbol.name;
+      //   }
+      // }
+      // this.symbol.xbsjFromJSON(czmObject);
       this.$root.$earthUI.showPropertyWindow(this.symbol);
       this.symbol.creating = true;
       // window.symbol = this.symbol

@@ -134,6 +134,7 @@ import ModelTreeTool from "./tools/ModelTreeTool";
 import EntityMoreTool from "./tools/EntityMoreTool";
 import CustomSymbol from "./tools/SymbolTool/CustomSymbol";
 import LabSymbol from "./tools/SymbolTool/LabSymbol";
+import OnlineSymbol from "./tools/SymbolTool/OnlineSymbol";
 
 export default {
   components: {
@@ -198,7 +199,8 @@ export default {
     ModelTreeTool,
     EntityMoreTool,
     CustomSymbol,
-    LabSymbol
+    LabSymbol, 
+    OnlineSymbol
   },
   data: function () {
     return {
@@ -313,6 +315,10 @@ export default {
         {
           component: "LabSymbol",
           ref: "labSymbol"
+        },
+        {
+          component: "OnlineSymbol",
+          ref: "onlineSymbol"
         }
       ],
       infos: [],
