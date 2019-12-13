@@ -108,7 +108,7 @@ export default {
         tileset.url = this.selectedUrl;
 
         //添加到场景树中
-        this.$root.$earthUI.tools.sceneTree.addSceneObject(
+        this.$root.$earthUI.addSceneObject(
           tileset,
           this.selected ? this.selected.cnname : this.lang.unName
         );

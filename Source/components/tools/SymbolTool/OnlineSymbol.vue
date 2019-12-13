@@ -58,37 +58,57 @@ export default {
   methods: {
     getonlineinfo () {
       var labServer = this.$root.$labServer;
-      let url = labServer.server + "symbol/share/list";
       let param = {};
       if (this.label !== undefined && this.label !== '') {
         param.queryfields = 'label';
         param.querykeys = this.label;
       }
-      axios
-        .get(url, {
-          params: param
-        })
+      labServer.getShareSymbol(param)
         .then(res => {
-          if (res.data.status === "ok") {
-            this.symbols = res.data.result;
+          if (res.status === "ok") {
+            this.symbols = res.result;
           } else {
-            this.$root.$earthUI.promptInfo(res.data.status, "info");
+            this.symbols = [];
+            this.$root.$earthUI.promptInfo(res.status, "info");
           }
         })
         .catch(err => {
           console.log(err);
         });
     },
-    createGroundImage (symbol) {
-      symbol = symbol.content.czmObject;
-      if (this.symbol && this.symbol.isCreating) { // 新创建的，没确定之前，又选择了其他图标
-        this.symbol.destroy()
-      }
-      this.symbol = XE.Core.XbsjObject.createObject(symbol.xbsjType, this.$root.$earth);
-      this.symbol.xbsjFromJSON(symbol);
-      this.symbol.isCreating = true;
-      this.$root.$earthUI.showPropertyWindow(this.symbol);
-      this.symbol.creating = true;
+    shareSymbolAddCount () {
+      var labServer = this.$root.$labServer;
+      labServer.shareSymbolAddCount(this.symbol.shareID)
+        .then(res => {
+          if (res.status === "ok") {
+
+          } else {
+            console.log(res.status)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        });
+    },
+    createGroundImage (s) {
+      let self = this;
+      var labServer = this.$root.$labServer;
+      labServer.getContentById(s._id).then(content => {
+        var symbol = content.czmObject;
+        if (self.symbol && self.symbol.isCreating) { // 新创建的，没确定之前，又选择了其他图标
+          self.symbol.destroy()
+        }
+        self.symbol = XE.Core.XbsjObject.createObject(symbol.xbsjType, self.$root.$earth);
+        self.symbol.xbsjFromJSON(symbol);
+        self.symbol.isCreating = true;
+        self.symbol.shareID = s._id;
+        self.symbol._callback = self.shareSymbolAddCount;
+        self.$root.$earthUI.showPropertyWindow(self.symbol);
+        self.symbol.creating = true;
+      })
+        .catch(err => {
+          console.log(err)
+        });
     },
     cancel () {
       this.show = false;

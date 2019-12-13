@@ -250,7 +250,7 @@ export default {
       if (modelToolObj.isCreating) {
         modelToolObj.isCreating = false;
         const sceneObject = new XE.SceneTree.Leaf(modelToolObj);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
       }
     },
 

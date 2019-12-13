@@ -716,7 +716,7 @@ export default {
         polyLineToolObj.isCreating = false;
 
         const sceneObject = new XE.SceneTree.Leaf(polyLineToolObj);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
       }
     },
 

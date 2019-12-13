@@ -246,7 +246,7 @@ export default {
       if (!this._imagelayer) return;
 
       //添加到场景树中
-      this.$root.$earthUI.tools.sceneTree.addSceneObject(
+      this.$root.$earthUI.addSceneObject(
         this._imagelayer,
         this.selected.layer.title
       );

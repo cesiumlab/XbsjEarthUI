@@ -354,7 +354,7 @@ export default {
       if (pathToolObj.isCreating) {
         pathToolObj.isCreating = false;
         const sceneObject = new XE.SceneTree.Leaf(pathToolObj);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
       }
     },
 

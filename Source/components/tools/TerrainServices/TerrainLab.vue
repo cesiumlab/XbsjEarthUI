@@ -189,7 +189,7 @@ export default {
         ];
 
         //添加到场景树中
-        this.$root.$earthUI.tools.sceneTree.addSceneObject(
+        this.$root.$earthUI.addSceneObject(
           terrain,
           this.selected.name
         );

@@ -661,7 +661,7 @@ export default {
       odlines.playing = true;
       odlines.name = "ODLines";
       const sceneObject = new XE.SceneTree.Leaf(odlines);
-      this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+      this.$root.$earthUI.addSceneObject(sceneObject);
     },
     createParabolic(minDistance, heightRatio) {
       if (
@@ -696,7 +696,7 @@ export default {
         }
 
         const sceneObject = new XE.SceneTree.Leaf(polyline);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
 
         this._czmObj = undefined;
         this.parabolicShow = false;

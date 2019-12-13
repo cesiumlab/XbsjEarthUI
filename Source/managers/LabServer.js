@@ -382,10 +382,10 @@ class LabServer {
     });
   }
 
-    /**
-   * 删除标绘符号
-   * @param {String} id 
-   */
+  /**
+ * 删除标绘符号
+ * @param {String} id 
+ */
   deleteSymbol (id) {
     var self = this
     return new Promise((resolve, reject) => {
@@ -517,6 +517,50 @@ class LabServer {
       });
   }
 
+  getShareSymbol (param) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(this.server + "symbol/share/list", {
+          params: param
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  }
+
+  shareSymbolAddCount (id) {
+    return new Promise((resolve, reject) => {
+      axios
+        .put(this.server + "symbol/share/use/" + id)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  }
+
+  getContentById (id) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(this.server + 'symbol/share/getContentById/' + id)
+        .then(res => {
+          if (res.status === 200 && res.data.status === 'ok') {
+            resolve(res.data.content);
+          } else {
+            reject(res.data);
+          }
+        })
+        .catch(error => {
+          reject(error);
+        })
+    })
+  }
   /**
    * 创建Guid
    */

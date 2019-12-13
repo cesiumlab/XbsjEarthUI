@@ -273,7 +273,7 @@ export default {
         clippingPlane.isCreating = false;
 
         const sceneObject = new XE.SceneTree.Leaf(clippingPlane);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
       }
     }
   },

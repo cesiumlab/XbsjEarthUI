@@ -637,6 +637,17 @@ class MainUI {
   }
 
   /**
+   * 添加对象到场景树
+   * @param {Object} czmObject 对象
+   */
+  addSceneObject (czmObject) {
+    if (czmObject.czmObject && (typeof czmObject.czmObject._callback === 'function')) {
+      czmObject.czmObject._callback();
+    }
+    this._earth.sceneTree.addSceneObject(czmObject);
+  }
+
+  /**
    * 打开外部地址
    * @param {String} url 地址链接 
    */

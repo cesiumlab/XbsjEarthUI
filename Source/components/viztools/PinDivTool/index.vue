@@ -286,7 +286,7 @@ export default {
         pinToolObj.isCreating = false;
         // 点击确定将pindiv添加到sceneTree当中
         const sceneObject = new XE.SceneTree.Leaf(pinToolObj);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
       } else {
         pinToolObj.innerHTML = this.divcontent;
       }
