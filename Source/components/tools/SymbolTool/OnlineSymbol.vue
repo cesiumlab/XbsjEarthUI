@@ -2,9 +2,9 @@
   <Window
     @cancel="cancel"
     v-show="show"
-    :height="420"
-    :width="500"
-    :minWidth="202"
+    :height="550"
+    :width="690"
+    :minWidth="500"
     :left="200"
     :top="138"
     :title="lang.online.title"
@@ -12,20 +12,31 @@
   >
     <div class="onlineSymbolBox">
       <div class="onlineSymbolDiv">
-        <label>{{lang.online.label}}:</label>
+        <!-- <label>{{lang.online.label}}:</label> -->
         <input v-model="label" @keyup.enter="getonlineinfo" />
-        <button @click="getonlineinfo" class="seaarchButton">{{lang.search}}</button>
+        <button @click="getonlineinfo" class="seaarchButton">
+          <img src="../../../images/search2.png" />
+          {{lang.search}}
+        </button>
+        <button @click="getonlineinfo" class="usednumButton">{{lang.usednum}}</button>
+        <button @click="getonlineinfo" class="lastTimeButton">{{lang.lasttime}}</button>
       </div>
     </div>
 
     <ul class="flexul" :class="showContent ? 'contentUl' : ''">
       <li v-for="s in symbols" @click="createGroundImage(s)" :key="s._id">
         <div :class="[{highlight:selected == s} ]" class="backimg">
-          <img style="width:128px;height:128px;" :src="s.thumbnail" alt />
+          <img :src="s.thumbnail" alt />
+          <div>
+            <span class="date">{{s.share_date|f_time}}</span>
+            <span class="auther">{{s.username}}</span>
+          </div>
         </div>
         <div class="onlinImageName">
-          {{getName(s)}}
-          <span class="onlineSymbolToolTip" v-html="getDetail(s)"></span>
+          <span class="name">{{getName(s)}}</span>
+          <span class="used">{{s.used}}次下载</span>
+          <p>{{s.desc}}</p>
+          <!-- <span class="onlineSymbolToolTip" v-html="getDetail(s)"></span> -->
         </div>
       </li>
     </ul>
@@ -35,9 +46,10 @@
 <script>
 import languagejs from "./locale";
 import axios from "axios";
+import moment from "moment";
 export default {
   components: {},
-  data () {
+  data() {
     return {
       langs: languagejs,
       show: false,
@@ -49,21 +61,22 @@ export default {
       symbols: []
     };
   },
-  created () { },
+  created() {},
   watch: {
-    show () {
+    show() {
       this.getonlineinfo();
     }
   },
   methods: {
-    getonlineinfo () {
+    getonlineinfo() {
       var labServer = this.$root.$labServer;
       let param = {};
-      if (this.label !== undefined && this.label !== '') {
-        param.queryfields = 'label';
+      if (this.label !== undefined && this.label !== "") {
+        param.queryfields = "label";
         param.querykeys = this.label;
       }
-      labServer.getShareSymbol(param)
+      labServer
+        .getShareSymbol(param)
         .then(res => {
           if (res.status === "ok") {
             this.symbols = res.result;
@@ -76,61 +89,83 @@ export default {
           console.log(err);
         });
     },
-    shareSymbolAddCount () {
+    shareSymbolAddCount() {
       var labServer = this.$root.$labServer;
-      labServer.shareSymbolAddCount(this.symbol.shareID)
+      labServer
+        .shareSymbolAddCount(this.symbol.shareID)
         .then(res => {
           if (res.status === "ok") {
-
           } else {
-            console.log(res.status)
+            console.log(res.status);
           }
         })
         .catch(err => {
-          console.log(err)
+          console.log(err);
         });
     },
-    createGroundImage (s) {
+    createGroundImage(s) {
       let self = this;
       var labServer = this.$root.$labServer;
-      labServer.getContentById(s._id).then(content => {
-        if (self.symbol && self.symbol.isCreating) { // 新创建的，没确定之前，又选择了其他图标
-          self.symbol.destroy()
-        }
-        self.symbol = XE.Core.XbsjObject.createObject(content.xbsjType, self.$root.$earth);
-        self.symbol.xbsjFromJSON(content);
-        self.symbol.isCreating = true;
-        self.symbol.shareID = s._id;
-        self.symbol._callback = self.shareSymbolAddCount;
-        self.$root.$earthUI.showPropertyWindow(self.symbol);
-        self.symbol.creating = true;
-      })
+      labServer
+        .getContentById(s._id)
+        .then(content => {
+          if (self.symbol && self.symbol.isCreating) {
+            // 新创建的，没确定之前，又选择了其他图标
+            self.symbol.destroy();
+          }
+          self.symbol = XE.Core.XbsjObject.createObject(
+            content.xbsjType,
+            self.$root.$earth
+          );
+          self.symbol.xbsjFromJSON(content);
+          self.symbol.isCreating = true;
+          self.symbol.shareID = s._id;
+          self.symbol._callback = self.shareSymbolAddCount;
+          self.$root.$earthUI.showPropertyWindow(self.symbol);
+          self.symbol.creating = true;
+        })
         .catch(err => {
-          console.log(err)
+          console.log(err);
         });
     },
-    cancel () {
+    cancel() {
       this.show = false;
     },
-    getName (s) {
+    getName(s) {
       if (!s) return this.lang.unName;
 
       return s.name;
     },
-    getDetail (s) {
+    getDetail(s) {
       if (!s) return this.lang.unName;
-      var info = "名称：" + s.name + '<br>' +
-        "标签：" + s.label + '<br>' +
-        "分享用户：" + s.username + '<br>' +
-        "分享时间：" + s.share_date + '<br>' +
-        "使用次数：" + s.used + '<br>' +
-        "描述：" + s.desc;
+      var info =
+        "名称：" +
+        s.name +
+        "<br>" +
+        "标签：" +
+        s.label +
+        "<br>" +
+        "分享用户：" +
+        s.username +
+        "<br>" +
+        "分享时间：" +
+        s.share_date +
+        "<br>" +
+        "使用次数：" +
+        s.used +
+        "<br>" +
+        "描述：" +
+        s.desc;
       return info;
     }
   },
   computed: {},
-  filters: {},
-  beforeDestroy () {
+  filters: {
+    f_time(data) {
+      return moment(data).format("YYYY/M/D");
+    }
+  },
+  beforeDestroy() {
     this.cancel();
     if (this.unbind) {
       this.unbind();
@@ -151,6 +186,7 @@ export default {
   overflow-y: auto;
   overflow-x: hidden;
   height: calc(100% - 86px);
+  margin: 0 18px;
 }
 .xbsj-onlineSymbol .contentUl {
   overflow-x: hidden;
@@ -160,16 +196,35 @@ export default {
   list-style: none;
   /* float: left; */
   position: relative;
-  height: 158px;
+  width: 192px;
+  height: 196px;
+  margin-right: 20px;
+  margin-bottom: 16px;
 }
 .xbsj-onlineSymbol .flexul li .onlinImageName {
   display: inline-block;
-  width: 128px;
-  text-align: center;
-  margin-left: 4px;
-  white-space: nowrap;
+  width: 100%;
+  height: 70px;
+}
+.onlinImageName .name {
+  font-size: 14px;
+}
+.onlinImageName .used {
+  font-size: 12px;
+  float: right;
+}
+.onlinImageName p {
+  font-size: 12px;
+  color: #ffffff;
+  margin-top: 4px;
   overflow: hidden;
   text-overflow: ellipsis;
+  /* 将对象作为弹性伸缩盒子模型显示 */
+  display: -webkit-box;
+  /* 用来限制在一个块元素显示的文本的行数,2表示最多显示2行。 为了实现该效果，它需要组合其他的WebKit属性 */
+  -webkit-line-clamp: 2;
+  /* 置或检索伸缩盒对象的子元素的排列方式 */
+  -webkit-box-orient: vertical;
 }
 .xbsj-onlineSymbol .flexul li .onlineSymbolToolTip {
   visibility: hidden;
@@ -189,17 +244,47 @@ export default {
   overflow-y: auto;
 }
 .xbsj-onlineSymbol .backimg {
-  width: 128px;
+  width: 100%;
   height: 128px;
-  border: 2px solid;
-  border-radius: 4px;
   background: gray;
-  margin: 5px;
+  position: relative;
+  margin-bottom: 14px;
+  border-radius: 4px;
 }
-.xbsj-onlineSymbol .backimg.highlight,
+.backimg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.backimg div {
+  display: inline-block;
+  width: 100%;
+  height: 28px;
+  background: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.backimg div span {
+  text-align: center;
+  font-size: 12px;
+  line-height: 30px;
+}
+.backimg div .date {
+  float: left;
+  margin-left: 4px;
+}
+.backimg div .auther {
+  float: right;
+  margin-right: 4px;
+}
+/* .xbsj-onlineSymbol .backimg.highlight,
 .xbsj-onlineSymbol .backimg:hover {
   border: 2px solid rgba(31, 255, 255, 1);
-}
+} */
 .xbsj-model-content-box {
   overflow-x: hidden;
   /* overflow-y: hidden; */
@@ -216,13 +301,14 @@ export default {
   margin-top: 6px;
 }
 .xbsj-onlineSymbol .onlineSymbolDiv > input {
-  width: calc(100% - 140px);
+  width: calc(100% - 314px);
   height: 28px;
   background: rgba(0, 0, 0, 0.4);
   border-radius: 3px;
   border: none;
   color: #ffffff;
   padding: 0 5px;
+  margin-left: 8px;
 }
 .xbsj-onlineSymbol .onlineSymbolzb {
   width: 470px;
@@ -235,7 +321,22 @@ export default {
   visibility: visible;
 }
 .xbsj-onlineSymbol .seaarchButton {
-  width: 54px;
+  width: 80px;
+  height: 28px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 3px;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+}
+.seaarchButton img {
+  margin-top: -3px;
+  vertical-align: middle;
+  margin-right: 2px;
+}
+.usednumButton,
+.lastTimeButton {
+  width: 70px;
   height: 28px;
   background: rgba(0, 0, 0, 0.4);
   border-radius: 3px;

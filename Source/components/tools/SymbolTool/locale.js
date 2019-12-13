@@ -8,6 +8,8 @@ const zh = {
     used: "使用次数",
   },
   search: "查询",
+  usednum: "使用次数",
+  lasttime: "最近时间",
   save: "添加到库",
   saveSuccess: "添加成功！",
   addGroup: "添加文件夹",
@@ -30,6 +32,8 @@ const en = {
     used: "Usage Count"
   },
   search: "Search",
+  usednum: "Usednum",
+  lasttime: "Lasttime",
   save: "Save",
   saveSuccess: "Save success!",
   addGroup: "Add Group",

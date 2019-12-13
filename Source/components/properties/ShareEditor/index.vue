@@ -106,7 +106,7 @@ export default {
     capture() {
       //截图
       this.$root.$earth
-        .capture(256, 256)
+        .capture(192, 128)
         .then(img => {
           //更新，如果成功，那么刷新页面，否则提示错误
           this.addData.thumbnail = img;
@@ -183,27 +183,27 @@ textarea {
   resize: none;
 }
 .thumbnail {
-  width: 256px;
-  height: 300px;
+  width: 192px;
+  height: 192px;
   margin-left: 82px;
 }
 img {
-  width: 255px;
-  height: 256px;
+  width: 192px;
+  height: 128px;
   border: 1px solid #000;
   border-radius: 5px;
   margin-right: -20px;
 }
 .noimg {
-  width: 256px;
-  height: 256px;
-  line-height: 256px;
+  width: 192px;
+  height: 128px;
+  line-height: 128px;
   text-align: center;
   border: 1px solid #000;
   border-radius: 5px;
 }
 .addcapture {
-  width: 256px;
+  width: 192px;
   border: none;
   background: #000;
   border-radius: 5px;
