@@ -76,7 +76,7 @@ import languagejs from "./imagery_locale";
 import axios from "axios";
 export default {
   components: {},
-  data() {
+  data () {
     return {
       selectshow: false,
       langs: languagejs,
@@ -95,14 +95,14 @@ export default {
       services: []
     };
   },
-  created() {},
+  created () { },
   watch: {
-    show() {
+    show () {
       this.getonlineinfo();
     }
   },
   methods: {
-    getonlineinfo() {
+    getonlineinfo () {
       var labServer = this.$root.$labServer;
       let url = labServer.serverOnline + "api/onlineResouces/image";
       axios
@@ -126,21 +126,21 @@ export default {
         });
     },
     // 点击select
-    selectClick() {
+    selectClick () {
       this.selectshow = !this.selectshow;
     },
-    selectName(value) {
+    selectName (value) {
       this.srcCoordType = value;
       this.selectshow = false;
     },
-    select2Click() {
+    select2Click () {
       this.select2show = !this.select2show;
     },
-    select2Name(value) {
+    select2Name (value) {
       this.dstCoordType = value;
       this.select2show = false;
     },
-    select(service) {
+    select (service) {
       this.selected = service;
 
       this.srcCoordType = service.coordType;
@@ -169,14 +169,14 @@ export default {
         }
       };
     },
-    cancel() {
+    cancel () {
       this.show = false;
 
       if (this._imagelayer) this._imagelayer.destroy();
       this._imagelayer = undefined;
       this.selected = undefined;
     },
-    ok() {
+    ok () {
       if (this.selectedUrl == "") {
         //提示需要弹出url
         this.error = this.lang.selectinput;
@@ -208,7 +208,7 @@ export default {
         };
 
         //添加到场景树中
-        this.$root.$earthUI.addSceneObject(
+        this.$root.$earthUI.tools.sceneTree.addSceneObject(
           imageLayer,
           this.getName(this.selected)
         );
@@ -219,7 +219,7 @@ export default {
         this.cancel();
       }
     },
-    onContexMenu(server, event) {
+    onContexMenu (server, event) {
       //弹出菜单
       this.$root.$earthUI.contextMenu.pop([
         {
@@ -235,7 +235,7 @@ export default {
         }
       ]);
     },
-    getName(s) {
+    getName (s) {
       if (!s) return this.lang.unName;
 
       if (s.cnname in this.lang) return this.lang[s.cnname];
@@ -245,7 +245,7 @@ export default {
   },
   computed: {},
   filters: {},
-  beforeDestroy() {
+  beforeDestroy () {
     this.cancel();
     if (this.unbind) {
       this.unbind();
