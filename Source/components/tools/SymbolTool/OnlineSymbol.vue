@@ -132,7 +132,7 @@ export default {
       this.show = false;
     },
     getName(s) {
-      if (!s) return this.lang.unName;
+      if (!s.name) return this.lang.unName;
 
       return s.name;
     },
