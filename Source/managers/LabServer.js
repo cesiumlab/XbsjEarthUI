@@ -551,7 +551,11 @@ class LabServer {
         .post(this.server + 'symbol/share/getContentById/' + id)
         .then(res => {
           if (res.status === 200 && res.data.status === 'ok') {
-            resolve(res.data.content);
+            var content = res.data.content;
+            if (content.czmObject) {
+              content = content.czmObject;
+            }
+            resolve(content);
           } else {
             reject(res.data);
           }

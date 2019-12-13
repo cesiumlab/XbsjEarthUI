@@ -94,12 +94,11 @@ export default {
       let self = this;
       var labServer = this.$root.$labServer;
       labServer.getContentById(s._id).then(content => {
-        var symbol = content.czmObject;
         if (self.symbol && self.symbol.isCreating) { // 新创建的，没确定之前，又选择了其他图标
           self.symbol.destroy()
         }
-        self.symbol = XE.Core.XbsjObject.createObject(symbol.xbsjType, self.$root.$earth);
-        self.symbol.xbsjFromJSON(symbol);
+        self.symbol = XE.Core.XbsjObject.createObject(content.xbsjType, self.$root.$earth);
+        self.symbol.xbsjFromJSON(content);
         self.symbol.isCreating = true;
         self.symbol.shareID = s._id;
         self.symbol._callback = self.shareSymbolAddCount;
