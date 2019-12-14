@@ -2,7 +2,7 @@
   <Window
     :width="622"
     :minWidth="622"
-    :height="450"
+    :height="466"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -17,14 +17,14 @@
         <input style="float:left;" type="text" v-model="path.name" />
       </div>
 
-      <div class="flatten-flex">
+      <div class="flatten-flex" style="height: 40px;">
         <!-- 编辑按钮 -->
-        <div>
+        <div style="height: 40px; margin-top: 10px;">
           <label>{{lang.eidtbtn}}</label>
           <XbsjSwitch v-model="path.show"></XbsjSwitch>
         </div>
         <div class="attitudeEdit" style="margin-left:25px;">
-          <div class="buttonGroup">
+          <div class="buttonGroup" style="margin-top: 10px;">
             <div>
               <button
                 class="attitudeEditCameraButton"
@@ -42,14 +42,16 @@
             <div>
               <button id="textbtn" class="attitudeEditCameraButton">{{lang.select}}</button>
             </div>
-            <div>
-              <!-- 拖拽 -->
-              <button
-                @dragover="dragOver"
-                @drop="drop"
-                class="attitudeEditCameraButton"
-              >{{lang.drag}}</button>
-            </div>
+          </div>
+          <div
+            :title="lang.drag"
+            class="dragBox"
+            @dragover="dragOver"
+            @drop="drop"
+            @dragleave="dragLeave"
+            style="display: inline-block;"
+          >
+            <div class="dragButton" :class="{highlight:drag_over||dragShow}"></div>
           </div>
         </div>
       </div>
@@ -164,6 +166,8 @@ export default {
       lang: {},
       showPinSelect: false,
       makiIconObj: {},
+      drag_over: false,
+      dragShow: false,
       path: {
         name: "",
         creating: false,
@@ -379,16 +383,22 @@ export default {
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions !== undefined) {
         e.dataTransfer.dropEffect = "copy";
+        this.drag_over = true;
       } else {
         e.dataTransfer.dropEffect = "none";
       }
     },
+    dragLeave() {
+      this.drag_over = false;
+    },
     //拖拽放置
     drop(e) {
+      this.drag_over = false;
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions !== undefined) {
         czmObj.positions = [...this._czmObj.positions];
+        this.dragShow = true;
       }
     }
   },
@@ -657,7 +667,9 @@ button:focus {
 }
 
 .buttonGroup {
-  display: flex;
+  display: inline-block;
+  height: 40px;
+  vertical-align: top;
 }
 .buttonGroup div {
   display: inline-block;
@@ -674,6 +686,7 @@ button:focus {
 }
 .attitudeEditCameraButton {
   color: #dddddd;
+  cursor: pointer;
 }
 .btncoloron {
   color: #1fffff !important;
@@ -708,5 +721,17 @@ button:focus {
   background-size: contain;
   height: 30px;
   width: 100px;
+}
+.dragButton {
+  width: 50px;
+  height: 40px;
+  margin-left: 18px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+}
+
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
 }
 </style>

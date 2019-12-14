@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="494"
+    :height="506"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -38,7 +38,7 @@
         </div>
       </div>-->
 
-      <div class="flatten-flex">
+      <div class="flatten-flex" style="height: 40px;">
         <!-- 编辑按钮 -->
         <div class="buttonGroup">
           <label class="xbsj-label"></label>
@@ -48,19 +48,20 @@
             :class="polyline.creating?'btncoloron':''"
           >{{lang.creating}}</button>
           <button
-            style="margin-left:20px;"
             class="attitudeEditCameraButton"
             @click="polyline.editing =!polyline.editing"
             :class="polyline.editing?'btncoloron':''"
           >{{lang.editing}}</button>
-          <!-- 拖拽 -->
-          <button
-            @dragover="dragOver"
-            @drop="drop"
-            style="margin-left:20px;"
-            class="attitudeEditCameraButton"
-          >{{lang.drag}}</button>
         </div>
+        <!-- 拖拽 -->
+        <div
+          @dragover="dragOver"
+          @drop="drop"
+          @dragleave="dragLeave"
+          class="dragButton"
+          :class="{highlight:drag_over||dragShow}"
+          :title="lang.drag"
+        ></div>
       </div>
 
       <div class="flatten">
@@ -282,6 +283,8 @@ export default {
       makiIconObj: {},
       dashPatternarr: [],
       dashPatternarrString: "",
+      drag_over: false,
+      dragShow: false,
       polyline: {
         name: "",
         creating: false,
@@ -741,16 +744,22 @@ export default {
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions !== undefined) {
         e.dataTransfer.dropEffect = "copy";
+        this.drag_over = true;
       } else {
         e.dataTransfer.dropEffect = "none";
       }
     },
+    dragLeave() {
+      this.drag_over = false;
+    },
     //拖拽放置
     drop(e) {
+      this.drag_over = false;
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions !== undefined) {
         czmObj.positions = [...this._czmObj.positions];
+        this.dragShow = true;
       }
     }
   },
@@ -1045,6 +1054,8 @@ button:focus {
 } */
 .attitudeEditCameraButton {
   color: #dddddd;
+  margin-top: 10px;
+  margin-right: 20px;
 }
 .btncoloron {
   color: #1fffff !important;
@@ -1081,5 +1092,17 @@ button:focus {
 .dottedstyle {
   display: flex;
   justify-content: space-around;
+}
+.dragButton {
+  display: inline-block;
+  width: 50px;
+  height: 40px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+}
+
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
 }
 </style>

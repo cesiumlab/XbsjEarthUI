@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="322"
+    :height="332"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -16,7 +16,7 @@
         <label>{{lang.name}}</label>
         <input style="float:left;" type="text" v-model="model.name" />
       </div>
-      <div class="flatten-flex">
+      <div class="flatten-flex" style="height: 40px;">
         <!-- 编辑按钮 -->
 
         <div class="buttonGroup">
@@ -29,19 +29,20 @@
           >{{lang.creating}}</button>
           <!-- 编辑 -->
           <button
-            style="margin-left:20px;"
             class="attitudeEditCameraButton"
             @click="model.editing =!model.editing"
             :class="model.editing?'btncoloron':''"
           >{{lang.editing}}</button>
-          <!-- 拖拽 -->
-          <button
-            @dragover="dragOver"
-            @drop="drop"
-            style="margin-left:20px;"
-            class="attitudeEditCameraButton"
-          >{{lang.drag}}</button>
         </div>
+        <!-- 拖拽 -->
+        <div
+          @dragover="dragOver"
+          @drop="drop"
+          @dragleave="dragLeave"
+          class="dragButton"
+          :class="{highlight:drag_over||dragShow}"
+          :title="lang.drag"
+        ></div>
       </div>
       <div class="flatten">
         <!-- 贴地 -->
@@ -88,6 +89,8 @@ export default {
       lang: {},
       showPinSelect: false,
       makiIconObj: {},
+      drag_over: false,
+      dragShow: false,
       model: {
         name: "",
         show: false,
@@ -218,16 +221,22 @@ export default {
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions !== undefined) {
         e.dataTransfer.dropEffect = "copy";
+        this.drag_over = true;
       } else {
         e.dataTransfer.dropEffect = "none";
       }
     },
+    dragLeave() {
+      this.drag_over = false;
+    },
     //拖拽放置
     drop(e) {
+      this.drag_over = false;
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions !== undefined) {
         czmObj.positions = [...this._czmObj.positions];
+        this.dragShow = true;
       }
     }
   },
@@ -531,5 +540,19 @@ button:focus {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   color: #dddddd;
+  margin-top: 10px;
+  margin-right: 20px;
+}
+.dragButton {
+  display: inline-block;
+  width: 50px;
+  height: 40px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+}
+
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
 }
 </style>

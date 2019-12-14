@@ -49,7 +49,7 @@
         </div>
 
         <!-- 编辑按钮 -->
-        <div class="attitudeEdit">
+        <div class="attitudeEdit" style="height: 40px;">
           <label class="xbsj-label"></label>
           <div class="buttonGroup">
             <div>
@@ -66,9 +66,19 @@
                 :class="pin.editing?'btncoloron':''"
               >{{lang.editing}}</button>
             </div>
-            <div @dragover="dragOver" @drop="drop">
+            <!-- <div @dragover="dragOver" @drop="drop">
               <button class="attitudeEditDragButton">{{lang.drag}}</button>
-            </div>
+            </div>-->
+          </div>
+          <div
+            :title="lang.drag"
+            class="dragBox"
+            @dragover="dragOver"
+            @drop="drop"
+            @dragleave="dragLeave"
+            style="display: inline-block;"
+          >
+            <div class="dragButton" :class="{highlight:drag_over||dragShow}"></div>
           </div>
         </div>
         <div class="flatten">
@@ -120,6 +130,8 @@ export default {
       pinshowPinSelect: false,
       makiIconObj: {},
       divcontent: ``,
+      drag_over: false,
+      dragShow: false,
       pin: {
         name: "",
         creating: true,
@@ -320,12 +332,17 @@ export default {
         (czmObj.positions !== undefined || czmObj.position !== undefined)
       ) {
         e.dataTransfer.dropEffect = "copy";
+        this.drag_over = true;
       } else {
         e.dataTransfer.dropEffect = "none";
       }
     },
+    dragLeave() {
+      this.drag_over = false;
+    },
     //拖拽放置
     drop(e) {
+      this.drag_over = false;
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
       if (
@@ -337,6 +354,7 @@ export default {
         } else {
           czmObj.positions[0] = [...this._czmObj.position];
         }
+        this.dragShow = true;
       }
     }
   },
@@ -352,7 +370,7 @@ export default {
 
 <style scoped>
 .field {
-  margin-top: 20px;
+  margin-top: 9px;
   padding-left: 4px;
   display: inline-block;
   width: 220px;
@@ -625,12 +643,16 @@ button:focus {
   color: #dddddd;
 }
 .buttonGroup {
-  display: flex;
+  display: inline-block;
+  width: 224px;
+  height: 40px;
+  vertical-align: top;
+  margin-top: 7px;
 }
 .buttonGroup div {
   display: inline-block;
   height: 25px;
-  width: 25%;
+  width: 100px;
   margin-left: 5%;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
@@ -648,6 +670,7 @@ button:focus {
 .attitudeEditCameraButton,
 .attitudeEditDragButton {
   color: #dddddd;
+  cursor: pointer;
 }
 .btncoloron {
   color: #1fffff !important;
@@ -660,7 +683,8 @@ button:focus {
   border: none;
   color: #dddddd;
   position: absolute;
-  height: calc(100% - 280px);
+  height: calc(100% - 290px);
+  resize: none;
 }
 .apply {
   width: 35px !important;
@@ -674,5 +698,17 @@ button:focus {
   background-color: rgba(0, 0, 0, 0.5);
   color: #dddddd;
   line-height: 27px;
+}
+.dragButton {
+  width: 50px;
+  height: 40px;
+  margin-left: 18px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+}
+
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
 }
 </style>

@@ -2,7 +2,7 @@
   <Window
     :width="712"
     :minWidth="712"
-    :height="668"
+    :height="680"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -16,7 +16,7 @@
         <label>{{lang.name}}</label>
         <input style="float:left;" type="text" v-model="model.name" />
       </div>
-      <div class="flatten-flex">
+      <div class="flatten-flex" style="height: 40px;">
         <!-- 鼠标点选 -->
         <div class="flatten">
           <label></label>
@@ -43,14 +43,17 @@
               class="attitudeEditCameraButton"
               @click="flyto"
             >{{lang.flyto}}</button>
-            <!-- 拖拽 -->
-            <button
-              style="margin-left:20px;"
-              @dragover="dragOver"
-              @drop="drop"
-              class="attitudeEditCameraButton"
-            >{{lang.drag}}</button>
           </div>
+          <!-- 拖拽 -->
+          <button
+            style="margin-left:20px;"
+            class="dragButton"
+            @dragover="dragOver"
+            @drop="drop"
+            @dragleave="dragLeave"
+            :title="lang.drag"
+            :class="{highlight:drag_over||dragShow}"
+          ></button>
         </div>
       </div>
       <!-- 位置 -->
@@ -228,6 +231,8 @@ export default {
       renderState: "",
       topTitle: "",
       tree: [],
+      drag_over: false,
+      dragShow: false,
       primitiveTypeObj: {
         0: "POINTS",
         1: "LINES",
@@ -878,12 +883,17 @@ export default {
         (czmObj.positions !== undefined || czmObj.position !== undefined)
       ) {
         e.dataTransfer.dropEffect = "copy";
+        this.drag_over = true;
       } else {
         e.dataTransfer.dropEffect = "none";
       }
     },
+    dragLeave() {
+      this.drag_over = false;
+    },
     //拖拽放置
     drop(e) {
+      this.drag_over = false;
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
       if (
@@ -895,6 +905,7 @@ export default {
         } else {
           czmObj.positions[0] = [...this._czmObj.position];
         }
+        this.dragShow = true;
       }
     }
   },
@@ -1163,7 +1174,7 @@ button:focus {
 }
 
 .buttonGroup {
-  display: flex;
+  display: inline-block;
 }
 .buttonGroup div {
   display: inline-block;
@@ -1304,5 +1315,18 @@ textarea {
 .xbsj-input-number {
   border-radius: 4px;
   border: none;
+}
+.dragButton {
+  display: inline-block;
+  width: 50px;
+  height: 40px;
+  margin-left: 18px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+}
+
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
 }
 </style>
