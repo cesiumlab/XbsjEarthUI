@@ -18,12 +18,12 @@
           <img src="../../../images/search2.png" />
           {{lang.search}}
         </button>
-        <button @click="getonlineinfo" class="usednumButton">{{lang.usednum}}</button>
-        <button @click="getonlineinfo" class="lastTimeButton">{{lang.lasttime}}</button>
+        <button @click="orderByUsageCount" class="usednumButton">{{lang.usednum}}</button>
+        <button @click="orderByShareDate" class="lastTimeButton">{{lang.lasttime}}</button>
       </div>
     </div>
 
-    <ul class="flexul" :class="showContent ? 'contentUl' : ''">
+    <ul ref="symbolList" class="flexul" :class="showContent ? 'contentUl' : ''">
       <li v-for="s in symbols" @click="createGroundImage(s)" :key="s._id">
         <div :class="[{highlight:selected == s} ]" class="backimg">
           <img :src="s.thumbnail" alt />
@@ -34,7 +34,7 @@
         </div>
         <div class="onlinImageName">
           <span class="name">{{getName(s)}}</span>
-          <span class="used">{{s.used}}次下载</span>
+          <span class="used">{{s.usage_count}}次下载</span>
           <p>{{s.desc}}</p>
           <!-- <span class="onlineSymbolToolTip" v-html="getDetail(s)"></span> -->
         </div>
@@ -49,7 +49,7 @@ import axios from "axios";
 import moment from "moment";
 export default {
   components: {},
-  data() {
+  data () {
     return {
       langs: languagejs,
       show: false,
@@ -58,85 +58,114 @@ export default {
       label: "",
       lang: undefined,
       showContent: false,
-      symbols: []
+      symbols: [],
+      param: {
+        skip: 0,
+        pagesize: 10,
+        order: 'usage_count'
+      }
     };
   },
-  created() {},
+  mounted () {
+    this.$nextTick(function () {
+      this.$refs.symbolList.addEventListener('scroll', this.onScroll)
+    })
+  },
+  created () { },
   watch: {
-    show() {
+    show () {
+      this.symbols = [];
+      this.param.skip = 0;
+      this.label = null;
       this.getonlineinfo();
     }
   },
   methods: {
-    getonlineinfo() {
-      var labServer = this.$root.$labServer;
-      let param = {};
-      if (this.label !== undefined && this.label !== "") {
-        param.queryfields = "label";
-        param.querykeys = this.label;
+    // 滚动事件触发下拉加载
+    onScroll () {
+      if (this.$refs.symbolList.scrollHeight - this.$refs.symbolList.clientHeight - this.$refs.symbolList.scrollTop <= 0) {
+        this.param.skip += this.param.pagesize;
+        // 调用请求函数
+        this.getonlineinfo();
       }
-      labServer
-        .getShareSymbol(param)
-        .then(res => {
-          if (res.status === "ok") {
-            this.symbols = res.result;
-          } else {
-            this.symbols = [];
-            this.$root.$earthUI.promptInfo(res.status, "info");
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
     },
-    shareSymbolAddCount() {
-      var labServer = this.$root.$labServer;
-      labServer
-        .shareSymbolAddCount(this.symbol.shareID)
-        .then(res => {
-          if (res.status === "ok") {
-          } else {
-            console.log(res.status);
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    query () {
+      this.symbols = [];
+      this.param.skip = 0;
+      if (this.label !== undefined && this.label !== null && this.label !== '') {
+        this.param.queryfields = 'label';
+        this.param.querykeys = this.label;
+      }
     },
-    createGroundImage(s) {
+    orderByUsageCount () {
+      this.symbols = [];
+      this.param.skip = 0;
+      this.param.order = 'usage_count';
+      this.getonlineinfo();
+    },
+    orderByShareDate () {
+      this.symbols = [];
+      this.param.skip = 0;
+      this.param.order = 'share_date';
+      this.getonlineinfo();
+    },
+    getonlineinfo () {
       let self = this;
       var labServer = this.$root.$labServer;
-      labServer
-        .getContentById(s._id)
-        .then(content => {
-          if (self.symbol && self.symbol.isCreating) {
-            // 新创建的，没确定之前，又选择了其他图标
-            self.symbol.destroy();
+      labServer.getShareSymbol(this.param)
+        .then(res => {
+          if (res.status === "ok") {
+            self.symbols.push(...res.result);
+          } else {
+            self.$root.$earthUI.promptInfo(res.status, "info");
           }
-          self.symbol = XE.Core.XbsjObject.createObject(
-            content.xbsjType,
-            self.$root.$earth
-          );
-          self.symbol.xbsjFromJSON(content);
-          self.symbol.isCreating = true;
-          self.symbol.shareID = s._id;
-          self.symbol._callback = self.shareSymbolAddCount;
-          self.$root.$earthUI.showPropertyWindow(self.symbol);
-          self.symbol.creating = true;
         })
         .catch(err => {
           console.log(err);
         });
     },
-    cancel() {
+    shareSymbolAddCount () {
+      var labServer = this.$root.$labServer;
+      labServer.shareSymbolAddCount(this.symbol.shareID)
+        .then(res => {
+          if (res.status === "ok") {
+
+          } else {
+            console.log(res.status)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        });
+    },
+    createGroundImage (s) {
+      let self = this;
+      var labServer = this.$root.$labServer;
+      labServer.getContentById(s._id).then(content => {
+        if (self.symbol && self.symbol.isCreating) { // 新创建的，没确定之前，又选择了其他图标
+          self.symbol.destroy()
+        }
+        self.symbol = XE.Core.XbsjObject.createObject(content.xbsjType, self.$root.$earth);
+        self.symbol.xbsjFromJSON(content);
+        self.symbol.isCreating = true;
+        self.symbol.shareID = s._id;
+        self.symbol._callback = self.shareSymbolAddCount;
+        self.$root.$earthUI.showPropertyWindow(self.symbol);
+        self.symbol.creating = true;
+      })
+        .catch(err => {
+          console.log(err)
+        });
+    },
+    cancel () {
       this.show = false;
     },
-    getName(s) {
+    getName (s) {
       if (!s.name) return this.lang.unName;
 
       return s.name;
     },
-    getDetail(s) {
+    getDetail (s) {
       if (!s) return this.lang.unName;
       var info =
         "名称：" +
@@ -152,7 +181,7 @@ export default {
         s.share_date +
         "<br>" +
         "使用次数：" +
-        s.used +
+        s.usage_count +
         "<br>" +
         "描述：" +
         s.desc;
@@ -161,11 +190,11 @@ export default {
   },
   computed: {},
   filters: {
-    f_time(data) {
+    f_time (data) {
       return moment(data).format("YYYY/M/D");
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     this.cancel();
     if (this.unbind) {
       this.unbind();
