@@ -2,7 +2,7 @@
   <Window
     :width="602"
     :minWidth="480"
-    :height="664"
+    :height="500"
     :top="164"
     :floatright="true"
     :title="lang.title"
@@ -13,12 +13,26 @@
   >
     <div style="height: 100%;">
       <div style="text-align: center;">
-        <div class="tab">
-          <span @click="firstShow=true, secondShow=false">{{lang.firstpage}}</span>
-          <span @click="firstShow=false, secondShow=true">{{lang.secondpage}}</span>
-        </div>
+        <ul class="tab">
+          <li
+            @click="routineShow=true,  imageShow=false, textShow=false, codeShow=false"
+            :class="routineShow?'highlight':''"
+          >{{lang.routine}}</li>
+          <li
+            @click="routineShow=false, imageShow=true, textShow=false, codeShow=false"
+            :class="imageShow?'highlight':''"
+          >{{lang.image}}</li>
+          <li
+            @click="routineShow=false, imageShow=false, textShow=true, codeShow=false"
+            :class="textShow?'highlight':''"
+          >{{lang.text}}</li>
+          <li
+            @click="routineShow=false, imageShow=false, textShow=false, codeShow=true"
+            :class="codeShow?'highlight':''"
+          >{{lang.code}}</li>
+        </ul>
       </div>
-      <div class="xbsj-flatten" v-show="firstShow">
+      <div class="xbsj-flatten" v-show="routineShow">
         <!-- 名字 -->
         <div class="flatten">
           <label>{{lang.name}}</label>
@@ -126,28 +140,6 @@
           </div>
         </div>
 
-        <!-- pin自定义外部图标 -->
-        <div class="flatten">
-          <label>{{lang.imageUrl}}</label>
-          <input style="float:left;" type="text" v-model="pin.imageUrl" />
-        </div>
-
-        <!-- 缩放 -->
-        <div class="flatten" style="margin-top:20px;">
-          <label>{{lang.scale}}</label>
-          <!-- <input style="float:left;" type="text" v-model="pin.scale" /> -->
-          <div class="field">
-            <XbsjSlider
-              :min="0.05"
-              :max="2"
-              :step="0.01"
-              showTip="always"
-              v-model="pin.scale"
-              ref="glowFactor"
-            ></XbsjSlider>
-          </div>
-        </div>
-
         <!-- 锚点  -->
         <div class="flatten">
           <label>{{lang.origin}}</label>
@@ -189,7 +181,33 @@
             </div>
           </div>
         </div>
+      </div>
 
+      <div class="xbsj-flatten" v-show="imageShow">
+        <!-- pin自定义外部图标 -->
+        <div class="flatten">
+          <label>{{lang.imageUrl}}</label>
+          <input style="float:left;" type="text" v-model="pin.imageUrl" />
+        </div>
+
+        <!-- 缩放 -->
+        <div class="flatten" style="margin-top:20px;">
+          <label>{{lang.scale}}</label>
+          <!-- <input style="float:left;" type="text" v-model="pin.scale" /> -->
+          <div class="field">
+            <XbsjSlider
+              :min="0.05"
+              :max="2"
+              :step="0.01"
+              showTip="always"
+              v-model="pin.scale"
+              ref="glowFactor"
+            ></XbsjSlider>
+          </div>
+        </div>
+      </div>
+
+      <div class="xbsj-flatten" v-show="textShow">
         <div class="flatten" style="display:flex;">
           <!-- pin文本内容 -->
           <div>
@@ -216,7 +234,8 @@
           </div>
         </div>
       </div>
-      <div class="xbsj-flatten" style="height: calc(100% - 38px);" v-show="secondShow">
+
+      <div class="xbsj-flatten" style="height: calc(100% - 38px);" v-show="codeShow">
         <div style="height: 100%">
           <label>{{lang.evalstring}}</label>
           <textarea v-model="pin.evalString"></textarea>
@@ -246,8 +265,10 @@ export default {
       lang: {},
       showPinSelect: false,
       pinshowPinSelect: false,
-      firstShow: true,
-      secondShow: false,
+      routineShow: true,
+      imageShow: false,
+      textShow: false,
+      codeShow: false,
       makiIconObj: {},
       drag_over: false,
       dragShow: false,
@@ -847,23 +868,29 @@ button:focus {
   display: inline-block;
 }
 .xbsj-input-number {
-  width: 140px;
+  width: 150px;
   height: 32px;
   margin-top: 0px;
   border: 0;
   border-radius: 4px;
-  margin-right: 19px;
+  margin-right: 16px;
 }
-.tab span {
+.tab {
+  overflow: hidden;
+  margin-left: 10px;
+}
+.tab li {
   display: inline-block;
   min-width: 50px;
   height: 28px;
   line-height: 28px;
   background: rgba(0, 0, 0, 0.5);
-  margin-right: 20px;
+  /* margin-right: 20px; */
   cursor: pointer;
+  float: left;
 }
-.tab span:hover {
+.tab li:hover,
+.tab .highlight {
   background: #000;
 }
 textarea {
@@ -894,7 +921,7 @@ textarea {
   border-radius: 3px;
   cursor: pointer;
   float: right;
-  margin-right: 6px;
+  margin-right: 12px;
 }
 .footbox button:hover {
   color: #1fffff;

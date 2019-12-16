@@ -34,8 +34,10 @@ const zh = {
   origin: '锚点',
   isDivImage: 'Div图标',
   apply: '应用',
-  firstpage: '第一页',
-  secondpage: '第二页',
+  routine: '常规',
+  code: '代码',
+  image: '图片',
+  text: '文本',
   evalstring: '创建代码'
 }
 
@@ -74,8 +76,10 @@ const en = {
   origin: 'origin',
   isDivImage: 'Div Image',
   apply: 'apply',
-  firstpage: 'FirstPage',
-  secondpage: 'SecondPage',
+  routine: 'routine',
+  code: 'code',
+  image: 'image',
+  text: 'text',
   evalstring: 'evalstring'
 }
 
