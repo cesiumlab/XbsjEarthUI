@@ -136,6 +136,7 @@ import EntityMoreTool from "./tools/EntityMoreTool";
 import CustomSymbol from "./tools/SymbolTool/CustomSymbol";
 import LabSymbol from "./tools/SymbolTool/LabSymbol";
 import OnlineSymbol from "./tools/SymbolTool/OnlineSymbol";
+import TilesTest from "./tools/TilesTest";
 
 export default {
   components: {
@@ -202,7 +203,8 @@ export default {
     EntityMoreTool,
     CustomSymbol,
     LabSymbol,
-    OnlineSymbol
+    OnlineSymbol,
+    TilesTest
   },
   data: function () {
     return {
@@ -243,7 +245,8 @@ export default {
         GeoSector: "GeoSector",
         ["CameraView.View"]: "CameraViewPrp",
         GroundImage: "GroundImageTool",
-        GeoPin: "PinDivTool"
+        GeoPin: "PinDivTool",
+        TilesTest: "TilesTest"
       },
       tools: [
         {
@@ -321,6 +324,10 @@ export default {
         {
           component: "OnlineSymbol",
           ref: "onlineSymbol"
+        },
+        {
+          component: "TilesTest",
+          ref: "tilesTest"
         }
       ],
       infos: [],
