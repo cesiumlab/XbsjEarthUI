@@ -2,7 +2,7 @@
   <Window
     :title="title"
     :width="700"
-    :height="445"
+    :height="460"
     :minWidth="380"
     @ok="ok"
     @cancel="cancel"
@@ -25,12 +25,12 @@
         <textarea style="float:left; height: 60px" v-model="addData.description"></textarea>
       </div>
       <!-- 代码 -->
-      <div class="flatten" style="height: 234px">
+      <!-- <div class="flatten" style="height: 234px">
         <label>{{lang.code}}</label>
         <textarea style="float:left; height: 216px" v-model="addData.content"></textarea>
-      </div>
+      </div>-->
       <div class="flatten">
-        <label>{{lang.thumbnail}}:</label>
+        <label>{{lang.thumbnail}}</label>
         <div class="thumbnail">
           <img :src="addData.thumbnail" v-show="addData.thumbnail" />
           <div class="noimg" v-show="!addData.thumbnail">{{lang.noimg}}</div>
@@ -52,7 +52,7 @@ export default {
   props: {
     getBind: Function
   },
-  data() {
+  data () {
     return {
       langs: {
         zh: {
@@ -64,7 +64,8 @@ export default {
           thumbnail: "缩略图",
           noimg: "暂无缩略图",
           capture: "截图",
-          sharesuccess: "添加分享成功"
+          sharesuccess: "添加分享成功",
+          sharetip: "您的分享在审核通过后有可能被其他用户使用，确认分享吗?"
         },
         en: {
           title: "Share",
@@ -75,7 +76,8 @@ export default {
           thumbnail: "Thumb",
           noimg: "No Thumb",
           capture: "Capture",
-          sharesuccess: "Add share success"
+          sharesuccess: "Add share success",
+          sharetip: "Your share may be used by other users. Do you confirm to share?"
         }
       },
       lang: undefined,
@@ -89,21 +91,21 @@ export default {
     };
   },
   computed: {
-    title() {
+    title () {
       var b = this.getBind();
       if (!b) return this.lang.title;
 
       return this.lang.title + "  [" + b.name + "]";
     }
   },
-  created() {},
-  mounted() {
+  created () { },
+  mounted () {
     var czmObj = this.getBind();
     this.addData.name = czmObj.name;
     this.addData.content = czmObj.toJSONStr();
   },
   methods: {
-    capture() {
+    capture () {
       //截图
       this.$root.$earth
         .capture(192, 128)
@@ -115,24 +117,27 @@ export default {
           console.log(err);
         });
     },
-    cancel() {
+    cancel () {
       this.$parent.destroyTool(this);
     },
-    ok() {
-      this.$parent.destroyTool(this);
-      var shareAddServer = this.$root.$labServer;
-      let url = shareAddServer.server + "symbol/share/add";
-      axios
-        .post(url, QS.stringify(this.addData))
-        .then(res => {
-          // console.log(res);
-          if (res.data.status === "ok") {
-            this.$root.$earthUI.promptInfo(this.lang.sharesuccess);
-          }
-        })
-        .catch(err => {
-          this.$root.$earthUI.promptInfo(err, "error");
-        });
+    ok () {
+      let self = this;
+      this.$root.$earthUI.confirm(this.lang.sharetip, () => {
+        self.$parent.destroyTool(self);
+        var shareAddServer = self.$root.$labServer;
+        let url = shareAddServer.server + "symbol/share/add";
+        axios
+          .post(url, QS.stringify(self.addData))
+          .then(res => {
+            // console.log(res);
+            if (res.data.status === "ok") {
+              self.$root.$earthUI.promptInfo(self.lang.sharesuccess);
+            }
+          })
+          .catch(err => {
+            self.$root.$earthUI.promptInfo(err, "error");
+          });
+      });
     }
   }
 };

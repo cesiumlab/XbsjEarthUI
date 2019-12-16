@@ -13,8 +13,8 @@
     <div class="onlineSymbolBox">
       <div class="onlineSymbolDiv">
         <!-- <label>{{lang.online.label}}:</label> -->
-        <input v-model="label" @keyup.enter="getonlineinfo" />
-        <button @click="getonlineinfo" class="seaarchButton">
+        <input v-model="label" @keyup.enter="query" />
+        <button @click="query" class="seaarchButton">
           <img src="../../../images/search2.png" />
           {{lang.search}}
         </button>
@@ -95,19 +95,19 @@ export default {
       if (this.label !== undefined && this.label !== null && this.label !== '') {
         this.param.queryfields = 'label';
         this.param.querykeys = this.label;
+      } else {
+        this.param.queryfields = null;
+        this.param.querykeys = null;
       }
+      this.getonlineinfo();
     },
     orderByUsageCount () {
-      this.symbols = [];
-      this.param.skip = 0;
       this.param.order = 'usage_count';
-      this.getonlineinfo();
+      this.query();
     },
     orderByShareDate () {
-      this.symbols = [];
-      this.param.skip = 0;
       this.param.order = 'share_date';
-      this.getonlineinfo();
+      this.query();
     },
     getonlineinfo () {
       let self = this;
@@ -211,7 +211,6 @@ export default {
 .xbsj-onlineSymbol .flexul {
   display: flex;
   flex-wrap: wrap;
-  cursor: pointer;
   overflow-y: auto;
   overflow-x: hidden;
   height: calc(100% - 86px);
@@ -229,6 +228,7 @@ export default {
   height: 196px;
   margin-right: 20px;
   margin-bottom: 16px;
+  cursor: pointer;
 }
 .xbsj-onlineSymbol .flexul li .onlinImageName {
   display: inline-block;
