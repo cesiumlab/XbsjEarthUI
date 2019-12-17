@@ -27,7 +27,8 @@ const zh = {
   },
   weizhi: "位置",
   eidtbtn: "编辑按钮",
-  pathAnimation: '路径动画'
+  pathAnimation: '路径动画',
+  dragcontent: '请把对象拖到这里'
 }
 
 const en = {
@@ -58,7 +59,8 @@ const en = {
   },
   weizhi: "weizhi",
   eidtbtn: "eidt btn",
-  pathAnimation: 'pathAnimation'
+  pathAnimation: 'pathAnimation',
+  dragcontent: 'Drag the object here'
 }
 
 export default {

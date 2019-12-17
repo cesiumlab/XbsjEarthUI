@@ -29,7 +29,8 @@ const zh = {
   yxfx: '延线方向',
   Tangentdirection: '切线方向',
   nowtime: '播放进度',
-  select: '选择'
+  select: '选择',
+  dragcontent: '请把对象拖到这里'
 }
 
 const en = {
@@ -63,8 +64,8 @@ const en = {
   yxfx: 'Direction',
   Tangentdirection: 'Tangent',
   nowtime: 'playProgress',
-  select: 'Select'
-
+  select: 'Select',
+  dragcontent: 'Drag the object here'
 }
 
 export default { zh, en }

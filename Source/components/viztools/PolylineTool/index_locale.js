@@ -25,7 +25,8 @@ const zh = {
   oDLineMaterial: "ODLine",
   odLinecolor: "颜色",
   totoalFrameCount: "循环周期",
-  weizhi: "位置"
+  weizhi: "位置",
+  dragcontent: '请把对象拖到这里'
 };
 
 const en = {
@@ -55,7 +56,8 @@ const en = {
   oDLineMaterial: "ODLine",
   odLinecolor: "color",
   totoalFrameCount: "totoalFrameCount",
-  weizhi: "position"
+  weizhi: "position",
+  dragcontent: 'Drag the object here'
 };
 
 export default { zh, en };

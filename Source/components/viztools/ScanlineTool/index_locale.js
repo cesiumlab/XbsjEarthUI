@@ -11,7 +11,8 @@ const zh = {
   loopcycle: '循环周期',
   color: '颜色',
   flyto: '定位',
-  nowtime: '当前时刻'
+  nowtime: '当前时刻',
+  dragcontent: '请把对象拖到这里'
 };
 
 const en = {
@@ -27,8 +28,8 @@ const en = {
   loopcycle: 'loopcycle',
   color: 'color',
   flyto: 'flyto',
-  nowtime: 'time'
-
+  nowtime: 'time',
+  dragcontent: 'Drag the object here'
 };
 
 export default {

@@ -38,7 +38,8 @@ const zh = {
   code: '代码',
   image: '图片',
   text: '文本',
-  evalstring: '创建代码'
+  evalstring: '创建代码',
+  dragcontent: '请把对象拖到这里'
 }
 
 const en = {
@@ -80,7 +81,8 @@ const en = {
   code: 'code',
   image: 'image',
   text: 'text',
-  evalstring: 'evalstring'
+  evalstring: 'evalstring',
+  dragcontent: 'Drag the object here'
 }
 
 export default { zh, en }

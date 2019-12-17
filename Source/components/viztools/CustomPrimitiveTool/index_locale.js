@@ -30,7 +30,8 @@ const zh = {
   editing: '正在编辑',
   apply: '应用',
   tipcontent: '请填入顶点坐标和indices',
-  scale: 'x,y,z缩放值'
+  scale: 'x,y,z缩放值',
+  dragcontent: '请把对象拖到这里'
 };
 
 const en = {
@@ -65,7 +66,8 @@ const en = {
   editing: 'editing',
   apply: 'apply',
   tipcontent: 'Please fill in vertex coordinates and indices',
-  scale: 'scale'
+  scale: 'scale',
+  dragcontent: 'Drag the object here'
 };
 
 export default {

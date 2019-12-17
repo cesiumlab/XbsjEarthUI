@@ -10,7 +10,8 @@ const zh = {
   outlineShow: '边框显示',
   outlineColor: '边框颜色',
   color: '颜色',
-  transparency: '透明度'
+  transparency: '透明度',
+  dragcontent: '请把对象拖到这里'
 };
 
 const en = {
@@ -25,7 +26,8 @@ const en = {
   outlineShow: 'outlineShow',
   outlineColor: 'outlineColor',
   color: 'color',
-  transparency: 'transparency'
+  transparency: 'transparency',
+  dragcontent: 'Drag the object here'
 };
 
 export default {

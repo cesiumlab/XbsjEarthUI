@@ -31,15 +31,6 @@
             @click="model.editing =!model.editing"
             :class="model.editing?'btncoloron':''"
           >{{lang.editing}}</button>
-          <!-- 拖拽 -->
-          <button
-            @dragover="dragOver"
-            @drop="drop"
-            @dragleave="dragLeave"
-            :title="lang.drag"
-            class="dragButton"
-            :class="{highlight:drag_over||dragShow}"
-          ></button>
         </div>
       </div>
       <div class="flatten-flex">
@@ -257,42 +248,6 @@ export default {
 
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
-    },
-    getCzmObjectFromDrag(dataTransfer) {
-      for (let i = 0; i < dataTransfer.types.length; i++) {
-        var t = dataTransfer.types[i];
-        if (!t) continue;
-        if (t.startsWith("_czmobj_")) {
-          let guid = t.substring(8);
-
-          return this.$root.$earth.getObject(guid);
-        }
-      }
-      return undefined;
-    },
-    //拖拽移动上面
-    dragOver(e) {
-      e.preventDefault();
-      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
-      if (czmObj && czmObj.positions !== undefined) {
-        e.dataTransfer.dropEffect = "copy";
-        this.drag_over = true;
-      } else {
-        e.dataTransfer.dropEffect = "none";
-      }
-    },
-    dragLeave() {
-      this.drag_over = false;
-    },
-    //拖拽放置
-    drop(e) {
-      this.drag_over = false;
-      e.preventDefault();
-      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
-      if (czmObj && czmObj.positions !== undefined) {
-        czmObj.positions = [...this._czmObj.positions];
-        this.dragShow = true;
-      }
     }
   },
   beforeDestroy() {
@@ -597,18 +552,5 @@ button:focus {
   vertical-align: top;
   margin-top: 6px;
   margin-right: 20px;
-}
-.dragButton {
-  display: inline-block;
-  width: 50px;
-  height: 40px;
-  margin-left: 4px;
-  background: url(../../../images/drag.png) no-repeat;
-  background-size: contain;
-}
-
-.dragButton.highlight {
-  background: url(../../../images/drag_on.png) no-repeat;
-  background-size: contain;
 }
 </style>

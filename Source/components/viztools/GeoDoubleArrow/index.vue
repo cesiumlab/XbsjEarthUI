@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="372"
+    :height="354"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -16,7 +16,7 @@
         <label>{{lang.name}}</label>
         <input style="float:left;" type="text" v-model="model.name" />
       </div>
-      <div class="flatten-flex" style="height: 40px;">
+      <div class="flatten-flex">
         <!-- 编辑按钮 -->
         <div class="buttonGroup">
           <label class="xbsj-label"></label>
@@ -32,15 +32,6 @@
             :class="model.editing?'btncoloron':''"
           >{{lang.editing}}</button>
         </div>
-        <!-- 拖拽 -->
-        <div
-          @dragover="dragOver"
-          @drop="drop"
-          @dragleave="dragLeave"
-          class="dragButton"
-          :class="{highlight:drag_over||dragShow}"
-          :title="lang.drag"
-        ></div>
       </div>
       <div class="flatten-flex">
         <!-- 贴地 -->
@@ -110,8 +101,6 @@ export default {
       lang: {},
       showPinSelect: false,
       makiIconObj: {},
-      drag_over: false,
-      dragShow: false,
       model: {
         name: "",
         show: false,
@@ -259,42 +248,6 @@ export default {
 
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
-    },
-    getCzmObjectFromDrag(dataTransfer) {
-      for (let i = 0; i < dataTransfer.types.length; i++) {
-        var t = dataTransfer.types[i];
-        if (!t) continue;
-        if (t.startsWith("_czmobj_")) {
-          let guid = t.substring(8);
-
-          return this.$root.$earth.getObject(guid);
-        }
-      }
-      return undefined;
-    },
-    //拖拽移动上面
-    dragOver(e) {
-      e.preventDefault();
-      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
-      if (czmObj && czmObj.positions !== undefined) {
-        e.dataTransfer.dropEffect = "copy";
-        this.drag_over = true;
-      } else {
-        e.dataTransfer.dropEffect = "none";
-      }
-    },
-    dragLeave() {
-      this.drag_over = false;
-    },
-    //拖拽放置
-    drop(e) {
-      this.drag_over = false;
-      e.preventDefault();
-      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
-      if (czmObj && czmObj.positions !== undefined) {
-        czmObj.positions = [...this._czmObj.positions];
-        this.dragShow = true;
-      }
     }
   },
   beforeDestroy() {
@@ -596,18 +549,5 @@ button:focus {
   border-radius: 3px;
   color: #dddddd;
   margin-right: 20px;
-  margin-top: 10px;
-}
-.dragButton {
-  display: inline-block;
-  width: 50px;
-  height: 40px;
-  background: url(../../../images/drag.png) no-repeat;
-  background-size: contain;
-}
-
-.dragButton.highlight {
-  background: url(../../../images/drag_on.png) no-repeat;
-  background-size: contain;
 }
 </style>

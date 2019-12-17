@@ -15,7 +15,8 @@ const zh = {
   flyto: '定位',
   colorintensity: '颜色强度',
   repeatX: '纹理宽度',
-  repeatY: '纹理高度'
+  repeatY: '纹理高度',
+  dragcontent: '请把对象拖到这里'
 };
 
 const en = {
@@ -35,7 +36,8 @@ const en = {
   flyto: 'flyto',
   colorintensity: 'colorintensity',
   repeatX: 'textureWidth',
-  repeatY: 'textureHeight'
+  repeatY: 'textureHeight',
+  dragcontent: 'Drag the object here'
 };
 
 export default {

@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="334"
+    :height="318"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -16,7 +16,7 @@
         <label>{{lang.name}}</label>
         <input style="float:left;" type="text" v-model="model.name" />
       </div>
-      <div class="flatten-flex" style="height: 40px;">
+      <div class="flatten-flex">
         <!-- 编辑按钮 -->
 
         <div class="buttonGroup">
@@ -40,8 +40,8 @@
             @dragleave="dragLeave"
             :title="lang.drag"
             class="dragButton"
-            :class="{highlight:drag_over||dragShow}"
-          ></button>
+            :class="{highlight:drag_over}"
+          >{{lang.dragcontent}}</button>
         </div>
       </div>
       <!-- 贴地 -->
@@ -90,7 +90,6 @@ export default {
       showPinSelect: false,
       makiIconObj: {},
       drag_over: false,
-      dragShow: false,
       model: {
         name: "",
         show: false,
@@ -203,22 +202,10 @@ export default {
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
     },
-    getCzmObjectFromDrag(dataTransfer) {
-      for (let i = 0; i < dataTransfer.types.length; i++) {
-        var t = dataTransfer.types[i];
-        if (!t) continue;
-        if (t.startsWith("_czmobj_")) {
-          let guid = t.substring(8);
-
-          return this.$root.$earth.getObject(guid);
-        }
-      }
-      return undefined;
-    },
     //拖拽移动上面
     dragOver(e) {
       e.preventDefault();
-      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions !== undefined) {
         e.dataTransfer.dropEffect = "copy";
         this.drag_over = true;
@@ -233,10 +220,10 @@ export default {
     drop(e) {
       this.drag_over = false;
       e.preventDefault();
-      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions !== undefined) {
-        czmObj.positions = [...this._czmObj.positions];
-        this.dragShow = true;
+        this._czmObj.creating = false;
+        this.$root.$earthUI.getCzmObjectPositionFromDrag(czmObj, this._czmObj);
       }
     }
   },
@@ -541,19 +528,22 @@ button:focus {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   color: #dddddd;
-  margin-top: 6px;
   margin-right: 20px;
 }
 .dragButton {
-  width: 50px;
-  height: 40px;
+  width: 120px;
+  height: 25px;
   margin-left: 18px;
   background: url(../../../images/drag.png) no-repeat;
   background-size: contain;
+  text-align: center;
+  line-height: 25px;
+  color: #dddddd;
 }
 
 .dragButton.highlight {
   background: url(../../../images/drag_on.png) no-repeat;
   background-size: contain;
+  color: #1fffff;
 }
 </style>
