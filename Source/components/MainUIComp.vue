@@ -206,7 +206,7 @@ export default {
     OnlineSymbol,
     TilesTest
   },
-  data: function () {
+  data: function() {
     return {
       modal: false,
       confirmInfo: "",
@@ -338,16 +338,16 @@ export default {
       selectedType: null
     };
   },
-  mounted () {
+  mounted() {
     let xbsjcesium = this.$refs.xbsjcesium;
     let that = this;
 
-    function handleDragOver (e) {
+    function handleDragOver(e) {
       e.stopPropagation();
       e.preventDefault();
     }
 
-    function handleFileSelect (e) {
+    function handleFileSelect(e) {
       // e.stopPropagation();
       e.preventDefault();
       let item = e.dataTransfer;
@@ -355,7 +355,7 @@ export default {
       var files = [];
       [].forEach.call(
         e.dataTransfer.files,
-        function (file) {
+        function(file) {
           files.push(file);
         },
         false
@@ -365,7 +365,7 @@ export default {
         var reader = new FileReader();
         reader.readAsText(f);
         //读取文件的内容
-        reader.onload = function () {
+        reader.onload = function() {
           that.jsontext = JSON.parse(this.result);
           that.analysisJson();
         };
@@ -379,14 +379,14 @@ export default {
       {
         name: "线",
         typeName: "Plots.GeoPolyline",
-        getObj: function (earth) {
+        getObj: function(earth) {
           return new XE.Obj.Plots.GeoPolyline(earth);
         }
       },
       {
         name: "管道",
         typeName: "CustomPrimitiveExt.Tube",
-        getObj: function (earth) {
+        getObj: function(earth) {
           var tube = new XE.Obj.CustomPrimitiveExt.Tube(earth);
           tube.imageUrl = "../../assets/ht/meteor_01.png";
           tube.radius = 0.5;
@@ -399,19 +399,19 @@ export default {
         {
           name: "面",
           typeName: "Plots.GeoPolygon",
-          getObj: function (earth) {
+          getObj: function(earth) {
             return new XE.Obj.Plots.GeoPolygon(earth);
           }
         }
       ]);
   },
   computed: {
-    type () {
+    type() {
       return this.viewporttype;
     }
   },
   methods: {
-    confirmLoadGeoJson () {
+    confirmLoadGeoJson() {
       if (this.jsontext.type != "") {
         const g0 = new XE.SceneTree.Group(this.$root.$earth);
         g0.title = "图形组合文件夹";
@@ -463,7 +463,7 @@ export default {
       }
       this.loadGeoJSONShow = false;
     },
-    analysisJson () {
+    analysisJson() {
       if (this.jsontext.sceneTree) {
         let self = this;
         this.confirm(
@@ -512,15 +512,15 @@ export default {
         }
       }
     },
-    selectType (index, item) {
+    selectType(index, item) {
       this.categoryIndex = index;
       this.selectedType = item;
     },
-    _getToolID (tool) {
+    _getToolID(tool) {
       if (!tool.guid) {
         tool.guid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
           /[xy]/g,
-          function (c) {
+          function(c) {
             var r = (Math.random() * 16) | 0;
             var v = c === "x" ? r : (r & 0x3) | 0x8;
             return v.toString(16);
@@ -529,19 +529,19 @@ export default {
       }
       return tool.guid;
     },
-    confirm (info, ok, cancel) {
+    confirm(info, ok, cancel) {
       this.confirmInfo = info;
       this.modal = true;
       this._ok = ok;
       this._cancel = cancel;
     },
-    modalCancel () {
+    modalCancel() {
       this.modal = false;
       if (typeof this._cancel == "function") {
         this._ok();
       }
     },
-    modalConfirm () {
+    modalConfirm() {
       this.modal = false;
       if (typeof this._ok == "function") {
         this._ok();
@@ -549,7 +549,7 @@ export default {
     },
 
     //显示对象的属性窗口
-    showPropertyWindow (czmObject, options) {
+    showPropertyWindow(czmObject, options) {
       //一个对象可以弹出若干种不同类型的属性窗口,判定是哪种component
 
       //用于判断是否弹出属性面板--mrq
@@ -630,18 +630,18 @@ export default {
         nextczm: options && options.jsonSchema
       });
     },
-    _topWindow (index) {
+    _topWindow(index) {
       if (index < 0 && index == this.tools.length - 1) return;
 
       const tool = this.tools[index];
       this.tools.splice(index, 1);
       this.tools.push(tool);
     },
-    topWindow (window) {
+    topWindow(window) {
       const index = window.$parent.$attrs._toolIndex;
       this._topWindow(index);
     },
-    destroyTool (tool) {
+    destroyTool(tool) {
       const index = tool.$attrs._toolIndex;
       if (index !== -1) {
         //const tool = this.tools[index];
@@ -649,7 +649,7 @@ export default {
       }
     },
 
-    promptInfo (info, type) {
+    promptInfo(info, type) {
       var _info = {
         info,
         type,
@@ -665,6 +665,41 @@ export default {
           this.infos.splice(index, 1);
         }
       }, 5000);
+    },
+
+    // 获取拖拽对象
+    getCzmObjectFromDrag(dataTransfer) {
+      for (let i = 0; i < dataTransfer.types.length; i++) {
+        var t = dataTransfer.types[i];
+        if (!t) continue;
+        if (t.startsWith("_czmobj_")) {
+          let guid = t.substring(8);
+
+          return this.$root.$earth.getObject(guid);
+        }
+      }
+      return undefined;
+    },
+
+    // 获取拖拽对象位置
+    getCzmObjectPositionFromDrag(dragczmObj, czmObj) {
+      if (dragczmObj._polyline !== undefined) {
+        czmObj.positions = [...dragczmObj._polyline.positions];
+      } else if (dragczmObj._polygon !== undefined) {
+        var polygonPositions = [],
+          polygonPositions2 = [];
+        // 将数组分割成每两个一组
+        for (var i = 0; i < dragczmObj._polygon.positions.length; i += 2) {
+          polygonPositions.push(dragczmObj._polygon.positions.slice(i, i + 2));
+        }
+        polygonPositions2 = polygonPositions.map(e => {
+          e[2] = dragczmObj._polygon.height;
+          return e;
+        });
+        czmObj.positions = [...polygonPositions2];
+      } else {
+        czmObj.positions = [...dragczmObj.positions];
+      }
     }
   }
 };
