@@ -71,6 +71,7 @@ export default {
       currentTilesetIndex: 0,
       resultIndex: 1,
       interval: 500,
+      intervalID: null,
       tilesetRecord: null,
       results: []
     };
@@ -118,8 +119,8 @@ export default {
       path.loopPlay = true;
     },
     stopTest () {
-      clearInterval(this.interval);
-      this.interval = null;
+      clearInterval(this.intervalID);
+      this.intervalID = null;
       let path = this.$root.$earth.getObject(this.attachedPathGuid);
       path.cameraAttached = false;
       path.playing = false;
@@ -128,18 +129,27 @@ export default {
     },
     testSingleTileset () {
       var tileset = this.$root.$earth.getObject(this.tiles[this.currentTilesetIndex].id);
-      this.tileset = new XE.Obj.Tileset(this.$root.$earth);
-      this.tileset.xbsjFromJSON(tileset.toJSON());
-      this.tileset.enabled = true;
+      this._tileset = new XE.Obj.Tileset(this.$root.$earth);
+      this._tileset.xbsjFromJSON(tileset.toJSON());
+      this._tileset.enabled = true;
       this.results.push({});
       this.tilesetRecord = this.results[this.results.length - 1];
-      this.tilesetRecord.tileset = this.tileset.toJSON();
+      this.tilesetRecord.tileset = this._tileset.toJSON();
       this.tilesetRecord.date = [];
       this.resultIndex = 1;
     },
+    testNextTileset () {
+      this.currentTilesetIndex++;
+      this._tileset.destroy();
+      if (this.currentTilesetIndex === this.tiles.length) {
+        this.stopTest();
+        return;
+      }
+      this.testSingleTileset();
+    },
     startTimeout () {
       let self = this
-      this.interval = setInterval(() => {
+      this.intervalID = setInterval(() => {
         self.record();
       }, this.interval
       );
@@ -148,7 +158,7 @@ export default {
       var record = {};
       record.time = this.resultIndex * this.interval;
       record.fps = this.$root.$earth.status.fps;
-      record.tileset = this.tileset._tileset.statistics;
+      record.tileset = this._tileset._tileset.statistics;
       this.tilesetRecord.date.push(record);
       this.resultIndex++;
     },
@@ -213,12 +223,7 @@ export default {
   watch: {
     currentD () {
       if (this.currentD === 0) {
-        this.currentTilesetIndex++;
-        if (this.currentTilesetIndex === this.tiles.length) {
-          this.stopTest();
-          return;
-        }
-        this.testSingleTileset();
+        this.testNextTileset();
       }
     }
   },

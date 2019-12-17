@@ -19,6 +19,7 @@
         </div>
       </div>
       <PathFlyTest class="xbsj-flatten" v-show="tabShow == '1'" @testfinished='testFinished'></PathFlyTest>
+      <Viewpoint class="xbsj-flatten" v-show="tabShow == '2'"  @testfinished='testFinished'></Viewpoint>
     </div>
   </Window>
 </template>
@@ -26,9 +27,11 @@
 <script>
 import languagejs from "./locale";
 import PathFlyTest from "./PathFlyTest";
+import Viewpoint from "./Viewpoint"
 export default {
   components: {
-    PathFlyTest
+    PathFlyTest,
+    Viewpoint
   },
   data () {
     return {
