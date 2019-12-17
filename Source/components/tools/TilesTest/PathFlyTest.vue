@@ -1,11 +1,16 @@
 <template>
-  <div style="height: 100%;">
+  <div
+    style="height: 100%;"
+    @mousedown="startMove($event)"
+    @mousemove="onMoving($event)"
+    @mouseup="endMove($event)"
+  >
     <div class="flatten">
       <div style="position: relative;">
         <label>{{lang.pathAnimation}}</label>
         <input
           type="text"
-          v-model="pin.attachedPathGuid"
+          v-model="attachedPathGuid"
           @click="pinselectinput"
           readonly
           style="cursor: pointer;"
@@ -17,19 +22,33 @@
           </div>
         </div>
       </div>
+      <div style="position: relative;">
+        <label>{{lang.interval}}</label>
+        <input type="text" v-model.number="interval" style="cursor: pointer;" />
+      </div>
     </div>
 
-    <ul class="flexul" :class="showContent ? 'contentUl' : ''">
-      <li v-for="s in tiles" @click="select(s)" :key="s.url">
-        <div :class="[{highlight:selected == s} ]" class="backimg">
-          <img style="width:64px;height:64px;" :src="s.thumbnail" alt />
-        </div>
-        <div class="onlinTerrainName">
-          {{s.cnname}}
-          <span class="onlineTerrainToolTip">{{s.cnname}}</span>
-        </div>
-      </li>
-    </ul>
+    <div
+      @drop="tileset_drop($event)"
+      @dragover="tileset_dragover($event)"
+      @dragleave="tileset_dragleave($event)"
+    >
+      <table border="1" cellpadding="0" cellspacing="0">
+        <tr>
+          <td>序号</td>
+          <td>名称</td>
+          <td>操作</td>
+        </tr>
+        <tr v-for="(value,index) in tiles" :key="index">
+          <td>{{index + 1}}</td>
+          <td>{{value.name}}</td>
+          <button>删除</button>
+        </tr>
+      </table>
+    </div>
+
+    <button @click="startTest">开始执行</button>
+    <button @click="stopTest">停止</button>
   </div>
 </template>
 
@@ -37,64 +56,28 @@
 import languagejs from "./locale";
 
 export default {
-  props: { result },
+  name: 'PathFlyTest',
   data () {
     return {
-      ranges: true,
       lang: {},
-      showPinSelect: false,
       pinshowPinSelect: false,
-      tabShow: '1',
-      drag_over: false,
-      dragShow: false,
-      showContent: false,
       tiles: [],
-      pin: {
-        name: "",
-        creating: true,
-        enabled: true,
-        editing: false,
-        far: 100,
-        near: 1,
-        imageUrl: "",
-        scale: 1,
-        show: true,
-        position: [0, 0, 0],
-        pinBuilder: {},
-        attachedPathGuid: "",
-        origin: [0, 0],
-        isDivImage: true,
-        evalString: ""
-      },
-
+      czmObjects: {},
+      attachedPathGuid: "",
       langs: languagejs,
       pathGuidarr: [],
+      currentD: 0,
+      pathLength: 0,
+      currentTilesetIndex: 0,
+      resultIndex: 1,
+      interval: 500,
+      tilesetRecord: null,
+      results: []
     };
-  },
-  created () { },
-  mounted () {
-
-  },
-  computed: {
-    name () {
-      return this.pin.name;
-    },
-    guid () {
-      return this.getBind().guid;
-    }
-  },
-  watch: {
-    nearfar (e) { },
-    "pin.pinBuilder.text" (e) {
-      if (e !== "") {
-        this.pin.pinBuilder.makiIcon = "";
-      }
-    },
-
   },
   methods: {
     pinoptionssure (c) {
-      this.pin.attachedPathGuid = c.guid;
+      this.attachedPathGuid = c.guid;
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
     pinselectinput () {
@@ -115,47 +98,59 @@ export default {
       }
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
-    optionssure (c) {
-      this.pin.pinBuilder.makiIcon = c;
-      this.showPinSelect = !this.showPinSelect;
-    },
-    selectinput () {
-      this.showPinSelect = !this.showPinSelect;
-      // console.log(this.showSelect);
-    },
-    apply () {
-      this._czmObj.evalString = this.pin.evalString;
-    },
-    close () {
-      this.$parent.destroyTool(this);
-    },
-    cancel () {
-      this.close();
-      const pinToolObj = this._czmObj;
-      if (!pinToolObj) {
-        return;
+    startTest () {
+      let path = this.$root.$earth.getObject(this.attachedPathGuid);
+      this.pathLength = path.length;
+      this._disposers = [];
+      this._disposers.push(
+        XE.MVVM.bind(this, "currentD", path, "currentD")
+      );
+      for (var i = 0; i < this.tiles.length; i++) {
+        this.$root.$earth.getObject(this.tiles[i].id).enabled = false;
       }
-      pinToolObj.positionEditing = false;
-      if (pinToolObj.isCreating) {
-        pinToolObj.isCreating = false;
-        pinToolObj.destroy();
-      }
-    },
-    ok () {
-      this.close();
-      const pinToolObj = this._czmObj;
-      pinToolObj.editing = false;
-      if (!pinToolObj) {
-        return;
-      }
-      pinToolObj.positionEditing = false;
-      pinToolObj.twoPostionsEditing = false;
-      if (pinToolObj.isCreating) {
-        pinToolObj.isCreating = false;
+      this.currentTilesetIndex = 0;
+      this.results = [];
+      this.testSingleTileset();
+      this.startTimeout();
 
-        const sceneObject = new XE.SceneTree.Leaf(pinToolObj);
-        this.$root.$earthUI.addSceneObject(sceneObject);
-      }
+      path.cameraAttached = true;
+      path.playing = true;
+      path.loopPlay = true;
+    },
+    stopTest () {
+      clearInterval(this.interval);
+      this.interval = null;
+      let path = this.$root.$earth.getObject(this.attachedPathGuid);
+      path.cameraAttached = false;
+      path.playing = false;
+      path.loopPlay = false;
+      this.$emit('testfinished', this.results);
+    },
+    testSingleTileset () {
+      var tileset = this.$root.$earth.getObject(this.tiles[this.currentTilesetIndex].id);
+      this.tileset = new XE.Obj.Tileset(this.$root.$earth);
+      this.tileset.xbsjFromJSON(tileset.toJSON());
+      this.tileset.enabled = true;
+      this.results.push({});
+      this.tilesetRecord = this.results[this.results.length - 1];
+      this.tilesetRecord.tileset = this.tileset.toJSON();
+      this.tilesetRecord.date = [];
+      this.resultIndex = 1;
+    },
+    startTimeout () {
+      let self = this
+      this.interval = setInterval(() => {
+        self.record();
+      }, this.interval
+      );
+    },
+    record () {
+      var record = {};
+      record.time = this.resultIndex * this.interval;
+      record.fps = this.$root.$earth.status.fps;
+      record.tileset = this.tileset._tileset.statistics;
+      this.tilesetRecord.date.push(record);
+      this.resultIndex++;
     },
     getCzmObjectFromDrag (dataTransfer) {
       for (let i = 0; i < dataTransfer.types.length; i++) {
@@ -169,38 +164,61 @@ export default {
       }
       return undefined;
     },
-    //拖拽移动上面
-    dragOver (e) {
+    tileset_dragover (e) {
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
-      if (
-        czmObj &&
-        (czmObj.positions !== undefined || czmObj.position !== undefined)
-      ) {
+      if (czmObj && czmObj.xbsjType === 'Tileset') {
         e.dataTransfer.dropEffect = "copy";
-        this.drag_over = true;
+        this.tileset_over = true;
       } else {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    dragLeave () {
-      this.drag_over = false;
+    tileset_dragleave () {
+      this.tileset_over = false;
     },
-    //拖拽放置
-    drop (e) {
-      this.drag_over = false;
+    tileset_drop (e) {
+      this.tileset_over = false;
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.xbsjType === 'Tileset') {
+        this.tiles.push({ id: czmObj.xbsjGuid, name: czmObj.name });
+      }
+    },
+    startMove (event) {
+      //如果事件的目标不是本el 返回
       if (
-        czmObj &&
-        (czmObj.position !== undefined || czmObj.positions !== undefined)
+        event.target.parentElement !== this.$refs.container &&
+        event.target.parentElement.parentElement !== this.$refs.container
       ) {
-        if (czmObj.position !== undefined) {
-          czmObj.position = [...this._czmObj.position];
-        } else {
-          czmObj.positions[0] = [...this._czmObj.position];
+        this.moving = false;
+        return;
+      }
+      this.moving = true;
+    },
+    onMoving (event) {
+      //获取鼠标和为开始位置的插值，滚动滚动条
+      if (!this.moving) return;
+
+      var dom = this.$refs.container;
+      var wleft = dom.scrollLeft - event.movementX;
+      if (wleft >= 0 && wleft <= dom.scrollWidth - dom.clientWidth) {
+        dom.scrollLeft = wleft;
+      }
+    },
+    endMove (envent) {
+      this.moving = false;
+    }
+  },
+  watch: {
+    currentD () {
+      if (this.currentD === 0) {
+        this.currentTilesetIndex++;
+        if (this.currentTilesetIndex === this.tiles.length) {
+          this.stopTest();
+          return;
         }
-        this.dragShow = true;
+        this.testSingleTileset();
       }
     }
   },
@@ -284,6 +302,33 @@ button:focus {
   right: 15px;
   top: 11px;
 }
+.xbsj-flatten {
+  min-width: 400px;
+}
+.xbsj-flatten > div {
+  width: 100%;
+  height: 60px;
+  margin-top: 10px;
+}
+.xbsj-flatten label {
+  float: left;
+  min-width: 50px;
+  height: 28px;
+  line-height: 28px;
+  text-align: right;
+  margin-left: 8px;
+  margin-right: 15px;
+}
+.xbsj-flatten .flatten input,
+.xbsj-flatten .attributePath input {
+  width: calc(100% - 150px);
+  height: 28px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  border: none;
+  color: #dddddd;
+  padding-left: 10px;
+}
 .flatten-box {
   display: flex;
   width: calc(100% - 100px);
@@ -301,30 +346,11 @@ button:focus {
 .tab span:hover {
   background: #000;
 }
-.flexul {
-  display: flex;
-  flex-wrap: wrap;
-  cursor: pointer;
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: calc(100% - 48px);
+.contentDiv {
+  overflow: auto;
+  /* height: calc(100% - 29px); */
 }
-.contentUl {
-  overflow-x: hidden;
-  height: calc(100% - 104px);
-}
-.flexul li {
-  list-style: none;
-  /* float: left; */
-  position: relative;
-  height: 102px;
-}
-.backimg {
-  width: 64px;
-  height: 64px;
-  border: 2px solid;
-  border-radius: 4px;
-  background: gray;
-  margin: 5px;
+.contentsDiv {
+  height: calc(100% - 142px);
 }
 </style>

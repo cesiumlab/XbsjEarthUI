@@ -7,8 +7,7 @@
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
-    @ok="ok"
-    :footervisible="true"
+    :footervisible="false"
     @showclick="showSelect=false"
   >
     <div style="height: 100%;">
@@ -19,18 +18,17 @@
           <span @click="tabShow='3'">{{lang.secondpage}}</span>
         </div>
       </div>
-      <div class="xbsj-flatten" v-show="tabShow == '1'">
-      </div>
+      <PathFlyTest class="xbsj-flatten" v-show="tabShow == '1'" @testfinished='testFinished'></PathFlyTest>
     </div>
   </Window>
 </template>
 
 <script>
 import languagejs from "./locale";
-
+import PathFlyTest from "./PathFlyTest";
 export default {
-  props: {
-    getBind: Function
+  components: {
+    PathFlyTest
   },
   data () {
     return {
@@ -42,6 +40,7 @@ export default {
       makiIconObj: {},
       drag_over: false,
       dragShow: false,
+      records: [],
       pin: {
         name: "",
         creating: true,
@@ -64,66 +63,10 @@ export default {
       pathGuidarr: [],
     };
   },
-  created () { },
-  mounted () {
-
-  },
-  computed: {
-    name () {
-      return this.pin.name;
-    },
-    guid () {
-      return this.getBind().guid;
-    },
-    nearfar: {
-      get () {
-        return [0, 30];
-      },
-      set (newValue) {
-        this.pin.near = Math.round(Math.pow(2, newValue[0]));
-        this.pin.far = Math.round(Math.pow(2, newValue[1]));
-      }
-    }
-  },
-  watch: {
-    nearfar (e) { },
-    "pin.pinBuilder.text" (e) {
-      if (e !== "") {
-        this.pin.pinBuilder.makiIcon = "";
-      }
-    },
-
-  },
   methods: {
-    pinoptionssure (c) {
-      this.pin.attachedPathGuid = c.guid;
-      this.pinshowPinSelect = !this.pinshowPinSelect;
-    },
-    pinselectinput () {
-      this.pathGuidarr = [];
-      let guidobj = {};
-      this.pathGuidarr.push({ name: "空", guid: "" });
-      this.$root.$earth.pathCollection.forEach(e => {
-        guidobj.name = e.name;
-        guidobj.guid = e.guid;
-        this.pathGuidarr.push(guidobj);
-      });
-      if (this.pathGuidarr.length < 2) {
-        this.$root.$earthUI.promptInfo(
-          "There is no path in the current scenario",
-          "warning"
-        );
-        return;
-      }
-      this.pinshowPinSelect = !this.pinshowPinSelect;
-    },
-    optionssure (c) {
-      this.pin.pinBuilder.makiIcon = c;
-      this.showPinSelect = !this.showPinSelect;
-    },
-    selectinput () {
-      this.showPinSelect = !this.showPinSelect;
-      // console.log(this.showSelect);
+    testFinished (results) {
+      this.records = results;
+      console.log(this.records);
     },
     apply () {
       this._czmObj.evalString = this.pin.evalString;
@@ -142,80 +85,14 @@ export default {
         pinToolObj.isCreating = false;
         pinToolObj.destroy();
       }
-    },
-    ok () {
-      this.close();
-      const pinToolObj = this._czmObj;
-      pinToolObj.editing = false;
-      if (!pinToolObj) {
-        return;
-      }
-      pinToolObj.positionEditing = false;
-      pinToolObj.twoPostionsEditing = false;
-      if (pinToolObj.isCreating) {
-        pinToolObj.isCreating = false;
-
-        const sceneObject = new XE.SceneTree.Leaf(pinToolObj);
-        this.$root.$earthUI.addSceneObject(sceneObject);
-      }
-    },
-
-    flyto (index) {
-      this._czmObj.polygons[index].flyTo();
-    },
-    getCzmObjectFromDrag (dataTransfer) {
-      for (let i = 0; i < dataTransfer.types.length; i++) {
-        var t = dataTransfer.types[i];
-        if (!t) continue;
-        if (t.startsWith("_czmobj_")) {
-          let guid = t.substring(8);
-
-          return this.$root.$earth.getObject(guid);
-        }
-      }
-      return undefined;
-    },
-    //拖拽移动上面
-    dragOver (e) {
-      e.preventDefault();
-      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
-      if (
-        czmObj &&
-        (czmObj.positions !== undefined || czmObj.position !== undefined)
-      ) {
-        e.dataTransfer.dropEffect = "copy";
-        this.drag_over = true;
-      } else {
-        e.dataTransfer.dropEffect = "none";
-      }
-    },
-    dragLeave () {
-      this.drag_over = false;
-    },
-    //拖拽放置
-    drop (e) {
-      this.drag_over = false;
-      e.preventDefault();
-      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
-      if (
-        czmObj &&
-        (czmObj.position !== undefined || czmObj.positions !== undefined)
-      ) {
-        if (czmObj.position !== undefined) {
-          czmObj.position = [...this._czmObj.position];
-        } else {
-          czmObj.positions[0] = [...this._czmObj.position];
-        }
-        this.dragShow = true;
-      }
     }
   },
-  beforeDestroy () {
-    // 解绑数据关联
-    this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers.forEach(e => e());
-    this._disposers.length = 0;
-  }
+  // beforeDestroy () {
+  //   // 解绑数据关联
+  //   this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
+  //   this._disposers.forEach(e => e());
+  //   this._disposers.length = 0;
+  // }
 };
 </script>
 
