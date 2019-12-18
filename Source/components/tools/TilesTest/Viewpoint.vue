@@ -42,7 +42,7 @@
         <tr v-for="(value,index) in tiles" :key="index">
           <td>{{index + 1}}</td>
           <td>{{value.name}}</td>
-          <button>删除</button>
+          <button @click="deleteTiles(index)">删除</button>
         </tr>
       </table>
     </div>
@@ -67,6 +67,8 @@ export default {
       interval: 500,
       intervalId: null,
       tilesetRecord: null,
+      numberOfPendingRequests: 0,
+      numberOfTilesProcessing: 0,
       results: [],
       item: {
         name: '',
@@ -82,8 +84,6 @@ export default {
       this.currentTilesetIndex = 0;
       this.results = [];
       this.testSingleTileset();
-      this.startTimeout();
-      this._viewpoint.flyTo();
     },
     stopTest () {
       clearInterval(this.intervalId);
@@ -91,19 +91,28 @@ export default {
       this.$emit('testfinished', this.results);
     },
     testSingleTileset () {
-      var tileset = this.$root.$earth.getObject(this.tiles[this.currentTilesetIndex].id);
-      this._tileset = new XE.Obj.Tileset(this.$root.$earth);
-      this._tileset.xbsjFromJSON(tileset.toJSON());
       let self = this;
-      this._tileset._tileset.allTilesLoaded.addEventListener(() => {
-        self.testNextTileset();
+      let earth = this.$root.$earth;
+      earth.cameraViewManager.globe.flyTo().then(() => {
+        var tileset = earth.getObject(self.tiles[self.currentTilesetIndex].id);
+        self._tileset = new XE.Obj.Tileset(self.$root.$earth);
+        self._tileset.xbsjFromJSON(tileset.toJSON());
+        self._tileset.enabled = true;
+        self._tileset._tileset.allTilesLoaded.addEventListener(() => {
+          self.testNextTileset();
+        });
+        self._tileset._tileset.loadProgress.addEventListener(function (numberOfPendingRequests, numberOfTilesProcessing) {
+          self.numberOfPendingRequests = numberOfPendingRequests;
+          self.numberOfTilesProcessing = numberOfTilesProcessing;
+        });
+        self.results.push({});
+        self.tilesetRecord = self.results[self.results.length - 1];
+        self.tilesetRecord.tileset = self._tileset.toJSON();
+        self.tilesetRecord.date = [];
+        self.resultIndex = 1;
+        self.startTimeout();
+        self._viewpoint.flyTo();
       });
-      this._tileset.enabled = true;
-      this.results.push({});
-      this.tilesetRecord = this.results[this.results.length - 1];
-      this.tilesetRecord.tileset = this._tileset.toJSON();
-      this.tilesetRecord.date = [];
-      this.resultIndex = 1;
     },
     testNextTileset () {
       this.currentTilesetIndex++;
@@ -116,6 +125,10 @@ export default {
     },
     startTimeout () {
       let self = this
+      if (this.intervalId !== null) {
+        clearInterval(this.intervalId);
+        this.intervalId = null;
+      }
       this.intervalId = setInterval(() => {
         self.record();
       }, this.interval
@@ -125,6 +138,8 @@ export default {
       var record = {};
       record.time = this.resultIndex * this.interval;
       record.fps = this.$root.$earth.status.fps;
+      record.numberOfPendingRequests = this.numberOfPendingRequests;
+      record.numberOfTilesProcessing = this.numberOfTilesProcessing;
       record.tileset = this._tileset._tileset.statistics;
       this.tilesetRecord.date.push(record);
       this.resultIndex++;
@@ -161,6 +176,9 @@ export default {
       if (czmObj && czmObj.xbsjType === 'Tileset') {
         this.tiles.push({ id: czmObj.xbsjGuid, name: czmObj.name });
       }
+    },
+    deleteTiles (index) {
+      this.tiles.splice(index, 1);
     },
     viewpoint_dragover (e) {
       e.preventDefault();
