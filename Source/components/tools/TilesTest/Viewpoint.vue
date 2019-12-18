@@ -1,54 +1,57 @@
 <template>
-  <div
-    style="height: 100%;"
-    @mousedown="startMove($event)"
-    @mousemove="onMoving($event)"
-    @mouseup="endMove($event)"
-  >
-    <div class="flatten">
-      <div style="position: relative;">
-        <label>{{lang.viewPoint}}</label>
-        <div
-          @click="clickItem(index,$event)"
-          @drop="viewpoint_drop($event)"
-          @dragover="viewpoint_dragover($event)"
-          @dragleave="viewpoint_dragleave($event)"
-        >
-          <img
-            :src="item.thumbnail"
-            class="xbsj-cameraview-img"
-            @contextmenu.prevent="onContexMenu(index, $event)"
-          />
-          <label class="xbsj-check">{{item.name}}</label>
+  <div @mousedown="startMove($event)" @mousemove="onMoving($event)" @mouseup="endMove($event)">
+    <div class="content">
+      <div class="flatten">
+        <div>
+          <label style="margin-top: 20px;">{{lang.viewPoint}}</label>
+          <div
+            class="viewbox"
+            @click="clickItem(index,$event)"
+            @drop="viewpoint_drop($event)"
+            @dragover="viewpoint_dragover($event)"
+            @dragleave="viewpoint_dragleave($event)"
+          >
+            <img :src="item.thumbnail" @contextmenu.prevent="onContexMenu(index, $event)" />
+            <label class="xbsj-check">{{item.name}}新视角</label>
+          </div>
+          <span class="viewspan">当前视角</span>
+        </div>
+        <div style="margin-top: 20px;">
+          <label>{{lang.interval}}</label>
+          <input type="text" v-model.number="interval" style="cursor: pointer;" />
+          <span>{{lang.ms}}</span>
         </div>
       </div>
-      <div style="position: relative;top:100px;">
-        <label>{{lang.interval}}</label>
-        <input type="text" v-model.number="interval" style="cursor: pointer;" />
+      <div class="flatten" style="margin-top: 20px;">
+        <label>3dtiles</label>
+        <div
+          @drop="tileset_drop($event)"
+          @dragover="tileset_dragover($event)"
+          @dragleave="tileset_dragleave($event)"
+        >
+          <table border="1" cellpadding="0" cellspacing="0">
+            <tr>
+              <td>序号</td>
+              <td>名称</td>
+              <td>操作</td>
+            </tr>
+            <tr v-for="(value,index) in tiles" :key="index">
+              <td>{{index + 1}}</td>
+              <td>{{value.name}}</td>
+              <td>
+                <!-- <button @click="deleteTiles(index)">删除</button> -->
+                <input type="button" class="pathfly-btn del" @click="deleteTiles(index)" />
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
 
-    <div
-      @drop="tileset_drop($event)"
-      @dragover="tileset_dragover($event)"
-      @dragleave="tileset_dragleave($event)"
-    >
-      <table border="1" cellpadding="0" cellspacing="0">
-        <tr>
-          <td>序号</td>
-          <td>名称</td>
-          <td>操作</td>
-        </tr>
-        <tr v-for="(value,index) in tiles" :key="index">
-          <td>{{index + 1}}</td>
-          <td>{{value.name}}</td>
-          <button @click="deleteTiles(index)">删除</button>
-        </tr>
-      </table>
+    <div class="footer">
+      <button @click="stopTest" style="margin-right: 20px;">停止</button>
+      <button @click="startTest">开始执行</button>
     </div>
-
-    <button @click="startTest">开始执行</button>
-    <button @click="stopTest">停止</button>
   </div>
 </template>
 
@@ -56,8 +59,8 @@
 import languagejs from "./locale";
 
 export default {
-  name: 'Viewpoint',
-  data () {
+  name: "Viewpoint",
+  data() {
     return {
       lang: {},
       tiles: [],
@@ -71,13 +74,13 @@ export default {
       numberOfTilesProcessing: 0,
       results: [],
       item: {
-        name: '',
-        thumbnail: ''
+        name: "",
+        thumbnail: ""
       }
     };
   },
   methods: {
-    startTest () {
+    startTest() {
       for (var i = 0; i < this.tiles.length; i++) {
         this.$root.$earth.getObject(this.tiles[i].id).enabled = false;
       }
@@ -85,12 +88,12 @@ export default {
       this.results = [];
       this.testSingleTileset();
     },
-    stopTest () {
+    stopTest() {
       clearInterval(this.intervalId);
       this.intervalId = null;
-      this.$emit('testfinished', this.results);
+      this.$emit("testfinished", this.results);
     },
-    testSingleTileset () {
+    testSingleTileset() {
       let self = this;
       let earth = this.$root.$earth;
       earth.cameraViewManager.globe.flyTo().then(() => {
@@ -101,7 +104,10 @@ export default {
         self._tileset._tileset.allTilesLoaded.addEventListener(() => {
           self.testNextTileset();
         });
-        self._tileset._tileset.loadProgress.addEventListener(function (numberOfPendingRequests, numberOfTilesProcessing) {
+        self._tileset._tileset.loadProgress.addEventListener(function(
+          numberOfPendingRequests,
+          numberOfTilesProcessing
+        ) {
           self.numberOfPendingRequests = numberOfPendingRequests;
           self.numberOfTilesProcessing = numberOfTilesProcessing;
         });
@@ -114,7 +120,7 @@ export default {
         self._viewpoint.flyTo();
       });
     },
-    testNextTileset () {
+    testNextTileset() {
       this.currentTilesetIndex++;
       this._tileset.destroy();
       if (this.currentTilesetIndex === this.tiles.length) {
@@ -123,18 +129,17 @@ export default {
       }
       this.testSingleTileset();
     },
-    startTimeout () {
-      let self = this
+    startTimeout() {
+      let self = this;
       if (this.intervalId !== null) {
         clearInterval(this.intervalId);
         this.intervalId = null;
       }
       this.intervalId = setInterval(() => {
         self.record();
-      }, this.interval
-      );
+      }, this.interval);
     },
-    record () {
+    record() {
       var record = {};
       record.time = this.resultIndex * this.interval;
       record.fps = this.$root.$earth.status.fps;
@@ -144,7 +149,7 @@ export default {
       this.tilesetRecord.date.push(record);
       this.resultIndex++;
     },
-    getCzmObjectFromDrag (dataTransfer) {
+    getCzmObjectFromDrag(dataTransfer) {
       for (let i = 0; i < dataTransfer.types.length; i++) {
         var t = dataTransfer.types[i];
         if (!t) continue;
@@ -156,31 +161,31 @@ export default {
       }
       return undefined;
     },
-    tileset_dragover (e) {
+    tileset_dragover(e) {
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
-      if (czmObj && czmObj.xbsjType === 'Tileset') {
+      if (czmObj && czmObj.xbsjType === "Tileset") {
         e.dataTransfer.dropEffect = "copy";
         this.tileset_over = true;
       } else {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    tileset_dragleave () {
+    tileset_dragleave() {
       this.tileset_over = false;
     },
-    tileset_drop (e) {
+    tileset_drop(e) {
       this.tileset_over = false;
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
-      if (czmObj && czmObj.xbsjType === 'Tileset') {
+      if (czmObj && czmObj.xbsjType === "Tileset") {
         this.tiles.push({ id: czmObj.xbsjGuid, name: czmObj.name });
       }
     },
-    deleteTiles (index) {
+    deleteTiles(index) {
       this.tiles.splice(index, 1);
     },
-    viewpoint_dragover (e) {
+    viewpoint_dragover(e) {
       e.preventDefault();
       if (e.dataTransfer.types.indexOf("_view") >= 0) {
         e.dataTransfer.dropEffect = "copy";
@@ -189,20 +194,22 @@ export default {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    viewpoint_dragleave () {
+    viewpoint_dragleave() {
       this.tileset_over = false;
     },
-    viewpoint_drop (e) {
+    viewpoint_drop(e) {
       e.preventDefault();
       if (this.tileset_over) {
         let index = e.dataTransfer.getData("_view");
-        this._viewpoint = this.$root.$earth.cameraViewManager.views[parseInt(index)];
+        this._viewpoint = this.$root.$earth.cameraViewManager.views[
+          parseInt(index)
+        ];
         this.item.name = this._viewpoint.name;
         this.item.thumbnail = this._viewpoint.thumbnail;
       }
       this.tileset_over = false;
     },
-    startMove (event) {
+    startMove(event) {
       //如果事件的目标不是本el 返回
       if (
         event.target.parentElement !== this.$refs.container &&
@@ -213,7 +220,7 @@ export default {
       }
       this.moving = true;
     },
-    onMoving (event) {
+    onMoving(event) {
       //获取鼠标和为开始位置的插值，滚动滚动条
       if (!this.moving) return;
 
@@ -223,7 +230,7 @@ export default {
         dom.scrollLeft = wleft;
       }
     },
-    endMove (envent) {
+    endMove(envent) {
       this.moving = false;
     }
   }
@@ -231,6 +238,11 @@ export default {
 </script>
 
 <style scoped>
+.content {
+  width: 100%;
+  height: calc(100% - 52px) !important;
+  overflow: auto;
+}
 button {
   background: none;
   border: none;
@@ -246,9 +258,6 @@ input[type="text"]:focus,
 button:focus {
   outline: 1px solid rgba(31, 255, 255, 1);
 }
-.border {
-  border: 1px solid black;
-}
 .select-ul {
   width: 80%;
   padding-left: 8px;
@@ -262,21 +271,21 @@ button:focus {
 }
 .xbsj-flatten > div {
   width: 100%;
-  height: 160px;
   margin-top: 10px;
+  margin-top: 30px;
 }
 .xbsj-flatten label {
   float: left;
   min-width: 50px;
   height: 28px;
-  line-height: 28px;
+  line-height: 30px;
   text-align: right;
-  margin-left: 8px;
-  margin-right: 15px;
+  margin-left: 40px;
+  margin-right: 12px;
 }
 .xbsj-flatten .flatten input,
 .xbsj-flatten .attributePath input {
-  width: calc(100% - 150px);
+  width: calc(100% - 200px);
   height: 28px;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
@@ -303,17 +312,98 @@ button:focus {
 }
 .contentDiv {
   overflow: auto;
-  /* height: calc(100% - 29px); */
 }
 .contentsDiv {
   height: calc(100% - 142px);
 }
-.xbsj-cameraview-img {
-  margin: 3px;
-  border-radius: 10px;
+.viewbox {
+  display: inline-block;
+  width: 72px;
+  height: 100px;
+  border-radius: 5px;
+}
+.viewbox img {
+  width: 100%;
+  height: 72px;
+  border-radius: 5px;
+  vertical-align: middle;
+}
+.viewbox .xbsj-check {
+  width: 100%;
+  height: 28px;
+  text-align: center;
+  line-height: 28px;
+  margin-left: 0px;
+}
+.viewspan {
+  display: inline-block;
+  width: 60px;
+  height: 28px;
+  text-align: center;
+  line-height: 28px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  margin-left: 10px;
+}
+table {
+  border: solid #2b2b2b;
+  border-width: 0px 2px 2px 0px;
+  width: calc(100% - 190px);
+}
+table td {
+  border: solid #2b2b2b;
+  border-width: 2px 0px 0px 2px;
+  text-align: center;
+}
+table tr {
+  border: solid #2b2b2b;
+  border-width: 2px 0px 0px 2px;
+  text-align: center;
+  font-size: 14px;
+  height: 28px;
+}
+table td:nth-child(1),
+table td:nth-child(3) {
+  width: 46px;
+}
+.pathfly-btn {
+  background: none;
+  border: none;
+  width: 100%;
+  height: 34px;
+  margin-top: -1px;
   cursor: pointer;
-  width: 64px;
-  height: 64px;
+}
+.pathfly-btn:focus {
+  outline: none;
+}
+.del {
+  background: url(../../../images/flatten/del.png) no-repeat !important;
+  background-position: center !important;
+}
+.footer {
+  width: 100%;
+  height: 60px;
+  border-top: 4px solid rgba(0, 0, 0, 0.4);
   position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.footer button {
+  display: inline-block;
+  width: 74px;
+  height: 32px;
+  line-height: 32px;
+  border-radius: 4px;
+  margin-right: 10px;
+  margin-top: 8px;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #ffffff;
+  float: right;
+}
+.footer button:hover {
+  color: #1fffff;
 }
 </style>

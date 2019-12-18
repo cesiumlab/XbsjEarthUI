@@ -2,7 +2,7 @@
   <Window
     :width="602"
     :minWidth="480"
-    :height="664"
+    :height="410"
     :top="164"
     :floatright="true"
     :title="lang.title"
@@ -11,15 +11,15 @@
     @showclick="showSelect=false"
   >
     <div style="height: 100%;">
-      <div style="text-align: center;">
-        <div class="tab">
-          <span @click="tabShow='1'">{{lang.firstpage}}</span>
-          <span @click="tabShow='2'">{{lang.secondpage}}</span>
-          <span @click="tabShow='3'">{{lang.secondpage}}</span>
-        </div>
+      <div class="tab">
+        <ul>
+          <li @click="tabShow='1'" :class="{highlight: tabShow=='1'}">{{lang.pathfly}}</li>
+          <li @click="tabShow='2'" :class="{highlight: tabShow=='2'}">{{lang.fixedpoint}}</li>
+          <li @click="tabShow='3'" :class="{highlight: tabShow=='3'}">{{lang.testresult}}</li>
+        </ul>
       </div>
-      <PathFlyTest class="xbsj-flatten" v-show="tabShow == '1'" @testfinished='testFinished'></PathFlyTest>
-      <Viewpoint class="xbsj-flatten" v-show="tabShow == '2'"  @testfinished='testFinished'></Viewpoint>
+      <PathFlyTest class="xbsj-flatten" v-show="tabShow == '1'" @testfinished="testFinished"></PathFlyTest>
+      <Viewpoint class="xbsj-flatten" v-show="tabShow == '2'" @testfinished="testFinished"></Viewpoint>
     </div>
   </Window>
 </template>
@@ -27,19 +27,19 @@
 <script>
 import languagejs from "./locale";
 import PathFlyTest from "./PathFlyTest";
-import Viewpoint from "./Viewpoint"
+import Viewpoint from "./Viewpoint";
 export default {
   components: {
     PathFlyTest,
     Viewpoint
   },
-  data () {
+  data() {
     return {
       ranges: true,
       lang: {},
       showPinSelect: false,
       pinshowPinSelect: false,
-      tabShow: '1',
+      tabShow: "1",
       makiIconObj: {},
       drag_over: false,
       dragShow: false,
@@ -63,21 +63,21 @@ export default {
       },
 
       langs: languagejs,
-      pathGuidarr: [],
+      pathGuidarr: []
     };
   },
   methods: {
-    testFinished (results) {
+    testFinished(results) {
       this.records = results;
       console.log(this.records);
     },
-    apply () {
+    apply() {
       this._czmObj.evalString = this.pin.evalString;
     },
-    close () {
+    close() {
       this.$parent.destroyTool(this);
     },
-    cancel () {
+    cancel() {
       this.close();
       const pinToolObj = this._czmObj;
       if (!pinToolObj) {
@@ -89,7 +89,7 @@ export default {
         pinToolObj.destroy();
       }
     }
-  },
+  }
   // beforeDestroy () {
   //   // 解绑数据关联
   //   this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
@@ -100,19 +100,9 @@ export default {
 </script>
 
 <style scoped>
-button {
-  background: none;
-  border: none;
-  margin: 0 auto;
-  display: block;
-  line-height: 25px;
-  outline: none;
-}
-button:focus {
-  outline: none !important;
-}
 .xbsj-flatten {
   min-width: 462px;
+  height: calc(100% - 68px);
 }
 .xbsj-flatten > div {
   width: 100%;
@@ -137,14 +127,6 @@ button:focus {
   border: none;
   color: #dddddd;
   padding-left: 10px;
-}
-.xbsj-flatten .attributePlay button {
-  width: 99px;
-  height: 28px;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 3px;
-  border: none;
-  cursor: pointer;
 }
 .xbsj-flatten .attributePlay .playspan {
   display: inline-block;
@@ -172,10 +154,6 @@ button:focus {
   color: #dddddd;
   padding-left: 10px;
   margin-right: 6px;
-}
-input[type="text"]:focus,
-button:focus {
-  outline: 1px solid rgba(31, 255, 255, 1);
 }
 .border {
   border: 1px solid black;
@@ -237,16 +215,26 @@ button:focus {
   width: calc(100% - 100px);
   height: 28px;
 }
-.tab span {
-  display: inline-block;
-  min-width: 50px;
+.tab {
+  width: 100%;
   height: 28px;
-  line-height: 28px;
-  background: rgba(0, 0, 0, 0.5);
-  margin-right: 20px;
-  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.5);
 }
-.tab span:hover {
+.tab ul li:nth-child(1) {
+  margin-left: 18px;
+}
+.tab ul li {
+  list-style: none;
+  float: left;
+  width: 82px;
+  height: 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 28px;
+}
+.tab ul .highlight,
+.tab ul li:hover {
   background: #000;
 }
 </style>

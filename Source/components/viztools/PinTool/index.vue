@@ -12,7 +12,7 @@
     @showclick="showSelect=false"
   >
     <div style="height: 100%;">
-      <div style="text-align: center;">
+      <div style="text-align: center; width: 100%; background: rgba(0,0,0,0.5);">
         <ul class="tab">
           <li
             @click="routineShow=true,  imageShow=false, textShow=false, codeShow=false"
@@ -871,10 +871,9 @@ button:focus {
   min-width: 50px;
   height: 28px;
   line-height: 28px;
-  background: rgba(0, 0, 0, 0.5);
-  /* margin-right: 20px; */
   cursor: pointer;
   float: left;
+  border-radius: 4px;
 }
 .tab li:hover,
 .tab .highlight {

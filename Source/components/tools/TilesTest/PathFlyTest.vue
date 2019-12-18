@@ -1,54 +1,57 @@
 <template>
-  <div
-    style="height: 100%;"
-    @mousedown="startMove($event)"
-    @mousemove="onMoving($event)"
-    @mouseup="endMove($event)"
-  >
-    <div class="flatten">
-      <div style="position: relative;">
-        <label>{{lang.pathAnimation}}</label>
-        <input
-          type="text"
-          v-model="attachedPathGuid"
-          @click="pinselectinput"
-          readonly
-          style="cursor: pointer;"
-        />
-        <button class="selectButton"></button>
-        <div class="cutselectbox" v-show="pinshowPinSelect" style="overflow:scroll;height:100px;">
-          <div @click="pinoptionssure(c)" v-for="(c,index) in pathGuidarr" :key="index">
-            <span>{{c.name}}</span>
+  <div @mousedown="startMove($event)" @mousemove="onMoving($event)" @mouseup="endMove($event)">
+    <div class="content">
+      <div class="flatten">
+        <div style="position: relative;">
+          <label>{{lang.pathAnimation}}</label>
+          <input
+            type="text"
+            v-model="attachedPathGuid"
+            @click="pinselectinput"
+            readonly
+            style="cursor: pointer;"
+          />
+          <button class="selectButton"></button>
+          <div class="cutselectbox" v-show="pinshowPinSelect">
+            <div @click="pinoptionssure(c)" v-for="(c,index) in pathGuidarr" :key="index">
+              <span>{{c.name}}</span>
+            </div>
           </div>
         </div>
+        <div style="position: relative; margin-top: 18px;">
+          <label>{{lang.interval}}</label>
+          <input type="text" v-model.number="interval" style="cursor: pointer;" />
+          <span>{{lang.ms}}</span>
+        </div>
       </div>
-      <div style="position: relative;">
-        <label>{{lang.interval}}</label>
-        <input type="text" v-model.number="interval" style="cursor: pointer;" />
+      <div class="flatten" style="margin-top: 20px;">
+        <label>3dtiles</label>
+        <div
+          @drop="tileset_drop($event)"
+          @dragover="tileset_dragover($event)"
+          @dragleave="tileset_dragleave($event)"
+        >
+          <table border="1" cellpadding="0" cellspacing="0">
+            <tr>
+              <td>序号</td>
+              <td>名称</td>
+              <td>操作</td>
+            </tr>
+            <tr v-for="(value,index) in tiles" :key="index">
+              <td>{{index + 1}}</td>
+              <td>{{value.name}}</td>
+              <td>
+                <input type="button" class="pathfly-btn del" />
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
-
-    <div
-      @drop="tileset_drop($event)"
-      @dragover="tileset_dragover($event)"
-      @dragleave="tileset_dragleave($event)"
-    >
-      <table border="1" cellpadding="0" cellspacing="0">
-        <tr>
-          <td>序号</td>
-          <td>名称</td>
-          <td>操作</td>
-        </tr>
-        <tr v-for="(value,index) in tiles" :key="index">
-          <td>{{index + 1}}</td>
-          <td>{{value.name}}</td>
-          <button>删除</button>
-        </tr>
-      </table>
+    <div class="footer">
+      <button @click="stopTest" style="margin-right: 20px;">停止</button>
+      <button @click="startTest">开始执行</button>
     </div>
-
-    <button @click="startTest">开始执行</button>
-    <button @click="stopTest">停止</button>
   </div>
 </template>
 
@@ -56,8 +59,8 @@
 import languagejs from "./locale";
 
 export default {
-  name: 'PathFlyTest',
-  data () {
+  name: "PathFlyTest",
+  data() {
     return {
       lang: {},
       pinshowPinSelect: false,
@@ -77,11 +80,11 @@ export default {
     };
   },
   methods: {
-    pinoptionssure (c) {
+    pinoptionssure(c) {
       this.attachedPathGuid = c.guid;
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
-    pinselectinput () {
+    pinselectinput() {
       this.pathGuidarr = [];
       let guidobj = {};
       this.pathGuidarr.push({ name: "空", guid: "" });
@@ -99,13 +102,11 @@ export default {
       }
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
-    startTest () {
+    startTest() {
       let path = this.$root.$earth.getObject(this.attachedPathGuid);
       this.pathLength = path.length;
       this._disposers = [];
-      this._disposers.push(
-        XE.MVVM.bind(this, "currentD", path, "currentD")
-      );
+      this._disposers.push(XE.MVVM.bind(this, "currentD", path, "currentD"));
       for (var i = 0; i < this.tiles.length; i++) {
         this.$root.$earth.getObject(this.tiles[i].id).enabled = false;
       }
@@ -118,17 +119,19 @@ export default {
       path.playing = true;
       path.loopPlay = true;
     },
-    stopTest () {
+    stopTest() {
       clearInterval(this.intervalID);
       this.intervalID = null;
       let path = this.$root.$earth.getObject(this.attachedPathGuid);
       path.cameraAttached = false;
       path.playing = false;
       path.loopPlay = false;
-      this.$emit('testfinished', this.results);
+      this.$emit("testfinished", this.results);
     },
-    testSingleTileset () {
-      var tileset = this.$root.$earth.getObject(this.tiles[this.currentTilesetIndex].id);
+    testSingleTileset() {
+      var tileset = this.$root.$earth.getObject(
+        this.tiles[this.currentTilesetIndex].id
+      );
       this._tileset = new XE.Obj.Tileset(this.$root.$earth);
       this._tileset.xbsjFromJSON(tileset.toJSON());
       this._tileset.enabled = true;
@@ -138,7 +141,7 @@ export default {
       this.tilesetRecord.date = [];
       this.resultIndex = 1;
     },
-    testNextTileset () {
+    testNextTileset() {
       this.currentTilesetIndex++;
       this._tileset.destroy();
       if (this.currentTilesetIndex === this.tiles.length) {
@@ -147,14 +150,13 @@ export default {
       }
       this.testSingleTileset();
     },
-    startTimeout () {
-      let self = this
+    startTimeout() {
+      let self = this;
       this.intervalID = setInterval(() => {
         self.record();
-      }, this.interval
-      );
+      }, this.interval);
     },
-    record () {
+    record() {
       var record = {};
       record.time = this.resultIndex * this.interval;
       record.fps = this.$root.$earth.status.fps;
@@ -162,7 +164,7 @@ export default {
       this.tilesetRecord.date.push(record);
       this.resultIndex++;
     },
-    getCzmObjectFromDrag (dataTransfer) {
+    getCzmObjectFromDrag(dataTransfer) {
       for (let i = 0; i < dataTransfer.types.length; i++) {
         var t = dataTransfer.types[i];
         if (!t) continue;
@@ -174,28 +176,28 @@ export default {
       }
       return undefined;
     },
-    tileset_dragover (e) {
+    tileset_dragover(e) {
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
-      if (czmObj && czmObj.xbsjType === 'Tileset') {
+      if (czmObj && czmObj.xbsjType === "Tileset") {
         e.dataTransfer.dropEffect = "copy";
         this.tileset_over = true;
       } else {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    tileset_dragleave () {
+    tileset_dragleave() {
       this.tileset_over = false;
     },
-    tileset_drop (e) {
+    tileset_drop(e) {
       this.tileset_over = false;
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
-      if (czmObj && czmObj.xbsjType === 'Tileset') {
+      if (czmObj && czmObj.xbsjType === "Tileset") {
         this.tiles.push({ id: czmObj.xbsjGuid, name: czmObj.name });
       }
     },
-    startMove (event) {
+    startMove(event) {
       //如果事件的目标不是本el 返回
       if (
         event.target.parentElement !== this.$refs.container &&
@@ -206,7 +208,7 @@ export default {
       }
       this.moving = true;
     },
-    onMoving (event) {
+    onMoving(event) {
       //获取鼠标和为开始位置的插值，滚动滚动条
       if (!this.moving) return;
 
@@ -216,18 +218,18 @@ export default {
         dom.scrollLeft = wleft;
       }
     },
-    endMove (envent) {
+    endMove(envent) {
       this.moving = false;
     }
   },
   watch: {
-    currentD () {
+    currentD() {
       if (this.currentD === 0) {
         this.testNextTileset();
       }
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
     this._disposers.forEach(e => e());
@@ -237,13 +239,10 @@ export default {
 </script>
 
 <style scoped>
-button {
-  background: none;
-  border: none;
-  margin: 0 auto;
-  display: block;
-  line-height: 25px;
-  outline: none;
+.content {
+  width: 100%;
+  height: calc(100% - 52px) !important;
+  overflow: auto;
 }
 button:focus {
   outline: none !important;
@@ -265,10 +264,10 @@ button:focus {
 }
 
 .cutselectbox {
-  width: calc(100% - 102px);
+  width: calc(100% - 190px);
   background: rgba(138, 138, 138, 1);
   position: absolute;
-  left: 78px;
+  left: 92px;
   border-radius: 0px 0px 4px 4px;
   overflow: auto;
   z-index: 999;
@@ -304,7 +303,7 @@ button:focus {
   /* margin-top: 10px; */
   outline: none;
   position: absolute;
-  right: 15px;
+  right: 98px;
   top: 11px;
 }
 .xbsj-flatten {
@@ -313,7 +312,7 @@ button:focus {
 .xbsj-flatten > div {
   width: 100%;
   height: 60px;
-  margin-top: 10px;
+  margin-top: 40px;
 }
 .xbsj-flatten label {
   float: left;
@@ -321,12 +320,12 @@ button:focus {
   height: 28px;
   line-height: 28px;
   text-align: right;
-  margin-left: 8px;
-  margin-right: 15px;
+  margin-left: 32px;
+  margin-right: 10px;
 }
 .xbsj-flatten .flatten input,
 .xbsj-flatten .attributePath input {
-  width: calc(100% - 150px);
+  width: calc(100% - 200px);
   height: 28px;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
@@ -357,5 +356,67 @@ button:focus {
 }
 .contentsDiv {
   height: calc(100% - 142px);
+}
+
+table {
+  border: solid #2b2b2b;
+  border-width: 0px 2px 2px 0px;
+  width: calc(100% - 190px);
+}
+table td {
+  border: solid #2b2b2b;
+  border-width: 2px 0px 0px 2px;
+  text-align: center;
+}
+table tr {
+  border: solid #2b2b2b;
+  border-width: 2px 0px 0px 2px;
+  text-align: center;
+  font-size: 14px;
+  height: 28px;
+}
+table td:nth-child(1),
+table td:nth-child(3) {
+  width: 46px;
+}
+.pathfly-btn {
+  background: none;
+  border: none;
+  width: 100%;
+  height: 34px;
+  margin-top: -1px;
+  cursor: pointer;
+}
+.pathfly-btn:focus {
+  outline: none;
+}
+.del {
+  background: url(../../../images/flatten/del.png) no-repeat !important;
+  background-position: center !important;
+}
+.footer {
+  width: 100%;
+  height: 44px;
+  border-top: 4px solid rgba(0, 0, 0, 0.4);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.footer button {
+  display: inline-block;
+  width: 74px;
+  height: 32px;
+  line-height: 32px;
+  border-radius: 4px;
+  margin-right: 10px;
+  margin-top: 8px;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #ffffff;
+  float: right;
+}
+.footer button:hover {
+  color: #1fffff;
 }
 </style>
