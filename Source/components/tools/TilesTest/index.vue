@@ -36,36 +36,11 @@ export default {
   },
   data () {
     return {
-      ranges: true,
       lang: {},
-      showPinSelect: false,
-      pinshowPinSelect: false,
       show: false,
       tabShow: "1",
-      makiIconObj: {},
-      drag_over: false,
-      dragShow: false,
       records: [],
-      pin: {
-        name: "",
-        creating: true,
-        enabled: true,
-        editing: false,
-        far: 100,
-        near: 1,
-        imageUrl: "",
-        scale: 1,
-        show: true,
-        position: [0, 0, 0],
-        pinBuilder: {},
-        attachedPathGuid: "",
-        origin: [0, 0],
-        isDivImage: true,
-        evalString: ""
-      },
-
-      langs: languagejs,
-      pathGuidarr: []
+      langs: languagejs
     };
   },
   methods: {
@@ -73,23 +48,11 @@ export default {
       this.records = results;
       console.log(this.records);
     },
-    apply () {
-      this._czmObj.evalString = this.pin.evalString;
-    },
     close () {
       this.$parent.destroyTool(this);
     },
     cancel () {
       this.close();
-      const pinToolObj = this._czmObj;
-      if (!pinToolObj) {
-        return;
-      }
-      pinToolObj.positionEditing = false;
-      if (pinToolObj.isCreating) {
-        pinToolObj.isCreating = false;
-        pinToolObj.destroy();
-      }
     }
   }
   // beforeDestroy () {

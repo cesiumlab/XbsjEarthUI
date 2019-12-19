@@ -41,7 +41,7 @@
               <td>{{index + 1}}</td>
               <td>{{value.name}}</td>
               <td>
-                <input type="button" class="pathfly-btn del" />
+                <input type="button" class="pathfly-btn del" @click="deleteTiles(index)" />
               </td>
             </tr>
           </table>
@@ -49,8 +49,8 @@
       </div>
     </div>
     <div class="footer">
-      <button @click="stopTest" style="margin-right: 20px;">停止</button>
-      <button @click="startTest">开始执行</button>
+      <button @click="stopTest" style="margin-right: 20px;" :value="state">{{state}}</button>
+      <button @click="startTest" disabled='true' >开始执行</button>
     </div>
   </div>
 </template>
@@ -60,8 +60,10 @@ import languagejs from "./locale";
 
 export default {
   name: "PathFlyTest",
-  data() {
+  data () {
     return {
+      state: "停止",
+      disabled: true,
       lang: {},
       pinshowPinSelect: false,
       tiles: [],
@@ -80,11 +82,11 @@ export default {
     };
   },
   methods: {
-    pinoptionssure(c) {
+    pinoptionssure (c) {
       this.attachedPathGuid = c.guid;
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
-    pinselectinput() {
+    pinselectinput () {
       this.pathGuidarr = [];
       let guidobj = {};
       this.pathGuidarr.push({ name: "空", guid: "" });
@@ -102,7 +104,7 @@ export default {
       }
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
-    startTest() {
+    startTest () {
       let path = this.$root.$earth.getObject(this.attachedPathGuid);
       this.pathLength = path.length;
       this._disposers = [];
@@ -119,7 +121,7 @@ export default {
       path.playing = true;
       path.loopPlay = true;
     },
-    stopTest() {
+    stopTest () {
       clearInterval(this.intervalID);
       this.intervalID = null;
       let path = this.$root.$earth.getObject(this.attachedPathGuid);
@@ -128,7 +130,7 @@ export default {
       path.loopPlay = false;
       this.$emit("testfinished", this.results);
     },
-    testSingleTileset() {
+    testSingleTileset () {
       var tileset = this.$root.$earth.getObject(
         this.tiles[this.currentTilesetIndex].id
       );
@@ -141,7 +143,7 @@ export default {
       this.tilesetRecord.date = [];
       this.resultIndex = 1;
     },
-    testNextTileset() {
+    testNextTileset () {
       this.currentTilesetIndex++;
       this._tileset.destroy();
       if (this.currentTilesetIndex === this.tiles.length) {
@@ -150,13 +152,13 @@ export default {
       }
       this.testSingleTileset();
     },
-    startTimeout() {
+    startTimeout () {
       let self = this;
       this.intervalID = setInterval(() => {
         self.record();
       }, this.interval);
     },
-    record() {
+    record () {
       var record = {};
       record.time = this.resultIndex * this.interval;
       record.fps = this.$root.$earth.status.fps;
@@ -164,7 +166,7 @@ export default {
       this.tilesetRecord.date.push(record);
       this.resultIndex++;
     },
-    getCzmObjectFromDrag(dataTransfer) {
+    getCzmObjectFromDrag (dataTransfer) {
       for (let i = 0; i < dataTransfer.types.length; i++) {
         var t = dataTransfer.types[i];
         if (!t) continue;
@@ -176,7 +178,7 @@ export default {
       }
       return undefined;
     },
-    tileset_dragover(e) {
+    tileset_dragover (e) {
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.xbsjType === "Tileset") {
@@ -186,10 +188,10 @@ export default {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    tileset_dragleave() {
+    tileset_dragleave () {
       this.tileset_over = false;
     },
-    tileset_drop(e) {
+    tileset_drop (e) {
       this.tileset_over = false;
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
@@ -197,7 +199,10 @@ export default {
         this.tiles.push({ id: czmObj.xbsjGuid, name: czmObj.name });
       }
     },
-    startMove(event) {
+    deleteTiles (index) {
+      this.tiles.splice(index, 1);
+    },
+    startMove (event) {
       //如果事件的目标不是本el 返回
       if (
         event.target.parentElement !== this.$refs.container &&
@@ -208,7 +213,7 @@ export default {
       }
       this.moving = true;
     },
-    onMoving(event) {
+    onMoving (event) {
       //获取鼠标和为开始位置的插值，滚动滚动条
       if (!this.moving) return;
 
@@ -218,18 +223,18 @@ export default {
         dom.scrollLeft = wleft;
       }
     },
-    endMove(envent) {
+    endMove (envent) {
       this.moving = false;
     }
   },
   watch: {
-    currentD() {
+    currentD () {
       if (this.currentD === 0) {
         this.testNextTileset();
       }
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
     this._disposers.forEach(e => e());

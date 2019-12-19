@@ -38,7 +38,7 @@
           <span class="xbsj-item-name">{{lang.modelTree}}</span>
         </div>
 
-        <div class="xbsj-item-btnbox" @click="tilesTestShow=!tilesTestShow" v-show="show">
+        <div class="xbsj-item-btnbox" @click="tilesTestShow=!tilesTestShow">
           <div class="xbsj-item-btn symbolbutton" :class="{highlight: tilesTestShow}"></div>
           <span class="xbsj-item-name">{{lang.autoTest}}</span>
         </div>

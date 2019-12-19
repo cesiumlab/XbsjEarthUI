@@ -48,4 +48,4 @@ class TilesTest {
     }
 }
 
-export default TerrainOnline;
+export default TilesTest;

@@ -67,7 +67,7 @@ import LabScene from "./LabScene"
 import ModelTree from "./tools/ModelTree";
 import EntityMore from "./tools/EntityMore";
 import Symbol from "./tools/Symbol"
-
+import TilesTest from "./tools/TilesTest"
 /**
  * EarthUI根管理器
  * @class
@@ -241,6 +241,7 @@ class MainUI {
     this._cutFillComputing = new CutFillComputing(this);
 
     this._featureProperty = new FeatureProperty(this);
+    this._tilesTest = new TilesTest(this);
     /**
     * 工具管理器
     * @class
