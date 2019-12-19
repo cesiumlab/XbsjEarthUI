@@ -65,7 +65,10 @@ export default {
         this.symbol.destroy()
       }
       this.symbol = XE.Core.XbsjObject.createObject(symbol.type, this.$root.$earth);
-      var json = JSON.parse(symbol.content).czmObject;
+      var json = JSON.parse(symbol.content);
+      if (json.czmObject) {
+        json = json.czmObject;
+      }
       this.symbol.xbsjFromJSON(json);
       this.symbol.isCreating = true;
       this.$root.$earthUI.showPropertyWindow(this.symbol);

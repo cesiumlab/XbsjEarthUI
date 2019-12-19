@@ -6,6 +6,7 @@
     :top="164"
     :floatright="true"
     :title="lang.title"
+    v-show="show"
     @cancel="cancel"
     :footervisible="false"
     @showclick="showSelect=false"
@@ -33,12 +34,13 @@ export default {
     PathFlyTest,
     Viewpoint
   },
-  data() {
+  data () {
     return {
       ranges: true,
       lang: {},
       showPinSelect: false,
       pinshowPinSelect: false,
+      show: false,
       tabShow: "1",
       makiIconObj: {},
       drag_over: false,
@@ -67,17 +69,17 @@ export default {
     };
   },
   methods: {
-    testFinished(results) {
+    testFinished (results) {
       this.records = results;
       console.log(this.records);
     },
-    apply() {
+    apply () {
       this._czmObj.evalString = this.pin.evalString;
     },
-    close() {
+    close () {
       this.$parent.destroyTool(this);
     },
-    cancel() {
+    cancel () {
       this.close();
       const pinToolObj = this._czmObj;
       if (!pinToolObj) {

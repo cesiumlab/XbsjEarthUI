@@ -426,7 +426,7 @@ export default {
           if (arr[j].geometry.type === "Polygon") {
             //如果类型为Polygon
             var Polygon = new XE.Obj.Plots.GeoPolygon(this.$root.$earth);
-            if (arr[j].properties.name) {
+            if (arr[j].properties && arr[j].properties.name) {
               Polygon.name = arr[j].properties.name;
             }
             var positionarr = arr[j].geometry.coordinates[0];
