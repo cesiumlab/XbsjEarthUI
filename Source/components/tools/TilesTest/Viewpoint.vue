@@ -12,9 +12,9 @@
             @dragleave="viewpoint_dragleave($event)"
           >
             <img :src="item.thumbnail" @contextmenu.prevent="onContexMenu(index, $event)" />
-            <label class="xbsj-check">{{item.name}}新视角</label>
+            <label class="xbsj-check">{{item.name}}</label>
           </div>
-          <span class="viewspan">当前视角</span>
+          <!-- <span class="viewspan">当前视角</span> -->
         </div>
         <div style="margin-top: 20px;">
           <label>{{lang.interval}}</label>
@@ -39,7 +39,6 @@
               <td>{{index + 1}}</td>
               <td>{{value.name}}</td>
               <td>
-                <!-- <button @click="deleteTiles(index)">删除</button> -->
                 <input type="button" class="pathfly-btn del" @click="deleteTiles(index)" />
               </td>
             </tr>
@@ -114,7 +113,7 @@ export default {
         self.results.push({});
         self.tilesetRecord = self.results[self.results.length - 1];
         self.tilesetRecord.tileset = self._tileset.toJSON();
-        self.tilesetRecord.date = [];
+        self.tilesetRecord.data = [];
         self.resultIndex = 1;
         self.startTimeout();
         self._viewpoint.flyTo();
@@ -146,7 +145,7 @@ export default {
       record.numberOfPendingRequests = this.numberOfPendingRequests;
       record.numberOfTilesProcessing = this.numberOfTilesProcessing;
       record.tileset = this._tileset._tileset.statistics;
-      this.tilesetRecord.date.push(record);
+      this.tilesetRecord.data.push(record);
       this.resultIndex++;
     },
     getCzmObjectFromDrag(dataTransfer) {
@@ -240,7 +239,7 @@ export default {
 <style scoped>
 .content {
   width: 100%;
-  height: calc(100% - 52px) !important;
+  height: calc(100% - 50px) !important;
   overflow: auto;
 }
 button {
@@ -383,11 +382,8 @@ table td:nth-child(3) {
 }
 .footer {
   width: 100%;
-  height: 60px;
+  height: 45px;
   border-top: 4px solid rgba(0, 0, 0, 0.4);
-  position: absolute;
-  bottom: 0;
-  left: 0;
 }
 .footer button {
   display: inline-block;

@@ -10,6 +10,7 @@
     @cancel="cancel"
     :footervisible="false"
     @showclick="showSelect=false"
+    class="mainwindow"
   >
     <div style="height: 100%;">
       <div class="tab">
@@ -19,8 +20,16 @@
           <li @click="tabShow='3'" :class="{highlight: tabShow=='3'}">{{lang.testresult}}</li>
         </ul>
       </div>
-      <PathFlyTest class="xbsj-flatten" v-show="tabShow == '1'" @testfinished="testFinished"></PathFlyTest>
-      <Viewpoint class="xbsj-flatten" v-show="tabShow == '2'" @testfinished="testFinished"></Viewpoint>
+      <div id="tab-content" class="xbsj-flatten">
+        <PathFlyTest v-show="tabShow == '1'" @testfinished="testFinished"></PathFlyTest>
+        <Viewpoint v-show="tabShow == '2'" @testfinished="testFinished"></Viewpoint>
+        <TestResult
+          :views-result="records"
+          :views-width="width"
+          :views-height="height"
+          v-show="tabShow == '3'"
+        ></TestResult>
+      </div>
     </div>
   </Window>
 </template>
@@ -29,29 +38,46 @@
 import languagejs from "./locale";
 import PathFlyTest from "./PathFlyTest";
 import Viewpoint from "./Viewpoint";
+import TestResult from "./TestResult";
 export default {
   components: {
     PathFlyTest,
-    Viewpoint
+    Viewpoint,
+    TestResult
   },
-  data () {
+  data() {
     return {
       lang: {},
       show: false,
       tabShow: "1",
       records: [],
-      langs: languagejs
+      langs: languagejs,
+      width: 0,
+      height: 0,
+      windowWidth: 0
     };
   },
+  mounted() {
+    // var tabcontent = document.getElementById("tab-content");
+    // var xbsjflatten = document.getElementsByClassName("xbsj-flatten")[0];
+    // console.log(xbsjflatten);
+    // console.log(xbsjflatten.offsetWidth);
+    // this.width = tabcontent.offsetWidth;
+    // this.height = tabcontent.offsetHeight;
+    // console.log(tabcontent.offsetWidth);
+    // console.log(this.height);
+  },
   methods: {
-    testFinished (results) {
+    testFinished(results) {
       this.records = results;
       console.log(this.records);
+      var item1 = JSON.stringify(this.records);
+      sessionStorage.setItem("result", item1);
     },
-    close () {
+    close() {
       this.$parent.destroyTool(this);
     },
-    cancel () {
+    cancel() {
       this.close();
     }
   }
@@ -71,7 +97,7 @@ export default {
 }
 .xbsj-flatten > div {
   width: 100%;
-  height: 28px;
+  height: 100%;
   margin-top: 10px;
 }
 .xbsj-flatten label {

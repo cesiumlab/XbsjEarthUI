@@ -20,6 +20,8 @@ import XbsjLoading from "../components/common/Loading";
 import XbsjColorButtonArray from "../components/common/ColorButtonArray";
 import "../css/xbsjicon.css";
 import "../css/common.css";
+import echarts from "echarts";
+Vue.prototype.$echarts = echarts;
 //Vue.prototype.$EventBus = new Vue();
 Vue.component("Modal", Modal); // 全局注册组件
 Vue.component("Window", Window); // 全局注册组件
