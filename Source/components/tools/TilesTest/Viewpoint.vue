@@ -11,7 +11,11 @@
             @dragover="viewpoint_dragover($event)"
             @dragleave="viewpoint_dragleave($event)"
           >
-            <img :src="item.thumbnail" @contextmenu.prevent="onContexMenu(index, $event)" />
+            <img
+              :src="item.thumbnail"
+              @contextmenu.prevent="onContexMenu(index, $event)"
+              :disabled="state === lang.stop"
+            />
             <label class="xbsj-check">{{item.name}}</label>
           </div>
           <!-- <span class="viewspan">当前视角</span> -->
@@ -39,7 +43,12 @@
               <td>{{index + 1}}</td>
               <td>{{value.name}}</td>
               <td>
-                <input type="button" class="pathfly-btn del" @click="deleteTiles(index)" />
+                <input
+                  type="button"
+                  class="pathfly-btn del"
+                  @click="deleteTiles(index)"
+                  :disabled="state === lang.stop"
+                />
               </td>
             </tr>
           </table>
@@ -48,8 +57,11 @@
     </div>
 
     <div class="footer">
-      <button @click="stopTest" style="margin-right: 20px;">停止</button>
-      <button @click="startTest">开始执行</button>
+      <button
+        @click="testStateChange"
+        style="margin-right: 20px;"
+        :disabled="tiles.length === 0 || item.name === ''"
+      >{{state}}</button>
     </div>
   </div>
 </template>
@@ -59,9 +71,10 @@ import languagejs from "./locale";
 
 export default {
   name: "Viewpoint",
-  data() {
+  data () {
     return {
       lang: {},
+      state: '',
       tiles: [],
       langs: languagejs,
       currentTilesetIndex: 0,
@@ -78,21 +91,33 @@ export default {
       }
     };
   },
+  mounted () {
+    this.state = this.lang.start;
+  },
   methods: {
-    startTest() {
+    testStateChange () {
+      if (this.state === this.lang.start) {
+        this.startTest();
+      } else {
+        this.stopTest();
+      }
+    },
+    startTest () {
       for (var i = 0; i < this.tiles.length; i++) {
         this.$root.$earth.getObject(this.tiles[i].id).enabled = false;
       }
       this.currentTilesetIndex = 0;
       this.results = [];
       this.testSingleTileset();
+      this.state = this.lang.stop;
     },
-    stopTest() {
+    stopTest () {
       clearInterval(this.intervalId);
       this.intervalId = null;
       this.$emit("testfinished", this.results);
+      this.state = this.lang.start;
     },
-    testSingleTileset() {
+    testSingleTileset () {
       let self = this;
       let earth = this.$root.$earth;
       earth.cameraViewManager.globe.flyTo().then(() => {
@@ -103,7 +128,7 @@ export default {
         self._tileset._tileset.allTilesLoaded.addEventListener(() => {
           self.testNextTileset();
         });
-        self._tileset._tileset.loadProgress.addEventListener(function(
+        self._tileset._tileset.loadProgress.addEventListener(function (
           numberOfPendingRequests,
           numberOfTilesProcessing
         ) {
@@ -119,7 +144,7 @@ export default {
         self._viewpoint.flyTo();
       });
     },
-    testNextTileset() {
+    testNextTileset () {
       this.currentTilesetIndex++;
       this._tileset.destroy();
       if (this.currentTilesetIndex === this.tiles.length) {
@@ -128,7 +153,7 @@ export default {
       }
       this.testSingleTileset();
     },
-    startTimeout() {
+    startTimeout () {
       let self = this;
       if (this.intervalId !== null) {
         clearInterval(this.intervalId);
@@ -138,7 +163,7 @@ export default {
         self.record();
       }, this.interval);
     },
-    record() {
+    record () {
       var record = {};
       record.time = this.resultIndex * this.interval;
       record.fps = this.$root.$earth.status.fps;
@@ -148,7 +173,7 @@ export default {
       this.tilesetRecord.data.push(record);
       this.resultIndex++;
     },
-    getCzmObjectFromDrag(dataTransfer) {
+    getCzmObjectFromDrag (dataTransfer) {
       for (let i = 0; i < dataTransfer.types.length; i++) {
         var t = dataTransfer.types[i];
         if (!t) continue;
@@ -160,20 +185,20 @@ export default {
       }
       return undefined;
     },
-    tileset_dragover(e) {
+    tileset_dragover (e) {
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
-      if (czmObj && czmObj.xbsjType === "Tileset") {
+      if (czmObj && czmObj.xbsjType === "Tileset" && this.state === this.lang.start) {
         e.dataTransfer.dropEffect = "copy";
         this.tileset_over = true;
       } else {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    tileset_dragleave() {
+    tileset_dragleave () {
       this.tileset_over = false;
     },
-    tileset_drop(e) {
+    tileset_drop (e) {
       this.tileset_over = false;
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
@@ -181,10 +206,10 @@ export default {
         this.tiles.push({ id: czmObj.xbsjGuid, name: czmObj.name });
       }
     },
-    deleteTiles(index) {
+    deleteTiles (index) {
       this.tiles.splice(index, 1);
     },
-    viewpoint_dragover(e) {
+    viewpoint_dragover (e) {
       e.preventDefault();
       if (e.dataTransfer.types.indexOf("_view") >= 0) {
         e.dataTransfer.dropEffect = "copy";
@@ -193,10 +218,10 @@ export default {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    viewpoint_dragleave() {
+    viewpoint_dragleave () {
       this.tileset_over = false;
     },
-    viewpoint_drop(e) {
+    viewpoint_drop (e) {
       e.preventDefault();
       if (this.tileset_over) {
         let index = e.dataTransfer.getData("_view");
@@ -208,7 +233,7 @@ export default {
       }
       this.tileset_over = false;
     },
-    startMove(event) {
+    startMove (event) {
       //如果事件的目标不是本el 返回
       if (
         event.target.parentElement !== this.$refs.container &&
@@ -219,7 +244,7 @@ export default {
       }
       this.moving = true;
     },
-    onMoving(event) {
+    onMoving (event) {
       //获取鼠标和为开始位置的插值，滚动滚动条
       if (!this.moving) return;
 
@@ -229,7 +254,7 @@ export default {
         dom.scrollLeft = wleft;
       }
     },
-    endMove(envent) {
+    endMove (envent) {
       this.moving = false;
     }
   }

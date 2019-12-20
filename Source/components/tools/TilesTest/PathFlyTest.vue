@@ -10,6 +10,7 @@
             @click="pinselectinput"
             readonly
             style="cursor: pointer;"
+            :disabled="state === lang.stop"
           />
           <button class="selectButton"></button>
           <div class="cutselectbox" v-show="pinshowPinSelect">
@@ -41,7 +42,12 @@
               <td>{{index + 1}}</td>
               <td>{{value.name}}</td>
               <td>
-                <input type="button" class="pathfly-btn del" @click="deleteTiles(index)" />
+                <input
+                  type="button"
+                  class="pathfly-btn del"
+                  :disabled="state === lang.stop"
+                  @click="deleteTiles(index)"
+                />
               </td>
             </tr>
           </table>
@@ -49,8 +55,11 @@
       </div>
     </div>
     <div class="footer">
-      <button @click="stopTest" style="margin-right: 20px;" :value="state">{{state}}</button>
-      <button @click="startTest" disabled="true">开始执行</button>
+      <button
+        @click="testStateChange"
+        style="margin-right: 20px;"
+        :disabled="tiles.length === 0 || attachedPathGuid === ''"
+      >{{state}}</button>
     </div>
   </div>
 </template>
@@ -62,9 +71,8 @@ export default {
   name: "PathFlyTest",
   data() {
     return {
-      state: "停止",
-      disabled: true,
       lang: {},
+      state: '',
       pinshowPinSelect: false,
       tiles: [],
       czmObjects: {},
@@ -80,6 +88,9 @@ export default {
       tilesetRecord: null,
       results: []
     };
+  },
+  mounted () {
+    this.state = this.lang.start;
   },
   methods: {
     pinoptionssure(c) {
@@ -104,7 +115,14 @@ export default {
       }
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
-    startTest() {
+    testStateChange () {
+      if (this.state === this.lang.start) {
+        this.startTest();
+      } else {
+        this.stopTest();
+      }
+    },
+    startTest () {
       let path = this.$root.$earth.getObject(this.attachedPathGuid);
       this.pathLength = path.length;
       this._disposers = [];
@@ -120,6 +138,7 @@ export default {
       path.cameraAttached = true;
       path.playing = true;
       path.loopPlay = true;
+      this.state = this.lang.stop;
     },
     stopTest() {
       clearInterval(this.intervalID);
@@ -129,6 +148,7 @@ export default {
       path.playing = false;
       path.loopPlay = false;
       this.$emit("testfinished", this.results);
+      this.state = this.lang.start;
     },
     testSingleTileset() {
       var tileset = this.$root.$earth.getObject(
@@ -181,7 +201,7 @@ export default {
     tileset_dragover(e) {
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
-      if (czmObj && czmObj.xbsjType === "Tileset") {
+      if (czmObj && czmObj.xbsjType === "Tileset" && this.state === this.lang.start) {
         e.dataTransfer.dropEffect = "copy";
         this.tileset_over = true;
       } else {

@@ -5,7 +5,10 @@ const zh = {
     pathAnimation: '飞行路径',
     viewPoint: '视点',
     interval: '时间间隔',
-    ms: '毫秒'
+    ms: '毫秒',
+    start: '开始',
+    stop:'停止',
+    finishedTip: '测试完成'
 };
 
 const en = {
@@ -15,7 +18,10 @@ const en = {
     pathAnimation: 'Path Animation',
     viewPoint: 'View Point',
     interval: 'Interval(ms)',
-    ms: 'ms'
+    ms: 'ms',
+    start: 'Start',
+    stop: 'Stop',
+    finishedTip: 'Test is finished'
 }
 
 export default { zh, en }
