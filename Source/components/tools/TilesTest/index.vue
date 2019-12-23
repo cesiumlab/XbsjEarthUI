@@ -67,11 +67,6 @@ export default {
     cancel () {
       this.show = false;
     }
-  },
-  watch: {
-    tabShow () {
-      this.$refs.testResult.resize();
-    }
   }
   // beforeDestroy () {
   //   // 解绑数据关联

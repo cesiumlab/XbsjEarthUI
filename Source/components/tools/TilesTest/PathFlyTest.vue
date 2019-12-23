@@ -34,11 +34,11 @@
         >
           <table border="1" cellpadding="0" cellspacing="0">
             <tr>
-              <td>序号</td>
+              <td>{{lang.order}}</td>
               <td>
-                <div class="dragButton" :class="{highlight:tileset_over}">名称</div>
+                <div class="dragButton" :class="{highlight:tileset_over}">{{lang.nametip}}</div>
               </td>
-              <td>操作</td>
+              <td>{{lang.operation}}</td>
             </tr>
             <tr v-for="(value,index) in tiles" :key="index">
               <td>{{index + 1}}</td>
@@ -460,17 +460,17 @@ table td:nth-child(3) {
 }
 .dragButton {
   display: inline-block;
-  width: 120px;
+  width: 150px;
   height: 25px;
   background: url(../../../images/drag.png) no-repeat;
-  background-size: contain;
+  background-size: 100% 100%;
   text-align: center;
   line-height: 25px;
 }
 
 .dragButton.highlight {
   background: url(../../../images/drag_on.png) no-repeat;
-  background-size: contain;
+  background-size: 100% 100%;
   color: #1fffff;
 }
 </style>

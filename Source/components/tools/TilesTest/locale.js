@@ -10,7 +10,10 @@ const zh = {
     stop:'停止',
     finishedTip: '测试完成',
     title: '瓦片测试',
-    exist3dtiles: '该3DTiles已存在'
+    exist3dtiles: '该3DTiles已存在',
+    nametip: '请把瓦片图层拖到这里',
+    order: '序号',
+    operation: '操作'
 };
 
 const en = {
@@ -25,7 +28,10 @@ const en = {
     stop: 'Stop',
     finishedTip: 'Test is finished',
     title: '3DTiles Test',
-    exist3dtiles: '3DTiles is existed'
+    exist3dtiles: '3DTiles is existed',
+    nametip: 'Drop 3DTiles Layer',
+    order: 'order',
+    operation: 'operation'
 }
 
 export default { zh, en }
