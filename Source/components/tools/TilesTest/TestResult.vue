@@ -90,23 +90,8 @@ export default {
       // var self = this;
       this.getOption(val);
     }
-    // viewsWidth: function(val, oldVal) {
-    //   console.log(val);
-    //   var mains = document.getElementById("mains");
-    //   mains.style.width = val + "px";
-    // },
-    // viewsHeight: function(val, oldVal) {
-    //   console.log(val);
-    //   var mains = document.getElementById("mains");
-    //   mains.style.height = val + "px";
-    // }
   },
-  mounted() {
-    // var results2 = sessionStorage.getItem("result");
-    // this.resultsObj2 = JSON.parse(results2);
-    // var resultsObj2 = [{ data: [], tileset: {} }];
-    // this.getOption(resultsObj2);
-  },
+  mounted() {},
   methods: {
     resize() {
       if (this.chart) {
@@ -274,17 +259,6 @@ export default {
       this.legname = this.legname1.concat(this.legname2);
       this.series = this.series1.concat(this.series2);
       this.yaxis = this.yaxis1.concat(this.yaxis2);
-      console.log(this.legname);
-      // console.log(xdata);
-      // console.log(series);
-      // console.log(ydata);
-      // console.log(ydata2);
-      // console.log(this.ydata);
-      // console.log(this.ydata2);
-      // console.log(this.series1);
-      // console.log(this.series2);
-      // console.log(this.series);
-      // console.log(this.yaxis);
       this.xdata = Array.from(new Set(this.xdata));
       this.yaxisdata = Array.from(new Set(this.yaxisdata));
       this.yaxisdata = this.del(this.yaxisdata, "tileset");
@@ -302,14 +276,11 @@ export default {
       (this.series1 = []), (this.legname1 = []), (this.yaxis1 = []);
       for (var j = 0, l = viewpointresult.length; j < l; j++) {
         this.legname1.push(viewpointresult[j].tileset.name + "-" + yparam);
-        // this.legname.splice(1, this.legname.length - 2);
 
         this.ydata = [];
         viewpointresult[j].data.forEach(element => {
           this.ydata.push(element[yparam] || element.tileset[yparam]);
         });
-        // var length = this.ydata.length;
-        // this.ydata.splice(0, length / 2);
 
         this.series1.push({
           name: viewpointresult[j].tileset.name + "-" + yparam,
@@ -330,7 +301,6 @@ export default {
             }
           }
         });
-        // this.series.splice(1, this.series.length - 2);
         this.yaxis1.unshift({
           type: "value",
           name: yparam,
@@ -359,20 +329,10 @@ export default {
         });
         this.yaxis.splice(1, this.yaxis.length - 2);
       }
-      // this.legname.splice(Math.pow(2, l - 1), Math.pow(2, l - 1));
-      // console.log(this.legname);
       yparam = "";
       this.series = this.series1.concat(this.series2);
       this.legname = this.legname1.concat(this.legname2);
       this.yaxis = this.yaxis1.concat(this.yaxis2);
-      // console.log(this.series1);
-      // console.log(this.series2);
-      // console.log(this.series);
-      // console.log(xdata);
-      // console.log(this.ydata);
-      // console.log(this.ydata2);
-      // console.log(this.yaxis);
-      // this.xdata = Array.from(new Set(this.xdata));
       this.drawLine(this.legname, this.xdata, this.series, this.yaxis);
     },
     getOption3(viewpointresult, yparam2) {
@@ -386,14 +346,11 @@ export default {
       (this.series2 = []), (this.legname2 = []), (this.yaxis2 = []);
       for (var i = 0, l = viewpointresult.length; i < l; i++) {
         this.legname2.push(viewpointresult[i].tileset.name + "-" + yparam2);
-        // this.legname.splice(1, this.legname.length - 2);
 
         this.ydata2 = [];
         viewpointresult[i].data.forEach(element => {
           this.ydata2.push(element[yparam2] || element.tileset[yparam2]);
         });
-        // var lengths = this.ydata2.length;
-        // this.ydata2.splice(0, lengths / 2);
 
         this.series2.push({
           name: viewpointresult[i].tileset.name + "-" + yparam2,
@@ -419,7 +376,6 @@ export default {
             }
           }
         });
-        // this.series.splice(1, this.series.length - 2);
         this.yaxis2.push({
           type: "value",
           name: yparam2,
@@ -448,17 +404,10 @@ export default {
         });
         this.yaxis.splice(1, this.yaxis.length - 2);
       }
-      // this.legname.splice(Math.pow(2, l - 1), Math.pow(2, l - 1));
-      // console.log(this.legname);
-      // console.log(this.ydata);
-      // console.log(this.ydata2);
       yparam2 = "";
       this.series = this.series1.concat(this.series2);
       this.legname = this.legname1.concat(this.legname2);
       this.yaxis = this.yaxis1.concat(this.yaxis2);
-      // console.log(this.series);
-      // console.log(xdata);
-      // console.log(this.yaxis);
       this.drawLine(this.legname, this.xdata, this.series, this.yaxis);
     },
     /*画图*/
