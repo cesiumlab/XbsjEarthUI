@@ -84,9 +84,13 @@ export default {
     windowID: {
       type: String,
       default: ""
+    },
+    resized: {
+      type: Function,
+      default: null
     }
   },
-  data() {
+  data () {
     return {
       langs: {
         zh: {
@@ -106,7 +110,7 @@ export default {
       windowstyle: {}
     };
   },
-  created() {
+  created () {
     // console.log(earth.czm.viewer.container)
     let earthUIWidth = this.$root.$earthUI._mainUI.clientWidth;
     this._width = this.width;
@@ -122,25 +126,25 @@ export default {
     this.updateStyle();
   },
   computed: {
-    compCancelText: function() {
+    compCancelText: function () {
       if (this.canceltext == "") {
         return this.lang.cancel;
       }
       return this.canceltext;
     },
-    compOkText: function() {
+    compOkText: function () {
       if (this.confirmtext == "") {
         return this.lang.ok;
       }
       return this.confirmtext;
     }
   },
-  mounted() {},
+  mounted () { },
   methods: {
-    contextMenu() {
+    contextMenu () {
       this.$emit("contextMenu");
     },
-    updateStyle() {
+    updateStyle () {
       this.windowstyle = {
         width: this._width + "px",
         height: this._height + "px",
@@ -148,19 +152,19 @@ export default {
         left: this._left + "px"
       };
     },
-    collapse() {
+    collapse () {
       this.collapsed = !this.collapsed;
     },
-    cancel() {
+    cancel () {
       this.$emit("cancel");
     },
-    ok() {
+    ok () {
       this.$emit("ok");
     },
-    showclick() {
+    showclick () {
       this.$emit("showclick");
     },
-    startMove(e) {
+    startMove (e) {
       e = e || event;
 
       if (e.target != this.$refs.xbsjmodelheader) return;
@@ -181,7 +185,7 @@ export default {
 
       var headerHeight = this.$refs.xbsjmodelheader.clientHeight;
 
-      function move(e) {
+      function move (e) {
         var e = e || event;
         e.stopPropagation();
         //计算当前鼠标位置
@@ -214,7 +218,7 @@ export default {
 
       var conbox = this.$root.$refs.mainUI.$el;
 
-      function up() {
+      function up () {
         conbox.removeEventListener("mousemove", move);
         document.removeEventListener("mouseup", up);
       }
@@ -222,7 +226,7 @@ export default {
       conbox.addEventListener("mousemove", move);
       document.addEventListener("mouseup", up);
     },
-    startResize(e) {
+    startResize (e) {
       e = e || event;
 
       //记录鼠标所在位置
@@ -235,7 +239,7 @@ export default {
 
       var self = this;
 
-      function move(e) {
+      function move (e) {
         var e = e || event;
         e.stopPropagation();
         //计算当前鼠标位置和全局点击位置的偏差值，尝试修改宽度和高度
@@ -254,7 +258,10 @@ export default {
 
       var conbox = this.$root.$refs.mainUI.$el;
 
-      function up() {
+      function up () {
+        if (self.resized) {
+          self.resized();
+        }
         conbox.removeEventListener("mousemove", move);
         document.removeEventListener("mouseup", up);
       }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 100%;height:100%">
     <div class="flatten">
       <div style="position: absolute; z-index: 1;">
         <input
@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <div class="myBarChart" id="mains"></div>
+    <div :class="[show?'myBarChart':'myBarChart2']" id="mains"></div>
     <div class="flatten">
       <div style="position: absolute; right: 6px; top: 44px;  z-index: 1;">
         <input
@@ -63,7 +63,7 @@ export default {
       }
     }
   },
-  data() {
+  data () {
     return {
       viewpointresult: [],
       chart: null,
@@ -79,15 +79,17 @@ export default {
       series: [],
       ydata: [],
       ydata2: [],
-      yaxis: []
+      yaxis: [],
+      chart: null,
+      show: false
     };
   },
   watch: {
-    viewsResult: function(val, oldVal) {
+    viewsResult: function (val, oldVal) {
       this.viewpointresult = val;
       // var self = this;
       this.getOption(val);
-    }
+    },
     // viewsWidth: function(val, oldVal) {
     //   console.log(val);
     //   var mains = document.getElementById("mains");
@@ -99,20 +101,26 @@ export default {
     //   mains.style.height = val + "px";
     // }
   },
-  mounted() {
+  mounted () {
     // var results2 = sessionStorage.getItem("result");
     // this.resultsObj2 = JSON.parse(results2);
     // var resultsObj2 = [{ data: [], tileset: {} }];
     // this.getOption(resultsObj2);
   },
   methods: {
+    resize () {
+      if (this.chart) {
+        this.show = true;
+        this.chart.resize();
+      }
+    },
     //定义删除的方法，需要传递的参数，一是数组，二是该数组里你想要删除的元素
-    del(ary, el) {
+    del (ary, el) {
       const index = ary.indexOf(el); //找到要删除的元素对应的下标,从0开始
       const delEle = ary.splice(index, 1); //splice为从要删除的元素开始,删除一个,刚好就是删除那个元素
       return ary; //因为splice方法直接对原数组进行改变,所以返回的是删除后的数组
     },
-    pinoptionssure(c1) {
+    pinoptionssure (c1) {
       this.yaxisvalue = c1;
       this.pinshowPinSelect = !this.pinshowPinSelect;
       var results = sessionStorage.getItem("result");
@@ -120,10 +128,10 @@ export default {
       if (this.yaxisvalue == this.yaxisvalue2) return;
       this.getOption2(resultsObj, this.yaxisvalue);
     },
-    pinselectinput() {
+    pinselectinput () {
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
-    pinoptionssure2(c2) {
+    pinoptionssure2 (c2) {
       this.yaxisvalue2 = c2;
       this.pinshowPinSelect2 = !this.pinshowPinSelect2;
       var results2 = sessionStorage.getItem("result");
@@ -131,10 +139,10 @@ export default {
       if (this.yaxisvalue2 == this.yaxisvalue) return;
       this.getOption3(resultsObj2, this.yaxisvalue2);
     },
-    pinselectinput2() {
+    pinselectinput2 () {
       this.pinshowPinSelect2 = !this.pinshowPinSelect2;
     },
-    getOption(viewpointresult) {
+    getOption (viewpointresult) {
       var self = this;
       var colorList = [
         "rgba(191,255,91,0.9)",
@@ -153,10 +161,10 @@ export default {
           this.xdata.push(element.time);
           this.ydata.push(element.fps);
           this.ydata2.push(element.numberOfPendingRequests);
-          Object.keys(element).forEach(function(key) {
+          Object.keys(element).forEach(function (key) {
             self.yaxisdata.push(key);
           });
-          Object.keys(element.tileset).forEach(function(key) {
+          Object.keys(element.tileset).forEach(function (key) {
             self.yaxisdata.push(key);
           });
         });
@@ -276,7 +284,7 @@ export default {
       this.yaxisdata = this.del(this.yaxisdata, "time");
       this.drawLine(this.legname, this.xdata, this.series, this.yaxis);
     },
-    getOption2(viewpointresult, yparam) {
+    getOption2 (viewpointresult, yparam) {
       var colorList = [
         "rgba(191,255,91,0.9)",
         "rgba(255,121,91,0.9)",
@@ -352,7 +360,7 @@ export default {
       // this.xdata = Array.from(new Set(this.xdata));
       this.drawLine(this.legname, this.xdata, this.series, this.yaxis);
     },
-    getOption3(viewpointresult, yparam2) {
+    getOption3 (viewpointresult, yparam2) {
       var colorList = [
         "rgba(191,255,91,0.9)",
         "rgba(255,121,91,0.9)",
@@ -433,10 +441,10 @@ export default {
       this.drawLine(this.legname, this.xdata, this.series, this.yaxis);
     },
     /*画图*/
-    drawLine(legname, xdata, series, yaxis) {
+    drawLine (legname, xdata, series, yaxis) {
       // 基于准备好的dom，初始化echarts实例
       let myBarChart = this.$echarts.init(
-        document.getElementsByClassName("myBarChart")[0]
+        document.getElementById('mains')
       );
       // 绘制柱状图图表
       myBarChart.setOption({
@@ -473,11 +481,7 @@ export default {
         yAxis: yaxis,
         series: series
       });
-      // 根据窗口的大小变动图表;
-      window.onresize = function() {
-        myBarChart.resize();
-        //myChart1.resize();    //若有多个图表变动，可多写
-      };
+      this.chart = myBarChart;
     }
   }
 };
@@ -553,9 +557,17 @@ button:focus {
 .selectButton2 {
   right: 0;
 }
-.myBarChart {
+.myBarChart2 {
   width: 592px;
   height: 292px;
+  margin: 0 auto !important;
+}
+.myBarChart2 > div {
+  margin: 0 auto !important;
+}
+.myBarChart {
+  width: 100%;
+  height: 100%;
   margin: 0 auto !important;
 }
 .myBarChart > div {

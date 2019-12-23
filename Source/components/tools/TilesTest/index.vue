@@ -11,6 +11,7 @@
     :footervisible="false"
     @showclick="showSelect=false"
     class="mainwindow"
+    :resized="resize"
   >
     <div style="height: 100%;">
       <div class="tab">
@@ -23,7 +24,7 @@
       <div id="tab-content" class="xbsj-flatten">
         <PathFlyTest v-show="tabShow == '1'" @testfinished="testFinished"></PathFlyTest>
         <Viewpoint v-show="tabShow == '2'" @testfinished="testFinished"></Viewpoint>
-        <TestResult :views-result="records" v-show="tabShow == '3'"></TestResult>
+        <TestResult ref="testResult" :views-result="records" v-show="tabShow == '3'"></TestResult>
       </div>
     </div>
   </Window>
@@ -40,29 +41,36 @@ export default {
     Viewpoint,
     TestResult
   },
-  data() {
+  data () {
     return {
       lang: {},
       show: false,
       tabShow: "1",
       records: [],
-      langs: languagejs,
-      windowWidth: 0
+      langs: languagejs
     };
   },
-  mounted() {},
+  mounted () { },
   methods: {
-    testFinished(results) {
+    resize () {
+      this.$refs.testResult.resize();
+    },
+    testFinished (results) {
       this.records = results;
       console.log(this.records);
       var item1 = JSON.stringify(this.records);
       sessionStorage.setItem("result", item1);
     },
-    close() {
+    close () {
       this.$parent.destroyTool(this);
     },
-    cancel() {
+    cancel () {
       this.show = false;
+    }
+  },
+  watch: {
+    tabShow () {
+      this.$refs.testResult.resize();
     }
   }
   // beforeDestroy () {
