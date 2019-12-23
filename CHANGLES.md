@@ -1,6 +1,21 @@
 Change Log
 ==========
 
+### 1.2.21 - 2019-12-23
+##### Additions :tada:
+* 修正跨域访问图像导致图像不能加载的问题，目前替换成Cesium加载图片的模式，按照Cesium的规则来加载图片
+* 新增热力图类XE.Obj.HeatMap
+* 自定义图元增加拾取功能
+
+##### Fixes :wrench:
+* 修复pin的extText和point不受near和far属性控制的问题
+* 修复不同图元拾取时指向同一个回调的问题
+* 解决CzmObject的子Object的拾取问题
+* ODLines的属性posititons变更为positions
+* 修复指北针左键操作不了，只有中键和右键能用的问题
+* 修复贴地面不停地更新时，不能隐藏
+* Pin增加指示线条
+
 ### 1.2.18 - 2019-12-6
 
 ##### Additions :tada:
