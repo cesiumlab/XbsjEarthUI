@@ -35,7 +35,9 @@
           <table border="1" cellpadding="0" cellspacing="0">
             <tr>
               <td>序号</td>
-              <td>名称</td>
+              <td>
+                <div class="dragButton" :class="{highlight:tileset_over}">名称</div>
+              </td>
               <td>操作</td>
             </tr>
             <tr v-for="(value,index) in tiles" :key="index">
@@ -70,11 +72,12 @@ import languagejs from "./locale";
 
 export default {
   name: "Viewpoint",
-  data () {
+  data() {
     return {
       lang: {},
       state: "",
       tiles: [],
+      tileset_over: false,
       langs: languagejs,
       currentTilesetIndex: 0,
       resultIndex: 1,
@@ -90,18 +93,18 @@ export default {
       }
     };
   },
-  mounted () {
+  mounted() {
     this.state = this.lang.start;
   },
   methods: {
-    testStateChange () {
+    testStateChange() {
       if (this.state === this.lang.start) {
         this.startTest();
       } else {
         this.stopTest();
       }
     },
-    startTest () {
+    startTest() {
       for (var i = 0; i < this.tiles.length; i++) {
         this.$root.$earth.getObject(this.tiles[i].id).enabled = false;
       }
@@ -110,24 +113,26 @@ export default {
       this.testSingleTileset();
       this.state = this.lang.stop;
     },
-    stopTest () {
+    stopTest() {
       clearInterval(this.intervalId);
       this.intervalId = null;
       this.$emit("testfinished", this.results);
       this.state = this.lang.start;
     },
-    testSingleTileset () {
+    testSingleTileset() {
       let self = this;
       let earth = this.$root.$earth;
       this._viewpoint.duration = 0;
       earth.cameraViewManager.globe.flyTo().then(() => {
         self._tileset = new XE.Obj.Tileset(self.$root.$earth);
-        self._tileset.xbsjFromJSON(this.tiles[this.currentTilesetIndex].content);
+        self._tileset.xbsjFromJSON(
+          this.tiles[this.currentTilesetIndex].content
+        );
         self._tileset.enabled = true;
         self._tileset._tileset.allTilesLoaded.addEventListener(() => {
           self.testNextTileset();
         });
-        self._tileset._tileset.loadProgress.addEventListener(function (
+        self._tileset._tileset.loadProgress.addEventListener(function(
           numberOfPendingRequests,
           numberOfTilesProcessing
         ) {
@@ -143,7 +148,7 @@ export default {
         self._viewpoint.flyTo();
       });
     },
-    testNextTileset () {
+    testNextTileset() {
       this.currentTilesetIndex++;
       this._tileset.destroy();
       if (this.currentTilesetIndex === this.tiles.length) {
@@ -152,7 +157,7 @@ export default {
       }
       this.testSingleTileset();
     },
-    startTimeout () {
+    startTimeout() {
       let self = this;
       if (this.intervalId !== null) {
         clearInterval(this.intervalId);
@@ -162,7 +167,7 @@ export default {
         self.record();
       }, this.interval);
     },
-    record () {
+    record() {
       if (this._tileset._tileset) {
         var record = {};
         record.time = this.resultIndex * this.interval;
@@ -174,7 +179,7 @@ export default {
         this.resultIndex++;
       }
     },
-    getCzmObjectFromDrag (dataTransfer) {
+    getCzmObjectFromDrag(dataTransfer) {
       for (let i = 0; i < dataTransfer.types.length; i++) {
         var t = dataTransfer.types[i];
         if (!t) continue;
@@ -186,7 +191,7 @@ export default {
       }
       return undefined;
     },
-    tileset_dragover (e) {
+    tileset_dragover(e) {
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
       if (
@@ -200,28 +205,34 @@ export default {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    tileset_dragleave () {
+    tileset_dragleave() {
       this.tileset_over = false;
     },
-    tileset_drop (e) {
+    tileset_drop(e) {
       this.tileset_over = false;
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.xbsjType === "Tileset") {
         var content = czmObj.toJSON();
-        for(var i=0;i<this.tiles.length;i++){
-          if(JSON.stringify(this.tiles[i].content) === JSON.stringify(content)){
+        for (var i = 0; i < this.tiles.length; i++) {
+          if (
+            JSON.stringify(this.tiles[i].content) === JSON.stringify(content)
+          ) {
             this.$root.$earthUI.promptInfo(this.lang.exist3dtiles, "info");
             return;
           }
         }
-        this.tiles.push({ id: czmObj.xbsjGuid, name: czmObj.name, content: content });
+        this.tiles.push({
+          id: czmObj.xbsjGuid,
+          name: czmObj.name,
+          content: content
+        });
       }
     },
-    deleteTiles (index) {
+    deleteTiles(index) {
       this.tiles.splice(index, 1);
     },
-    viewpoint_dragover (e) {
+    viewpoint_dragover(e) {
       e.preventDefault();
       if (e.dataTransfer.types.indexOf("_view") >= 0) {
         e.dataTransfer.dropEffect = "copy";
@@ -230,10 +241,10 @@ export default {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    viewpoint_dragleave () {
+    viewpoint_dragleave() {
       this.tileset_over = false;
     },
-    viewpoint_drop (e) {
+    viewpoint_drop(e) {
       e.preventDefault();
       if (this.tileset_over) {
         let index = e.dataTransfer.getData("_view");
@@ -245,7 +256,7 @@ export default {
       }
       this.tileset_over = false;
     },
-    startMove (event) {
+    startMove(event) {
       //如果事件的目标不是本el 返回
       if (
         event.target.parentElement !== this.$refs.container &&
@@ -256,7 +267,7 @@ export default {
       }
       this.moving = true;
     },
-    onMoving (event) {
+    onMoving(event) {
       //获取鼠标和为开始位置的插值，滚动滚动条
       if (!this.moving) return;
 
@@ -266,7 +277,7 @@ export default {
         dom.scrollLeft = wleft;
       }
     },
-    endMove (envent) {
+    endMove(envent) {
       this.moving = false;
     }
   }
@@ -437,6 +448,21 @@ table td:nth-child(3) {
   float: right;
 }
 .footer button:hover {
+  color: #1fffff;
+}
+.dragButton {
+  display: inline-block;
+  width: 120px;
+  height: 25px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+  text-align: center;
+  line-height: 25px;
+}
+
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
   color: #1fffff;
 }
 </style>

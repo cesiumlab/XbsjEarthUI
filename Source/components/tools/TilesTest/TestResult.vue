@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%;height:100%">
     <div class="flatten">
-      <div style="position: absolute; z-index: 1;">
+      <div style="position: relative; z-index: 1; display: inline-block;">
         <input
           type="text"
           v-model="yaxisvalue"
@@ -16,10 +16,7 @@
           </div>
         </div>
       </div>
-    </div>
-    <div :class="[show?'myBarChart':'myBarChart2']" id="mains"></div>
-    <div class="flatten">
-      <div style="position: absolute; right: 6px; top: 44px;  z-index: 1;">
+      <div style="position: relative; display: inline-block; float: right;">
         <input
           type="text"
           v-model="yaxisvalue2"
@@ -35,6 +32,7 @@
         </div>
       </div>
     </div>
+    <div :class="[show?'myBarChart':'myBarChart2']" id="mains"></div>
   </div>
 </template>
 <script>
@@ -42,7 +40,6 @@ import languagejs from "./locale";
 
 export default {
   name: "TestResult",
-  // props: ["viewsResult", "viewsWidth", "viewsHeight"],
   props: {
     viewsResult: {
       type: Array,
@@ -63,7 +60,7 @@ export default {
       }
     }
   },
-  data () {
+  data() {
     return {
       viewpointresult: [],
       chart: null,
@@ -77,19 +74,22 @@ export default {
       legname2: [],
       xdata: [],
       series: [],
+      series1: [],
+      series2: [],
       ydata: [],
       ydata2: [],
       yaxis: [],
-      chart: null,
+      yaxis1: [],
+      yaxis2: [],
       show: false
     };
   },
   watch: {
-    viewsResult: function (val, oldVal) {
+    viewsResult: function(val, oldVal) {
       this.viewpointresult = val;
       // var self = this;
       this.getOption(val);
-    },
+    }
     // viewsWidth: function(val, oldVal) {
     //   console.log(val);
     //   var mains = document.getElementById("mains");
@@ -101,26 +101,26 @@ export default {
     //   mains.style.height = val + "px";
     // }
   },
-  mounted () {
+  mounted() {
     // var results2 = sessionStorage.getItem("result");
     // this.resultsObj2 = JSON.parse(results2);
     // var resultsObj2 = [{ data: [], tileset: {} }];
     // this.getOption(resultsObj2);
   },
   methods: {
-    resize () {
+    resize() {
       if (this.chart) {
         this.show = true;
         this.chart.resize();
       }
     },
     //定义删除的方法，需要传递的参数，一是数组，二是该数组里你想要删除的元素
-    del (ary, el) {
+    del(ary, el) {
       const index = ary.indexOf(el); //找到要删除的元素对应的下标,从0开始
       const delEle = ary.splice(index, 1); //splice为从要删除的元素开始,删除一个,刚好就是删除那个元素
       return ary; //因为splice方法直接对原数组进行改变,所以返回的是删除后的数组
     },
-    pinoptionssure (c1) {
+    pinoptionssure(c1) {
       this.yaxisvalue = c1;
       this.pinshowPinSelect = !this.pinshowPinSelect;
       var results = sessionStorage.getItem("result");
@@ -128,10 +128,10 @@ export default {
       if (this.yaxisvalue == this.yaxisvalue2) return;
       this.getOption2(resultsObj, this.yaxisvalue);
     },
-    pinselectinput () {
+    pinselectinput() {
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
-    pinoptionssure2 (c2) {
+    pinoptionssure2(c2) {
       this.yaxisvalue2 = c2;
       this.pinshowPinSelect2 = !this.pinshowPinSelect2;
       var results2 = sessionStorage.getItem("result");
@@ -139,10 +139,10 @@ export default {
       if (this.yaxisvalue2 == this.yaxisvalue) return;
       this.getOption3(resultsObj2, this.yaxisvalue2);
     },
-    pinselectinput2 () {
+    pinselectinput2() {
       this.pinshowPinSelect2 = !this.pinshowPinSelect2;
     },
-    getOption (viewpointresult) {
+    getOption(viewpointresult) {
       var self = this;
       var colorList = [
         "rgba(191,255,91,0.9)",
@@ -151,159 +151,32 @@ export default {
         "rgba(91,127,255,0.9)",
         "rgba(91,192,255,0.9)"
       ];
+      (this.legname1 = []),
+        (this.legname2 = []),
+        (this.series1 = []),
+        (this.series2 = []),
+        (this.yaxis1 = []),
+        (this.yaxis2 = []);
       for (var i = 0, l = viewpointresult.length; i < l; i++) {
-        this.legname.push(viewpointresult[i].tileset.name + "-fps");
-        this.legname.push(
+        this.legname1.push(viewpointresult[i].tileset.name + "-fps");
+        this.legname2.push(
           viewpointresult[i].tileset.name + "-numberOfPendingRequests"
         );
 
+        (this.ydata = []), (this.ydata2 = []);
         viewpointresult[i].data.forEach(element => {
           this.xdata.push(element.time);
           this.ydata.push(element.fps);
           this.ydata2.push(element.numberOfPendingRequests);
-          Object.keys(element).forEach(function (key) {
+          Object.keys(element).forEach(function(key) {
             self.yaxisdata.push(key);
           });
-          Object.keys(element.tileset).forEach(function (key) {
+          Object.keys(element.tileset).forEach(function(key) {
             self.yaxisdata.push(key);
           });
         });
-        this.series.push(
-          {
-            name: viewpointresult[i].tileset.name + "-fps",
-            type: "line",
-            data: this.ydata,
-            yAxisIndex: 0,
-            label: {
-              normal: {
-                show: true,
-                position: "inside"
-              }
-            },
-            itemStyle: {
-              //通常情况下：
-              normal: {
-                //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-                color: colorList[i]
-              }
-            }
-          },
-          {
-            name: viewpointresult[i].tileset.name + "-numberOfPendingRequests",
-            type: "line",
-            data: this.ydata2,
-            yAxisIndex: 1,
-            lineStyle: {
-              normal: {
-                type: "dashed"
-              }
-            },
-            label: {
-              normal: {
-                show: true,
-                position: "inside"
-              }
-            },
-            itemStyle: {
-              //通常情况下：
-              normal: {
-                //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-                color: colorList[i]
-              }
-            }
-          }
-        );
-        this.yaxis.push(
-          {
-            type: "value",
-            name: "fps",
-            minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
-            axisLine: {
-              lineStyle: {
-                type: "solid",
-                color: "rgba(255,255,255,1)", //坐标线的颜色
-                width: "3"
-              }
-            },
-            axisLabel: {
-              textStyle: {
-                color: "rgba(255,255,255,1)" //坐标值得具体的颜色
-              }
-            },
-            //网格样式
-            splitLine: {
-              show: true,
-              lineStyle: {
-                color: ["rgba(255,255,255,1)"],
-                width: 2,
-                type: "solid"
-              }
-            }
-          },
-          {
-            type: "value",
-            name: "numberOfPendingRequests",
-            minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
-            axisLine: {
-              lineStyle: {
-                type: "solid",
-                color: "rgba(255,255,255,1)", //坐标线的颜色
-                width: "3"
-              }
-            },
-            axisLabel: {
-              textStyle: {
-                color: "rgba(255,255,255,1)" //坐标值得具体的颜色
-              }
-            },
-            //网格样式
-            splitLine: {
-              show: true,
-              lineStyle: {
-                color: ["rgba(255,255,255,1)"],
-                width: 2,
-                type: "solid"
-              }
-            }
-          }
-        );
-      }
-      // this.legname = this.legname1.concat(this.legname2);
-      console.log(this.legname);
-      // console.log(xdata);
-      // console.log(series);
-      // console.log(ydata);
-      // console.log(ydata2);
-      console.log(this.ydata);
-      console.log(this.ydata2);
-      // console.log(this.series);
-      // console.log(this.yaxis);
-      this.xdata = Array.from(new Set(this.xdata));
-      this.yaxisdata = Array.from(new Set(this.yaxisdata));
-      this.yaxisdata = this.del(this.yaxisdata, "tileset");
-      this.yaxisdata = this.del(this.yaxisdata, "time");
-      this.drawLine(this.legname, this.xdata, this.series, this.yaxis);
-    },
-    getOption2 (viewpointresult, yparam) {
-      var colorList = [
-        "rgba(191,255,91,0.9)",
-        "rgba(255,121,91,0.9)",
-        "rgba(255,175,91,0.9)",
-        "rgba(91,127,255,0.9)",
-        "rgba(91,192,255,0.9)"
-      ];
-      for (var i = 0, l = viewpointresult.length; i < l; i++) {
-        this.legname.unshift(viewpointresult[i].tileset.name + "-" + yparam);
-        this.legname.splice(1, this.legname.length - 2);
-
-        viewpointresult[i].data.forEach(element => {
-          this.ydata.push(element[yparam] || element.tileset[yparam]);
-        });
-        var length = this.ydata.length;
-        this.ydata.splice(0, length / 2);
-
-        this.series.unshift({
-          name: viewpointresult[i].tileset.name + "-" + yparam,
+        this.series1.push({
+          name: viewpointresult[i].tileset.name + "-fps",
           type: "line",
           data: this.ydata,
           yAxisIndex: 0,
@@ -321,8 +194,144 @@ export default {
             }
           }
         });
-        this.series.splice(1, this.series.length - 2);
-        this.yaxis.unshift({
+        this.series2.push({
+          name: viewpointresult[i].tileset.name + "-numberOfPendingRequests",
+          type: "line",
+          data: this.ydata2,
+          yAxisIndex: 1,
+          lineStyle: {
+            normal: {
+              type: "dashed"
+            }
+          },
+          label: {
+            normal: {
+              show: true,
+              position: "inside"
+            }
+          },
+          itemStyle: {
+            //通常情况下：
+            normal: {
+              //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+              color: colorList[i]
+            }
+          }
+        });
+        this.yaxis1.push({
+          type: "value",
+          name: "fps",
+          minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
+          axisLine: {
+            lineStyle: {
+              type: "solid",
+              color: "rgba(255,255,255,1)", //坐标线的颜色
+              width: "3"
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "rgba(255,255,255,1)" //坐标值得具体的颜色
+            }
+          },
+          //网格样式
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ["rgba(255,255,255,1)"],
+              width: 2,
+              type: "solid"
+            }
+          }
+        });
+        this.yaxis2.push({
+          type: "value",
+          name: "numberOfPendingRequests",
+          minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
+          axisLine: {
+            lineStyle: {
+              type: "solid",
+              color: "rgba(255,255,255,1)", //坐标线的颜色
+              width: "3"
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "rgba(255,255,255,1)" //坐标值得具体的颜色
+            }
+          },
+          //网格样式
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ["rgba(255,255,255,1)"],
+              width: 2,
+              type: "solid"
+            }
+          }
+        });
+      }
+      this.legname = this.legname1.concat(this.legname2);
+      this.series = this.series1.concat(this.series2);
+      this.yaxis = this.yaxis1.concat(this.yaxis2);
+      console.log(this.legname);
+      // console.log(xdata);
+      // console.log(series);
+      // console.log(ydata);
+      // console.log(ydata2);
+      // console.log(this.ydata);
+      // console.log(this.ydata2);
+      // console.log(this.series1);
+      // console.log(this.series2);
+      // console.log(this.series);
+      // console.log(this.yaxis);
+      this.xdata = Array.from(new Set(this.xdata));
+      this.yaxisdata = Array.from(new Set(this.yaxisdata));
+      this.yaxisdata = this.del(this.yaxisdata, "tileset");
+      this.yaxisdata = this.del(this.yaxisdata, "time");
+      this.drawLine(this.legname, this.xdata, this.series, this.yaxis);
+    },
+    getOption2(viewpointresult, yparam) {
+      var colorList = [
+        "rgba(191,255,91,0.9)",
+        "rgba(255,121,91,0.9)",
+        "rgba(255,175,91,0.9)",
+        "rgba(91,127,255,0.9)",
+        "rgba(91,192,255,0.9)"
+      ];
+      (this.series1 = []), (this.legname1 = []), (this.yaxis1 = []);
+      for (var j = 0, l = viewpointresult.length; j < l; j++) {
+        this.legname1.push(viewpointresult[j].tileset.name + "-" + yparam);
+        // this.legname.splice(1, this.legname.length - 2);
+
+        this.ydata = [];
+        viewpointresult[j].data.forEach(element => {
+          this.ydata.push(element[yparam] || element.tileset[yparam]);
+        });
+        // var length = this.ydata.length;
+        // this.ydata.splice(0, length / 2);
+
+        this.series1.push({
+          name: viewpointresult[j].tileset.name + "-" + yparam,
+          type: "line",
+          data: this.ydata,
+          yAxisIndex: 0,
+          label: {
+            normal: {
+              show: true,
+              position: "inside"
+            }
+          },
+          itemStyle: {
+            //通常情况下：
+            normal: {
+              //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+              color: colorList[j]
+            }
+          }
+        });
+        // this.series.splice(1, this.series.length - 2);
+        this.yaxis1.unshift({
           type: "value",
           name: yparam,
           minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
@@ -352,6 +361,12 @@ export default {
       }
       // this.legname.splice(Math.pow(2, l - 1), Math.pow(2, l - 1));
       // console.log(this.legname);
+      yparam = "";
+      this.series = this.series1.concat(this.series2);
+      this.legname = this.legname1.concat(this.legname2);
+      this.yaxis = this.yaxis1.concat(this.yaxis2);
+      // console.log(this.series1);
+      // console.log(this.series2);
       // console.log(this.series);
       // console.log(xdata);
       // console.log(this.ydata);
@@ -360,7 +375,7 @@ export default {
       // this.xdata = Array.from(new Set(this.xdata));
       this.drawLine(this.legname, this.xdata, this.series, this.yaxis);
     },
-    getOption3 (viewpointresult, yparam2) {
+    getOption3(viewpointresult, yparam2) {
       var colorList = [
         "rgba(191,255,91,0.9)",
         "rgba(255,121,91,0.9)",
@@ -368,17 +383,19 @@ export default {
         "rgba(91,127,255,0.9)",
         "rgba(91,192,255,0.9)"
       ];
+      (this.series2 = []), (this.legname2 = []), (this.yaxis2 = []);
       for (var i = 0, l = viewpointresult.length; i < l; i++) {
-        this.legname.push(viewpointresult[i].tileset.name + "-" + yparam2);
-        this.legname.splice(1, this.legname.length - 2);
+        this.legname2.push(viewpointresult[i].tileset.name + "-" + yparam2);
+        // this.legname.splice(1, this.legname.length - 2);
 
+        this.ydata2 = [];
         viewpointresult[i].data.forEach(element => {
           this.ydata2.push(element[yparam2] || element.tileset[yparam2]);
         });
-        var lengths = this.ydata2.length;
-        this.ydata2.splice(0, lengths / 2);
+        // var lengths = this.ydata2.length;
+        // this.ydata2.splice(0, lengths / 2);
 
-        this.series.push({
+        this.series2.push({
           name: viewpointresult[i].tileset.name + "-" + yparam2,
           type: "line",
           data: this.ydata2,
@@ -402,8 +419,8 @@ export default {
             }
           }
         });
-        this.series.splice(1, this.series.length - 2);
-        this.yaxis.push({
+        // this.series.splice(1, this.series.length - 2);
+        this.yaxis2.push({
           type: "value",
           name: yparam2,
           minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
@@ -435,17 +452,19 @@ export default {
       // console.log(this.legname);
       // console.log(this.ydata);
       // console.log(this.ydata2);
+      yparam2 = "";
+      this.series = this.series1.concat(this.series2);
+      this.legname = this.legname1.concat(this.legname2);
+      this.yaxis = this.yaxis1.concat(this.yaxis2);
       // console.log(this.series);
       // console.log(xdata);
       // console.log(this.yaxis);
       this.drawLine(this.legname, this.xdata, this.series, this.yaxis);
     },
     /*画图*/
-    drawLine (legname, xdata, series, yaxis) {
+    drawLine(legname, xdata, series, yaxis) {
       // 基于准备好的dom，初始化echarts实例
-      let myBarChart = this.$echarts.init(
-        document.getElementById('mains')
-      );
+      let myBarChart = this.$echarts.init(document.getElementById("mains"));
       // 绘制柱状图图表
       myBarChart.setOption({
         tooltip: {

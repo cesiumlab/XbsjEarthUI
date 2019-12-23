@@ -35,7 +35,9 @@
           <table border="1" cellpadding="0" cellspacing="0">
             <tr>
               <td>序号</td>
-              <td>名称</td>
+              <td>
+                <div class="dragButton" :class="{highlight:tileset_over}">名称</div>
+              </td>
               <td>操作</td>
             </tr>
             <tr v-for="(value,index) in tiles" :key="index">
@@ -72,8 +74,9 @@ export default {
   data() {
     return {
       lang: {},
-      state: '',
+      state: "",
       pinshowPinSelect: false,
+      tileset_over: false,
       tiles: [],
       czmObjects: {},
       attachedPathGuid: "",
@@ -89,7 +92,7 @@ export default {
       results: []
     };
   },
-  mounted () {
+  mounted() {
     this.state = this.lang.start;
   },
   methods: {
@@ -115,14 +118,14 @@ export default {
       }
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
-    testStateChange () {
+    testStateChange() {
       if (this.state === this.lang.start) {
         this.startTest();
       } else {
         this.stopTest();
       }
     },
-    startTest () {
+    startTest() {
       let path = this.$root.$earth.getObject(this.attachedPathGuid);
       this.pathLength = path.length;
       this._disposers = [];
@@ -198,7 +201,11 @@ export default {
     tileset_dragover(e) {
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
-      if (czmObj && czmObj.xbsjType === "Tileset" && this.state === this.lang.start) {
+      if (
+        czmObj &&
+        czmObj.xbsjType === "Tileset" &&
+        this.state === this.lang.start
+      ) {
         e.dataTransfer.dropEffect = "copy";
         this.tileset_over = true;
       } else {
@@ -214,13 +221,19 @@ export default {
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.xbsjType === "Tileset") {
         var content = czmObj.toJSON();
-        for(var i=0;i<this.tiles.length;i++){
-          if(JSON.stringify(this.tiles[i].content) === JSON.stringify(content)){
+        for (var i = 0; i < this.tiles.length; i++) {
+          if (
+            JSON.stringify(this.tiles[i].content) === JSON.stringify(content)
+          ) {
             this.$root.$earthUI.promptInfo(this.lang.exist3dtiles, "info");
             return;
           }
         }
-        this.tiles.push({ id: czmObj.xbsjGuid, name: czmObj.name, content: content });
+        this.tiles.push({
+          id: czmObj.xbsjGuid,
+          name: czmObj.name,
+          content: content
+        });
       }
     },
     deleteTiles(index) {
@@ -257,7 +270,7 @@ export default {
         this.testNextTileset();
       }
     }
-  },
+  }
   // beforeDestroy() {
   //   // 解绑数据关联
   //   this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
@@ -443,6 +456,21 @@ table td:nth-child(3) {
   float: right;
 }
 .footer button:hover {
+  color: #1fffff;
+}
+.dragButton {
+  display: inline-block;
+  width: 120px;
+  height: 25px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+  text-align: center;
+  line-height: 25px;
+}
+
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
   color: #1fffff;
 }
 </style>
