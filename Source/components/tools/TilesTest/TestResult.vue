@@ -68,7 +68,7 @@ export default {
       pinshowPinSelect: false,
       pinshowPinSelect2: false,
       yaxisvalue: "fps",
-      yaxisvalue2: "numberOfPendingRequests",
+      yaxisvalue2: "selected",
       legname: [],
       legname1: [],
       legname2: [],
@@ -144,15 +144,13 @@ export default {
         (this.yaxis2 = []);
       for (var i = 0, l = viewpointresult.length; i < l; i++) {
         this.legname1.push(viewpointresult[i].tileset.name + "-fps");
-        this.legname2.push(
-          viewpointresult[i].tileset.name + "-numberOfPendingRequests"
-        );
+        this.legname2.push(viewpointresult[i].tileset.name + "-selected");
 
         (this.ydata = []), (this.ydata2 = []);
         viewpointresult[i].data.forEach(element => {
           this.xdata.push(element.time);
           this.ydata.push(element.fps);
-          this.ydata2.push(element.numberOfPendingRequests);
+          this.ydata2.push(element.tileset.selected);
           Object.keys(element).forEach(function(key) {
             self.yaxisdata.push(key);
           });
@@ -180,7 +178,7 @@ export default {
           }
         });
         this.series2.push({
-          name: viewpointresult[i].tileset.name + "-numberOfPendingRequests",
+          name: viewpointresult[i].tileset.name + "-selected",
           type: "line",
           data: this.ydata2,
           yAxisIndex: 1,
@@ -231,7 +229,7 @@ export default {
         });
         this.yaxis2.push({
           type: "value",
-          name: "numberOfPendingRequests",
+          name: "selected",
           minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
           axisLine: {
             lineStyle: {
@@ -258,6 +256,7 @@ export default {
       }
       this.legname = this.legname1.concat(this.legname2);
       this.series = this.series1.concat(this.series2);
+      console.log(this.series);
       this.yaxis = this.yaxis1.concat(this.yaxis2);
       this.xdata = Array.from(new Set(this.xdata));
       this.yaxisdata = Array.from(new Set(this.yaxisdata));
