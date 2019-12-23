@@ -39,7 +39,7 @@
         </div>
 
         <div class="xbsj-item-btnbox" @click="tilesTestShow=!tilesTestShow">
-          <div class="xbsj-item-btn symbolbutton" :class="{highlight: tilesTestShow}"></div>
+          <div class="xbsj-item-btn testbutton" :class="{highlight: tilesTestShow}"></div>
           <span class="xbsj-item-name">{{lang.autoTest}}</span>
         </div>
         <!--
@@ -533,6 +533,17 @@ export default {
 }
 .capturebutton:hover {
   background: url(../../../../images/layer_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.testbutton {
+  background: url(../../../../images/test.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.testbutton.highlight,
+.testbutton:hover {
+  background: url(../../../../images/test_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
