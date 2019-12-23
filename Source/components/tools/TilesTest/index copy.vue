@@ -23,7 +23,12 @@
       <div id="tab-content" class="xbsj-flatten">
         <PathFlyTest v-show="tabShow == '1'" @testfinished="testFinished"></PathFlyTest>
         <Viewpoint v-show="tabShow == '2'" @testfinished="testFinished"></Viewpoint>
-        <TestResult :views-result="records" v-show="tabShow == '3'"></TestResult>
+        <TestResult
+          :views-result="records"
+          :views-width="width"
+          :views-height="height"
+          v-show="tabShow == '3'"
+        ></TestResult>
       </div>
     </div>
   </Window>
@@ -47,10 +52,21 @@ export default {
       tabShow: "1",
       records: [],
       langs: languagejs,
+      width: 0,
+      height: 0,
       windowWidth: 0
     };
   },
-  mounted() {},
+  mounted() {
+    // var tabcontent = document.getElementById("tab-content");
+    // var xbsjflatten = document.getElementsByClassName("xbsj-flatten")[0];
+    // console.log(xbsjflatten);
+    // console.log(xbsjflatten.offsetWidth);
+    // this.width = tabcontent.offsetWidth;
+    // this.height = tabcontent.offsetHeight;
+    // console.log(tabcontent.offsetWidth);
+    // console.log(this.height);
+  },
   methods: {
     testFinished(results) {
       this.records = results;

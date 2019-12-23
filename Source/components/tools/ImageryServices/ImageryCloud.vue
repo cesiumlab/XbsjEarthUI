@@ -55,7 +55,7 @@
 import languagejs from "./imagery_locale";
 export default {
   components: {},
-  data() {
+  data () {
     return {
       show: false,
       services: [],
@@ -70,10 +70,10 @@ export default {
       langs: languagejs
     };
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {
-    select(s) {
+    select (s) {
       this.selected = s;
       // console.log(this.selected);
       this.selectedUrl = this.serverUrl(s);
@@ -81,7 +81,7 @@ export default {
       this.contentShow = true;
       this.error = "";
     },
-    query() {
+    query () {
       var labServer = this.$root.$earthUI.labServer;
 
       this.dayItems = [];
@@ -101,15 +101,15 @@ export default {
           this.$root.$earthUI.promptInfo(this.error, "error");
         });
     },
-    serverUrl(server) {
+    serverUrl (server) {
       return (
         this.$root.$earthUI.labServer.cloudServiceUrl +
         "/api/wmts/gettile/" +
         server._id +
-        "/{z}/{x}/{y}"
+        "/{z}/{x}/{y}&tk=248169fc4766127fb29c4e046e04ac0a"
       );
     },
-    ok() {
+    ok () {
       if (!this.selected) {
         this.error = this.lang.selectservice;
         this.$root.$earthUI.promptInfo(this.error, "error");
@@ -138,6 +138,13 @@ export default {
           (this.selected.north * Math.PI) / 180
         ];
 
+        imageLayer.cutoutRectangle = [
+          (this.selected.west * Math.PI) / 180,
+          (this.selected.south * Math.PI) / 180,
+          (this.selected.east * Math.PI) / 180,
+          (this.selected.north * Math.PI) / 180
+        ];
+
         //添加到场景树中
         this.$root.$earthUI.tools.sceneTree.addSceneObject(
           imageLayer,
@@ -151,8 +158,8 @@ export default {
   },
   computed: {},
   filters: {
-    f_day(day) {},
-    f_range(item) {
+    f_day (day) { },
+    f_range (item) {
       return (
         item.west.toFixed(5) +
         ", " +
@@ -164,14 +171,14 @@ export default {
       );
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     if (this.unbind) {
       this.unbind();
       this.unbind = undefined;
     }
   },
   watch: {
-    show(v) {
+    show (v) {
       if (v) {
         this.query();
       }

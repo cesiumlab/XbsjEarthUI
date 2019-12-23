@@ -18,6 +18,7 @@
             />
             <label class="xbsj-check">{{item.name}}</label>
           </div>
+          <!-- <span class="viewspan">当前视角</span> -->
         </div>
         <div style="margin-top: 20px;">
           <label>{{lang.interval}}</label>
@@ -73,7 +74,7 @@ export default {
   data () {
     return {
       lang: {},
-      state: "",
+      state: '',
       tiles: [],
       langs: languagejs,
       currentTilesetIndex: 0,
@@ -189,11 +190,7 @@ export default {
     tileset_dragover (e) {
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
-      if (
-        czmObj &&
-        czmObj.xbsjType === "Tileset" &&
-        this.state === this.lang.start
-      ) {
+      if (czmObj && czmObj.xbsjType === "Tileset" && this.state === this.lang.start) {
         e.dataTransfer.dropEffect = "copy";
         this.tileset_over = true;
       } else {

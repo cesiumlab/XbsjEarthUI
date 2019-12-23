@@ -151,11 +151,8 @@ export default {
       this.state = this.lang.start;
     },
     testSingleTileset() {
-      var tileset = this.$root.$earth.getObject(
-        this.tiles[this.currentTilesetIndex].id
-      );
       this._tileset = new XE.Obj.Tileset(this.$root.$earth);
-      this._tileset.xbsjFromJSON(tileset.toJSON());
+      this._tileset.xbsjFromJSON(this.tiles[this.currentTilesetIndex].content);
       this._tileset.enabled = true;
       this.results.push({});
       this.tilesetRecord = this.results[this.results.length - 1];
@@ -216,7 +213,14 @@ export default {
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.xbsjType === "Tileset") {
-        this.tiles.push({ id: czmObj.xbsjGuid, name: czmObj.name });
+        var content = czmObj.toJSON();
+        for(var i=0;i<this.tiles.length;i++){
+          if(JSON.stringify(this.tiles[i].content) === JSON.stringify(content)){
+            this.$root.$earthUI.promptInfo(this.lang.exist3dtiles, "info");
+            return;
+          }
+        }
+        this.tiles.push({ id: czmObj.xbsjGuid, name: czmObj.name, content: content });
       }
     },
     deleteTiles(index) {
@@ -254,12 +258,12 @@ export default {
       }
     }
   },
-  beforeDestroy() {
-    // 解绑数据关联
-    this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers.forEach(e => e());
-    this._disposers.length = 0;
-  }
+  // beforeDestroy() {
+  //   // 解绑数据关联
+  //   this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
+  //   this._disposers.forEach(e => e());
+  //   this._disposers.length = 0;
+  // }
 };
 </script>
 
