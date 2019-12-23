@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="355"
+    :height="354"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -27,31 +27,34 @@
           >{{lang.creating}}</button>
 
           <button
-            style="margin-left:20px;"
             class="attitudeEditCameraButton"
             @click="model.editing =!model.editing"
             :class="model.editing?'btncoloron':''"
           >{{lang.editing}}</button>
         </div>
+      </div>
+      <div class="flatten-flex">
         <!-- 贴地 -->
         <div class="flatten">
           <label>{{lang.ground}}</label>
           <XbsjSwitch v-model="model.ground"></XbsjSwitch>
         </div>
+        <div class="flatten">
+          <div class="flatten">
+            <label>{{lang.outlineShow}}</label>
+            <XbsjSwitch v-model="model.outlineShow"></XbsjSwitch>
+          </div>
+        </div>
       </div>
+
       <!-- 颜色 -->
       <div class="flatten">
         <label>{{lang.color}}</label>
         <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
       </div>
-      <div class="flatten-flex" style="padding-top:10px;">
-        <div class="flatten">
-          <label>{{lang.outlineShow}}</label>
-          <XbsjSwitch v-model="model.outlineShow"></XbsjSwitch>
-        </div>
-      </div>
+
       <!-- 宽度 -->
-      <div class="flatten" style="margin-top:20px;">
+      <div class="flatten" style="margin-top:30px;">
         <label>{{lang.outlineWidth}}</label>
         <div class="field">
           <XbsjSlider
@@ -240,7 +243,7 @@ export default {
       if (modelToolObj.isCreating) {
         modelToolObj.isCreating = false;
         const sceneObject = new XE.SceneTree.Leaf(modelToolObj);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
       }
     },
 
@@ -546,5 +549,6 @@ button:focus {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   color: #dddddd;
+  margin-right: 20px;
 }
 </style>

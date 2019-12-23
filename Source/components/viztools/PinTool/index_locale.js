@@ -3,6 +3,7 @@ const zh = {
   name: '名称',
   creating: '鼠标点选',
   editing: '修改位置',
+  drag: '拖拽',
   nearfar: '近远裁',
   far: 'Far',
   near: 'Near',
@@ -33,9 +34,12 @@ const zh = {
   origin: '锚点',
   isDivImage: 'Div图标',
   apply: '应用',
-  firstpage: '第一页',
-  secondpage: '第二页',
-  evalstring: '创建代码'
+  routine: '常规',
+  code: '代码',
+  image: '图片',
+  text: '文本',
+  evalstring: '创建代码',
+  dragcontent: '请把对象拖到这里'
 }
 
 const en = {
@@ -43,6 +47,7 @@ const en = {
   name: 'Name',
   creating: 'Creat',
   editing: 'Edit',
+  drag: 'Drag',
   far: 'Far',
   near: 'Near',
   imageUrl: 'ImageUrl',
@@ -72,9 +77,12 @@ const en = {
   origin: 'origin',
   isDivImage: 'Div Image',
   apply: 'apply',
-  firstpage: 'FirstPage',
-  secondpage: 'SecondPage',
-  evalstring: 'evalstring'
+  routine: 'routine',
+  code: 'code',
+  image: 'image',
+  text: 'text',
+  evalstring: 'evalstring',
+  dragcontent: 'Drag the object here'
 }
 
 export default { zh, en }

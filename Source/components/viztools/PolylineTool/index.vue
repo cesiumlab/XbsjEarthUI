@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="458"
+    :height="494"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -48,22 +48,33 @@
             :class="polyline.creating?'btncoloron':''"
           >{{lang.creating}}</button>
           <button
-            style="margin-left:20px;"
             class="attitudeEditCameraButton"
             @click="polyline.editing =!polyline.editing"
             :class="polyline.editing?'btncoloron':''"
           >{{lang.editing}}</button>
-          <div class="flatten" style="display: inline-block;">
-            <label>{{lang.loop}}</label>
-            <XbsjSwitch v-model="polyline.loop"></XbsjSwitch>
-          </div>
-          <!-- 深度检测 -->
-          <div class="flatten" style="display: inline-block;">
-            <label>{{lang.depthTest}}</label>
-            <XbsjSwitch v-model="polyline.depthTest"></XbsjSwitch>
-          </div>
         </div>
+        <!-- 拖拽 -->
+        <div
+          @dragover="dragOver"
+          @drop="drop"
+          @dragleave="dragLeave"
+          class="dragButton"
+          :class="{highlight:drag_over}"
+          :title="lang.drag"
+        >{{lang.dragcontent}}</div>
+      </div>
+
+      <div class="flatten">
         <!-- 首尾相连 -->
+        <div class="flatten" style="display: inline-block;">
+          <label>{{lang.loop}}</label>
+          <XbsjSwitch v-model="polyline.loop"></XbsjSwitch>
+        </div>
+        <!-- 深度检测 -->
+        <div class="flatten" style="display: inline-block;">
+          <label>{{lang.depthTest}}</label>
+          <XbsjSwitch v-model="polyline.depthTest"></XbsjSwitch>
+        </div>
       </div>
 
       <!-- 显示辅助线框
@@ -272,6 +283,7 @@ export default {
       makiIconObj: {},
       dashPatternarr: [],
       dashPatternarrString: "",
+      drag_over: false,
       polyline: {
         name: "",
         creating: false,
@@ -706,12 +718,36 @@ export default {
         polyLineToolObj.isCreating = false;
 
         const sceneObject = new XE.SceneTree.Leaf(polyLineToolObj);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
       }
     },
 
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        e.dataTransfer.dropEffect = "copy";
+        this.drag_over = true;
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    dragLeave() {
+      this.drag_over = false;
+    },
+    //拖拽放置
+    drop(e) {
+      this.drag_over = false;
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        this._czmObj.creating = false;
+        this.$root.$earthUI.getCzmObjectPositionFromDrag(czmObj, this._czmObj);
+      }
     }
   },
   beforeDestroy() {
@@ -1005,6 +1041,7 @@ button:focus {
 } */
 .attitudeEditCameraButton {
   color: #dddddd;
+  margin-right: 20px;
 }
 .btncoloron {
   color: #1fffff !important;
@@ -1041,5 +1078,20 @@ button:focus {
 .dottedstyle {
   display: flex;
   justify-content: space-around;
+}
+.dragButton {
+  display: inline-block;
+  width: 120px;
+  height: 25px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+  text-align: center;
+  line-height: 25px;
+}
+
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
+  color: #1fffff;
 }
 </style>

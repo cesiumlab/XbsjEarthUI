@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="322"
+    :height="328"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -28,17 +28,17 @@
           >{{lang.creating}}</button>
 
           <button
-            style="margin-left:20px;"
             class="attitudeEditCameraButton"
             @click="model.editing =!model.editing"
             :class="model.editing?'btncoloron':''"
           >{{lang.editing}}</button>
         </div>
-        <!-- 贴地 -->
-        <div class="flatten">
-          <label>{{lang.ground}}</label>
-          <XbsjSwitch v-model="model.ground"></XbsjSwitch>
-        </div>
+      </div>
+
+      <!-- 贴地 -->
+      <div class="flatten">
+        <label>{{lang.ground}}</label>
+        <XbsjSwitch v-model="model.ground"></XbsjSwitch>
       </div>
 
       <div class="flatten-flex">
@@ -185,7 +185,7 @@ export default {
       if (modelToolObj.isCreating) {
         modelToolObj.isCreating = false;
         const sceneObject = new XE.SceneTree.Leaf(modelToolObj);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
       }
     },
 
@@ -458,7 +458,8 @@ button:focus {
 }
 
 .buttonGroup {
-  display: flex;
+  display: inline-block;
+  height: 40px;
 }
 .buttonGroup div {
   display: inline-block;
@@ -469,9 +470,6 @@ button:focus {
   border-radius: 3px;
   color: #dddddd;
   padding: 0 4px;
-}
-.attitudeEditCameraButton {
-  color: #dddddd;
 }
 .btncoloron {
   color: #1fffff !important;
@@ -494,5 +492,7 @@ button:focus {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   color: #dddddd;
+  vertical-align: top;
+  margin-right: 20px;
 }
 </style>

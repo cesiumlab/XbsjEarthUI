@@ -3,6 +3,7 @@ const zh = {
   name: '名称',
   creating: '鼠标点选',
   editing: '修改位置',
+  drag: '拖拽',
   nearfar: '近远裁',
   far: 'Far',
   near: 'Near',
@@ -26,7 +27,8 @@ const zh = {
   },
   weizhi: "位置",
   eidtbtn: "编辑按钮",
-  pathAnimation: '路径动画'
+  pathAnimation: '路径动画',
+  dragcontent: '请把对象拖到这里'
 }
 
 const en = {
@@ -34,6 +36,7 @@ const en = {
   name: 'Name',
   creating: 'Creat',
   editing: 'Edit',
+  drag: 'Drag',
   far: 'Far',
   near: 'Near',
   imageUrl: 'ImageUrl',
@@ -56,7 +59,8 @@ const en = {
   },
   weizhi: "weizhi",
   eidtbtn: "eidt btn",
-  pathAnimation: 'pathAnimation'
+  pathAnimation: 'pathAnimation',
+  dragcontent: 'Drag the object here'
 }
 
 export default {

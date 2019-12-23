@@ -11,10 +11,12 @@ const zh = {
   closed: '闭合',
   creating: '创建',
   editing: '编辑',
+  drag: '拖拽',
   flyto: '定位',
   colorintensity: '颜色强度',
-  repeatX: '横向重复',
-  repeatY: '纵向重复'
+  repeatX: '纹理宽度',
+  repeatY: '纹理高度',
+  dragcontent: '请把对象拖到这里'
 };
 
 const en = {
@@ -30,10 +32,12 @@ const en = {
   closed: 'closed',
   creating: 'creating',
   editing: 'edit',
+  drag: 'drag',
   flyto: 'flyto',
   colorintensity: 'colorintensity',
-  repeatX: 'repeatX',
-  repeatY: 'repeatY'
+  repeatX: 'textureWidth',
+  repeatY: 'textureHeight',
+  dragcontent: 'Drag the object here'
 };
 
 export default {

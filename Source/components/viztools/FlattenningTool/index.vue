@@ -307,7 +307,7 @@ export default {
         polygonCollection.isCreating = false;
 
         const sceneObject = new XE.SceneTree.Leaf(polygonCollection);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
       }
     },
     add() {

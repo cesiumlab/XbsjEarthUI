@@ -4,6 +4,7 @@ const zh = {
   weizhi: '位置',
   zitai: '姿态',
   creating: '创建',
+  drag: '拖拽',
   positionEditing: '位置编辑',
   rotationEditing: '姿态编辑',
   width: '画布宽度',
@@ -29,7 +30,8 @@ const zh = {
   editing: '正在编辑',
   apply: '应用',
   tipcontent: '请填入顶点坐标和indices',
-  scale: 'x,y,z缩放值'
+  scale: 'x,y,z缩放值',
+  dragcontent: '请把对象拖到这里'
 };
 
 const en = {
@@ -38,6 +40,7 @@ const en = {
   weizhi: 'position',
   zitai: 'rotation',
   creating: 'creating',
+  drag: 'drag',
   positionEditing: 'positionEditing',
   rotationEditing: 'rotationEditing',
   width: 'canvasWidth',
@@ -63,7 +66,8 @@ const en = {
   editing: 'editing',
   apply: 'apply',
   tipcontent: 'Please fill in vertex coordinates and indices',
-  scale: 'scale'
+  scale: 'scale',
+  dragcontent: 'Drag the object here'
 };
 
 export default {

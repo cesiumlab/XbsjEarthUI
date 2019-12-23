@@ -2,7 +2,7 @@
   <Window
     :width="602"
     :minWidth="480"
-    :height="656"
+    :height="500"
     :top="164"
     :floatright="true"
     :title="lang.title"
@@ -11,14 +11,28 @@
     :footervisible="true"
     @showclick="showSelect=false"
   >
-    <div style="text-align: center; height: 100%;">
-      <div style="text-align: center;">
-        <div class="tab">
-          <span @click="firstShow=true, secondShow=false">{{lang.firstpage}}</span>
-          <span @click="firstShow=false, secondShow=true">{{lang.secondpage}}</span>
-        </div>
+    <div style="height: 100%;">
+      <div style="text-align: center; width: 100%; background: rgba(0,0,0,0.5);">
+        <ul class="tab">
+          <li
+            @click="routineShow=true,  imageShow=false, textShow=false, codeShow=false"
+            :class="routineShow?'highlight':''"
+          >{{lang.routine}}</li>
+          <li
+            @click="routineShow=false, imageShow=true, textShow=false, codeShow=false"
+            :class="imageShow?'highlight':''"
+          >{{lang.image}}</li>
+          <li
+            @click="routineShow=false, imageShow=false, textShow=true, codeShow=false"
+            :class="textShow?'highlight':''"
+          >{{lang.text}}</li>
+          <li
+            @click="routineShow=false, imageShow=false, textShow=false, codeShow=true"
+            :class="codeShow?'highlight':''"
+          >{{lang.code}}</li>
+        </ul>
       </div>
-      <div class="xbsj-flatten" v-show="firstShow">
+      <div class="xbsj-flatten" v-show="routineShow">
         <!-- 名字 -->
         <div class="flatten">
           <label>{{lang.name}}</label>
@@ -73,6 +87,15 @@
               >{{lang.editing}}</button>
             </div>
           </div>
+          <div
+            :title="lang.drag"
+            class="dragBox"
+            @dragover="dragOver"
+            @drop="drop"
+            @dragleave="dragLeave"
+          >
+            <div class="dragButton" :class="{highlight:drag_over}">{{lang.dragcontent}}</div>
+          </div>
         </div>
 
         <!-- pin内置样式 -->
@@ -112,28 +135,6 @@
               :step="1"
               showTip="always"
               v-model="pin.pinBuilder.size"
-              ref="glowFactor"
-            ></XbsjSlider>
-          </div>
-        </div>
-
-        <!-- pin自定义外部图标 -->
-        <div class="flatten">
-          <label>{{lang.imageUrl}}</label>
-          <input style="float:left;" type="text" v-model="pin.imageUrl" />
-        </div>
-
-        <!-- 缩放 -->
-        <div class="flatten" style="margin-top:20px;">
-          <label>{{lang.scale}}</label>
-          <!-- <input style="float:left;" type="text" v-model="pin.scale" /> -->
-          <div class="field">
-            <XbsjSlider
-              :min="0.05"
-              :max="2"
-              :step="0.01"
-              showTip="always"
-              v-model="pin.scale"
               ref="glowFactor"
             ></XbsjSlider>
           </div>
@@ -180,7 +181,33 @@
             </div>
           </div>
         </div>
+      </div>
 
+      <div class="xbsj-flatten" v-show="imageShow">
+        <!-- pin自定义外部图标 -->
+        <div class="flatten">
+          <label>{{lang.imageUrl}}</label>
+          <input style="float:left;" type="text" v-model="pin.imageUrl" />
+        </div>
+
+        <!-- 缩放 -->
+        <div class="flatten" style="margin-top:20px;">
+          <label>{{lang.scale}}</label>
+          <!-- <input style="float:left;" type="text" v-model="pin.scale" /> -->
+          <div class="field">
+            <XbsjSlider
+              :min="0.05"
+              :max="2"
+              :step="0.01"
+              showTip="always"
+              v-model="pin.scale"
+              ref="glowFactor"
+            ></XbsjSlider>
+          </div>
+        </div>
+      </div>
+
+      <div class="xbsj-flatten" v-show="textShow">
         <div class="flatten" style="display:flex;">
           <!-- pin文本内容 -->
           <div>
@@ -207,7 +234,8 @@
           </div>
         </div>
       </div>
-      <div class="xbsj-flatten" style="height: calc(100% - 38px);" v-show="secondShow">
+
+      <div class="xbsj-flatten" style="height: calc(100% - 38px);" v-show="codeShow">
         <div style="height: 100%">
           <label>{{lang.evalstring}}</label>
           <textarea v-model="pin.evalString"></textarea>
@@ -237,9 +265,12 @@ export default {
       lang: {},
       showPinSelect: false,
       pinshowPinSelect: false,
-      firstShow: true,
-      secondShow: false,
+      routineShow: true,
+      imageShow: false,
+      textShow: false,
+      codeShow: false,
       makiIconObj: {},
+      drag_over: false,
       pin: {
         name: "",
         creating: true,
@@ -463,12 +494,46 @@ export default {
         pinToolObj.isCreating = false;
 
         const sceneObject = new XE.SceneTree.Leaf(pinToolObj);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
       }
     },
 
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        (czmObj.positions !== undefined || czmObj.position !== undefined)
+      ) {
+        e.dataTransfer.dropEffect = "copy";
+        this.drag_over = true;
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    dragLeave() {
+      this.drag_over = false;
+    },
+    //拖拽放置
+    drop(e) {
+      this.drag_over = false;
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        (czmObj.position !== undefined || czmObj.positions !== undefined)
+      ) {
+        this._czmObj.creating = false;
+        if (czmObj.position !== undefined) {
+          this._czmObj.position = [...czmObj.position];
+        } else {
+          this._czmObj.position = [...czmObj.positions[0]];
+        }
+      }
     }
   },
   beforeDestroy() {
@@ -755,17 +820,22 @@ button:focus {
   color: #dddddd;
 }
 .buttonGroup {
-  display: flex;
+  display: inline-block;
+  width: 311px;
+  height: 40px;
+  vertical-align: top;
+  margin-top: -1px;
 }
 .buttonGroup div {
   display: inline-block;
   height: 25px;
-  width: 25%;
+  width: 132px;
   margin-left: 5%;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   color: #dddddd;
   padding: 2px 1px;
+  margin-right: 6px;
 }
 .buttonGroup div:nth-child(1) {
   display: inline-block;
@@ -781,24 +851,32 @@ button:focus {
 .btncoloron {
   color: #1fffff !important;
 }
+.dragBox {
+  display: inline-block;
+}
 .xbsj-input-number {
-  width: 140px;
+  width: 150px;
   height: 32px;
   margin-top: 0px;
   border: 0;
   border-radius: 4px;
-  margin-right: 19px;
+  margin-right: 16px;
 }
-.tab span {
+.tab {
+  overflow: hidden;
+  margin-left: 10px;
+}
+.tab li {
   display: inline-block;
   min-width: 50px;
   height: 28px;
   line-height: 28px;
-  background: rgba(0, 0, 0, 0.5);
-  margin-right: 20px;
   cursor: pointer;
+  float: left;
+  border-radius: 4px;
 }
-.tab span:hover {
+.tab li:hover,
+.tab .highlight {
   background: #000;
 }
 textarea {
@@ -829,9 +907,23 @@ textarea {
   border-radius: 3px;
   cursor: pointer;
   float: right;
-  margin-right: 6px;
+  margin-right: 12px;
 }
 .footbox button:hover {
+  color: #1fffff;
+}
+.dragButton {
+  width: 120px;
+  height: 25px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+  text-align: center;
+  line-height: 25px;
+}
+
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
   color: #1fffff;
 }
 </style>

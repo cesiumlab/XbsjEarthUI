@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="355"
+    :height="366"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -27,16 +27,32 @@
           >{{lang.creating}}</button>
 
           <button
-            style="margin-left:20px;"
             class="attitudeEditCameraButton"
             @click="model.editing =!model.editing"
             :class="model.editing?'btncoloron':''"
           >{{lang.editing}}</button>
+          <!-- 拖拽 -->
+          <button
+            @dragover="dragOver"
+            @drop="drop"
+            @dragleave="dragLeave"
+            :title="lang.drag"
+            class="dragButton"
+            :class="{highlight:drag_over}"
+          >{{lang.dragcontent}}</button>
         </div>
+      </div>
+      <div class="flatten-flex">
         <!-- 贴地 -->
         <div class="flatten">
           <label>{{lang.ground}}</label>
           <XbsjSwitch v-model="model.ground"></XbsjSwitch>
+        </div>
+        <div class="flatten">
+          <div class="flatten">
+            <label>{{lang.outlineShow}}</label>
+            <XbsjSwitch v-model="model.outlineShow"></XbsjSwitch>
+          </div>
         </div>
       </div>
       <!-- 颜色 -->
@@ -44,14 +60,9 @@
         <label>{{lang.color}}</label>
         <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
       </div>
-      <div class="flatten-flex" style="padding-top:10px;">
-        <div class="flatten">
-          <label>{{lang.outlineShow}}</label>
-          <XbsjSwitch v-model="model.outlineShow"></XbsjSwitch>
-        </div>
-      </div>
+
       <!-- 宽度 -->
-      <div class="flatten" style="margin-top:20px;">
+      <div class="flatten" style="margin-top:30px;">
         <label>{{lang.outlineWidth}}</label>
         <div class="field">
           <XbsjSlider
@@ -100,6 +111,7 @@ export default {
       lang: {},
       showPinSelect: false,
       makiIconObj: {},
+      drag_over: false,
       model: {
         name: "",
         show: false,
@@ -241,12 +253,36 @@ export default {
       if (modelToolObj.isCreating) {
         modelToolObj.isCreating = false;
         const sceneObject = new XE.SceneTree.Leaf(modelToolObj);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
       }
     },
 
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        e.dataTransfer.dropEffect = "copy";
+        this.drag_over = true;
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    dragLeave() {
+      this.drag_over = false;
+    },
+    //拖拽放置
+    drop(e) {
+      this.drag_over = false;
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        this._czmObj.creating = false;
+        this.$root.$earthUI.getCzmObjectPositionFromDrag(czmObj, this._czmObj);
+      }
     }
   },
   beforeDestroy() {
@@ -514,7 +550,8 @@ button:focus {
 }
 
 .buttonGroup {
-  display: flex;
+  display: inline-block;
+  height: 40px;
 }
 .buttonGroup div {
   display: inline-block;
@@ -547,5 +584,24 @@ button:focus {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   color: #dddddd;
+  vertical-align: top;
+  margin-right: 20px;
+}
+.dragButton {
+  display: inline-block;
+  width: 120px;
+  height: 25px;
+  margin-left: 4px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+  text-align: center;
+  line-height: 25px;
+  color: #dddddd;
+}
+
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
+  color: #1fffff;
 }
 </style>

@@ -38,11 +38,10 @@
           <span class="xbsj-item-name">{{lang.modelTree}}</span>
         </div>
 
-        <!-- Symbol标绘 -->
-        <!-- <div class="xbsj-item-btnbox" @click="SymbolShow=!SymbolShow" v-show="show">
-          <div class="xbsj-item-btn symbolbutton" :class="{highlight: SymbolShow}"></div>
-          <span class="xbsj-item-name">{{lang.symbol}}</span>
-        </div>-->
+        <div class="xbsj-item-btnbox" @click="tilesTestShow=!tilesTestShow">
+          <div class="xbsj-item-btn symbolbutton" :class="{highlight: tilesTestShow}"></div>
+          <span class="xbsj-item-name">{{lang.autoTest}}</span>
+        </div>
         <!--
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn attributebutton"></div>
@@ -182,7 +181,7 @@ export default {
       },
       baseColor: [0, 0, 0.5, 1],
       langs: languagejs,
-      SymbolShow: false
+      tilesTestShow: false
     };
   },
   created() {},

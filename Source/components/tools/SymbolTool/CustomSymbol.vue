@@ -67,7 +67,7 @@
 
 <script>
 import languagejs from "./locale";
-import { parse } from 'path';
+import { parse } from "path";
 export default {
   data () {
     return {
@@ -79,22 +79,22 @@ export default {
       symbolNameEditable: {},
       langs: languagejs,
       lang: undefined,
-      symbolGroupId: "custom_symbols"
+      symbolGroupId: "custom_symbols",
+      symbolContent: null,
     };
   },
   created () { },
-  mounted () {
-  },
+  mounted () { },
   methods: {
     symbolsContextMenu (item, vueObject) {
-      var self = this
+      var self = this;
       var labServer = this.$root.$labServer;
       const baseItems = [
         {
           text: this.lang.rename,
           func: () => {
-            self.symbolNameEditable[item._id] = true
-            self.$forceUpdate()
+            self.symbolNameEditable[item._id] = true;
+            self.$forceUpdate();
             // self.modifyingSymbol = item
             // self.modifyGroundImage(item)
           }
@@ -105,7 +105,7 @@ export default {
             self.$root.$earth
               .capture(64, 64)
               .then(img => {
-                self.symbolChange(item, { thumbnail: img })
+                self.symbolChange(item, { thumbnail: img });
               })
               .catch(err => {
                 console.log(err);
@@ -115,19 +115,24 @@ export default {
         {
           text: this.lang.delete,
           func: () => {
-            const index = self.currentSelectedTreeNode.content.symbols.indexOf(item._id);
-            self.currentSelectedTreeNode.content.symbols.splice(index, 1);
+            this.$root.$earthUI.confirm(this.lang.conformdelete, () => {
+              const index = self.currentSelectedTreeNode.content.symbols.indexOf(
+                item._id
+              );
+              self.currentSelectedTreeNode.content.symbols.splice(index, 1);
 
-            const symbolIndex = self.symbols.indexOf(item)
-            self.symbols.splice(symbolIndex, 1)
-            self.updateSymbolGroup()
+              const symbolIndex = self.symbols.indexOf(item);
+              self.symbols.splice(symbolIndex, 1);
+              self.updateSymbolGroup();
+              self.deleteSymbol(item._id);
+            });
           }
         }
       ];
       this.$root.$earthUI.contextMenu.pop(baseItems);
     },
     treeContextMenu ({ item, vueObject }) {
-      var self = this
+      var self = this;
       var labServer = this.$root.$labServer;
       const baseItems = [
         {
@@ -136,23 +141,23 @@ export default {
             labServer
               .createGuid()
               .then(result => {
-                if (result.status === 'ok') {
+                if (result.status === "ok") {
                   var dataNode = {
                     _id: result.id,
                     name: self.lang.newGroup,
                     symbols: [],
                     children: []
-                  }
+                  };
                   var treeNode = {
                     id: result.id,
                     expand: true,
                     title: self.lang.newGroup,
                     children: [],
                     content: dataNode
-                  }
+                  };
                   item.children.push(treeNode);
-                  item.content.children.push(dataNode)
-                  self.updateSymbolGroup()
+                  item.content.children.push(dataNode);
+                  self.updateSymbolGroup();
                 }
               })
               .catch(err => {
@@ -172,36 +177,41 @@ export default {
             const index = item.parent.children.indexOf(item);
             item.parent.children.splice(index, 1);
 
-            const indexContent = item.parent.content.children.indexOf(item.content);
-            item.parent.content.children.splice(indexContent, 1)
-            self.updateSymbolGroup()
+            const indexContent = item.parent.content.children.indexOf(
+              item.content
+            );
+            item.parent.content.children.splice(indexContent, 1);
+            self.updateSymbolGroup();
           }
         }
       ];
       this.$root.$earthUI.contextMenu.pop(baseItems);
     },
+    deleteSymbol (id) {
+      this.$root.$labServer.deleteSymbol(id);
+    },
     updateSymbolGroup () {
-      var self = this
-      this.$root.$labServer.updateSymbolGroup()
-        .then(result => {
-        })
+      var self = this;
+      this.$root.$labServer
+        .updateSymbolGroup(this.symbolContent)
+        .then(result => { })
         .catch(err => {
           this.error = err;
         });
     },
     isChildren (parent, children) {
       if (parent.children === undefined || parent.children.length === 0) {
-        return false
+        return false;
       }
-      var isChildren = parent.children.indexOf(children)
+      var isChildren = parent.children.indexOf(children);
       if (isChildren < 0) {
         for (var i = 0; i < parent.children.length; i++) {
           if (this.isChildren(parent.children[i], children)) {
-            break
+            break;
           }
         }
       }
-      return isChildren >= 0
+      return isChildren >= 0;
     },
     movetreeitem (item, $event) {
       let self = this;
@@ -211,10 +221,7 @@ export default {
       source.addEventListener(
         "dragstart",
         function (event) {
-          event.dataTransfer.setData(
-            "obj",
-            JSON.stringify(item)
-          ); //兼容火狐浏览器，拖动时候必须携带数据否则没效果
+          event.dataTransfer.setData("obj", JSON.stringify(item)); //兼容火狐浏览器，拖动时候必须携带数据否则没效果
           self.moveItem({ item, vueObject: self, $event });
         },
         false
@@ -272,7 +279,7 @@ export default {
       this.canmove = true;
       this._currentDropNode = item;
       var sceneTree = this.$root.$refs.mainUI.$refs.sceneTreeTool[0];
-      sceneTree._currentSceneNode = undefined
+      sceneTree._currentSceneNode = undefined;
     },
     canMoveItem ({ item, vueObject }) {
       //判断放置目标是否是源目标的子节点
@@ -289,37 +296,41 @@ export default {
     dropItem ({ item, vueObject }) {
       //放置源目标到放置目标位置
       if (this._currentDropNode) {
-        if (this._currentDropNode.type === "GroundImage" || this._currentDropNode.type === "Pin") {
-          var index = this.currentSelectedTreeNode.content.symbols.indexOf(this._currentDropNode._id)
-          this.currentSelectedTreeNode.content.symbols.splice(index, 1)
-          vueObject.item.content.symbols.push(this._currentDropNode._id)
-          var symbolsIndex = this.symbols.indexOf(this._currentDropNode)
-          this.symbols.splice(symbolsIndex, 1)
-          this.updateSymbolGroup()
-        }
-        else if (this._currentDropNode && item !== this._currentDropNode) {
+        if (
+          this._currentDropNode.type) {
+          var index = this.currentSelectedTreeNode.content.symbols.indexOf(
+            this._currentDropNode._id
+          );
+          this.currentSelectedTreeNode.content.symbols.splice(index, 1);
+          vueObject.item.content.symbols.push(this._currentDropNode._id);
+          var symbolsIndex = this.symbols.indexOf(this._currentDropNode);
+          this.symbols.splice(symbolsIndex, 1);
+          this.updateSymbolGroup();
+        } else if (this._currentDropNode && item !== this._currentDropNode) {
           this._currentDropNode.parent &&
-            this.moveToItem(this._currentDropNode, vueObject.item)
+            this.moveToItem(this._currentDropNode, vueObject.item);
         }
       }
-      this.$forceUpdate()
+      this.$forceUpdate();
       this._currentDropNode = undefined;
     },
     moveToItem (srcItem, dstItem) {
       if (srcItem.parent) {
         if (srcItem.parent.content) {
-          var contentIndex = srcItem.parent.content.children.indexOf(srcItem.content)
-          srcItem.parent.content.children.splice(contentIndex, 1)
+          var contentIndex = srcItem.parent.content.children.indexOf(
+            srcItem.content
+          );
+          srcItem.parent.content.children.splice(contentIndex, 1);
 
-          var index = srcItem.parent.children.indexOf(srcItem)
-          srcItem.parent.children.splice(index, 1)
+          var index = srcItem.parent.children.indexOf(srcItem);
+          srcItem.parent.children.splice(index, 1);
 
           this.$nextTick(() => {
-            dstItem.content.children.push(srcItem.content)
-            dstItem.children.push(srcItem)
-            this.updateSymbolGroup()
-            dstItem.expand = true
-          })
+            dstItem.content.children.push(srcItem.content);
+            dstItem.children.push(srcItem);
+            this.updateSymbolGroup();
+            dstItem.expand = true;
+          });
         }
       }
     },
@@ -327,93 +338,51 @@ export default {
       const treeItem = options.item;
       const newTitle = options.title;
       treeItem && (treeItem.title = newTitle);
-      treeItem.content.name = newTitle
-      this.updateSymbolGroup()
+      treeItem.content.name = newTitle;
+      this.updateSymbolGroup();
     },
     createGroundImage (symbol) {
-      if (this.symbol && this.symbol.isCreating) { // 新创建的，没确定之前，又选择了其他图标
-        this.symbol.destroy()
+      if (this.symbol && this.symbol.isCreating) {
+        // 新创建的，没确定之前，又选择了其他图标
+        this.symbol.destroy();
       }
-      switch (symbol.type) {
-        case 'CustomPrimitive': this.symbol = new XE.Obj.CustomPrimitive(this.$root.$earth); break;
-        case 'CustomPrimitiveExt_Tube': this.symbol = new XE.Obj.CustomPrimitiveExt.Tube(this.$root.$earth); break;
-        case 'GroundImage': this.symbol = new XE.Obj.GroundImage(this.$root.$earth); break;
-        case 'Pin': this.symbol = new XE.Obj.Pin(this.$root.$earth); break;
-        case 'GeoPin': this.symbol = new XE.Obj.Plots.GeoPin(this.$root.$earth); break;
-        case 'Path': this.symbol = new XE.Obj.Path(this.$root.$earth); break;
-        case 'GeoPolyline': this.symbol = new XE.Obj.Plots.GeoPolyline(this.$root.$earth); break;
-        case 'Polyline': this.symbol = new XE.Obj.Polyline(this.$root.$earth); break;
-        case 'GeoSectorSearch': this.symbol = new XE.Obj.Plots.GeoSectorSearch(this.$root.$earth); break;
-        case 'GeoPolylineArrow': this.symbol = new XE.Obj.Plots.GeoPolylineArrow(this.$root.$earth); break;
-        case 'GeoCurveArrow': this.symbol = new XE.Obj.Plots.GeoCurveArrow(this.$root.$earth); break;
-        case 'GeoArc': this.symbol = new XE.Obj.Plots.GeoArc(this.$root.$earth); break;
-        case 'GeoBezier2': this.symbol = new XE.Obj.Plots.GeoBezier2(this.$root.$earth); break;
-        case 'GeoBezier3': this.symbol = new XE.Obj.Plots.GeoBezier3(this.$root.$earth); break;
-        case 'GeoParallelSearch': this.symbol = new XE.Obj.Plots.GeoParallelSearch(this.$root.$earth); break;
-        case 'GeoCircle': this.symbol = new XE.Obj.Plots.GeoCircle(this.$root.$earth); break;
-        case 'GeoRectangle': this.symbol = new XE.Obj.Plots.GeoRectangle(this.$root.$earth); break;
-        case 'GeoTriFlag': this.symbol = new XE.Obj.Plots.GeoTriFlag(this.$root.$earth); break;
-        case 'GeoCurveFlag': this.symbol = new XE.Obj.Plots.GeoCurveFlag(this.$root.$earth); break;
-        case 'GeoRightAngleFlag': this.symbol = new XE.Obj.Plots.GeoRightAngleFlag(this.$root.$earth); break;
-        case 'GeoDoubleArrow': this.symbol = new XE.Obj.Plots.GeoDoubleArrow(this.$root.$earth); break;
-        case 'GeoPolygon': this.symbol = new XE.Obj.Plots.GeoPolygon(this.$root.$earth); break;
-        case 'GeoSector': this.symbol = new XE.Obj.Plots.GeoSector(this.$root.$earth); break;
-        case 'Scanline': this.symbol = new XE.Obj.Scanline(this.$root.$earth); break;
-        case 'Model': this.symbol = new XE.Obj.Model(this.$root.$earth); break;
-        default: return;
+      this.symbol = XE.Core.XbsjObject.createObject(symbol.type, this.$root.$earth);
+      var json = JSON.parse(symbol.content);
+      if(json.czmObject){
+        json = json.czmObject;
       }
+      this.symbol.xbsjFromJSON(json);
       this.symbol.isCreating = true;
 
-      var czmObject = JSON.parse(symbol.content);
-      if (czmObject.czmObject) {
-        czmObject = czmObject.czmObject;
-        if (!czmObject.name) {
-          czmObject.name = symbol.name;
-        }
-      }
-      this.symbol.xbsjFromJSON(czmObject);
+      // var czmObject = JSON.parse(symbol.content);
+      // if (czmObject.czmObject) {
+      //   czmObject = czmObject.czmObject;
+      //   if (!czmObject.name) {
+      //     czmObject.name = symbol.name;
+      //   }
+      // }
+      // this.symbol.xbsjFromJSON(czmObject);
       this.$root.$earthUI.showPropertyWindow(this.symbol);
       this.symbol.creating = true;
       // window.symbol = this.symbol
     },
     symbolChange (item, options) {
-      var self = this
+      var self = this;
       this.$root.$labServer.updateSymbol(item._id, options).then(res => {
-        self.itemClick({ item: self.currentSelectedTreeNode })
-      })
+        self.itemClick({ item: self.currentSelectedTreeNode });
+      });
     },
-    // modifyGroundImage (symbol) {
-    //   var groundImage = new XE.Obj.GroundImage(this.$root.$earth);
-    //   groundImage.creating = true
-    //   groundImage.xbsjFromJSON(JSON.parse(symbol.content));
-    //   groundImage.modifyEnd = this.modifyGroundImageEnd
-    //   this.$root.$earthUI.showPropertyWindow(groundImage);
-    // },
-    // modifyGroundImageEnd (item, groundImage) { // 修改后点击 取消 或 确定 时触发
-    //   if (ok) {
-    //     var objJson = groundImage.toJSON()
-    //     if (groundImage.imageUrls.length > 0) {
-    //       objJson.image = groundImage.imageUrls[0]
-    //     }
-    //     delete objJson.xbsjGuid
-    //     this.modifyingSymbol.name = groundImage.name
-    //     this.modifyingSymbol.content = JSON.stringify(objJson)
-    //     this.$root.$labServer.updateSymbol(this.modifyingSymbol._id, this.modifyingSymbol)
-    //   }
-    //   this.modifyingSymbol = null
-    //   groundImage.destroy()
-    // },
     initSymbol (id) {
       var labServer = this.$root.$labServer;
-      var self = this
+      var self = this;
       labServer
         .getSymbol(id)
         .then(result => {
-          if (result.status === 'ok' && result.symbols.rows.length === 1) {
-            var group = JSON.parse(result.symbols.rows[0].content);
-            var treeRoot = self.initTreeNode(group)
-            treeRoot.expand = true
-            self.tree = [treeRoot]
+          if (result.status === "ok" && result.symbols.rows.length === 1) {
+            self.symbolContent = JSON.parse(result.symbols.rows[0].content);
+            var treeRoot = self.initTreeNode(self.symbolContent);
+            treeRoot.expand = true;
+            self.tree = [treeRoot];
             // self.$forceUpdate()
           }
         })
@@ -422,48 +391,50 @@ export default {
         });
     },
     initTreeNode (node) {
-      var self = this
+      var self = this;
       var treeNode = {
         expand: false,
         title: node.name,
         children: [],
         content: node
-      }
+      };
       if (node.children.length > 0) {
         for (var i = 0; i < node.children.length; i++) {
-          treeNode.children.push(self.initTreeNode(node.children[i]))
+          treeNode.children.push(self.initTreeNode(node.children[i]));
         }
       }
-      return treeNode
+      return treeNode;
+    },
+    addSymbolToRoot (id) {
+      if (this.symbolContent) {
+        this.symbolContent.symbols.push(id);
+      }
     },
     itemClick (item) {
       if (item && item.item) {
-        this.currentSelectedTreeNode = item.item
+        this.currentSelectedTreeNode = item.item;
       }
-      if (this.currentSelectedTreeNode && this.currentSelectedTreeNode.content.symbols.length > 0) {
+      if (
+        this.currentSelectedTreeNode &&
+        this.currentSelectedTreeNode.content.symbols.length > 0
+      ) {
         var labServer = this.$root.$labServer;
-        var self = this
-        var ids = this.currentSelectedTreeNode.content.symbols.join(',').replace('\"', '')
+        var self = this;
+        var ids = this.currentSelectedTreeNode.content.symbols
+          .join(",")
+          .replace('"', "");
         labServer
           .getSymbols(ids)
           .then(result => {
-            if (result.status === 'ok') {
-              self.symbols = result.symbols.rows
-              // self.symbols.forEach((symbol) => {
-              //   symbol.domType = "symbol"
-              // if (symbol.image.indexOf('data') !== 0) {
-              //   symbol.base64 = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(symbol.image)))
-              // } else {
-              //   symbol.base64 = symbol.image
-              // }
-              // })
+            if (result.status === "ok") {
+              self.symbols = result.symbols.rows;
             }
           })
           .catch(err => {
             this.error = err;
           });
       } else {
-        this.symbols = []
+        this.symbols = [];
       }
     }
   },
@@ -478,7 +449,7 @@ export default {
   watch: {
     show (val) {
       if (val) {
-        this.initSymbol(this.symbolGroupId)
+        this.initSymbol(this.symbolGroupId);
       }
     }
   }

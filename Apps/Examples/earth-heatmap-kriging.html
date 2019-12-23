@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <title>热力图-克里金插值</title>
+
+    <!-- 强制提前加载Cesium.js，其中Cesium相关路径可以换成自定义的 -->
+    <!-- <script src="../../XbsjCesium/Cesium.js"></script> -->
+    <!-- <link rel="stylesheet" href="../../XbsjCesium/Widgets/Widgets.css"> -->
+
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function startup() {
+            // earth = new XE.Earth('earthContainer');
+            earth = new XE.Earth('earthContainer', {
+                // 这里设置Viewer的配置，和new Viewer(container, options)中的options一致
+                homeButton: true,
+                timeline: true,
+            });
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "默认离线影像",
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "createTileMapServiceImageryProvider": {
+                                    "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    "fileExtension": 'jpg',
+                                },
+                                "type": "createTileMapServiceImageryProvider"
+                            }
+                        }
+                    },
+                ]
+            };
+
+            const config = {
+                "position": [
+                    2.0313527955350708,
+                    0.6964650964888595,
+                    0
+                ],
+                // 在地球上的实际尺寸，单位是米
+                "width": 10000,
+                "height": 10000,
+                // 调色板参数，第一个代码值域，范围在0-1之间，第二个为css颜色字符串
+                "gradient": [
+                    [
+                        0,
+                        "rgba(0, 255, 0, 0.1)"
+                    ],
+                    [
+                        0.2,
+                        "rgba(0, 0, 255, 0.1)"
+                    ],
+                    [
+                        0.6,
+                        "rgba(255, 255, 0, 0.5)"
+                    ],
+                    [
+                        1,
+                        "red"
+                    ]
+                ],
+                "maxValue": 1000
+            }
+
+            var h = new XE.Obj.HeatMap(earth);
+            h.xbsjFromJSON(config);
+
+            // 演示1：设置网格数据
+            // {
+            //     var gridData = new Array(100*100);
+            //     gridData.fill(0);
+            //     // 采样点数组
+            //     const posValues = [[10, 10, 100], [10, 90, 500], [90, 10, 300], [90, 90, 1000]];
+            //     // 通过克里金插值获得网格数组
+            //     XE.Obj.HeatMap.getGridDataFromKriging(posValues, 100, 100, gridData);
+            //     h.setGridData(gridData);
+            // }
+
+            // 演示2：通过插值的方式设置网格数据
+            {
+                // 采样点数组0
+                var gridData0 = new Array(100*100);
+                gridData0.fill(0);
+                const posValues0 = [[10, 10, 100], [10, 90, 500], [90, 10, 300], [90, 90, 1000]];
+                // 通过克里金插值获得网格数组1
+                XE.Obj.HeatMap.getGridDataFromKriging(posValues0, 100, 100, gridData0);
+
+                var gridData1 = new Array(100*100);
+                gridData1.fill(0);
+                const posValues1 = [[10, 10, 500], [10, 90, 100], [90, 10, 200], [90, 90, 100]];
+                // 通过克里金插值获得网格数组1
+                XE.Obj.HeatMap.getGridDataFromKriging(posValues1, 100, 100, gridData1);
+
+                let ratio = 0;
+                earth.czm.scene.preUpdate.addEventListener(() => {
+                    ratio += 0.02;
+                    if (ratio > 1.0) {
+                        ratio = 0.0;
+                    }
+
+                    var gridData = new Array(100*100);
+                    gridData.fill(0);
+
+                    XE.Obj.HeatMap.interpolateGridData(ratio, gridData0, gridData1, 100*100, gridData);
+
+                    h.setGridData(gridData);
+                })
+            }
+
+            h.flyTo();
+
+            window.heatmap = h;
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);            
+    </script>
+</body>
+
+</html>

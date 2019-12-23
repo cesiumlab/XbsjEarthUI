@@ -13,6 +13,12 @@
         <textarea v-model="code"></textarea>
         <div class="box-footer">
           <!-- <label class="error" v-show="error!=''">{{error}}</label> -->
+          <a
+            href="https://github.com/AnalyticalGraphicsInc/3d-tiles/tree/master/specification/Styling
+"
+            target="__black"
+            style="padding: 1.5px 15px; margin-right: 15px;"
+          >{{lang.styledescription}}</a>
           <button @click="save">{{lang.save}}</button>
           <button @click="apply">{{lang.apply}}</button>
         </div>
@@ -39,23 +45,22 @@
   </Window>
 </template>
 <script>
-
 function codeValid(code, earthUI) {
   try {
-      const style = JSON.parse(code);         
+    const style = JSON.parse(code);
   } catch (error) {
-      try {
-          const style = eval(code+";style");        
-          if (typeof style === 'undefined') {
-            earthUI.promptInfo(`typeof style === 'undefined'`, "error");
-            return false;
-          }
-      } catch (error) {
-          // console.warn('3dtiles的style设置不合法！');
-          //提醒
-          earthUI.promptInfo(error.message || error, "error");
-          return false;          
+    try {
+      const style = eval(code + ";style");
+      if (typeof style === "undefined") {
+        earthUI.promptInfo(`typeof style === 'undefined'`, "error");
+        return false;
       }
+    } catch (error) {
+      // console.warn('3dtiles的style设置不合法！');
+      //提醒
+      earthUI.promptInfo(error.message || error, "error");
+      return false;
+    }
   }
   return true;
 }
@@ -71,6 +76,7 @@ export default {
           save: "另存为新样式",
           apply: "应用",
           add: "保存新样式",
+          styledescription: "style语言说明",
           delete: "删除",
           rename: "重命名",
           thumbnail: "更新缩略图",
@@ -83,6 +89,7 @@ export default {
           save: "Save New Style",
           apply: "Apply",
           add: "Save new style",
+          styledescription: "Style description",
           delete: "Delete",
           rename: "Rename",
           thumbnail: "Update thumbnail",
@@ -109,9 +116,7 @@ export default {
       return this.lang.title + "  [" + b.name + "]";
     }
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
     //获取当前的样式
     this.orignCode = this.code = this.getBind().xbsjStyle;
@@ -332,7 +337,9 @@ export default {
   float: right;
   margin-right: -20px;
 }
-.box-footer button {
+.box-footer button,
+.box-footer a {
+  display: inline-block;
   border: 1px solid #666666;
   background-color: rgba(0, 0, 0, 0.5);
   color: #dddddd;
@@ -340,12 +347,13 @@ export default {
   text-align: center;
   vertical-align: middle;
   font-size: 14px;
-  padding: 2px 15px;
+  padding: 3px 15px;
   text-decoration: none;
   border-radius: 3px;
   cursor: pointer;
 }
-.box-footer button:hover {
+.box-footer button:hover,
+.box-footer a:hover {
   color: #1fffff;
 }
 .right {

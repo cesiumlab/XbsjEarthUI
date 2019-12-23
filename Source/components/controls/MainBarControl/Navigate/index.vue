@@ -104,6 +104,14 @@
           :class="{highlight:popup == 'rotateCenter'}"
           @click.stop="togglePopup('rotateCenter',$event)"
         ></span>
+        <!-- 绑定相机 -->
+        <div class="xbsj-item-btnbox" ref="cameraAttach" @click="cameraattachbtn">
+          <div
+            class="xbsj-item-btn pathbutton"
+            :class=" {  pathbuttonActive : cameraAttached || cameraAttachOver }"
+          ></div>
+          <span class="xbsj-item-name">{{lang.cameraattach}}</span>
+        </div>
         <!--
         <div class="xbsj-item-btnbox">
           <div
@@ -202,7 +210,7 @@ import SceneComp from "./Scene";
 import TrackComp from "./Track";
 import { addOutterEventListener } from "../../../utils/xbsjUtil";
 export default {
-  props:["labServiceUI"],
+  props: ["labServiceUI"],
   components: {
     SearchComp,
     RotateGlobeComp,
@@ -230,7 +238,9 @@ export default {
       useCesiumNavigator: false,
       cameraViewManagerShow: false,
       moving: false,
-      langs: languagejs
+      langs: languagejs,
+      cameraAttached: false,
+      cameraAttachOver: false
     };
   },
   created() {},
@@ -295,7 +305,73 @@ export default {
           "enabled"
         )
       );
+
+      this._disposers.push(
+        XE.MVVM.bind(
+          this,
+          "cameraAttached",
+          this.$root.$earth.camera.tracking,
+          "enabled"
+        )
+      );
     });
+
+    let cameraAttach = this.$refs.cameraAttach;
+
+    var that = this;
+
+    function getCzmObjectFromDrag(dataTransfer) {
+      for (let i = 0; i < dataTransfer.types.length; i++) {
+        var t = dataTransfer.types[i];
+        if (!t) continue;
+        if (t.startsWith("_czmobj_")) {
+          let guid = t.substring(8);
+
+          return that.$root.$earth.getObject(guid);
+        }
+      }
+      return undefined;
+    }
+    //拖拽移动上面
+    cameraAttach.addEventListener(
+      "dragover",
+      e => {
+        //e.stopPropagation();
+        e.preventDefault();
+        let czmObj = getCzmObjectFromDrag(e.dataTransfer);
+        if (czmObj && czmObj.cameraAttached !== undefined) {
+          that.cameraAttachOver = true;
+          e.dataTransfer.dropEffect = "link";
+        } else {
+          e.dataTransfer.dropEffect = "none";
+        }
+      },
+      false
+    );
+
+    cameraAttach.addEventListener(
+      "dragleave",
+      e => {
+        that.cameraAttachOver = false;
+      },
+      false
+    );
+
+    //拖拽放置
+    cameraAttach.addEventListener(
+      "drop",
+      e => {
+        // e.stopPropagation();
+        e.preventDefault();
+
+        let czmObj = getCzmObjectFromDrag(e.dataTransfer);
+        if (czmObj && czmObj.cameraAttached !== undefined) {
+          czmObj.cameraAttached = true;
+        }
+        that.cameraAttachOver = false;
+      },
+      false
+    );
   },
   beforeDestroy() {
     if (this._disposers) {
@@ -304,6 +380,9 @@ export default {
     }
   },
   methods: {
+    cameraattachbtn() {
+      this.cameraAttached = false;
+    },
     saveScene() {
       this.$root.$earthUI.labScene.saveScene();
     },
@@ -678,6 +757,17 @@ export default {
   outline: none;
   border-color: transparent;
   box-shadow: none;
+}
+.pathbutton {
+  background: url(../../../../images/path.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.pathbuttonActive {
+  background: url(../../../../images/path_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
 }
 </style>
 

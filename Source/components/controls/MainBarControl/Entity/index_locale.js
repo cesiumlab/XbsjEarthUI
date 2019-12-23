@@ -1,6 +1,6 @@
 const zh = {
   plotlibrary: '标绘库',
-  online: '在线',
+  online: '在线分享',
   localhost: 'Lab内置',
   custom: '自定义',
   routine: "常规",
@@ -50,7 +50,10 @@ const zh = {
   senior: '高级',
   barwrite: '带杆文字',
   diffusionsurface: '扩散面',
-  odLine: 'OD线'
+  odLine: 'OD线',
+  parabolic: '抛物差值',
+  algorithm: '算法',
+  delcontent: '必须选中一条折线'
 };
 
 const en = {
@@ -105,7 +108,10 @@ const en = {
   senior: 'Senior',
   barwrite: 'barwrite',
   diffusionsurface: 'surface',
-  odLine: 'ODLine'
+  odLine: 'ODLine',
+  parabolic: 'Parabolic',
+  algorithm: 'algorithm',
+  delcontent: 'A polyline must be selected'
 };
 
 export default { zh, en };

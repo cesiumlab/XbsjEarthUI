@@ -14,7 +14,8 @@ const zh = {
   enlargeScale: '放大比例',
   minpx: '像素大小',
   pathAnimation: '路径动画',
-  material: '材质底色'
+  material: '材质底色',
+  color: "颜色"
 }
 
 const en = {
@@ -33,7 +34,8 @@ const en = {
   enlargeScale: 'enlargeScale',
   minpx: 'min px',
   pathAnimation: 'pathAnimation',
-  material: 'material'
+  material: 'material',
+  color: "color"
 }
 
 export default {

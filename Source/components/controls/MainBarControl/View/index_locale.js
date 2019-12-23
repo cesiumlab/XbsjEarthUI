@@ -18,7 +18,8 @@ const zh = {
   capture: "场景截图",
   earthColor:'地球颜色',
   modelTree:'模型结构',
-  symbol: '标绘库'
+  symbol: '标绘库',
+  autoTest: '瓦片测试'
 };
 
 const en = {
@@ -41,7 +42,8 @@ const en = {
   capture: "Capture",
   earthColor:'GlobeClr',
   modelTree:'ModelScene',
-  symbol: 'Symbol store'
+  symbol: 'Symbol store',
+  autoTest: '3dtiles test'
 };
 
 export default { zh, en };

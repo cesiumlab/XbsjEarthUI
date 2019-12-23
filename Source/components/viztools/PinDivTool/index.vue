@@ -66,6 +66,19 @@
                 :class="pin.editing?'btncoloron':''"
               >{{lang.editing}}</button>
             </div>
+            <!-- <div @dragover="dragOver" @drop="drop">
+              <button class="attitudeEditDragButton">{{lang.drag}}</button>
+            </div>-->
+          </div>
+          <div
+            :title="lang.drag"
+            class="dragBox"
+            @dragover="dragOver"
+            @drop="drop"
+            @dragleave="dragLeave"
+            style="display: inline-block;"
+          >
+            <div class="dragButton" :class="{highlight:drag_over}">{{lang.dragcontent}}</div>
           </div>
         </div>
         <div class="flatten">
@@ -110,13 +123,14 @@ export default {
   props: {
     getBind: Function
   },
-  data () {
+  data() {
     return {
       lang: {},
       showPinSelect: false,
       pinshowPinSelect: false,
       makiIconObj: {},
       divcontent: ``,
+      drag_over: false,
       pin: {
         name: "",
         creating: true,
@@ -158,8 +172,8 @@ export default {
       pathGuidarr: []
     };
   },
-  created () { },
-  mounted () {
+  created() {},
+  mounted() {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
@@ -203,22 +217,21 @@ export default {
     </div>`;
       }
 
-
-      console.log(this._czmObj.defaultImgUrl());
+      // console.log(this._czmObj.defaultImgUrl());
     }
   },
   computed: {
-    name () {
+    name() {
       return this.pin.name;
     },
-    guid () {
+    guid() {
       return this.getBind().guid;
     },
     nearfar: {
-      get () {
+      get() {
         return [0, 30];
       },
-      set (newValue) {
+      set(newValue) {
         this.pin.near = Math.round(Math.pow(2, newValue[0]));
         this.pin.far = Math.round(Math.pow(2, newValue[1]));
       }
@@ -226,12 +239,12 @@ export default {
   },
   watch: {},
   methods: {
-    pinoptionssure (c) {
+    pinoptionssure(c) {
       this.pin.attachedPathGuid = c.guid;
       // console.log(this._czmObj)
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
-    pinselectinput () {
+    pinselectinput() {
       this.pathGuidarr = [];
       let guidobj = {};
       this.pathGuidarr.push({ name: "空", guid: "" });
@@ -249,17 +262,17 @@ export default {
       }
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
-    optionssure (c) {
+    optionssure(c) {
       this.pin.pinBuilder.makiIcon = c;
       this.showPinSelect = !this.showPinSelect;
     },
-    selectinput () {
+    selectinput() {
       this.showPinSelect = !this.showPinSelect;
     },
-    close () {
+    close() {
       this.$parent.destroyTool(this);
     },
-    cancel () {
+    cancel() {
       this.close();
 
       const pinToolObj = this._czmObj;
@@ -272,7 +285,7 @@ export default {
         pinToolObj.destroy();
       }
     },
-    ok () {
+    ok() {
       this.close();
       const pinToolObj = this._czmObj;
       pinToolObj.editing = false;
@@ -284,21 +297,55 @@ export default {
         pinToolObj.isCreating = false;
         // 点击确定将pindiv添加到sceneTree当中
         const sceneObject = new XE.SceneTree.Leaf(pinToolObj);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
       } else {
         pinToolObj.innerHTML = this.divcontent;
       }
     },
-    apply () {
+    apply() {
       const pinToolObj = this._czmObj;
       //修改pindiv操作
       pinToolObj.innerHTML = this.divcontent;
     },
-    flyto (index) {
+    flyto(index) {
       this._czmObj.polygons[index].flyTo();
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        (czmObj.positions !== undefined || czmObj.position !== undefined)
+      ) {
+        e.dataTransfer.dropEffect = "copy";
+        this.drag_over = true;
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    dragLeave() {
+      this.drag_over = false;
+    },
+    //拖拽放置
+    drop(e) {
+      this.drag_over = false;
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        (czmObj.position !== undefined || czmObj.positions !== undefined)
+      ) {
+        this._czmObj.creating = false;
+        if (czmObj.position !== undefined) {
+          this._czmObj.position = [...czmObj.position];
+        } else {
+          this._czmObj.position = [...czmObj.positions[0]];
+        }
+      }
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
     this._disposers.forEach(e => e());
@@ -310,7 +357,7 @@ export default {
 
 <style scoped>
 .field {
-  margin-top: 20px;
+  margin-top: 9px;
   padding-left: 4px;
   display: inline-block;
   width: 220px;
@@ -583,12 +630,14 @@ button:focus {
   color: #dddddd;
 }
 .buttonGroup {
-  display: flex;
+  display: inline-block;
+  width: 224px;
+  vertical-align: top;
 }
 .buttonGroup div {
   display: inline-block;
   height: 25px;
-  width: 25%;
+  width: 100px;
   margin-left: 5%;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
@@ -603,8 +652,10 @@ button:focus {
   border-radius: 3px;
   color: #dddddd;
 }
-.attitudeEditCameraButton {
+.attitudeEditCameraButton,
+.attitudeEditDragButton {
   color: #dddddd;
+  cursor: pointer;
 }
 .btncoloron {
   color: #1fffff !important;
@@ -617,7 +668,8 @@ button:focus {
   border: none;
   color: #dddddd;
   position: absolute;
-  height: calc(100% - 280px);
+  height: calc(100% - 290px);
+  resize: none;
 }
 .apply {
   width: 35px !important;
@@ -631,5 +683,20 @@ button:focus {
   background-color: rgba(0, 0, 0, 0.5);
   color: #dddddd;
   line-height: 27px;
+}
+.dragButton {
+  width: 120px;
+  height: 25px;
+  margin-left: 18px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+  text-align: center;
+  line-height: 25px;
+}
+
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
+  color: #1fffff;
 }
 </style>

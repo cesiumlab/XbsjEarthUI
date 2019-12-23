@@ -11,14 +11,14 @@
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.plotlibrary}}</span>
         <!-- 在线 -->
-        <!-- <div class="xbsj-item-btnbox ml20">
+        <div class="xbsj-item-btnbox ml20">
           <div
             class="xbsj-item-btn onlinebutton"
-            @click="plotOnline=!plotOnline"
-            :class="{highlight:plotOnline}"
+            @click="OnlineSymbolShow=!OnlineSymbolShow"
+            :class="{highlight:OnlineSymbolShow}"
           ></div>
           <span class="xbsj-item-name">{{lang.online}}</span>
-        </div>-->
+        </div>
         <!-- Lab内置 -->
         <div class="xbsj-item-btnbox" @click="LabSymbolShow=!LabSymbolShow">
           <div class="xbsj-item-btn localhostbutton" :class="{highlight:LabSymbolShow}"></div>
@@ -50,12 +50,6 @@
         <!-- <div class="xbsj-item-btnbox ml20" @click="pindivbtn" title="div图标">
           <div class="xbsj-item-btn pindivbutton"></div>
           <span class="xbsj-item-name">{{lang.pindivbtn}}</span>
-        </div>-->
-
-        <!-- 路径 -->
-        <!-- <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
-          <div class="xbsj-item-btn pathbutton"></div>
-          <span class="xbsj-item-name">{{lang.path}}</span>
         </div>-->
         <!-- 折线 -->
         <!-- <div class="xbsj-item-btnbox" @click="polylinebtn" title="折线">
@@ -107,10 +101,10 @@
           <span class="xbsj-item-name">{{lang.TriFlag}}</span>
         </div>-->
         <!-- 双箭头 -->
-        <!-- <div class="xbsj-item-btnbox" @click="DoubleArrow">
+        <div class="xbsj-item-btnbox" @click="DoubleArrow">
           <div class="xbsj-item-btn DoubleArrow"></div>
           <span class="xbsj-item-name">{{lang.DoubleArrow}}</span>
-        </div>-->
+        </div>
         <!-- 多边形 -->
         <div class="xbsj-item-btnbox" @click="Polygon">
           <div class="xbsj-item-btn facebutton"></div>
@@ -195,7 +189,7 @@
           <span class="xbsj-item-name">{{lang.more}}</span>
         </div>
       </div>-->
-      <div class="xbsj-list-item xbsj-list-lastitem">
+      <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.senior}}</span>
         <!-- 路径 -->
         <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
@@ -269,17 +263,45 @@
           <span class="xbsj-item-name">{{lang.more}}</span>
         </div>-->
       </div>
+      <div class="xbsj-list-item xbsj-list-lastitem">
+        <span class="xbsj-list-name">{{lang.algorithm}}</span>
+        <!-- 抛物差值 -->
+        <div
+          class="xbsj-item-btnbox ml20"
+          ref="parabolicBtn"
+          @click="parabolicBtn"
+          @drop="parabolic_drop($event)"
+          @dragover="parabolic_dragover($event)"
+          @dragleave="parabolic_dragleave($event)"
+        >
+          <div
+            class="xbsj-item-btn parabolicbtn"
+            :class="{highlight:parabolic_over||parabolicShow}"
+          ></div>
+          <span class="xbsj-item-name">{{lang.parabolic}}</span>
+        </div>
+
+        <!-- ODLines -->
+        <div class="xbsj-item-btnbox ml20" ref="odlinesbtn" @click="createODlines">
+          <div class="xbsj-item-btn odlinesbtn"></div>
+          <span class="xbsj-item-name">ODLines</span>
+        </div>
+      </div>
     </div>
     <PlottingMore ref="plottingMore"></PlottingMore>
+    <Parabolic ref="parabolic" v-show="parabolicShow"></Parabolic>
   </div>
 </template>
 
 <script>
 import languagejs from "./index_locale";
 import PlottingMore from "./PlottingMore/index";
+import Parabolic from "./Parabolic";
+import { addOutterEventListener } from "../../../utils/xbsjUtil";
 export default {
   components: {
-    PlottingMore
+    PlottingMore,
+    Parabolic
   },
   data() {
     return {
@@ -288,14 +310,37 @@ export default {
       langs: languagejs,
       PlottingShow: false,
       EntityMoreShow: false,
-      plotOnline: false,
+      OnlineSymbolShow: false,
       LabSymbolShow: false,
       CustomSymbolShow: false,
-      show: true
+      show: true,
+      popup: "",
+      parabolicShow: false,
+      parabolic_over: false,
+      odlines_over: false
     };
   },
   created() {},
-  mounted() {},
+  mounted() {
+    //给所有popup的el上添加外部事件
+    Object.keys(this.$refs).forEach(key => {
+      addOutterEventListener(this.$refs[key].$el, "mousedown", el => {
+        let comp = this.getPopupComp();
+        if (comp && comp.$el === el) {
+          if (typeof comp.show == "function") {
+            comp.show(false);
+          }
+          this.popup = "";
+        }
+      });
+    });
+
+    //console.log(this.$root.$earthUI);
+    this.$parent.$on("hidePopup", () => {
+      this.showPopup(false);
+      this.popup = "";
+    });
+  },
   methods: {
     // 多边形
     Polygon() {
@@ -510,8 +555,152 @@ export default {
 
       CustomPrimitive.isCreating = true;
       CustomPrimitive.creating = true;
-      console.log(CustomPrimitive);
+      // console.log(CustomPrimitive);
       this.$root.$earthUI.showPropertyWindow(CustomPrimitive);
+    },
+
+    getCzmObjectFromDrag(dataTransfer) {
+      for (let i = 0; i < dataTransfer.types.length; i++) {
+        var t = dataTransfer.types[i];
+        if (!t) continue;
+        if (t.startsWith("_czmobj_")) {
+          let guid = t.substring(8);
+
+          return this.$root.$earth.getObject(guid);
+        }
+      }
+      return undefined;
+    },
+    parabolicBtn() {
+      //此按钮只隐藏
+      this.parabolicShow = false;
+      this._czmObj = undefined;
+    },
+    parabolic_dragover(e) {
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions && czmObj.positions.length > 1) {
+        e.dataTransfer.dropEffect = "copy";
+        this.parabolic_over = true;
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    parabolic_dragleave() {
+      this.parabolic_over = false;
+    },
+    parabolic_drop(e) {
+      this.parabolic_over = false;
+      e.preventDefault();
+      let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions && czmObj.positions.length > 1) {
+        //显示面板
+        var p = this.$refs.parabolicBtn.parentElement;
+        var t = this.$refs.parabolic.$el;
+        t.style.left = p.offsetLeft + 20 + "px";
+        t.style.top = p.offsetTop + 80 + "px";
+        this.parabolicShow = true;
+
+        this._czmObj = czmObj;
+      }
+    },
+    collectODLines(sn) {
+      let ret = [];
+
+      let timeDuration = 5.0;
+      let moveBaseDuration = 4.0;
+
+      if (sn == undefined) sn = this.$root.$earth.sceneTree.currentSelectedNode;
+
+      if (!sn) return ret;
+
+      if (sn.czmObject) {
+        let czmobj = sn.czmObject;
+
+        if (czmobj.positions && czmobj.positions.length > 1) {
+          var obj = {
+            posititons: [],
+            color: czmobj.color ? [...czmobj.color] : [1, 1, 0, 1],
+            width: czmobj.width ? czmobj.width : 3,
+            startTime: timeDuration * Math.random(),
+            duration: moveBaseDuration + 1.0 * Math.random()
+          };
+          // var positions=[];
+          czmobj.positions.map(e => {
+            obj.posititons.push([...e]);
+          });
+          //obj.posititons.push(positions);
+          ret.push(obj);
+        }
+      } else if (sn.children) {
+        //递归收集子
+        for (let i = 0; i < sn.children.length; i++) {
+          let c = sn.children[i];
+          let r = this.collectODLines(c);
+          if (r && r.length > 0) {
+            ret = ret.concat(r);
+          }
+        }
+      }
+
+      return ret;
+    },
+    createODlines() {
+      var ret = this.collectODLines();
+      if (!ret || ret.length == 0) {
+        this.$root.$earthUI.promptInfo(
+          "请选中一条折线或者包含折线的目录",
+          "error"
+        );
+        return;
+      }
+      var odlines = new XE.Obj.ODLines(this.$root.$earth);
+      odlines.evalString = "p.playing = true;";
+      odlines.data = ret;
+      odlines.timeDuration = 10;
+      odlines.playing = true;
+      odlines.name = "ODLines";
+      const sceneObject = new XE.SceneTree.Leaf(odlines);
+      this.$root.$earthUI.addSceneObject(sceneObject);
+    },
+    createParabolic(minDistance, heightRatio) {
+      if (
+        this._czmObj &&
+        this._czmObj.positions &&
+        this._czmObj.positions.length > 1
+      ) {
+        const cartesians = Cesium.xbsjCreateTransmitPolyline(
+          [...this._czmObj.positions[0]],
+          [...this._czmObj.positions[1]],
+          minDistance,
+          heightRatio
+        );
+        const poss = cartesians.map(ee => {
+          const carto = Cesium.Cartographic.fromCartesian(ee);
+          return [carto.longitude, carto.latitude, carto.height];
+        });
+
+        var polyline = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+
+        polyline.creating = false;
+        polyline.isCreating = false;
+        polyline.name = "抛物线";
+        polyline.positions = poss;
+        polyline.ground = false;
+
+        if (this._czmObj.color) {
+          polyline.color = [...this._czmObj.color];
+        }
+        if (this._czmObj.width) {
+          polyline.width = this._czmObj.width;
+        }
+
+        const sceneObject = new XE.SceneTree.Leaf(polyline);
+        this.$root.$earthUI.addSceneObject(sceneObject);
+
+        this._czmObj = undefined;
+        this.parabolicShow = false;
+      }
     },
     //打开管道-动画
     tubeBtn() {
@@ -521,6 +710,48 @@ export default {
       Tube.creating = true;
       console.log(Tube);
       this.$root.$earthUI.showPropertyWindow(Tube);
+    },
+    getPopupComp() {
+      if (this.$refs.hasOwnProperty(this.popup)) {
+        return this.$refs[this.popup];
+      } else {
+        return undefined;
+      }
+    },
+    showPopup(v) {
+      let comp = this.getPopupComp();
+      if (comp && typeof comp.show == "function") {
+        comp.show(v);
+      }
+      return comp;
+    },
+    togglePopup(p, event) {
+      //调用上一个组件的隐藏
+      this.showPopup(false);
+
+      this.popup = this.popup == p ? "" : p;
+
+      //调用当前组件的显示
+      let curComp = this.showPopup(true);
+      if (!curComp) return;
+      if (this.popup == "" || !event) return;
+      try {
+        //基于现在UI结构强行计算的
+        let el = curComp.$el;
+        // el.style.left =
+        //   event.target.offsetLeft +
+        //   event.target.offsetParent.offsetLeft -
+        //   40 +
+        //   "px";
+        el.style.left = event.clientX - 40 + "px";
+        el.style.top =
+          event.target.offsetTop +
+          event.target.offsetParent.offsetTop +
+          44 +
+          "px";
+      } catch (ex) {
+        console.log(ex);
+      }
     },
     startMove(event) {
       //如果事件的目标不是本el 返回
@@ -550,7 +781,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .DoubleArrow {
   background: url(../../../../images/doublearrow.png) no-repeat;
   background-size: contain;
@@ -984,6 +1215,30 @@ export default {
 }
 .customprimitivebutton.highlight,
 .customprimitivebutton:hover {
+  background: url(../../../../images/customprimitive_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.parabolicbtn {
+  background: url(../../../../images/customprimitive.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.parabolicbtn.highlight {
+  background: url(../../../../images/customprimitive_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.odlinesbtn {
+  background: url(../../../../images/customprimitive.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.odlinesbtn.highlight .odlinesbtn:hover {
   background: url(../../../../images/customprimitive_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;

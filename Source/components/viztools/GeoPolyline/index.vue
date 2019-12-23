@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="322"
+    :height="332"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -21,19 +21,30 @@
 
         <div class="buttonGroup">
           <label class="xbsj-label"></label>
+          <!-- 创建 -->
           <button
             class="attitudeEditCameraButton"
             @click="model.creating =!model.creating"
             :class="model.creating?'btncoloron':''"
           >{{lang.creating}}</button>
-
+          <!-- 编辑 -->
           <button
-            style="margin-left:20px;"
             class="attitudeEditCameraButton"
             @click="model.editing =!model.editing"
             :class="model.editing?'btncoloron':''"
           >{{lang.editing}}</button>
         </div>
+        <!-- 拖拽 -->
+        <div
+          @dragover="dragOver"
+          @drop="drop"
+          @dragleave="dragLeave"
+          class="dragButton"
+          :class="{highlight:drag_over}"
+          :title="lang.drag"
+        >{{lang.dragcontent}}</div>
+      </div>
+      <div class="flatten">
         <!-- 贴地 -->
         <div class="flatten">
           <label>{{lang.ground}}</label>
@@ -78,6 +89,7 @@ export default {
       lang: {},
       showPinSelect: false,
       makiIconObj: {},
+      drag_over: false,
       model: {
         name: "",
         show: false,
@@ -184,12 +196,35 @@ export default {
       if (modelToolObj.isCreating) {
         modelToolObj.isCreating = false;
         const sceneObject = new XE.SceneTree.Leaf(modelToolObj);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
       }
     },
-
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        e.dataTransfer.dropEffect = "copy";
+        this.drag_over = true;
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    dragLeave() {
+      this.drag_over = false;
+    },
+    //拖拽放置
+    drop(e) {
+      this.drag_over = false;
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        this._czmObj.creating = false;
+        this.$root.$earthUI.getCzmObjectPositionFromDrag(czmObj, this._czmObj);
+      }
     }
   },
   beforeDestroy() {
@@ -492,5 +527,21 @@ button:focus {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   color: #dddddd;
+  margin-right: 20px;
+}
+.dragButton {
+  display: inline-block;
+  width: 120px;
+  height: 25px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+  text-align: center;
+  line-height: 25px;
+}
+
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
+  color: #1fffff;
 }
 </style>

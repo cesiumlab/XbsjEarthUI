@@ -33,7 +33,7 @@
     <!-- <div class="xbsj-custom-middle"></div> -->
     <div class="xbsj-foot">
       <ul class="xbsj-foot-ul" :key="index" v-for="(item,index) in items">
-        <li @click="clickItem(index,$event)">
+        <li @click="clickItem(index,$event)" @mousedown="movetreeitem(index,$event)">
           <span class="xbsj-default" v-if="defaultIndex == index"></span>
           <img
             :src="item.thumbnail"
@@ -54,7 +54,7 @@
 <script>
 import languagejs from "./locale";
 export default {
-  data() {
+  data () {
     return {
       show: true,
       confirmInfo: "",
@@ -66,8 +66,8 @@ export default {
       langs: languagejs
     };
   },
-  created() {},
-  mounted() {
+  created () { },
+  mounted () {
     this.cvm = this.$root.$earth.cameraViewManager;
 
     this.autorunDisposer = XE.MVVM.watch(() => {
@@ -77,7 +77,26 @@ export default {
     this.getData(this.$root.$earth.cameraViewManager.views);
   },
   methods: {
-    fromView(view) {
+    movetreeitem (index,$event) {
+      let self = this;
+      let source = $event.target;
+      // 按下鼠标键并开始移动鼠标时，会在被拖放的元素上触发dragstart事件。
+      // 此时光标变成“不能放”符号(圆环中有一条反斜线)，表示不能把元素放到自己上面
+      source.addEventListener(
+        "dragstart",
+        function (event) {
+          try {
+            event.dataTransfer.setData(
+              "_view",
+              index
+              // this.$root.$earth.cameraViewManager.views[parseInt(index)].toJSON()
+            ); //兼容火狐浏览器，拖动时候必须携带数据否则没效果
+          } catch (e) { }
+        },
+        false
+      );
+    },
+    fromView (view) {
       return {
         name: view.name,
         duration: view.duration,
@@ -86,7 +105,7 @@ export default {
       };
     },
 
-    getData(views) {
+    getData (views) {
       this.items = [];
       views.map(view => {
         this.items.push(this.fromView(view));
@@ -94,7 +113,7 @@ export default {
 
       this.defaultIndex = this.cvm.defaultViewIndex;
     },
-    clickItem(index) {
+    clickItem (index) {
       try {
         let views = this.cvm.views;
         views[index].flyTo();
@@ -102,7 +121,7 @@ export default {
         console.log(ex);
       }
     },
-    onContexMenu(index, event) {
+    onContexMenu (index, event) {
       //弹出右键菜单
 
       const menus = [
@@ -142,16 +161,16 @@ export default {
 
       this.$root.$earthUI.contextMenu.pop(menus);
     },
-    multiSelect() {
+    multiSelect () {
       this.canMultiSelected = !this.canMultiSelected;
       this.selected = [];
     },
-    setDefault() {
+    setDefault () {
       if (this.selected.length == 1) {
         this.cvm.defaultViewIndex = this.selected[0];
       }
     },
-    _edit(index) {
+    _edit (index) {
       //弹出待修改的对象
       let view = this.cvm.views[index];
 
@@ -159,12 +178,12 @@ export default {
         component: "CameraViewPrp"
       });
     },
-    edit() {
+    edit () {
       if (this.selected.length == 1) {
         this._edit(this.selected[0]);
       }
     },
-    del() {
+    del () {
       //弹出确认
       this.$root.$earthUI.confirm(this.lang.delcontent, () => {
         //按从大到小排序
@@ -181,7 +200,7 @@ export default {
         this.canMultiSelected = false;
       });
     },
-    add() {
+    add () {
       //直接增加
       this.cvm
         .newView()
@@ -195,7 +214,7 @@ export default {
     }
   },
   watch: {},
-  beforeDestroy() {
+  beforeDestroy () {
     if (this.unbind) {
       this.unbind();
       this.unbind = undefined;

@@ -193,7 +193,7 @@ export default {
         viewshed.isCreating = false;
 
         const sceneObject = new XE.SceneTree.Leaf(viewshed);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
       }
     },
     playClick() {

@@ -328,7 +328,7 @@ export default {
       if (groundToolObj.isCreating) {
         groundToolObj.isCreating = false;
         const sceneObject = new XE.SceneTree.Leaf(groundToolObj);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
       }
       groundToolObj.editing = false;
       groundToolObj.creating = false;

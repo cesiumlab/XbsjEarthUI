@@ -201,7 +201,7 @@ export default {
       if (cameraVideo.isCreating) {
         cameraVideo.isCreating = false;
         const sceneObject = new XE.SceneTree.Leaf(cameraVideo);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
       }
     },
     playClick() {

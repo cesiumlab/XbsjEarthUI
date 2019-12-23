@@ -28,6 +28,7 @@
     constructor(viewer) {
         var c = document.createElement('canvas');
         c.style.pointerEvents = 'none';
+        // 需要相对于父节点，父节点的position属性必须为非static，否则可能出问题
         c.style = 'position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; pointer-events: none';
 
         this._positions = [];

@@ -7,7 +7,7 @@ class Symbol {
         this._root = root;
         this._compCustom = root._comp.$refs.customSymbol[0];
         this._compLab = root._comp.$refs.labSymbol[0];
-
+        this._compOnline = root._comp.$refs.onlineSymbol[0];
         XE.MVVM.extend(this, {
             /**
                         * 自定义标绘面板是否可见
@@ -17,9 +17,7 @@ class Symbol {
                         * @memberof Symbol
                         */
             showCustom: false,
-        });
 
-        XE.MVVM.extend(this, {
             /**
                         * cesiumLab标绘面板是否可见
                         * @type {boolean}
@@ -28,6 +26,15 @@ class Symbol {
                         * @memberof Symbol
                         */
             showLab: false,
+
+            /**
+            * 在线标绘面板是否可见
+            * @type {boolean}
+            * @default false 
+            * @instance
+            * @memberof Symbol
+            */
+           showOnline: false,
         });
 
         var toolbar = root._comp.$refs.mainBarControl.$refs.entity;
@@ -51,7 +58,7 @@ class Symbol {
             this,
             "showLab"
         );
-                
+
         this.unbind4 = XE.MVVM.bind(
             this._compCustom,
             "show",
@@ -59,19 +66,37 @@ class Symbol {
             "showCustom"
         );
 
+        this.unbind5 = XE.MVVM.bind(
+            toolbar,
+            "OnlineSymbolShow",
+            this,
+            "showOnline"
+        );
+
+        this.unbind6 = XE.MVVM.bind(
+            this._compOnline,
+            "show",
+            this,
+            "showOnline"
+        );
+
+
+
     }
 
-    isDestroyed() {
+    isDestroyed () {
         return false;
     }
 
-    destroy() {
+    destroy () {
         this._showListenerDisposer = this._showListenerDisposer && this._showListenerDisposer();
 
         this.unbind1 = this.unbind1 && this.unbind1();
         this.unbind2 = this.unbind2 && this.unbind2();
         this.unbind3 = this.unbind3 && this.unbind3();
         this.unbind4 = this.unbind4 && this.unbind4();
+        this.unbind5 = this.unbind5 && this.unbind5();
+        this.unbind6 = this.unbind6 && this.unbind6();
     }
 
 }

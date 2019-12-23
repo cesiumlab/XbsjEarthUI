@@ -38,6 +38,17 @@
               @click="flyto"
             >{{lang.flyto}}</button>
           </div>
+          <!-- 拖拽 -->
+          <div
+            :title="lang.drag"
+            class="dragBox"
+            style="display: inline-block;"
+            @dragover="dragOver"
+            @drop="drop"
+            @dragleave="dragLeave"
+          >
+            <div class="dragButton" :class="{highlight:drag_over}">{{lang.dragcontent}}</div>
+          </div>
         </div>
       </div>
       <!-- 当前位置 -->
@@ -76,6 +87,7 @@
 
           <div style="background:none;margin-left:20px;">
             <button
+              style="margin-top: -6px;"
               class="attitudeEditCameraButton"
               @click="model.loopPlay =!model.loopPlay"
               :class="model.loopPlay?'btncoloron':''"
@@ -125,6 +137,7 @@ export default {
       lang: {},
       showPinSelect: false,
       makiIconObj: {},
+      drag_over: false,
       model: {
         name: "",
         playing: false,
@@ -243,7 +256,7 @@ export default {
       if (modelToolObj.isCreating) {
         modelToolObj.isCreating = false;
         const sceneObject = new XE.SceneTree.Leaf(modelToolObj);
-        this.$root.$earth.sceneTree.addSceneObject(sceneObject);
+        this.$root.$earthUI.addSceneObject(sceneObject);
       }
     },
 
@@ -252,6 +265,40 @@ export default {
     },
     reset() {
       this.model.xbsjRotation = [0, 0, 0];
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        (czmObj.positions !== undefined || czmObj.position !== undefined)
+      ) {
+        e.dataTransfer.dropEffect = "copy";
+        this.drag_over = true;
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    dragLeave() {
+      this.drag_over = false;
+    },
+    //拖拽放置
+    drop(e) {
+      this.drag_over = false;
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        (czmObj.position !== undefined || czmObj.positions !== undefined)
+      ) {
+        this._czmObj.creating = false;
+        if (czmObj.position !== undefined) {
+          this._czmObj.position = [...czmObj.position];
+        } else {
+          this._czmObj.position = [...czmObj.positions[0]];
+        }
+      }
     }
   },
   beforeDestroy() {
@@ -519,7 +566,7 @@ button:focus {
 }
 
 .buttonGroup {
-  display: flex;
+  display: inline-block;
 }
 .buttonGroup div {
   display: inline-block;
@@ -548,7 +595,7 @@ button:focus {
 .attitudeEditCameraButton {
   display: block;
   float: left;
-  height: 30px;
+  height: 25px;
   margin-left: 0;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
@@ -573,5 +620,22 @@ button:focus {
   background-size: contain;
   height: 30px;
   width: 100px;
+}
+.dragButton {
+  display: inline-block;
+  width: 120px;
+  height: 25px;
+  margin-left: 18px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+  text-align: center;
+  line-height: 25px;
+  float: left;
+}
+
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
+  color: #1fffff;
 }
 </style>
