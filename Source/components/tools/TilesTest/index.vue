@@ -1,8 +1,9 @@
 <template>
   <Window
     :width="602"
-    :minWidth="480"
+    :minWidth="602"
     :height="410"
+    :minHeight="410"
     :top="164"
     :floatright="true"
     :title="lang.title"
@@ -58,8 +59,6 @@ export default {
     testFinished(results) {
       this.records = results;
       console.log(this.records);
-      // var item1 = JSON.stringify(this.records);
-      // sessionStorage.setItem("result", item1);
       this.$refs.testResult.setData(this.records);
     },
     close() {

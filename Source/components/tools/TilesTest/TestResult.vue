@@ -17,9 +17,6 @@
         </div>
       </div>
       <div style="position: relative; display: inline-block; float: right;">
-        <!-- <label class="xbsj-check">
-          <input type="checkbox" v-model="checked" />
-        </label>-->
         <input
           type="text"
           v-model="yaxisdata[yaxisvalue2]"
@@ -49,21 +46,7 @@ import languagejs from "./locale";
 
 export default {
   name: "TestResult",
-  props: {
-    viewsWidth: {
-      type: Number,
-      default: () => {
-        return 0;
-      }
-    },
-    viewsHeight: {
-      type: Number,
-      default: () => {
-        return 0;
-      }
-    }
-  },
-  data () {
+  data() {
     return {
       viewpointresult: [],
       chart: null,
@@ -83,53 +66,117 @@ export default {
       ]
     };
   },
-  mounted () { },
+  mounted() {},
   watch: {
-    checked () {
+    checked() {
       this.getOption();
     }
   },
   methods: {
-    setData (results) {
+    setData(results) {
       this.viewpointresult = results;
       this.yaxisvalue = [];
       for (var key in this.viewpointresult[0].data[0]) {
-        if (key !== 'time')
+        console.log(typeof this.viewpointresult[0].data[0][key]);
+        if (
+          typeof this.viewpointresult[0].data[0][key] !== "function" &&
+          key !== "time"
+        )
           this.yaxisdata.push(key);
       }
       this.getOption();
     },
-    resize () {
-      if (this.chart) {
-        document.getElementById("mains").style.width = document.getElementById("chartContainer").style.width;
-        document.getElementById("mains").style.height = document.getElementById("chartContainer").style.height;
-        this.chart.resize();
+    resize() {
+      if (this._chart) {
+        document.getElementById("mains").style.width = document.getElementById(
+          "chartContainer"
+        ).style.width;
+        document.getElementById("mains").style.height = document.getElementById(
+          "chartContainer"
+        ).style.height;
+        this._chart.resize();
       }
     },
-    pinoptionssure (c1) {
+    pinoptionssure(c1) {
       this.yaxisvalue1 = c1;
       this.pinshowPinSelect = !this.pinshowPinSelect;
+      if (this.yaxisvalue1 == this.yaxisvalue2) return;
       this.getOption();
     },
-    pinselectinput () {
+    pinselectinput() {
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
-    pinoptionssure2 (c2) {
+    pinoptionssure2(c2) {
       this.yaxisvalue2 = c2;
       this.pinshowPinSelect2 = !this.pinshowPinSelect2;
       this.getOption();
     },
-    pinselectinput2 () {
+    pinselectinput2() {
       this.pinshowPinSelect2 = !this.pinshowPinSelect2;
     },
-    getOption () {
+    getOption() {
       var self = this;
       var legname = [];
       var xdata = [];
       var yaxis = [];
       var series = [];
+      yaxis.push({
+        type: "value",
+        name: this.yaxisdata[this.yaxisvalue1],
+        minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
+        // position: "left",
+        axisLine: {
+          lineStyle: {
+            type: "solid",
+            color: "rgba(255,255,255,1)", //坐标线的颜色
+            width: "3"
+          }
+        },
+        axisLabel: {
+          textStyle: {
+            color: "rgba(255,255,255,1)" //坐标值得具体的颜色
+          }
+        },
+        //网格样式
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: ["rgba(255,255,255,1)"],
+            width: 2,
+            type: "solid"
+          }
+        }
+      });
+      if (this.checked) {
+        yaxis.push({
+          type: "value",
+          name: this.yaxisdata[this.yaxisvalue2],
+          minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
+          // position: "left",
+          axisLine: {
+            lineStyle: {
+              type: "solid",
+              color: "rgba(255,255,255,1)", //坐标线的颜色
+              width: "3"
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "rgba(255,255,255,1)" //坐标值得具体的颜色
+            }
+          },
+          //网格样式
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ["rgba(255,255,255,1)"],
+              width: 2,
+              type: "solid"
+            }
+          }
+        });
+      }
       for (var i = 0; i < this.viewpointresult.length; i++) {
-
         var ydata1 = [];
         var ydata2 = [];
         xdata = [];
@@ -141,12 +188,16 @@ export default {
           }
         });
 
-        var seriesname = this.viewpointresult[i].tileset.name + "-" + this.yaxisdata[this.yaxisvalue1];
+        var seriesname =
+          this.viewpointresult[i].tileset.name +
+          "-" +
+          this.yaxisdata[this.yaxisvalue1];
         legname.push(seriesname);
         series.push({
           name: seriesname,
           type: "line",
           data: ydata1,
+          yAxisIndex: 0,
           label: {
             normal: {
               show: true,
@@ -160,43 +211,17 @@ export default {
           }
         });
 
-        yaxis.push(
-          {
-            type: "value",
-            name: this.yaxisdata[this.yaxisvalue1],
-            minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
-            // position: "left",
-            axisLine: {
-              lineStyle: {
-                type: "solid",
-                color: "rgba(255,255,255,1)", //坐标线的颜色
-                width: "3"
-              }
-            },
-            axisLabel: {
-              textStyle: {
-                color: "rgba(255,255,255,1)" //坐标值得具体的颜色
-              }
-            },
-            //网格样式
-            splitLine: {
-              show: true,
-              lineStyle: {
-                color: ["rgba(255,255,255,1)"],
-                width: 2,
-                type: "solid"
-              }
-            }
-          }
-        );
-
         if (this.checked) {
-          var seriesname2 = this.viewpointresult[i].tileset.name + "-" + this.yaxisdata[this.yaxisvalue2];
+          var seriesname2 =
+            this.viewpointresult[i].tileset.name +
+            "-" +
+            this.yaxisdata[this.yaxisvalue2];
           legname.push(seriesname2);
           series.push({
             name: seriesname2,
             type: "line",
             data: ydata2,
+            yAxisIndex: 1,
             lineStyle: {
               normal: {
                 type: "dashed"
@@ -214,47 +239,20 @@ export default {
               }
             }
           });
-
-          yaxis.push(
-            {
-              type: "value",
-              name: this.yaxisdata[this.yaxisvalue2],
-              minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
-              // position: "left",
-              axisLine: {
-                lineStyle: {
-                  type: "solid",
-                  color: "rgba(255,255,255,1)", //坐标线的颜色
-                  width: "3"
-                }
-              },
-              axisLabel: {
-                textStyle: {
-                  color: "rgba(255,255,255,1)" //坐标值得具体的颜色
-                }
-              },
-              //网格样式
-              splitLine: {
-                show: true,
-                lineStyle: {
-                  color: ["rgba(255,255,255,1)"],
-                  width: 2,
-                  type: "solid"
-                }
-              }
-            }
-          );
         }
       }
 
       this.drawLine(legname, xdata, series, yaxis);
     },
     /*画图*/
-    drawLine (legname, xdata, series, yaxis) {
+    drawLine(legname, xdata, series, yaxis) {
+      if (this._chart) {
+        this._chart.dispose();
+      }
       // 基于准备好的dom，初始化echarts实例
-      let myBarChart = this.$echarts.init(document.getElementById("mains"));
-      // 绘制柱状图图表
-      myBarChart.setOption({
+      this._chart = this.$echarts.init(document.getElementById("mains"));
+      // 绘制折线图图表
+      this._chart.setOption({
         tooltip: {
           trigger: "axis"
         },
@@ -288,7 +286,7 @@ export default {
         yAxis: yaxis,
         series: series
       });
-      this.chart = myBarChart;
+      // = myBarChart;
     }
   }
 };

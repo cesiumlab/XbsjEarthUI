@@ -15,7 +15,11 @@ const zh = {
   minpx: '像素大小',
   pathAnimation: '路径动画',
   material: '材质底色',
-  color: "颜色"
+  color: "颜色",
+  routine: "常规",
+  senior: "高级",
+  effect: "效果",
+  distancedisplay: "可见距离"
 }
 
 const en = {
@@ -35,7 +39,11 @@ const en = {
   minpx: 'min px',
   pathAnimation: 'pathAnimation',
   material: 'material',
-  color: "color"
+  color: "color",
+  routine: "routine",
+  senior: "senior",
+  effect: "effect",
+  distancedisplay: "distancedisplay"
 }
 
 export default {

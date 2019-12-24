@@ -1,8 +1,8 @@
 <template>
   <Window
-    :width="480"
+    :width="546"
     :minWidth="480"
-    :height="558"
+    :height="356"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -10,120 +10,151 @@
     :footervisible="true"
     @showclick="showSelect=false"
   >
-    <div class="xbsj-flatten">
-      <!-- 名称 -->
-      <div class="flatten">
-        <label>{{lang.name}}</label>
-        <input style="float:left;" type="text" v-model="model.name" />
+    <div style="height: 100%;">
+      <div style="text-align: center; width: 100%; background: rgba(0,0,0,0.5);">
+        <ul class="tab">
+          <li @click="tabShow='1'" :class="{highlight: tabShow=='1'}">{{lang.routine}}</li>
+          <li @click="tabShow='2'" :class="{highlight: tabShow=='2'}">{{lang.senior}}</li>
+          <li @click="tabShow='3'" :class="{highlight: tabShow=='3'}">{{lang.effect}}</li>
+        </ul>
       </div>
-      <!-- 模型url -->
-      <div class="flatten">
-        <label>{{lang.url}}</label>
-        <input style="float:left;" type="text" v-model="model.url" />
-      </div>
-      <!-- 环境贴图 -->
-      <div class="flatten">
-        <label>{{lang.environmentmaps}}</label>
-        <input style="float:left;" type="text" v-model="model.specularEnvironmentMaps" />
-      </div>
-      <div class="flatten-flex">
-        <!-- 鼠标点选 -->
+      <div class="xbsj-flatten" v-show="tabShow == '1'">
+        <!-- 名称 -->
         <div class="flatten">
-          <label>{{lang.weizhi}}</label>
-          <div class="buttonGroup">
-            <button
-              class="attitudeEditCameraButton"
-              @click="model.creating =!model.creating"
-              :class="model.creating?'btncoloron':''"
-            >{{lang.creating}}</button>
-            <button
-              style="margin-left:20px;"
-              class="attitudeEditCameraButton"
-              @click="model.positionEditing =!model.positionEditing"
-              :class="model.positionEditing?'btncoloron':''"
-            >{{lang.positionEditing}}</button>
-            <button
-              style="margin-left:20px;"
-              class="attitudeEditCameraButton"
-              @click="flyto"
-            >{{lang.flyto}}</button>
-          </div>
+          <label>{{lang.name}}</label>
+          <input style="float:left;" type="text" v-model="model.name" />
         </div>
-      </div>
-      <!-- 当前位置 -->
-      <div class="flatten">
-        <label></label>
-        <div class="flatten-box">
-          <XbsjLngLatHeight v-model="model.xbsjPosition"></XbsjLngLatHeight>
-        </div>
-      </div>
-
-      <div class="flatten-flex">
-        <!-- rotation -->
+        <!-- 资源路径 -->
         <div class="flatten">
-          <label>{{lang.cx}}</label>
-          <div class="buttonGroup">
-            <button
-              class="attitudeEditCameraButton"
-              @click="model.rotationEditing =!model.rotationEditing"
-              :class="model.rotationEditing?'btncoloron':''"
-            >{{lang.rotationEditing}}</button>
-            <button
-              @click="reset"
-              style="margin-left:20px;"
-              class="attitudeEditCameraButton"
-            >{{lang.reset}}</button>
-          </div>
+          <label>{{lang.url}}</label>
+          <input style="float:left;" type="text" v-model="model.url" />
         </div>
-      </div>
-      <div class="flatten">
-        <label></label>
-        <div class="flatten-box">
-          <XbsjHeadingPitchRoll v-model="model.xbsjRotation"></XbsjHeadingPitchRoll>
-        </div>
-      </div>
-      <div class="flatten">
-        <label>{{lang.enlargeScale}}</label>
-        <div class="flatten-box">
-          <input style="width:100px;" v-model.number="model.maximumScale" />
-        </div>
-      </div>
-      <div class="flatten">
-        <label>{{lang.minpx}}</label>
-        <!-- <input style="width:100px;" v-model="model.minimumPixelSize" /> -->
-        <div class="field">
-          <XbsjSlider :min="0" :max="256" :step="1" v-model.number="model.minimumPixelSize"></XbsjSlider>
-        </div>
-      </div>
-      <div class="flatten">
-        <div style="position: relative;">
-          <label>{{lang.pathAnimation}}</label>
-          <input
-            type="text"
-            v-model="model.attachedPathGuid"
-            @click="selectinput"
-            readonly
-            style="cursor: pointer;"
-          />
-          <button class="selectButton"></button>
-          <div class="cutselectbox" v-show="showPinSelect" style="overflow:scroll;height:100px;">
-            <div @click="optionssure(c)" v-for="(c,index) in pathGuidarr" :key="index">
-              <span>{{c.name}}</span>
+        <div class="flatten-flex">
+          <!-- 鼠标点选 -->
+          <div class="flatten">
+            <label>{{lang.weizhi}}</label>
+            <div class="buttonGroup">
+              <button
+                class="attitudeEditCameraButton"
+                @click="model.creating =!model.creating"
+                :class="model.creating?'btncoloron':''"
+              >{{lang.creating}}</button>
+              <button
+                style="margin-left:20px;"
+                class="attitudeEditCameraButton"
+                @click="model.positionEditing =!model.positionEditing"
+                :class="model.positionEditing?'btncoloron':''"
+              >{{lang.positionEditing}}</button>
+              <button
+                style="margin-left:20px;"
+                class="attitudeEditCameraButton"
+                @click="flyto"
+              >{{lang.flyto}}</button>
             </div>
           </div>
         </div>
-      </div>
-      <!-- 当前位置 -->
-      <div class="flatten">
-        <label @click="model.luminanceAtZenith=0.2">{{lang.material}}</label>
-        <div class="field">
-          <XbsjSlider :min="0" :max="5.0" :step="0.02" v-model.number="model.luminanceAtZenith"></XbsjSlider>
+        <!-- 位置 -->
+        <div class="flatten">
+          <label></label>
+          <div class="flatten-box">
+            <XbsjLngLatHeight v-model="model.xbsjPosition"></XbsjLngLatHeight>
+          </div>
+        </div>
+        <!-- 朝向 -->
+        <div class="flatten-flex">
+          <div class="flatten">
+            <label>{{lang.cx}}</label>
+            <div class="buttonGroup">
+              <button
+                class="attitudeEditCameraButton"
+                @click="model.rotationEditing =!model.rotationEditing"
+                :class="model.rotationEditing?'btncoloron':''"
+              >{{lang.rotationEditing}}</button>
+              <button
+                @click="reset"
+                style="margin-left:20px;"
+                class="attitudeEditCameraButton"
+              >{{lang.reset}}</button>
+            </div>
+          </div>
+        </div>
+        <!-- rotation -->
+        <div class="flatten">
+          <label></label>
+          <div class="flatten-box">
+            <XbsjHeadingPitchRoll v-model="model.xbsjRotation"></XbsjHeadingPitchRoll>
+          </div>
         </div>
       </div>
-      <!-- 颜色 -->
-      <div class="flatten">
-        <label>{{lang.color}}</label>
-        <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
+
+      <div class="xbsj-flatten" v-show="tabShow == '2'">
+        <!-- 路径动画 -->
+        <div class="flatten">
+          <div style="position: relative;">
+            <label>{{lang.pathAnimation}}</label>
+            <input
+              type="text"
+              v-model="model.attachedPathGuid"
+              @click="selectinput"
+              readonly
+              style="cursor: pointer;"
+            />
+            <button class="selectButton"></button>
+            <div class="cutselectbox" v-show="showPinSelect" style="overflow:scroll;height:100px;">
+              <div @click="optionssure(c)" v-for="(c,index) in pathGuidarr" :key="index">
+                <span>{{c.name}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 像素大小 -->
+        <div class="flatten">
+          <label>{{lang.minpx}}</label>
+          <!-- <input style="width:100px;" v-model="model.minimumPixelSize" /> -->
+          <div class="field">
+            <XbsjSlider :min="0" :max="256" :step="1" v-model.number="model.minimumPixelSize"></XbsjSlider>
+          </div>
+        </div>
+        <!-- 放大比例 -->
+        <div class="flatten">
+          <label>{{lang.enlargeScale}}</label>
+          <div class="flatten-box">
+            <input style="width:100px;" v-model.number="model.maximumScale" />
+          </div>
+        </div>
+        <!-- 可见距离范围 -->
+        <div class="flatten" style="margin-top:20px;display:flex;">
+          <label>{{lang.distancedisplay}}</label>
+          <div class="field">
+            <XbsjSlider
+              range
+              :min="0"
+              :max="100000"
+              :step="1"
+              v-model="model.distanceDisplayCondition"
+            ></XbsjSlider>
+          </div>
+        </div>
+      </div>
+
+      <div class="xbsj-flatten" v-show="tabShow == '3'">
+        <!-- 环境贴图 -->
+        <div class="flatten">
+          <label>{{lang.environmentmaps}}</label>
+          <input style="float:left;" type="text" v-model="model.specularEnvironmentMaps" />
+        </div>
+        <!-- 材质底色 -->
+        <div class="flatten">
+          <label @click="model.luminanceAtZenith=0.2">{{lang.material}}</label>
+          <div class="field">
+            <XbsjSlider :min="0" :max="5.0" :step="0.02" v-model.number="model.luminanceAtZenith"></XbsjSlider>
+          </div>
+        </div>
+        <!-- 颜色 -->
+        <div class="flatten">
+          <label>{{lang.color}}</label>
+          <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
+        </div>
       </div>
     </div>
   </Window>
@@ -142,6 +173,7 @@ export default {
       lang: {},
       showPinSelect: false,
       pathGuidarr: [],
+      tabShow: "1",
       model: {
         name: "",
         show: true,
@@ -155,7 +187,8 @@ export default {
         maximumScale: 0,
         minimumPixelSize: 0,
         attachedPathGuid: "",
-        luminanceAtZenith: 0.2
+        luminanceAtZenith: 0.2,
+        distanceDisplayCondition: undefined
       },
       pinstyletype: true,
       langs: languagejs,
@@ -175,7 +208,7 @@ export default {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
-    // console.log(czmObj);
+    console.log(czmObj);
 
     if (czmObj) {
       this._czmObj = czmObj;
@@ -190,6 +223,7 @@ export default {
         xbsjRotation: "model.xbsjRotation",
         xbsjPosition: "model.xbsjPosition",
         maximumScale: "model.maximumScale",
+        distanceDisplayCondition: "model.distanceDisplayCondition",
         minimumPixelSize: "model.minimumPixelSize",
         attachedPathGuid: "model.attachedPathGuid",
         luminanceAtZenith: "model.luminanceAtZenith"
@@ -594,5 +628,22 @@ button:focus {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   color: #dddddd;
+}
+.tab {
+  overflow: hidden;
+  margin-left: 10px;
+}
+.tab li {
+  display: inline-block;
+  min-width: 50px;
+  height: 28px;
+  line-height: 28px;
+  cursor: pointer;
+  float: left;
+  border-radius: 4px;
+}
+.tab li:hover,
+.tab .highlight {
+  background: #000;
 }
 </style>
