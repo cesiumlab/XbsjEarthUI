@@ -17,9 +17,6 @@
         </div>
       </div>
       <div style="position: relative; display: inline-block; float: right;">
-        <!-- <label class="xbsj-check">
-          <input type="checkbox" v-model="checked" />
-        </label>-->
         <input
           type="text"
           v-model="yaxisvalue2"
@@ -128,7 +125,6 @@ export default {
       this.pinshowPinSelect2 = !this.pinshowPinSelect2;
     },
     getOption(viewpointresult, paramdata) {
-      console.log(this.checked);
       var self = this;
       var colorList = [
         "rgba(191,255,91,0.9)",
@@ -176,7 +172,7 @@ export default {
             name: viewpointresult[i].tileset.name + "-fps",
             type: "line",
             data: ydata,
-            // yAxisIndex: 0,
+            yAxisIndex: 0,
             label: {
               normal: {
                 show: true,
@@ -318,7 +314,6 @@ export default {
               type: "value",
               name: paramdata[0],
               minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
-              // position: "left",
               axisLine: {
                 lineStyle: {
                   type: "solid",
@@ -345,7 +340,6 @@ export default {
               type: "value",
               name: paramdata[1],
               minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
-              // position: "left",
               axisLine: {
                 lineStyle: {
                   type: "solid",
@@ -371,7 +365,9 @@ export default {
           );
         }
       }
-      console.log(legname);
+      // console.log(legname);
+      // console.log(series);
+      // console.log(yaxis);
       xdata = Array.from(new Set(xdata));
       this.yaxisdata = Array.from(new Set(this.yaxisdata));
       this.yaxisdata = this.del(this.yaxisdata, "tileset");
