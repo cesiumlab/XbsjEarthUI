@@ -182,7 +182,10 @@ export default {
       var record = {};
       record.time = this.resultIndex * this.interval;
       record.fps = this.$root.$earth.status.fps;
-      record.tileset = this._tileset._tileset.statistics;
+      for(var p in this._tileset._tileset.statistics){
+        record[p] = this._tileset._tileset.statistics[p];
+      }
+      // record.tileset = this._tileset._tileset.statistics;
       this.tilesetRecord.data.push(record);
       this.resultIndex++;
     },

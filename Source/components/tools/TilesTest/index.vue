@@ -24,7 +24,7 @@
       <div id="tab-content" class="xbsj-flatten">
         <PathFlyTest v-show="tabShow == '1'" @testfinished="testFinished"></PathFlyTest>
         <Viewpoint v-show="tabShow == '2'" @testfinished="testFinished"></Viewpoint>
-        <TestResult ref="testResult" :views-result="records" v-show="tabShow == '3'"></TestResult>
+        <TestResult ref="testResult" v-show="tabShow == '3'"></TestResult>
       </div>
     </div>
   </Window>
