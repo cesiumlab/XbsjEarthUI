@@ -100,7 +100,6 @@ export default {
     pinoptionssure(c1) {
       this.yaxisvalue1 = c1;
       this.pinshowPinSelect = !this.pinshowPinSelect;
-      if (this.yaxisvalue1 == this.yaxisvalue2) return;
       this.getOption();
     },
     pinselectinput() {
