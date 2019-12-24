@@ -4,7 +4,7 @@
       <div style="position: relative; z-index: 1; display: inline-block;">
         <input
           type="text"
-          v-model="yaxisvalue"
+          v-model="yaxisvalue1"
           @click="pinselectinput"
           readonly
           style="cursor: pointer;"
@@ -17,12 +17,16 @@
         </div>
       </div>
       <div style="position: relative; display: inline-block; float: right;">
+        <!-- <label class="xbsj-check">
+          <input type="checkbox" v-model="checked" />
+        </label>-->
         <input
           type="text"
           v-model="yaxisvalue2"
           @click="pinselectinput2"
           readonly
-          style="cursor: pointer;"
+          class="selectInput"
+          :disabled="!checked"
         />
         <button class="selectButton2"></button>
         <div class="cutselectbox2" v-show="pinshowPinSelect2">
@@ -31,6 +35,9 @@
           </div>
         </div>
       </div>
+      <label class="xbsj-check">
+        <input type="checkbox" v-model="checked" />
+      </label>
     </div>
     <div :class="[show?'myBarChart':'myBarChart2']" id="mains"></div>
   </div>
@@ -67,32 +74,26 @@ export default {
       yaxisdata: [],
       pinshowPinSelect: false,
       pinshowPinSelect2: false,
-      yaxisvalue: "fps",
-      yaxisvalue2: "selected",
-      legname: [],
-      legname1: [],
-      legname2: [],
-      xdata: [],
-      series: [],
-      series1: [],
-      series2: [],
-      ydata: [],
-      ydata2: [],
-      yaxis: [],
-      yaxis1: [],
-      yaxis2: [],
-      show: false
+      yaxisvalue1: "fps",
+      yaxisvalue2: "",
+      yaxisvalue: ["fps", ""],
+      show: false,
+      checked: false,
+      selecteddata: false
     };
   },
   watch: {
     viewsResult: function(val, oldVal) {
       this.viewpointresult = val;
-      // var self = this;
-      this.getOption(val);
+      this.getOption(val, []);
     }
   },
   mounted() {},
   methods: {
+    setData(results) {
+      this.results = results;
+      console.log(this.results);
+    },
     resize() {
       if (this.chart) {
         this.show = true;
@@ -106,28 +107,28 @@ export default {
       return ary; //因为splice方法直接对原数组进行改变,所以返回的是删除后的数组
     },
     pinoptionssure(c1) {
-      this.yaxisvalue = c1;
+      this.yaxisvalue1 = c1;
+      this.yaxisvalue[0] = c1;
+      this.yaxisvalue[1] = "";
       this.pinshowPinSelect = !this.pinshowPinSelect;
-      var results = sessionStorage.getItem("result");
-      var resultsObj = JSON.parse(results);
-      if (this.yaxisvalue == this.yaxisvalue2) return;
-      this.getOption2(resultsObj, this.yaxisvalue);
+      this.selecteddata = false;
+      this.getOption(this.results, this.yaxisvalue);
     },
     pinselectinput() {
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
     pinoptionssure2(c2) {
       this.yaxisvalue2 = c2;
+      this.yaxisvalue[1] = c2;
       this.pinshowPinSelect2 = !this.pinshowPinSelect2;
-      var results2 = sessionStorage.getItem("result");
-      var resultsObj2 = JSON.parse(results2);
-      if (this.yaxisvalue2 == this.yaxisvalue) return;
-      this.getOption3(resultsObj2, this.yaxisvalue2);
+      this.selecteddata = true;
+      this.getOption(this.results, this.yaxisvalue);
     },
     pinselectinput2() {
       this.pinshowPinSelect2 = !this.pinshowPinSelect2;
     },
-    getOption(viewpointresult) {
+    getOption(viewpointresult, paramdata) {
+      console.log(this.checked);
       var self = this;
       var colorList = [
         "rgba(191,255,91,0.9)",
@@ -136,21 +137,33 @@ export default {
         "rgba(91,127,255,0.9)",
         "rgba(91,192,255,0.9)"
       ];
-      (this.legname1 = []),
-        (this.legname2 = []),
-        (this.series1 = []),
-        (this.series2 = []),
-        (this.yaxis1 = []),
-        (this.yaxis2 = []);
-      for (var i = 0, l = viewpointresult.length; i < l; i++) {
-        this.legname1.push(viewpointresult[i].tileset.name + "-fps");
-        this.legname2.push(viewpointresult[i].tileset.name + "-selected");
-
-        (this.ydata = []), (this.ydata2 = []);
+      var legname = [],
+        xdata = [],
+        ydata = [],
+        ydata2 = [],
+        series = [],
+        yaxis = [],
+        l = viewpointresult.length;
+      for (var i = 0; i < l; i++) {
+        if (paramdata.length === 0) {
+          legname.push(viewpointresult[i].tileset.name + "-fps");
+        } else if (paramdata[1] === "") {
+          legname.push(viewpointresult[i].tileset.name + "-" + paramdata[0]);
+        } else {
+          legname.push(viewpointresult[i].tileset.name + "-" + paramdata[0]);
+          legname.push(viewpointresult[i].tileset.name + "-" + paramdata[1]);
+        }
+        ydata = [];
         viewpointresult[i].data.forEach(element => {
-          this.xdata.push(element.time);
-          this.ydata.push(element.fps);
-          this.ydata2.push(element.tileset.selected);
+          xdata.push(element.time);
+          if (paramdata.length === 0) {
+            ydata.push(element.fps);
+          } else if (paramdata[1] === "") {
+            ydata.push(element[paramdata[0]] || element.tileset[paramdata[0]]);
+          } else {
+            ydata.push(element[paramdata[0]] || element.tileset[paramdata[0]]);
+            ydata2.push(element[paramdata[1]] || element.tileset[paramdata[1]]);
+          }
           Object.keys(element).forEach(function(key) {
             self.yaxisdata.push(key);
           });
@@ -158,256 +171,212 @@ export default {
             self.yaxisdata.push(key);
           });
         });
-        this.series1.push({
-          name: viewpointresult[i].tileset.name + "-fps",
-          type: "line",
-          data: this.ydata,
-          yAxisIndex: 0,
-          label: {
-            normal: {
+        if (paramdata.length === 0) {
+          series.push({
+            name: viewpointresult[i].tileset.name + "-fps",
+            type: "line",
+            data: ydata,
+            // yAxisIndex: 0,
+            label: {
+              normal: {
+                show: true,
+                position: "inside"
+              }
+            },
+            itemStyle: {
+              //通常情况下：
+              normal: {
+                //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                color: colorList[i]
+              }
+            }
+          });
+          yaxis.push({
+            type: "value",
+            name: "fps",
+            minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
+            position: "left",
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "rgba(255,255,255,1)", //坐标线的颜色
+                width: "3"
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: "rgba(255,255,255,1)" //坐标值得具体的颜色
+              }
+            },
+            //网格样式
+            splitLine: {
               show: true,
-              position: "inside"
+              lineStyle: {
+                color: ["rgba(255,255,255,1)"],
+                width: 2,
+                type: "solid"
+              }
             }
-          },
-          itemStyle: {
-            //通常情况下：
-            normal: {
-              //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-              color: colorList[i]
+          });
+        }
+        if (paramdata.length !== 0 && paramdata[1] === "") {
+          series.push({
+            name: viewpointresult[i].tileset.name + paramdata[0],
+            type: "line",
+            data: ydata,
+            yAxisIndex: 0,
+            label: {
+              normal: {
+                show: true,
+                position: "inside"
+              }
+            },
+            itemStyle: {
+              //通常情况下：
+              normal: {
+                //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                color: colorList[i]
+              }
             }
-          }
-        });
-        this.series2.push({
-          name: viewpointresult[i].tileset.name + "-selected",
-          type: "line",
-          data: this.ydata2,
-          yAxisIndex: 1,
-          lineStyle: {
-            normal: {
-              type: "dashed"
-            }
-          },
-          label: {
-            normal: {
+          });
+          yaxis.push({
+            type: "value",
+            name: paramdata[0],
+            minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
+            // position: "left",
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "rgba(255,255,255,1)", //坐标线的颜色
+                width: "3"
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: "rgba(255,255,255,1)" //坐标值得具体的颜色
+              }
+            },
+            //网格样式
+            splitLine: {
               show: true,
-              position: "inside"
+              lineStyle: {
+                color: ["rgba(255,255,255,1)"],
+                width: 2,
+                type: "solid"
+              }
             }
-          },
-          itemStyle: {
-            //通常情况下：
-            normal: {
-              //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-              color: colorList[i]
+          });
+        }
+        if (paramdata.length !== 0 && paramdata[1] !== "") {
+          series.push(
+            {
+              name: viewpointresult[i].tileset.name + paramdata[0],
+              type: "line",
+              data: ydata,
+              yAxisIndex: 0,
+              label: {
+                normal: {
+                  show: true,
+                  position: "inside"
+                }
+              },
+              itemStyle: {
+                //通常情况下：
+                normal: {
+                  //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                  color: colorList[i]
+                }
+              }
+            },
+            {
+              name: viewpointresult[i].tileset.name + paramdata[1],
+              type: "line",
+              data: ydata2,
+              yAxisIndex: 1,
+              lineStyle: {
+                normal: {
+                  type: "dashed"
+                }
+              },
+              label: {
+                normal: {
+                  show: true,
+                  position: "inside"
+                }
+              },
+              itemStyle: {
+                //通常情况下：
+                normal: {
+                  //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                  color: colorList[i]
+                }
+              }
             }
-          }
-        });
-        this.yaxis1.push({
-          type: "value",
-          name: "fps",
-          minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
-          axisLine: {
-            lineStyle: {
-              type: "solid",
-              color: "rgba(255,255,255,1)", //坐标线的颜色
-              width: "3"
+          );
+          yaxis.push(
+            {
+              type: "value",
+              name: paramdata[0],
+              minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
+              // position: "left",
+              axisLine: {
+                lineStyle: {
+                  type: "solid",
+                  color: "rgba(255,255,255,1)", //坐标线的颜色
+                  width: "3"
+                }
+              },
+              axisLabel: {
+                textStyle: {
+                  color: "rgba(255,255,255,1)" //坐标值得具体的颜色
+                }
+              },
+              //网格样式
+              splitLine: {
+                show: true,
+                lineStyle: {
+                  color: ["rgba(255,255,255,1)"],
+                  width: 2,
+                  type: "solid"
+                }
+              }
+            },
+            {
+              type: "value",
+              name: paramdata[1],
+              minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
+              // position: "left",
+              axisLine: {
+                lineStyle: {
+                  type: "solid",
+                  color: "rgba(255,255,255,1)", //坐标线的颜色
+                  width: "3"
+                }
+              },
+              axisLabel: {
+                textStyle: {
+                  color: "rgba(255,255,255,1)" //坐标值得具体的颜色
+                }
+              },
+              //网格样式
+              splitLine: {
+                show: true,
+                lineStyle: {
+                  color: ["rgba(255,255,255,1)"],
+                  width: 2,
+                  type: "solid"
+                }
+              }
             }
-          },
-          axisLabel: {
-            textStyle: {
-              color: "rgba(255,255,255,1)" //坐标值得具体的颜色
-            }
-          },
-          //网格样式
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: ["rgba(255,255,255,1)"],
-              width: 2,
-              type: "solid"
-            }
-          }
-        });
-        this.yaxis2.push({
-          type: "value",
-          name: "selected",
-          minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
-          axisLine: {
-            lineStyle: {
-              type: "solid",
-              color: "rgba(255,255,255,1)", //坐标线的颜色
-              width: "3"
-            }
-          },
-          axisLabel: {
-            textStyle: {
-              color: "rgba(255,255,255,1)" //坐标值得具体的颜色
-            }
-          },
-          //网格样式
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: ["rgba(255,255,255,1)"],
-              width: 2,
-              type: "solid"
-            }
-          }
-        });
+          );
+        }
       }
-      this.legname = this.legname1.concat(this.legname2);
-      this.series = this.series1.concat(this.series2);
-      console.log(this.series);
-      this.yaxis = this.yaxis1.concat(this.yaxis2);
-      this.xdata = Array.from(new Set(this.xdata));
+      console.log(legname);
+      xdata = Array.from(new Set(xdata));
       this.yaxisdata = Array.from(new Set(this.yaxisdata));
       this.yaxisdata = this.del(this.yaxisdata, "tileset");
       this.yaxisdata = this.del(this.yaxisdata, "time");
-      this.drawLine(this.legname, this.xdata, this.series, this.yaxis);
-    },
-    getOption2(viewpointresult, yparam) {
-      var colorList = [
-        "rgba(191,255,91,0.9)",
-        "rgba(255,121,91,0.9)",
-        "rgba(255,175,91,0.9)",
-        "rgba(91,127,255,0.9)",
-        "rgba(91,192,255,0.9)"
-      ];
-      (this.series1 = []), (this.legname1 = []), (this.yaxis1 = []);
-      for (var j = 0, l = viewpointresult.length; j < l; j++) {
-        this.legname1.push(viewpointresult[j].tileset.name + "-" + yparam);
-
-        this.ydata = [];
-        viewpointresult[j].data.forEach(element => {
-          this.ydata.push(element[yparam] || element.tileset[yparam]);
-        });
-
-        this.series1.push({
-          name: viewpointresult[j].tileset.name + "-" + yparam,
-          type: "line",
-          data: this.ydata,
-          yAxisIndex: 0,
-          label: {
-            normal: {
-              show: true,
-              position: "inside"
-            }
-          },
-          itemStyle: {
-            //通常情况下：
-            normal: {
-              //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-              color: colorList[j]
-            }
-          }
-        });
-        this.yaxis1.unshift({
-          type: "value",
-          name: yparam,
-          minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
-          axisLine: {
-            lineStyle: {
-              type: "solid",
-              color: "rgba(255,255,255,1)", //坐标线的颜色
-              width: "3"
-            }
-          },
-          axisLabel: {
-            textStyle: {
-              color: "rgba(255,255,255,1)" //坐标值得具体的颜色
-            }
-          },
-          //网格样式
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: ["rgba(255,255,255,1)"],
-              width: 2,
-              type: "solid"
-            }
-          }
-        });
-        this.yaxis.splice(1, this.yaxis.length - 2);
-      }
-      yparam = "";
-      this.series = this.series1.concat(this.series2);
-      this.legname = this.legname1.concat(this.legname2);
-      this.yaxis = this.yaxis1.concat(this.yaxis2);
-      this.drawLine(this.legname, this.xdata, this.series, this.yaxis);
-    },
-    getOption3(viewpointresult, yparam2) {
-      var colorList = [
-        "rgba(191,255,91,0.9)",
-        "rgba(255,121,91,0.9)",
-        "rgba(255,175,91,0.9)",
-        "rgba(91,127,255,0.9)",
-        "rgba(91,192,255,0.9)"
-      ];
-      (this.series2 = []), (this.legname2 = []), (this.yaxis2 = []);
-      for (var i = 0, l = viewpointresult.length; i < l; i++) {
-        this.legname2.push(viewpointresult[i].tileset.name + "-" + yparam2);
-
-        this.ydata2 = [];
-        viewpointresult[i].data.forEach(element => {
-          this.ydata2.push(element[yparam2] || element.tileset[yparam2]);
-        });
-
-        this.series2.push({
-          name: viewpointresult[i].tileset.name + "-" + yparam2,
-          type: "line",
-          data: this.ydata2,
-          yAxisIndex: 1,
-          lineStyle: {
-            normal: {
-              type: "dashed"
-            }
-          },
-          label: {
-            normal: {
-              show: true,
-              position: "inside"
-            }
-          },
-          itemStyle: {
-            //通常情况下：
-            normal: {
-              //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-              color: colorList[i]
-            }
-          }
-        });
-        this.yaxis2.push({
-          type: "value",
-          name: yparam2,
-          minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
-          axisLine: {
-            lineStyle: {
-              type: "solid",
-              color: "rgba(255,255,255,1)", //坐标线的颜色
-              width: "3"
-            }
-          },
-          axisLabel: {
-            textStyle: {
-              color: "rgba(255,255,255,1)" //坐标值得具体的颜色
-            }
-          },
-          //网格样式
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: ["rgba(255,255,255,1)"],
-              width: 2,
-              type: "solid"
-            }
-          }
-        });
-        this.yaxis.splice(1, this.yaxis.length - 2);
-      }
-      yparam2 = "";
-      this.series = this.series1.concat(this.series2);
-      this.legname = this.legname1.concat(this.legname2);
-      this.yaxis = this.yaxis1.concat(this.yaxis2);
-      this.drawLine(this.legname, this.xdata, this.series, this.yaxis);
+      this.drawLine(legname, xdata, series, yaxis);
     },
     /*画图*/
     drawLine(legname, xdata, series, yaxis) {
@@ -460,7 +429,7 @@ button:focus {
 }
 .xbsj-flatten .flatten input,
 .xbsj-flatten .attributePath input {
-  width: 100px;
+  width: 262px;
   height: 28px;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
@@ -470,7 +439,7 @@ button:focus {
 }
 .cutselectbox,
 .cutselectbox2 {
-  width: 110px;
+  width: 272px;
   height: 200px;
   background: rgba(138, 138, 138, 1);
   position: absolute;
@@ -518,7 +487,7 @@ button:focus {
   outline: none;
   position: absolute;
   /* right: 98px; */
-  left: 90px;
+  left: 251px;
   top: 11px;
 }
 .selectButton2 {
@@ -539,5 +508,33 @@ button:focus {
 }
 .myBarChart > div {
   margin: 0 auto !important;
+}
+.xbsj-check {
+  cursor: pointer;
+}
+.xbsj-check input {
+  display: inline-block !important;
+  width: 25px !important;
+  height: 25px !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  outline: none !important;
+  background: url(../../../images/check.png) no-repeat top center !important;
+  background-size: 100% 100% !important;
+  cursor: pointer !important;
+  vertical-align: middle !important;
+  float: right !important;
+}
+.xbsj-check input:checked {
+  position: relative !important;
+  background: url(../../../images/check_on.png) no-repeat top center !important;
+  background-size: 100% 100% !important;
+}
+.selectInput {
+  cursor: pointer;
+}
+.selectInput:disabled {
+  cursor: not-allowed;
 }
 </style>

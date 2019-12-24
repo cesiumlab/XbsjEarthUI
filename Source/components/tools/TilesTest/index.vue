@@ -41,7 +41,7 @@ export default {
     Viewpoint,
     TestResult
   },
-  data () {
+  data() {
     return {
       lang: {},
       show: false,
@@ -50,21 +50,22 @@ export default {
       langs: languagejs
     };
   },
-  mounted () { },
+  mounted() {},
   methods: {
-    resize () {
+    resize() {
       this.$refs.testResult.resize();
     },
-    testFinished (results) {
+    testFinished(results) {
       this.records = results;
       console.log(this.records);
-      var item1 = JSON.stringify(this.records);
-      sessionStorage.setItem("result", item1);
+      // var item1 = JSON.stringify(this.records);
+      // sessionStorage.setItem("result", item1);
+      this.$refs.testResult.setData(this.records);
     },
-    close () {
+    close() {
       this.$parent.destroyTool(this);
     },
-    cancel () {
+    cancel() {
       this.show = false;
     }
   }
