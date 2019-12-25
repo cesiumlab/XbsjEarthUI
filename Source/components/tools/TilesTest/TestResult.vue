@@ -77,7 +77,6 @@ export default {
       this.viewpointresult = results;
       this.yaxisvalue = [];
       for (var key in this.viewpointresult[0].data[0]) {
-        console.log(typeof this.viewpointresult[0].data[0][key]);
         if (
           typeof this.viewpointresult[0].data[0][key] !== "function" &&
           key !== "time"
@@ -134,6 +133,17 @@ export default {
         axisLabel: {
           textStyle: {
             color: "rgba(255,255,255,1)" //坐标值得具体的颜色
+          },
+          // yAxis.axisLabel.margin：刻度标签与轴线之间的距离。默认值是8，可以改小一点。不过本来的值已经很小了，这个没多大作用。
+          margin: 2,
+          // yAxis.axisLabel.formatter：刻度标签的内容格式器，支持字符串模板和回调函数两种形式。比如可以设置太长了换行之类的。
+          formatter: function(value, index) {
+            if (value >= 10000 && value < 10000000) {
+              value = value / 10000 + "万";
+            } else if (value >= 10000000) {
+              value = value / 10000000 + "千万";
+            }
+            return value;
           }
         },
         //网格样式
@@ -162,6 +172,17 @@ export default {
           axisLabel: {
             textStyle: {
               color: "rgba(255,255,255,1)" //坐标值得具体的颜色
+            },
+            // yAxis.axisLabel.margin：刻度标签与轴线之间的距离。默认值是8，可以改小一点。不过本来的值已经很小了，这个没多大作用。
+            margin: 2,
+            // yAxis.axisLabel.formatter：刻度标签的内容格式器，支持字符串模板和回调函数两种形式。比如可以设置太长了换行之类的。
+            formatter: function(value, index) {
+              if (value >= 10000 && value < 10000000) {
+                value = value / 10000 + "万";
+              } else if (value >= 10000000) {
+                value = value / 10000000 + "千万";
+              }
+              return value;
             }
           },
           //网格样式
@@ -200,7 +221,8 @@ export default {
           label: {
             normal: {
               show: true,
-              position: "inside"
+              // position: "inside",
+              color: "#fff"
             }
           },
           itemStyle: {
@@ -229,7 +251,8 @@ export default {
             label: {
               normal: {
                 show: true,
-                position: "inside"
+                // position: "inside"
+                color: "#fff"
               }
             },
             itemStyle: {
@@ -283,6 +306,11 @@ export default {
           }
         ],
         yAxis: yaxis,
+        // grid.left：grid 组件离容器左侧的距离。默认值是10%。
+        grid: {
+          left: 120,
+          right: 120
+        },
         series: series
       });
       // = myBarChart;
@@ -362,8 +390,8 @@ button:focus {
   right: 0;
 }
 .myBarChart {
-  width: 592px;
-  height: 292px;
+  width: 926px;
+  height: 472px;
   margin: 0 auto !important;
 }
 .myBarChart > div {

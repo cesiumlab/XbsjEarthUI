@@ -1,11 +1,11 @@
 <template>
   <Window
-    :width="602"
+    :width="936"
     :minWidth="602"
-    :height="410"
+    :height="590"
     :minHeight="410"
     :top="164"
-    :floatright="true"
+    :left="500"
     :title="lang.title"
     v-show="show"
     @cancel="cancel"
