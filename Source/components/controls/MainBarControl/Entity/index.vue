@@ -450,6 +450,7 @@ export default {
       Model.creating = true;
       Model.isCreating = true;
       Model.name = "树";
+      Model.distanceDisplayCondition = [0, 5000];
       this.$root.$earthUI.showPropertyWindow(Model);
     },
     // 创建汽车模型
@@ -459,6 +460,7 @@ export default {
       Model.creating = true;
       Model.isCreating = true;
       Model.name = "汽车";
+      Model.distanceDisplayCondition = [0, 5000];
       this.$root.$earthUI.showPropertyWindow(Model);
     },
     // 创建飞机模型
@@ -469,12 +471,14 @@ export default {
       Model.creating = true;
       Model.isCreating = true;
       Model.name = "模型";
+      Model.distanceDisplayCondition = [0, 5000];
       this.$root.$earthUI.showPropertyWindow(Model);
     },
     // 打开模型属性窗口
     createmodelbtn() {
       var Model = new XE.Obj.Model(this.$root.$earth);
       Model.name = "模型";
+      Model.distanceDisplayCondition = [0, 5000];
       Model.isCreating = true;
       Model.creating = true;
       this.$root.$earthUI.showPropertyWindow(Model);
@@ -1221,13 +1225,13 @@ export default {
 }
 
 .parabolicbtn {
-  background: url(../../../../images/customprimitive.png) no-repeat;
+  background: url(../../../../images/parabolic.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
 
 .parabolicbtn.highlight {
-  background: url(../../../../images/customprimitive_on.png) no-repeat;
+  background: url(../../../../images/parabolic_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }

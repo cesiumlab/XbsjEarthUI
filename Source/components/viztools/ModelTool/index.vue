@@ -110,7 +110,6 @@
         <!-- 像素大小 -->
         <div class="flatten">
           <label>{{lang.minpx}}</label>
-          <!-- <input style="width:100px;" v-model="model.minimumPixelSize" /> -->
           <div class="field">
             <XbsjSlider :min="0" :max="256" :step="1" v-model.number="model.minimumPixelSize"></XbsjSlider>
           </div>
@@ -123,13 +122,13 @@
           </div>
         </div>
         <!-- 可见距离范围 -->
-        <div class="flatten" style="margin-top:20px;display:flex;">
+        <div class="flatten">
           <label>{{lang.distancedisplay}}</label>
           <div class="field">
             <XbsjSlider
               range
               :min="0"
-              :max="100000"
+              :max="50000000"
               :step="1"
               v-model="model.distanceDisplayCondition"
             ></XbsjSlider>
@@ -188,7 +187,7 @@ export default {
         minimumPixelSize: 0,
         attachedPathGuid: "",
         luminanceAtZenith: 0.2,
-        distanceDisplayCondition: undefined
+        distanceDisplayCondition: [0, 0]
       },
       pinstyletype: true,
       langs: languagejs,
@@ -461,7 +460,6 @@ button {
   height: 30px;
   text-align: center;
   line-height: 30px;
-  /* border-bottom: none !important; */
 }
 .xbsj-flatten {
   min-width: 462px;
@@ -569,7 +567,6 @@ button:focus {
 
 .cutselectbox span {
   display: inline-block;
-  /* width: 72px; */
   text-align: left;
   margin-left: 10px;
 }
@@ -583,7 +580,6 @@ button:focus {
   cursor: pointer;
   float: right;
   margin-right: 15px;
-  /* margin-top: 10px; */
   outline: none;
   position: absolute;
   right: 15px;
