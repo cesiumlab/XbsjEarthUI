@@ -122,7 +122,7 @@ export default {
     testSingleTileset () {
       let self = this;
       let earth = this.$root.$earth;
-      this._viewpoint.duration = 0;
+      // this._viewpoint.duration = 0;
       earth.cameraViewManager.globe.flyTo().then(() => {
         self._tileset = new XE.Obj.Tileset(self.$root.$earth);
         self._tileset.xbsjFromJSON(
@@ -251,11 +251,16 @@ export default {
       e.preventDefault();
       if (this.tileset_over) {
         let index = e.dataTransfer.getData("_view");
-        this._viewpoint = this.$root.$earth.cameraViewManager.views[
-          parseInt(index)
-        ];
-        this.item.name = this._viewpoint.name;
-        this.item.thumbnail = this._viewpoint.thumbnail;
+        let self = this;
+        this.$root.$earth.cameraViewManager.newView().then(view => {
+          view.xbsjFromJSON(self.$root.$earth.cameraViewManager.views[
+            parseInt(index)
+          ].toJSON());
+          view.duration = 0;
+          self._viewpoint = view;
+          self.item.name = this._viewpoint.name;
+          self.item.thumbnail = this._viewpoint.thumbnail;
+        });
       }
       this.tileset_over = false;
     },
