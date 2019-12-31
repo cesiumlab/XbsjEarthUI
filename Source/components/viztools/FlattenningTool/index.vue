@@ -335,7 +335,7 @@ export default {
   },
   beforeDestroy() {
     // 解绑数据关联
-    this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
+    // this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
     this._disposers.forEach(e => e());
     this._disposers.length = 0;
   }
