@@ -16,6 +16,10 @@
         <div class="field">
           <XbsjSlider :min="0" :max="100" :step="1" showTip="always" v-model="offsetratevalue"></XbsjSlider>
         </div>
+        <div style="background:none; float: right;">
+          <button v-show="!playing" class="playButton" @click="playClick"></button>
+          <button v-show="playing" class="suspendButton" @click="suspendClick"></button>
+        </div>
       </div>
       <div>
         <div class="flatten-table">
@@ -68,6 +72,9 @@ export default {
       editShow: false,
       editvalues: [],
       offsetratevalue: 1,
+      playing: false,
+      plays: true,
+      play: "",
       langs: {
         zh: {
           title: "模型展开窗口",
@@ -113,6 +120,26 @@ export default {
     }
   },
   methods: {
+    playClick() {
+      this.playing = !this.playing;
+      this.play = setInterval(() => {
+        if (this.plays) {
+          this.offsetratevalue += 1;
+        } else {
+          this.offsetratevalue -= 1;
+        }
+        if (this.offsetratevalue > 100) {
+          this.plays = false;
+        }
+        if (this.offsetratevalue < 0) {
+          this.plays = true;
+        }
+      }, 100);
+    },
+    suspendClick() {
+      this.playing = !this.playing;
+      clearInterval(this.play);
+    },
     updateStyle() {
       var editvalues = [];
       this.styleList.forEach(element => {
@@ -142,28 +169,9 @@ export default {
       this.styleList.splice(0, this.styleList.length);
       this.getBind().xbsjStyle = "";
       this.close();
-      const polygonCollection = this._czmObj;
-      if (!polygonCollection) {
-        return;
-      }
-      polygonCollection.polygons.forEach(p => (p.editing = false));
-      if (polygonCollection.isCreating) {
-        polygonCollection.isCreating = false;
-        polygonCollection.destroy();
-      }
     },
     ok() {
       this.close();
-      const polygonCollection = this._czmObj;
-      if (!polygonCollection) {
-        return;
-      }
-      polygonCollection.polygons.forEach(p => (p.editing = false));
-      if (polygonCollection.isCreating) {
-        polygonCollection.isCreating = false;
-        const sceneObject = new XE.SceneTree.Leaf(polygonCollection);
-        this.$root.$earthUI.addSceneObject(sceneObject);
-      }
     },
     add() {
       var l = this.styleList.length;
@@ -479,8 +487,23 @@ td input {
   margin-top: 20px;
 }
 .field {
-  padding-left: 8px;
+  /* padding-left: 8px; */
   display: inline-block;
-  width: 220px;
+  width: calc(100% - 184px);
+  margin-top: 11px;
+}
+.playButton {
+  background: url(../../../images/play.png) no-repeat !important;
+  background-size: contain;
+  height: 30px;
+  width: 100px;
+  cursor: pointer;
+}
+.suspendButton {
+  background: url(../../../images/suspend.png) no-repeat !important;
+  background-size: contain;
+  height: 30px;
+  width: 100px;
+  cursor: pointer;
 }
 </style>
