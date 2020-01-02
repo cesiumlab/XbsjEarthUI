@@ -623,7 +623,7 @@ export default {
 
         if (czmobj.positions && czmobj.positions.length > 1) {
           var obj = {
-            posititons: [],
+            positions: [],
             color: czmobj.color ? [...czmobj.color] : [1, 1, 0, 1],
             width: czmobj.width ? czmobj.width : 3,
             startTime: timeDuration * Math.random(),
@@ -631,7 +631,7 @@ export default {
           };
           // var positions=[];
           czmobj.positions.map(e => {
-            obj.posititons.push([...e]);
+            obj.positions.push([...e]);
           });
           //obj.posititons.push(positions);
           ret.push(obj);
