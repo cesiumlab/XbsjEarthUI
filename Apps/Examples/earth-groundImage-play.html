@@ -173,7 +173,7 @@
                         <div class="defultbtn" :class="{'btnon':playing}" @click="playing = !playing">热力图播放</div><br/>
                         <span @click="loopPlay = !loopPlay" class="checkbox"><input class="play" type="checkbox" v-model="loopPlay">循环播放</span><br/>
                         <span>持续时间: {{ timeDuration }}s</span><br/><input type="range" min="0" step="0.1" max="5" v-model.number="timeDuration"><br/>
-                        <span>当前时间：</span><br/><input type="range" min="0" step="0.01" max="1" v-model.number="currentTime"><br/>
+                        <span>当前时间：</span><br/><input type="range" min="0" step="0.01" :max="timeDuration" v-model.number="currentTime"><br/>
                         <span style="display: inline-block; margin-bottom: 3px;">图片地址：</span><br/>
                         <div class="inputbox">
                             <div class="arrbox">
@@ -198,11 +198,12 @@
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                     playing: true,
                     loopPlay: true,
-                    timeDuration: 0,
+                    timeDuration: 1,
                     currentTime: 0,
                     imageUrls: [],
                     labelarr: [],
                     currentval: '',
+                    _uw1: undefined
                 };
             },
             // 1.1 资源创建
@@ -271,8 +272,27 @@
                 // 1.1.5 数据绑定
                 this._playingUnbind = XE.MVVM.bind(this, 'playing', groundImage1, 'playing');
                 this._loopPlayUnbind = XE.MVVM.bind(this, 'loopPlay', groundImage1, 'loopPlay');
-                this._timeDurationUnbind = XE.MVVM.bind(this, 'timeDuration', groundImage1, 'timeDuration');
+                // this._timeDurationUnbind = XE.MVVM.bind(this, 'timeDuration', groundImage1, 'timeDuration');
                 this._currentTimeUnbind = XE.MVVM.bind(this, 'currentTime', groundImage1, 'currentTime');
+
+                if (this._uw) {
+                    this._uw = this._uw();
+                } else {
+                    this._uw = XE.MVVM.watch(() => groundImage1.timeDuration, () => {
+                        this.timeDuration = groundImage1.timeDuration;
+                        // if (groundImage1.timeDuration == 0) {
+                        //     this.timeDuration = 1.0;
+                        // } else {
+                        //     this.timeDuration = groundImage1.timeDuration;
+                        // }
+                    });
+                }
+
+                this.$watch('timeDuration', function (newVal, oldVal) {
+                    if (newVal > 0) {
+                        groundImage1.timeDuration = newVal;
+                    }
+                });
 
                 this._earth = earth;
 
@@ -312,6 +332,7 @@
                 this._timeDurationUnbind = this._timeDurationUnbind && this._timeDurationUnbind();
                 this._currentTimeUnbind = this._currentTimeUnbind && this._currentTimeUnbind();
                 this._earth = this._earth && this._earth.destroy();
+                this._uw = this._uw && this._uw();
             },
         }
 
