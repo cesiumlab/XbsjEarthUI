@@ -42,10 +42,10 @@
 </template>
 
 <script>
-import { parse } from 'path';
+import { parse } from "path";
 import languagejs from "./locale";
 export default {
-  data () {
+  data() {
     return {
       show: false,
       tree: [],
@@ -53,18 +53,22 @@ export default {
       currentSelectedTreeNode: null,
       langs: languagejs,
       lang: undefined,
-      symbolGroupId: "cesiumlab_symbols"
+      symbolGroupId: "cesiumlab_symbols",
+      selected: false
     };
   },
-  created () { },
-  mounted () {
-  },
+  created() {},
+  mounted() {},
   methods: {
-    createGroundImage (symbol) {
-      if (this.symbol && this.symbol.isCreating) { // 新创建的，没确定之前，又选择了其他图标
-        this.symbol.destroy()
+    createGroundImage(symbol) {
+      if (this.symbol && this.symbol.isCreating) {
+        // 新创建的，没确定之前，又选择了其他图标
+        this.symbol.destroy();
       }
-      this.symbol = XE.Core.XbsjObject.createObject(symbol.type, this.$root.$earth);
+      this.symbol = XE.Core.XbsjObject.createObject(
+        symbol.type,
+        this.$root.$earth
+      );
       var json = JSON.parse(symbol.content);
       if (json.czmObject) {
         json = json.czmObject;
@@ -74,73 +78,103 @@ export default {
       this.$root.$earthUI.showPropertyWindow(this.symbol);
       this.symbol.creating = true;
     },
-    initSymbol (id) {
+    initSymbol(id) {
       var labServer = this.$root.$labServer;
-      var self = this
+      var self = this;
       labServer
         .getSymbol(id)
         .then(result => {
-          if (result.status === 'ok' && result.symbols.rows.length === 1) {
+          if (result.status === "ok" && result.symbols.rows.length === 1) {
             var group = JSON.parse(result.symbols.rows[0].content);
-            var treeRoot = self.initTreeNode(group)
-            treeRoot.expand = true
-            self.tree = [treeRoot]
+            var treeRoot = self.initTreeNode(group);
+            treeRoot.expand = true;
+            self.tree = [treeRoot];
           }
         })
         .catch(err => {
           this.error = err;
         });
     },
-    initTreeNode (node) {
-      var self = this
+    initTreeNode(node) {
+      var self = this;
       var treeNode = {
         expand: false,
         title: node.name,
         children: [],
-        content: node
-      }
+        content: node,
+        isSelected: false
+      };
+      this.tree.push(treeNode);
       if (node.children.length > 0) {
         for (var i = 0; i < node.children.length; i++) {
-          treeNode.children.push(self.initTreeNode(node.children[i]))
+          treeNode.children.push(self.initTreeNode(node.children[i]));
         }
       }
-      return treeNode
+      return treeNode;
     },
-    itemClick (item) {
-      if (item && item.item) {
-        this.currentSelectedTreeNode = item.item
+    itemClick(item) {
+      if (this.tree[0].title == item.item["title"]) {
+        this.tree[0].isSelected = true;
+      } else {
+        this.tree[0].isSelected = false;
       }
-      if (this.currentSelectedTreeNode && this.currentSelectedTreeNode.content.symbols.length > 0) {
+
+      var treeroot = this.tree[0];
+
+      function getChildren(parent) {
+        var len = parent.children.length;
+        if (len > 0) {
+          for (var i = 0; i < len; i++) {
+            if (parent.children[i].title == item.item["title"]) {
+              parent.children[i].isSelected = true;
+            } else {
+              parent.children[i].isSelected = false;
+            }
+            getChildren(parent.children[i]);
+          }
+        }
+      }
+      getChildren(treeroot);
+
+      if (item && item.item) {
+        this.currentSelectedTreeNode = item.item;
+      }
+      if (
+        this.currentSelectedTreeNode &&
+        this.currentSelectedTreeNode.content.symbols.length > 0
+      ) {
         var labServer = this.$root.$labServer;
-        var self = this
-        var ids = this.currentSelectedTreeNode.content.symbols.join(',').replace('\"', '')
+        var self = this;
+        var ids = this.currentSelectedTreeNode.content.symbols
+          .join(",")
+          .replace('"', "");
         labServer
           .getSymbols(ids)
           .then(result => {
-            if (result.status === 'ok') {
-              self.symbols = result.symbols.rows
+            if (result.status === "ok") {
+              self.symbols = result.symbols.rows;
             }
           })
           .catch(err => {
             this.error = err;
           });
       } else {
-        this.symbols = []
+        this.symbols = [];
       }
     }
   },
   directives: {
     focus: {
       // 指令的定义
-      inserted: function (el) {
+      inserted: function(el) {
         // el.__vue__ && el.__vue__.focus();
       }
     }
   },
   watch: {
-    show (val) {
+    show(val) {
       if (val) {
-        this.initSymbol(this.symbolGroupId)
+        this.initSymbol(this.symbolGroupId);
       }
     }
   }

@@ -54,6 +54,7 @@
           <li
             v-for="(p,index) in types"
             @click="selectType(index, p)"
+            :key="index"
             :class="{active:categoryIndex==index}"
           >
             <label class="liname">{{p.name}}</label>
@@ -514,6 +515,7 @@ export default {
             } else if (arr[0].geometry.type === "LineString") {
               this.types = this.polylineTypes;
               this.loadGeoJSONShow = true;
+              this.selectedType = this.types[0];
             }
           }
         }
