@@ -21,7 +21,8 @@ const zh = {
   height: "高度",
   shows: "显示",
   position: "定位",
-  edit: "编辑"
+  edit: "编辑",
+  dragcontent: '请把对象拖到这里'
 };
 
 const en = {
@@ -47,7 +48,8 @@ const en = {
   height: "height",
   shows: "show",
   position: "flyto",
-  edit: "edit"
+  edit: "edit",
+  dragcontent: 'Drag the object here'
 };
 
 export default { zh, en };
