@@ -1,6 +1,18 @@
 Change Log
 ==========
 
+##### Additions :tada:
+* 视图菜单中新增瓦片测试功能
+* 拖拽geojson时 限制只加载前100条
+* 模型属性面板添加了tab切换，并新增了可见距离属性
+* 添加clt格式的tileset
+* 分析菜单中新增模型展开功能
+* 分析菜单中水面面板新增拖拽功能
+
+##### Fixes :wrench:
+* 修复feature属性窗口自动弹出的问题，XE.MVVM.watch(picking, 'clickedObj' 会导致莫名奇妙被调用，虽然clickObj中的值并未发生变化。
+* EarthSDK示例修复了热力图当前时间进度条不随持续时间不同而变化的bug
+
 ### 1.2.22 - 2019-12-23
 ##### Additions :tada:
 * 新增热力图类XE.Obj.HeatMap
