@@ -44,9 +44,7 @@ export default {
       results: []
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {},
   methods: {
     query(key) {
@@ -139,7 +137,7 @@ export default {
   width: 270px;
   height: 276px;
   top: 120px;
-  left: 389px;
+  left: 429px;
   overflow: auto;
   padding: 10px 10px;
 }
