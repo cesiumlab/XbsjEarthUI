@@ -445,9 +445,11 @@ export default {
         if (this._tileset.xbsjCustomShader.fsBody === "") {
           this._tileset.xbsjCustomShader.fsBody =
             XE.Obj.Tileset.xbsjCustomShader.builtinFsBody1;
+          this._tileset.xbsjStyle = "var style = {\n    color: \"vec4(0, 0.5, 1.0,1)\"\n}";
           this.technologyShader = true;
         } else {
           this._tileset.xbsjCustomShader.fsBody = "";
+          this._tileset.xbsjStyle = "";
           this.technologyShader = false;
         }
       }
