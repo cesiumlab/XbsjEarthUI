@@ -34,6 +34,19 @@
           ></div>
           <span class="xbsj-item-name">{{lang.cloudhost}}</span>
         </div>
+        <!-- <div class="xbsj-item-btnbox ml20">
+          <div
+            class="xbsj-item-btn onlinebutton"
+            @click="modelForest=!modelForest"
+            :class="{highlight:modelForest}"
+          ></div>
+          <span class="xbsj-item-name">{{lang.instance}}</span>
+        </div>-->
+        <!-- 实例模型 -->
+        <div class="xbsj-item-btnbox" @click="forestbtn">
+          <div class="xbsj-item-btn localhostbutton"></div>
+          <span class="xbsj-item-name">{{lang.instance}}</span>
+        </div>
       </div>
 
       <div class="xbsj-list-item" v-if="customBtns.length>0">
@@ -267,6 +280,7 @@ export default {
       modelLab: false,
       modelCloud: false,
       modelOnline: false,
+      modelForest: false,
       flattings: [],
       positionEditing: false,
       rotationEditing: false,
@@ -325,6 +339,15 @@ export default {
     }
   },
   methods: {
+    // 打开实例模型属性窗口
+    forestbtn() {
+      var forest = new XE.Obj.Forest(this.$root.$earth);
+      forest.name = "森林";
+      forest.positionPicking = true;
+      forest.isCreating = true;
+      // forest.creating = true;
+      this.$root.$earthUI.showPropertyWindow(forest);
+    },
     addCustomButton(item) {
       //给几个方法默认值，避免出错
       item.cls =

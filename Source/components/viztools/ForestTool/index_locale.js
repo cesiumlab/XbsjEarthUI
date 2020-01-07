@@ -1,0 +1,51 @@
+const zh = {
+  title: '森林属性',
+  pointaddress: '点位数据源地址',
+  addpoint: '添加点位',
+  select: '选择',
+  delete: '删除',
+  edit: '修改',
+  lodmodelurl: 'LOD模型库地址',
+  order: '序号',
+  name: '名称',
+  address: '地址',
+  addpointtitle: '添加点位',
+  Lodmodelprobabilitytable: 'LOD模型出现概率表',
+  treename: '树种名称',
+  ratio: '出现比率',
+  color: '图例颜色',
+  position: '位置偏移',
+  rotation: '随机朝向',
+  forestlabtitle: 'Forest本机服务',
+  search: '查询',
+  serveraddress: '服务地址',
+  updatethumb: '更新缩略图',
+  scale: '随机大小'
+}
+
+const en = {
+  title: 'Forest Property',
+  pointaddress: 'PointAddress',
+  addpoint: 'addpoint',
+  select: 'select',
+  delete: 'delete',
+  edit: 'edit',
+  lodmodelurl: 'LOD Model Url',
+  order: 'Order',
+  name: 'Name',
+  address: 'Address',
+  addpointtitle: 'Add Point',
+  Lodmodelprobabilitytable: 'Lod model probability table',
+  treename: 'Tree Name',
+  ratio: 'Ratio',
+  color: 'Color',
+  position: 'position',
+  rotation: 'rotation',
+  forestlabtitle: 'Forest Server',
+  search: 'search',
+  serveraddress: 'serveraddress',
+  updatethumb: 'updatethumb',
+  scale: 'scale'
+}
+
+export default { zh, en }

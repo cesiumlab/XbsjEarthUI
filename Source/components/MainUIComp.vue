@@ -98,6 +98,7 @@ import PinPictureTool from "./viztools/PinPictureTool";
 import GroundImageTool from "./viztools/GroundImageTool";
 import PinDivTool from "./viztools/PinDivTool";
 import PathTool from "./viztools/PathTool";
+import ForestTool from "./viztools/ForestTool";
 import ModelTool from "./viztools/ModelTool";
 import PolylineTool from "./viztools/PolylineTool";
 import GeoCurveArrow from "./viztools/GeoCurveArrow";
@@ -120,6 +121,8 @@ import GeoSector from "./viztools/GeoSector";
 import ScanlineTool from "./viztools/ScanlineTool";
 import CustomPrimitiveTool from "./viztools/CustomPrimitiveTool";
 import TubeTool from "./viztools/TubeTool";
+import AddPoint from "./viztools/ForestTool/AddPoint";
+import ForestLab from "./viztools/ForestTool/ForestLab";
 
 import CamerVideoTool from "./viztools/CamerVideoTool";
 import ViewshedTool from "./viztools/ViewshedTool";
@@ -160,6 +163,7 @@ export default {
     GroundImageTool,
     PinDivTool,
     PathTool,
+    ForestTool,
     ModelTool,
     PolylineTool,
     GeoCurveArrow,
@@ -197,6 +201,8 @@ export default {
     TerrainOnline,
     PropertyWindow,
     CameraViewPrp,
+    AddPoint,
+    ForestLab,
     TilesetStyleEditor,
     TilesetExpansionEditor,
     ShareEditor,
@@ -224,6 +230,7 @@ export default {
         PinDivTool: "PinDivTool",
         // Pin: "PinPictureTool",
         Path: "PathTool",
+        Forest: "ForestTool",
         Scanline: "ScanlineTool",
         CustomPrimitive: "CustomPrimitiveTool",
         CustomPrimitiveExt_Tube: "TubeTool",
