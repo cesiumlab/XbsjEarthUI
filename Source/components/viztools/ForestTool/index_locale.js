@@ -20,7 +20,8 @@ const zh = {
   search: '查询',
   serveraddress: '服务地址',
   updatethumb: '更新缩略图',
-  scale: '随机大小'
+  scale: '随机大小',
+  dragcontent: '请把对象拖到这里'
 }
 
 const en = {
@@ -45,7 +46,8 @@ const en = {
   search: 'search',
   serveraddress: 'serveraddress',
   updatethumb: 'updatethumb',
-  scale: 'scale'
+  scale: 'scale',
+  dragcontent: 'Drag the object here'
 }
 
 export default { zh, en }
