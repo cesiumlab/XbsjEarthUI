@@ -79,7 +79,7 @@ export default {
   props: {
     getBind: Function
   },
-  data() {
+  data () {
     return {
       lang: {},
       modelList: [],
@@ -89,8 +89,8 @@ export default {
       langs: languagejs
     };
   },
-  created() {},
-  mounted() {
+  created () { },
+  mounted () {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
@@ -114,7 +114,10 @@ export default {
         this.modelList.push({
           name: "",
           address: value,
-          ratio: 1
+          ratio: 1,
+          color: {
+            rgba: { r: 255, g: 255, b: 0, a: 1 }
+          }
         });
         this.modelList[index].address = value;
       });
@@ -123,27 +126,33 @@ export default {
   computed: {},
   watch: {
     modelList: {
-      handler(n, o) {
+      handler (n, o) {
         this.updateModelUrl();
       },
       deep: true // 可以深度检测到 modelList 对象的属性值的变化
     }
   },
   methods: {
-    add() {
+    updateDataUrl (id) {
+      this.forest.treeDataUrl = this.$root.$labServer.server + "assets/" + id;
+    },
+    add () {
       this.modelList.push({
         name: "",
         address: "",
-        ratio: 1
+        ratio: 1,
+        color: {
+          rgba: { r: 255, g: 255, b: 0, a: 1 }
+        }
       });
     },
-    del(index) {
+    del (index) {
       //弹出提示
       this.$root.$earthUI.confirm("确认删除该模型库地址?", () => {
         this.modelList.splice(index, 1);
       });
     },
-    updateModelUrl() {
+    updateModelUrl () {
       var updatevalues = [];
       this.modelList.forEach(element => {
         updatevalues.push(element.address);
@@ -151,22 +160,33 @@ export default {
       // console.log(updatevalues);
       this._czmObj.treeMetaUrls = updatevalues;
     },
-    addPointClick() {
+    addPointClick () {
+      if (this.modelList.length == 0) {
+        this.$root.$earthUI.promptInfo("没有添加树种模型！", "warning");
+        return;
+      }
+
       var item = this.modelList;
-      this.$root.$earthUI.showPropertyWindow(item, {
+      let self = this;
+      this.$root.$earthUI.showPropertyWindow({
+        item: item,
+        callback: function (id) {
+          self.updateDataUrl(id);
+        }
+      }, {
         component: "AddPoint"
       });
     },
-    addLab() {
+    addLab () {
       var items = this.modelList;
       this.$root.$earthUI.showPropertyWindow(items, {
         component: "ForestLab"
       });
     },
-    close() {
+    close () {
       this.$parent.destroyTool(this);
     },
-    cancel() {
+    cancel () {
       this.modelList.splice(0, this.modelList.length);
       this.close();
       const forestToolObj = this._czmObj;
@@ -179,7 +199,7 @@ export default {
         forestToolObj.destroy();
       }
     },
-    ok() {
+    ok () {
       this.close();
       const forestToolObj = this._czmObj;
       forestToolObj.editing = false;
@@ -195,7 +215,7 @@ export default {
       }
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
     this._disposers.forEach(e => e());

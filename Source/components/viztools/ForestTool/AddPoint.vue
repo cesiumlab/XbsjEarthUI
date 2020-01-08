@@ -11,10 +11,12 @@
   >
     <div class="xbsj-flatten">
       <!-- 位置偏移 -->
-      <div class="flatten">
+      <div class="flatten-flex">
         <label>{{lang.position}}</label>
         <div class="flatten-box">
-          <XbsjLngLatHeight v-model="lodmodel.position"></XbsjLngLatHeight>
+          <input type="text" class="scaleInput" v-model.number="lodmodel.position[0]" />
+          <input type="text" class="scaleInput" v-model.number="lodmodel.position[1]" />
+          <input type="text" class="scaleInput" v-model.number="lodmodel.position[2]" />
         </div>
       </div>
       <!-- 随机朝向 -->
@@ -32,6 +34,11 @@
           <input type="text" class="scaleInput" v-model.number="lodmodel.scale.min" />
           <input type="text" class="scaleInput" v-model.number="lodmodel.scale.max" />
         </div>
+      </div>
+
+      <div class="flatten-flex">
+        <XbsjCheckBox v-model="getHeightFromTerrain"></XbsjCheckBox>
+        <XbsjCheckBox v-model="getHeightFromTileset"></XbsjCheckBox>
       </div>
       <div>
         <label class="xbsj-label">{{lang.Lodmodelprobabilitytable}}:</label>
@@ -52,10 +59,10 @@
                   <input type="text" v-model="item.name" />
                 </td>
                 <td>
-                  <input type="text" v-model="item.ratio" />
+                  <input type="text" v-model.number="item.ratio" />
                 </td>
                 <td>
-                  <XbsjColorButton v-model="treeColorUI" ref="treeColor"></XbsjColorButton>
+                  <XbsjColorButton v-model="item.color"></XbsjColorButton>
                 </td>
               </tr>
             </tbody>
@@ -73,7 +80,7 @@ export default {
   props: {
     getBind: Function
   },
-  data() {
+  data () {
     return {
       lang: {},
       treeList: [],
@@ -91,76 +98,216 @@ export default {
       langs: languagejs,
       treeColorUI: {
         rgba: {
-          r: 94,
-          g: 104,
-          b: 62,
+          r: 255,
+          g: 255,
+          b: 0,
           a: 1
         }
       },
-      treeColor: [94, 104, 62, 1]
+      creating: true,
+      getHeightFromTerrain: false,
+      getHeightFromTileset: false
     };
   },
-  created() {},
-  mounted() {
+  created () { },
+  mounted () {
     // 数据关联
     this._disposers = this._disposers || [];
-
-    this.treeList = this.getBind();
+    this.bindData = this.getBind();
+    this.treeList = this.bindData.item;
+    this._points = new XE.Obj.Points(this.$root.$earth);
+    this._temPin = new XE.Obj.Model(this.$root.$earth);
+    this._temPin.positionPicking = true;
+    this._temPin.creating = true;
+    this._disposers.push(XE.MVVM.bind(this, "creating", this._temPin, "creating"));
     // this._disposers.push(XE.MVVM.bind(this, "treeColor", czmObj, "color"));
   },
   computed: {},
   watch: {
-    treeColorUI(color) {
-      let v = color.rgba;
-      var cc = [v.r, v.g, v.b, v.a];
-      if (!this.treeColor.every((c, index) => c === cc[index])) {
-        this.treeColor = cc;
-      }
+    creating (v) {
+      this._points.points.push({});
+      var point = this._points.points[this._points.points.length - 1];
+      var position = this._temPin.xbsjPosition;
+      point.position = [position[0], position[1], position[2]];
+      point.type = this.getType();
+      var color = this.treeList[point.type].color.rgba;
+      point.color = [color.r / 255.0, color.g / 255.0, color.b / 255.0, color.a];
+      this.creating = true;
     },
-    treeColor(c) {
-      this.treeColorUI = {
-        rgba: {
-          r: c[0],
-          g: c[1],
-          b: c[2],
-          a: c[3]
-        }
-      };
+    treeList: {
+      handler (n, o) {
+        console.log(n);
+        console.log(o);
+      },
+      deep: true // 可以深度检测到 styleList 对象的属性值的变化
     }
   },
   methods: {
-    close() {
+    updateStyle (v) {
+      this.$forceUpdate();
+    },
+    select (index) {
+      alert(index);
+    },
+    getType () {
+      var sum_all = 0;
+      for (var i = 0; i < this.treeList.length; i++) {
+        sum_all += this.treeList[i].ratio;
+      }
+      var random = Math.random() * sum_all;
+      var sum_current = 0;
+      for (var i = 0; i < this.treeList.length; i++) {
+        sum_current += this.treeList[i].ratio;
+        if (random <= sum_current) {
+          return i;
+        }
+      }
+      return 0;
+    },
+    close () {
+      this._temPin.destroy();
       this.$parent.destroyTool(this);
     },
-    cancel() {
+    cancel () {
+      this._points.destroy();
       this.close();
-      //   const forestToolObj = this._czmObj;
-      //   if (!forestToolObj) {
-      //     return;
-      //   }
-      //   forestToolObj.positionEditing = false;
-      //   if (forestToolObj.isCreating) {
-      //     forestToolObj.isCreating = false;
-      //     forestToolObj.destroy();
-      //   }
     },
-    ok() {
+    ok () {
+      let self = this;
+      var points = [];
+      for (var i = 0; i < this._points.points.length; i++) {
+        var e = this._points.points[i];
+        points.push([
+          e.position[0] + (Math.random() * this.lodmodel.position[0] * 2 - this.lodmodel.position[0]),
+          e.position[1] + (Math.random() * this.lodmodel.position[1] * 2 - this.lodmodel.position[1]),
+          e.position[2]
+        ]);
+      };
+      if (this.getHeightFromTerrain && this.getHeightFromTileset) {
+        this.getPositionsHeightFromTileset(this.$root.$earth, points, function (v) {
+          if (v) {
+            self.submitPositions(points);
+          } else {
+            self.getPositionsHeightFromTerrain(self.$root.$earth, points, function (v) {
+              self.submitPositions(points);
+            })
+          }
+        })
+      } else if (this.getHeightFromTerrain) {
+        this.getPositionsHeightFromTerrain(this.$root.$earth, points, function (v) {
+          self.submitPositions(points);
+        })
+      } else if (this.getHeightFromTileset) {
+        this.getPositionsHeightFromTileset(this.$root.$earth, points, function (v) {
+          self.submitPositions(points);
+        })
+      } else {
+        self.submitPositions(points);
+      }
+
       this.close();
-      //   const forestToolObj = this._czmObj;
-      //   forestToolObj.editing = false;
-      //   if (!forestToolObj) {
-      //     return;
-      //   }
-      //   forestToolObj.positionEditing = false;
-      //   forestToolObj.twoPostionsEditing = false;
-      //   if (forestToolObj.isCreating) {
-      //     forestToolObj.isCreating = false;
-      //     const sceneObject = new XE.SceneTree.Leaf(forestToolObj);
-      //     this.$root.$earthUI.addSceneObject(sceneObject);
-      //   }
+    },
+    submitPositions (transformPoints) {
+      var points = [];
+      for (var i = 0; i < transformPoints.length; i++) {
+        var transformPoint = transformPoints[i];
+        var point = this._points.points[i];
+        var scale = Math.random() * (this.lodmodel.scale.max - this.lodmodel.scale.min) + this.lodmodel.scale.min;
+        points.push({
+          position: [
+            transformPoint[0],
+            transformPoint[1],
+            transformPoint[2] + (Math.random() * this.lodmodel.position[2] * 2 - this.lodmodel.position[2])
+          ],
+          scale: [scale, scale, scale],
+          rotation: [(Math.random() * (this.lodmodel.rotation.max - this.lodmodel.rotation.min) + this.lodmodel.rotation.min) * Math.PI / 180, 0, 0],
+          id: 'id' + i,
+          type: point.type
+        });
+      }
+
+      var data = new FormData();
+      data.append("type", "application/json");
+      data.append("data", JSON.stringify(points));
+      let self = this;
+      var labServer = this.$root.$labServer;
+      labServer.addAssets(data).then(data => {
+        if (self.bindData.callback) {
+          self.bindData.callback(data.id);
+        }
+      })
+        .catch(err => {
+          console.log(err)
+        });
+
+    },
+    getPositionsHeightFromTileset (earth, positions, resultCallback) {
+      if (!earth.czm.scene.globe.depthTestAgainstTerrain) {
+        console.warn('scene.globe.depthTestAgainstTerrain is false, may not get the height!');
+      }
+
+      const cps = [];
+      for (let p of positions) {
+        cps.push(new Cesium.Cartographic(p[0], p[1], p[2]));
+      }
+
+      earth.czm.scene.sampleHeightMostDetailed(cps).then(r => {
+        try {
+          let i = 0;
+          for (let p of positions) {
+            if (r[i].height === undefined) {
+              throw new Error('r[i].height === undefined');
+            }
+            p[2] = r[i].height;
+            i++;
+          }
+          // console.log(p);
+          resultCallback(true);
+        } catch (error) {
+          console.error('sampleHeightMostDetailed error 1!');
+          resultCallback(false);
+        }
+      }).otherwise(error => {
+        resultCallback(false);
+        console.error('sampleHeightMostDetailed error 2!');
+      });
+    },
+    getPositionsHeightFromTerrain (earth, positions, resultCallback) {
+      // Query the terrain height of two Cartographic positions
+      var terrainProvider = earth.czm.scene.terrainProvider;
+
+      if (terrainProvider instanceof Cesium.EllipsoidTerrainProvider) {
+        console.warn('没加载地形，可能获取不到高程信息');
+      }
+
+      const cps = [];
+      for (let p of positions) {
+        cps.push(new Cesium.Cartographic(p[0], p[1], p[2]));
+      }
+
+      var promise = Cesium.sampleTerrainMostDetailed(terrainProvider, cps);
+      Cesium.when(promise, function (r) {
+        try {
+          let i = 0;
+          for (let p of positions) {
+            if (r[i].height === undefined) {
+              throw new Error('r[i].height === undefined');
+            }
+            p[2] = r[i].height;
+            i++;
+          }
+          resultCallback(true);
+        } catch (error) {
+          console.error('sampleTerrainMostDetailed error 1!');
+          resultCallback(false);
+        }
+      }, function (error) {
+        resultCallback(false);
+        console.error('sampleTerrainMostDetailed error 2!' + error);
+      });
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
     this._disposers.forEach(e => e());

@@ -265,7 +265,7 @@
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{lang.algorithm}}</span>
-        <!-- 抛物差值 -->
+        <!-- 抛物插值 -->
         <div
           class="xbsj-item-btnbox ml20"
           ref="parabolicBtn"

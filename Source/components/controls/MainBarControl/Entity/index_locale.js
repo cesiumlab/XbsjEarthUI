@@ -51,7 +51,7 @@ const zh = {
   barwrite: '带杆文字',
   diffusionsurface: '扩散面',
   odLine: 'OD线',
-  parabolic: '抛物差值',
+  parabolic: '抛物插值',
   algorithm: '算法',
   delcontent: '必须选中一条折线'
 };

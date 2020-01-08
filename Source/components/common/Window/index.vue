@@ -242,7 +242,7 @@ export default {
       function move (e) {
         var e = e || event;
         e.stopPropagation();
-        //计算当前鼠标位置和全局点击位置的偏差值，尝试修改宽度和高度
+        //计算当前鼠标位置和全局点击位置的偏插值，尝试修改宽度和高度
         let w = e.movementX + self._width;
         let h = e.movementY + self._height;
 

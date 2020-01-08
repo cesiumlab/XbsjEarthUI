@@ -46,7 +46,7 @@ export default {
   props: {
     getBind: Function
   },
-  data() {
+  data () {
     return {
       error: "",
       dayItems: [],
@@ -58,15 +58,15 @@ export default {
       forestlabList: []
     };
   },
-  mounted() {
+  mounted () {
     this.query();
     this.forestlabList = this.getBind();
   },
   methods: {
-    _updateServerThumbnail(server, thumbnail) {
+    _updateServerThumbnail (server, thumbnail) {
       var labServer = this.$root.$earthUI.labServer;
       labServer
-        .updateLayerThumbnail("models", server._id, thumbnail)
+        .updateLayerThumbnail("lodmodels", server._id, thumbnail)
         .then(data => {
           this.query();
         })
@@ -75,7 +75,7 @@ export default {
           this.$root.$earthUI.promptInfo(this.error, "error");
         });
     },
-    onContexMenu(server, event) {
+    onContexMenu (server, event) {
       //弹出菜单
       this.$root.$earthUI.contextMenu.pop([
         {
@@ -97,13 +97,13 @@ export default {
         }
       ]);
     },
-    select(s) {
+    select (s) {
       this.selected = s;
       this.selectedUrl = this.serverUrl(s);
       this.contentShow = true;
       this.error = "";
     },
-    _addServices(s) {
+    _addServices (s) {
       //添加到列表中，并且按照天进行分组
       let day = s.date.substr(0, 10);
 
@@ -120,7 +120,7 @@ export default {
       };
       this.dayItems.push(newDays);
     },
-    query() {
+    query () {
       this.error = "";
       var labServer = this.$root.$earthUI.labServer;
 
@@ -139,7 +139,7 @@ export default {
           this.$root.$earthUI.promptInfo(this.error, "error");
         });
     },
-    serverUrl(server) {
+    serverUrl (server) {
       let path = server.path;
       let idx0 = path.lastIndexOf("\\");
       let idx1 = path.lastIndexOf("/");
@@ -154,26 +154,30 @@ export default {
       var a = document.createElement("A");
       a.href =
         this.$root.$earthUI.labServer.server +
-        "model/" +
+        "lodmodels/" +
         server._id +
         "/" +
         path;
       return a.href;
     },
-    close() {
+    close () {
       this.$parent.destroyTool(this);
     },
-    cancel() {
+    cancel () {
       this.close();
     },
-    ok() {
+    ok () {
       if (!this.selected) {
         this.error = this.lang.selectservice;
         this.$root.$earthUI.promptInfo(this.error, "error");
       } else {
         this.forestlabList.push({
           name: this.selected.name,
-          address: this.serverUrl(this.selected)
+          address: this.serverUrl(this.selected),
+          ratio: 1,
+          color: {
+            rgba: { r: 255, g: 255, b: 0, a: 1 }
+          }
         });
         this.error = "";
       }
