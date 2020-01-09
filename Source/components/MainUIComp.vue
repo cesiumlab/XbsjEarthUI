@@ -123,6 +123,8 @@ import CustomPrimitiveTool from "./viztools/CustomPrimitiveTool";
 import TubeTool from "./viztools/TubeTool";
 import AddPoint from "./viztools/ForestTool/AddPoint";
 import ForestLab from "./viztools/ForestTool/ForestLab";
+import LinearPanel from "./viztools/ForestTool/LinearPanel";
+import FacePlate from "./viztools/ForestTool/FacePlate";
 
 import CamerVideoTool from "./viztools/CamerVideoTool";
 import ViewshedTool from "./viztools/ViewshedTool";
@@ -203,6 +205,8 @@ export default {
     CameraViewPrp,
     AddPoint,
     ForestLab,
+    LinearPanel,
+    FacePlate,
     TilesetStyleEditor,
     TilesetExpansionEditor,
     ShareEditor,

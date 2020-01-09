@@ -212,6 +212,24 @@ export default {
         (czmObj.position !== undefined || czmObj.xbsjPosition !== undefined)
       ) {
       }
+      if (
+        czmObj &&
+        czmObj._polyline !== undefined &&
+        czmObj.positions !== undefined
+      ) {
+        this.$root.$earthUI.showPropertyWindow(czmObj, {
+          component: "LinearPanel"
+        });
+      }
+      if (
+        czmObj &&
+        czmObj._polygon !== undefined &&
+        czmObj.positions !== undefined
+      ) {
+        this.$root.$earthUI.showPropertyWindow(czmObj, {
+          component: "FacePlate"
+        });
+      }
     },
     close() {
       this._temPin.destroy();

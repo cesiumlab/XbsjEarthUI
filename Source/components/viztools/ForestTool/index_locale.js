@@ -21,7 +21,15 @@ const zh = {
   serveraddress: '服务地址',
   updatethumb: '更新缩略图',
   scale: '随机大小',
-  dragcontent: '请把对象拖到这里'
+  dragcontent: '请把对象拖到这里',
+  linearpaneltitle: '线状面板',
+  samplinginterval: '采样间隔',
+  linerotation: '朝向',
+  fixedangle: '固定切线夹角',
+  random: '随机',
+  faceflatetitle: '面状面板',
+  hsamplinginterval: '横向采样间隔',
+  zsamplinginterval: '纵向采样间隔',
 }
 
 const en = {
@@ -47,7 +55,15 @@ const en = {
   serveraddress: 'serveraddress',
   updatethumb: 'updatethumb',
   scale: 'scale',
-  dragcontent: 'Drag the object here'
+  dragcontent: 'Drag the object here',
+  linearpaneltitle: 'Linear panel',
+  samplinginterval: 'samplinginterval',
+  linerotation: 'rotation',
+  fixedangle: 'fixedangle',
+  random: 'random',
+  faceflatetitle: 'Face Flate',
+  hsamplinginterval: 'hsamplinginterval',
+  zsamplinginterval: 'hsamplinginterval',
 }
 
 export default { zh, en }
