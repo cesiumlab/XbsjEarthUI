@@ -54,13 +54,12 @@ export default {
       selectedUrl: "",
       contentShow: false,
       lang: {},
-      langs: languagejs,
-      forestlabList: []
+      langs: languagejs
     };
   },
   mounted () {
     this.query();
-    this.forestlabList = this.getBind();
+    this._czmObj = this.getBind();
   },
   methods: {
     _updateServerThumbnail (server, thumbnail) {
@@ -171,14 +170,15 @@ export default {
         this.error = this.lang.selectservice;
         this.$root.$earthUI.promptInfo(this.error, "error");
       } else {
-        this.forestlabList.push({
-          name: this.selected.name,
-          address: this.serverUrl(this.selected),
-          ratio: 1,
-          color: {
-            rgba: { r: 255, g: 255, b: 0, a: 1 }
-          }
-        });
+        this._czmObj.treeMetas.push({ name: this.selected.name, url: this.serverUrl(this.selected) });
+        // this.forestlabList.push({
+        //   name: this.selected.name,
+        //   address: this.serverUrl(this.selected),
+        //   ratio: 1,
+        //   color: {
+        //     rgba: { r: 255, g: 255, b: 0, a: 1 }
+        //   }
+        // });
         this.error = "";
       }
       this.close();

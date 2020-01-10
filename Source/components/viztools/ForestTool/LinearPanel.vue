@@ -13,7 +13,14 @@
       <!-- 采样间隔 -->
       <div class="flatten">
         <label>{{lang.samplinginterval}}:</label>
-        <input style="float:left;" type="text" v-model="segmentLength" />
+        <input style="float:left;" type="text" v-model.number="segmentLength" />
+      </div>
+      <!-- 位置偏移 -->
+      <div class="flatten-flex">
+        <label>{{lang.position}}</label>
+        <div class="flatten-box">
+          <input type="text" class="scaleInput" v-model.number="randomLength" />
+        </div>
       </div>
       <!-- 朝向 -->
       <div class="flatten">
@@ -31,32 +38,130 @@
         />
         <label class="radiolabel" style="min-width: 20px;" for="gheight">{{lang.random}}</label>
       </div>
+      <div class="flatten-flex">
+        <XbsjCheckBox v-model="getHeightFromTerrain">{{lang.getPositionsHeightFromTerrain}}</XbsjCheckBox>
+        <XbsjCheckBox v-model="getHeightFromTileset">{{lang.getPositionsHeightFromTileset}}</XbsjCheckBox>
+      </div>
     </div>
   </Window>
 </template>
 <script>
 import languagejs from "./index_locale";
-
+import { getPositionsHeightFromTerrain, getPositionsHeightFromTileset } from "./getHeight"
 export default {
-  data() {
+  props: {
+    getBind: Function
+  },
+  data () {
     return {
       lang: {},
       langs: languagejs,
-      segmentLength: 0,
+      segmentLength: 5,
       rotation: "",
-      rotationmode: "fixed"
+      rotationmode: "fixed",
+      getHeightFromTerrain: false,
+      getHeightFromTileset: false,
+      randomLength: 0,
     };
   },
+  mounted () {
+    this.obj = this.getBind();
+    this._polylinePoints = this.obj.czmObj.positions;
+    if (!this._polylinePoints) {
+      this._polylinePoints = this.obj.czmObj._polyline.positions;
+    }
+    XE.HTML.loadJS("../../../XbsjEarth/thirdParty/turf.min.js")
+  },
   methods: {
-    close() {
+    close () {
       this.$parent.destroyTool(this);
     },
-    cancel() {
+    cancel () {
       this.close();
     },
-    ok() {
+    ok () {
+      let self = this;
+      var points = this.getPositionsAndRotationsFromPolyline(this._polylinePoints, this.segmentLength, this.randomLength);
+      if (this.getHeightFromTerrain && this.getHeightFromTileset) {
+        getPositionsHeightFromTileset(this.$root.$earth, points, function (
+          v
+        ) {
+          if (v) {
+            self.obj.callback(points, this.rotationmode != 'fixed');
+          } else {
+            getPositionsHeightFromTerrain(
+              self.$root.$earth,
+              points,
+              function (v) {
+                self.obj.callback(points, this.rotationmode != 'fixed');
+              }
+            );
+          }
+        });
+      } else if (this.getHeightFromTerrain) {
+        getPositionsHeightFromTerrain(this.$root.$earth, points, function (
+          v
+        ) {
+          self.obj.callback(points, this.rotationmode != 'fixed');
+        });
+      } else if (this.getHeightFromTileset) {
+        getPositionsHeightFromTileset(this.$root.$earth, points, function (
+          v
+        ) {
+          self.obj.callback(points, this.rotationmode != 'fixed');
+        });
+      } else {
+        self.obj.callback(points, this.rotationmode != 'fixed');
+      }
       this.close();
-    }
+    },
+    getPositionsAndRotationsFromPolyline (polylinePositions, segmentLength, randomLength = 0, dirAddDistance = 0.01 * segmentLength) {
+      // debugger;
+      const td = 180.0 / Math.PI;
+      const tr = Math.PI / 180.0;
+      const rawLine = polylinePositions.map(e => [e[0] * td, e[1] * td]);
+      const line = turf.lineString(rawLine);
+      const opts = { units: 'meters' };
+      const length = turf.length(line, opts);
+
+      const posAndRots = [];
+      let lastD = undefined;
+      for (let d = 0.0; d < length - dirAddDistance; d += segmentLength) {
+        const d2 = d + (Math.random() - 0.5) * randomLength;
+        const v = turf.along(line, d2, opts);
+        const v2 = turf.along(line, d2 + dirAddDistance, opts);
+        let b = ((turf.bearing(v, v2) - 90.0) % 360.0) * tr;
+        if (this.rotationmode === 'fixed') {
+          b += this.rotation * Math.PI / 180;
+        }
+        const pos = [...turf.getCoord(v).map(e => e * tr), 0];
+        posAndRots.push({
+          position: pos,
+          rotation: [b, 0, 0],
+        });
+
+        lastD = d;
+      }
+
+      if (length - lastD > (0.5 * segmentLength)) {
+        const d = length;
+        const d2 = d + (Math.random() - 0.5) * randomLength;
+        const v = turf.along(line, d2, opts);
+        const v2 = turf.along(line, d2 - dirAddDistance, opts);
+        let b = ((turf.bearing(v2, v) - 90.0) % 360.0) * tr;
+        if (this.rotationmode === 'fixed') {
+          b += this.rotation * Math.PI / 180;
+        }
+        const pos = [...turf.getCoord(v).map(e => e * tr), 0];
+        posAndRots.push({
+          position: pos,
+          rotation: [b, 0, 0],
+        });
+      }
+
+      return posAndRots;
+    },
+
   }
 };
 </script>

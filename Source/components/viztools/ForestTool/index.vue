@@ -109,32 +109,37 @@ export default {
           this._disposers.push(vm.handler(this, vm.prop, czmObj, sm));
         }
       });
-      this.modelList.splice(0, this.modelList.length); // vue的数组必须这样清空！
-      czmObj.treeMetaUrls.forEach((value, index) => {
-        this.modelList.push({
-          name: "",
-          address: value,
-          ratio: 1,
-          color: {
-            rgba: { r: 255, g: 255, b: 0, a: 1 }
-          }
-        });
-        this.modelList[index].address = value;
-      });
+      this.updateUITreeList();
+      this._disposers.push(
+        this._uw = XE.MVVM.watch(() => {
+          return JSON.stringify(this._czmObj.treeMetas);
+        }, () => {
+          this.updateUITreeList();
+        })
+      )
     }
   },
   computed: {},
   watch: {
-    modelList: {
-      handler (n, o) {
-        this.updateModelUrl();
-      },
-      deep: true // 可以深度检测到 modelList 对象的属性值的变化
-    }
   },
   methods: {
-    updateDataUrl (id) {
-      this.forest.treeDataUrl = this.$root.$labServer.server + "assets/" + id;
+    updateTreeMetaList () {
+      this._czmObj.treeMetas = [];
+      this.modelList.forEach((value, index) => {
+        this._czmObj.treeMetas.push({
+          name: value.name,
+          url: value.address
+        })
+      });
+    },
+    updateUITreeList () {
+      this.modelList.splice(0, this.modelList.length);
+      this._czmObj.treeMetas.forEach((value, index) => {
+        this.modelList.push({
+          name: value.name,
+          address: value.url
+        });
+      });
     },
     add () {
       this.modelList.push({
@@ -165,21 +170,12 @@ export default {
         this.$root.$earthUI.promptInfo("没有添加树种模型！", "warning");
         return;
       }
-
-      var item = this.modelList;
-      let self = this;
-      this.$root.$earthUI.showPropertyWindow({
-        item: item,
-        callback: function (id) {
-          self.updateDataUrl(id);
-        }
-      }, {
+      this.$root.$earthUI.showPropertyWindow(this._czmObj, {
         component: "AddPoint"
       });
     },
     addLab () {
-      var items = this.modelList;
-      this.$root.$earthUI.showPropertyWindow(items, {
+      this.$root.$earthUI.showPropertyWindow(this._czmObj, {
         component: "ForestLab"
       });
     },
@@ -220,6 +216,7 @@ export default {
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
     this._disposers.forEach(e => e());
     this._disposers.length = 0;
+    this._uw = this._uw && this._uw();
   }
 };
 </script>

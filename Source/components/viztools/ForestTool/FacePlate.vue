@@ -13,37 +13,114 @@
       <!-- 横向采样间隔 -->
       <div class="flatten">
         <label>{{lang.hsamplinginterval}}:</label>
-        <input style="float:left;" type="text" v-model="hsegmentLength" />
+        <input style="float:left;" type="text" v-model.number="segmentLength" />
       </div>
-      <!-- 纵向采样间隔 -->
-      <div class="flatten">
-        <label>{{lang.zsamplinginterval}}:</label>
-        <input style="float:left;" type="text" v-model="zsegmentLength" />
+      <!-- 位置偏移 -->
+      <div class="flatten-flex">
+        <label>{{lang.position}}</label>
+        <div class="flatten-box">
+          <input type="text" class="scaleInput" v-model.number="randomLength" />
+        </div>
+      </div>
+      <div class="flatten-flex">
+        <XbsjCheckBox v-model="getHeightFromTerrain">{{lang.getPositionsHeightFromTerrain}}</XbsjCheckBox>
+        <XbsjCheckBox v-model="getHeightFromTileset">{{lang.getPositionsHeightFromTileset}}</XbsjCheckBox>
       </div>
     </div>
   </Window>
 </template>
 <script>
 import languagejs from "./index_locale";
-
+import { getPositionsHeightFromTerrain, getPositionsHeightFromTileset } from "./getHeight";
 export default {
-  data() {
+  props: {
+    getBind: Function
+  },
+  data () {
     return {
       lang: {},
       langs: languagejs,
-      hsegmentLength: 0,
-      zsegmentLength: 0
+      segmentLength: 5,
+      getHeightFromTerrain: false,
+      getHeightFromTileset: false,
+      randomLength: 0,
     };
   },
+  mounted () {
+    this.obj = this.getBind();
+    this._polygonPoints = this.obj.czmObj.positions;
+    if (!this._polygonPoints) {
+      this._polygonPoints = this.obj.czmObj._polygon.positions;
+    }
+    XE.HTML.loadJS("../../../XbsjEarth/thirdParty/turf.min.js")
+  },
   methods: {
-    close() {
+    close () {
       this.$parent.destroyTool(this);
     },
-    cancel() {
+    cancel () {
       this.close();
     },
-    ok() {
+    ok () {
+      let self = this;
+      var points = this.getPositionsAndAreaFromPolygon(this._polygonPoints, this.segmentLength, this.randomLength).positions;
+      if (this.getHeightFromTerrain && this.getHeightFromTileset) {
+        getPositionsHeightFromTileset(this.$root.$earth, points, function (
+          v
+        ) {
+          if (v) {
+            self.obj.callback(points);
+          } else {
+            getPositionsHeightFromTerrain(
+              self.$root.$earth,
+              points,
+              function (v) {
+                self.obj.callback(points);
+              }
+            );
+          }
+        });
+      } else if (this.getHeightFromTerrain) {
+        getPositionsHeightFromTerrain(this.$root.$earth, points, function (
+          v
+        ) {
+          self.obj.callback(points);
+        });
+      } else if (this.getHeightFromTileset) {
+        getPositionsHeightFromTileset(this.$root.$earth, points, function (
+          v
+        ) {
+          self.obj.callback(points);
+        });
+      } else {
+        self.obj.callback(points);
+      }
       this.close();
+    },
+    getPositionsAndAreaFromPolygon (polygonPositions, segmentLength, randomLength = 0, dirAddDistance = 0.01 * segmentLength) {
+      // debugger;
+      const td = 180.0 / Math.PI;
+      const tr = Math.PI / 180.0;
+      const rawPolygon = polygonPositions.map(e => [e[0] * td, e[1] * td]);
+      rawPolygon.push(rawPolygon[0]);
+      const polygon = turf.polygon([rawPolygon]);
+      const opts = { units: 'meters' };
+      const area = turf.area(polygon);
+      let positions = [];
+
+      const bbox = turf.bbox(polygon);
+      const grid = turf.pointGrid(bbox, segmentLength, opts);
+      const ptsWithin = turf.pointsWithinPolygon(grid, polygon);
+
+      turf.geomEach(ptsWithin, function (currentGeometry, featureIndex, featureProperties, featureBBox, featureId) {
+        let coord = turf.getCoord(currentGeometry);
+        coord = turf.destination(coord, randomLength * 0.5 * Math.random(), Math.random() * Math.PI * 2.0, opts);
+        const pos = turf.getCoord(coord);
+        // positions.push([...pos, 0.0]);
+        positions.push([pos[0] * tr, pos[1] * tr, 0.0]);
+      });
+      // positions = positions.map(e => [e[0] * tr, e[1] * tr, e[2]]);
+      return { positions, area };
     }
   }
 };

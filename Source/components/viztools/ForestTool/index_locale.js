@@ -21,7 +21,7 @@ const zh = {
   serveraddress: '服务地址',
   updatethumb: '更新缩略图',
   scale: '随机大小',
-  dragcontent: '请把对象拖到这里',
+  dragcontent: '请把对象(点、线、面)拖到这里',
   linearpaneltitle: '线状面板',
   samplinginterval: '采样间隔',
   linerotation: '朝向',
@@ -30,6 +30,9 @@ const zh = {
   faceflatetitle: '面状面板',
   hsamplinginterval: '横向采样间隔',
   zsamplinginterval: '纵向采样间隔',
+  getPositionsHeightFromTerrain: '根据地形计算高度',
+  getPositionsHeightFromTileset: '根据3DTiles计算高度',
+  pointCount: '当前模型总数'
 }
 
 const en = {
@@ -64,6 +67,9 @@ const en = {
   faceflatetitle: 'Face Flate',
   hsamplinginterval: 'hsamplinginterval',
   zsamplinginterval: 'hsamplinginterval',
+  getPositionsHeightFromTerrain: 'Get Positions Height From Terrain',
+  getPositionsHeightFromTileset: 'Get Positions Height From TileSet',
+  pointCount: 'Current Model Count'
 }
 
 export default { zh, en }

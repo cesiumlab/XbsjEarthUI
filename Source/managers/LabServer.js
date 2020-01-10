@@ -613,17 +613,33 @@ class LabServer {
    * 修改或添加资源
    */
   addAssets (assets) {
-    let config = {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    }
     return new Promise((resolve, reject) => {
       axios
         .post(this.server + "assets", assets)
         .then(res => {
           // console.log(res);
           if (res.status == 200 && res.data.status == "ok") {
+            resolve(res.data);
+          } else {
+            reject(res.data.status);
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  /**
+ * 获取资源
+ */
+  getAssets (id) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(this.server + "assets/" + id)
+        .then(res => {
+          // console.log(res);
+          if (res.status == 200) {
             resolve(res.data);
           } else {
             reject(res.data.status);
