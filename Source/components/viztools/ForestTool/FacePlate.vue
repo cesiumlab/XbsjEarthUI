@@ -52,7 +52,7 @@ export default {
     if (!this._polygonPoints) {
       this._polygonPoints = this.obj.czmObj._polygon.positions;
     }
-    XE.HTML.loadJS("../../../XbsjEarth/thirdParty/turf.min.js")
+    // XE.HTML.loadJS("../../../XbsjEarth/thirdParty/turf.min.js")
   },
   methods: {
     close () {
@@ -114,7 +114,7 @@ export default {
 
       turf.geomEach(ptsWithin, function (currentGeometry, featureIndex, featureProperties, featureBBox, featureId) {
         let coord = turf.getCoord(currentGeometry);
-        coord = turf.destination(coord, randomLength * 0.5 * Math.random(), Math.random() * Math.PI * 2.0, opts);
+        coord = turf.destination(coord, randomLength * 0.5 * Math.random(), Math.random() * 360, opts);
         const pos = turf.getCoord(coord);
         // positions.push([...pos, 0.0]);
         positions.push([pos[0] * tr, pos[1] * tr, 0.0]);

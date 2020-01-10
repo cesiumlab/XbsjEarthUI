@@ -70,7 +70,7 @@ export default {
     if (!this._polylinePoints) {
       this._polylinePoints = this.obj.czmObj._polyline.positions;
     }
-    XE.HTML.loadJS("../../../XbsjEarth/thirdParty/turf.min.js")
+    // XE.HTML.loadJS("../../../XbsjEarth/thirdParty/turf.min.js")
   },
   methods: {
     close () {
@@ -82,36 +82,49 @@ export default {
     ok () {
       let self = this;
       var points = this.getPositionsAndRotationsFromPolyline(this._polylinePoints, this.segmentLength, this.randomLength);
+      var positions = points.map(e => e.position);
       if (this.getHeightFromTerrain && this.getHeightFromTileset) {
-        getPositionsHeightFromTileset(this.$root.$earth, points, function (
+        getPositionsHeightFromTileset(this.$root.$earth, positions, function (
           v
         ) {
           if (v) {
-            self.obj.callback(points, this.rotationmode != 'fixed');
+            for (var i = 0; i < positions.length; i++) {
+              points[i].position = positions[i];
+            }
+            self.obj.callback(points, self.rotationmode != 'fixed');
           } else {
             getPositionsHeightFromTerrain(
               self.$root.$earth,
-              points,
+              positions,
               function (v) {
-                self.obj.callback(points, this.rotationmode != 'fixed');
+                for (var i = 0; i < positions.length; i++) {
+                  points[i].position = positions[i];
+                }
+                self.obj.callback(points, self.rotationmode != 'fixed');
               }
             );
           }
         });
       } else if (this.getHeightFromTerrain) {
-        getPositionsHeightFromTerrain(this.$root.$earth, points, function (
+        getPositionsHeightFromTerrain(this.$root.$earth, positions, function (
           v
         ) {
-          self.obj.callback(points, this.rotationmode != 'fixed');
+          for (var i = 0; i < positions.length; i++) {
+            points[i].position = positions[i];
+          }
+          self.obj.callback(points, self.rotationmode != 'fixed');
         });
       } else if (this.getHeightFromTileset) {
-        getPositionsHeightFromTileset(this.$root.$earth, points, function (
+        getPositionsHeightFromTileset(this.$root.$earth, positions, function (
           v
         ) {
-          self.obj.callback(points, this.rotationmode != 'fixed');
+          for (var i = 0; i < positions.length; i++) {
+            points[i].position = positions[i];
+          }
+          self.obj.callback(points, self.rotationmode != 'fixed');
         });
       } else {
-        self.obj.callback(points, this.rotationmode != 'fixed');
+        self.obj.callback(points, self.rotationmode != 'fixed');
       }
       this.close();
     },
@@ -127,7 +140,8 @@ export default {
       const posAndRots = [];
       let lastD = undefined;
       for (let d = 0.0; d < length - dirAddDistance; d += segmentLength) {
-        const d2 = d + (Math.random() - 0.5) * randomLength;
+        let d2 = d + (Math.random() - 0.5) * randomLength;
+        d2 = d2 < 0 ? 0 : d2;
         const v = turf.along(line, d2, opts);
         const v2 = turf.along(line, d2 + dirAddDistance, opts);
         let b = ((turf.bearing(v, v2) - 90.0) % 360.0) * tr;

@@ -45,7 +45,7 @@
                 <th>{{lang.name}}</th>
                 <th>{{lang.address}}</th>
                 <th class="header-add">
-                  <span class="flatten-btn add" @click="add"></span>
+                  <!-- <span class="flatten-btn add" @click="add"></span> -->
                   <span class="flatten-btn add" @click="addLab"></span>
                 </th>
               </tr>
@@ -116,22 +116,28 @@ export default {
         }, () => {
           this.updateUITreeList();
         })
-      )
+      );
     }
   },
   computed: {},
   watch: {
+    // modelList: {
+    //   handler (n, o) {
+    //     this.updateTreeMetaList();
+    //   },
+    //   deep: true // 可以深度检测到 styleList 对象的属性值的变化
+    // },
   },
   methods: {
-    updateTreeMetaList () {
-      this._czmObj.treeMetas = [];
-      this.modelList.forEach((value, index) => {
-        this._czmObj.treeMetas.push({
-          name: value.name,
-          url: value.address
-        })
-      });
-    },
+    // updateTreeMetaList () {
+    //   this._czmObj.treeMetas = [];
+    //   this.modelList.forEach((value, index) => {
+    //     this._czmObj.treeMetas.push({
+    //       name: value.name,
+    //       url: value.address
+    //     })
+    //   });
+    // },
     updateUITreeList () {
       this.modelList.splice(0, this.modelList.length);
       this._czmObj.treeMetas.forEach((value, index) => {
@@ -154,7 +160,8 @@ export default {
     del (index) {
       //弹出提示
       this.$root.$earthUI.confirm("确认删除该模型库地址?", () => {
-        this.modelList.splice(index, 1);
+        // this.modelList.splice(index, 1);
+        this._czmObj.treeMetas.splice(index, 1);
       });
     },
     updateModelUrl () {
@@ -183,17 +190,19 @@ export default {
       this.$parent.destroyTool(this);
     },
     cancel () {
-      this.modelList.splice(0, this.modelList.length);
-      this.close();
-      const forestToolObj = this._czmObj;
-      if (!forestToolObj) {
-        return;
-      }
-      forestToolObj.positionEditing = false;
-      if (forestToolObj.isCreating) {
-        forestToolObj.isCreating = false;
-        forestToolObj.destroy();
-      }
+      this.$root.$earthUI.confirm(this.lang.confirm, () => {
+        this.modelList.splice(0, this.modelList.length);
+        this.close();
+        const forestToolObj = this._czmObj;
+        if (!forestToolObj) {
+          return;
+        }
+        forestToolObj.positionEditing = false;
+        if (forestToolObj.isCreating) {
+          forestToolObj.isCreating = false;
+          forestToolObj.destroy();
+        }
+      });
     },
     ok () {
       this.close();

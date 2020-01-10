@@ -32,7 +32,8 @@ const zh = {
   zsamplinginterval: '纵向采样间隔',
   getPositionsHeightFromTerrain: '根据地形计算高度',
   getPositionsHeightFromTileset: '根据3DTiles计算高度',
-  pointCount: '当前模型总数'
+  pointCount: '当前模型总数',
+  confirm: '确认取消编辑吗?'
 }
 
 const en = {
@@ -69,7 +70,8 @@ const en = {
   zsamplinginterval: 'hsamplinginterval',
   getPositionsHeightFromTerrain: 'Get Positions Height From Terrain',
   getPositionsHeightFromTileset: 'Get Positions Height From TileSet',
-  pointCount: 'Current Model Count'
+  pointCount: 'Current Model Count',
+  confirm: 'Confirm Cancel?'
 }
 
 export default { zh, en }

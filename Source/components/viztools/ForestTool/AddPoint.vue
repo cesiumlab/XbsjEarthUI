@@ -384,7 +384,9 @@ export default {
       this.$parent.destroyTool(this);
     },
     cancel () {
-      this.close();
+      this.$root.$earthUI.confirm(this.lang.confirm, () => {
+        this.close();
+      });
     },
     ok () {
       let self = this;
