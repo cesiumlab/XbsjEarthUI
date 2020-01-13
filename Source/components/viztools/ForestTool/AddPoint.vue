@@ -12,6 +12,18 @@
     <div class="xbsj-flatten">
       <!-- 随机朝向 -->
       <div class="flatten-flex">
+        <label>{{lang.pointCount}}： {{pointCount}}</label>
+        <div
+          @dragover="dragOver"
+          @drop="drop"
+          @dragleave="dragLeave"
+          class="dragButton"
+          :class="{highlight:drag_over}"
+          :title="lang.drag"
+        >{{lang.dragcontent}}</div>
+      </div>
+      <!-- 随机朝向 -->
+      <div class="flatten-flex">
         <label>{{lang.rotation}}</label>
         <div class="flatten-box">
           <input type="text" class="scaleInput" v-model.number="lodmodel.rotation.min" />
@@ -25,19 +37,6 @@
           <input type="text" class="scaleInput" v-model.number="lodmodel.scale.min" />
           <input type="text" class="scaleInput" v-model.number="lodmodel.scale.max" />
         </div>
-      </div>
-
-      <div class="flatten-flex">
-        <!-- 拖拽 -->
-        <div
-          @dragover="dragOver"
-          @drop="drop"
-          @dragleave="dragLeave"
-          class="dragButton"
-          :class="{highlight:drag_over}"
-          :title="lang.drag"
-        >{{lang.dragcontent}}</div>
-        <div>{{lang.pointCount}}:{{pointCount}}</div>
       </div>
       <div>
         <label class="xbsj-label">{{lang.Lodmodelprobabilitytable}}:</label>
@@ -202,8 +201,10 @@ export default {
   computed: {},
   watch: {
     creating (v) {
-      this.addPointPosition(this._temPin.xbsjPosition);
-      this.updateRender();
+      if (!v) {
+        this.addPointPosition(this._temPin.xbsjPosition);
+        this.updateRender();
+      }
       this.creating = true;
     },
     treeList: {
@@ -726,6 +727,8 @@ td input {
   text-align: center;
   line-height: 25px;
   margin-left: 74px;
+  left: 140px;
+  position: absolute;
 }
 
 .dragButton.highlight {

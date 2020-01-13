@@ -1,5 +1,5 @@
 const zh = {
-  title: '森林属性',
+  title: '实例模型属性',
   pointaddress: '点位数据源地址',
   addpoint: '添加点位',
   select: '选择',
@@ -32,12 +32,12 @@ const zh = {
   zsamplinginterval: '纵向采样间隔',
   getPositionsHeightFromTerrain: '根据地形计算高度',
   getPositionsHeightFromTileset: '根据3DTiles计算高度',
-  pointCount: '当前模型总数',
+  pointCount: '模型总数',
   confirm: '确认取消编辑吗?'
 }
 
 const en = {
-  title: 'Forest Property',
+  title: 'Instance Property',
   pointaddress: 'PointAddress',
   addpoint: 'addpoint',
   select: 'select',
@@ -70,7 +70,7 @@ const en = {
   zsamplinginterval: 'hsamplinginterval',
   getPositionsHeightFromTerrain: 'Get Positions Height From Terrain',
   getPositionsHeightFromTileset: 'Get Positions Height From TileSet',
-  pointCount: 'Current Model Count',
+  pointCount: 'Model Count',
   confirm: 'Confirm Cancel?'
 }
 
