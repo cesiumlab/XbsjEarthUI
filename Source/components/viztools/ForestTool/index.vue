@@ -27,11 +27,11 @@
             @click="addPointClick"
           >{{lang.addpoint}}</button>
           <!-- 选择 -->
-          <button class="attitudeEditCameraButton">{{lang.select}}</button>
+          <!-- <button class="attitudeEditCameraButton">{{lang.select}}</button> -->
           <!-- 删除 -->
-          <button class="attitudeEditCameraButton">{{lang.delete}}</button>
+          <!-- <button class="attitudeEditCameraButton">{{lang.delete}}</button> -->
           <!-- 修改 -->
-          <button class="attitudeEditCameraButton">{{lang.edit}}</button>
+          <!-- <button class="attitudeEditCameraButton">{{lang.edit}}</button> -->
         </div>
       </div>
 

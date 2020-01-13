@@ -10,7 +10,6 @@
     @showclick="showSelect=false"
   >
     <div class="xbsj-flatten">
-      <!-- 随机朝向 -->
       <div class="flatten-flex">
         <label>{{lang.pointCount}}： {{pointCount}}</label>
         <div
@@ -197,16 +196,36 @@ export default {
         this.updateUITreeList();
       })
     )
+
+    let self = this;
+    var czm = this.$root.$earth.czm;
+    var handler = new Cesium.ScreenSpaceEventHandler(czm.viewer.scene.canvas);
+    handler.setInputAction(function (movement) {
+      var pick = czm.viewer.scene.pick(movement.position);
+      if (Cesium.defined(pick) && Cesium.defined(pick.primitive._index)) {
+        self._points.splice(pick.primitive._index, 1);
+        self.updateRender();
+      }
+      self.creating = true;
+    }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
+
+    handler.setInputAction(function (movement) {
+      if (!self.creating) {
+        self.addPointPosition(self._temPin.xbsjPosition);
+        self.updateRender();
+        self.creating = true;
+      }
+    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
   },
   computed: {},
   watch: {
-    creating (v) {
-      if (!v) {
-        this.addPointPosition(this._temPin.xbsjPosition);
-        this.updateRender();
-      }
-      this.creating = true;
-    },
+    // creating (v) {
+    //   if (!v) {
+    //     this.addPointPosition(this._temPin.xbsjPosition);
+    //     this.updateRender();
+    //   }
+    //   this.creating = true;
+    // },
     treeList: {
       handler (n, o) {
         this.updateRender();
