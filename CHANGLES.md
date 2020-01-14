@@ -4,6 +4,9 @@ Change Log
 ##### Additions :tada:
 * 增加Lod模型图层，可以批量化生成Lod模型
 * 增加Tileset自动测试功能
+* 增加polyli创建，编辑提示信息
+* 增加压平面创建，编辑提示信息
+* 增加平移、旋转、位置拾取提示信息
 
 ##### Fixes :wrench:
 * 拖拽geojson到地球时，限制只加载前100条
