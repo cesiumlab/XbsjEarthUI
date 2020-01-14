@@ -299,7 +299,7 @@ export default {
             this.$root.$earth.interaction.rotatableObjectBinding.target !==
             undefined
           ) {
-            this.$root.$earthUI.promptInfo(this.lang.positionPickingTip);
+            this.$root.$earthUI.promptInfo(this.lang.rotatableObjectTip);
           }
         }
       );
