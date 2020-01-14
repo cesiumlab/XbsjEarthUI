@@ -2,6 +2,14 @@ Change Log
 ==========
 
 ##### Additions :tada:
+* 增加Lod模型图层，可以批量化生成Lod模型
+* 增加Tileset自动测试功能
+
+##### Fixes :wrench:
+* 拖拽geojson到地球时，限制只加载前100条
+* 修改生成抛物线时，末尾点抬高的问题
+
+##### Additions :tada:
 * 视图菜单中新增瓦片测试功能
 * 拖拽geojson时 限制只加载前100条
 * 模型属性面板添加了tab切换，并新增了可见距离属性

@@ -181,7 +181,7 @@ export default {
       },
       baseColor: [0, 0, 0.5, 1],
       langs: languagejs,
-      tilesTestShow: false
+      tilesTestShow: true
     };
   },
   created() {},
