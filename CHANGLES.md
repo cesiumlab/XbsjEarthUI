@@ -1,29 +1,35 @@
 Change Log
 ==========
 
+### 1.2.24 - 2020-1-14
+
 ##### Additions :tada:
 * 增加Lod模型图层，可以批量化生成Lod模型
 * 增加Tileset自动测试功能
 * 增加polyli创建，编辑提示信息
 * 增加压平面创建，编辑提示信息
 * 增加平移、旋转、位置拾取提示信息
-
-##### Fixes :wrench:
-* 拖拽geojson到地球时，限制只加载前100条
-* 修改生成抛物线时，末尾点抬高的问题
-* 图层管理右键菜单弹出位置适应当前窗口
-
-##### Additions :tada:
 * 视图菜单中新增瓦片测试功能
 * 拖拽geojson时 限制只加载前100条
 * 模型属性面板添加了tab切换，并新增了可见距离属性
 * 添加clt格式的tileset
 * 分析菜单中新增模型展开功能
 * 分析菜单中水面面板新增拖拽功能
+* 增加XE.Obj.Forest类型，可以自动加载树模型数据(vtxf)
 
 ##### Fixes :wrench:
-* 修复feature属性窗口自动弹出的问题
+* 拖拽geojson到地球时，限制只加载前100条
+* 修改生成抛物线时，末尾点抬高的问题
+* 图层管理右键菜单弹出位置适应当前窗口
+* 修复feature属性窗口自动弹出的问题(vtxf)
 * EarthSDK示例修复了热力图当前时间进度条不随持续时间不同而变化的bug
+* 修复位置拾取过程中点击右键时报错的问题(vtxf)
+* 不进行XbsjCzmObj类型的严格限定，让有onclick和onclickout函数的对象都可以进行拾取操作(vtxf)
+* GroundImage增加不透明度属性(vtxf)
+* 修复给无光照3dtiles数据设置科技感会崩溃的问题(vtxf)
+* 修复水面引起的3dtiles反射贴图不能生效且发暗的问题(vtxf)
+* 修复XbsjCzmObj的派生类不能定义defaultOptions的问题(vtxf)
+* 折线和多边形的创建操作改进，右键取消上一个点，shift+右键结束操作(vtxf)
 
 ### 1.2.22 - 2019-12-23
 ##### Additions :tada:
