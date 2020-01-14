@@ -22,7 +22,7 @@ Change Log
 * 分析菜单中水面面板新增拖拽功能
 
 ##### Fixes :wrench:
-* 修复feature属性窗口自动弹出的问题，XE.MVVM.watch(picking, 'clickedObj' 会导致莫名奇妙被调用，虽然clickObj中的值并未发生变化。
+* 修复feature属性窗口自动弹出的问题
 * EarthSDK示例修复了热力图当前时间进度条不随持续时间不同而变化的bug
 
 ### 1.2.22 - 2019-12-23
