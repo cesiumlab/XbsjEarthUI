@@ -28,7 +28,7 @@ export default {
           velocity: "键盘运动速度",
           createPolylineTip: "左键添加点，右键删除点，shift+右键创建完成",
           editPolylineTip:
-            "鼠标移动到其中一个点会出现一个操作栏，点击移动按钮，可以移动折线位置；点击旋转按钮，可以修改相机朝向；点击增加按钮，可以在该位置增加一个点；点击删除按钮，可以删除该点",
+            "鼠标移动到其中一个点会出现一个操作栏，点击移动按钮，可以移动折线位置；点击增加按钮，可以在该位置增加一个点；点击删除按钮，可以删除该点",
           createRectangleTip:
             "点击左键确定矩形中心点，移动鼠标确定矩形方向和对角线长度，再次点击左键创建完成",
           editRectangleTip: "左键点击其中一个点移动矩形位置",
@@ -60,7 +60,7 @@ export default {
           createPolylineTip:
             "Left click to add points, right click to delete points, shift + right click to finish creating",
           editPolylineTip:
-            "When the mouse moves to one of the points, an operation bar will appear. Click the move button to move the polyline position; click the rotate button to change the camera orientation; click the Add button to add a point in the position; click the delete button to delete the point",
+            "When the mouse moves to one of the points, an operation bar will appear. Click the move button to move the polyline position; click the Add button to add a point in the position; click the delete button to delete the point",
           createRectangleTip:
             "Click the left button to determine the center point of the rectangle, move the mouse to determine the direction of the rectangle and the length of the diagonal, and click the left button again to complete the creation",
           editRectangleTip:
