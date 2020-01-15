@@ -34,13 +34,14 @@ export default {
   transform: translate(-25%, 0);
   height: 20px;
   line-height: 20px;
-  display: flex;
+  /* display: flex; */
 }
 .infomation span {
   display: inline-block;
   height: 20px;
   width: 20px;
   margin-right: 10px;
+  vertical-align: middle;
 }
 .infomation_info {
   background: url(../../images/infomation_info.png);

@@ -54,6 +54,7 @@
           <li
             v-for="(p,index) in types"
             @click="selectType(index, p)"
+            :key="index"
             :class="{active:categoryIndex==index}"
           >
             <label class="liname">{{p.name}}</label>
@@ -97,6 +98,7 @@ import PinPictureTool from "./viztools/PinPictureTool";
 import GroundImageTool from "./viztools/GroundImageTool";
 import PinDivTool from "./viztools/PinDivTool";
 import PathTool from "./viztools/PathTool";
+import ForestTool from "./viztools/ForestTool";
 import ModelTool from "./viztools/ModelTool";
 import PolylineTool from "./viztools/PolylineTool";
 import GeoCurveArrow from "./viztools/GeoCurveArrow";
@@ -119,6 +121,10 @@ import GeoSector from "./viztools/GeoSector";
 import ScanlineTool from "./viztools/ScanlineTool";
 import CustomPrimitiveTool from "./viztools/CustomPrimitiveTool";
 import TubeTool from "./viztools/TubeTool";
+import AddPoint from "./viztools/ForestTool/AddPoint";
+import ForestLab from "./viztools/ForestTool/ForestLab";
+import LinearPanel from "./viztools/ForestTool/LinearPanel";
+import FacePlate from "./viztools/ForestTool/FacePlate";
 
 import CamerVideoTool from "./viztools/CamerVideoTool";
 import ViewshedTool from "./viztools/ViewshedTool";
@@ -126,6 +132,7 @@ import ViewshedTool from "./viztools/ViewshedTool";
 import PropertyWindow from "./properties/PropertyWindow";
 import CameraViewPrp from "./properties/CameraViewPrp";
 import TilesetStyleEditor from "./properties/TilesetStyleEditor";
+import TilesetExpansionEditor from "./properties/TilesetExpansionEditor";
 import ShareEditor from "./properties/ShareEditor";
 
 import GlobalColorPicker from "./common/GlobalColorPicker";
@@ -158,6 +165,7 @@ export default {
     GroundImageTool,
     PinDivTool,
     PathTool,
+    ForestTool,
     ModelTool,
     PolylineTool,
     GeoCurveArrow,
@@ -195,7 +203,12 @@ export default {
     TerrainOnline,
     PropertyWindow,
     CameraViewPrp,
+    AddPoint,
+    ForestLab,
+    LinearPanel,
+    FacePlate,
     TilesetStyleEditor,
+    TilesetExpansionEditor,
     ShareEditor,
     GlobalColorPicker,
     InformationBox,
@@ -221,6 +234,7 @@ export default {
         PinDivTool: "PinDivTool",
         // Pin: "PinPictureTool",
         Path: "PathTool",
+        Forest: "ForestTool",
         Scanline: "ScanlineTool",
         CustomPrimitive: "CustomPrimitiveTool",
         CustomPrimitiveExt_Tube: "TubeTool",
@@ -422,7 +436,12 @@ export default {
       let arr;
       if (this.jsontext.features && this.jsontext.features.length > 0) {
         arr = this.jsontext.features;
-        for (let j = 0, len = arr.length; j < len; j++) {
+        var len = arr.length;
+        if (arr.length > 100) {
+          len = 100;
+          this.$root.$earthUI.promptInfo("只创建前100条！", "warning");
+        }
+        for (let j = 0; j < len; j++) {
           if (arr[j].geometry.type === "Polygon") {
             //如果类型为Polygon
             var Polygon = new XE.Obj.Plots.GeoPolygon(this.$root.$earth);
@@ -507,6 +526,7 @@ export default {
             } else if (arr[0].geometry.type === "LineString") {
               this.types = this.polylineTypes;
               this.loadGeoJSONShow = true;
+              this.selectedType = this.types[0];
             }
           }
         }

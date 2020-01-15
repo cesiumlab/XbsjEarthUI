@@ -2,7 +2,7 @@
   <Window
     :width="602"
     :minWidth="480"
-    :height="500"
+    :height="456"
     :top="164"
     :floatright="true"
     :title="lang.title"
@@ -14,25 +14,13 @@
     <div style="height: 100%;">
       <div style="text-align: center; width: 100%; background: rgba(0,0,0,0.5);">
         <ul class="tab">
-          <li
-            @click="routineShow=true,  imageShow=false, textShow=false, codeShow=false"
-            :class="routineShow?'highlight':''"
-          >{{lang.routine}}</li>
-          <li
-            @click="routineShow=false, imageShow=true, textShow=false, codeShow=false"
-            :class="imageShow?'highlight':''"
-          >{{lang.image}}</li>
-          <li
-            @click="routineShow=false, imageShow=false, textShow=true, codeShow=false"
-            :class="textShow?'highlight':''"
-          >{{lang.text}}</li>
-          <li
-            @click="routineShow=false, imageShow=false, textShow=false, codeShow=true"
-            :class="codeShow?'highlight':''"
-          >{{lang.code}}</li>
+          <li @click="tabShow='1'" :class="{highlight: tabShow=='1'}">{{lang.routine}}</li>
+          <li @click="tabShow='2'" :class="{highlight: tabShow=='2'}">{{lang.image}}</li>
+          <li @click="tabShow='3'" :class="{highlight: tabShow=='3'}">{{lang.text}}</li>
+          <li @click="tabShow='4'" :class="{highlight: tabShow=='4'}">{{lang.code}}</li>
         </ul>
       </div>
-      <div class="xbsj-flatten" v-show="routineShow">
+      <div class="xbsj-flatten" v-show="tabShow == '1'">
         <!-- 名字 -->
         <div class="flatten">
           <label>{{lang.name}}</label>
@@ -99,7 +87,7 @@
         </div>
 
         <!-- pin内置样式 -->
-        <div class="flatten" style="display:flex;">
+        <!-- <div class="flatten" style="display:flex;">
           <div>
             <label>{{lang.pinBuilder.text}}</label>
             <input style="float:left;" type="text" v-model="pin.pinBuilder.text" />
@@ -124,7 +112,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div>-->
 
         <div class="flatten" style="margin-top:20px;">
           <label>{{lang.pinBuilder.size}}</label>
@@ -183,7 +171,34 @@
         </div>
       </div>
 
-      <div class="xbsj-flatten" v-show="imageShow">
+      <div class="xbsj-flatten" v-show="tabShow == '2'">
+        <!-- pin内置样式 -->
+        <div class="flatten" style="display:flex;">
+          <div>
+            <label>{{lang.pinBuilder.text}}</label>
+            <input style="float:left;" type="text" v-model="pin.pinBuilder.text" />
+          </div>
+          <div style="position: relative;">
+            <label>{{lang.pinBuilder.pinstyle}}</label>
+            <input
+              type="text"
+              v-model="pin.pinBuilder.makiIcon"
+              @click="selectinput"
+              readonly
+              style="cursor: pointer;"
+            />
+            <button class="selectButton"></button>
+            <div
+              class="cutselectbox"
+              v-show="showPinSelect"
+              style="  overflow:scroll;height:100px;"
+            >
+              <div @click="optionssure(c)" v-for="(c,index) in makiIconObj" :key="index">
+                <span>{{c}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- pin自定义外部图标 -->
         <div class="flatten">
           <label>{{lang.imageUrl}}</label>
@@ -207,7 +222,7 @@
         </div>
       </div>
 
-      <div class="xbsj-flatten" v-show="textShow">
+      <div class="xbsj-flatten" v-show="tabShow == '3'">
         <div class="flatten" style="display:flex;">
           <!-- pin文本内容 -->
           <div>
@@ -235,7 +250,7 @@
         </div>
       </div>
 
-      <div class="xbsj-flatten" style="height: calc(100% - 38px);" v-show="codeShow">
+      <div class="xbsj-flatten" style="height: calc(100% - 38px);" v-show="tabShow == '4'">
         <div style="height: 100%">
           <label>{{lang.evalstring}}</label>
           <textarea v-model="pin.evalString"></textarea>
@@ -265,10 +280,7 @@ export default {
       lang: {},
       showPinSelect: false,
       pinshowPinSelect: false,
-      routineShow: true,
-      imageShow: false,
-      textShow: false,
-      codeShow: false,
+      tabShow: "1",
       makiIconObj: {},
       drag_over: false,
       pin: {

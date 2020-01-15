@@ -7,6 +7,7 @@ const zh = {
   selectinput: "请选择或者输入服务地址",
   localtitle: "CesiumLab本机服务",
   cloudtitle: "云服务",
+  instancetitle: '实例模型服务',
   bimlabel: "BIM瓦片",
   photolabel: "倾斜瓦片",
   search: "查询",
@@ -14,7 +15,12 @@ const zh = {
   dilifanwei: "地理范围",
   updatethumb: "更新缩略图",
   selectservice: "请选择服务",
-  unName:'未命名瓦片'
+  unName: '未命名瓦片',
+  pointaddress: '点位数据源地址',
+  addpoint: '添加点位',
+  select: '选择',
+  delete: '删除',
+  edit: '修改'
 };
 
 const en = {
@@ -26,6 +32,7 @@ const en = {
   selectinput: "Please select or enter the service address",
   localtitle: "CesiumLab Local Service",
   cloudtitle: "Cloud Service",
+  instancetitle: 'Instance Model Service',
   bimlabel: "BIM 3DTiles",
   photolabel: "Photo 3DTiles",
   search: "Search",
@@ -33,7 +40,12 @@ const en = {
   dilifanwei: "dilifanwei",
   updatethumb: "updatethumb",
   selectservice: "Please choose the service",
-  unName:'no name tileset'
+  unName: 'no name tileset',
+  pointaddress: 'PointAddress',
+  addpoint: 'addpoint',
+  select: 'select',
+  delete: 'delete',
+  edit: 'edit'
 };
 
 export default { zh, en };

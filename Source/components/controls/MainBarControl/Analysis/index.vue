@@ -51,6 +51,24 @@
           <div class="xbsj-item-btn waterbutton"></div>
           <span class="xbsj-item-name">{{lang.water}}</span>
         </div>
+        <!-- 模型展开 -->
+        <div
+          class="xbsj-item-btnbox"
+          title="模型展开"
+          @drop="modelexpansion_drop($event)"
+          @dragover="modelexpansion_dragover($event)"
+          @dragleave="modelexpansion_dragleave($event)"
+        >
+          <div class="xbsj-item-btn">
+            <button
+              class="stylebutton"
+              :disabled="!enabled"
+              :class="{highlight:modelexpansion_over}"
+              @click="expansionEditor()"
+            ></button>
+          </div>
+          <span class="xbsj-item-name">{{lang.expansion}}</span>
+        </div>
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{lang.measure}}</span>
@@ -109,7 +127,9 @@ export default {
       lang: {},
       measurementType: "NONE",
       cutFillComputingShow: false,
-      langs: languagejs
+      langs: languagejs,
+      enabled: false,
+      modelexpansion_over: false
     };
   },
   created() {},
@@ -124,12 +144,30 @@ export default {
           "measurement.type"
         )
       );
+      this._unBinds = [];
+      this._unBinds.push(
+        XE.MVVM.watch(() => {
+          const csn = this.$root.$earth.sceneTree.currentSelectedNode;
+          if (csn && csn.czmObject && csn.czmObject instanceof XE.Obj.Tileset) {
+            this.setTileset(csn.czmObject);
+          } else {
+            this.setTileset(undefined);
+          }
+        })
+      );
     });
   },
   beforeDestroy() {
     this._disposers.forEach(d => d());
   },
   methods: {
+    setTileset(tileset) {
+      if (this._tileset !== tileset) {
+        this._tileset = tileset;
+      }
+
+      this.enabled = !!this._tileset;
+    },
     startCameraVideo() {
       var demoVideo =
         XE.HTML.getScriptBaseUrl("XbsjEarthUI") + "/assets/demo.mp4";
@@ -174,6 +212,54 @@ export default {
       water.positionPicking = true;
       water.creating = true;
       this.$root.$earthUI.showPropertyWindow(water);
+    },
+    expansionEditor() {
+      //显示模型编辑器
+      this.$root.$earthUI.showPropertyWindow(this._tileset, {
+        component: "TilesetExpansionEditor"
+      });
+    },
+    modelexpansion_dragover(e) {
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj instanceof XE.Obj.Tileset) {
+        e.dataTransfer.dropEffect = "copy";
+        this.modelexpansion_over = true;
+        this.enabled = true;
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    modelexpansion_dragleave() {
+      this.modelexpansion_over = false;
+      const csn3 = this.$root.$earth.sceneTree.currentSelectedNode;
+      if (csn3 && csn3.czmObject && csn3.czmObject instanceof XE.Obj.Tileset) {
+        this.enabled = true;
+      } else {
+        this.enabled = false;
+      }
+    },
+    modelexpansion_drop(e) {
+      this.modelexpansion_over = false;
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj instanceof XE.Obj.Tileset) {
+        //显示面板
+        this.$root.$earthUI.showPropertyWindow(czmObj, {
+          component: "TilesetExpansionEditor"
+        });
+        this._czmObj = czmObj;
+        const csn2 = this.$root.$earth.sceneTree.currentSelectedNode;
+        if (
+          csn2 &&
+          csn2.czmObject &&
+          csn2.czmObject instanceof XE.Obj.Tileset
+        ) {
+          this.enabled = true;
+        } else {
+          this.enabled = false;
+        }
+      }
     },
     clearResults() {
       this.$root.$earth.analyzation.measurement.clearResults();
@@ -378,6 +464,28 @@ export default {
   background: url(../../../../images/reset_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
+}
+.stylebutton {
+  background: url(../../../../images/style.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.stylebutton.highlight,
+.stylebutton:hover {
+  background: url(../../../../images/style_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.stylebutton:disabled {
+  background: url(../../../../images/style_disabled.png) no-repeat;
+  background-size: contain;
+  cursor: not-allowed;
+}
+.stylebutton {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
 }
 </style>
 

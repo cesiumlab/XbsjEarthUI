@@ -18,7 +18,6 @@
             />
             <label class="xbsj-check">{{item.name}}</label>
           </div>
-          <!-- <span class="viewspan">当前视角</span> -->
         </div>
         <div style="margin-top: 20px;">
           <label>{{lang.interval}}</label>
@@ -35,9 +34,11 @@
         >
           <table border="1" cellpadding="0" cellspacing="0">
             <tr>
-              <td>序号</td>
-              <td>名称</td>
-              <td>操作</td>
+              <td>{{lang.order}}</td>
+              <td>
+                <div class="dragButton" :class="{highlight:tileset_over}">{{lang.nametip}}</div>
+              </td>
+              <td>{{lang.operation}}</td>
             </tr>
             <tr v-for="(value,index) in tiles" :key="index">
               <td>{{index + 1}}</td>
@@ -74,8 +75,9 @@ export default {
   data () {
     return {
       lang: {},
-      state: '',
+      state: "",
       tiles: [],
+      tileset_over: false,
       langs: languagejs,
       currentTilesetIndex: 0,
       resultIndex: 1,
@@ -120,10 +122,12 @@ export default {
     testSingleTileset () {
       let self = this;
       let earth = this.$root.$earth;
+      // this._viewpoint.duration = 0;
       earth.cameraViewManager.globe.flyTo().then(() => {
-        var tileset = earth.getObject(self.tiles[self.currentTilesetIndex].id);
         self._tileset = new XE.Obj.Tileset(self.$root.$earth);
-        self._tileset.xbsjFromJSON(tileset.toJSON());
+        self._tileset.xbsjFromJSON(
+          this.tiles[this.currentTilesetIndex].content
+        );
         self._tileset.enabled = true;
         self._tileset._tileset.allTilesLoaded.addEventListener(() => {
           self.testNextTileset();
@@ -164,14 +168,19 @@ export default {
       }, this.interval);
     },
     record () {
-      var record = {};
-      record.time = this.resultIndex * this.interval;
-      record.fps = this.$root.$earth.status.fps;
-      record.numberOfPendingRequests = this.numberOfPendingRequests;
-      record.numberOfTilesProcessing = this.numberOfTilesProcessing;
-      record.tileset = this._tileset._tileset.statistics;
-      this.tilesetRecord.data.push(record);
-      this.resultIndex++;
+      if (this._tileset._tileset) {
+        var record = {};
+        record.time = this.resultIndex * this.interval;
+        record.fps = this.$root.$earth.status.fps;
+        record.numberOfPendingRequests = this.numberOfPendingRequests;
+        record.numberOfTilesProcessing = this.numberOfTilesProcessing;
+        for (var p in this._tileset._tileset.statistics) {
+          record[p] = this._tileset._tileset.statistics[p];
+        }
+        // record.tileset = this._tileset._tileset.statistics;
+        this.tilesetRecord.data.push(record);
+        this.resultIndex++;
+      }
     },
     getCzmObjectFromDrag (dataTransfer) {
       for (let i = 0; i < dataTransfer.types.length; i++) {
@@ -188,7 +197,11 @@ export default {
     tileset_dragover (e) {
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
-      if (czmObj && czmObj.xbsjType === "Tileset" && this.state === this.lang.start) {
+      if (
+        czmObj &&
+        czmObj.xbsjType === "Tileset" &&
+        this.state === this.lang.start
+      ) {
         e.dataTransfer.dropEffect = "copy";
         this.tileset_over = true;
       } else {
@@ -203,7 +216,20 @@ export default {
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.xbsjType === "Tileset") {
-        this.tiles.push({ id: czmObj.xbsjGuid, name: czmObj.name });
+        var content = czmObj.toJSON();
+        for (var i = 0; i < this.tiles.length; i++) {
+          if (
+            JSON.stringify(this.tiles[i].content) === JSON.stringify(content)
+          ) {
+            this.$root.$earthUI.promptInfo(this.lang.exist3dtiles, "info");
+            return;
+          }
+        }
+        this.tiles.push({
+          id: czmObj.xbsjGuid,
+          name: czmObj.name,
+          content: content
+        });
       }
     },
     deleteTiles (index) {
@@ -225,11 +251,16 @@ export default {
       e.preventDefault();
       if (this.tileset_over) {
         let index = e.dataTransfer.getData("_view");
-        this._viewpoint = this.$root.$earth.cameraViewManager.views[
-          parseInt(index)
-        ];
-        this.item.name = this._viewpoint.name;
-        this.item.thumbnail = this._viewpoint.thumbnail;
+        let self = this;
+        this.$root.$earth.cameraViewManager.newView().then(view => {
+          view.xbsjFromJSON(self.$root.$earth.cameraViewManager.views[
+            parseInt(index)
+          ].toJSON());
+          view.duration = 0;
+          self._viewpoint = view;
+          self.item.name = this._viewpoint.name;
+          self.item.thumbnail = this._viewpoint.thumbnail;
+        });
       }
       this.tileset_over = false;
     },
@@ -425,6 +456,21 @@ table td:nth-child(3) {
   float: right;
 }
 .footer button:hover {
+  color: #1fffff;
+}
+.dragButton {
+  display: inline-block;
+  width: 150px;
+  height: 25px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: 100% 100%;
+  text-align: center;
+  line-height: 25px;
+}
+
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: 100% 100%;
   color: #1fffff;
 }
 </style>

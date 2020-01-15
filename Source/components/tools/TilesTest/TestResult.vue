@@ -1,40 +1,44 @@
 <template>
-  <div>
+  <div style="width: 100%;height:100%">
     <div class="flatten">
-      <div style="position: absolute; z-index: 1;">
+      <div style="position: relative; z-index: 1; display: inline-block;">
         <input
           type="text"
-          v-model="yaxisvalue"
+          v-model="yaxisdata[yaxisvalue1]"
           @click="pinselectinput"
           readonly
           style="cursor: pointer;"
         />
         <button class="selectButton"></button>
         <div class="cutselectbox" v-show="pinshowPinSelect">
-          <div @click="pinoptionssure(c)" v-for="(c,index) in yaxisdata" :key="index">
+          <div @click="pinoptionssure(index)" v-for="(c,index) in yaxisdata" :key="index">
             <span>{{c}}</span>
           </div>
         </div>
       </div>
-    </div>
-    <div class="myBarChart" id="mains"></div>
-    <!-- <div class="flatten">
-      <div style="position: absolute; right: 6px; top: 44px;  z-index: 1;">
+      <div style="position: relative; display: inline-block; float: right;">
         <input
           type="text"
-          v-model="yaxisvalue"
-          @click="pinselectinput"
+          v-model="yaxisdata[yaxisvalue2]"
+          @click="pinselectinput2"
           readonly
-          style="cursor: pointer;"
+          class="selectInput"
+          :disabled="!checked"
         />
         <button class="selectButton2"></button>
-        <div class="cutselectbox2" v-show="pinshowPinSelect">
-          <div @click="pinoptionssure(c)" v-for="(c,index) in yaxisdata" :key="index">
+        <div class="cutselectbox2" v-show="pinshowPinSelect2">
+          <div @click="pinoptionssure2(index)" v-for="(c,index) in yaxisdata" :key="index">
             <span>{{c}}</span>
           </div>
         </div>
       </div>
-    </div>-->
+      <label class="xbsj-check">
+        <input type="checkbox" v-model="checked" />
+      </label>
+    </div>
+    <div id="chartContainer" style="width:100%;height:100%;">
+      <div class="myBarChart" id="mains"></div>
+    </div>
   </div>
 </template>
 <script>
@@ -42,155 +46,235 @@ import languagejs from "./locale";
 
 export default {
   name: "TestResult",
-  // props: ["viewsResult", "viewsWidth", "viewsHeight"],
-  props: {
-    viewsResult: {
-      type: Array,
-      default: () => {
-        return [];
-      }
-    },
-    viewsWidth: {
-      type: Number,
-      default: () => {
-        return 0;
-      }
-    },
-    viewsHeight: {
-      type: Number,
-      default: () => {
-        return 0;
-      }
-    }
-  },
   data() {
     return {
       viewpointresult: [],
       chart: null,
       yaxisdata: [],
       pinshowPinSelect: false,
-      yaxisvalue: "fps",
-      yaxisvalues: ""
-    };
-  },
-  watch: {
-    // yaxisvalue: function(val, oldVal) {
-    //   this.yaxisvalues = val;
-    // },
-    viewsResult: function(val, oldVal) {
-      this.viewpointresult = val;
-      // console.log(this.viewpointresult);
-      // var self = this;
-      this.getOption(val);
-    }
-    // viewsWidth: function(val, oldVal) {
-    //   console.log(val);
-    //   var mains = document.getElementById("mains");
-    //   mains.style.width = val + "px";
-    // },
-    // viewsHeight: function(val, oldVal) {
-    //   console.log(val);
-    //   var mains = document.getElementById("mains");
-    //   mains.style.height = val + "px";
-    // }
-  },
-  mounted() {
-    // console.log(this.viewsWidth);
-    // var mains = document.getElementById("mains");
-    // mains.style.width = this.viewsWidth + "px";
-    // mains.style.height = this.viewsHeight + "px";
-    // this.chart = this.$echarts.init(
-    //   document.getElementsByClassName("myBarChart")[0]
-    // );
-    // this.chart.resize();
-  },
-  methods: {
-    //定义删除的方法，需要传递的参数，一是数组，二是该数组里你想要删除的元素
-    del(ary, el) {
-      const index = ary.indexOf(el); //找到要删除的元素对应的下标,从0开始
-      const delEle = ary.splice(index, 1); //splice为从要删除的元素开始,删除一个,刚好就是删除那个元素
-      return ary; //因为splice方法直接对原数组进行改变,所以返回的是删除后的数组
-    },
-    pinoptionssure(c) {
-      this.yaxisvalue = c;
-      this.pinshowPinSelect = !this.pinshowPinSelect;
-      var results = sessionStorage.getItem("result");
-      // var results2 = JSON.stringify(results);
-      var resultsObj = JSON.parse(results);
-      // console.log(typeof resultsObj);
-      // console.log(resultsObj);
-      this.getOption(resultsObj, c);
-    },
-    pinselectinput() {
-      this.pinshowPinSelect = !this.pinshowPinSelect;
-    },
-    getOption(viewpointresult, yparam) {
-      var self = this;
-      var legname = [],
-        xdata = [],
-        series = [],
-        ydata = [];
-      var colorList = [
+      pinshowPinSelect2: false,
+      yaxisvalue1: 0,
+      yaxisvalue2: 1,
+      yaxisvalue: ["fps", ""],
+      checked: false,
+      colorList: [
         "rgba(191,255,91,0.9)",
         "rgba(255,121,91,0.9)",
         "rgba(255,175,91,0.9)",
         "rgba(91,127,255,0.9)",
         "rgba(91,192,255,0.9)"
-      ];
-      for (var i = 0, l = viewpointresult.length; i < l; i++) {
-        legname.push(viewpointresult[i].tileset.name);
-        ydata = [];
-        viewpointresult[i].data.forEach(element => {
-          xdata.push(element.time);
-          if (yparam === undefined) {
-            ydata.push(element.fps);
-          } else {
-            ydata.push(element[yparam] || element.tileset[yparam]);
+      ]
+    };
+  },
+  mounted() {},
+  watch: {
+    checked() {
+      this.getOption();
+    }
+  },
+  methods: {
+    setData(results) {
+      this.viewpointresult = results;
+      this.yaxisvalue = [];
+      for (var key in this.viewpointresult[0].data[0]) {
+        if (
+          typeof this.viewpointresult[0].data[0][key] !== "function" &&
+          key !== "time"
+        )
+          this.yaxisdata.push(key);
+      }
+      this.getOption();
+    },
+    resize() {
+      if (this._chart) {
+        document.getElementById("mains").style.width = document.getElementById(
+          "chartContainer"
+        ).style.width;
+        document.getElementById("mains").style.height = document.getElementById(
+          "chartContainer"
+        ).style.height;
+        this._chart.resize();
+      }
+    },
+    pinoptionssure(c1) {
+      this.yaxisvalue1 = c1;
+      this.pinshowPinSelect = !this.pinshowPinSelect;
+      this.getOption();
+    },
+    pinselectinput() {
+      this.pinshowPinSelect = !this.pinshowPinSelect;
+    },
+    pinoptionssure2(c2) {
+      this.yaxisvalue2 = c2;
+      this.pinshowPinSelect2 = !this.pinshowPinSelect2;
+      this.getOption();
+    },
+    pinselectinput2() {
+      this.pinshowPinSelect2 = !this.pinshowPinSelect2;
+    },
+    getOption() {
+      var self = this;
+      var legname = [];
+      var xdata = [];
+      var yaxis = [];
+      var series = [];
+      yaxis.push({
+        type: "value",
+        name: this.yaxisdata[this.yaxisvalue1],
+        minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
+        // position: "left",
+        axisLine: {
+          lineStyle: {
+            type: "solid",
+            color: "rgba(255,255,255,1)", //坐标线的颜色
+            width: "3"
           }
-          Object.keys(element).forEach(function(key) {
-            self.yaxisdata.push(key);
-          });
-          Object.keys(element.tileset).forEach(function(key) {
-            self.yaxisdata.push(key);
-          });
-        });
-        series.push({
-          name: viewpointresult[i].tileset.name,
-          type: "line",
-          data: ydata,
-          label: {
-            normal: {
-              show: true,
-              position: "inside"
+        },
+        axisLabel: {
+          textStyle: {
+            color: "rgba(255,255,255,1)" //坐标值得具体的颜色
+          },
+          // yAxis.axisLabel.margin：刻度标签与轴线之间的距离。默认值是8，可以改小一点。不过本来的值已经很小了，这个没多大作用。
+          margin: 2
+          // yAxis.axisLabel.formatter：刻度标签的内容格式器，支持字符串模板和回调函数两种形式。比如可以设置太长了换行之类的。
+          // formatter: function(value, index) {
+          //   if (value >= 10000 && value < 10000000) {
+          //     value = value / 10000 + "万";
+          //   } else if (value >= 10000000) {
+          //     value = value / 10000000 + "千万";
+          //   }
+          //   return value;
+          // }
+        },
+        //网格样式
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: ["rgba(255,255,255,1)"],
+            width: 2,
+            type: "solid"
+          }
+        }
+      });
+      if (this.checked) {
+        yaxis.push({
+          type: "value",
+          name: this.yaxisdata[this.yaxisvalue2],
+          minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
+          // position: "left",
+          axisLine: {
+            lineStyle: {
+              type: "solid",
+              color: "rgba(255,255,255,1)", //坐标线的颜色
+              width: "3"
             }
           },
-          itemStyle: {
-            //通常情况下：
-            normal: {
-              //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-              color: colorList[i]
+          axisLabel: {
+            textStyle: {
+              color: "rgba(255,255,255,1)" //坐标值得具体的颜色
+            },
+            // yAxis.axisLabel.margin：刻度标签与轴线之间的距离。默认值是8，可以改小一点。不过本来的值已经很小了，这个没多大作用。
+            margin: 2
+            // yAxis.axisLabel.formatter：刻度标签的内容格式器，支持字符串模板和回调函数两种形式。比如可以设置太长了换行之类的。
+            // formatter: function(value, index) {
+            //   if (value >= 10000 && value < 10000000) {
+            //     value = value / 10000 + "万";
+            //   } else if (value >= 10000000) {
+            //     value = value / 10000000 + "千万";
+            //   }
+            //   return value;
+            // }
+          },
+          //网格样式
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ["rgba(255,255,255,1)"],
+              width: 2,
+              type: "solid"
             }
           }
         });
       }
-      // console.log(legname);
-      // console.log(xdata);
-      // console.log(series);
-      xdata = Array.from(new Set(xdata));
-      this.yaxisdata = Array.from(new Set(this.yaxisdata));
-      this.yaxisdata = this.del(this.yaxisdata, "tileset");
-      this.yaxisdata = this.del(this.yaxisdata, "time");
-      // console.log(this.yaxisdata);
-      this.drawLine(legname, xdata, series);
+      for (var i = 0; i < this.viewpointresult.length; i++) {
+        var ydata1 = [];
+        var ydata2 = [];
+        xdata = [];
+        this.viewpointresult[i].data.forEach(element => {
+          xdata.push(element.time);
+          ydata1.push(element[this.yaxisdata[this.yaxisvalue1]]);
+          if (this.checked) {
+            ydata2.push(element[this.yaxisdata[this.yaxisvalue2]]);
+          }
+        });
+
+        var seriesname =
+          this.viewpointresult[i].tileset.name +
+          "-" +
+          this.yaxisdata[this.yaxisvalue1];
+        legname.push(seriesname);
+        series.push({
+          name: seriesname,
+          type: "line",
+          data: ydata1,
+          yAxisIndex: 0,
+          label: {
+            normal: {
+              show: true,
+              // position: "inside",
+              color: "#fff"
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: this.colorList[i]
+            }
+          }
+        });
+
+        if (this.checked) {
+          var seriesname2 =
+            this.viewpointresult[i].tileset.name +
+            "-" +
+            this.yaxisdata[this.yaxisvalue2];
+          legname.push(seriesname2);
+          series.push({
+            name: seriesname2,
+            type: "line",
+            data: ydata2,
+            yAxisIndex: 1,
+            lineStyle: {
+              normal: {
+                type: "dashed"
+              }
+            },
+            label: {
+              normal: {
+                show: true,
+                // position: "inside"
+                color: "#fff"
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: this.colorList[i]
+              }
+            }
+          });
+        }
+      }
+
+      this.drawLine(legname, xdata, series, yaxis);
     },
     /*画图*/
-    drawLine(legname, xdata, series) {
+    drawLine(legname, xdata, series, yaxis) {
+      if (this._chart) {
+        this._chart.dispose();
+      }
       // 基于准备好的dom，初始化echarts实例
-      let myBarChart = this.$echarts.init(
-        document.getElementsByClassName("myBarChart")[0]
-      );
-      // 绘制柱状图图表
-      myBarChart.setOption({
+      this._chart = this.$echarts.init(document.getElementById("mains"));
+      // 绘制折线图图表
+      this._chart.setOption({
         tooltip: {
           trigger: "axis"
         },
@@ -221,40 +305,15 @@ export default {
             }
           }
         ],
-        yAxis: [
-          {
-            type: "value",
-            minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
-            axisLine: {
-              lineStyle: {
-                type: "solid",
-                color: "rgba(255,255,255,1)", //坐标线的颜色
-                width: "3"
-              }
-            },
-            axisLabel: {
-              textStyle: {
-                color: "rgba(255,255,255,1)" //坐标值得具体的颜色
-              }
-            },
-            //网格样式
-            splitLine: {
-              show: true,
-              lineStyle: {
-                color: ["rgba(255,255,255,1)"],
-                width: 2,
-                type: "solid"
-              }
-            }
-          }
-        ],
+        yAxis: yaxis,
+        // grid.left：grid 组件离容器左侧的距离。默认值是10%。
+        grid: {
+          left: 120,
+          right: 120
+        },
         series: series
       });
-      // 根据窗口的大小变动图表;
-      window.onresize = function() {
-        myBarChart.resize();
-        //myChart1.resize();    //若有多个图表变动，可多写
-      };
+      // = myBarChart;
     }
   }
 };
@@ -266,7 +325,7 @@ button:focus {
 }
 .xbsj-flatten .flatten input,
 .xbsj-flatten .attributePath input {
-  width: 100px;
+  width: 262px;
   height: 28px;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
@@ -276,7 +335,7 @@ button:focus {
 }
 .cutselectbox,
 .cutselectbox2 {
-  width: 110px;
+  width: 272px;
   height: 200px;
   background: rgba(138, 138, 138, 1);
   position: absolute;
@@ -324,18 +383,46 @@ button:focus {
   outline: none;
   position: absolute;
   /* right: 98px; */
-  left: 90px;
+  left: 251px;
   top: 11px;
 }
 .selectButton2 {
   right: 0;
 }
 .myBarChart {
-  width: 592px;
-  height: 292px;
+  width: 926px;
+  height: 472px;
   margin: 0 auto !important;
 }
 .myBarChart > div {
   margin: 0 auto !important;
+}
+.xbsj-check {
+  cursor: pointer;
+}
+.xbsj-check input {
+  display: inline-block !important;
+  width: 25px !important;
+  height: 25px !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  outline: none !important;
+  background: url(../../../images/check.png) no-repeat top center !important;
+  background-size: 100% 100% !important;
+  cursor: pointer !important;
+  vertical-align: middle !important;
+  float: right !important;
+}
+.xbsj-check input:checked {
+  position: relative !important;
+  background: url(../../../images/check_on.png) no-repeat top center !important;
+  background-size: 100% 100% !important;
+}
+.selectInput {
+  cursor: pointer;
+}
+.selectInput:disabled {
+  cursor: not-allowed;
 }
 </style>

@@ -107,8 +107,8 @@
         <!-- 绑定相机 -->
         <div class="xbsj-item-btnbox" ref="cameraAttach" @click="cameraattachbtn">
           <div
-            class="xbsj-item-btn pathbutton"
-            :class=" {  pathbuttonActive : cameraAttached || cameraAttachOver }"
+            class="xbsj-item-btn cameraattachbutton"
+            :class=" {  cameraattachbuttonActive : cameraAttached || cameraAttachOver }"
           ></div>
           <span class="xbsj-item-name">{{lang.cameraattach}}</span>
         </div>
@@ -758,14 +758,14 @@ export default {
   border-color: transparent;
   box-shadow: none;
 }
-.pathbutton {
-  background: url(../../../../images/path.png) no-repeat;
+.cameraattachbutton {
+  background: url(../../../../images/cameraattach.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
 
-.pathbuttonActive {
-  background: url(../../../../images/path_on.png) no-repeat;
+.cameraattachbuttonActive {
+  background: url(../../../../images/cameraattach_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }

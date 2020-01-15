@@ -33,6 +33,15 @@
             >{{lang.editing}}</button>
           </div>
         </div>
+        <!-- 拖拽 -->
+        <div
+          @dragover="dragOver"
+          @drop="drop"
+          @dragleave="dragLeave"
+          class="dragButton"
+          :class="{highlight:drag_over}"
+          :title="lang.drag"
+        >{{lang.dragcontent}}</div>
       </div>
 
       <div class="attributeLocation">
@@ -125,6 +134,7 @@ export default {
   data() {
     return {
       showTip: "never",
+      drag_over: false,
       attribute: {
         name: "",
         creating: false,
@@ -242,6 +252,30 @@ export default {
     water.addEventListener("drop", handleFileSelect, false);
   },
   methods: {
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        e.dataTransfer.dropEffect = "copy";
+        this.drag_over = true;
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    dragLeave() {
+      this.drag_over = false;
+    },
+    //拖拽放置
+    drop(e) {
+      this.drag_over = false;
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        this._czmObj.creating = false;
+        this.$root.$earthUI.getCzmObjectPositionFromDrag(czmObj, this._czmObj);
+      }
+    },
     close() {
       this.$parent.destroyTool(this);
     },
@@ -414,6 +448,7 @@ export default {
 .xbsj-videoAttribute .attitudeEdit {
   /* width: 300px; */
   height: 28px;
+  display: flex;
 }
 .creatingButton {
   display: inline-block;
@@ -612,5 +647,21 @@ button:focus {
   padding-right: 8px;
   margin-left: 18px;
   margin-bottom: 10px;
+}
+.dragButton {
+  display: inline-block;
+  width: 120px;
+  height: 25px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+  text-align: center;
+  line-height: 25px;
+  margin-left: 20px;
+}
+
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
+  color: #1fffff;
 }
 </style>

@@ -34,9 +34,11 @@
         >
           <table border="1" cellpadding="0" cellspacing="0">
             <tr>
-              <td>序号</td>
-              <td>名称</td>
-              <td>操作</td>
+              <td>{{lang.order}}</td>
+              <td>
+                <div class="dragButton" :class="{highlight:tileset_over}">{{lang.nametip}}</div>
+              </td>
+              <td>{{lang.operation}}</td>
             </tr>
             <tr v-for="(value,index) in tiles" :key="index">
               <td>{{index + 1}}</td>
@@ -72,8 +74,9 @@ export default {
   data() {
     return {
       lang: {},
-      state: '',
+      state: "",
       pinshowPinSelect: false,
+      tileset_over: false,
       tiles: [],
       czmObjects: {},
       attachedPathGuid: "",
@@ -89,7 +92,7 @@ export default {
       results: []
     };
   },
-  mounted () {
+  mounted() {
     this.state = this.lang.start;
   },
   methods: {
@@ -115,14 +118,14 @@ export default {
       }
       this.pinshowPinSelect = !this.pinshowPinSelect;
     },
-    testStateChange () {
+    testStateChange() {
       if (this.state === this.lang.start) {
         this.startTest();
       } else {
         this.stopTest();
       }
     },
-    startTest () {
+    startTest() {
       let path = this.$root.$earth.getObject(this.attachedPathGuid);
       this.pathLength = path.length;
       this._disposers = [];
@@ -151,11 +154,8 @@ export default {
       this.state = this.lang.start;
     },
     testSingleTileset() {
-      var tileset = this.$root.$earth.getObject(
-        this.tiles[this.currentTilesetIndex].id
-      );
       this._tileset = new XE.Obj.Tileset(this.$root.$earth);
-      this._tileset.xbsjFromJSON(tileset.toJSON());
+      this._tileset.xbsjFromJSON(this.tiles[this.currentTilesetIndex].content);
       this._tileset.enabled = true;
       this.results.push({});
       this.tilesetRecord = this.results[this.results.length - 1];
@@ -182,7 +182,10 @@ export default {
       var record = {};
       record.time = this.resultIndex * this.interval;
       record.fps = this.$root.$earth.status.fps;
-      record.tileset = this._tileset._tileset.statistics;
+      for(var p in this._tileset._tileset.statistics){
+        record[p] = this._tileset._tileset.statistics[p];
+      }
+      // record.tileset = this._tileset._tileset.statistics;
       this.tilesetRecord.data.push(record);
       this.resultIndex++;
     },
@@ -201,7 +204,11 @@ export default {
     tileset_dragover(e) {
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
-      if (czmObj && czmObj.xbsjType === "Tileset" && this.state === this.lang.start) {
+      if (
+        czmObj &&
+        czmObj.xbsjType === "Tileset" &&
+        this.state === this.lang.start
+      ) {
         e.dataTransfer.dropEffect = "copy";
         this.tileset_over = true;
       } else {
@@ -216,7 +223,20 @@ export default {
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.xbsjType === "Tileset") {
-        this.tiles.push({ id: czmObj.xbsjGuid, name: czmObj.name });
+        var content = czmObj.toJSON();
+        for (var i = 0; i < this.tiles.length; i++) {
+          if (
+            JSON.stringify(this.tiles[i].content) === JSON.stringify(content)
+          ) {
+            this.$root.$earthUI.promptInfo(this.lang.exist3dtiles, "info");
+            return;
+          }
+        }
+        this.tiles.push({
+          id: czmObj.xbsjGuid,
+          name: czmObj.name,
+          content: content
+        });
       }
     },
     deleteTiles(index) {
@@ -253,13 +273,13 @@ export default {
         this.testNextTileset();
       }
     }
-  },
-  beforeDestroy() {
-    // 解绑数据关联
-    this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers.forEach(e => e());
-    this._disposers.length = 0;
   }
+  // beforeDestroy() {
+  //   // 解绑数据关联
+  //   this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
+  //   this._disposers.forEach(e => e());
+  //   this._disposers.length = 0;
+  // }
 };
 </script>
 
@@ -439,6 +459,21 @@ table td:nth-child(3) {
   float: right;
 }
 .footer button:hover {
+  color: #1fffff;
+}
+.dragButton {
+  display: inline-block;
+  width: 150px;
+  height: 25px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: 100% 100%;
+  text-align: center;
+  line-height: 25px;
+}
+
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: 100% 100%;
   color: #1fffff;
 }
 </style>

@@ -51,7 +51,9 @@ export default {
   mounted() {
     //监控获取pick到的对象
     const picking = this.$root.$earth.interaction.picking;
-    this.unAutorun = XE.MVVM.watch(picking, 'clickedObj', () => {
+    // 修复feature属性窗口自动弹出的问题，XE.MVVM.watch(picking, 'clickedObj' 会导致莫名奇妙被调用，虽然clickObj中的值并未发生变化。
+    // this.unAutorun = XE.MVVM.watch(picking, 'clickedObj', () => {
+    this.unAutorun = XE.MVVM.watch(() => picking.clickedObj, () => {
       // var feature =
       //   this.$root.$earth.pickedObject.clicked &&
       //   this.$root.$earth.pickedObject.clicked.rawObject;

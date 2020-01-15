@@ -265,7 +265,7 @@
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{lang.algorithm}}</span>
-        <!-- 抛物差值 -->
+        <!-- 抛物插值 -->
         <div
           class="xbsj-item-btnbox ml20"
           ref="parabolicBtn"
@@ -450,6 +450,7 @@ export default {
       Model.creating = true;
       Model.isCreating = true;
       Model.name = "树";
+      Model.distanceDisplayCondition = [0, 5000];
       this.$root.$earthUI.showPropertyWindow(Model);
     },
     // 创建汽车模型
@@ -459,6 +460,7 @@ export default {
       Model.creating = true;
       Model.isCreating = true;
       Model.name = "汽车";
+      Model.distanceDisplayCondition = [0, 5000];
       this.$root.$earthUI.showPropertyWindow(Model);
     },
     // 创建飞机模型
@@ -469,12 +471,14 @@ export default {
       Model.creating = true;
       Model.isCreating = true;
       Model.name = "模型";
+      Model.distanceDisplayCondition = [0, 5000];
       this.$root.$earthUI.showPropertyWindow(Model);
     },
     // 打开模型属性窗口
     createmodelbtn() {
       var Model = new XE.Obj.Model(this.$root.$earth);
       Model.name = "模型";
+      Model.distanceDisplayCondition = [0, 5000];
       Model.isCreating = true;
       Model.creating = true;
       this.$root.$earthUI.showPropertyWindow(Model);
@@ -619,7 +623,7 @@ export default {
 
         if (czmobj.positions && czmobj.positions.length > 1) {
           var obj = {
-            posititons: [],
+            positions: [],
             color: czmobj.color ? [...czmobj.color] : [1, 1, 0, 1],
             width: czmobj.width ? czmobj.width : 3,
             startTime: timeDuration * Math.random(),
@@ -627,7 +631,7 @@ export default {
           };
           // var positions=[];
           czmobj.positions.map(e => {
-            obj.posititons.push([...e]);
+            obj.positions.push([...e]);
           });
           //obj.posititons.push(positions);
           ret.push(obj);
@@ -1221,13 +1225,13 @@ export default {
 }
 
 .parabolicbtn {
-  background: url(../../../../images/customprimitive.png) no-repeat;
+  background: url(../../../../images/parabolic.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
 
 .parabolicbtn.highlight {
-  background: url(../../../../images/customprimitive_on.png) no-repeat;
+  background: url(../../../../images/parabolic_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }

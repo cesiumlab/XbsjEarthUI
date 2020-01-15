@@ -1,16 +1,18 @@
 <template>
   <Window
-    :width="602"
-    :minWidth="480"
-    :height="410"
+    :width="936"
+    :minWidth="602"
+    :height="590"
+    :minHeight="410"
     :top="164"
-    :floatright="true"
+    :left="500"
     :title="lang.title"
     v-show="show"
     @cancel="cancel"
     :footervisible="false"
     @showclick="showSelect=false"
     class="mainwindow"
+    :resized="resize"
   >
     <div style="height: 100%;">
       <div class="tab">
@@ -23,12 +25,7 @@
       <div id="tab-content" class="xbsj-flatten">
         <PathFlyTest v-show="tabShow == '1'" @testfinished="testFinished"></PathFlyTest>
         <Viewpoint v-show="tabShow == '2'" @testfinished="testFinished"></Viewpoint>
-        <TestResult
-          :views-result="records"
-          :views-width="width"
-          :views-height="height"
-          v-show="tabShow == '3'"
-        ></TestResult>
+        <TestResult ref="testResult" v-show="tabShow == '3'"></TestResult>
       </div>
     </div>
   </Window>
@@ -51,34 +48,24 @@ export default {
       show: false,
       tabShow: "1",
       records: [],
-      langs: languagejs,
-      width: 0,
-      height: 0,
-      windowWidth: 0
+      langs: languagejs
     };
   },
-  mounted() {
-    // var tabcontent = document.getElementById("tab-content");
-    // var xbsjflatten = document.getElementsByClassName("xbsj-flatten")[0];
-    // console.log(xbsjflatten);
-    // console.log(xbsjflatten.offsetWidth);
-    // this.width = tabcontent.offsetWidth;
-    // this.height = tabcontent.offsetHeight;
-    // console.log(tabcontent.offsetWidth);
-    // console.log(this.height);
-  },
+  mounted() {},
   methods: {
+    resize() {
+      this.$refs.testResult.resize();
+    },
     testFinished(results) {
       this.records = results;
       console.log(this.records);
-      var item1 = JSON.stringify(this.records);
-      sessionStorage.setItem("result", item1);
+      this.$refs.testResult.setData(this.records);
     },
     close() {
       this.$parent.destroyTool(this);
     },
     cancel() {
-      this.close();
+      this.show = false;
     }
   }
   // beforeDestroy () {

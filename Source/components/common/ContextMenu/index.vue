@@ -20,7 +20,7 @@
 <script>
 import { addOutterEventListener } from "../../utils/xbsjUtil";
 export default {
-  data() {
+  data () {
     return {
       items: [],
       show: false,
@@ -31,7 +31,7 @@ export default {
       position: "left:0px;top:0px;"
     };
   },
-  mounted() {
+  mounted () {
     /*
     //防止浏览器默认菜单
     document.body.oncontextmenu = () => {
@@ -78,28 +78,42 @@ export default {
     */
   },
   methods: {
-    click(it) {
+    click (it) {
       if (typeof it.func === "function") {
         it.func();
       }
       this.show = false;
       this.items = [];
     },
-    pop(items, x, y) {
+    pop (items, x, y) {
       if (this.show) return;
       this.items = items;
       this.show = true;
       if (x == undefined) x = this.cursor.x;
       if (y == undefined) y = this.cursor.y;
+      let bottom = 0;
+      items.forEach(element => {
+        if (element.type === "divider") {
+          bottom += 2;
+        } else {
+          bottom += 30;
+        }
+      });
+      if (this.$parent.$el.clientHeight < y + bottom) {
+        y = y - bottom;
+      }
+      if (this.$parent.$el.clientWidth < x + 150) {
+        x = x - 150;
+      }
       this.position = `left:${x}px; top:${y}px;`;
     },
-    close() {
+    close () {
       if (!this.show) return;
       this.show = false;
       this.items = [];
     }
   },
-  destroyed() {
+  destroyed () {
     document.body.oncontextmenu = null;
   }
 };

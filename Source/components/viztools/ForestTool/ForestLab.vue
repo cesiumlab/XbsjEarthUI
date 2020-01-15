@@ -1,30 +1,21 @@
 <template>
   <Window
-    :footervisible="true"
-    @cancel="show=false"
+    :width="500"
+    :height="380"
+    :floatright="true"
+    :title="lang.forestlabtitle"
+    @cancel="cancel"
     @ok="ok"
-    v-show="show"
-    :width="463"
-    :minWidth="202"
-    :height="500"
-    :left="5"
-    :top="138"
-    :title="lang.localtitle"
+    :footervisible="true"
+    @showclick="showSelect=false"
     class="xbsj-localModel"
   >
-    <div class="localModelSeaarch">
-      <input v-model="key" @keyup.enter="query" />
-      <button @click="query" class="localModelSeaarchButton">{{lang.search}}</button>
-      <!-- <label v-show="error!=''" class="error">{{error}}</label> -->
-    </div>
-    <div v-if="selected!=null" class="localModelDiv">
-      <!-- <label>服务地址:{{serverUrl(selected)}}</label> -->
+    <!-- <div v-if="selected!=null" class="localModelDiv">
       <div>
-        <label class="localLabel">{{lang.address}}:</label>
+        <label class="localLabel">{{lang.serveraddress}}:</label>
         <input v-model="selectedUrl" readonly />
       </div>
-    </div>
-
+    </div>-->
     <!-- 按照日期，按照item 双重遍历 -->
     <div class="contentDiv" :class="contentShow ? 'contentsDiv' : ''">
       <div v-for="days in dayItems" :key="days.day" class="dateDiv">
@@ -34,12 +25,11 @@
             v-for="s in days.services"
             @click="select(s)"
             @contextmenu.prevent="onContexMenu(s, $event)"
-            :key="s.thumbnail"
+            :key="s.id"
           >
             <div class="backimg" :class="{highlight:selected == s}">
               <img class="itemimg" :src="s.thumbnail" />
             </div>
-            <!-- <span>{{s.name}}</span> -->
             <div class="localModelName">
               {{s.name}}
               <span class="localModelToolTip">{{s.name}}</span>
@@ -50,33 +40,32 @@
     </div>
   </Window>
 </template>
-
 <script>
-import languagejs from "./model_locale";
+import languagejs from "./index_locale";
 export default {
-  components: {},
+  props: {
+    getBind: Function
+  },
   data () {
     return {
-      show: false,
-      key: "",
       error: "",
-      selected: null,
       dayItems: [],
+      selected: null,
       selectedUrl: "",
       contentShow: false,
       lang: {},
       langs: languagejs
     };
   },
-  created () {
-
+  mounted () {
+    this.query();
+    this._czmObj = this.getBind();
   },
-  mounted () { },
   methods: {
     _updateServerThumbnail (server, thumbnail) {
       var labServer = this.$root.$earthUI.labServer;
       labServer
-        .updateLayerThumbnail("models", server._id, thumbnail)
+        .updateLayerThumbnail("lodmodels", server._id, thumbnail)
         .then(data => {
           this.query();
         })
@@ -136,7 +125,7 @@ export default {
 
       this.dayItems = [];
       labServer
-        .modelLayers(this.key)
+        .Getlodmodels()
         .then(services => {
           this.error = "";
           for (let i = 0; i < services.length; i++) {
@@ -161,66 +150,42 @@ export default {
       if (path.indexOf(".clt") === path.length - 4) {
         path = "tileset.json";
       }
-      var a = document.createElement('A');
-      a.href = this.$root.$earthUI.labServer.server +
-        "model/" +
+      var a = document.createElement("A");
+      a.href =
+        this.$root.$earthUI.labServer.server +
+        "lodmodels/" +
         server._id +
         "/" +
         path;
       return a.href;
+    },
+    close () {
+      this.$parent.destroyTool(this);
+    },
+    cancel () {
+      this.close();
     },
     ok () {
       if (!this.selected) {
         this.error = this.lang.selectservice;
         this.$root.$earthUI.promptInfo(this.error, "error");
       } else {
-        //添加图层服务
-        const tileset = new XE.Obj.Tileset(this.$root.$earth);
-
-        tileset.url = this.serverUrl(this.selected);
-
-        //添加到场景树中
-        this.$root.$earthUI.tools.sceneTree.addSceneObject(
-          tileset,
-          this.selected.name
-        );
-
-        this.show = false;
+        this._czmObj.treeMetas.push({ name: this.selected.name, url: this.serverUrl(this.selected) });
+        // this.forestlabList.push({
+        //   name: this.selected.name,
+        //   address: this.serverUrl(this.selected),
+        //   ratio: 1,
+        //   color: {
+        //     rgba: { r: 255, g: 255, b: 0, a: 1 }
+        //   }
+        // });
         this.error = "";
       }
-    }
-  },
-  computed: {},
-  filters: {
-    f_day (day) { },
-    f_range (item) {
-      return (
-        item.west.toFixed(5) +
-        ", " +
-        item.south.toFixed(5) +
-        ", " +
-        item.east.toFixed(5) +
-        ", " +
-        item.north.toFixed(5)
-      );
-    }
-  },
-  beforeDestroy () {
-    if (this.unbind) {
-      this.unbind();
-      this.unbind = undefined;
-    }
-  },
-  watch: {
-    show (v) {
-      if (v) {
-        this.query();
-      }
+      this.close();
     }
   }
 };
 </script>
-
 <style scoped>
 .xbsj-localModel .localModelDiv > div {
   margin-top: 10px;
