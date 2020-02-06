@@ -121,23 +121,22 @@ export default {
   },
   computed: {},
   watch: {
-    // modelList: {
-    //   handler (n, o) {
-    //     this.updateTreeMetaList();
-    //   },
-    //   deep: true // 可以深度检测到 styleList 对象的属性值的变化
-    // },
+    modelList: {
+      handler (n, o) {
+        console.log(n);
+        console.log(o);
+        this.updateTreeMetaList();
+      },
+      deep: true // 可以深度检测到 styleList 对象的属性值的变化
+    },
   },
   methods: {
-    // updateTreeMetaList () {
-    //   this._czmObj.treeMetas = [];
-    //   this.modelList.forEach((value, index) => {
-    //     this._czmObj.treeMetas.push({
-    //       name: value.name,
-    //       url: value.address
-    //     })
-    //   });
-    // },
+    updateTreeMetaList () {
+      for (var i = 0; i < this.modelList.length; i++) {
+        this._czmObj.treeMetas[i].name = this.modelList[i].name;
+        this._czmObj.treeMetas[i].url = this.modelList[i].address;
+      }
+    },
     updateUITreeList () {
       this.modelList.splice(0, this.modelList.length);
       this._czmObj.treeMetas.forEach((value, index) => {
