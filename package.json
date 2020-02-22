@@ -28,7 +28,9 @@
     "xbsjDebug-comment": "底层代码调试，只调试xbsjEarth，不调试cesium和xbsjCesium",
     "xbsjDebug": "cross-env NODE_ENV=xbsjDebug webpack-dev-server",
     "xbsjDebug2-comment": "底层代码调试，同时调试cesium、xbsjCesium和xbsjEarth",
-    "xbsjDebug2": "cross-env NODE_ENV=xbsjDebug2 webpack-dev-server"
+    "xbsjDebug2": "cross-env NODE_ENV=xbsjDebug2 webpack-dev-server",
+    "xbsjDebug3-comment": "底层代码调试，同时调试cesium、xbsjCesium和xbsjEarth, Cesium使用localhost:8080加载",
+    "xbsjDebug3": "cross-env NODE_ENV=xbsjDebug3 webpack-dev-server"    
   },
   "dependencies": {
     "echarts": "^4.5.0",
