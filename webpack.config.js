@@ -239,9 +239,8 @@ module.exports.plugins = (module.exports.plugins || []).concat([
                 } else if (process.env.NODE_ENV === 'xbsjDebug3') {
                     // cs = cs.replace(/\/\/xbsjDebug2\b/g, '');
                     cs = cs.replace(/\<head>/, `<head>
-    <script src="//localhost:8080/Build/CesiumUnminified/Cesium.js"></script>
-    <link rel="stylesheet" href="//localhost:8080/Build/CesiumUnminified/Widgets/Widgets.css">
     <script>
+        window.xbsjNativeCesiumDir = '//localhost:8080/Source/';
         window.xbsjEarthDir = 'http://127.0.0.1:9529/XbsjEarth/';
         window.xbsjCesiumDir = 'http://127.0.0.1:9527/XbsjCesium/';
     </script>`)
