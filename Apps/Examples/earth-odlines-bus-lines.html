@@ -142,6 +142,7 @@
                 this._earth = earth;
 
                 this._odlines = new XE.Obj.ODLines(earth);
+                this._odlines.translucentPass = false;
                 this._odlines.color = [1, 1, 1, 1];
 
                 loadData((data, timeDuration) => {
