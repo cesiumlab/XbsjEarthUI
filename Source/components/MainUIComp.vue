@@ -448,26 +448,7 @@ export default {
           this.$root.$earthUI.promptInfo("只创建前100条！", "warning");
         }
         for (let j = 0; j < len; j++) {
-          // if (arr[j].geometry.type.toLowerCase() === "polygon") {
-          //   //如果类型为Polygon
-          //   var Polygon = new XE.Obj.Plots.GeoPolygon(this.$root.$earth);
-          //   if (arr[j].properties && arr[j].properties.name) {
-          //     Polygon.name = arr[j].properties.name;
-          //   }
-          //   var positionarr = arr[j].geometry.coordinates[0];
-          //   for (let k = 0; k < positionarr.length; k++) {
-          //     positionarr[k][0] = (Math.PI / 180) * positionarr[k][0];
-          //     positionarr[k][1] = (Math.PI / 180) * positionarr[k][1];
-          //     positionarr[k][2] = 0;
-          //   }
-          //   // π/180×角度
-          //   Polygon.positions = positionarr;
-          //   var selected = this.$root.$earth.sceneTree.currentSelectedNode;
-          //   const obj = new XE.SceneTree.Leaf(Polygon);
-          //   selected.children.push(obj);
-          // } else 
           if (arr[j].geometry.type.toLowerCase() === "polygon" || arr[j].geometry.type.toLowerCase() === "linestring") {
-            // var polylin = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
             var polylin = this.selectedType.getObj(this.$root.$earth);
             if (arr[j].properties && arr[j].properties.name) {
               polylin.name = arr[j].properties && arr[j].properties.name;
@@ -476,7 +457,12 @@ export default {
             for (let k = 0; k < positionarr.length; k++) {
               positionarr[k][0] = (Math.PI / 180) * positionarr[k][0];
               positionarr[k][1] = (Math.PI / 180) * positionarr[k][1];
-              positionarr[k][2] = 0;
+              if (positionarr[k].length > 2) {
+                positionarr[k][2] = positionarr[k][2];
+                polylin.ground = false;
+              } else {
+                positionarr[k][2] = 0;
+              }
             }
             // π/180×角度
             polylin.positions = positionarr;
@@ -484,8 +470,6 @@ export default {
             const obj = new XE.SceneTree.Leaf(polylin);
             selected.children.push(obj);
           } else if (arr[j].geometry.type.toLowerCase() === "multilinestring" || arr[j].geometry.type.toLowerCase() === "multipolygon") {
-            // var polylin = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
-
             var multiLineString = arr[j].geometry.coordinates;
             for (let single = 0; single < multiLineString.length; single++) {
               var polylin = this.selectedType.getObj(this.$root.$earth);
@@ -496,7 +480,12 @@ export default {
               for (let k = 0; k < positionarr.length; k++) {
                 positionarr[k][0] = (Math.PI / 180) * positionarr[k][0];
                 positionarr[k][1] = (Math.PI / 180) * positionarr[k][1];
-                positionarr[k][2] = 0;
+                if (positionarr[k].length > 2) {
+                  positionarr[k][2] = positionarr[k][2];
+                  polylin.ground = false;
+                } else {
+                  positionarr[k][2] = 0;
+                }
               }
 
               // π/180×角度
@@ -506,29 +495,6 @@ export default {
               selected.children.push(obj);
             }
           }
-          // else if (arr[j].geometry.type.toLowerCase() === "multipolygon") {
-          //   // var polylin = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
-
-          //   var multiLineString = arr[j].geometry.coordinates;
-          //   for (let single = 0; single < multiLineString.length; single++) {
-          //     var polygon = new XE.Obj.Plots.GeoPolygon(this.$root.$earth);
-          //     if (arr[j].properties && arr[j].properties.name) {
-          //       polygon.name = arr[j].properties && arr[j].properties.name;
-          //     }
-          //     positionarr = multiLineString[single];
-          //     for (let k = 0; k < positionarr.length; k++) {
-          //       positionarr[k][0] = (Math.PI / 180) * positionarr[k][0];
-          //       positionarr[k][1] = (Math.PI / 180) * positionarr[k][1];
-          //       positionarr[k][2] = 0;
-          //     }
-
-          //     // π/180×角度
-          //     polygon.positions = positionarr;
-          //     var selected = this.$root.$earth.sceneTree.currentSelectedNode;
-          //     const obj = new XE.SceneTree.Leaf(polygon);
-          //     selected.children.push(obj);
-          //   }
-          // }
         }
       }
       this.loadGeoJSONShow = false;
