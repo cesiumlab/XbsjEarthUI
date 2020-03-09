@@ -1,6 +1,26 @@
 Change Log
 ==========
 
+### 1.2.28 - 2020-2-25
+##### Fixes :wrench:
+* 避免GroundImage创建时设置show属性不起作用
+* 避免GroundImage设置图像之前的闪跳
+
+### 1.2.27 - 2020-2-25
+##### Additions :tada:
+* 地表透明模式下使用POI时，会出现POI被融合的问题，此处增加了Cesium.BillboardCollection.xbsjForceRSOpaqueDepthMask属性，设置为true即可。但是会导致位置拾取不准确。
+
+### 1.2.26 - 2020-2-20
+
+##### Fixes :wrench:
+* 修复点云渲染性能慢的问题
+
+### 1.2.25 - 2020-2-3
+
+##### Additions :tada:
+* 视频融合支持直接播放m3u8格式视频
+* 增加winPos的api文档说明
+
 ### 1.2.24 - 2020-1-14
 
 ##### Additions :tada:

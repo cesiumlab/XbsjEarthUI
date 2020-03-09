@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth案例">
+    </meta>
+    <title>批量化Lod模型</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 38px;
+            padding: 0 10px;
+            line-height: 38px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+
+        .btnon {
+            background-color: #1E9FFF;
+            color: #fff;
+            border: 1px solid #1E9FFF;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:170px; font-size:24px; font-family: 宋体;">
+                        <div class="defultbtn" :class="{'btnon':cameraAttached}"  @click=lookAtLamp>路灯</div>
+                        <div class="defultbtn" :class="{'btnon':cameraAttached}"  @click=lookAtTree>树林</div>
+                    </div>
+                </div>
+            `,
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    cameraAttached: false
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "czmObject": {
+                                "xbsjType": "Imagery",
+                                "xbsjGuid": "0a74da9f-bff6-4eab-af64-d8cf95978145",
+                                "name": "谷歌影像",
+                                "xbsjImageryProvider": {
+                                    "XbsjImageryProvider": {
+                                        "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}",
+                                        "srcCoordType": "GCJ02",
+                                        "dstCoordType": "WGS84",
+                                        "maximumLevel": 21,
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "czmObject": {
+                                "xbsjType": "Terrain",
+                                "xbsjGuid": "56078d92-2512-48e8-8d3a-b977f33f5de8",
+                                "name": "中国14级（测试）",
+                                "xbsjTerrainProvider": {
+                                    "type": "XbsjCesiumTerrainProvider",
+                                    "XbsjEllipsoidTerrainProvider": {},
+                                    "XbsjCesiumTerrainProvider": {
+                                        "url": "https://lab.earthsdk.com/terrain/577fd5b0ac1f11e99dbd8fd044883638",
+                                        "requestVertexNormals": true,
+                                        "requestWaterMask": true
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "czmObject": {
+                                "xbsjType": "FlattenedPolygonCollection",
+                                "xbsjGuid": "fb002dda-df41-4497-844f-228ab58f352d",
+                                "name": "未命名压平组",
+                                "polygons": [
+                                    {
+                                        "positions": [
+                                            1.9017145037169423,
+                                            0.5972338999265,
+                                            1.901713574750664,
+                                            0.5972535781598853,
+                                            1.9017069004053295,
+                                            0.5972537390699232,
+                                            1.9017067059770736,
+                                            0.5972330942421016
+                                        ],
+                                        "height": 423.1758758754003
+                                    }
+                                ]
+                            }
+                        },
+                        // 下面Polyline用于生成路灯生成位置
+                        // {
+                        //     "czmObject": {
+                        //         "xbsjType": "GeoPolyline",
+                        //         "enabled": false,
+                        //         "xbsjGuid": "747f74fd-009c-41e1-8509-798f3eb39c41",
+                        //         "name": "路灯线",
+                        //         "positions": [
+                        //             [
+                        //                 1.9016783999488605,
+                        //                 0.5972702142666949,
+                        //                 422.00142180909984
+                        //             ],
+                        //             [
+                        //                 1.9017234768368503,
+                        //                 0.5972702076793095,
+                        //                 424.64822012498934
+                        //             ]
+                        //         ],
+                        //         "show": false
+                        //     }
+                        // },
+                        // 下面Polygon用于生成树的生成位置
+                        // {
+                        //     "czmObject": {
+                        //         "xbsjType": "GeoPolygon",
+                        //         "enabled": false,
+                        //         "xbsjGuid": "ac7df596-e48b-49be-9964-044b56b3fbfb",
+                        //         "name": "森林区域",
+                        //         "positions": [
+                        //             [
+                        //                 1.9017073354782088,
+                        //                 0.5972336791725996,
+                        //                 421.6153550055982
+                        //             ],
+                        //             [
+                        //                 1.9017136508931143,
+                        //                 0.5972341607970172,
+                        //                 427.5118494119884
+                        //             ],
+                        //             [
+                        //                 1.9017133901986059,
+                        //                 0.5972533107035879,
+                        //                 424.29125740915254
+                        //             ],
+                        //             [
+                        //                 1.901707113928358,
+                        //                 0.597253510184526,
+                        //                 423.51719863648333
+                        //             ]
+                        //         ],
+                        //         "show": false
+                        //     }
+                        // },
+                        {
+                            "czmObject": {
+                                "xbsjType": "Tileset",
+                                "xbsjGuid": "a24e5f2a-1b5d-4288-9307-266d615f7f3f",
+                                "name": "大雁塔",
+                                "url": "http://lab.earthsdk.com/model/f15b9e90ac2d11e99dbd8fd044883638/tileset.json",
+                                "xbsjPosition": [
+                                    1.9016974701882112,
+                                    0.5972325152147303,
+                                    425.8641913624607
+                                ],
+                                "xbsjFlattenGuid": "fb002dda-df41-4497-844f-228ab58f352d",
+                                "xbsjClippingPlanes": {},
+                                "xbsjCustomShader": {}
+                            }
+                        },
+                        {
+                            "czmObject": {
+                                "xbsjType": "Forest",
+                                "xbsjGuid": "599e0bdb-91bc-4622-a477-77a907978683",
+                                "name": "森林",
+                                "treeDataUrl": "http://lab.earthsdk.com/assets/f1944e2036cf11ea949be5b960dde490",  // 该url指向一个数组，存放每个lod模型位置、朝向、缩放等信息
+                                "treeMetas": [
+                                    {
+                                        "name": "杨树秋季",
+                                        "url": "http://lab.earthsdk.com/lodmodels/7699551036cc11ea949be5b960dde490/meta.json"  // 指向lod模型，参考https://www.jianshu.com/p/45badc1fac5c
+                                    },
+                                    {
+                                        "name": "雪松",
+                                        "url": "http://lab.earthsdk.com/lodmodels/6c92319036cc11ea949be5b960dde490/meta.json"
+                                    },
+                                    {
+                                        "name": "路灯",
+                                        "url": "http://lab.earthsdk.com/lodmodels/67299c7036cc11ea949be5b960dde490/meta.json"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                };
+
+                window.earth = earth;
+
+                this.lookAtLamp();
+            },
+            methods: {
+                lookAtLamp() {
+                    earth.camera.flyTo(
+                        [
+                            1.901685924498983,
+                            0.5972685170316505,
+                            442.35127491824403
+                        ],
+                        0,
+                        [
+                            1.4574481486165363,
+                            -0.1874317849101712,
+                            0.003155081568777085
+                        ]
+                    );
+                    this.cameraAttached = true;
+                },
+                lookAtTree() {
+                    earth.camera.flyTo(
+                        [
+                            1.9017007216730086,
+                            0.5972226633108514,
+                            489.4840828550852
+                        ],
+                        0,
+                        [
+                            0.3975660314393341,
+                            -0.42383229144092494,
+                            0.001326767247270766
+                        ]
+                    );
+                    this.cameraAttached = false;
+                }
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>

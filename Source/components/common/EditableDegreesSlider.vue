@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Cesium from 'Cesium';
+//import Cesium from 'Cesium';
 import EditableSlider from './EditableSlider';
 
 const tr = Cesium.Math.toRadians;
