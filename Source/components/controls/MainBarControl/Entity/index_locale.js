@@ -53,7 +53,9 @@ const zh = {
   odLine: 'OD线',
   parabolic: '抛物插值',
   algorithm: '算法',
-  delcontent: '必须选中一条折线'
+  delcontent: '必须选中一条折线',
+  road: '道路',
+  wall: '挡土墙'
 };
 
 const en = {
@@ -111,7 +113,9 @@ const en = {
   odLine: 'ODLine',
   parabolic: 'Parabolic',
   algorithm: 'algorithm',
-  delcontent: 'A polyline must be selected'
+  delcontent: 'A polyline must be selected',
+  road: 'Road',
+  wall: 'Wall'
 };
 
 export default { zh, en };

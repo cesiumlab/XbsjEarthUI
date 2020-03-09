@@ -226,6 +226,16 @@
           <div class="xbsj-item-btn customprimitivebutton"></div>
           <span class="xbsj-item-name">{{lang.CustomPrimitive}}</span>
         </div>
+        <!-- 道路 -->
+        <div class="xbsj-item-btnbox ml20" @click="roadBtn">
+          <div class="xbsj-item-btn customprimitivebutton"></div>
+          <span class="xbsj-item-name">{{lang.road}}</span>
+        </div>
+        <!-- 挡土墙 -->
+        <div class="xbsj-item-btnbox ml20" @click="wallBtn">
+          <div class="xbsj-item-btn customprimitivebutton"></div>
+          <span class="xbsj-item-name">{{lang.wall}}</span>
+        </div>
         <!-- <div class="xbsj-item-btnbox ml20">
           <div class="xbsj-item-btn odbutton"></div>
           <span class="xbsj-item-name">{{lang.od}}</span>
@@ -561,6 +571,28 @@ export default {
       CustomPrimitive.creating = true;
       // console.log(CustomPrimitive);
       this.$root.$earthUI.showPropertyWindow(CustomPrimitive);
+    },
+    // 道路
+    roadBtn() {
+      var road = new XE.Obj.Road(this.$root.$earth);
+      road.name = "道路";
+      road.autoRegisterEditing = true;
+
+      road.isCreating = true;
+      road.creating = true;
+      // console.log(road);
+      this.$root.$earthUI.showPropertyWindow(road);
+    },
+    // 挡土墙
+    wallBtn() {
+      var wall = new XE.Obj.Wall(this.$root.$earth);
+      wall.name = "挡土墙";
+      wall.autoRegisterEditing = true;
+
+      wall.isCreating = true;
+      wall.creating = true;
+      console.log(wall);
+      this.$root.$earthUI.showPropertyWindow(wall);
     },
 
     getCzmObjectFromDrag(dataTransfer) {
