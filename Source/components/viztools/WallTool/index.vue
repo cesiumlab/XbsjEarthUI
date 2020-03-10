@@ -110,11 +110,6 @@
           ></XbsjInputNumber>
         </div>
       </div>
-
-      <!-- <div class="flatten">
-        <label>{{lang.imgurl}}</label>
-        <input style="float:left;" type="text" v-model="model.imageUrl" />
-      </div>-->
     </div>
   </Window>
 </template>
@@ -141,7 +136,6 @@ export default {
         enabled: true,
         height: 3.0,
         depth: 0.8,
-        // width: 15,
         scale: 1.0,
         imageUrl: "",
         wallImageHeight: 3.0,
@@ -168,7 +162,6 @@ export default {
         editing: "model.editing",
         height: "model.height",
         depth: "model.depth",
-        // width: "model.width",
         scale: "model.scale",
         imageUrl: "model.imageUrl",
         wallImageHeight: "model.wallImageHeight",
