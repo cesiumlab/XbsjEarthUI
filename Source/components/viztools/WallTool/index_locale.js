@@ -1,5 +1,5 @@
 const zh = {
-  title: "道路属性",
+  title: "挡土墙属性",
   name: "名称",
   weizhi: '位置',
   creating: '鼠标点选',
@@ -21,7 +21,7 @@ const zh = {
 };
 
 const en = {
-  title: "Scaneline Property",
+  title: "Wall Property",
   name: "Name",
   weizhi: 'position',
   creating: 'creating',

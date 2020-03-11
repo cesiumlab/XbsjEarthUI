@@ -77,13 +77,13 @@
                         <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:200px; font-size:24px; font-family: 宋体;">
                             <div class="defultbtn" :class="{'btnon':creating}" @click="creating = !creating">创建</div>
                             <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':editing}"  @click="editing = !editing">编辑</div><br/>
-                            <div style="float: left; margin-right: 10px;">
+                            <div style="float: left; width: 224px;">
                                 <span @click="show = !show" class="checkbox"><input class="poyline" type="checkbox" v-model="show">挡土墙显隐</span><br/>
                                 <span>挡土墙高度：{{height}}</span>米<br/><input type="range" min="0" max="100" v-model.number="height"><br/>
                                 <span>挡土墙厚度：{{depth}}</span>米<br/><input type="range" step="0.1" min="0" max="100" v-model.number="depth"><br/>
                                 <span>缩放比例：{{scale}}</span><br/><input type="range" min="0" max="10" v-model.number="scale"><br/>
                             </div>
-                            <div style="float: left; padding-left: 10px; border-left: 1px solid #fff;">
+                            <div style="float: left; padding-left: 20px; border-left: 1px solid #fff;">
                                 <span>墙纹理图像：</span><br/>
                                 <input type="text" v-model="imageUrl"><br/>
                                 <span>墙纹理高度：</span>米<br/>
