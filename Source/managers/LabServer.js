@@ -650,6 +650,23 @@ class LabServer {
         });
     });
   }
+
+  getAuth(){
+    return new Promise((resolve, reject) => {
+      axios
+        .get(this.server + "other/authinfo")
+        .then(res => {
+          if (res.status == 200) {
+            resolve(res.data);
+          } else {
+            reject(res.data.status);
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 }
 
 export default LabServer;
