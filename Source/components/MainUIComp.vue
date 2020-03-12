@@ -227,7 +227,7 @@ export default {
     // ,
     // GeoPolygonImage
   },
-  data: function() {
+  data: function () {
     return {
       modal: false,
       confirmInfo: "",
@@ -364,16 +364,16 @@ export default {
       selectedType: null
     };
   },
-  mounted() {
+  mounted () {
     let xbsjcesium = this.$refs.xbsjcesium;
     let that = this;
 
-    function handleDragOver(e) {
+    function handleDragOver (e) {
       e.stopPropagation();
       e.preventDefault();
     }
 
-    function handleFileSelect(e) {
+    function handleFileSelect (e) {
       // e.stopPropagation();
       e.preventDefault();
       let item = e.dataTransfer;
@@ -381,7 +381,7 @@ export default {
       var files = [];
       [].forEach.call(
         e.dataTransfer.files,
-        function(file) {
+        function (file) {
           files.push(file);
         },
         false
@@ -391,7 +391,7 @@ export default {
         var reader = new FileReader();
         reader.readAsText(f);
         //读取文件的内容
-        reader.onload = function() {
+        reader.onload = function () {
           that.jsontext = JSON.parse(this.result);
           that.analysisJson();
         };
@@ -405,7 +405,7 @@ export default {
       {
         name: "线",
         typeName: "Plots.GeoPolyline",
-        getObj: function(earth) {
+        getObj: function (earth) {
           return new XE.Obj.Plots.GeoPolyline(earth);
         }
       }
@@ -425,19 +425,19 @@ export default {
         {
           name: "面",
           typeName: "Plots.GeoPolygon",
-          getObj: function(earth) {
+          getObj: function (earth) {
             return new XE.Obj.Plots.GeoPolygon(earth);
           }
         }
       ]);
   },
   computed: {
-    type() {
+    type () {
       return this.viewporttype;
     }
   },
   methods: {
-    confirmLoadGeoJson() {
+    confirmLoadGeoJson () {
       if (this.jsontext.type != "") {
         const g0 = new XE.SceneTree.Group(this.$root.$earth);
         g0.title = "图形组合文件夹";
@@ -454,9 +454,7 @@ export default {
           this.$root.$earthUI.promptInfo("只创建前100条！", "warning");
         }
         for (let j = 0; j < len; j++) {
-          if (
-            arr[j].geometry.type.toLowerCase() === "polygon" ||
-            arr[j].geometry.type.toLowerCase() === "linestring"
+          if (arr[j].geometry.type.toLowerCase() === "linestring"
           ) {
             var polylin = this.selectedType.getObj(this.$root.$earth);
             if (arr[j].properties && arr[j].properties.name) {
@@ -464,8 +462,8 @@ export default {
             }
             var positionarr = arr[j].geometry.coordinates;
             for (let k = 0; k < positionarr.length; k++) {
-              positionarr[k][0] = (Math.PI / 180) * positionarr[k][0];
-              positionarr[k][1] = (Math.PI / 180) * positionarr[k][1];
+              positionarr[k][0] = Math.PI * positionarr[k][0] / 180.0;
+              positionarr[k][1] = Math.PI * positionarr[k][1] / 180.0;
               if (positionarr[k].length > 2) {
                 positionarr[k][2] = positionarr[k][2];
                 polylin.ground = false;
@@ -477,6 +475,27 @@ export default {
             polylin.positions = positionarr;
             var selected = this.$root.$earth.sceneTree.currentSelectedNode;
             const obj = new XE.SceneTree.Leaf(polylin);
+            selected.children.push(obj);
+          } else if (arr[j].geometry.type.toLowerCase() === "polygon") {
+            var polygon = this.selectedType.getObj(this.$root.$earth);
+            if (arr[j].properties && arr[j].properties.name) {
+              polygon.name = arr[j].properties && arr[j].properties.name;
+            }
+            var positionarr = arr[j].geometry.coordinates[0];
+            for (let k = 0; k < positionarr.length; k++) {
+              positionarr[k][0] = Math.PI * positionarr[k][0] / 180.0;
+              positionarr[k][1] = Math.PI * positionarr[k][1] / 180.0;
+              if (positionarr[k].length > 2) {
+                positionarr[k][2] = positionarr[k][2];
+                polygon.ground = false;
+              } else {
+                positionarr[k][2] = 0;
+              }
+            }
+            // π/180×角度
+            polygon.positions = positionarr;
+            var selected = this.$root.$earth.sceneTree.currentSelectedNode;
+            const obj = new XE.SceneTree.Leaf(polygon);
             selected.children.push(obj);
           } else if (
             arr[j].geometry.type.toLowerCase() === "multilinestring" ||
@@ -490,8 +509,8 @@ export default {
               }
               positionarr = multiLineString[single];
               for (let k = 0; k < positionarr.length; k++) {
-                positionarr[k][0] = (Math.PI / 180) * positionarr[k][0];
-                positionarr[k][1] = (Math.PI / 180) * positionarr[k][1];
+                positionarr[k][0] = Math.PI * positionarr[k][0] / 180.0;
+                positionarr[k][1] = Math.PI * positionarr[k][1] / 180.0;
                 if (positionarr[k].length > 2) {
                   positionarr[k][2] = positionarr[k][2];
                   polylin.ground = false;
@@ -511,7 +530,7 @@ export default {
       }
       this.loadGeoJSONShow = false;
     },
-    analysisJson() {
+    analysisJson () {
       if (this.jsontext.sceneTree) {
         let self = this;
         this.confirm(
@@ -568,15 +587,15 @@ export default {
         }
       }
     },
-    selectType(index, item) {
+    selectType (index, item) {
       this.categoryIndex = index;
       this.selectedType = item;
     },
-    _getToolID(tool) {
+    _getToolID (tool) {
       if (!tool.guid) {
         tool.guid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
           /[xy]/g,
-          function(c) {
+          function (c) {
             var r = (Math.random() * 16) | 0;
             var v = c === "x" ? r : (r & 0x3) | 0x8;
             return v.toString(16);
@@ -585,19 +604,19 @@ export default {
       }
       return tool.guid;
     },
-    confirm(info, ok, cancel) {
+    confirm (info, ok, cancel) {
       this.confirmInfo = info;
       this.modal = true;
       this._ok = ok;
       this._cancel = cancel;
     },
-    modalCancel() {
+    modalCancel () {
       this.modal = false;
       if (typeof this._cancel == "function") {
         this._ok();
       }
     },
-    modalConfirm() {
+    modalConfirm () {
       this.modal = false;
       if (typeof this._ok == "function") {
         this._ok();
@@ -605,7 +624,7 @@ export default {
     },
 
     //显示对象的属性窗口
-    showPropertyWindow(czmObject, options) {
+    showPropertyWindow (czmObject, options) {
       //一个对象可以弹出若干种不同类型的属性窗口,判定是哪种component
 
       //用于判断是否弹出属性面板--mrq
@@ -686,18 +705,18 @@ export default {
         nextczm: options && options.jsonSchema
       });
     },
-    _topWindow(index) {
+    _topWindow (index) {
       if (index < 0 && index == this.tools.length - 1) return;
 
       const tool = this.tools[index];
       this.tools.splice(index, 1);
       this.tools.push(tool);
     },
-    topWindow(window) {
+    topWindow (window) {
       const index = window.$parent.$attrs._toolIndex;
       this._topWindow(index);
     },
-    destroyTool(tool) {
+    destroyTool (tool) {
       const index = tool.$attrs._toolIndex;
       if (index !== -1) {
         //const tool = this.tools[index];
@@ -705,7 +724,7 @@ export default {
       }
     },
 
-    promptInfo(info, type) {
+    promptInfo (info, type) {
       var _info = {
         info,
         type,
@@ -724,7 +743,7 @@ export default {
     },
 
     // 获取拖拽对象
-    getCzmObjectFromDrag(dataTransfer) {
+    getCzmObjectFromDrag (dataTransfer) {
       for (let i = 0; i < dataTransfer.types.length; i++) {
         var t = dataTransfer.types[i];
         if (!t) continue;
@@ -738,7 +757,7 @@ export default {
     },
 
     // 获取拖拽对象位置
-    getCzmObjectPositionFromDrag(dragczmObj, czmObj) {
+    getCzmObjectPositionFromDrag (dragczmObj, czmObj) {
       if (dragczmObj._polyline !== undefined) {
         czmObj.positions = [...dragczmObj._polyline.positions];
       } else if (dragczmObj._polygon !== undefined) {
