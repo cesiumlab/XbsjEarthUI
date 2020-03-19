@@ -1,0 +1,105 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v1.0.5",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                0
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "mesh" : 0,
+            "name" : "Line270"
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "name" : "ts.001",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.4479883313179016,
+                    0.4479883313179016,
+                    0.4479883313179016,
+                    1
+                ],
+                "metallicFactor" : 1,
+                "roughnessFactor" : 0.47999998927116394
+            }
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "Mesh.006",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1
+                    },
+                    "indices" : 2,
+                    "material" : 0
+                }
+            ]
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 12816,
+            "max" : [
+                6.510037422180176,
+                31.03500747680664,
+                4.069671154022217
+            ],
+            "min" : [
+                -6.5156941413879395,
+                -0.029078006744384766,
+                -4.069573402404785
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 12816,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5123,
+            "count" : 19224,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 153792,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 153792,
+            "byteOffset" : 153792
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 38448,
+            "byteOffset" : 307584
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 346032,
+            "uri" : "ts.bin"
+        }
+    ]
+}

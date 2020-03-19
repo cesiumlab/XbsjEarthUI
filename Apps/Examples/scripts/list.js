@@ -248,6 +248,10 @@ vueApp.examples = [
                 "url": "./earth-model-editing.html"
             },
             {
+                "title": "模型-位置匹配",
+                "url": "./earth-model-positionmatcn.html"
+            },
+            {
                 "title": "MVVM.watch",
                 "url": "./earth-MVVM-watch.html"
             },

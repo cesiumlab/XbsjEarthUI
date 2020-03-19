@@ -1,0 +1,117 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v1.0.5",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                0
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "mesh" : 0,
+            "name" : "jyz21.5m.001"
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "name" : "jyz.001",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.03310476616024971,
+                    0.03310476616024971,
+                    0.03310476616024971,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "Mesh.002",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1,
+                        "TEXCOORD_0" : 2
+                    },
+                    "indices" : 3,
+                    "material" : 0
+                }
+            ]
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 22821,
+            "max" : [
+                0.1419529914855957,
+                1.6286401748657227,
+                0.13805750012397766
+            ],
+            "min" : [
+                -0.14117908477783203,
+                -1.5400817394256592,
+                -0.1450725495815277
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 22821,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5126,
+            "count" : 22821,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 3,
+            "componentType" : 5123,
+            "count" : 22821,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 273852,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 273852,
+            "byteOffset" : 273852
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 182568,
+            "byteOffset" : 547704
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 45642,
+            "byteOffset" : 730272
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 775916,
+            "uri" : "jyz_1.bin"
+        }
+    ]
+}
