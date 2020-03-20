@@ -56,7 +56,8 @@ const zh = {
   delcontent: '必须选中一条折线',
   road: '道路',
   wall: '挡土墙',
-  polygonImage: '多边形贴图'
+  polygonImage: '多边形贴图',
+  surface: '填充面'
 };
 
 const en = {
@@ -117,7 +118,8 @@ const en = {
   delcontent: 'A polyline must be selected',
   road: 'Road',
   wall: 'Wall',
-  polygonImage: 'polygon Image'
+  polygonImage: 'polygon Image',
+  surface: 'Surface'
 };
 
 export default { zh, en };

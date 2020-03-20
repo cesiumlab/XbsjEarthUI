@@ -593,7 +593,7 @@
    height: 34px;
    line-height: 32px;
    vertical-align: middle;
-   border: 1px solid #dcdee2;
+   /* border: 1px solid #dcdee2; */
    /* border-radius: 4px; */
    overflow: hidden;
    cursor: default;

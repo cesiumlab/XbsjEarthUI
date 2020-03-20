@@ -404,6 +404,10 @@ vueApp.examples = [
                 "url": "./earth-subsurface.html"
             },
             {
+                "title": "填充面-编辑",
+                "url": "./earth-surface-editing.html"
+            },
+            {
                 "title": "地形-cesium官方",
                 "url": "./earth-terrain-cesium.html"
             },

@@ -241,6 +241,11 @@
           <div class="xbsj-item-btn wallbutton"></div>
           <span class="xbsj-item-name">{{lang.wall}}</span>
         </div>
+        <!-- 填充面 -->
+        <div class="xbsj-item-btnbox ml20" @click="surfaceBtn">
+          <div class="xbsj-item-btn wallbutton"></div>
+          <span class="xbsj-item-name">{{lang.surface}}</span>
+        </div>
         <!-- <div class="xbsj-item-btnbox ml20">
           <div class="xbsj-item-btn odbutton"></div>
           <span class="xbsj-item-name">{{lang.od}}</span>
@@ -609,6 +614,17 @@ export default {
       wall.creating = true;
       console.log(wall);
       this.$root.$earthUI.showPropertyWindow(wall);
+    },
+    // 填充面
+    surfaceBtn() {
+      var surface = new XE.Obj.Surface(this.$root.$earth);
+      surface.name = "填充面";
+      surface.autoRegisterEditing = true;
+
+      surface.isCreating = true;
+      surface.creating = true;
+      // console.log(surface);
+      this.$root.$earthUI.showPropertyWindow(surface);
     },
 
     getCzmObjectFromDrag(dataTransfer) {
