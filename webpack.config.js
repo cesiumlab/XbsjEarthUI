@@ -205,6 +205,13 @@ module.exports.plugins = (module.exports.plugins || []).concat([
             toType: 'dir'
         },
         {
+            // TODO(vtxf): 暂时不从node_modules读取
+            from: 'Static/XbsjEarth-Plugins/customPrimitiveImage',
+            // from: 'Static/XbsjEarth-Plugins/customPrimitive',
+            to: 'XbsjEarth-Plugins/customPrimitiveImage',
+            toType: 'dir'
+        },
+        {
             from: 'Static/assets',
             to: 'XbsjEarthUI/assets',
             toType: 'dir'
