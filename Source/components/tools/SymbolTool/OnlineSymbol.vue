@@ -114,6 +114,7 @@ export default {
       var labServer = this.$root.$labServer;
       labServer.getShareSymbol(this.param)
         .then(res => {
+          self.symbols = [];
           if (res.status === "ok") {
             self.symbols.push(...res.result);
           } else {
@@ -147,11 +148,22 @@ export default {
         }
         self.symbol = XE.Core.XbsjObject.createObject(content.xbsjType, self.$root.$earth);
         self.symbol.xbsjFromJSON(content);
-        self.symbol.isCreating = true;
-        self.symbol.shareID = s._id;
-        self.symbol._callback = self.shareSymbolAddCount;
-        self.$root.$earthUI.showPropertyWindow(self.symbol);
-        self.symbol.creating = true;
+        if (self.symbol.xbsjType === 'Imagery' || self.symbol.xbsjType === 'Terrain' || self.symbol.xbsjType === 'Tileset') {
+          //直接添加到场景树中
+          var symbol = XE.Core.XbsjObject.createObject(content.xbsjType, self.$root.$earth);
+          symbol.xbsjFromJSON(content);
+          self.$root.$earthUI.tools.sceneTree.addSceneObject(
+            symbol,
+            symbol.name
+          );
+          self.symbol.destroy();
+        } else {
+          self.symbol.isCreating = true;
+          self.symbol.shareID = s._id;
+          self.symbol._callback = self.shareSymbolAddCount;
+          self.$root.$earthUI.showPropertyWindow(self.symbol);
+          self.symbol.creating = true;
+        }
       })
         .catch(err => {
           console.log(err)
