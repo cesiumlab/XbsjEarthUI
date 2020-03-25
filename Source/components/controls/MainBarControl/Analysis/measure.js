@@ -4,6 +4,13 @@ function getDisAndLabelPos (positions, interval, maxSample, earth) {
         earth.czm.scene.globe.depthTestAgainstTerrain = true;
     }
     var samplePoints = [];
+    samplePoints.push({
+        distance: 0,
+        longitude: positions[0][0] * 180 / Math.PI,
+        latitude: positions[0][1] * 180 / Math.PI,
+        height: positions[0][2]
+    });
+
     var disAndLabelPos = [];
     var total = 0;
     for (var i = 1; i < positions.length; i++) {
@@ -13,10 +20,9 @@ function getDisAndLabelPos (positions, interval, maxSample, earth) {
 
         var c1 = Cesium.Cartesian3.fromRadians(p1[0], p1[1], p1[2]);
         var c2 = Cesium.Cartesian3.fromRadians(p2[0], p2[1], p2[2]);
-        var distance = Cesium.Cartesian3.distance(c1, c2);;
-        samplePoints.push(p1);
+        var distance = Cesium.Cartesian3.distance(c1, c2);
 
-        var pos = [];
+        var first = c1;
         if (distance > interval) {
             var step = distance / interval;
             step = Math.min(step, maxSample);
@@ -24,35 +30,43 @@ function getDisAndLabelPos (positions, interval, maxSample, earth) {
             var xinterval = (p1[0] - p2[0]) / step;
             var yinterval = (p1[1] - p2[1]) / step;
 
-            pos.push(c1);
-            while (distance > interval) {
-                var p = [p1[0] + xinterval, p1[1] + yinterval, 0];
+            var setiondistance = 0;
+            var p = p1;
+            while (distance >= interval) {
+                p = [p[0] + xinterval, p[1] + yinterval, 0];
                 p[2] = getSampleHeight(p, earth)
-                pos.push(Cesium.Cartesian3.fromRadians(p[0], p[1], p[2]));
-                samplePoints.push(p);
-                distance -= interval;
-            }
-            pos.push(c2);
 
-            distance = 0;
-            for (var j = 1; j < pos.length; j++) {
-                var c1 = pos[j - 1];
-                var c2 = pos[j];                
-                distance += parseFloat(Cesium.Cartesian3.distance(c1, c2).toFixed(2));
+                var second = Cesium.Cartesian3.fromRadians(p[0], p[1], p[2]);
+                setiondistance += Cesium.Cartesian3.distance(first, second);
+                samplePoints.push({
+                    distance: Math.round((total + setiondistance) * 100) / 100,
+                    longitude: p[0] * 180 / Math.PI,
+                    latitude: p[1] * 180 / Math.PI,
+                    height: p[2]
+                });
+
+                distance -= interval;
+                first = second;
             }
+            distance = setiondistance;
+        } else {
+            samplePoints.push({
+                distance: Math.round((total) * 100) / 100,
+                longitude: p2[0] * 180 / Math.PI,
+                latitude: p2[1] * 180 / Math.PI,
+                height: p2[2]
+            });
         }
         total += distance;
 
         disAndLabelPos.push({
-            dis: distance + "米",
+            dis: (Math.round((distance) * 100) / 100) + "米",
             pos: center
         })
     }
-    var p = positions[positions.length - 1];
-    samplePoints.push(p);
 
     disAndLabelPos.push({
-        dis: "总长：" + total + "米",
+        dis: "总长：" + (Math.round((total) * 100) / 100) + "米",
         pos: positions[0]
     })
 
