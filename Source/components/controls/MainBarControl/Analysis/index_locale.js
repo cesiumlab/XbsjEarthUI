@@ -14,6 +14,7 @@ const zh = {
   distance: "距离",
   height: "高度",
   area: "面积",
+  section: "剖面",
   volume: "体积",
   reset: "清除"
 };
