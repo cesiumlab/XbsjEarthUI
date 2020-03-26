@@ -149,15 +149,15 @@ function create(earthDom, options) {
             const xbsjEarthUri = (window.xbsjEarthDir || getScriptBaseUrl('xbsj')) + '../XbsjEarth/XbsjEarth.js';
             const xbsjEarthPlottingSymbolUri = getScriptBaseUrl('xbsj') + '../XbsjEarth-Plugins/plottingSymbol/plottingSymbol.js';
             const xbsjEarthCustomPrimitiveUri = getScriptBaseUrl('xbsj') + '../XbsjEarth-Plugins/customPrimitive/customPrimitive.js';
-            // const xbsjEarthCustomPrimitiveImageUri = getScriptBaseUrl('xbsj') + '../XbsjEarth-Plugins/customPrimitiveImage/customPrimitiveImage.js';
+            const xbsjEarthCustomPrimitiveImageUri = getScriptBaseUrl('xbsj') + '../XbsjEarth-Plugins/customPrimitiveImage/customPrimitiveImage.js';
 
             Promise.all([loadJS(xbsjEarthUIUri), loadJS(xbsjEarthUri)]).then(() => {
                 XE.ready().then(() => {
                     return loadJS(xbsjEarthPlottingSymbolUri);
                 }).then(() => {
                     return loadJS(xbsjEarthCustomPrimitiveUri);
-                // }).then(() => {
-                //     return loadJS(xbsjEarthCustomPrimitiveImageUri);
+                }).then(() => {
+                    return loadJS(xbsjEarthCustomPrimitiveImageUri);
                 }).then(() => {
                     //创建earthUI 
                     let earthUI = new XbsjEarthUI.MainUI(earthDom);

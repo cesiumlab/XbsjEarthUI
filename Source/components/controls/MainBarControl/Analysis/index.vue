@@ -138,7 +138,8 @@ export default {
       langs: languagejs,
       enabled: false,
       modelexpansion_over: false,
-      measuring: false
+      measuring: false,
+      interval: 0
     };
   },
   created () { },
@@ -208,7 +209,10 @@ export default {
     },
     updateMeasure (p) {
       if (p.length > 1) {
-        var result = getDisAndLabelPos(p, 10, 50, this.$root.$earth);
+        var result = getDisAndLabelPos(p, this.interval, this.$root.$earth);
+        if (this.interval === 0) {
+          this.interval = result.interval;
+        }
         var labels = result.label;
         this._labels.forEach(l => l.destroy());
         this._labels = [];

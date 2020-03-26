@@ -111,10 +111,10 @@
           <span class="xbsj-item-name">{{lang.face}}</span>
         </div>
         <!-- 多边形贴图 -->
-        <!-- <div class="xbsj-item-btnbox" @click="PolygonImageShow">
+        <div class="xbsj-item-btnbox" @click="PolygonImageShow">
           <div class="xbsj-item-btn facebutton"></div>
           <span class="xbsj-item-name">{{lang.polygonImage}}</span>
-        </div>-->
+        </div>
         <!-- 标绘更多 -->
         <!-- <div class="xbsj-item-btnbox" @click="EntityMoreShow=!EntityMoreShow">
           <div class="xbsj-item-btn more"></div>

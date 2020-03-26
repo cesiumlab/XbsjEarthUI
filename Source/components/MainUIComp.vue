@@ -148,7 +148,7 @@ import LabSymbol from "./tools/SymbolTool/LabSymbol";
 import OnlineSymbol from "./tools/SymbolTool/OnlineSymbol";
 import TilesTest from "./tools/TilesTest";
 
-// import GeoPolygonImage from "./viztools/GeoPolygonImage";
+import GeoPolygonImage from "./viztools/GeoPolygonImage";
 
 export default {
   components: {
@@ -225,9 +225,8 @@ export default {
     CustomSymbol,
     LabSymbol,
     OnlineSymbol,
-    TilesTest
-    // ,
-    // GeoPolygonImage
+    TilesTest,
+    GeoPolygonImage
   },
   data: function() {
     return {
@@ -273,9 +272,8 @@ export default {
         ["CameraView.View"]: "CameraViewPrp",
         GroundImage: "GroundImageTool",
         GeoPin: "PinDivTool",
-        TilesTest: "TilesTest"
-        // ,
-        // CustomPrimitiveExt_Image: "GeoPolygonImage"
+        TilesTest: "TilesTest",
+        CustomPrimitiveExt_Image: "GeoPolygonImage"
       },
       tools: [
         {
