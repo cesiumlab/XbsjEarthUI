@@ -148,7 +148,8 @@ export default {
       enabled: false,
       modelexpansion_over: false,
       measuring: false,
-      interval: 0
+      interval: 0,
+      temInterval: 0
     };
   },
   created () { },
@@ -191,6 +192,9 @@ export default {
         })
         this._labels = [];
         this.measurementType = "NONE";
+        if (this.interval == 0) {
+          this.interval = this.temInterval;
+        }
       }
     },
     measurementType (v) {
@@ -228,6 +232,8 @@ export default {
       }
     },
     disGroudMeasure () {
+      this.interval = 0;
+      this.temInterval = 0;
       if (this.measurementType !== "SPACE_DIS_GROUD") {
         this._disGroud = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
         this._disGroud.creating = true;
@@ -250,13 +256,12 @@ export default {
     },
     updateMeasure (p) {
       if (p.length > 1) {
-        var result = getDisAndLabelPos(p, this.interval, this.$root.$earth);
+        var it = this.interval;
+        var result = getDisAndLabelPos(p, it, this.$root.$earth);
         if (!result) {
           return;
         }
-        if (this.interval === 0) {
-          this.interval = result.interval;
-        }
+        this.temInterval = result.interval;
         var labels = result.label;
         this._labels.forEach(l => l.destroy());
         this._labels = [];

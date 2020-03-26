@@ -1,5 +1,5 @@
 
-var limit = 50;
+var limit = 20;
 function getDisAndLabelPos (positions, interval, earth) {
     if (!earth.czm.scene.globe.depthTestAgainstTerrain) {
         earth.czm.scene.globe.depthTestAgainstTerrain = true;
@@ -44,7 +44,6 @@ function getDisAndLabelPos (positions, interval, earth) {
         var first = c1;
         if (distance > interval) {
             var step = distance / interval;
-            interval = distance / step;
             var xinterval = (p1[0] - p2[0]) / step;
             var yinterval = (p1[1] - p2[1]) / step;
 
