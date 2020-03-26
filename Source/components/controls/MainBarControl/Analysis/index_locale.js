@@ -14,7 +14,8 @@ const zh = {
   distance: "距离",
   height: "高度",
   area: "面积",
-  section: "剖面",
+  disGroud: "剖面",
+  areaGroud: "贴地面积",
   volume: "体积",
   reset: "清除"
 };
@@ -35,6 +36,8 @@ const en = {
   distance: "Distance",
   height: "Height",
   area: "Area",
+  disGroud: "Section",
+  areaGroud: "Groud Area",
   volume: "Volume",
   reset: "Clear"
 };

@@ -1,5 +1,6 @@
 
-function getDisAndLabelPos (positions, interval, maxSample, earth) {
+var limit = 50;
+function getDisAndLabelPos (positions, interval, earth) {
     if (!earth.czm.scene.globe.depthTestAgainstTerrain) {
         earth.czm.scene.globe.depthTestAgainstTerrain = true;
     }
@@ -13,6 +14,24 @@ function getDisAndLabelPos (positions, interval, maxSample, earth) {
 
     var disAndLabelPos = [];
     var total = 0;
+
+    if (interval === 0) {
+        for (var i = 1; i < positions.length; i++) {
+            var p1 = positions[i - 1];
+            var p2 = positions[i];
+
+            var c1 = Cesium.Cartesian3.fromRadians(p1[0], p1[1], p1[2]);
+            var c2 = Cesium.Cartesian3.fromRadians(p2[0], p2[1], p2[2]);
+            total += Cesium.Cartesian3.distance(c1, c2);
+        }
+
+        interval = Math.round(total / limit);
+    }
+
+    if (!interval) {
+        return null;
+    }
+    total = 0;
     for (var i = 1; i < positions.length; i++) {
         var p1 = positions[i - 1];
         var p2 = positions[i];
@@ -25,7 +44,6 @@ function getDisAndLabelPos (positions, interval, maxSample, earth) {
         var first = c1;
         if (distance > interval) {
             var step = distance / interval;
-            step = Math.min(step, maxSample);
             interval = distance / step;
             var xinterval = (p1[0] - p2[0]) / step;
             var yinterval = (p1[1] - p2[1]) / step;
@@ -73,6 +91,7 @@ function getDisAndLabelPos (positions, interval, maxSample, earth) {
     var result = {};
     result.sample = samplePoints;
     result.label = disAndLabelPos;
+    result.interval = interval;
     return result;
 }
 

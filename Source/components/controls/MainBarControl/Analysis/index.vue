@@ -101,12 +101,21 @@
           ></div>
           <span class="xbsj-item-name">{{lang.area}}</span>
         </div>
-        <div class="xbsj-item-btnbox" @click="disSectionMeasure()">
+
+        <div class="xbsj-item-btnbox" @click="disGroudMeasure()">
           <div
-            class="xbsj-item-btn disSectionbutto"
-            :class="measurementType === 'SPACE_DIS_SECTION' ? 'disSectionbuttonActive' : ''"
+            class="xbsj-item-btn disGroudbutton"
+            :class="measurementType === 'SPACE_DIS_GROUD' ? 'disGroudbuttonActive' : ''"
           ></div>
-          <span class="xbsj-item-name">{{lang.section}}</span>
+          <span class="xbsj-item-name">{{lang.disGroud}}</span>
+        </div>
+
+        <div class="xbsj-item-btnbox" @click="areaGroudMeasure()">
+          <div
+            class="xbsj-item-btn areabutton"
+            :class="measurementType === 'SPACE_AREA_GROUD' ? 'areaGroudbuttonActive' : ''"
+          ></div>
+          <span class="xbsj-item-name">{{lang.areaGroud}}</span>
         </div>
         <!-- <div class="xbsj-item-btnbox" @click="cutFillEnabled=!cutFillEnabled"> -->
         <div class="xbsj-item-btnbox" @click="cutFillComputingShow=!cutFillComputingShow">
@@ -183,33 +192,68 @@ export default {
         this._labels = [];
         this.measurementType = "NONE";
       }
+    },
+    measurementType (v) {
+      if (this._disGroud && this.measurementType !== "SPACE_DIS_GROUD") {
+        this._disGroud.creating = false;
+      }
+      if (this._areaGroud && this.measurementType !== "SPACE_AREA_GROUD") {
+        this._areaGroud.creating = false;
+      }
     }
   },
   methods: {
-    disSectionMeasure () {
-      if (this.measurementType !== "SPACE_DIS_SECTION") {
-        var Polyline = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
-        Polyline.creating = true;
+    areaGroudMeasure () {
+      if (this.measurementType !== "SPACE_AREA_GROUD") {
+        this._areaGroud = new XE.Obj.CustomPrimitiveExt.Image(this.$root.$earth);
+        this._areaGroud.isCreating = true;
+        this._areaGroud.creating = true;
+        this._areaGroud.imageUrl = null;
+
         this._creating = [];
         this._creating.push(XE.MVVM.bind(
           this,
           "measuring",
-          Polyline,
+          this._areaGroud,
           "creating"
         ));
         this._creating.push(XE.MVVM.watch(() => ({
-          positions: [...Polyline.positions],
+          positions: [...this._areaGroud.positions],
         }), () => {
-          this.updateMeasure(Polyline.positions);
+          this.updateMeasure(this._areaGroud.positions);
         }));
 
-        this._temGeometry.push(Polyline);
-        this.measurementType = "SPACE_DIS_SECTION";
+        this._temGeometry.push(this._areaGroud);
+        this.measurementType = "SPACE_AREA_GROUD";
+      }
+    },
+    disGroudMeasure () {
+      if (this.measurementType !== "SPACE_DIS_GROUD") {
+        this._disGroud = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+        this._disGroud.creating = true;
+        this._creating = [];
+        this._creating.push(XE.MVVM.bind(
+          this,
+          "measuring",
+          this._disGroud,
+          "creating"
+        ));
+        this._creating.push(XE.MVVM.watch(() => ({
+          positions: [...this._disGroud.positions],
+        }), () => {
+          this.updateMeasure(this._disGroud.positions);
+        }));
+
+        this._temGeometry.push(this._disGroud);
+        this.measurementType = "SPACE_DIS_GROUD";
       }
     },
     updateMeasure (p) {
       if (p.length > 1) {
         var result = getDisAndLabelPos(p, this.interval, this.$root.$earth);
+        if (!result) {
+          return;
+        }
         if (this.interval === 0) {
           this.interval = result.interval;
         }
@@ -512,17 +556,32 @@ export default {
   background-size: contain;
   cursor: pointer;
 }
-.disSectionbutto {
+.disGroudbutton {
   background: url(../../../../images/area.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
-.disSectionbutto:hover {
+.disGroudbutton:hover {
   background: url(../../../../images/area_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
-.disSectionbuttonActive {
+.disGroudbuttonActive {
+  background: url(../../../../images/area_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.areaGroudbutton {
+  background: url(../../../../images/area.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.areaGroudbutton:hover {
+  background: url(../../../../images/area_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.areaGroudbuttonActive {
   background: url(../../../../images/area_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
