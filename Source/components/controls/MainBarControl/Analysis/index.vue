@@ -267,7 +267,6 @@ export default {
         this._temGeometry.push(this._disGroud);
         this.measurementType = "SPACE_DIS_GROUD";
       }
-      // this._result = {};
       // this.$root.$earthUI.showPropertyWindow(this._result, {
       //   component: "ProfileAnalysis"
       // });

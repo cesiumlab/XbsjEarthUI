@@ -12,11 +12,7 @@
     :resized="resize"
   >
     <div style="width:100%;height:100%;">
-      <!-- <div class="flatten">
-        <label>{{lang.sampinterval}}</label>
-        <XbsjInputNumber style="float:left; width: 200px;" v-model.number="interval"></XbsjInputNumber>
-      </div>-->
-      <div ref="chartContents" style="float:left;width:100%;height:100%;">
+      <div class="flatten">
         <div style="float: left;">
           <div class="buttonGroup">
             <button
@@ -30,7 +26,7 @@
               :class="editing?'btncoloron':''"
             >{{lang.editing}}</button>
           </div>
-          <!-- 拖拽 -->
+
           <div
             :title="lang.drag"
             class="dragBox"
@@ -41,6 +37,32 @@
             <div class="dragButton" :class="{highlight:drag_over}">{{lang.dragcontent}}</div>
           </div>
         </div>
+      </div>
+      <div class="chartContents" ref="chartContents">
+        <!-- <div style="float: left;">
+          <div class="buttonGroup">
+            <button
+              class="attitudeEditCameraButton"
+              @click="creating =!creating"
+              :class="creating?'btncoloron':''"
+            >{{lang.creating}}</button>
+            <button
+              class="attitudeEditCameraButton"
+              @click="editing =!editing"
+              :class="editing?'btncoloron':''"
+            >{{lang.editing}}</button>
+          </div>
+
+          <div
+            :title="lang.drag"
+            class="dragBox"
+            @dragover="dragOver"
+            @drop="drop"
+            @dragleave="dragLeave"
+          >
+            <div class="dragButton" :class="{highlight:drag_over}">{{lang.dragcontent}}</div>
+          </div>
+        </div>-->
         <div class="myBarChart" ref="mains"></div>
       </div>
     </div>
@@ -168,7 +190,7 @@ export default {
         //   text: "大数据量面积图"
         // },
         grid: {
-          left: 180, //距离左边的距离
+          left: 50, //距离左边的距离
           right: 25, //距离右边的距离
           bottom: 25, //距离下边的距离
           top: 25 //距离上边的距离
@@ -391,6 +413,11 @@ button:focus {
   background: url(../../images/drag_on.png) no-repeat;
   background-size: contain;
   color: #1fffff;
+}
+.chartContents {
+  float: left;
+  width: calc(100% - 120px);
+  height: 100%;
 }
 </style>
 
