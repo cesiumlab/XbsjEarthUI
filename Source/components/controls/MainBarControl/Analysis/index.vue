@@ -405,6 +405,7 @@ export default {
           e.destroy();
         });
       }
+      this.$root.$earth.analyzation.cutFillComputingOld.clearResults();
     },
     startMove(event) {
       //如果事件的目标不是本el 返回
