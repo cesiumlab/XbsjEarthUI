@@ -399,7 +399,7 @@ export default {
     clearResults() {
       this.$root.$earth.analyzation.measurement.clearResults();
       this.$root.$earth.analyzation.cutFillComputing.clearResults();
-      this.$root.$earth.analyzation.cutFillComputing.showHelper = false;
+      this.$root.$earth.analyzation.cutFillComputing.positions = [];
       this.cutFillComputingShow = false;
       if (this._temGeometry) {
         this._temGeometry.forEach(e => {
