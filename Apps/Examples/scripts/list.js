@@ -120,8 +120,16 @@ vueApp.examples = [
                 "url": "./earth-effect-fog.html"
             },
             {
+                "title": "效果-雨",
+                "url": "./earth-effect-rain.html"
+            },
+            {
                 "title": "效果-阴影",
                 "url": "./earth-effect-shadow.html"
+            },
+            {
+                "title": "效果-雪",
+                "url": "./earth-effect-snow.html"
             },
             {
                 "title": "效果-太阳/月亮/星空",

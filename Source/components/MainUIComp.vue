@@ -134,6 +134,7 @@ import ViewshedTool from "./viztools/ViewshedTool";
 
 import PropertyWindow from "./properties/PropertyWindow";
 import CameraViewPrp from "./properties/CameraViewPrp";
+import ProfileAnalysis from "./properties/ProfileAnalysis";
 import TilesetStyleEditor from "./properties/TilesetStyleEditor";
 import TilesetExpansionEditor from "./properties/TilesetExpansionEditor";
 import ShareEditor from "./properties/ShareEditor";
@@ -211,6 +212,7 @@ export default {
     TerrainOnline,
     PropertyWindow,
     CameraViewPrp,
+    ProfileAnalysis,
     AddPoint,
     ForestLab,
     LinearPanel,
@@ -270,6 +272,7 @@ export default {
         GeoPolygon: "GeoPolygon",
         GeoSector: "GeoSector",
         ["CameraView.View"]: "CameraViewPrp",
+        ProfileAnalysis: "ProfileAnalysis",
         GroundImage: "GroundImageTool",
         GeoPin: "PinDivTool",
         TilesTest: "TilesTest",
