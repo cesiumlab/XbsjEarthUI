@@ -10,11 +10,13 @@
   >
     <div v-if="!startShow && computing">
       <button class="xbsj-button" @click="buttonClick">{{buttonText}}</button>
+      <br />
       <span>{{lang.progress}}{{ (progress * 100).toFixed(1) }}%</span>
     </div>
 
     <div v-if="!startShow && !computing">
       <button class="xbsj-button" @click="buttonClick">{{buttonText}}</button>
+      <br />
       <span>{{lang.results}}</span>
       <br />
       <span>{{lang.gridWidth}}{{ results.gridWidth.toFixed(2) }} m</span>
@@ -128,7 +130,7 @@ export default {
   mounted() {
     const bind = XE.MVVM.bind;
     this._cutFillComputing = this.$root.$earth.analyzation.cutFillComputing;
-    console.log(this._cutFillComputing);
+    // console.log(this._cutFillComputing);
 
     this._disposers = this._disposers || [];
     const props = [
@@ -177,6 +179,7 @@ export default {
         this._cutFillComputing.clearResults();
         this._cutFillComputing.polygonCreating = false;
         this._cutFillComputing.positions = [];
+        this.startShow = true;
       }
     }
   },
