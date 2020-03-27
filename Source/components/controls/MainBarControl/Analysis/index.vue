@@ -105,7 +105,6 @@
         <div class="xbsj-item-btnbox" @click="disGroudMeasure()">
           <div
             class="xbsj-item-btn disGroudbutton"
-            :class="measurementType === 'SPACE_DIS_GROUD' ? 'disGroudbuttonActive' : ''"
           ></div>
           <span class="xbsj-item-name">{{lang.disGroud}}</span>
         </div>
@@ -318,6 +317,9 @@ export default {
     },
     createLabel (option) {
       let p = new XE.Obj.Pin(this.$root.$earth);
+      p.pinBuilder.extTextFont = "36px 楷体";
+      p.pinBuilder.outlineColor = [0, 0, 0];
+      p.position = option.pos;
       p.position = option.pos;
       p.pinBuilder.extText = option.dis;
       p.scale = 0.0001;
@@ -426,6 +428,8 @@ export default {
     clearResults () {
       this.$root.$earth.analyzation.measurement.clearResults();
       this.$root.$earth.analyzation.cutFillComputing.clearResults();
+      this.$root.$earth.analyzation.cutFillComputing.positions = [];
+      this.cutFillComputingShow = false;
       if (this._temGeometry) {
         this._temGeometry.forEach(e => {
           e.destroy();

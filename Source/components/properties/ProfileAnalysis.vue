@@ -134,12 +134,18 @@ export default {
       this.updateMeasure(this._disGroud.positions);
     }));
 
-    this._temGeometry.push(this._disGroud);
+
   },
   watch: {
+    editing (v) {
+      if (this._temGeometry) {
+        this._temGeometry.forEach(e => {
+          e.destroy();
+        });
+      }
+    },
     creating (v) {
       if (v == false) {
-        this._creating.forEach(d => d());
         this._creating = [];
         let self = this;
         if (this._labels.length > 0) {
@@ -166,6 +172,12 @@ export default {
           ydata.push(element.height);
         });
         this.drawLine(resultdata, xdata, ydata);
+      } else {
+        if (this._temGeometry) {
+          this._temGeometry.forEach(e => {
+            e.destroy();
+          });
+        }
       }
     }
   },
@@ -190,6 +202,8 @@ export default {
     },
     createLabel (option) {
       let p = new XE.Obj.Pin(this.$root.$earth);
+      p.pinBuilder.extTextFont = "36px 楷体";
+      p.pinBuilder.outlineColor = [0, 0, 0];
       p.position = option.pos;
       p.pinBuilder.extText = option.dis;
       p.scale = 0.0001;
@@ -384,12 +398,25 @@ export default {
       e.preventDefault();
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions !== undefined) {
-        this._czmObj.creating = false;
-        this.$root.$earthUI.getCzmObjectPositionFromDrag(czmObj, this._czmObj);
+        // this._czmObj.creating = false;
+        this.$root.$earthUI.getCzmObjectPositionFromDrag(czmObj, this._disGroud);
+        this._disGroud.creating = false;
       }
     },
     cancel () {
-      
+      this._creating.forEach(d => d());
+      this._disGroud.destroy();
+      if (this._temGeometry) {
+        this._temGeometry.forEach(e => {
+          e.destroy();
+        });
+      }
+      if (this._labels) {
+        this._labels.forEach(e => {
+          e.destroy();
+        })
+      }
+
       this.$parent.destroyTool(this);
     }
   }
