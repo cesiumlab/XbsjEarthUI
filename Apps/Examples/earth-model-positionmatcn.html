@@ -125,7 +125,7 @@
                     this._line.flyTo();
                 },
                 compute() {
-                    var r = ab2Ab(new Cesium.Cartesian3(0, 0, 0),
+                    var r = XE.Tool.Math.ab2Ab(new Cesium.Cartesian3(0, 0, 0),
                         new Cesium.Cartesian3(0, 0, 10),
                         Cesium.Cartesian3.fromDegrees(this.xbsjPosition[0], this.xbsjPosition[1], this.xbsjPosition[2]),
                         Cesium.Cartesian3.fromDegrees(this.xbsjPosition[0], this.xbsjPosition[1], this.xbsjPosition[2] + 10));
@@ -140,7 +140,7 @@
                         this._pin1.position[2] = projectPoint.height;
 
 
-                        var r2 = ab2Ab(new Cesium.Cartesian3(0, 0, -1.540082),
+                        var r2 = XE.Tool.Math.ab2Ab(new Cesium.Cartesian3(0, 0, -1.540082),
                             new Cesium.Cartesian3(0, 0, 1.62862),
                             Cesium.Cartesian3.fromRadians(this._pin1.position[0], this._pin1.position[1], this._pin1.position[2]),
                             Cesium.Cartesian3.fromRadians(this._pin2.position[0], this._pin2.position[1], this._pin2.position[2]));
@@ -304,8 +304,8 @@
         // 2 创建vue程序
         // XE.ready()用来加载Cesium.js等相关资源
         XE.ready().then(() => {
-            return XE.HTML.loadJS('./scripts/ab2AB.js');
-        }).then(() => {
+            //     return XE.HTML.loadJS('./scripts/ab2AB.js');
+            // }).then(() => {
             var app = new Vue({
                 el: '#vueApp',
                 components: {

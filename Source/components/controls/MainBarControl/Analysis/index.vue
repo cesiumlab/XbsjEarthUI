@@ -112,11 +112,20 @@
 
         <div class="xbsj-item-btnbox" @click="areaGroudMeasure()">
           <div
-            class="xbsj-item-btn areabutton"
+            class="xbsj-item-btn areaGroudbutton"
             :class="measurementType === 'SPACE_AREA_GROUD' ? 'areaGroudbuttonActive' : ''"
           ></div>
           <span class="xbsj-item-name">{{lang.areaGroud}}</span>
         </div>
+
+        <div class="xbsj-item-btnbox" @click="angleMeasure()">
+          <div
+            class="xbsj-item-btn anglebutton"
+            :class="measurementType === 'SPACE_ANGLE' ? 'anglebuttonActive' : ''"
+          ></div>
+          <span class="xbsj-item-name">{{lang.areaGroud}}</span>
+        </div>
+
         <!-- <div class="xbsj-item-btnbox" @click="cutFillEnabled=!cutFillEnabled"> -->
         <div class="xbsj-item-btnbox" @click="cutFillComputingShow=!cutFillComputingShow">
           <div class="xbsj-item-btn volumebutton" :class="{highlight:cutFillComputingShow}"></div>
@@ -137,9 +146,8 @@
 
 <script>
 import languagejs from "./index_locale";
-import { getDisAndLabelPos } from "./measure";
 export default {
-  data() {
+  data () {
     return {
       lang: {},
       measurementType: "NONE",
@@ -149,12 +157,13 @@ export default {
       enabled: false,
       modelexpansion_over: false,
       measuring: false,
-      interval: 0,
-      temInterval: 0
+      areaGroud: 0,
+      areaGroudinterval: 0,
+      temAreaGroudinterval: 0
     };
   },
-  created() {},
-  mounted() {
+  created () { },
+  mounted () {
     this.$nextTick(() => {
       this._disposers = this._disposers || [];
       this._disposers.push(
@@ -178,34 +187,19 @@ export default {
       );
       this._labels = [];
       this._temGeometry = [];
+      this._creating = [];
     });
   },
-  beforeDestroy() {
+  beforeDestroy () {
     this._disposers.forEach(d => d());
   },
   watch: {
-    measuring(v) {
+    measuring (v) {
       if (v == false) {
-        this._creating.forEach(d => d());
-        let self = this;
-        this._labels.forEach(l => {
-          self._temGeometry.push(l);
-        });
-        this._labels = [];
-        this.measurementType = "NONE";
-        if (this.interval == 0) {
-          this.interval = this.temInterval;
-        }
-        window.oncontextmenu = function(event) {
-          var evt = event || window.event;
-          evt.preventDefault();
-        };
-        this.$root.$earthUI.showPropertyWindow(this._result, {
-          component: "ProfileAnalysis"
-        });
+        this.updateCreatingBind();
       }
     },
-    measurementType(v) {
+    measurementType (v) {
       if (this._disGroud && this.measurementType !== "SPACE_DIS_GROUD") {
         this._disGroud.creating = false;
       }
@@ -215,95 +209,128 @@ export default {
     }
   },
   methods: {
-    areaGroudMeasure() {
+    angleMeasure () {
+      if (this.measurementType !== "SPACE_ANGLE") {
+        this._angle = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+        this._angle.isCreating = true;
+        this._angle.creating = true;
+        this.updateCreatingBind();
+        this._creating.push(XE.MVVM.bind(
+          this,
+          "measuring",
+          this._angle,
+          "creating"
+        ));
+        let self = this;
+        this._creating.push(XE.MVVM.watch(() => ({
+          positions: [...this._angle.positions],
+        }), () => {
+          if (self._angle.positions.length == 2) {
+            var result = XE.Tool.Math.hpr(self._angle.positions[0], self._angle.positions[1]);
+            if (result) {
+              self._labels.forEach(l => l.destroy());
+              self._labels = [];
+              var lb = self.createLabel({
+                pos: self._angle.positions[1],
+                dis: Math.round(((result[0] * 180 / Math.PI) + 90) % 360 * 100) / 100 + "度"
+              });
+              self._labels.push(lb);
+            }
+          } else if (self._angle.positions.length > 2) {
+            this._angle.creating = false;
+          }
+        }));
+
+        this._temGeometry.push(this._angle);
+        this.measurementType = "SPACE_ANGLE";
+      }
+    },
+    areaGroudMeasure () {
+      this.areaGroudinterval = 0;
+      this.temAreaGroudInterval = 0;
       if (this.measurementType !== "SPACE_AREA_GROUD") {
-        this._areaGroud = new XE.Obj.CustomPrimitiveExt.Image(
-          this.$root.$earth
-        );
+        this._areaGroud = new XE.Obj.CustomPrimitiveExt.Image(this.$root.$earth);
         this._areaGroud.isCreating = true;
         this._areaGroud.creating = true;
         this._areaGroud.imageUrl = null;
-
-        this._creating = [];
-        this._creating.push(
-          XE.MVVM.bind(this, "measuring", this._areaGroud, "creating")
-        );
-        this._creating.push(
-          XE.MVVM.watch(
-            () => ({
-              positions: [...this._areaGroud.positions]
-            }),
-            () => {
-              this.updateMeasure(this._areaGroud.positions);
+        this._areaGroud.offsetHeight = 5;
+        this._areaGroud._customPrimitive.translucent = true;
+        this.updateCreatingBind();
+        this._creating.push(XE.MVVM.bind(
+          this,
+          "measuring",
+          this._areaGroud,
+          "creating"
+        ));
+        let self = this;
+        this._creating.push(XE.MVVM.watch(() => ({
+          positions: [...this._areaGroud.positions],
+        }), () => {
+          if (self._areaGroud.positions.length > 2) {
+            self.areaGroud = self._areaGroud.totalArea;
+            if (isNaN(self.areaGroud)) {
+              self.areaGroud = 0;
             }
-          )
-        );
+            if (self.areaGroudinterval === 0 && self.areaGroud > 1) {
+              self._areaGroud.interpolation = true;
+              self.temAreaGroudInterval = Math.sqrt(self.areaGroud) / 5;
+              self._areaGroud.interpolationDistance = self.temAreaGroudInterval;
+            }
+
+            self._labels.forEach(l => l.destroy());
+            self._labels = [];
+            var lb = self.createLabel({
+              pos: self._areaGroud.positions[0],
+              dis: Math.round(self.areaGroud * 100) / 100 + "平方米"
+            });
+            self._labels.push(lb);
+          }
+
+        }));
 
         this._temGeometry.push(this._areaGroud);
         this.measurementType = "SPACE_AREA_GROUD";
       }
     },
-    disGroudMeasure() {
-      this.interval = 0;
-      this.temInterval = 0;
-      if (this.measurementType !== "SPACE_DIS_GROUD") {
-        this._disGroud = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
-        this._disGroud.creating = true;
-        this._creating = [];
-        this._creating.push(
-          XE.MVVM.bind(this, "measuring", this._disGroud, "creating")
-        );
-        this._creating.push(
-          XE.MVVM.watch(
-            () => ({
-              positions: [...this._disGroud.positions]
-            }),
-            () => {
-              this.updateMeasure(this._disGroud.positions);
-            }
-          )
-        );
-
-        this._temGeometry.push(this._disGroud);
-        this.measurementType = "SPACE_DIS_GROUD";
-      }
-      // this.$root.$earthUI.showPropertyWindow(this._result, {
-      //   component: "ProfileAnalysis"
-      // });
+    disGroudMeasure () {
+      this.measurementType = "SPACE_DIS_GROUD"
+      this.$root.$earthUI.showPropertyWindow({}, {
+        component: "ProfileAnalysis"
+      });
     },
-    updateMeasure(p) {
-      if (p.length > 1) {
-        var it = this.interval;
-        var result = getDisAndLabelPos(p, it, this.$root.$earth);
-        if (!result) {
-          return;
-        }
-        this._result = result;
-        this.temInterval = result.interval;
-        var labels = result.label;
-        this._labels.forEach(l => l.destroy());
+    updateCreatingBind () {
+      this._creating.forEach(d => d());
+      this._creating = [];
+      let self = this;
+      if (this._labels.length > 0) {
+        this._labels.forEach(l => {
+          self._temGeometry.push(l);
+        })
         this._labels = [];
-        labels.forEach(l => {
-          var lb = this.createLabel(l);
-          this._labels.push(lb);
-        });
+        this.measurementType = "NONE";
+      }
+      if (this.disGroudinterval == 0) {
+        this.disGroudinterval = this.temDisGroudInterval;
+      }
+      if (this.areaGroudInterval == 0) {
+        this.areaGroudInterval = this.temAreaGroudInterval;
       }
     },
-    createLabel(option) {
+    createLabel (option) {
       let p = new XE.Obj.Pin(this.$root.$earth);
       p.position = option.pos;
       p.pinBuilder.extText = option.dis;
       p.scale = 0.0001;
       return p;
     },
-    setTileset(tileset) {
+    setTileset (tileset) {
       if (this._tileset !== tileset) {
         this._tileset = tileset;
       }
 
       this.enabled = !!this._tileset;
     },
-    startCameraVideo() {
+    startCameraVideo () {
       var demoVideo =
         XE.HTML.getScriptBaseUrl("XbsjEarthUI") + "/assets/demo.mp4";
       // 视频融合
@@ -316,7 +343,7 @@ export default {
 
       this.$root.$earthUI.showPropertyWindow(cameraVideo);
     },
-    startViewshed() {
+    startViewshed () {
       var viewshed = new XE.Obj.Viewshed(this.$root.$earth);
       viewshed.setPositionWithCurrentCamera();
       viewshed.far = 50;
@@ -325,7 +352,7 @@ export default {
 
       this.$root.$earthUI.showPropertyWindow(viewshed);
     },
-    startFlattenning() {
+    startFlattenning () {
       var flattenedPolygons = new XE.Obj.FlattenedPolygonCollection(
         this.$root.$earth
       );
@@ -333,14 +360,14 @@ export default {
       flattenedPolygons.isCreating = true;
       this.$root.$earthUI.showPropertyWindow(flattenedPolygons);
     },
-    startClipping() {
+    startClipping () {
       var clippingPlane = new XE.Obj.ClippingPlane(this.$root.$earth);
       clippingPlane.name = "未命名剖切面";
       clippingPlane.positionPicking = true;
       clippingPlane.isCreating = true;
       this.$root.$earthUI.showPropertyWindow(clippingPlane);
     },
-    startWater() {
+    startWater () {
       var water = new XE.Obj.Water(this.$root.$earth);
       water.name = "未命名水面";
       water.isCreating = true;
@@ -348,13 +375,13 @@ export default {
       water.creating = true;
       this.$root.$earthUI.showPropertyWindow(water);
     },
-    expansionEditor() {
+    expansionEditor () {
       //显示模型编辑器
       this.$root.$earthUI.showPropertyWindow(this._tileset, {
         component: "TilesetExpansionEditor"
       });
     },
-    modelexpansion_dragover(e) {
+    modelexpansion_dragover (e) {
       e.preventDefault();
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj instanceof XE.Obj.Tileset) {
@@ -365,7 +392,7 @@ export default {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    modelexpansion_dragleave() {
+    modelexpansion_dragleave () {
       this.modelexpansion_over = false;
       const csn3 = this.$root.$earth.sceneTree.currentSelectedNode;
       if (csn3 && csn3.czmObject && csn3.czmObject instanceof XE.Obj.Tileset) {
@@ -374,7 +401,7 @@ export default {
         this.enabled = false;
       }
     },
-    modelexpansion_drop(e) {
+    modelexpansion_drop (e) {
       this.modelexpansion_over = false;
       e.preventDefault();
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
@@ -396,11 +423,9 @@ export default {
         }
       }
     },
-    clearResults() {
+    clearResults () {
       this.$root.$earth.analyzation.measurement.clearResults();
       this.$root.$earth.analyzation.cutFillComputing.clearResults();
-      this.$root.$earth.analyzation.cutFillComputing.positions = [];
-      this.cutFillComputingShow = false;
       if (this._temGeometry) {
         this._temGeometry.forEach(e => {
           e.destroy();
@@ -408,7 +433,7 @@ export default {
       }
       this.$root.$earth.analyzation.cutFillComputingOld.clearResults();
     },
-    startMove(event) {
+    startMove (event) {
       //如果事件的目标不是本el 返回
       if (
         event.target.parentElement !== this.$refs.container &&
@@ -419,7 +444,7 @@ export default {
       }
       this.moving = true;
     },
-    onMoving(event) {
+    onMoving (event) {
       //获取鼠标和为开始位置的插值，滚动滚动条
       if (!this.moving) return;
 
@@ -429,7 +454,7 @@ export default {
         dom.scrollLeft = wleft;
       }
     },
-    endMove(envent) {
+    endMove (envent) {
       this.moving = false;
     }
   }

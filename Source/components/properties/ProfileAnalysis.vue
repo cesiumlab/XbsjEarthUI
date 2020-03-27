@@ -70,11 +70,12 @@
 </template>
 
 <script>
+import { getDisAndLabelPos } from '../utils/measure';
 export default {
   props: {
     getBind: Function
   },
-  data() {
+  data () {
     return {
       langs: {
         zh: {
@@ -96,29 +97,105 @@ export default {
       interval: 0,
       creating: true,
       editing: false,
-      drag_over: false
+      drag_over: false,
+      interval: 0,
+      teminterval: 0
     };
   },
-  created() {
+  created () {
     // var lang = this.$root.language;
     // this.lang = this.langs[lang];
   },
-  mounted() {
+  mounted () {
     //获取绑定的view
-    let result = this.getBind();
-    // console.log(result);
-    let resultdata = result.sample,
-      xdata = [],
-      ydata = [],
-      data = {};
-    resultdata.forEach(element => {
-      xdata.push(element.distance);
-      ydata.push(element.height);
-    });
-    this.drawLine(resultdata, xdata, ydata);
+    this.interval = 0;
+    this.teminterval = 0;
+    this._labels = [];
+    this._temGeometry = [];
+    this._creating = [];
+    this._disGroud = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+    this._disGroud.creating = true;
+
+    this._creating.push(XE.MVVM.bind(
+      this,
+      "creating",
+      this._disGroud,
+      "creating"
+    ));
+    this._creating.push(XE.MVVM.bind(
+      this,
+      "editing",
+      this._disGroud,
+      "editing"
+    ));
+    this._creating.push(XE.MVVM.watch(() => ({
+      positions: [...this._disGroud.positions],
+    }), () => {
+      this.updateMeasure(this._disGroud.positions);
+    }));
+
+    this._temGeometry.push(this._disGroud);
+  },
+  watch: {
+    creating (v) {
+      if (v == false) {
+        this._creating.forEach(d => d());
+        this._creating = [];
+        let self = this;
+        if (this._labels.length > 0) {
+          this._labels.forEach(l => {
+            self._temGeometry.push(l);
+          })
+          this._labels = [];
+          this.measurementType = "NONE";
+        }
+        if (this.disGroudinterval == 0) {
+          this.disGroudinterval = this.temDisGroudInterval;
+        }
+        if (this.areaGroudInterval == 0) {
+          this.areaGroudInterval = this.temAreaGroudInterval;
+        }
+
+        // console.log(result);
+        let resultdata = this._result.sample,
+          xdata = [],
+          ydata = [],
+          data = {};
+        resultdata.forEach(element => {
+          xdata.push(element.distance);
+          ydata.push(element.height);
+        });
+        this.drawLine(resultdata, xdata, ydata);
+      }
+    }
   },
   methods: {
-    resize() {
+    updateMeasure (p) {
+      if (p.length > 1) {
+        var it = this.interval;
+        var result = getDisAndLabelPos(p, it, this.$root.$earth);
+        if (!result) {
+          return;
+        }
+        this._result = result;
+        this.temInterval = result.interval;
+        var labels = result.label;
+        this._labels.forEach(l => l.destroy());
+        this._labels = [];
+        labels.forEach(l => {
+          var lb = this.createLabel(l);
+          this._labels.push(lb);
+        });
+      }
+    },
+    createLabel (option) {
+      let p = new XE.Obj.Pin(this.$root.$earth);
+      p.position = option.pos;
+      p.pinBuilder.extText = option.dis;
+      p.scale = 0.0001;
+      return p;
+    },
+    resize () {
       if (this._chart) {
         this.$refs.mains.style.width = this.$refs.chartContents.style.width;
         this.$refs.mains.style.height = this.$refs.chartContents.style.height;
@@ -126,7 +203,7 @@ export default {
       }
     },
     /*画图*/
-    drawLine(resultdata, xdata, ydata) {
+    drawLine (resultdata, xdata, ydata) {
       // 基于准备好的dom，初始化echarts实例
       this._chart = this.$echarts.init(this.$refs.mains);
       // 绘制柱状图图表
@@ -134,10 +211,10 @@ export default {
       this._chart.setOption({
         tooltip: {
           trigger: "axis",
-          position: function(pt) {
+          position: function (pt) {
             return [pt[0], "10%"];
           },
-          position: function(point, params, dom, rect, size) {
+          position: function (point, params, dom, rect, size) {
             //其中point为当前鼠标的位置，size中有两个属性：viewSize和contentSize，分别为外层div和tooltip提示框的大小;
             var x = point[0]; //
             var y = point[1];
@@ -165,7 +242,7 @@ export default {
             }
             return [posX, posY];
           },
-          formatter(params) {
+          formatter (params) {
             const item = params[0];
             // console.log(item);
             item.data = resultdata[item.dataIndex];
@@ -288,7 +365,7 @@ export default {
       });
     },
     //拖拽移动上面
-    dragOver(e) {
+    dragOver (e) {
       e.preventDefault();
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions !== undefined) {
@@ -298,11 +375,11 @@ export default {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    dragLeave() {
+    dragLeave () {
       this.drag_over = false;
     },
     //拖拽放置
-    drop(e) {
+    drop (e) {
       this.drag_over = false;
       e.preventDefault();
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
@@ -311,7 +388,8 @@ export default {
         this.$root.$earthUI.getCzmObjectPositionFromDrag(czmObj, this._czmObj);
       }
     },
-    cancel() {
+    cancel () {
+      
       this.$parent.destroyTool(this);
     }
   }
