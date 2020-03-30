@@ -58,7 +58,8 @@ const zh = {
   wall: '挡土墙',
   polygonImage: '多边形贴图',
   surface: '填充面',
-  polygonStretch: '多边形拉伸'
+  polygonStretch: '多边形拉伸',
+  classificationpolygon: '单体化'
 };
 
 const en = {
@@ -121,7 +122,8 @@ const en = {
   wall: 'Wall',
   polygonImage: 'polygon Image',
   surface: 'Surface',
-  polygonStretch: 'Polygon Stretch'
+  polygonStretch: 'Polygon Stretch',
+  classificationpolygon: 'Classification Polygon'
 };
 
 export default { zh, en };

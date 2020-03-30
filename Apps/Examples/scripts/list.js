@@ -68,6 +68,10 @@ vueApp.examples = [
                 "url": "./earth-camera-firstpersion.html"
             },
             {
+                "title": "单体化-编辑",
+                "url": "./earth-classificationPolygon-editing.html"
+            },
+            {
                 "title": "自定义贴地矩形-image",
                 "url": "./earth-customGroundRectangle-image.html"
             },

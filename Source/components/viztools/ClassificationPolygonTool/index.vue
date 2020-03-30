@@ -2,7 +2,7 @@
   <Window
     :width="480"
     :minWidth="480"
-    :height="344"
+    :height="300"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -31,6 +31,12 @@
             @click="model.editing =!model.editing"
             :class="model.editing?'btncoloron':''"
           >{{lang.editing}}</button>
+
+          <button
+            class="attitudeEditCameraButton"
+            @click="model.extrudedHeightEditing =!model.extrudedHeightEditing"
+            :class="model.extrudedHeightEditing?'btncoloron':''"
+          >{{lang.extrudedheightediting}}</button>
         </div>
         <!-- 拖拽 -->
         <!-- <div
@@ -43,30 +49,30 @@
         >{{lang.dragcontent}}</div>-->
       </div>
 
-      <!-- 高度 -->
-      <div class="flatten">
-        <label>{{lang.height}}</label>
-        <input style="float:left;" type="text" v-model.number="model.height" />
+      <div class="flatten-flex">
+        <!-- 辅助线 -->
+        <div class="flatten">
+          <label>{{lang.showhelper}}</label>
+          <XbsjSwitch v-model="model.showHelper"></XbsjSwitch>
+        </div>
       </div>
 
       <!-- 拉伸 -->
       <div class="flatten">
-        <label>{{lang.stretch}}</label>
+        <label>{{lang.extrudedheight}}</label>
         <input style="float:left;" type="text" v-model.number="model.extrudedHeight" />
       </div>
+
+      <!-- 拉伸 -->
+      <!-- <div class="flatten">
+        <label>{{lang.stretch}}</label>
+        <input style="float:left;" type="text" v-model.number="model.extrudedHeight" />
+      </div>-->
 
       <!-- 颜色 -->
       <div class="flatten">
         <label>{{lang.color}}</label>
         <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
-      </div>
-
-      <div class="flatten-flex">
-        <!-- 深度检测 -->
-        <div class="flatten" style="margin-top:16px;">
-          <label>{{lang.depthtest}}</label>
-          <XbsjSwitch v-model="model.depthTest"></XbsjSwitch>
-        </div>
       </div>
     </div>
   </Window>
@@ -91,9 +97,9 @@ export default {
         show: false,
         creating: false,
         editing: false,
-        height: 0,
-        extrudedHeight: null,
-        depthTest: false
+        showHelper: false,
+        extrudedHeight: 0,
+        extrudedHeightEditing: false
       },
       bgbaseColorUI: {
         rgba: {
@@ -113,6 +119,11 @@ export default {
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
     // console.log(czmObj);
+    uia.earth.interaction.picking.enabled = true; // 开启拾取操作
+
+    // 拾取事件定制
+    czmObj.onclick = () => (czmObj.color = [0, 1, 0, 0.5]);
+    czmObj.onclickout = () => (czmObj.color = [1, 1, 0, 0.01]);
 
     if (czmObj) {
       this._czmObj = czmObj;
@@ -121,10 +132,9 @@ export default {
         show: "model.show",
         creating: "model.creating",
         editing: "model.editing",
-        height: "model.height",
+        showHelper: "model.showHelper",
         extrudedHeight: "model.extrudedHeight",
-        ground: "model.ground",
-        depthTest: "model.depthTest"
+        extrudedHeightEditing: "model.extrudedHeightEditing"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {

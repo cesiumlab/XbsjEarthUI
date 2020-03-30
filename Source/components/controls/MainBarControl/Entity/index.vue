@@ -120,6 +120,11 @@
           <div class="xbsj-item-btn facebutton"></div>
           <span class="xbsj-item-name">{{lang.polygonStretch}}</span>
         </div>
+        <!-- 单体化 -->
+        <div class="xbsj-item-btnbox" @click="ClassificationPolygon">
+          <div class="xbsj-item-btn facebutton"></div>
+          <span class="xbsj-item-name">{{lang.classificationpolygon}}</span>
+        </div>
         <!-- 标绘更多 -->
         <!-- <div class="xbsj-item-btnbox" @click="EntityMoreShow=!EntityMoreShow">
           <div class="xbsj-item-btn more"></div>
@@ -604,8 +609,19 @@ export default {
       polygonStretch.name = "多边形拉伸";
       polygonStretch.isCreating = true;
       polygonStretch.creating = true;
-      console.log(polygonStretch);
+      // console.log(polygonStretch);
       this.$root.$earthUI.showPropertyWindow(polygonStretch);
+    },
+    //单体化
+    ClassificationPolygon() {
+      var classificationPolygon = new XE.Obj.ClassificationPolygon(
+        this.$root.$earth
+      );
+      classificationPolygon.name = "单体化";
+      classificationPolygon.isCreating = true;
+      classificationPolygon.creating = true;
+      console.log(classificationPolygon);
+      this.$root.$earthUI.showPropertyWindow(classificationPolygon);
     },
     // 道路
     roadBtn() {

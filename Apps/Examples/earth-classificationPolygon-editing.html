@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="xbsj-labels" content="Earth示例">
     </meta>
-    <title>多边形-拉伸</title>
+    <title>单体化-编辑</title>
     <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <script src="./scripts/vue.min.js"></script>
@@ -73,10 +73,10 @@
                     </div>
                     <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:200px; font-size:24px; font-family: 宋体;">
                             <div class="defultbtn" :class="{'btnon':creating}" @click="creating = !creating">创建</div>
-                            <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':editing}"  @click="editing = !editing">编辑</div><br/>
-                            <span @click="show = !show" style="cursor: pointer;"><input type="checkbox" style="width: 14px; cursor: pointer;" v-model="show">多边形显隐</span><br/>
-                            <span @click="depthTest = !depthTest" style="cursor: pointer;"><input type="checkbox" style="width: 14px; cursor: pointer;" v-model="depthTest">深度检测</span><br/>
-                            <span>高度：</span><input v-model.number="height"/><br/>
+                            <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':editing}"  @click="editing = !editing">编辑</div>
+                            <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':extrudedHeightEditing}"  @click="extrudedHeightEditing = !extrudedHeightEditing">拉伸编辑</div><br/>
+                            <span @click="show = !show" style="cursor: pointer;"><input type="checkbox" style="width: 14px; cursor: pointer;" v-model="show">单体化显隐</span><br/>
+                            <span @click="showHelper = !showHelper" style="cursor: pointer;"><input type="checkbox" style="width: 14px; cursor: pointer;" v-model="showHelper">线框显隐</span><br/>
                             <span>拉伸：</span><input v-model.number="extrudedHeight"/><br/>
                             <span>颜色：</span><input class="colorbox" type="color" value="#ffff00" @input=colorchange(event)><br/>
                             <span>填充不透明度: {{ colors[3] }}</span><br/>
@@ -89,9 +89,12 @@
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                     creating: false,
                     editing: false,
+                    extrudedHeightEditing: false,
                     show: true,
+                    showHelper: false,
                     height: 0,
-                    extrudedHeight: null,
+                    outlineWidth: 0,
+                    extrudedHeight: 0,
                     depthTest: false,
                     colors: [0, 0, 0, 0]
                 };
@@ -99,7 +102,7 @@
             watch: {
                 extrudedHeight(val) {
                     if (typeof val == "string") {
-                        polygon.extrudedHeight = null;
+                        classificationpolygon.extrudedHeight = null;
                     }
                 }
             },
@@ -107,6 +110,7 @@
             mounted() {
                 // 1.1.1 创建地球
                 var earth = new XE.Earth(this.$refs.earthContainer);
+                earth.interaction.picking.enabled = true; // 开启拾取操作
 
                 // 1.1.2 场景配置
                 earth.sceneTree.root = {
@@ -124,40 +128,58 @@
                                 }
                             }
                         }
+                    },
+                    {
+                        "czmObject": {
+                            "name": '大雁塔',
+                            "xbsjType": "Tileset",
+                            "url": '../assets/dayanta/tileset.json',
+                            "xbsjPosition": [
+                                1.9016974701882112,
+                                0.5972325152147303,
+                                425.8641913624607
+                            ],
+                            "xbsjUseOriginTransform": false,
+                            "skipLevelOfDetail": false
+                        },
+                        "ref": 'tileset'
                     }
                     ]
                 };
 
-                var polygon = new XE.Obj.Polygon(earth);
+                var classificationpolygon = new XE.Obj.ClassificationPolygon(earth);
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
-                earth.camera.position = [2.289711760498515, 0.8337577883568027, 7702827.15551359];
-                earth.camera.rotation = [5.491171177587914, -1.56096324206777, 0];
+                earth.camera.position = [1.9016991633909208, 0.5971695799282292, 756.7010439120457];
+                earth.camera.rotation = [0.027900493226680645, -0.6716444402205366, 0.00011144258520534578];
 
-                polygon.positions = [2.441541383786435, 0.9720167036729879, 2.430510528272103, 0.8132393917466161, 2.113829688271316, 0.699160907233165, 1.9220305776128077, 0.842399323485495, 1.9479554737763745, 1.061825464402381, 2.2842234982283003, 1.037584931062702];
-                polygon.height = 549645.8569259422;
-                polygon.extrudedHeight = 0;
+                classificationpolygon.positions = [1.901696187121785, 0.5972449008742788, 1.9017061471418992, 0.5972447321375927, 1.9017067914212735, 0.5972580482997942, 1.9016939145423322, 0.5972563596224854];
+                classificationpolygon.height = 511.3415929293872;
+
+                // 拾取事件定制
+                classificationpolygon.onclick = () => classificationpolygon.color = [0, 1, 0, 0.5];
+                classificationpolygon.onclickout = () => classificationpolygon.color = [1, 1, 0, 0.01];
 
                 // 1.1.5 数据绑定
-                this._creatingUnbind = XE.MVVM.bind(this, 'creating', polygon, 'creating');
-                this._editingUnbind = XE.MVVM.bind(this, 'editing', polygon, 'editing');
-                this._showUnbind = XE.MVVM.bind(this, 'show', polygon, 'show');
-                this._depthTestUnbind = XE.MVVM.bind(this, 'depthTest', polygon, 'depthTest');
-                this._heightUnbind = XE.MVVM.bind(this, 'height', polygon, 'height');
-                this._extrudedHeightUnbind = XE.MVVM.bind(this, 'extrudedHeight', polygon, 'extrudedHeight');
-                this._colorsUnbind = XE.MVVM.bind(this, 'colors', polygon, 'color');
+                this._creatingUnbind = XE.MVVM.bind(this, 'creating', classificationpolygon, 'creating');
+                this._editingUnbind = XE.MVVM.bind(this, 'editing', classificationpolygon, 'editing');
+                this._showHelperUnbind = XE.MVVM.bind(this, 'showHelper', classificationpolygon, 'showHelper');
+                this._showUnbind = XE.MVVM.bind(this, 'show', classificationpolygon, 'show');
+                this._extrudedHeightEditingUnbind = XE.MVVM.bind(this, 'extrudedHeightEditing', classificationpolygon, 'extrudedHeightEditing');
+                this._extrudedHeightUnbind = XE.MVVM.bind(this, 'extrudedHeight', classificationpolygon, 'extrudedHeight');
+                this._colorsUnbind = XE.MVVM.bind(this, 'colors', classificationpolygon, 'color');
 
                 this._earth = earth;
 
                 // only for Debug
                 window.earth = earth;
-                window.polygon = polygon;
+                window.classificationpolygon = classificationpolygon;
             },
             methods: {
                 colorchange(event) {
                     var color = event.target.value;
-                    polygon.color = color.xeColor;
+                    classificationpolygon.color = color.xeColor;
                 }
             },
             // 1.2 资源销毁
@@ -166,8 +188,8 @@
                 this._creatingUnbind = this._creatingUnbind && this._creatingUnbind();
                 this._editingUnbind = this._editingUnbind && this._editingUnbind();
                 this._showUnbind = this._showUnbind && this._showUnbind();
-                this._depthTestUnbind = this._depthTestUnbind && this._depthTestUnbind();
-                this._heightUnbind = this._heightUnbind && this._heightUnbind();
+                this._showHelperUnbind = this._showHelperUnbind && this._showHelperUnbind();
+                this._extrudedHeightEditingUnbind = this._extrudedHeightEditingUnbind && this._extrudedHeightEditingUnbind();
                 this._extrudedHeightUnbind = this._extrudedHeightUnbind && this._extrudedHeightUnbind();
                 this._colorsUnbind = this._colorsUnbind && this._colorsUnbind();
                 this._earth = this._earth && this._earth.destroy();

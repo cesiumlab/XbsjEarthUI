@@ -14,7 +14,7 @@ const zh = {
   innercreating: '内部创建',
   innerediting: '内部编辑',
   rotation: '内部旋转',
-  showhelper: '辅助线'
+  showhelper: '显示线框'
 };
 
 const en = {
