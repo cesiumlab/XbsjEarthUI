@@ -70,10 +70,14 @@
                     <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:100px; font-size:24px; font-family: 宋体;">
                         <div class="defultbtn" v-model="enabled"  @click="volumeClick">体积测量</div>
                         <div v-show="show" style="width: 280px; margin-top: 5px;">
-                            <div v-if="status==='completed' || computing">
+                            <div v-if="!startShow && computing">
                                 <button class="xbsj-button" @click="buttonClick">{{buttonText}}</button>
+                                <br />
+                                <span>计算进度:{{ (progress * 100).toFixed(1) }}%</span>
                             </div>
-                            <div v-if="status==='completed'">
+                            <div v-if="!startShow && !computing">
+                                <button class="xbsj-button" @click="buttonClick">{{buttonText}}</button>
+                                <br />
                                 <span>计算结果:</span>
                                 <br />
                                 <span>采样间距:{{ results.gridWidth.toFixed(2) }} m</span>
@@ -86,20 +90,15 @@
                                 <br />
                                 <span>挖填方:{{ results.total.toFixed(2) }} m³</span>
                                 <br />
-                                </div>
-                                <div v-else-if="status==='cancelled'">
-                                <span>意外终止！请重新开始！</span><br />
-                                <button class="xbsj-button" @click="buttonClick">{{buttonText}}</button>
-                                <br />
-                                </div>
-                                <div v-else-if="computing">
-                                <span>计算进度:{{ (progress * 100).toFixed(1) }}%</span>
-                                <br />
                             </div>
-                            <div v-else>
+                            <div v-show="startShow">
                                 <span>使用鼠标在模型数据上绘制待分析的多边形区域</span><br/>
                                 <span style="vertical-align: middle;">采样间距:</span>
                                 <input v-model.number="gridWidth" class="gridWidth"> m
+                                <br/>
+                                <span style="vertical-align: middle;">基准面高程:</span>
+                                <input v-model.number="height" class="gridWidth"> m
+                                <button class="xbsj-button" @click="startClick">开始分析</button>
                             </div>
                         </div>
                     </div>
@@ -115,11 +114,14 @@
                         reStart: "重新开始"
                     },
                     show: false,
+                    startShow: true,
+                    polygonCreating: false,
                     enabled: false,
                     status: "",
                     progress: 0.0,
                     computing: false,
                     gridWidth: 1.0,
+                    height: 0,
                     results: {
                         gridWidth: 0.0,
                         area: 0.0,
@@ -134,13 +136,9 @@
                     //如果正在计算，返回取消计算
                     if (this.computing) {
                         return this.text.cancelComputing;
-                    }
-                    //如果计算结束，返回重新开始
-                    if (this.status == "completed") {
+                    } else {
                         return this.text.reStart;
                     }
-                    //返回开始计算
-                    return this.text.start;
                 }
             },
             // 1.1 资源创建
@@ -183,11 +181,11 @@
                     this._cutFillComputing = earth.analyzation.cutFillComputing;
                     this._disposers = [];
                     const props = [
-                        "enabled",
-                        "status",
+                        "polygonCreating",
                         "progress",
                         "computing",
                         "gridWidth",
+                        "height",
                         "results.gridWidth",
                         "results.area",
                         "results.cut",
@@ -203,28 +201,42 @@
                 this._earth = earth;
             },
             methods: {
+                startClick() {
+                    if (this._cutFillComputing.positions.length != 2) {
+                        this._cutFillComputing.compute();
+                        this.startShow = false;
+                    } else {
+                        return;
+                    }
+                },
                 volumeClick() {
                     //清空结果 停止
                     this._cutFillComputing.clearResults();
+                    this._cutFillComputing.positions = [];
                     this.show = !this.show;
                 },
                 buttonClick() {
                     //清空结果 停止
                     this._cutFillComputing.clearResults();
-                    this._cutFillComputing.enabled = false;
+                    this._cutFillComputing.polygonCreating = false;
+                    this._cutFillComputing.positions = [];
                     //下一个帧再次开始
                     this.$nextTick(() => {
-                        this._cutFillComputing.enabled = true;
+                        this._cutFillComputing.polygonCreating = true;
+                        this.startShow = true;
                     });
                 }
             },
             watch: {
                 show(v) {
                     if (v) {
-                        this._cutFillComputing.enabled = true;
+                        this._cutFillComputing.polygonCreating = true;
+                        // this._cutFillComputing.showHelper = true;
                     } else {
                         this._cutFillComputing.clearResults();
-                        this._cutFillComputing.enabled = false;
+                        this._cutFillComputing.polygonCreating = false;
+                        this._cutFillComputing.positions = [];
+                        this.startShow = true;
                     }
                 }
             },

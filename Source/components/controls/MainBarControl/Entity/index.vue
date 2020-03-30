@@ -115,6 +115,11 @@
           <div class="xbsj-item-btn facebutton"></div>
           <span class="xbsj-item-name">{{lang.polygonImage}}</span>
         </div>
+        <!-- 多边形拉伸 -->
+        <div class="xbsj-item-btnbox" @click="PolygonStretch">
+          <div class="xbsj-item-btn facebutton"></div>
+          <span class="xbsj-item-name">{{lang.polygonStretch}}</span>
+        </div>
         <!-- 标绘更多 -->
         <!-- <div class="xbsj-item-btnbox" @click="EntityMoreShow=!EntityMoreShow">
           <div class="xbsj-item-btn more"></div>
@@ -592,6 +597,15 @@ export default {
       customPrimitive.creating = true;
       customPrimitive.imageUrl = "./assets/earth.png";
       this.$root.$earthUI.showPropertyWindow(customPrimitive);
+    },
+    //多边形拉伸
+    PolygonStretch() {
+      var polygonStretch = new XE.Obj.Polygon(this.$root.$earth);
+      polygonStretch.name = "多边形拉伸";
+      polygonStretch.isCreating = true;
+      polygonStretch.creating = true;
+      console.log(polygonStretch);
+      this.$root.$earthUI.showPropertyWindow(polygonStretch);
     },
     // 道路
     roadBtn() {

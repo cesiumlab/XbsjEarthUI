@@ -98,6 +98,7 @@ import PinPictureTool from "./viztools/PinPictureTool";
 import GroundImageTool from "./viztools/GroundImageTool";
 import PinDivTool from "./viztools/PinDivTool";
 import PathTool from "./viztools/PathTool";
+import PolygonTool from "./viztools/PolygonTool";
 import ForestTool from "./viztools/ForestTool";
 import ModelTool from "./viztools/ModelTool";
 import PolylineTool from "./viztools/PolylineTool";
@@ -171,6 +172,7 @@ export default {
     GroundImageTool,
     PinDivTool,
     PathTool,
+    PolygonTool,
     ForestTool,
     ModelTool,
     PolylineTool,
@@ -245,6 +247,7 @@ export default {
         PinDivTool: "PinDivTool",
         // Pin: "PinPictureTool",
         Path: "PathTool",
+        Polygon: "PolygonTool",
         Forest: "ForestTool",
         Scanline: "ScanlineTool",
         CustomPrimitive: "CustomPrimitiveTool",

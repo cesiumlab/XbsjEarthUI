@@ -57,7 +57,8 @@ const zh = {
   road: '道路',
   wall: '挡土墙',
   polygonImage: '多边形贴图',
-  surface: '填充面'
+  surface: '填充面',
+  polygonStretch: '多边形拉伸'
 };
 
 const en = {
@@ -119,7 +120,8 @@ const en = {
   road: 'Road',
   wall: 'Wall',
   polygonImage: 'polygon Image',
-  surface: 'Surface'
+  surface: 'Surface',
+  polygonStretch: 'Polygon Stretch'
 };
 
 export default { zh, en };
