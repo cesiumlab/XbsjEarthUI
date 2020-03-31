@@ -117,12 +117,12 @@
         </div>
         <!-- 多边形贴图 -->
         <div class="xbsj-item-btnbox" @click="PolygonImageShow">
-          <div class="xbsj-item-btn facebutton"></div>
+          <div class="xbsj-item-btn polygonimagebutton"></div>
           <span class="xbsj-item-name">{{lang.polygonImage}}</span>
         </div>
         <!-- 单体化 -->
         <div class="xbsj-item-btnbox" @click="ClassificationPolygon">
-          <div class="xbsj-item-btn facebutton"></div>
+          <div class="xbsj-item-btn classificationpolygonbutton"></div>
           <span class="xbsj-item-name">{{lang.classificationpolygon}}</span>
         </div>
         <!-- 标绘更多 -->
@@ -253,7 +253,7 @@
         </div>
         <!-- 填充面 -->
         <div class="xbsj-item-btnbox ml20" @click="surfaceBtn">
-          <div class="xbsj-item-btn wallbutton"></div>
+          <div class="xbsj-item-btn surfacebutton"></div>
           <span class="xbsj-item-name">{{lang.surface}}</span>
         </div>
         <!-- <div class="xbsj-item-btnbox ml20">
@@ -609,7 +609,7 @@ export default {
       polygonStretch.name = "多边形";
       polygonStretch.isCreating = true;
       polygonStretch.creating = true;
-      console.log(polygonStretch);
+      // console.log(polygonStretch);
       this.$root.$earthUI.showPropertyWindow(polygonStretch);
     },
     //单体化
@@ -620,7 +620,7 @@ export default {
       classificationPolygon.name = "单体化";
       classificationPolygon.isCreating = true;
       classificationPolygon.creating = true;
-      console.log(classificationPolygon);
+      // console.log(classificationPolygon);
       this.$root.$earthUI.showPropertyWindow(classificationPolygon);
     },
     // 道路
@@ -642,7 +642,7 @@ export default {
 
       wall.isCreating = true;
       wall.creating = true;
-      console.log(wall);
+      // console.log(wall);
       this.$root.$earthUI.showPropertyWindow(wall);
     },
     // 填充面
@@ -1026,6 +1026,26 @@ export default {
   background-size: contain;
   cursor: pointer;
 }
+.polygonimagebutton {
+  background: url(../../../../images/polygonimage.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.polygonimagebutton:hover {
+  background: url(../../../../images/polygonimage_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.classificationpolygonbutton {
+  background: url(../../../../images/classificationpolygon.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.classificationpolygonbutton:hover {
+  background: url(../../../../images/classificationpolygon_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
 .charactersbutton {
   background: url(../../../../images/characters.png) no-repeat;
   background-size: contain;
@@ -1336,6 +1356,18 @@ export default {
 .wallbutton.highlight,
 .wallbutton:hover {
   background: url(../../../../images/wall_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.surfacebutton {
+  background: url(../../../../images/fillsurface.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.surfacebutton.highlight,
+.surfacebutton:hover {
+  background: url(../../../../images/fillsurface_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }

@@ -22,6 +22,7 @@ const zh = {
   apply: '应用',
   routine: '常规',
   code: '代码',
+  metre: '米'
 };
 
 const en = {
@@ -48,6 +49,7 @@ const en = {
   apply: 'apply',
   routine: 'routine',
   code: 'code',
+  metre: 'metre'
 };
 
 export default {

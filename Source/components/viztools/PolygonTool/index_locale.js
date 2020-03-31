@@ -14,7 +14,8 @@ const zh = {
   dragcontent: '请把对象拖到这里',
   height: '高度',
   stretch: '拉伸',
-  depthtest: '深度检测'
+  depthtest: '深度检测',
+  metre: '米'
 };
 
 const en = {
@@ -33,7 +34,8 @@ const en = {
   dragcontent: 'Drag the object here',
   height: 'height',
   stretch: 'stretch',
-  depthtest: 'depthtest'
+  depthtest: 'depthtest',
+  metre: 'metre'
 };
 
 export default {

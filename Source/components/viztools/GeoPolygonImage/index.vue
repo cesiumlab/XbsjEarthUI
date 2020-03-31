@@ -50,7 +50,7 @@
 
       <div class="flatten">
         <!-- 是否插值 -->
-        <div>
+        <div style="margin-left: 76px;">
           <XbsjCheckBox v-model="model.interpolation">{{lang.interpolation}}</XbsjCheckBox>
         </div>
 
@@ -95,7 +95,7 @@ export default {
   props: {
     getBind: Function
   },
-  data () {
+  data() {
     return {
       lang: {},
       showPinSelect: false,
@@ -106,7 +106,7 @@ export default {
         show: false,
         creating: false,
         editing: false,
-        imageUrl: './assets/earth.png',
+        imageUrl: "./assets/earth.png",
         textureSize: 10,
         interpolation: false,
         interpolationDistance: 10,
@@ -115,11 +115,11 @@ export default {
       },
       positions: [],
       pinstyletype: true,
-      langs: languagejs,
+      langs: languagejs
     };
   },
-  created () { },
-  mounted () {
+  created() {},
+  mounted() {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
@@ -149,20 +149,19 @@ export default {
     }
   },
   computed: {
-    name () {
+    name() {
       return this.model.name;
     },
-    guid () {
+    guid() {
       return this.getBind().guid;
     }
   },
-  watch: {
-  },
+  watch: {},
   methods: {
-    close () {
+    close() {
       this.$parent.destroyTool(this);
     },
-    cancel () {
+    cancel() {
       this.close();
       const modelToolObj = this._czmObj;
       if (!modelToolObj) {
@@ -174,7 +173,7 @@ export default {
         modelToolObj.destroy();
       }
     },
-    ok () {
+    ok() {
       this.close();
       const modelToolObj = this._czmObj;
       modelToolObj.editing = false;
@@ -189,7 +188,7 @@ export default {
       }
     },
     //拖拽移动上面
-    dragOver (e) {
+    dragOver(e) {
       e.preventDefault();
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions !== undefined) {
@@ -199,11 +198,11 @@ export default {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    dragLeave () {
+    dragLeave() {
       this.drag_over = false;
     },
     //拖拽放置
-    drop (e) {
+    drop(e) {
       this.drag_over = false;
       e.preventDefault();
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
@@ -213,7 +212,7 @@ export default {
       }
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     // 解绑数据关联
     this._disposers.forEach(e => e());
     this._disposers.length = 0;

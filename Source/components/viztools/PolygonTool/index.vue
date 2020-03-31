@@ -1,8 +1,8 @@
 <template>
   <Window
-    :width="502"
+    :width="494"
     :minWidth="480"
-    :height="394"
+    :height="302"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -69,21 +69,22 @@
         <input style="float:left;" type="text" v-model.number="model.height" />
       </div>-->
 
-      <!-- 拉伸 -->
-      <div class="flatten">
+      <div class="flatten-flex">
+        <!-- 拉伸 -->
         <label>{{lang.stretch}}</label>
-        <input style="float:left;" type="text" v-model.number="model.extrudedHeight" />
-      </div>
-
-      <!-- 颜色 -->
-      <div class="flatten">
-        <label>{{lang.color}}</label>
+        <XbsjInputNumber style="float:left;" v-model.number="model.extrudedHeight"></XbsjInputNumber>
+        <span style="line-height:28px;">{{lang.metre}}</span>
+        <!-- 颜色 -->
+        <label style="margin-left:-12px;">{{lang.color}}</label>
         <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
+        <!-- 边框颜色 -->
+        <label>{{lang.outlineColor}}</label>
+        <XbsjColorButton v-model="borderbaseColorUI" ref="borderbaseColor"></XbsjColorButton>
       </div>
 
       <!-- 宽度 -->
       <div class="flatten" style="margin-top:30px;">
-        <label>{{lang.outlineWidth}}</label>
+        <label style="line-height: 20px;">{{lang.outlineWidth}}</label>
         <div class="field">
           <XbsjSlider
             :min="1"
@@ -94,11 +95,6 @@
             ref="glowFactor"
           ></XbsjSlider>
         </div>
-      </div>
-
-      <div class="flatten">
-        <label>{{lang.outlineColor}}</label>
-        <XbsjColorButton v-model="borderbaseColorUI" ref="borderbaseColor"></XbsjColorButton>
       </div>
     </div>
   </Window>

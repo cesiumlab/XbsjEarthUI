@@ -64,21 +64,13 @@
           </div>
         </div>
 
-        <!-- 拉伸 -->
-        <div class="flatten">
+        <div class="flatten-flex">
+          <!-- 拉伸 -->
           <label>{{lang.extrudedheight}}</label>
-          <input style="float:left;" type="text" v-model.number="model.extrudedHeight" />
-        </div>
-
-        <!-- 拉伸 -->
-        <!-- <div class="flatten">
-        <label>{{lang.stretch}}</label>
-        <input style="float:left;" type="text" v-model.number="model.extrudedHeight" />
-        </div>-->
-
-        <!-- 颜色 -->
-        <div class="flatten">
-          <label>{{lang.color}}</label>
+          <XbsjInputNumber style="float:left;" v-model.number="model.extrudedHeight"></XbsjInputNumber>
+          <span style="float:left;line-height:28px;">{{lang.metre}}</span>
+          <!-- 颜色 -->
+          <label style="float:left;margin-left:-12px;">{{lang.color}}</label>
           <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
         </div>
       </div>
