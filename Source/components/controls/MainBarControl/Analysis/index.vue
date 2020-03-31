@@ -104,10 +104,7 @@
 
         <!-- 剖面 -->
         <div class="xbsj-item-btnbox" @click="disGroudMeasure()">
-          <div
-            class="xbsj-item-btn disGroudbutton"
-            :class="measurementType === 'SPACE_DIS_GROUD' ? 'disGroudbuttonActive' : ''"
-          ></div>
+          <div class="xbsj-item-btn disGroudbutton"></div>
           <span class="xbsj-item-name">{{lang.disGroud}}</span>
         </div>
 
