@@ -107,15 +107,29 @@ function getPickRay (p1, p2, earth) {
     var direction = Cesium.Cartesian3.subtract(c2, c1, new Cesium.Cartesian3())
     direction = Cesium.Cartesian3.normalize(direction, direction);
     var ray = new Cesium.Ray(c1, direction);
-    const result = scene.pickFromRay(ray);
-    if (Cesium.defined(result) && Cesium.defined(result.object) && result.position) {
+    const resultScene = scene.pickFromRay(ray);
+    const resultGlobe = scene.globe.pick(ray, scene);
+    var dis = 0;
+    var result;
+    if (Cesium.defined(resultScene) && Cesium.defined(resultGlobe)) {
+        const disScene = Cesium.Cartesian3.distance(c1, resultScene.position);
+        const disGlobe = Cesium.Cartesian3.distance(c1, resultGlobe);
+        dis = Math.min(disScene, disGlobe);
+        result = disScene < disGlobe ? resultScene.position : resultGlobe;
+    } else if(Cesium.defined(resultScene)){
+        result = resultScene.position;
+    } else if(Cesium.defined(resultGlobe)){
+        result = resultGlobe;
+    }
+
+    if (Cesium.defined(result)) {
         const d1 = Cesium.Cartesian3.distance(c1, c2);
-        const d2 = Cesium.Cartesian3.distance(c1, result.position);
+        const d2 = Cesium.Cartesian3.distance(c1, result);
 
         if (d2 > d1) {
             return Cesium.Cartographic.fromCartesian(c2);
         } else {
-            return Cesium.Cartographic.fromCartesian(result.position);
+            return Cesium.Cartographic.fromCartesian(result);
         }
     } else {
         return null;

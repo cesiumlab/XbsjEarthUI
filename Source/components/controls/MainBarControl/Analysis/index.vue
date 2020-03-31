@@ -213,8 +213,12 @@ export default {
     measuring (v) {
       if (v == false) {
         if (this.measurementType === "SPACE_Circle_Intervisible") {
+          this._circle.positions[0][2] += 0.5;
           for (var i = 0; i < this._circle._polygonPositions.length; i += 3) {
             var pos = this._circle._polygonPositions[i];
+            if (pos[2] === this._circle.positions[1][2]) {
+              pos[2] = this._circle.positions[0][2];
+            }
             var p = getPickRay(this._circle.positions[0], pos, this.$root.$earth);
             if (p) {
               var mid = [p.longitude, p.latitude, p.height];
@@ -284,6 +288,7 @@ export default {
           positions: [...this._intervisible.positions],
         }), () => {
           if (self._intervisible.positions.length > 2) {
+            this._intervisible.positions[0][2] += 0.5;
             var p = getPickRay(self._intervisible.positions[0], self._intervisible.positions[1], this.$root.$earth);
             if (p) {
               var mid = [p.longitude, p.latitude, p.height];
@@ -413,9 +418,6 @@ export default {
         })
         this._labels = [];
         this.measurementType = "NONE";
-      }
-      if (this.disGroudinterval == 0) {
-        this.disGroudinterval = this.temDisGroudInterval;
       }
       if (this.areaGroudInterval == 0) {
         this.areaGroudInterval = this.temAreaGroudInterval;
