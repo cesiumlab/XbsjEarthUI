@@ -288,6 +288,7 @@ export default {
       if (this.measurementType !== "SPACE_Intervisible") {
         this.updateCreatingBind();
         this._intervisible = new XE.Obj.Polyline(this.$root.$earth);
+        this._intervisible.width = 2;
         this._intervisible.isCreating = true;
         this._intervisible.creating = true;
         this._intervisible.ground = false;
@@ -313,8 +314,9 @@ export default {
     angleMeasure () {
       if (this.measurementType !== "SPACE_ANGLE") {
         this.updateCreatingBind();
-        this._angle = new XE.Obj.Polyline(this.$root.$earth);
+        this._angle = new XE.Obj.Plots.GeoPolylineArrow(this.$root.$earth);
         this._angle.ground = false;
+        this._angle.width = 2;
         this._angle.isCreating = true;
         this._angle.creating = true;
 
