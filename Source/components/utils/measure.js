@@ -114,11 +114,10 @@ function getPickRay (p1, p2, earth) {
     if (Cesium.defined(resultScene) && Cesium.defined(resultScene.position) && Cesium.defined(resultGlobe)) {
         const disScene = Cesium.Cartesian3.distance(c1, resultScene.position);
         const disGlobe = Cesium.Cartesian3.distance(c1, resultGlobe);
-        dis = Math.min(disScene, disGlobe);
         result = disScene < disGlobe ? resultScene.position : resultGlobe;
-    } else if(Cesium.defined(resultScene) && Cesium.defined(resultScene.position)){
+    } else if (Cesium.defined(resultScene) && Cesium.defined(resultScene.position)) {
         result = resultScene.position;
-    } else if(Cesium.defined(resultGlobe)){
+    } else if (Cesium.defined(resultGlobe)) {
         result = resultGlobe;
     }
 
