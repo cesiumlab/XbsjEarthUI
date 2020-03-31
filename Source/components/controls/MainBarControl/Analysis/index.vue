@@ -132,6 +132,15 @@
           <span class="xbsj-item-name">{{lang.intervisible}}</span>
         </div>
 
+        <!-- 圆形通视 -->
+        <div class="xbsj-item-btnbox" @click="circleIntervisible()">
+          <div
+            class="xbsj-item-btn anglebutton"
+            :class="measurementType === 'SPACE_Circle_Intervisible' ? 'circleIntervisiblebuttonActive' : ''"
+          ></div>
+          <span class="xbsj-item-name">{{lang.circleIntervisible}}</span>
+        </div>
+
         <!-- <div class="xbsj-item-btnbox" @click="cutFillEnabled=!cutFillEnabled"> -->
         <div class="xbsj-item-btnbox" @click="cutFillComputingShow=!cutFillComputingShow">
           <div class="xbsj-item-btn volumebutton" :class="{highlight:cutFillComputingShow}"></div>
@@ -203,6 +212,38 @@ export default {
   watch: {
     measuring (v) {
       if (v == false) {
+        if (this.measurementType === "SPACE_Circle_Intervisible") {
+          for (var i = 0; i < this._circle._polygonPositions.length; i += 3) {
+            var pos = this._circle._polygonPositions[i];
+            var p = getPickRay(this._circle.positions[0], pos, this.$root.$earth);
+            if (p) {
+              var mid = [p.longitude, p.latitude, p.height];
+              var line1 = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+              line1.ground = false;
+              line1.width = 2;
+              var line2 = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+              line2.ground = false;
+              line2.width = 2;
+
+              line1.positions = [[...this._circle.positions[0]], mid];
+              line2.positions = [mid, [...pos]];
+              line2.color = [1, 0, 0, 1];
+              this._temGeometry.push(line1);
+              this._temGeometry.push(line2);
+
+            } else {
+              var line1 = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+              line1.ground = false;
+              line1.width = 2;
+
+              line1.positions = [[...this._circle.positions[0]], [...pos]];
+              this._temGeometry.push(line1);
+            }
+            this._circle.creating = false;
+            this._circle.destroy();
+            this.measurementType = "NONE";
+          }
+        }
         this.updateCreatingBind();
       }
     },
@@ -213,6 +254,24 @@ export default {
     }
   },
   methods: {
+    circleIntervisible () {
+      if (this.measurementType !== "SPACE_Circle_Intervisible") {
+        this._circle = new XE.Obj.Plots.GeoCircle(this.$root.$earth);
+        this._circle.isCreating = true;
+        this._circle.creating = true;
+        this._circle.ground = false;
+        this.updateCreatingBind();
+        let self = this;
+        this._creating.push(XE.MVVM.bind(
+          this,
+          "measuring",
+          this._circle,
+          "creating"
+        ));
+
+        this.measurementType = "SPACE_Circle_Intervisible";
+      }
+    },
     startIntervisible () {
       if (this.measurementType !== "SPACE_Intervisible") {
         this._intervisible = new XE.Obj.Polyline(this.$root.$earth);

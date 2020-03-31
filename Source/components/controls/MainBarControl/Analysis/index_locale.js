@@ -19,6 +19,7 @@ const zh = {
   volume: "体积",
   reset: "清除",
   intervisible: "通视",
+  circleIntervisible: "圆形通视",
   angle: "方位角"
 };
 
@@ -43,6 +44,7 @@ const en = {
   volume: "Volume",
   reset: "Clear",
   intervisible: "Intervisible",
+  circleIntervisible: "Circle Intervisible",
   angle: "Azimuth"
 };
 
