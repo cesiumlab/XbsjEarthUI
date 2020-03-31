@@ -278,11 +278,11 @@ export default {
     },
     startIntervisible () {
       if (this.measurementType !== "SPACE_Intervisible") {
+        this.updateCreatingBind();
         this._intervisible = new XE.Obj.Polyline(this.$root.$earth);
         this._intervisible.isCreating = true;
         this._intervisible.creating = true;
         this._intervisible.ground = false;
-        this.updateCreatingBind();
         let self = this;
         this._creating.push(XE.MVVM.watch(() => ({
           positions: [...this._intervisible.positions],
@@ -320,11 +320,12 @@ export default {
     },
     angleMeasure () {
       if (this.measurementType !== "SPACE_ANGLE") {
+        this.updateCreatingBind();
         this._angle = new XE.Obj.Polyline(this.$root.$earth);
         this._angle.ground = false;
         this._angle.isCreating = true;
         this._angle.creating = true;
-        this.updateCreatingBind();
+
         this._creating.push(XE.MVVM.bind(
           this,
           "measuring",
@@ -543,6 +544,7 @@ export default {
           e.destroy();
         });
       }
+      this.measurementType = "NONE";
       this.$root.$earth.analyzation.cutFillComputingOld.clearResults();
     },
     startMove (event) {
