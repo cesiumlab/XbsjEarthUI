@@ -1,8 +1,8 @@
 <template>
   <Window
-    :width="480"
+    :width="486"
     :minWidth="480"
-    :height="300"
+    :height="324"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -10,69 +10,89 @@
     :footervisible="true"
     @showclick="showSelect=false"
   >
-    <div class="xbsj-flatten">
-      <!-- 名称 -->
-      <div class="flatten">
-        <label>{{lang.name}}</label>
-        <input style="float:left;" type="text" v-model="model.name" />
+    <div style="height: 100%;">
+      <div style="text-align: center; width: 100%; background: rgba(0,0,0,0.5);">
+        <ul class="tab">
+          <li @click="tabShow='1'" :class="{highlight: tabShow=='1'}">{{lang.routine}}</li>
+          <li @click="tabShow='2'" :class="{highlight: tabShow=='2'}">{{lang.code}}</li>
+        </ul>
       </div>
-      <div class="flatten-flex">
-        <!-- 编辑按钮 -->
-        <div class="buttonGroup">
-          <label class="xbsj-label"></label>
-          <button
-            class="attitudeEditCameraButton"
-            @click="model.creating =!model.creating"
-            :class="model.creating?'btncoloron':''"
-          >{{lang.creating}}</button>
-
-          <button
-            class="attitudeEditCameraButton"
-            @click="model.editing =!model.editing"
-            :class="model.editing?'btncoloron':''"
-          >{{lang.editing}}</button>
-
-          <button
-            class="attitudeEditCameraButton"
-            @click="model.extrudedHeightEditing =!model.extrudedHeightEditing"
-            :class="model.extrudedHeightEditing?'btncoloron':''"
-          >{{lang.extrudedheightediting}}</button>
+      <div class="xbsj-flatten" v-show="tabShow == '1'">
+        <!-- 名称 -->
+        <div class="flatten">
+          <label>{{lang.name}}</label>
+          <input style="float:left;" type="text" v-model="model.name" />
         </div>
-        <!-- 拖拽 -->
-        <!-- <div
+        <div class="flatten-flex">
+          <!-- 编辑按钮 -->
+          <div class="buttonGroup">
+            <label class="xbsj-label"></label>
+            <button
+              class="attitudeEditCameraButton"
+              @click="model.creating =!model.creating"
+              :class="model.creating?'btncoloron':''"
+            >{{lang.creating}}</button>
+
+            <button
+              class="attitudeEditCameraButton"
+              @click="model.editing =!model.editing"
+              :class="model.editing?'btncoloron':''"
+            >{{lang.editing}}</button>
+
+            <button
+              class="attitudeEditCameraButton"
+              @click="model.extrudedHeightEditing =!model.extrudedHeightEditing"
+              :class="model.extrudedHeightEditing?'btncoloron':''"
+            >{{lang.extrudedheightediting}}</button>
+          </div>
+          <!-- 拖拽 -->
+          <!-- <div
           @dragover="dragOver"
           @drop="drop"
           @dragleave="dragLeave"
           class="dragButton"
           :class="{highlight:drag_over}"
           :title="lang.drag"
-        >{{lang.dragcontent}}</div>-->
-      </div>
-
-      <div class="flatten-flex">
-        <!-- 辅助线 -->
-        <div class="flatten">
-          <label>{{lang.showhelper}}</label>
-          <XbsjSwitch v-model="model.showHelper"></XbsjSwitch>
+          >{{lang.dragcontent}}</div>-->
         </div>
-      </div>
 
-      <!-- 拉伸 -->
-      <div class="flatten">
-        <label>{{lang.extrudedheight}}</label>
-        <input style="float:left;" type="text" v-model.number="model.extrudedHeight" />
-      </div>
+        <div class="flatten-flex">
+          <!-- 辅助线 -->
+          <div class="flatten">
+            <label>{{lang.showhelper}}</label>
+            <XbsjSwitch v-model="model.showHelper"></XbsjSwitch>
+          </div>
+        </div>
 
-      <!-- 拉伸 -->
-      <!-- <div class="flatten">
+        <!-- 拉伸 -->
+        <div class="flatten">
+          <label>{{lang.extrudedheight}}</label>
+          <input style="float:left;" type="text" v-model.number="model.extrudedHeight" />
+        </div>
+
+        <!-- 拉伸 -->
+        <!-- <div class="flatten">
         <label>{{lang.stretch}}</label>
         <input style="float:left;" type="text" v-model.number="model.extrudedHeight" />
-      </div>-->
+        </div>-->
 
-      <!-- 颜色 -->
-      <div class="flatten">
-        <label>{{lang.color}}</label>
-        <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
+        <!-- 颜色 -->
+        <div class="flatten">
+          <label>{{lang.color}}</label>
+          <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
+        </div>
+      </div>
+      <div class="xbsj-flatten" style="height: calc(100% - 38px);" v-show="tabShow == '2'">
+        <div style="height: 100%">
+          <label>{{lang.evalstring}}</label>
+          <textarea v-model="model.evalString"></textarea>
+          <div class="footbox">
+            <button @click="apply">{{lang.apply}}</button>
+          </div>
+        </div>
+        <!-- <div class="footbox">
+          <button @click="apply">{{lang.apply}}</button>
+        </div>-->
       </div>
     </div>
   </Window>
@@ -92,6 +112,7 @@ export default {
       showPinSelect: false,
       makiIconObj: {},
       drag_over: false,
+      tabShow: "1",
       model: {
         name: "",
         show: false,
@@ -99,7 +120,9 @@ export default {
         editing: false,
         showHelper: false,
         extrudedHeight: 0,
-        extrudedHeightEditing: false
+        extrudedHeightEditing: false,
+        evalString:
+          "uia.earth.interaction.picking.enabled = true;p.onclick = () => (p.color = [0, 1, 0, 0.5]);"
       },
       bgbaseColorUI: {
         rgba: {
@@ -119,11 +142,18 @@ export default {
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
     // console.log(czmObj);
-    uia.earth.interaction.picking.enabled = true; // 开启拾取操作
+    // uia.earth.interaction.picking.enabled = true; // 开启拾取操作
 
     // 拾取事件定制
-    czmObj.onclick = () => (czmObj.color = [0, 1, 0, 0.5]);
-    czmObj.onclickout = () => (czmObj.color = [1, 1, 0, 0.01]);
+    // czmObj.onclick = () => (czmObj.color = [0, 1, 0, 0.5]);
+    // czmObj.onclickout = () => (czmObj.color = [1, 1, 0, 0.01]);
+    if (!czmObj.evalString) {
+      czmObj.evalString = `
+      // 开启拾取操作
+      uia.earth.interaction.picking.enabled = true; 
+      p.onclick = () => (alert(1));
+      `;
+    }
 
     if (czmObj) {
       this._czmObj = czmObj;
@@ -149,6 +179,7 @@ export default {
       });
 
       this._disposers.push(XE.MVVM.bind(this, "bgbaseColor", czmObj, "color"));
+      this.model.evalString = this._czmObj.evalString;
     }
   },
 
@@ -183,10 +214,14 @@ export default {
         if (typeof val == "string") {
           this._czmObj.extrudedHeight = null;
         }
-      }
+      },
+      deep: true
     }
   },
   methods: {
+    apply() {
+      this._czmObj.evalString = this.model.evalString;
+    },
     close() {
       this.$parent.destroyTool(this);
     },
@@ -255,10 +290,8 @@ export default {
 </script>
 
 <style scoped>
-.flatten-flex {
-  display: flex;
-}
 .field {
+  margin-top: 11px;
   padding-left: 4px;
   display: inline-block;
   width: 220px;
@@ -353,6 +386,10 @@ button {
   margin: 0 auto;
   display: block;
   line-height: 25px;
+  outline: none;
+}
+button:focus {
+  outline: none !important;
 }
 .header-add {
   width: 61px;
@@ -392,7 +429,7 @@ button {
 }
 .xbsj-flatten label {
   float: left;
-  min-width: 60px;
+  min-width: 50px;
   height: 28px;
   line-height: 28px;
   text-align: right;
@@ -508,7 +545,131 @@ button:focus {
   right: 15px;
   top: 11px;
 }
+.flatten-box {
+  display: flex;
+  width: calc(100% - 100px);
+  height: 28px;
+}
+.attitudeEditMouseButton {
+  display: inline-block;
+  position: relative;
+  width: 66px;
+  height: 18px;
+  background-size: contain;
+  margin-top: 3px;
+  margin-left: 10px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  color: #dddddd;
+}
+.buttonGroup {
+  display: inline-block;
+  width: 311px;
+  height: 40px;
+  vertical-align: top;
+  margin-top: -1px;
+}
+.buttonGroup div {
+  display: inline-block;
+  height: 25px;
+  width: 132px;
+  margin-left: 5%;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  color: #dddddd;
+  padding: 2px 1px;
+  margin-right: 6px;
+}
+.buttonGroup div:nth-child(1) {
+  display: inline-block;
+  height: 25px;
+  margin-left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  color: #dddddd;
+}
+.attitudeEditCameraButton {
+  color: #dddddd;
+}
+.btncoloron {
+  color: #1fffff !important;
+}
+.dragBox {
+  display: inline-block;
+}
+.xbsj-input-number {
+  width: 150px;
+  height: 32px;
+  margin-top: 0px;
+  border: 0;
+  border-radius: 4px;
+  margin-right: 16px;
+}
+.tab {
+  overflow: hidden;
+  margin-left: 10px;
+}
+.tab li {
+  display: inline-block;
+  min-width: 50px;
+  height: 28px;
+  line-height: 28px;
+  cursor: pointer;
+  float: left;
+  border-radius: 4px;
+}
+.tab li:hover,
+.tab .highlight {
+  background: #000;
+}
+textarea {
+  width: calc(100% - 106px);
+  height: calc(100% - 55px);
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #ffffff;
+  padding: 10px;
+  outline: none;
+  resize: none;
+}
+.footbox {
+  width: 100%;
+  height: 30px;
+  /* border-top: 1px solid black; */
+}
+.footbox button {
+  border: 1px solid #666666;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #dddddd;
+  min-width: 60px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 14px;
+  /* padding: 2px 15px; */
+  text-decoration: none;
+  border-radius: 3px;
+  cursor: pointer;
+  float: right;
+  margin-right: 12px;
+}
+.footbox button:hover {
+  color: #1fffff;
+}
+.dragButton {
+  width: 120px;
+  height: 25px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+  text-align: center;
+  line-height: 25px;
+}
 
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
+  color: #1fffff;
+}
 .buttonGroup {
   display: flex;
 }
@@ -544,20 +705,5 @@ button:focus {
   border-radius: 3px;
   color: #dddddd;
   margin-right: 20px;
-}
-.dragButton {
-  display: inline-block;
-  width: 120px;
-  height: 25px;
-  background: url(../../../images/drag.png) no-repeat;
-  background-size: contain;
-  text-align: center;
-  line-height: 25px;
-}
-
-.dragButton.highlight {
-  background: url(../../../images/drag_on.png) no-repeat;
-  background-size: contain;
-  color: #1fffff;
 }
 </style>

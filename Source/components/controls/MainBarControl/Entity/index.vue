@@ -106,19 +106,19 @@
           <span class="xbsj-item-name">{{lang.DoubleArrow}}</span>
         </div>
         <!-- 多边形 -->
-        <div class="xbsj-item-btnbox" @click="Polygon">
+        <!-- <div class="xbsj-item-btnbox" @click="Polygon">
           <div class="xbsj-item-btn facebutton"></div>
           <span class="xbsj-item-name">{{lang.face}}</span>
+        </div>-->
+        <!-- 多边形 -->
+        <div class="xbsj-item-btnbox" @click="PolygonStretch">
+          <div class="xbsj-item-btn facebutton"></div>
+          <span class="xbsj-item-name">{{lang.polygonStretch}}</span>
         </div>
         <!-- 多边形贴图 -->
         <div class="xbsj-item-btnbox" @click="PolygonImageShow">
           <div class="xbsj-item-btn facebutton"></div>
           <span class="xbsj-item-name">{{lang.polygonImage}}</span>
-        </div>
-        <!-- 多边形拉伸 -->
-        <div class="xbsj-item-btnbox" @click="PolygonStretch">
-          <div class="xbsj-item-btn facebutton"></div>
-          <span class="xbsj-item-name">{{lang.polygonStretch}}</span>
         </div>
         <!-- 单体化 -->
         <div class="xbsj-item-btnbox" @click="ClassificationPolygon">
@@ -606,10 +606,10 @@ export default {
     //多边形拉伸
     PolygonStretch() {
       var polygonStretch = new XE.Obj.Polygon(this.$root.$earth);
-      polygonStretch.name = "多边形拉伸";
+      polygonStretch.name = "多边形";
       polygonStretch.isCreating = true;
       polygonStretch.creating = true;
-      // console.log(polygonStretch);
+      console.log(polygonStretch);
       this.$root.$earthUI.showPropertyWindow(polygonStretch);
     },
     //单体化

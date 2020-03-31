@@ -1,8 +1,8 @@
 <template>
   <Window
-    :width="480"
+    :width="502"
     :minWidth="480"
-    :height="344"
+    :height="394"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -43,11 +43,31 @@
         >{{lang.dragcontent}}</div>-->
       </div>
 
+      <div class="flatten-flex">
+        <!-- 贴地 -->
+        <div class="flatten">
+          <label>{{lang.ground}}</label>
+          <XbsjSwitch v-model="model.ground"></XbsjSwitch>
+        </div>
+        <!-- 边框显示 -->
+        <div class="flatten">
+          <div class="flatten">
+            <label>{{lang.outlineShow}}</label>
+            <XbsjSwitch v-model="model.outline.show"></XbsjSwitch>
+          </div>
+        </div>
+        <!-- 深度检测 -->
+        <div class="flatten">
+          <label>{{lang.depthtest}}</label>
+          <XbsjSwitch v-model="model.depthTest"></XbsjSwitch>
+        </div>
+      </div>
+
       <!-- 高度 -->
-      <div class="flatten">
+      <!-- <div class="flatten">
         <label>{{lang.height}}</label>
         <input style="float:left;" type="text" v-model.number="model.height" />
-      </div>
+      </div>-->
 
       <!-- 拉伸 -->
       <div class="flatten">
@@ -61,12 +81,24 @@
         <XbsjColorButton v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
       </div>
 
-      <div class="flatten-flex">
-        <!-- 深度检测 -->
-        <div class="flatten" style="margin-top:16px;">
-          <label>{{lang.depthtest}}</label>
-          <XbsjSwitch v-model="model.depthTest"></XbsjSwitch>
+      <!-- 宽度 -->
+      <div class="flatten" style="margin-top:30px;">
+        <label>{{lang.outlineWidth}}</label>
+        <div class="field">
+          <XbsjSlider
+            :min="1"
+            :max="100"
+            :step="1"
+            showTip="always"
+            v-model="model.outline.width"
+            ref="glowFactor"
+          ></XbsjSlider>
         </div>
+      </div>
+
+      <div class="flatten">
+        <label>{{lang.outlineColor}}</label>
+        <XbsjColorButton v-model="borderbaseColorUI" ref="borderbaseColor"></XbsjColorButton>
       </div>
     </div>
   </Window>
@@ -92,8 +124,13 @@ export default {
         creating: false,
         editing: false,
         height: 0,
+        ground: false,
         extrudedHeight: null,
-        depthTest: false
+        depthTest: false,
+        outline: {
+          show: true,
+          width: 2
+        }
       },
       bgbaseColorUI: {
         rgba: {
@@ -104,6 +141,15 @@ export default {
         }
       },
       bgbaseColor: [0, 0, 0.5, 1],
+      borderbaseColorUI: {
+        rgba: {
+          r: 0,
+          g: 0,
+          b: 255,
+          a: 1
+        }
+      },
+      borderbaseColor: [0, 0, 0.5, 1],
       langs: languagejs
     };
   },
@@ -124,7 +170,9 @@ export default {
         height: "model.height",
         extrudedHeight: "model.extrudedHeight",
         ground: "model.ground",
-        depthTest: "model.depthTest"
+        depthTest: "model.depthTest",
+        "outline.show": "model.outline.show",
+        "outline.width": "model.outline.width"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -139,6 +187,9 @@ export default {
       });
 
       this._disposers.push(XE.MVVM.bind(this, "bgbaseColor", czmObj, "color"));
+      this._disposers.push(
+        XE.MVVM.bind(this, "borderbaseColor", czmObj, "outline.color")
+      );
     }
   },
 
@@ -168,12 +219,31 @@ export default {
         }
       };
     },
+    borderbaseColorUI(color) {
+      let v = color.rgba;
+
+      var cc = [v.r / 255.0, v.g / 255.0, v.b / 255.0, v.a];
+      if (!this.borderbaseColor.every((c, index) => c === cc[index])) {
+        this.borderbaseColor = cc;
+      }
+    },
+    borderbaseColor(c) {
+      this.borderbaseColorUI = {
+        rgba: {
+          r: c[0] * 255,
+          g: c[1] * 255,
+          b: c[2] * 255,
+          a: c[3]
+        }
+      };
+    },
     "model.extrudedHeight": {
       handler: function(val) {
         if (typeof val == "string") {
           this._czmObj.extrudedHeight = null;
         }
-      }
+      },
+      deep: true
     }
   },
   methods: {

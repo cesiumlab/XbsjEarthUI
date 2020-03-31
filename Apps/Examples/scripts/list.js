@@ -364,10 +364,6 @@ vueApp.examples = [
                 "url": "./earth-pin-pinBuilder.html"
             },
             {
-                "title": "多边形-拉伸",
-                "url": "./earth-polygon-stretch.html"
-            },
-            {
                 "title": "折线-插值方式",
                 "url": "./earth-polyline-acytype.html"
             },

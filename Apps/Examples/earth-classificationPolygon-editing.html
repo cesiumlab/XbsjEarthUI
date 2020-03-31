@@ -110,7 +110,6 @@
             mounted() {
                 // 1.1.1 创建地球
                 var earth = new XE.Earth(this.$refs.earthContainer);
-                earth.interaction.picking.enabled = true; // 开启拾取操作
 
                 // 1.1.2 场景配置
                 earth.sceneTree.root = {
@@ -156,10 +155,6 @@
 
                 classificationpolygon.positions = [1.901696187121785, 0.5972449008742788, 1.9017061471418992, 0.5972447321375927, 1.9017067914212735, 0.5972580482997942, 1.9016939145423322, 0.5972563596224854];
                 classificationpolygon.height = 511.3415929293872;
-
-                // 拾取事件定制
-                classificationpolygon.onclick = () => classificationpolygon.color = [0, 1, 0, 0.5];
-                classificationpolygon.onclickout = () => classificationpolygon.color = [1, 1, 0, 0.01];
 
                 // 1.1.5 数据绑定
                 this._creatingUnbind = XE.MVVM.bind(this, 'creating', classificationpolygon, 'creating');

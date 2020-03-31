@@ -17,7 +17,11 @@ const zh = {
   depthtest: '深度检测',
   showhelper: '显示线框',
   extrudedheight: '拉伸',
-  extrudedheightediting: '拉伸编辑'
+  extrudedheightediting: '拉伸编辑',
+  evalstring: '创建代码',
+  apply: '应用',
+  routine: '常规',
+  code: '代码',
 };
 
 const en = {
@@ -39,7 +43,11 @@ const en = {
   depthtest: 'depthtest',
   showhelper: 'showhelper',
   extrudedheight: 'extrudedheight:',
-  extrudedheightediting: 'extrudedheightediting'
+  extrudedheightediting: 'extrudedheightediting',
+  evalstring: 'evalstring',
+  apply: 'apply',
+  routine: 'routine',
+  code: 'code',
 };
 
 export default {
