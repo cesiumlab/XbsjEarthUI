@@ -103,9 +103,7 @@
         </div>
 
         <div class="xbsj-item-btnbox" @click="disGroudMeasure()">
-          <div
-            class="xbsj-item-btn disGroudbutton"
-          ></div>
+          <div class="xbsj-item-btn disGroudbutton"></div>
           <span class="xbsj-item-name">{{lang.disGroud}}</span>
         </div>
 
@@ -122,7 +120,16 @@
             class="xbsj-item-btn anglebutton"
             :class="measurementType === 'SPACE_ANGLE' ? 'anglebuttonActive' : ''"
           ></div>
-          <span class="xbsj-item-name">{{lang.areaGroud}}</span>
+          <span class="xbsj-item-name">{{lang.angle}}</span>
+        </div>
+
+        <!-- 通视 -->
+        <div class="xbsj-item-btnbox" @click="startIntervisible()">
+          <div
+            class="xbsj-item-btn anglebutton"
+            :class="measurementType === 'SPACE_Intervisible' ? 'intervisiblebuttonActive' : ''"
+          ></div>
+          <span class="xbsj-item-name">{{lang.intervisible}}</span>
         </div>
 
         <!-- <div class="xbsj-item-btnbox" @click="cutFillEnabled=!cutFillEnabled"> -->
@@ -145,6 +152,7 @@
 
 <script>
 import languagejs from "./index_locale";
+import { getPickRay } from "../../../utils/measure"
 export default {
   data () {
     return {
@@ -199,18 +207,57 @@ export default {
       }
     },
     measurementType (v) {
-      if (this._disGroud && this.measurementType !== "SPACE_DIS_GROUD") {
-        this._disGroud.creating = false;
-      }
       if (this._areaGroud && this.measurementType !== "SPACE_AREA_GROUD") {
         this._areaGroud.creating = false;
       }
     }
   },
   methods: {
+    startIntervisible () {
+      if (this.measurementType !== "SPACE_Intervisible") {
+        this._intervisible = new XE.Obj.Polyline(this.$root.$earth);
+        this._intervisible.isCreating = true;
+        this._intervisible.creating = true;
+        this._intervisible.ground = false;
+        this.updateCreatingBind();
+        let self = this;
+        this._creating.push(XE.MVVM.watch(() => ({
+          positions: [...this._intervisible.positions],
+        }), () => {
+          if (self._intervisible.positions.length > 2) {
+            var p = getPickRay(self._intervisible.positions[0], self._intervisible.positions[1], this.$root.$earth);
+            if (p) {
+              var mid = [p.longitude, p.latitude, p.height];
+              var line1 = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+              line1.ground = false;
+              var line2 = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+              line2.ground = false;
+              line1.positions = [[...self._intervisible.positions[0]], mid];
+              line2.positions = [mid, [...self._intervisible.positions[1]]];
+              line2.color = [1, 0, 0, 1];
+              self._temGeometry.push(line1);
+              self._temGeometry.push(line2);
+
+            } else {
+              var line1 = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+              line1.ground = false;
+              line1.positions = [[...self._intervisible.positions[0]], [...self._intervisible.positions[1]]];
+              self._temGeometry.push(line1);
+            }
+            self._intervisible.creating = false;
+            self._intervisible.destroy();
+            self.measurementType = "NONE";
+          }
+        }));
+
+        this._temGeometry.push(this._intervisible);
+        this.measurementType = "SPACE_Intervisible";
+      }
+    },
     angleMeasure () {
       if (this.measurementType !== "SPACE_ANGLE") {
-        this._angle = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+        this._angle = new XE.Obj.Polyline(this.$root.$earth);
+        this._angle.ground = false;
         this._angle.isCreating = true;
         this._angle.creating = true;
         this.updateCreatingBind();

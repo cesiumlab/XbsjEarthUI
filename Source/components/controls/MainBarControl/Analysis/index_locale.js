@@ -17,7 +17,9 @@ const zh = {
   disGroud: "剖面",
   areaGroud: "贴地面积",
   volume: "体积",
-  reset: "清除"
+  reset: "清除",
+  intervisible: "通视",
+  angle: "方位角"
 };
 
 const en = {
@@ -39,7 +41,9 @@ const en = {
   disGroud: "Section",
   areaGroud: "Groud Area",
   volume: "Volume",
-  reset: "Clear"
+  reset: "Clear",
+  intervisible: "Intervisible",
+  angle: "Azimuth"
 };
 
 export default { zh, en };

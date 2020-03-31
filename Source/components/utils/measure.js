@@ -98,4 +98,30 @@ function getSampleHeight (p, earth) {
     var c = new Cesium.Cartographic(p[0], p[1]);
     return earth.czm.scene.sampleHeight(c);
 }
-export { getDisAndLabelPos };
+
+function getPickRay (p1, p2, earth) {
+    var scene = earth.czm.scene;
+
+    var c1 = Cesium.Cartesian3.fromRadians(p1[0], p1[1], p1[2]);
+    var c2 = Cesium.Cartesian3.fromRadians(p2[0], p2[1], p2[2]);
+    var direction = Cesium.Cartesian3.subtract(c2, c1, new Cesium.Cartesian3())
+    direction = Cesium.Cartesian3.normalize(direction, direction);
+    var ray = new Cesium.Ray(c1, direction);
+    const result = scene.pickFromRay(ray);
+    if (Cesium.defined(result) && Cesium.defined(result.object) && result.position) {
+        const d1 = Cesium.Cartesian3.distance(c1, c2);
+        const d2 = Cesium.Cartesian3.distance(c1, result.position);
+
+        if (d2 > d1) {
+            return Cesium.Cartographic.fromCartesian(c2);
+        } else {
+            return Cesium.Cartographic.fromCartesian(result.position);
+        }
+    } else {
+        return null;
+    }
+}
+
+
+
+export { getDisAndLabelPos, getPickRay };
