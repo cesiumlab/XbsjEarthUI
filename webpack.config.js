@@ -212,6 +212,12 @@ module.exports.plugins = (module.exports.plugins || []).concat([
             toType: 'dir'
         },
         {
+            from: 'Static/XbsjEarth-Private-Plugins',
+            // from: 'Static/XbsjEarth-Plugins/customPrimitive',
+            to: 'XbsjEarth-Plugins',
+            // toType: 'dir'
+        },
+        {
             from: 'Static/assets',
             to: 'XbsjEarthUI/assets',
             toType: 'dir'
