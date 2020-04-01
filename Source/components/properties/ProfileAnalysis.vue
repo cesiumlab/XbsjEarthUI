@@ -4,7 +4,7 @@
     ref="win"
     :title="lang.title"
     :width="width"
-    :height="210"
+    :height="240"
     :floatright="true"
     :top="top"
     @cancel="cancel"
@@ -100,7 +100,7 @@ export default {
       drag_over: false,
       interval: 0,
       teminterval: 0,
-      top: window.innerHeight - 241,
+      top: window.innerHeight - 271,
       width: window.innerWidth
     };
   },
@@ -165,10 +165,12 @@ export default {
         let resultdata = this._result.sample,
           xdata = [],
           ydata = [],
-          data = {};
+          data = {},
+          min,
+          max;
         resultdata.forEach(element => {
           xdata.push(element.distance);
-          ydata.push(element.height);
+          ydata.push(Number(element.height.toFixed(2)));
         });
         this.drawLine(resultdata, xdata, ydata);
       } else {
@@ -261,17 +263,17 @@ export default {
             item.data = resultdata[item.dataIndex];
             return (
               "<span>所在位置 " +
-              item.data.longitude +
-              "," +
-              item.data.latitude +
-              "</span><br/><span>距起点 " +
+              item.data.longitude.toFixed(6) +
+              "°," +
+              item.data.latitude.toFixed(6) +
+              "°</span><br/><span>距起点 " +
               item.name +
-              "</span><br/>" +
+              "米</span><br/>" +
               item.seriesName +
               " " +
               "<span style='color:rgb(255, 70, 131);font-weight:bold;'>" +
               item.value +
-              "</span>"
+              "米</span>"
             );
           }
         },
@@ -282,39 +284,38 @@ export default {
         grid: {
           left: 50, //距离左边的距离
           right: 25, //距离右边的距离
-          bottom: 25, //距离下边的距离
+          bottom: 60, //距离下边的距离
           top: 25 //距离上边的距离
         },
         xAxis: {
           type: "category",
-          boundaryGap: false,
+          // boundaryGap: false,
           data: xdata,
-          show: false,
           axisLabel: {
             interval: 0,
             rotate: 40,
             textStyle: {
               color: "rgba(255,255,255,1)" //坐标值得具体的颜色
-            }
+            },
+            formatter: "{value} 米"
           },
           axisLine: {
             lineStyle: {
               type: "solid",
               color: "rgb(255, 70, 131)", //坐标线的颜色
               width: "2" //坐标线的宽度
-            }
-          },
-          axisTick: {
+            },
+            // onZero: false,
             show: false
           },
-          axisLine: {
+          axisTick: {
             show: false
           }
         },
         yAxis: {
           type: "value",
-          boundaryGap: [0, "100%"],
-          minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
+          // boundaryGap: [0, "100%"],
+          // minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数
           // axisLine: {
           //   lineStyle: {
           //     type: "solid",
@@ -322,6 +323,12 @@ export default {
           //     width: "2"
           //   }
           // },
+          max: function(value) {
+            return value.max;
+          },
+          min: function(value) {
+            return value.min;
+          },
           axisLabel: {
             interval: 0,
             rotate: 40,
@@ -336,11 +343,6 @@ export default {
           //网格样式
           splitLine: {
             show: true
-            // lineStyle: {
-            //   color: ["rgba(85,85,85,0.6)"],
-            //   width: 2,
-            //   type: "solid"
-            // }
           }
         },
         dataZoom: [
