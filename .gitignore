@@ -4,4 +4,6 @@ XbsjBuild/dist
 Build
 out
 Apps/static/LargeSampleData
-static
+Static/XbsjCesium
+Static/XbsjEarth
+Static/XbsjEarth-Plugins
