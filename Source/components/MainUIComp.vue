@@ -784,6 +784,29 @@ export default {
       } else {
         czmObj.positions = [...dragczmObj.positions];
       }
+    },
+
+    // 获取拖拽对象位置
+    getCzmObjectPositionFromDrags(dragczmObj, czmObj) {
+      if (dragczmObj._polyline !== undefined) {
+        var polylinePositions = [],
+          polylinePositions2 = [];
+        // 将数组分割成每两个一组
+        for (var i = 0; i < dragczmObj._polyline.positions.length; i++) {
+          polylinePositions.push(dragczmObj._polyline.positions[i].slice(0, 2));
+        }
+        polylinePositions.forEach(element => {
+          polylinePositions2.push(element[0]);
+          polylinePositions2.push(element[1]);
+        });
+        czmObj.positions = [...polylinePositions2];
+        czmObj.height = dragczmObj._polyline.positions[0][2];
+      } else if (dragczmObj._polygon !== undefined) {
+        czmObj.positions = [...dragczmObj._polygon.positions];
+        czmObj.height = dragczmObj._polygon.height;
+      } else {
+        czmObj.positions = [...dragczmObj.positions];
+      }
     }
   }
 };

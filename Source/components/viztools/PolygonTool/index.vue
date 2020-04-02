@@ -33,14 +33,14 @@
           >{{lang.editing}}</button>
         </div>
         <!-- 拖拽 -->
-        <!-- <div
+        <div
           @dragover="dragOver"
           @drop="drop"
           @dragleave="dragLeave"
           class="dragButton"
           :class="{highlight:drag_over}"
           :title="lang.drag"
-        >{{lang.dragcontent}}</div>-->
+        >{{lang.dragcontent}}</div>
       </div>
 
       <div class="flatten-flex">
@@ -297,7 +297,7 @@ export default {
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions !== undefined) {
         this._czmObj.creating = false;
-        this.$root.$earthUI.getCzmObjectPositionFromDrag(czmObj, this._czmObj);
+        this.$root.$earthUI.getCzmObjectPositionFromDrags(czmObj, this._czmObj);
       }
     }
   },

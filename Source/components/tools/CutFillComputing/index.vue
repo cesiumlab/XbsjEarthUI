@@ -1,8 +1,8 @@
 <template>
   <Window
     :title="lang.title"
-    :width="281"
-    :height="225"
+    :width="386"
+    :height="226"
     :left="900"
     @cancel="show=false"
     v-show="show"
@@ -14,7 +14,10 @@
       <span>{{lang.progress}}{{ (progress * 100).toFixed(1) }}%</span>
     </div>
 
-    <div v-if="!startShow && !computing">
+    <div
+      v-if="!startShow && !computing"
+      style="width:112px; float:left; margin-right: 10px; border-right: 1px solid white;"
+    >
       <button class="xbsj-button" @click="buttonClick">{{buttonText}}</button>
       <br />
       <span>{{lang.results}}</span>
@@ -42,11 +45,31 @@
     </div>-->
     <div v-show="startShow">
       <span>{{lang.tooltip}}</span>
-      <div class="field" style="margin-top: 10px;">{{lang.gridWidth}}</div>
+      <!-- 拖拽 -->
+      <div
+        @dragover="dragOver"
+        @drop="drop"
+        @dragleave="dragLeave"
+        class="dragButton"
+        :class="{highlight:drag_over}"
+        :title="lang.drag"
+      >{{lang.dragcontent}}</div>
+      <!-- <div class="field" style="margin-top: 10px;">{{lang.gridWidth}}</div>
       <XbsjMeterInput style="margin: 10px 0;" v-model.number="gridWidth" class="gridWidth"></XbsjMeterInput>
       <div class="field">{{lang.height}}</div>
       <XbsjMeterInput v-model.number="height" class="gridWidth"></XbsjMeterInput>
-      <button class="xbsj-button" @click="startClick">{{lang.start}}</button>
+      <button class="xbsj-button" @click="startClick">{{lang.start}}</button>-->
+    </div>
+    <div>
+      <div class="field">{{lang.gridWidth}}</div>
+      <div :class="!computing ? '': 'notInput'">
+        <XbsjMeterInput style="margin: 10px 0;" v-model.number="gridWidth" class="gridWidth"></XbsjMeterInput>
+      </div>
+      <div class="field">{{lang.height}}</div>
+      <div :class="!computing ? '': 'notInput'">
+        <XbsjMeterInput v-model.number="height" class="gridWidth"></XbsjMeterInput>
+      </div>
+      <button class="xbsj-button" @click="startClick" :disabled="computing">{{lang.start}}</button>
     </div>
   </Window>
 </template>
@@ -68,7 +91,9 @@ export default {
           area: "总面积:",
           cut: "挖方:",
           fill: "填方:",
-          total: "挖填方:"
+          total: "挖填方:",
+          drag: "拖拽",
+          dragcontent: "请把对象拖到这里"
         },
         en: {
           title: "Cut&Fill Volume",
@@ -83,7 +108,9 @@ export default {
           area: "Area:",
           cut: "Cut Volume:",
           fill: "Fill Volume:",
-          total: "Total Volume:"
+          total: "Total Volume:",
+          drag: "drag",
+          dragcontent: "Drag the object here"
         }
       },
       show: true,
@@ -102,7 +129,8 @@ export default {
         fill: 0.0,
         total: 0.0
       },
-      lang: undefined
+      lang: undefined,
+      drag_over: false
     };
   },
   computed: {
@@ -168,6 +196,33 @@ export default {
         this._cutFillComputing.polygonCreating = true;
         this.startShow = true;
       });
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        e.dataTransfer.dropEffect = "copy";
+        this.drag_over = true;
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    dragLeave() {
+      this.drag_over = false;
+    },
+    //拖拽放置
+    drop(e) {
+      this.drag_over = false;
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (czmObj && czmObj.positions !== undefined) {
+        this._cutFillComputing.polygonCreating = false;
+        this.$root.$earthUI.getCzmObjectPositionFromDrags(
+          czmObj,
+          this._cutFillComputing
+        );
+      }
     }
   },
   watch: {
@@ -199,6 +254,32 @@ export default {
   line-height: 30px;
   margin-right: 10px;
   width: 64px;
+}
+.notInput {
+  pointer-events: none;
+  background: gray;
+  width: 179px;
+  margin-left: 74px;
+  border-radius: 4px;
+}
+.xbsj-button:disabled {
+  cursor: not-allowed;
+}
+.dragButton {
+  /* display: inline-block; */
+  width: 120px;
+  height: 25px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+  text-align: center;
+  line-height: 25px;
+  margin-top: 8px;
+}
+
+.dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
+  color: #1fffff;
 }
 </style>
 

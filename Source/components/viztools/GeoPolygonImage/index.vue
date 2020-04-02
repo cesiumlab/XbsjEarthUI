@@ -64,7 +64,7 @@
 
       <div class="flatten">
         <!-- 纹理大小 -->
-        <div>
+        <div style="margin-bottom: 10px;">
           <label>{{lang.textureSize}}</label>
           <XbsjInputNumber v-model="model.textureSize"></XbsjInputNumber>
           <span>米</span>
@@ -78,7 +78,11 @@
         </div>
 
         <div>
-          <label>{{lang.totalArea}}：{{Math.round(model.totalArea * 100) / 100}}平方米</label>
+          <!-- <label>{{lang.totalArea}}：{{Math.round(model.totalArea * 100) / 100}}平方米</label> -->
+          <label>{{lang.totalArea}}</label>
+          <span
+            style="display: inline-block;height: 28px;line-height: 28px;"
+          >{{Math.round(model.totalArea * 100) / 100}}平方米</span>
         </div>
       </div>
       <div class="flatten">
@@ -96,7 +100,7 @@ export default {
   props: {
     getBind: Function
   },
-  data () {
+  data() {
     return {
       lang: {},
       showPinSelect: false,
@@ -119,8 +123,8 @@ export default {
       langs: languagejs
     };
   },
-  created () { },
-  mounted () {
+  created() {},
+  mounted() {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
@@ -150,19 +154,19 @@ export default {
     }
   },
   computed: {
-    name () {
+    name() {
       return this.model.name;
     },
-    guid () {
+    guid() {
       return this.getBind().guid;
     }
   },
   watch: {},
   methods: {
-    close () {
+    close() {
       this.$parent.destroyTool(this);
     },
-    cancel () {
+    cancel() {
       this.close();
       const modelToolObj = this._czmObj;
       if (!modelToolObj) {
@@ -174,7 +178,7 @@ export default {
         modelToolObj.destroy();
       }
     },
-    ok () {
+    ok() {
       this.close();
       const modelToolObj = this._czmObj;
       modelToolObj.editing = false;
@@ -189,7 +193,7 @@ export default {
       }
     },
     //拖拽移动上面
-    dragOver (e) {
+    dragOver(e) {
       e.preventDefault();
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions !== undefined) {
@@ -199,11 +203,11 @@ export default {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    dragLeave () {
+    dragLeave() {
       this.drag_over = false;
     },
     //拖拽放置
-    drop (e) {
+    drop(e) {
       this.drag_over = false;
       e.preventDefault();
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
@@ -213,7 +217,7 @@ export default {
       }
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     // 解绑数据关联
     this._disposers.forEach(e => e());
     this._disposers.length = 0;

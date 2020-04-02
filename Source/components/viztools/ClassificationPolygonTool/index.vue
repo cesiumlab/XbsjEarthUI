@@ -46,14 +46,14 @@
             >{{lang.extrudedheightediting}}</button>
           </div>
           <!-- 拖拽 -->
-          <!-- <div
-          @dragover="dragOver"
-          @drop="drop"
-          @dragleave="dragLeave"
-          class="dragButton"
-          :class="{highlight:drag_over}"
-          :title="lang.drag"
-          >{{lang.dragcontent}}</div>-->
+          <div
+            @dragover="dragOver"
+            @drop="drop"
+            @dragleave="dragLeave"
+            class="dragButton"
+            :class="{highlight:drag_over}"
+            :title="lang.drag"
+          >{{lang.dragcontent}}</div>
         </div>
 
         <div class="flatten-flex">
@@ -111,6 +111,7 @@ export default {
         creating: false,
         editing: false,
         showHelper: false,
+        height: 0,
         extrudedHeight: 0,
         extrudedHeightEditing: false,
         evalString:
@@ -133,7 +134,6 @@ export default {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
-    // console.log(czmObj);
     // uia.earth.interaction.picking.enabled = true; // 开启拾取操作
 
     // 拾取事件定制
@@ -155,6 +155,7 @@ export default {
         creating: "model.creating",
         editing: "model.editing",
         showHelper: "model.showHelper",
+        height: "model.height",
         extrudedHeight: "model.extrudedHeight",
         extrudedHeightEditing: "model.extrudedHeightEditing"
       };
@@ -268,7 +269,7 @@ export default {
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions !== undefined) {
         this._czmObj.creating = false;
-        this.$root.$earthUI.getCzmObjectPositionFromDrag(czmObj, this._czmObj);
+        this.$root.$earthUI.getCzmObjectPositionFromDrags(czmObj, this._czmObj);
       }
     }
   },
@@ -557,7 +558,7 @@ button:focus {
 }
 .buttonGroup {
   display: inline-block;
-  width: 311px;
+  /* width: 311px; */
   height: 40px;
   vertical-align: top;
   margin-top: -1px;
@@ -596,7 +597,7 @@ button:focus {
   margin-top: 0px;
   border: 0;
   border-radius: 4px;
-  margin-right: 16px;
+  /* margin-right: 16px; */
 }
 .tab {
   overflow: hidden;
@@ -697,5 +698,8 @@ button:focus {
   border-radius: 3px;
   color: #dddddd;
   margin-right: 20px;
+}
+.flatten-flex {
+  display: flex;
 }
 </style>
