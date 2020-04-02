@@ -56,7 +56,7 @@ const zh = {
   delcontent: '必须选中一条折线',
   road: '道路',
   wall: '挡土墙',
-  polygonImage: '多边形贴图',
+  polygonImage: '立面贴图',
   surface: '填充面',
   polygonStretch: '多边形',
   classificationpolygon: '单体化'

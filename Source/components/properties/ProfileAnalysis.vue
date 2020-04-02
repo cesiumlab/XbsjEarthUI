@@ -75,7 +75,7 @@ export default {
   props: {
     getBind: Function
   },
-  data() {
+  data () {
     return {
       langs: {
         zh: {
@@ -104,11 +104,11 @@ export default {
       width: window.innerWidth
     };
   },
-  created() {
+  created () {
     // var lang = this.$root.language;
     // this.lang = this.langs[lang];
   },
-  mounted() {
+  mounted () {
     //获取绑定的view
     this.interval = 0;
     this.teminterval = 0;
@@ -136,14 +136,14 @@ export default {
     );
   },
   watch: {
-    editing(v) {
+    editing (v) {
       if (this._temGeometry) {
         this._temGeometry.forEach(e => {
           e.destroy();
         });
       }
     },
-    creating(v) {
+    creating (v) {
       if (v == false) {
         this._creating = [];
         let self = this;
@@ -183,7 +183,8 @@ export default {
     }
   },
   methods: {
-    updateMeasure(p) {
+    updateMeasure (p) {
+      this._labels.forEach(l => l.destroy());
       if (p.length > 1) {
         var it = this.interval;
         var result = getDisAndLabelPos(p, it, this.$root.$earth);
@@ -193,7 +194,6 @@ export default {
         this._result = result;
         this.temInterval = result.interval;
         var labels = result.label;
-        this._labels.forEach(l => l.destroy());
         this._labels = [];
         labels.forEach(l => {
           var lb = this.createLabel(l);
@@ -201,7 +201,7 @@ export default {
         });
       }
     },
-    createLabel(option) {
+    createLabel (option) {
       let p = new XE.Obj.Pin(this.$root.$earth);
       p.pinBuilder.extTextFont = "36px 楷体";
       p.pinBuilder.outlineColor = [0, 0, 0];
@@ -210,7 +210,7 @@ export default {
       p.scale = 0.0001;
       return p;
     },
-    resize() {
+    resize () {
       if (this._chart) {
         this.$refs.mains.style.width = this.$refs.chartContents.style.width;
         this.$refs.mains.style.height = this.$refs.chartContents.style.height;
@@ -218,7 +218,7 @@ export default {
       }
     },
     /*画图*/
-    drawLine(resultdata, xdata, ydata) {
+    drawLine (resultdata, xdata, ydata) {
       // 基于准备好的dom，初始化echarts实例
       this._chart = this.$echarts.init(this.$refs.mains);
       // 绘制柱状图图表
@@ -226,10 +226,10 @@ export default {
       this._chart.setOption({
         tooltip: {
           trigger: "axis",
-          position: function(pt) {
+          position: function (pt) {
             return [pt[0], "10%"];
           },
-          position: function(point, params, dom, rect, size) {
+          position: function (point, params, dom, rect, size) {
             //其中point为当前鼠标的位置，size中有两个属性：viewSize和contentSize，分别为外层div和tooltip提示框的大小;
             var x = point[0]; //
             var y = point[1];
@@ -257,7 +257,7 @@ export default {
             }
             return [posX, posY];
           },
-          formatter(params) {
+          formatter (params) {
             const item = params[0];
             // console.log(item);
             item.data = resultdata[item.dataIndex];
@@ -323,10 +323,10 @@ export default {
           //     width: "2"
           //   }
           // },
-          max: function(value) {
+          max: function (value) {
             return value.max;
           },
-          min: function(value) {
+          min: function (value) {
             return value.min;
           },
           axisLabel: {
@@ -380,7 +380,7 @@ export default {
       });
     },
     //拖拽移动上面
-    dragOver(e) {
+    dragOver (e) {
       e.preventDefault();
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions !== undefined) {
@@ -390,11 +390,11 @@ export default {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    dragLeave() {
+    dragLeave () {
       this.drag_over = false;
     },
     //拖拽放置
-    drop(e) {
+    drop (e) {
       this.drag_over = false;
       e.preventDefault();
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
@@ -407,7 +407,7 @@ export default {
         this._disGroud.creating = false;
       }
     },
-    cancel() {
+    cancel () {
       this._creating.forEach(d => d());
       this._disGroud.destroy();
       if (this._temGeometry) {
