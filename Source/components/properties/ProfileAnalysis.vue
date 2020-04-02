@@ -134,6 +134,8 @@ export default {
         }
       )
     );
+    // 基于准备好的dom，初始化echarts实例
+    this._chart = this.$echarts.init(this.$refs.mains);
   },
   watch: {
     editing (v) {
@@ -145,7 +147,7 @@ export default {
     },
     creating (v) {
       if (v == false) {
-        this._creating = [];
+        // this._creating = [];
         let self = this;
         if (this._labels.length > 0) {
           this._labels.forEach(l => {
@@ -162,17 +164,7 @@ export default {
         }
 
         // console.log(result);
-        let resultdata = this._result.sample,
-          xdata = [],
-          ydata = [],
-          data = {},
-          min,
-          max;
-        resultdata.forEach(element => {
-          xdata.push(element.distance);
-          ydata.push(Number(element.height.toFixed(2)));
-        });
-        this.drawLine(resultdata, xdata, ydata);
+        this.drawLine();
       } else {
         if (this._temGeometry) {
           this._temGeometry.forEach(e => {
@@ -199,15 +191,16 @@ export default {
           var lb = this.createLabel(l);
           this._labels.push(lb);
         });
+        this.drawLine();
       }
     },
     createLabel (option) {
-      let p = new XE.Obj.Pin(this.$root.$earth);
-      p.pinBuilder.extTextFont = "36px 楷体";
-      p.pinBuilder.outlineColor = [0, 0, 0];
+      let p = new XE.Obj.Plots.GeoPin(this.$root.$earth);
+      p.innerHTML = "<div style=\"cursor:pointer;position: absolute;width:300px;left:6px; line-height:15px;color: white;\"><span style=\"font-size: 14px;color:#ffffff\">"
+        + option.dis + "</span></div>";//-webkit-text-stroke:0.6px #000;
       p.position = option.pos;
-      p.pinBuilder.extText = option.dis;
-      p.scale = 0.0001;
+      p._pin.show = false;
+
       return p;
     },
     resize () {
@@ -218,10 +211,18 @@ export default {
       }
     },
     /*画图*/
-    drawLine (resultdata, xdata, ydata) {
-      // 基于准备好的dom，初始化echarts实例
-      this._chart = this.$echarts.init(this.$refs.mains);
+    drawLine () {
       // 绘制柱状图图表
+      let resultdata = this._result.sample,
+        xdata = [],
+        ydata = [],
+        data = {},
+        min,
+        max;
+      resultdata.forEach(element => {
+        xdata.push(element.distance);
+        ydata.push(Number(element.height.toFixed(2)));
+      });
 
       this._chart.setOption({
         tooltip: {

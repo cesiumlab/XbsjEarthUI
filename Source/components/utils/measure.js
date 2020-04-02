@@ -44,8 +44,8 @@ function getDisAndLabelPos (positions, interval, earth) {
         var first = c1;
         if (distance > interval) {
             var step = distance / interval;
-            var xinterval = (p1[0] - p2[0]) / step;
-            var yinterval = (p1[1] - p2[1]) / step;
+            var xinterval = (p2[0] - p1[0]) / step;
+            var yinterval = (p2[1] - p1[1]) / step;
 
             var setiondistance = 0;
             var p = p1;

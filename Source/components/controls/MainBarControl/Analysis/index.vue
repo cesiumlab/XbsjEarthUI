@@ -239,7 +239,7 @@ export default {
             if (this.areaGroudinterval === 0 && this.areaGroud > 1) {
               this._areaGroud.interpolation = true;
               this._areaGroud.interpolationDistance = Math.sqrt(this.areaGroud) / 10;
-              this._areaGroud.offsetHeight = 2;
+              this._areaGroud.offsetHeight = 0.5;
             }
 
             var temPrimitve = new XE.Obj.CustomPrimitive(this.$root.$earth);
@@ -437,13 +437,10 @@ export default {
       }
     },
     createLabel (option) {
-      let p = new XE.Obj.Pin(this.$root.$earth);
-      p.pinBuilder.extTextFont = "36px 楷体";
-      p.pinBuilder.outlineColor = [0, 0, 0];
+      let p = new XE.Obj.Plots.GeoPin(this.$root.$earth);
+      p.innerHTML = "<div style=\"cursor:pointer;position: absolute;width:300px;left:6px; line-height:15px;color: white;\"><span style=\"text-stroke:2px #000;font-size: 14px;color:#ffffff\">" + option.dis + "</span></div>";
       p.position = option.pos;
-      p.position = option.pos;
-      p.pinBuilder.extText = option.dis;
-      p.scale = 0.0001;
+      p._pin.show = false;
       return p;
     },
     setTileset (tileset) {
