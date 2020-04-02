@@ -116,6 +116,11 @@
           ></div>
           <span class="xbsj-item-name">{{lang.areaGroud}}</span>
         </div>
+        <span
+          class="xbsj-select"
+          :class="{highlight:popup == 'interpolation'}"
+          @click.stop="togglePopup('interpolation',$event)"
+        ></span>
 
         <!-- 方位角 -->
         <div class="xbsj-item-btnbox" @click="angleMeasure()">
@@ -159,15 +164,25 @@
         </div>-->
       </div>
     </div>
+    <Interpolation
+      ref="interpolation"
+      v-show="popup =='interpolation'"
+      @changeInterval="changeInterval"
+      :interval="areaGroudinterval"
+    ></Interpolation>
   </div>
 </template>
 
 <script>
 import languagejs from "./index_locale";
+import Interpolation from "./Interpolation";
 import { getPickRay } from "../../../utils/measure";
 import { createPolylinePrimitive } from "../../../utils/DepthPolyline";
 
 export default {
+  components: {
+    Interpolation
+  },
   data () {
     return {
       lang: {},
@@ -179,7 +194,8 @@ export default {
       modelexpansion_over: false,
       measuring: false,
       areaGroud: 0,
-      areaGroudinterval: 0
+      areaGroudinterval: 0,
+      popup: ""
     };
   },
   created () { },
@@ -280,6 +296,50 @@ export default {
     }
   },
   methods: {
+    changeInterval (v) {
+      this.areaGroudinterval = v;
+    },
+    getPopupComp () {
+      if (this.$refs.hasOwnProperty(this.popup)) {
+        return this.$refs[this.popup];
+      } else {
+        return undefined;
+      }
+    },
+    showPopup (v) {
+      let comp = this.getPopupComp();
+      if (comp && typeof comp.show == "function") {
+        comp.show(v);
+      }
+      return comp;
+    },
+    togglePopup (p, event) {
+      //调用上一个组件的隐藏
+      this.showPopup(false);
+
+      this.popup = this.popup == p ? "" : p;
+
+      //调用当前组件的显示
+      let curComp = this.showPopup(true);
+      if (!curComp) return;
+      if (this.popup == "" || !event) return;
+      try {
+        //基于现在UI结构强行计算的
+        let el = curComp.$el;
+        el.style.left =
+          event.target.offsetLeft +
+          event.target.offsetParent.offsetLeft -
+          40 +
+          "px";
+        el.style.top =
+          event.target.offsetTop +
+          event.target.offsetParent.offsetTop +
+          44 +
+          "px";
+      } catch (ex) {
+        console.log(ex);
+      }
+    },
     drawIntervisibleLine (p1, p2, obj) {
       var p = getPickRay(p1, p2, this.$root.$earth);
       if (p) {

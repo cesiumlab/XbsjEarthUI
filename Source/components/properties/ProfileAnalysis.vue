@@ -14,6 +14,14 @@
     <div style="width:100%;height:100%;">
       <div class="flatten">
         <div style="float: left;">
+          <div>
+            <label class="label">{{lang.jianju}}:</label>
+
+            <div>
+              <XbsjInputNumber v-model="samplinginterval"></XbsjInputNumber>
+            </div>
+          </div>
+
           <div class="buttonGroup">
             <button
               class="attitudeEditCameraButton"
@@ -39,30 +47,6 @@
         </div>
       </div>
       <div class="chartContents" ref="chartContents">
-        <!-- <div style="float: left;">
-          <div class="buttonGroup">
-            <button
-              class="attitudeEditCameraButton"
-              @click="creating =!creating"
-              :class="creating?'btncoloron':''"
-            >{{lang.creating}}</button>
-            <button
-              class="attitudeEditCameraButton"
-              @click="editing =!editing"
-              :class="editing?'btncoloron':''"
-            >{{lang.editing}}</button>
-          </div>
-
-          <div
-            :title="lang.drag"
-            class="dragBox"
-            @dragover="dragOver"
-            @drop="drop"
-            @dragleave="dragLeave"
-          >
-            <div class="dragButton" :class="{highlight:drag_over}">{{lang.dragcontent}}</div>
-          </div>
-        </div>-->
         <div class="myBarChart" ref="mains"></div>
       </div>
     </div>
@@ -83,23 +67,23 @@ export default {
           creating: "创建",
           editing: "编辑",
           drag: "拖拽",
-          dragcontent: "请把对象拖到这里"
+          dragcontent: "请把对象拖到这里",
+          jianju: "采样间隔"
         },
         en: {
           title: "Profile analysis",
           creating: "creating",
           editing: "editing",
           drag: "drag",
-          dragcontent: "Drag the object here"
+          dragcontent: "Drag the object here",
+          jianju: "sampling interval",
         }
       },
       lang: undefined,
-      interval: 0,
+      samplinginterval: 0,
       creating: true,
       editing: false,
       drag_over: false,
-      interval: 0,
-      teminterval: 0,
       top: window.innerHeight - 271,
       width: window.innerWidth
     };
@@ -110,8 +94,7 @@ export default {
   },
   mounted () {
     //获取绑定的view
-    this.interval = 0;
-    this.teminterval = 0;
+    this.samplinginterval = 0;
     this._labels = [];
     this._temGeometry = [];
     this._creating = [];
@@ -138,6 +121,9 @@ export default {
     this._chart = this.$echarts.init(this.$refs.mains);
   },
   watch: {
+    samplinginterval (v) {
+      this.updateMeasure(this._disGroud.positions);
+    },
     editing (v) {
       if (this._temGeometry) {
         this._temGeometry.forEach(e => {
@@ -155,9 +141,6 @@ export default {
           });
           this._labels = [];
           this.measurementType = "NONE";
-        }
-        if (this.disGroudinterval == 0) {
-          this.disGroudinterval = this.temDisGroudInterval;
         }
         if (this.areaGroudInterval == 0) {
           this.areaGroudInterval = this.temAreaGroudInterval;
@@ -178,13 +161,12 @@ export default {
     updateMeasure (p) {
       this._labels.forEach(l => l.destroy());
       if (p.length > 1) {
-        var it = this.interval;
+        var it = this.samplinginterval;
         var result = getDisAndLabelPos(p, it, this.$root.$earth);
         if (!result) {
           return;
         }
         this._result = result;
-        this.temInterval = result.interval;
         var labels = result.label;
         this._labels = [];
         labels.forEach(l => {
