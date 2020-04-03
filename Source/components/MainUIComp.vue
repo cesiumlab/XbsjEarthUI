@@ -98,6 +98,8 @@ import PinPictureTool from "./viztools/PinPictureTool";
 import GroundImageTool from "./viztools/GroundImageTool";
 import PinDivTool from "./viztools/PinDivTool";
 import PathTool from "./viztools/PathTool";
+import PolygonTool from "./viztools/PolygonTool";
+import ClassificationPolygonTool from "./viztools/ClassificationPolygonTool";
 import ForestTool from "./viztools/ForestTool";
 import ModelTool from "./viztools/ModelTool";
 import PolylineTool from "./viztools/PolylineTool";
@@ -120,6 +122,9 @@ import GeoTriFlag from "./viztools/GeoTriFlag";
 import GeoSector from "./viztools/GeoSector";
 import ScanlineTool from "./viztools/ScanlineTool";
 import CustomPrimitiveTool from "./viztools/CustomPrimitiveTool";
+import RoadTool from "./viztools/RoadTool";
+import WallTool from "./viztools/WallTool";
+import SurfaceTool from "./viztools/SurfaceTool";
 import TubeTool from "./viztools/TubeTool";
 import AddPoint from "./viztools/ForestTool/AddPoint";
 import ForestLab from "./viztools/ForestTool/ForestLab";
@@ -131,6 +136,7 @@ import ViewshedTool from "./viztools/ViewshedTool";
 
 import PropertyWindow from "./properties/PropertyWindow";
 import CameraViewPrp from "./properties/CameraViewPrp";
+import ProfileAnalysis from "./properties/ProfileAnalysis";
 import TilesetStyleEditor from "./properties/TilesetStyleEditor";
 import TilesetExpansionEditor from "./properties/TilesetExpansionEditor";
 import ShareEditor from "./properties/ShareEditor";
@@ -144,6 +150,8 @@ import CustomSymbol from "./tools/SymbolTool/CustomSymbol";
 import LabSymbol from "./tools/SymbolTool/LabSymbol";
 import OnlineSymbol from "./tools/SymbolTool/OnlineSymbol";
 import TilesTest from "./tools/TilesTest";
+
+import GeoPolygonImage from "./viztools/GeoPolygonImage";
 
 export default {
   components: {
@@ -165,6 +173,8 @@ export default {
     GroundImageTool,
     PinDivTool,
     PathTool,
+    PolygonTool,
+    ClassificationPolygonTool,
     ForestTool,
     ModelTool,
     PolylineTool,
@@ -185,6 +195,9 @@ export default {
     GeoParallelSearch,
     GeoTriFlag,
     GeoSector,
+    RoadTool,
+    WallTool,
+    SurfaceTool,
     ScanlineTool,
     CustomPrimitiveTool,
     TubeTool,
@@ -203,6 +216,7 @@ export default {
     TerrainOnline,
     PropertyWindow,
     CameraViewPrp,
+    ProfileAnalysis,
     AddPoint,
     ForestLab,
     LinearPanel,
@@ -217,7 +231,8 @@ export default {
     CustomSymbol,
     LabSymbol,
     OnlineSymbol,
-    TilesTest
+    TilesTest,
+    GeoPolygonImage
   },
   data: function() {
     return {
@@ -234,9 +249,14 @@ export default {
         PinDivTool: "PinDivTool",
         // Pin: "PinPictureTool",
         Path: "PathTool",
+        Polygon: "PolygonTool",
+        ClassificationPolygon: "ClassificationPolygonTool",
         Forest: "ForestTool",
         Scanline: "ScanlineTool",
         CustomPrimitive: "CustomPrimitiveTool",
+        Road: "RoadTool",
+        Wall: "WallTool",
+        Surface: "SurfaceTool",
         CustomPrimitiveExt_Tube: "TubeTool",
         Model: "ModelTool",
         Polyline: "PolylineTool",
@@ -258,9 +278,11 @@ export default {
         GeoPolygon: "GeoPolygon",
         GeoSector: "GeoSector",
         ["CameraView.View"]: "CameraViewPrp",
+        ProfileAnalysis: "ProfileAnalysis",
         GroundImage: "GroundImageTool",
         GeoPin: "PinDivTool",
-        TilesTest: "TilesTest"
+        TilesTest: "TilesTest",
+        CustomPrimitiveExt_Image: "GeoPolygonImage"
       },
       tools: [
         {
@@ -396,18 +418,18 @@ export default {
         getObj: function(earth) {
           return new XE.Obj.Plots.GeoPolyline(earth);
         }
-      },
-      {
-        name: "管道",
-        typeName: "CustomPrimitiveExt.Tube",
-        getObj: function(earth) {
-          var tube = new XE.Obj.CustomPrimitiveExt.Tube(earth);
-          tube.imageUrl = "../../assets/ht/meteor_01.png";
-          tube.radius = 0.5;
-          tube.speed = [0.2, 0.2];
-          return tube;
-        }
       }
+      // {
+      //   name: "管道",
+      //   typeName: "CustomPrimitiveExt.Tube",
+      //   getObj: function(earth) {
+      //     var tube = new XE.Obj.CustomPrimitiveExt.Tube(earth);
+      //     tube.imageUrl = "../../assets/ht/meteor_01.png";
+      //     tube.radius = 0.5;
+      //     tube.speed = [0.2, 0.2];
+      //     return tube;
+      //   }
+      // }
     ]),
       (this.polygonTypes = [
         {
@@ -442,41 +464,76 @@ export default {
           this.$root.$earthUI.promptInfo("只创建前100条！", "warning");
         }
         for (let j = 0; j < len; j++) {
-          if (arr[j].geometry.type === "Polygon") {
-            //如果类型为Polygon
-            var Polygon = new XE.Obj.Plots.GeoPolygon(this.$root.$earth);
-            if (arr[j].properties && arr[j].properties.name) {
-              Polygon.name = arr[j].properties.name;
-            }
-            var positionarr = arr[j].geometry.coordinates[0];
-            for (let k = 0; k < positionarr.length; k++) {
-              positionarr[k][0] = (Math.PI / 180) * positionarr[k][0];
-              positionarr[k][1] = (Math.PI / 180) * positionarr[k][1];
-              positionarr[k][2] = 0;
-            }
-            // π/180×角度
-            Polygon.positions = positionarr;
-            var selected = this.$root.$earth.sceneTree.currentSelectedNode;
-            const obj = new XE.SceneTree.Leaf(Polygon);
-            selected.children.push(obj);
-          } else if (arr[j].geometry.type === "LineString") {
-            //如果类型为Polygon
-            // var polylin = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+          if (arr[j].geometry.type.toLowerCase() === "linestring") {
             var polylin = this.selectedType.getObj(this.$root.$earth);
             if (arr[j].properties && arr[j].properties.name) {
               polylin.name = arr[j].properties && arr[j].properties.name;
             }
             var positionarr = arr[j].geometry.coordinates;
             for (let k = 0; k < positionarr.length; k++) {
-              positionarr[k][0] = (Math.PI / 180) * positionarr[k][0];
-              positionarr[k][1] = (Math.PI / 180) * positionarr[k][1];
-              positionarr[k][2] = 0;
+              positionarr[k][0] = (Math.PI * positionarr[k][0]) / 180.0;
+              positionarr[k][1] = (Math.PI * positionarr[k][1]) / 180.0;
+              if (positionarr[k].length > 2) {
+                positionarr[k][2] = positionarr[k][2];
+                polylin.ground = false;
+              } else {
+                positionarr[k][2] = 0;
+              }
             }
             // π/180×角度
             polylin.positions = positionarr;
             var selected = this.$root.$earth.sceneTree.currentSelectedNode;
             const obj = new XE.SceneTree.Leaf(polylin);
             selected.children.push(obj);
+          } else if (arr[j].geometry.type.toLowerCase() === "polygon") {
+            var polygon = this.selectedType.getObj(this.$root.$earth);
+            if (arr[j].properties && arr[j].properties.name) {
+              polygon.name = arr[j].properties && arr[j].properties.name;
+            }
+            var positionarr = arr[j].geometry.coordinates[0];
+            for (let k = 0; k < positionarr.length; k++) {
+              positionarr[k][0] = (Math.PI * positionarr[k][0]) / 180.0;
+              positionarr[k][1] = (Math.PI * positionarr[k][1]) / 180.0;
+              if (positionarr[k].length > 2) {
+                positionarr[k][2] = positionarr[k][2];
+                polygon.ground = false;
+              } else {
+                positionarr[k][2] = 0;
+              }
+            }
+            // π/180×角度
+            polygon.positions = positionarr;
+            var selected = this.$root.$earth.sceneTree.currentSelectedNode;
+            const obj = new XE.SceneTree.Leaf(polygon);
+            selected.children.push(obj);
+          } else if (
+            arr[j].geometry.type.toLowerCase() === "multilinestring" ||
+            arr[j].geometry.type.toLowerCase() === "multipolygon"
+          ) {
+            var multiLineString = arr[j].geometry.coordinates;
+            for (let single = 0; single < multiLineString.length; single++) {
+              var polylin = this.selectedType.getObj(this.$root.$earth);
+              if (arr[j].properties && arr[j].properties.name) {
+                polylin.name = arr[j].properties && arr[j].properties.name;
+              }
+              positionarr = multiLineString[single];
+              for (let k = 0; k < positionarr.length; k++) {
+                positionarr[k][0] = (Math.PI * positionarr[k][0]) / 180.0;
+                positionarr[k][1] = (Math.PI * positionarr[k][1]) / 180.0;
+                if (positionarr[k].length > 2) {
+                  positionarr[k][2] = positionarr[k][2];
+                  polylin.ground = false;
+                } else {
+                  positionarr[k][2] = 0;
+                }
+              }
+
+              // π/180×角度
+              polylin.positions = positionarr;
+              var selected = this.$root.$earth.sceneTree.currentSelectedNode;
+              const obj = new XE.SceneTree.Leaf(polylin);
+              selected.children.push(obj);
+            }
           }
         }
       }
@@ -520,10 +577,17 @@ export default {
         }
         if (arr && arr.length > 0) {
           if (arr.length > 0) {
-            if (arr[0].geometry.type === "Polygon") {
+            if (
+              arr[0].geometry.type.toLowerCase() === "polygon" ||
+              arr[0].geometry.type.toLowerCase() === "multipolygon"
+            ) {
               this.types = this.polygonTypes;
               this.loadGeoJSONShow = true;
-            } else if (arr[0].geometry.type === "LineString") {
+              this.selectedType = this.types[0];
+            } else if (
+              arr[0].geometry.type.toLowerCase() === "linestring" ||
+              arr[0].geometry.type.toLowerCase() === "multilinestring"
+            ) {
               this.types = this.polylineTypes;
               this.loadGeoJSONShow = true;
               this.selectedType = this.types[0];
@@ -717,6 +781,29 @@ export default {
           return e;
         });
         czmObj.positions = [...polygonPositions2];
+      } else {
+        czmObj.positions = [...dragczmObj.positions];
+      }
+    },
+
+    // 获取拖拽对象位置
+    getCzmObjectPositionFromDrags(dragczmObj, czmObj) {
+      if (dragczmObj._polyline !== undefined) {
+        var polylinePositions = [],
+          polylinePositions2 = [];
+        // 将数组分割成每两个一组
+        for (var i = 0; i < dragczmObj._polyline.positions.length; i++) {
+          polylinePositions.push(dragczmObj._polyline.positions[i].slice(0, 2));
+        }
+        polylinePositions.forEach(element => {
+          polylinePositions2.push(element[0]);
+          polylinePositions2.push(element[1]);
+        });
+        czmObj.positions = [...polylinePositions2];
+        czmObj.height = dragczmObj._polyline.positions[0][2];
+      } else if (dragczmObj._polygon !== undefined) {
+        czmObj.positions = [...dragczmObj._polygon.positions];
+        czmObj.height = dragczmObj._polygon.height;
       } else {
         czmObj.positions = [...dragczmObj.positions];
       }

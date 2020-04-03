@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>填充面-编辑</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 38px;
+            padding: 0 10px;
+            line-height: 38px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+
+        .btnon {
+            background-color: #1E9FFF;
+            color: #fff;
+            border: 1px solid #1E9FFF;
+        }
+
+        .poyline {
+            width: 20px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .checkbox {
+            display: inline-block;
+            margin: 5px 0;
+            cursor: pointer;
+        }
+
+        input {
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%"  @click="raise = false,reduce = false">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                        <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:200px; font-size:24px; font-family: 宋体;">
+                            <div class="defultbtn" :class="{'btnon':creating}" @click="creating = !creating">创建</div>
+                            <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':editing}"  @click="editing = !editing">编辑</div><br/>
+                            <div style="margin-top: 10px;" class="defultbtn" :class="{'btnon':innerCreating}" @click="innerCreating = !innerCreating">内部创建</div>
+                            <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':innerEditing}"  @click="innerEditing = !innerEditing">内部编辑</div>
+                            <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':textureRotationEditing}"  @click="textureRotationEditing = !textureRotationEditing">内部旋转</div><br/>
+                            <span @click="show = !show" class="checkbox"><input class="poyline" type="checkbox" v-model="show">填充面显隐</span><br/>
+                            <span>图像宽度缩放比例：{{imageWidthScale}}</span><br/><input type="range" min="0" max="10" v-model.number="imageWidthScale"><br/>
+                            <span>纹理图像：</span>
+                            <input type="text" v-model="imageUrl"><br/>
+                            <span>纹理高度：</span>
+                            <input type="text" v-model="imageHeight"><br/>
+                            <span @click="showHelper = !showHelper" class="checkbox"><input class="poyline" type="checkbox" v-model="showHelper">辅助线显隐</span><br/>
+                        </div>
+                </div>
+            `,
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    creating: false,
+                    editing: false,
+                    show: true,
+                    imageWidthScale: 1.0,
+                    imageUrl: "",
+                    imageHeight: 3.0,
+                    textureRotationEditing: false,
+                    innerCreating: false,
+                    innerEditing: false,
+                    showHelper: true
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "expand": true,
+                    "title": "预览场景",
+                    "children": [
+                        {
+                            "czmObject": {
+                                "name": '默认影像',
+                                "xbsjType": "Imagery",
+                                "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
+                            },
+                        }, {
+                            "ref": 'surface',
+                            "czmObject": {
+                                "xbsjType": "Surface",
+                                "positions": [
+                                    [
+                                        1.5025566219012698,
+                                        0.48507399007967084,
+                                        -3.909769389653449
+                                    ],
+                                    [
+                                        1.503318344125221,
+                                        0.4850461298563379,
+                                        -4.009622529653977
+                                    ],
+                                    [
+                                        1.503336932761483,
+                                        0.4838412731789048,
+                                        0
+                                    ],
+                                    [
+                                        1.5025043178100246,
+                                        0.48386185889310374,
+                                        0
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                };
+
+                var surface = earth.sceneTree.$refs.surface.czmObject;
+
+
+                // 1.1.3 设置相机位置
+                // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
+                earth.camera.position = [1.50299808826547, 0.48407197285475667, 12595.666049340498];
+                earth.camera.rotation = [0.03525441774425353, -1.2416460359776456, 0.0003034497917715484];
+
+                // 1.1.4 数据绑定
+                this._creatingUnbind = XE.MVVM.bind(this, 'creating', surface, 'creating');
+                this._editingUnbind = XE.MVVM.bind(this, 'editing', surface, 'editing');
+                this._showUnbind = XE.MVVM.bind(this, 'show', surface, 'show');
+                this._imageWidthScaleUnbind = XE.MVVM.bind(this, 'imageWidthScale', surface, 'imageWidthScale');
+                this._imageUrlUnbind = XE.MVVM.bind(this, 'imageUrl', surface, 'imageUrl');
+                this._imageHeightUnbind = XE.MVVM.bind(this, 'imageHeight', surface, 'imageHeight');
+                this._innerCreatingUnbind = XE.MVVM.bind(this, 'innerCreating', surface, 'innerCreating');
+                this._innerEditingUnbind = XE.MVVM.bind(this, 'innerEditing', surface, 'innerEditing');
+                this._textureRotationEditingUnbind = XE.MVVM.bind(this, 'textureRotationEditing', surface, 'textureRotationEditing');
+                this._showHelperUnbind = XE.MVVM.bind(this, 'showHelper', surface, 'showHelper');
+
+                this._earth = earth;
+
+                // only for Debug
+                window.surface = surface;
+                window.earth = earth;
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._creatingUnbind = this._creatingUnbind && this._creatingUnbind();
+                this._editingUnbind = this._editingUnbind && this._editingUnbind();
+                this._showUnbind = this._showUnbind && this._showUnbind();
+                this._imageWidthScaleUnbind = this._imageWidthScaleUnbind && this._imageWidthScaleUnbind();
+                this._imageHeightUnbind = this._imageHeightUnbind && this._imageHeightUnbind();
+                this._imageWidthScaleUnbind = this._imageWidthScaleUnbind && this._imageWidthScaleUnbind();
+                this._imageUrlUnbind = this._imageUrlUnbind && this._imageUrlUnbind();
+                this._innerCreatingUnbind = this._innerCreatingUnbind && this._innerCreatingUnbind();
+                this._innerEditingUnbind = this._innerEditingUnbind && this._innerEditingUnbind();
+                this._textureRotationEditingUnbind = this._textureRotationEditingUnbind && this._textureRotationEditingUnbind();
+                this._showHelperUnbind = this._showHelperUnbind && this._showHelperUnbind();
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>

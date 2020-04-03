@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="xbsj-labels" content="Earth示例">
+  </meta>
+  <title>效果-雨</title>
+  <!-- 0 引入js文件 -->
+  <script src="../../XbsjEarth/XbsjEarth.js"></script>
+  <script src="./scripts/vue.min.js"></script>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+    }
+
+    .box span {
+      display: block;
+      margin-top: 10px;
+    }
+
+    .defultbtn {
+      display: inline-block;
+      text-align: center;
+      min-width: 60px;
+      height: 38px;
+      padding: 0 10px;
+      line-height: 38px;
+      border-radius: 100px;
+      border: 1px solid #C9C9C9;
+      background-color: #FFF;
+      color: #555;
+      cursor: pointer;
+    }
+
+    .defultbtn:hover {
+      background-color: #b3daf8;
+    }
+
+    .btnon {
+      background-color: #1E9FFF;
+      color: #fff;
+      border: 1px solid #1E9FFF;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+    <earth-comp></earth-comp>
+  </div>
+
+  <script>
+    // 1 创建Earth的vue组件
+    var EarthComp = {
+      template: `
+          <div style="width: 100%; height: 100%">
+              <div ref="earthContainer" style="width: 100%; height: 100%">
+              </div>
+              <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; padding: 20px; border-radius: 25px;min-width:200px; font-size:24px; font-family: 宋体;">
+                <div class="defultbtn" :class="{'btnon':enabled}" @click="enabled = !enabled">雨</div>
+              </div>
+          </div>
+      `,
+      data() {
+        return {
+          enabled: true,
+          _earth: undefined // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+        };
+      },
+      // 1.1 资源加载
+      mounted() {
+        // 1.2.1 创建地球
+        var earth = new XE.Earth(this.$refs.earthContainer);
+
+        // 1.2.2 添加默认地球影像
+        earth.sceneTree.root = {
+          "title": "当前场景",
+          "isSelected": true,
+          "children": [{
+            "czmObject": {
+              "xbsjType": "Imagery",
+              "enabled": true,
+              "name": "谷歌影像",
+              "show": true,
+              "xbsjImageryProvider": {
+                "XbsjImageryProvider": {
+                  "url": "//www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}",
+                }
+              }
+            }
+          },
+          {
+            "czmObject": {
+              "xbsjType": "Tileset",
+              "name": "三维瓦片1x",
+              "url": "../assets/dayanta/tileset.json",
+              "xbsjClippingPlanes": {},
+              "xbsjUseOriginTransform": false, //是否启用原先的状态
+              "skipLevelOfDetail": false
+            },
+            "ref": 'tileset'
+          },
+          ]
+        };
+
+        // 设置相机位置
+        // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
+        earth.camera.position = [1.9017001010801335, 0.597137460253705, 1110.4850734777483];
+        earth.camera.rotation = [6.283185307179429, -0.7855047806765185, 1.0658141036401503e-14];
+
+        // 1.2.3 双向数据绑定!
+        this._enabledUnbind = XE.MVVM.bind(this, 'enabled', earth.weather.rainPostProcess, 'enabled');
+        earth.weather.rainPostProcess.enabled = true;
+
+        this._earth = earth;
+
+        // only for Debug
+        window.app = this;
+        window.earth = earth;
+      },
+      // 1.2 资源销毁
+      beforeDestroy() {
+        // vue程序销毁时，需要清理相关资源
+        this._enabledUnbind = this._enabledUnbind && this._enabledUnbind();
+        this._earth = this._earth && this._earth.destroy();
+      },
+    }
+
+    // 2 创建vue程序
+    // XE.ready()用来加载Cesium.js等相关资源
+    XE.ready().then(() => {
+      var app = new Vue({
+        el: '#vueApp',
+        components: {
+          EarthComp,
+        },
+      });
+    });
+  </script>
+
+
+</body>
+
+</html>

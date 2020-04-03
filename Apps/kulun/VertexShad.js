@@ -125,7 +125,7 @@ function createVertexShad() {
                     czm_material material = czm_getDefaultMaterial(materialInput);
                     material.diffuse = vec3(1.0);
                     material.specular = 0.0;
-                    gl_FragColor = czm_phong(normalize(positionToEyeEC), material);
+                    gl_FragColor = czm_phong(normalize(positionToEyeEC), material, czm_lightDirectionEC);
 
                     // custom color
                     float xbsji = u_xbsjCustomParams.z; 

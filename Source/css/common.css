@@ -584,7 +584,7 @@
    display: inline-block;
    font-size: 12px;
    color: #515a6e;
-   background-color: rgba(71, 71, 71, 1);
+   background-color: rgba(0, 0, 0, 0.5);
    background-image: none;
    position: relative;
    margin: 0;
@@ -593,7 +593,7 @@
    height: 34px;
    line-height: 32px;
    vertical-align: middle;
-   border: 1px solid #dcdee2;
+   /* border: 1px solid #dcdee2; */
    /* border-radius: 4px; */
    overflow: hidden;
    cursor: default;
@@ -689,20 +689,23 @@
  .xbsj-input-number-input-wrap {
    overflow: hidden;
    height: 34px;
+   width: calc(100% - 36px);
+   padding: 0 6px;
+   background: transparent;
  }
 
  .xbsj-input-number-input {
    width: 100%;
    height: 32px;
    line-height: 32px;
-   padding: 0 7px;
+   /* padding: 0 7px; */
    text-align: left;
    outline: 0;
    color: #666;
    border: 0;
    border-radius: 4px;
    transition: all 0.2s linear;
-   background: rgba(71, 71, 71, 1);
+   background: none;
    color: #fff;
  }
 
@@ -786,7 +789,7 @@
 }
 
 .xbsj-input-number-input {
-  background: rgba(0, 0, 0, 0.5);
+  background: none;
 }
 .xbsj-input-number-handler-wrap, .xbsj-input-number-handler {
   background: none;

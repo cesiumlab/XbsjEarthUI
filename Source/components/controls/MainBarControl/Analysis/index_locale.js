@@ -14,8 +14,13 @@ const zh = {
   distance: "距离",
   height: "高度",
   area: "面积",
+  disGroud: "剖面",
+  areaGroud: "立面面积",
   volume: "体积",
-  reset: "清除"
+  reset: "清除",
+  intervisible: "通视",
+  circleIntervisible: "圆形通视",
+  angle: "方位角"
 };
 
 const en = {
@@ -34,8 +39,13 @@ const en = {
   distance: "Distance",
   height: "Height",
   area: "Area",
+  disGroud: "Section",
+  areaGroud: "Space Area",
   volume: "Volume",
-  reset: "Clear"
+  reset: "Clear",
+  intervisible: "Intervisible",
+  circleIntervisible: "Circle Intervisible",
+  angle: "Azimuth"
 };
 
 export default { zh, en };

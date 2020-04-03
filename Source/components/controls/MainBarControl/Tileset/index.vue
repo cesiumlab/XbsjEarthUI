@@ -147,7 +147,7 @@
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn">
             <button
-              class="rotatebutton"
+              class="techonlogybutton"
               :class="{highlight:technologyShader}"
               :disabled="!enabled"
               @click="toggleTechnology"
@@ -445,7 +445,8 @@ export default {
         if (this._tileset.xbsjCustomShader.fsBody === "") {
           this._tileset.xbsjCustomShader.fsBody =
             XE.Obj.Tileset.xbsjCustomShader.builtinFsBody1;
-          this._tileset.xbsjStyle = "var style = {\n    color: \"vec4(0, 0.5, 1.0,1)\"\n}";
+          this._tileset.xbsjStyle =
+            'var style = {\n    color: "vec4(0, 0.5, 1.0,1)"\n}';
           this.technologyShader = true;
         } else {
           this._tileset.xbsjCustomShader.fsBody = "";
@@ -667,6 +668,23 @@ export default {
   cursor: not-allowed;
 }
 
+.techonlogybutton {
+  background: url(../../../../images/techonlogy.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.techonlogybutton.highlight,
+.techonlogybutton:hover {
+  background: url(../../../../images/techonlogy_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.techonlogybutton:disabled {
+  background: url(../../../../images/techonlogy_disabled.png) no-repeat;
+  background-size: contain;
+  cursor: not-allowed;
+}
 .viewbutton {
   background: url(../../../../images/view-model.png) no-repeat;
   background-size: contain;
@@ -698,6 +716,7 @@ export default {
 .stylebutton,
 .movebutton,
 .rotatebutton,
+.techonlogybutton,
 .custombutton {
   width: 100%;
   height: 100%;

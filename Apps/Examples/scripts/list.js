@@ -68,6 +68,10 @@ vueApp.examples = [
                 "url": "./earth-camera-firstpersion.html"
             },
             {
+                "title": "单体化-编辑",
+                "url": "./earth-classificationPolygon-editing.html"
+            },
+            {
                 "title": "自定义贴地矩形-image",
                 "url": "./earth-customGroundRectangle-image.html"
             },
@@ -120,8 +124,16 @@ vueApp.examples = [
                 "url": "./earth-effect-fog.html"
             },
             {
+                "title": "效果-雨",
+                "url": "./earth-effect-rain.html"
+            },
+            {
                 "title": "效果-阴影",
                 "url": "./earth-effect-shadow.html"
+            },
+            {
+                "title": "效果-雪",
+                "url": "./earth-effect-snow.html"
             },
             {
                 "title": "效果-太阳/月亮/星空",
@@ -246,6 +258,10 @@ vueApp.examples = [
             {
                 "title": "模型-平移旋转",
                 "url": "./earth-model-editing.html"
+            },
+            {
+                "title": "模型-位置匹配",
+                "url": "./earth-model-positionmatcn.html"
             },
             {
                 "title": "MVVM.watch",
@@ -376,6 +392,10 @@ vueApp.examples = [
                 "url": "./earth-restrict.html"
             },
             {
+                "title": "道路-编辑",
+                "url": "./earth-road-editing.html"
+            },
+            {
                 "title": "扫描线-currentTime",
                 "url": "./earth-scaneline-currentTime.html"
             },
@@ -394,6 +414,10 @@ vueApp.examples = [
             {
                 "title": "地下模式和地表透明",
                 "url": "./earth-subsurface.html"
+            },
+            {
+                "title": "填充面-编辑",
+                "url": "./earth-surface-editing.html"
             },
             {
                 "title": "地形-cesium官方",
@@ -416,6 +440,10 @@ vueApp.examples = [
                 "url": "./earth-view-navigator.html"
             },
             {
+                "title": "挡土墙-编辑",
+                "url": "./earth-wall-editing.html"
+            },
+            {
                 "title": "水面-编辑",
                 "url": "./earth-water-editing.html"
             },
@@ -434,6 +462,43 @@ vueApp.examples = [
         ]
     },
     {
+        "title": "Earth起步",
+        "list": [
+            {
+                "title": "创建地球-背景透明",
+                "url": "./earth-bgtransparent.html"
+            },
+            {
+                "title": "数据双向绑定-理论模型",
+                "url": "./startup-binds-classic.html"
+            },
+            {
+                "title": "数据双向绑定-理论模型2",
+                "url": "./startup-binds-classic2.html"
+            },
+            {
+                "title": "数据双向绑定",
+                "url": "./startup-binds.html"
+            },
+            {
+                "title": "创建地球",
+                "url": "./startup-createEarth.html"
+            },
+            {
+                "title": "使用Vue创建地球",
+                "url": "./startup-createEarthWithVue.html"
+            },
+            {
+                "title": "加载标绘插件",
+                "url": "./startup-curveArrow.html"
+            },
+            {
+                "title": "3dtiles数据加载",
+                "url": "./startup-tileset.html"
+            }
+        ]
+    },
+    {
         "title": "Earth案例",
         "list": [
             {
@@ -447,7 +512,7 @@ vueApp.examples = [
             {
                 "title": "批量化Lod模型",
                 "url": "./earth-lodModels.html"
-            }            
+            }
         ]
     },
     {
@@ -541,39 +606,6 @@ vueApp.examples = [
             {
                 "title": "内置UI组件",
                 "url": "./earthui-xbsjUI.html"
-            }
-        ]
-    },
-    {
-        "title": "Earth起步",
-        "list": [
-            {
-                "title": "数据双向绑定-理论模型",
-                "url": "./startup-binds-classic.html"
-            },
-            {
-                "title": "数据双向绑定-理论模型2",
-                "url": "./startup-binds-classic2.html"
-            },
-            {
-                "title": "数据双向绑定",
-                "url": "./startup-binds.html"
-            },
-            {
-                "title": "创建地球",
-                "url": "./startup-createEarth.html"
-            },
-            {
-                "title": "使用Vue创建地球",
-                "url": "./startup-createEarthWithVue.html"
-            },
-            {
-                "title": "加载标绘插件",
-                "url": "./startup-curveArrow.html"
-            },
-            {
-                "title": "3dtiles数据加载",
-                "url": "./startup-tileset.html"
             }
         ]
     }

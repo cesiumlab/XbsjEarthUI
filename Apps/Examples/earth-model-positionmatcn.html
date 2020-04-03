@@ -1,0 +1,319 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>模型-位置匹配</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+
+
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .box span {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 38px;
+            padding: 0 10px;
+            line-height: 38px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+
+        .btnon {
+            background-color: #1E9FFF;
+            color: #fff;
+            border: 1px solid #1E9FFF;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:300px; font-size:24px; font-family: 宋体;">
+                        <div class="defultbtn"  @click="flyToPylon()">电塔定位</div>
+                        <div class="defultbtn"  @click="flyToWire()">电线定位</div>
+                        <div class="defultbtn" :class="{'btnon':positionEditing}"  @click="positionEditing = !positionEditing">平移</div>
+                        <div>
+                            <label>电塔经度：</label><input type='text' v-model='xbsjPosition[0]'>°</input> 
+                        </div>
+                        <div>
+                            <label>电塔纬度：</label><input type='text' v-model='xbsjPosition[1]'>°</input> 
+                        </div>
+                        <div>
+                            <label>电塔高度：</label><input type='text' v-model='xbsjPosition[2]'>m</input>
+                        </div>
+                        <div>
+                            <label>绝缘子挂接点相对X：</label><input type='text' v-model='insulator[0]'></input> 
+                        </div>
+                        <div>
+                            <label>绝缘子挂接点相对Y：</label><input type='text' v-model='insulator[1]'></input> 
+                        </div>
+                        <div>
+                            <label>绝缘子挂接点相对Z：</label><input type='text' v-model='insulator[2]'></input>
+                        </div>
+    
+                    </div>
+                </div>
+            `,
+            data() {
+                // <span>电线终点经度：{{contactPointLine[0]}}°</span>
+                // <span>电线终点纬度：{{contactPointLine[1]}}°</span>
+                // <span>电线终点高度：{{contactPointLine[2]}}m</span>
+
+                // <span>绝缘子经度：{{insulatorPosition.longitude}}°</span>
+                // <span>绝缘子纬度：{{insulatorPosition.latitude}}°</span>
+                // <span>绝缘子高度：{{insulatorPosition.height}}m</span>
+
+                // <span>绝缘子旋转X：{{insulatorRotation.heading}}</span>
+                // <span>绝缘子旋转Y：{{insulatorRotation.pitch}}</span>
+                // <span>绝缘子旋转Z：{{insulatorRotation.roll}}</span>
+
+                // <span>绝缘子缩放：{{insulatorScale}}</span>
+                return {
+                    positionEditing: false,
+                    rotationEditing: false,
+                    xbsjPosition: [0, 0, 0],
+                    insulator: [0.8, 5.8, 31],
+                    insulatorPosition: { longitude: 0, latitude: 0, height: 0 },
+                    insulatorRotation: {},
+                    insulatorScale: 0,
+                    contactPoint: [0, 0, 0],
+                    contactPointLine: [0, 0, 0],
+                    _earth: undefined,
+                    _model: undefined
+                };
+            },
+            methods: {
+                flyToPylon() {
+                    this._model.flyTo();
+                },
+                flyToWire() {
+                    this._line.flyTo();
+                },
+                compute() {
+                    var r = XE.Tool.Math.ab2Ab(new Cesium.Cartesian3(0, 0, 0),
+                        new Cesium.Cartesian3(0, 0, 10),
+                        Cesium.Cartesian3.fromDegrees(this.xbsjPosition[0], this.xbsjPosition[1], this.xbsjPosition[2]),
+                        Cesium.Cartesian3.fromDegrees(this.xbsjPosition[0], this.xbsjPosition[1], this.xbsjPosition[2] + 10));
+
+                    if (!isNaN(this.insulatorPosition.longitude)) {
+
+                        var cartesian = { x: this.insulator[0], y: this.insulator[1], z: this.insulator[2] };
+                        var projectPoint = Cesium.Matrix4.multiplyByPoint(r.modelMatrix, cartesian, new Cesium.Cartesian3());
+                        projectPoint = Cesium.Cartographic.fromCartesian(projectPoint);
+                        this._pin1.position[0] = projectPoint.longitude;
+                        this._pin1.position[1] = projectPoint.latitude;
+                        this._pin1.position[2] = projectPoint.height;
+
+
+                        var r2 = XE.Tool.Math.ab2Ab(new Cesium.Cartesian3(0, 0, -1.540082),
+                            new Cesium.Cartesian3(0, 0, 1.62862),
+                            Cesium.Cartesian3.fromRadians(this._pin1.position[0], this._pin1.position[1], this._pin1.position[2]),
+                            Cesium.Cartesian3.fromRadians(this._pin2.position[0], this._pin2.position[1], this._pin2.position[2]));
+
+                        this._model2.xbsjScale[2] = r2.scale;
+                        this._model2.xbsjPosition[0] = r2.positionInRadians.longitude;
+                        this._model2.xbsjPosition[1] = r2.positionInRadians.latitude;
+                        this._model2.xbsjPosition[2] = r2.positionInRadians.height;
+                        this._model2.xbsjRotation[0] = r2.hpr.heading;
+                        this._model2.xbsjRotation[1] = r2.hpr.pitch;
+                        this._model2.xbsjRotation[2] = r2.hpr.roll;
+
+                        this.insulatorPosition = r2.positionInDegrees;
+                        this.insulatorRotation = r2.hpr;
+                        this.insulatorScale = r2.scale;
+
+
+                    } else {
+                        this._model.xbsjRotation = [0, 0, 0];
+                        console.log(this.insulatorPosition.longitude);
+                    }
+                }
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "czmObject": {
+                                "xbsjType": "Imagery",
+                                "name": "谷歌影像",
+                                "xbsjImageryProvider": {
+                                    "XbsjImageryProvider": {
+                                        "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}",
+                                        "srcCoordType": "GCJ02",
+                                        "dstCoordType": "WGS84",
+                                        "maximumLevel": 21,
+                                    },
+                                }
+                            },
+                        },
+                        {
+                            "czmObject": {
+                                "xbsjType": "Model",
+                                "url": "./assets/JG3G/ts.gltf",
+                                "minimumPixelSize": 128,
+                                "maximumScale": 20000,
+                                "xbsjPosition": [2.031395064211438, 0.6963855831071951, 0],
+                            },
+                            "ref": "model1",
+                        },
+                        {
+                            "czmObject": {
+                                "xbsjType": "Model",
+                                "url": "./assets/JG3G/jyz_1.gltf",
+                                "xbsjPosition": [2.031395064211438, 0.6963855831071951, 0],
+                                "xbsjScale": [1, 1, 1]
+                            },
+                            "ref": "model2",
+                        },
+                        {
+                            "czmObject": {
+                                "xbsjType": "Polyline",
+                                "xbsjGuid": "e146e1e5-3b58-4469-8f9c-b58529e801c4",
+                                "name": "折线",
+                                "positions": [
+                                    [
+                                        2.0313957164972, 0.6963864715457375, 30
+                                    ],
+                                    [
+                                        2.0313997164962, 0.6963864715457375, 30
+                                    ]
+                                ]
+                            },
+                            "ref": "line"
+                        },
+                        {
+                            "czmObject": {
+                                "xbsjType": "Pin",
+                                "xbsjGuid": "e55d3ebb-2c3f-4d11-9b9f-3bb2ad5f4380",
+                                "name": "图标点",
+                                "position": [2.0313887163962, 0.6963863715457375, 41.7],
+                                "pinBuilder": {},
+                                "far": 1073741824
+                            },
+                            "ref": "pin1"
+                        },
+                        {
+                            "czmObject": {
+                                "xbsjType": "Pin",
+                                "xbsjGuid": "e55d3ebb-2c3f-4d11-9b9f-3bb2ad5f4381",
+                                "name": "图标点",
+                                "position": [0, 0, 0],
+                                "pinBuilder": {},
+                                "far": 1073741824
+                            },
+                            "ref": "pin2"
+                        }
+                    ]
+                }
+
+                var model1 = earth.sceneTree.$refs.model1.czmObject;
+                this._model = model1;
+                this._model2 = earth.sceneTree.$refs.model2.czmObject;
+                var pin1 = earth.sceneTree.$refs.pin1.czmObject;
+                this._pin1 = pin1;
+                var pin2 = earth.sceneTree.$refs.pin2.czmObject;
+                this._pin2 = pin2;
+                this._line = earth.sceneTree.$refs.line.czmObject;
+
+                earth.camera.position = [2.0313939158337986, 0.6963882052359618, 37.59368984403024];
+                earth.camera.rotation = [2.609848767179005, -0.3729591726011434, 0.0017965861104354275];
+
+                // this._model.flyTo();
+                this._pin2.position[0] = this._line.positions[0][0];
+                this._pin2.position[1] = this._line.positions[0][1];
+                this._pin2.position[2] = this._line.positions[0][2];
+
+
+                // 1.1.3 数据绑定
+                {
+                    this._positionEditingUnbind = XE.MVVM.bind(this, 'positionEditing', model1, 'positionEditing');
+                    this._xbsjPositionUnbind = XE.MVVM.bindPosition(this, 'xbsjPosition', model1, 'xbsjPosition');
+                    this._xbsjPositionUnbind = XE.MVVM.bindPosition(this, 'contactPointLine', pin2, 'position');
+
+                    // 设置初始值
+                    earth.terrainEffect.subSurfaceEnabled = false;
+                    earth.terrainEffect.surfaceOpacity = 0.0;
+                }
+
+
+                this._earth = earth;
+                this._model = model1;
+
+                window.earth = earth;
+                window.model = model1;
+            },
+            watch: {
+                insulator(v) {
+                    this.compute();
+                },
+                xbsjPosition(v) {
+                    this.compute();
+                }
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._earth = this._earth && this._earth.destroy();
+                this._model = this._model && this._model.destroy();
+                this._rotationEditingUnbind = this._rotationEditingUnbind && this._rotationEditingUnbind();
+                this._positionEditingUnbind = this._positionEditingUnbind && this._positionEditingUnbind();
+                this._xbsjPositionUnbind = this._xbsjPositionUnbind && this._xbsjPositionUnbind();
+                this._xbsjRotationUnbind = this._xbsjRotationUnbind && this._xbsjRotationUnbind();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            //     return XE.HTML.loadJS('./scripts/ab2AB.js');
+            // }).then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -585,6 +585,15 @@ class MainUI {
     this._vm.$refs.mainUI.getCzmObjectPositionFromDrag(dragczmObj, czmObj);
   }
 
+  /**
+  * 获取拖拽对象位置
+  * @param {Object} dragczmObj 被拖拽的对象
+  * @param {Object} czmObj 被编辑的对象
+  */
+  getCzmObjectPositionFromDrags(dragczmObj, czmObj) {
+    this._vm.$refs.mainUI.getCzmObjectPositionFromDrags(dragczmObj, czmObj);
+  }
+
 
   destroy() {
     this._czmObjectOpsEventDisposer =

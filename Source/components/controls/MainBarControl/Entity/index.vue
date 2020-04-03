@@ -106,9 +106,19 @@
           <span class="xbsj-item-name">{{lang.DoubleArrow}}</span>
         </div>
         <!-- 多边形 -->
-        <div class="xbsj-item-btnbox" @click="Polygon">
+        <!-- <div class="xbsj-item-btnbox" @click="Polygon">
           <div class="xbsj-item-btn facebutton"></div>
           <span class="xbsj-item-name">{{lang.face}}</span>
+        </div>-->
+        <!-- 多边形 -->
+        <div class="xbsj-item-btnbox" @click="PolygonStretch">
+          <div class="xbsj-item-btn facebutton"></div>
+          <span class="xbsj-item-name">{{lang.polygonStretch}}</span>
+        </div>
+        <!-- 单体化 -->
+        <div class="xbsj-item-btnbox" @click="ClassificationPolygon">
+          <div class="xbsj-item-btn classificationpolygonbutton"></div>
+          <span class="xbsj-item-name">{{lang.classificationpolygon}}</span>
         </div>
         <!-- 标绘更多 -->
         <!-- <div class="xbsj-item-btnbox" @click="EntityMoreShow=!EntityMoreShow">
@@ -158,6 +168,11 @@
         <div class="xbsj-item-btnbox" @click="createPlane">
           <div class="xbsj-item-btn modelbutton"></div>
           <span class="xbsj-item-name">{{lang.model}}</span>
+        </div>
+        <!-- 多边形贴图 -->
+        <div class="xbsj-item-btnbox" @click="PolygonImageShow">
+          <div class="xbsj-item-btn polygonimagebutton"></div>
+          <span class="xbsj-item-name">{{lang.polygonImage}}</span>
         </div>
       </div>
       <!-- <div class="xbsj-list-item">
@@ -225,6 +240,21 @@
         <div class="xbsj-item-btnbox ml20" @click="customPrimitiveBtn">
           <div class="xbsj-item-btn customprimitivebutton"></div>
           <span class="xbsj-item-name">{{lang.CustomPrimitive}}</span>
+        </div>
+        <!-- 道路 -->
+        <div class="xbsj-item-btnbox ml20" @click="roadBtn">
+          <div class="xbsj-item-btn roadbutton"></div>
+          <span class="xbsj-item-name">{{lang.road}}</span>
+        </div>
+        <!-- 挡土墙 -->
+        <div class="xbsj-item-btnbox ml20" @click="wallBtn">
+          <div class="xbsj-item-btn wallbutton"></div>
+          <span class="xbsj-item-name">{{lang.wall}}</span>
+        </div>
+        <!-- 填充面 -->
+        <div class="xbsj-item-btnbox ml20" @click="surfaceBtn">
+          <div class="xbsj-item-btn surfacebutton"></div>
+          <span class="xbsj-item-name">{{lang.surface}}</span>
         </div>
         <!-- <div class="xbsj-item-btnbox ml20">
           <div class="xbsj-item-btn odbutton"></div>
@@ -303,7 +333,7 @@ export default {
     PlottingMore,
     Parabolic
   },
-  data() {
+  data () {
     return {
       selectlist: false,
       lang: {},
@@ -320,8 +350,8 @@ export default {
       odlines_over: false
     };
   },
-  created() {},
-  mounted() {
+  created () { },
+  mounted () {
     //给所有popup的el上添加外部事件
     Object.keys(this.$refs).forEach(key => {
       addOutterEventListener(this.$refs[key].$el, "mousedown", el => {
@@ -343,7 +373,7 @@ export default {
   },
   methods: {
     // 多边形
-    Polygon() {
+    Polygon () {
       var Polygon = new XE.Obj.Plots.GeoPolygon(this.$root.$earth);
       // console.log(Polygon);
       Polygon.creating = true;
@@ -352,7 +382,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(Polygon);
     },
     // 圆弧
-    Arc() {
+    Arc () {
       var Arc = new XE.Obj.Plots.GeoArc(this.$root.$earth);
       Arc.creating = true;
       Arc.isCreating = true;
@@ -360,7 +390,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(Arc);
     },
     //双箭头
-    DoubleArrow() {
+    DoubleArrow () {
       var DoubleArrow = new XE.Obj.Plots.GeoDoubleArrow(this.$root.$earth);
       // console.log(DoubleArrow);
       DoubleArrow.creating = true;
@@ -369,7 +399,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(DoubleArrow);
     },
     //三角旗帜
-    TriFlag() {
+    TriFlag () {
       var TriFlag = new XE.Obj.Plots.GeoTriFlag(this.$root.$earth);
       // console.log(TriFlag);
       TriFlag.creating = true;
@@ -378,7 +408,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(TriFlag);
     },
     //打开扇形搜索
-    SectorSearch() {
+    SectorSearch () {
       var SectorSearch = new XE.Obj.Plots.GeoSectorSearch(this.$root.$earth);
       // console.log(SectorSearch);
       SectorSearch.creating = true;
@@ -387,7 +417,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(SectorSearch);
     },
     // 打开折线弹窗
-    Polyline() {
+    Polyline () {
       var Polyline = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
       // console.log(Polyline);
       Polyline.creating = true;
@@ -396,7 +426,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(Polyline);
     },
     // 打开折线箭头弹窗
-    PolylineArrow() {
+    PolylineArrow () {
       var PolylineArrow = new XE.Obj.Plots.GeoPolylineArrow(this.$root.$earth);
       // console.log(PolylineArrow);
       PolylineArrow.creating = true;
@@ -405,7 +435,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(PolylineArrow);
     },
     // 打开矩形弹窗
-    rectangle() {
+    rectangle () {
       var Rectangle = new XE.Obj.Plots.GeoRectangle(this.$root.$earth);
       Rectangle.creating = true;
       Rectangle.isCreating = true;
@@ -413,7 +443,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(Rectangle);
     },
     // 打开圆弹窗
-    circle() {
+    circle () {
       var Circle = new XE.Obj.Plots.GeoCircle(this.$root.$earth);
       Circle.creating = true;
       Circle.isCreating = true;
@@ -421,7 +451,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(Circle);
     },
     //打开曲线弹窗
-    curvebtn() {
+    curvebtn () {
       var GeoCurve = new XE.Obj.Plots.GeoCurve(this.$root.$earth);
       // console.log(GeoCurveArrow);
       GeoCurve.creating = true;
@@ -430,7 +460,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(GeoCurve);
     },
     //打开曲线箭头弹窗
-    curvedarrowbtn() {
+    curvedarrowbtn () {
       var GeoCurveArrow = new XE.Obj.Plots.GeoCurveArrow(this.$root.$earth);
       // console.log(GeoCurveArrow);
       GeoCurveArrow.creating = true;
@@ -439,12 +469,12 @@ export default {
       this.$root.$earthUI.showPropertyWindow(GeoCurveArrow);
     },
     // 打开常规更多弹窗
-    routineMore() {
+    routineMore () {
       // console.log(this.$refs);
       this.$refs.plottingMore.show = !this.$refs.plottingMore.show;
     },
     //创建树模型
-    createTree() {
+    createTree () {
       var Model = new XE.Obj.Model(this.$root.$earth);
       Model.url = "./assets/shu.glb";
       Model.creating = true;
@@ -454,7 +484,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(Model);
     },
     // 创建汽车模型
-    createCar() {
+    createCar () {
       var Model = new XE.Obj.Model(this.$root.$earth);
       Model.url = "./assets/gongjiao.glb";
       Model.creating = true;
@@ -464,7 +494,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(Model);
     },
     // 创建飞机模型
-    createPlane() {
+    createPlane () {
       var Model = new XE.Obj.Model(this.$root.$earth);
       // console.log(Model);
       Model.url = "./assets/feiji.glb";
@@ -475,7 +505,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(Model);
     },
     // 打开模型属性窗口
-    createmodelbtn() {
+    createmodelbtn () {
       var Model = new XE.Obj.Model(this.$root.$earth);
       Model.name = "模型";
       Model.distanceDisplayCondition = [0, 5000];
@@ -484,7 +514,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(Model);
     },
     // 打开path属性窗口
-    pathbtn() {
+    pathbtn () {
       var Path = new XE.Obj.Path(this.$root.$earth);
       Path.name = "路径动画";
       Path.positionPicking = true;
@@ -493,7 +523,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(Path);
     },
     // 打开pin属性窗口
-    pinbtn() {
+    pinbtn () {
       var Pin = new XE.Obj.Pin(this.$root.$earth);
       // Pin.ctrtype = "PinTool";
       Pin.name = "图标点";
@@ -503,7 +533,7 @@ export default {
       // console.log(Pin);
       this.$root.$earthUI.showPropertyWindow(Pin);
     },
-    pindivbtn() {
+    pindivbtn () {
       var PinDivTool = new XE.Obj.Plots.GeoPin(this.$root.$earth);
       // PinDivTool.ctrtype = "PinDivTool";
       PinDivTool.name = "div图标";
@@ -512,7 +542,7 @@ export default {
       PinDivTool._pin.show = false;
       this.$root.$earthUI.showPropertyWindow(PinDivTool);
     },
-    pinpicturebtn() {
+    pinpicturebtn () {
       var PinPictureTool = new XE.Obj.Pin(this.$root.$earth);
       // PinPictureTool.ctrtype = "PinPictureTool";
       PinPictureTool.name = "图片";
@@ -523,7 +553,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(PinPictureTool);
     },
     // OD线
-    odLine() {
+    odLine () {
       var Polyline = new XE.Obj.Polyline(this.$root.$earth);
       Polyline.name = "OD线";
       Polyline.material.type = "XbsjODLineMaterial";
@@ -542,7 +572,7 @@ export default {
     //   this.$root.$earthUI.showPropertyWindow(Polyline);
     // },
     //打开扫描线-动画
-    scanLineBtn() {
+    scanLineBtn () {
       var Scanline = new XE.Obj.Scanline(this.$root.$earth);
       Scanline.name = "扫描线";
       Scanline.creating = true;
@@ -552,7 +582,7 @@ export default {
       this.$root.$earthUI.showPropertyWindow(Scanline);
     },
     //打开自定义图元-动画
-    customPrimitiveBtn() {
+    customPrimitiveBtn () {
       var CustomPrimitive = new XE.Obj.CustomPrimitive(this.$root.$earth);
       CustomPrimitive.name = "自定义图元";
       CustomPrimitive.autoRegisterEditing = true;
@@ -562,8 +592,72 @@ export default {
       // console.log(CustomPrimitive);
       this.$root.$earthUI.showPropertyWindow(CustomPrimitive);
     },
+    //多边形贴图
+    PolygonImageShow () {
+      var customPrimitive = new XE.Obj.CustomPrimitiveExt.Image(
+        this.$root.$earth
+      );
+      customPrimitive.name = "自定义图元";
+      customPrimitive.isCreating = true;
+      customPrimitive.creating = true;
+      customPrimitive.imageUrl = "./assets/earth.png";
+      this.$root.$earthUI.showPropertyWindow(customPrimitive);
+    },
+    //多边形拉伸
+    PolygonStretch () {
+      var polygonStretch = new XE.Obj.Polygon(this.$root.$earth);
+      polygonStretch.name = "多边形";
+      polygonStretch.isCreating = true;
+      polygonStretch.creating = true;
+      // console.log(polygonStretch);
+      this.$root.$earthUI.showPropertyWindow(polygonStretch);
+    },
+    //单体化
+    ClassificationPolygon () {
+      var classificationPolygon = new XE.Obj.ClassificationPolygon(
+        this.$root.$earth
+      );
+      classificationPolygon.name = "单体化";
+      classificationPolygon.isCreating = true;
+      classificationPolygon.creating = true;
+      // console.log(classificationPolygon);
+      this.$root.$earthUI.showPropertyWindow(classificationPolygon);
+    },
+    // 道路
+    roadBtn () {
+      var road = new XE.Obj.Road(this.$root.$earth);
+      road.name = "道路";
+      road.autoRegisterEditing = true;
 
-    getCzmObjectFromDrag(dataTransfer) {
+      road.isCreating = true;
+      road.creating = true;
+      // console.log(road);
+      this.$root.$earthUI.showPropertyWindow(road);
+    },
+    // 挡土墙
+    wallBtn () {
+      var wall = new XE.Obj.Wall(this.$root.$earth);
+      wall.name = "挡土墙";
+      wall.autoRegisterEditing = true;
+
+      wall.isCreating = true;
+      wall.creating = true;
+      // console.log(wall);
+      this.$root.$earthUI.showPropertyWindow(wall);
+    },
+    // 填充面
+    surfaceBtn () {
+      var surface = new XE.Obj.Surface(this.$root.$earth);
+      surface.name = "填充面";
+      surface.autoRegisterEditing = true;
+
+      surface.isCreating = true;
+      surface.creating = true;
+      // console.log(surface);
+      this.$root.$earthUI.showPropertyWindow(surface);
+    },
+
+    getCzmObjectFromDrag (dataTransfer) {
       for (let i = 0; i < dataTransfer.types.length; i++) {
         var t = dataTransfer.types[i];
         if (!t) continue;
@@ -575,12 +669,12 @@ export default {
       }
       return undefined;
     },
-    parabolicBtn() {
+    parabolicBtn () {
       //此按钮只隐藏
       this.parabolicShow = false;
       this._czmObj = undefined;
     },
-    parabolic_dragover(e) {
+    parabolic_dragover (e) {
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions && czmObj.positions.length > 1) {
@@ -590,10 +684,10 @@ export default {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    parabolic_dragleave() {
+    parabolic_dragleave () {
       this.parabolic_over = false;
     },
-    parabolic_drop(e) {
+    parabolic_drop (e) {
       this.parabolic_over = false;
       e.preventDefault();
       let czmObj = this.getCzmObjectFromDrag(e.dataTransfer);
@@ -608,7 +702,7 @@ export default {
         this._czmObj = czmObj;
       }
     },
-    collectODLines(sn) {
+    collectODLines (sn) {
       let ret = [];
 
       let timeDuration = 5.0;
@@ -649,7 +743,7 @@ export default {
 
       return ret;
     },
-    createODlines() {
+    createODlines () {
       var ret = this.collectODLines();
       if (!ret || ret.length == 0) {
         this.$root.$earthUI.promptInfo(
@@ -667,7 +761,7 @@ export default {
       const sceneObject = new XE.SceneTree.Leaf(odlines);
       this.$root.$earthUI.addSceneObject(sceneObject);
     },
-    createParabolic(minDistance, heightRatio) {
+    createParabolic (minDistance, heightRatio) {
       if (
         this._czmObj &&
         this._czmObj.positions &&
@@ -707,7 +801,7 @@ export default {
       }
     },
     //打开管道-动画
-    tubeBtn() {
+    tubeBtn () {
       var Tube = new XE.Obj.CustomPrimitiveExt.Tube(this.$root.$earth);
       Tube.name = "管道";
       Tube.isCreating = true;
@@ -715,21 +809,21 @@ export default {
       console.log(Tube);
       this.$root.$earthUI.showPropertyWindow(Tube);
     },
-    getPopupComp() {
+    getPopupComp () {
       if (this.$refs.hasOwnProperty(this.popup)) {
         return this.$refs[this.popup];
       } else {
         return undefined;
       }
     },
-    showPopup(v) {
+    showPopup (v) {
       let comp = this.getPopupComp();
       if (comp && typeof comp.show == "function") {
         comp.show(v);
       }
       return comp;
     },
-    togglePopup(p, event) {
+    togglePopup (p, event) {
       //调用上一个组件的隐藏
       this.showPopup(false);
 
@@ -757,7 +851,7 @@ export default {
         console.log(ex);
       }
     },
-    startMove(event) {
+    startMove (event) {
       //如果事件的目标不是本el 返回
       if (
         event.target.parentElement !== this.$refs.container &&
@@ -768,7 +862,7 @@ export default {
       }
       this.moving = true;
     },
-    onMoving(event) {
+    onMoving (event) {
       //获取鼠标和为开始位置的插值，滚动滚动条
       if (!this.moving) return;
 
@@ -778,7 +872,7 @@ export default {
         dom.scrollLeft = wleft;
       }
     },
-    endMove(envent) {
+    endMove (envent) {
       this.moving = false;
     }
   }
@@ -929,6 +1023,26 @@ export default {
 }
 .facebutton:hover {
   background: url(../../../../images/face_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.polygonimagebutton {
+  background: url(../../../../images/polygonimage.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.polygonimagebutton:hover {
+  background: url(../../../../images/polygonimage_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.classificationpolygonbutton {
+  background: url(../../../../images/classificationpolygon.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.classificationpolygonbutton:hover {
+  background: url(../../../../images/classificationpolygon_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
@@ -1223,6 +1337,40 @@ export default {
   background-size: contain;
   cursor: pointer;
 }
+.roadbutton {
+  background: url(../../../../images/road.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.roadbutton.highlight,
+.roadbutton:hover {
+  background: url(../../../../images/road_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.wallbutton {
+  background: url(../../../../images/wall.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.wallbutton.highlight,
+.wallbutton:hover {
+  background: url(../../../../images/wall_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.surfacebutton {
+  background: url(../../../../images/fillsurface.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.surfacebutton.highlight,
+.surfacebutton:hover {
+  background: url(../../../../images/fillsurface_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
 
 .parabolicbtn {
   background: url(../../../../images/parabolic.png) no-repeat;
@@ -1237,13 +1385,13 @@ export default {
 }
 
 .odlinesbtn {
-  background: url(../../../../images/customprimitive.png) no-repeat;
+  background: url(../../../../images/odlines.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
 
 .odlinesbtn.highlight .odlinesbtn:hover {
-  background: url(../../../../images/customprimitive_on.png) no-repeat;
+  background: url(../../../../images/odlines_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
