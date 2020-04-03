@@ -114,8 +114,7 @@ export default {
         height: 0,
         extrudedHeight: 0,
         extrudedHeightEditing: false,
-        evalString:
-          "uia.earth.interaction.picking.enabled = true;p.onclick = () => (p.color = [0, 1, 0, 0.5]);"
+        evalString: ""
       },
       bgbaseColorUI: {
         rgba: {

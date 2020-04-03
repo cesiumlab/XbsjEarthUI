@@ -14,7 +14,7 @@
     <div style="width:100%;height:100%;">
       <div class="flatten">
         <div style="float: left;">
-          <div>
+          <div style="float: left; margin-bottom: 10px;">
             <label class="label">{{lang.jianju}}:</label>
 
             <div>
@@ -59,7 +59,7 @@ export default {
   props: {
     getBind: Function
   },
-  data () {
+  data() {
     return {
       langs: {
         zh: {
@@ -76,7 +76,7 @@ export default {
           editing: "editing",
           drag: "drag",
           dragcontent: "Drag the object here",
-          jianju: "sampling interval",
+          jianju: "sampling interval"
         }
       },
       lang: undefined,
@@ -88,11 +88,11 @@ export default {
       width: window.innerWidth
     };
   },
-  created () {
+  created() {
     // var lang = this.$root.language;
     // this.lang = this.langs[lang];
   },
-  mounted () {
+  mounted() {
     //获取绑定的view
     this.samplinginterval = 0;
     this._labels = [];
@@ -121,17 +121,17 @@ export default {
     this._chart = this.$echarts.init(this.$refs.mains);
   },
   watch: {
-    samplinginterval (v) {
+    samplinginterval(v) {
       this.updateMeasure(this._disGroud.positions);
     },
-    editing (v) {
+    editing(v) {
       if (this._temGeometry) {
         this._temGeometry.forEach(e => {
           e.destroy();
         });
       }
     },
-    creating (v) {
+    creating(v) {
       if (v == false) {
         // this._creating = [];
         let self = this;
@@ -158,7 +158,7 @@ export default {
     }
   },
   methods: {
-    updateMeasure (p) {
+    updateMeasure(p) {
       this._labels.forEach(l => l.destroy());
       if (p.length > 1) {
         var it = this.samplinginterval;
@@ -176,16 +176,18 @@ export default {
         this.drawLine();
       }
     },
-    createLabel (option) {
+    createLabel(option) {
       let p = new XE.Obj.Plots.GeoPin(this.$root.$earth);
-      p.innerHTML = "<div style=\"cursor:pointer;position: absolute;width:300px;left:6px; line-height:15px;color: white;\"><span style=\"font-size: 14px;color:#ffffff\">"
-        + option.dis + "</span></div>";//-webkit-text-stroke:0.6px #000;
+      p.innerHTML =
+        '<div style="cursor:pointer;position: absolute;width:300px;left:6px; line-height:15px;color: white;"><span style="font-size: 14px;color:#ffffff">' +
+        option.dis +
+        "</span></div>"; //-webkit-text-stroke:0.6px #000;
       p.position = option.pos;
       p._pin.show = false;
 
       return p;
     },
-    resize () {
+    resize() {
       if (this._chart) {
         this.$refs.mains.style.width = this.$refs.chartContents.style.width;
         this.$refs.mains.style.height = this.$refs.chartContents.style.height;
@@ -193,7 +195,7 @@ export default {
       }
     },
     /*画图*/
-    drawLine () {
+    drawLine() {
       // 绘制柱状图图表
       let resultdata = this._result.sample,
         xdata = [],
@@ -209,10 +211,10 @@ export default {
       this._chart.setOption({
         tooltip: {
           trigger: "axis",
-          position: function (pt) {
+          position: function(pt) {
             return [pt[0], "10%"];
           },
-          position: function (point, params, dom, rect, size) {
+          position: function(point, params, dom, rect, size) {
             //其中point为当前鼠标的位置，size中有两个属性：viewSize和contentSize，分别为外层div和tooltip提示框的大小;
             var x = point[0]; //
             var y = point[1];
@@ -240,7 +242,7 @@ export default {
             }
             return [posX, posY];
           },
-          formatter (params) {
+          formatter(params) {
             const item = params[0];
             // console.log(item);
             item.data = resultdata[item.dataIndex];
@@ -306,10 +308,10 @@ export default {
           //     width: "2"
           //   }
           // },
-          max: function (value) {
+          max: function(value) {
             return value.max;
           },
-          min: function (value) {
+          min: function(value) {
             return value.min;
           },
           axisLabel: {
@@ -363,7 +365,7 @@ export default {
       });
     },
     //拖拽移动上面
-    dragOver (e) {
+    dragOver(e) {
       e.preventDefault();
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions !== undefined) {
@@ -373,11 +375,11 @@ export default {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    dragLeave () {
+    dragLeave() {
       this.drag_over = false;
     },
     //拖拽放置
-    drop (e) {
+    drop(e) {
       this.drag_over = false;
       e.preventDefault();
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
@@ -390,7 +392,7 @@ export default {
         this._disGroud.creating = false;
       }
     },
-    cancel () {
+    cancel() {
       this._creating.forEach(d => d());
       this._disGroud.destroy();
       if (this._temGeometry) {
@@ -431,10 +433,6 @@ export default {
 .myBarChart > div {
   margin: 0 auto !important;
 }
-
-.buttonGroup {
-  display: inline-block;
-}
 .buttonGroup div {
   display: inline-block;
   height: 25px;
@@ -466,7 +464,7 @@ button:focus {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   color: #dddddd;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .xbsj-videoAttribute .attributePlay button {
   width: 99px;
@@ -498,7 +496,7 @@ button:focus {
   text-align: center;
   line-height: 25px;
   float: left;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .dragButton.highlight {
@@ -508,7 +506,7 @@ button:focus {
 }
 .chartContents {
   float: left;
-  width: calc(100% - 120px);
+  width: calc(100% - 146px);
   height: 100%;
 }
 </style>
