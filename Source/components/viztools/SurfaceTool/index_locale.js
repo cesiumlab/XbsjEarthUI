@@ -2,7 +2,7 @@ const zh = {
   title: "填充面属性",
   name: "名称",
   weizhi: '位置',
-  creating: '鼠标点选',
+  creating: '创建',
   editing: '编辑',
   drag: '拖拽',
   flyto: '定位',

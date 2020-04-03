@@ -125,6 +125,7 @@ import CustomPrimitiveTool from "./viztools/CustomPrimitiveTool";
 import RoadTool from "./viztools/RoadTool";
 import WallTool from "./viztools/WallTool";
 import SurfaceTool from "./viztools/SurfaceTool";
+import CutSurfaceTool from "./viztools/CutSurfaceTool";
 import TubeTool from "./viztools/TubeTool";
 import AddPoint from "./viztools/ForestTool/AddPoint";
 import ForestLab from "./viztools/ForestTool/ForestLab";
@@ -198,6 +199,7 @@ export default {
     RoadTool,
     WallTool,
     SurfaceTool,
+    CutSurfaceTool,
     ScanlineTool,
     CustomPrimitiveTool,
     TubeTool,
@@ -257,6 +259,7 @@ export default {
         Road: "RoadTool",
         Wall: "WallTool",
         Surface: "SurfaceTool",
+        CutSurface: "CutSurfaceTool",
         CustomPrimitiveExt_Tube: "TubeTool",
         Model: "ModelTool",
         Polyline: "PolylineTool",
