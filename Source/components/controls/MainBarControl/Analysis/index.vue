@@ -358,6 +358,7 @@ export default {
       }
       obj.creating = false;
       obj.destroy();
+      obj = null;
       this.measurementType = "NONE";
     },
     circleIntervisible () {
@@ -481,6 +482,7 @@ export default {
         this.measurementType = "NONE";
         if (this._areaGroud) {
           this._areaGroud.destroy();
+          this._areaGroud = null;
         }
       }
     },
@@ -621,6 +623,7 @@ export default {
         this._temGeometry.forEach(e => {
           e.destroy();
         });
+        this._temGeometry = [];
       }
       if (this._temPrimitive) {
         this._temPrimitive.forEach(e => {
