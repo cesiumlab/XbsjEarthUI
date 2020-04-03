@@ -15,10 +15,6 @@ const zh = {
   bottomimageheight: '底面纹理高度',
   bottomimagewidthscale: '宽度缩放比例',
   bottomrotation: '底面旋转',
-  innercreating: '内部创建',
-  innerediting: '内部编辑',
-  rotation: '内部旋转',
-  showhelper: '显示线框',
   confirmOther: '该数据已经绑定其他压平组，确认替换到当前组上?',
   other: '等',
   count: '个'
@@ -41,10 +37,6 @@ const en = {
   bottomimageheight: 'bottomimageheight',
   bottomimagewidthscale: 'bottomimagewidthscale',
   bottomrotation: 'bottomrotation',
-  innercreating: 'innercreating',
-  innerediting: 'innerediting',
-  rotation: 'innerrotation',
-  showhelper: 'showhelper',
   confirmOther: 'the tileset has binded other flatern,confirm to replace it?',
   other: ' etc ',
   count: ' tilesets'

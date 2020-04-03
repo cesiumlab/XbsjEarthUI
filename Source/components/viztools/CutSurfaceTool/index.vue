@@ -152,7 +152,6 @@ export default {
     return {
       lang: {},
       showPinSelect: false,
-      makiIconObj: {},
       drag_over: false,
       model: {
         name: "",
@@ -168,11 +167,8 @@ export default {
         bottomImageUrl: "",
         bottomImageHeight: 3,
         bottomImageWidthScale: 1,
-        bottomTextureRotationEditing: false,
-        innerEditing: false,
-        showHelper: true
+        bottomTextureRotationEditing: false
       },
-      pinstyletype: true,
       connections: [],
       connectedTileset: "",
       showSelect: false,
@@ -203,13 +199,6 @@ export default {
         bottomImageHeight: "model.bottomImageHeight",
         bottomImageWidthScale: "model.bottomImageWidthScale",
         bottomTextureRotationEditing: "model.bottomTextureRotationEditing"
-        // textureRotationEditing: "model.textureRotationEditing",
-        // imageWidthScale: "model.imageWidthScale",
-        // imageUrl: "model.imageUrl",
-        // imageHeight: "model.imageHeight",
-        // innerCreating: "model.innerCreating",
-        // innerEditing: "model.innerEditing",
-        // showHelper: "model.showHelper"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
