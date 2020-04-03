@@ -594,6 +594,10 @@ export default {
     },
     //多边形贴图
     PolygonImageShow () {
+      if (!this.$root.$earth.terrainEffect.depthTest) {
+        this.$root.$earthUI.promptInfo("使用此功能前请先打开深度检测！", "warning");
+        return;
+      }
       var customPrimitive = new XE.Obj.CustomPrimitiveExt.Image(
         this.$root.$earth
       );
