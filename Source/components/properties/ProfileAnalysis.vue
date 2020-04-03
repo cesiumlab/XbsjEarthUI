@@ -458,13 +458,13 @@ button:focus {
   outline: none !important;
 }
 .attitudeEditCameraButton {
-  display: block;
+  display: inline-block;
   height: 25px;
   margin-left: 0;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   color: #dddddd;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 .xbsj-videoAttribute .attributePlay button {
   width: 99px;
