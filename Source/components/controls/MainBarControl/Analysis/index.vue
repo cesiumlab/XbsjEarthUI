@@ -457,6 +457,10 @@ export default {
     },
     areaGroudMeasure () {
       this.areaGroudinterval = 0;
+      if (!this.$root.$earth.terrainEffect.depthTest) {
+        this.$root.$earthUI.promptInfo("使用此功能前请先打开深度检测！", "warning");
+        return;
+      }
       if (this.measurementType !== "SPACE_AREA_GROUD") {
         this._areaGroud = new XE.Obj.CustomPrimitiveExt.Image(
           this.$root.$earth
@@ -473,6 +477,11 @@ export default {
         window.p = this._areaGroud;
         this._temGeometry.push(this._areaGroud);
         this.measurementType = "SPACE_AREA_GROUD";
+      } else {
+        this.measurementType = "NONE";
+        if (this._areaGroud) {
+          this._areaGroud.destroy();
+        }
       }
     },
     disGroudMeasure () {
