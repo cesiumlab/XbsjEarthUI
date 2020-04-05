@@ -280,7 +280,7 @@ export default {
             this._labels.forEach(l => l.destroy());
             this._labels = [];
             var lb = this.createLabel({
-              pos: this._areaGroud.positions[0],
+              pos: this._areaGroud._customPrimitive.position,
               dis: Math.round(this._areaGroud.totalArea * 100) / 100 + "平方米"
             });
             this._labels.push(lb);
@@ -426,14 +426,15 @@ export default {
               positions: [...this._angle.positions]
             }),
             () => {
+              self._labels.forEach(l => l.destroy());
+              self._labels = [];
               if (self._angle.positions.length == 2) {
                 var result = XE.Tool.Math.hpr(
                   self._angle.positions[0],
                   self._angle.positions[1]
                 );
                 if (result) {
-                  self._labels.forEach(l => l.destroy());
-                  self._labels = [];
+
                   var lb = self.createLabel({
                     pos: self._angle.positions[1],
                     dis:
@@ -509,7 +510,9 @@ export default {
     },
     createLabel (option) {
       let p = new XE.Obj.Plots.GeoPin(this.$root.$earth);
-      p.innerHTML = "<div style=\"cursor:pointer;position: absolute;width:300px;left:6px; line-height:15px;color: white;\"><span style=\"text-stroke:2px #000;font-size: 14px;color:#ffffff\">" + option.dis + "</span></div>";
+      p.innerHTML = "<div style=\"cursor:pointer;position: absolute;width:300px;left:6px; line-height:15px;color: white;\">"
+        + "<span style=\"padding:2px;border-radius: 2px;text-stroke:2px #000;font-size: 14px;color:#ffffff;background-color: rgba(50,50,50,0.5)\">"
+        + option.dis + "</span></div>";
       p.position = option.pos;
       p._pin.show = false;
       return p;

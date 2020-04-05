@@ -137,10 +137,10 @@ export default {
         // this._creating = [];
         let self = this;
         if (this._labels.length > 0) {
-          this._labels.forEach(l => {
-            self._temGeometry.push(l);
-          });
-          this._labels = [];
+          // this._labels.forEach(l => {
+          //   self._temGeometry.push(l);
+          // });
+          // this._labels = [];
           this.measurementType = "NONE";
         }
         if (this.areaGroudInterval == 0) {
@@ -182,9 +182,9 @@ export default {
     createLabel (option) {
       let p = new XE.Obj.Plots.GeoPin(this.$root.$earth);
       p.innerHTML =
-        '<div style="cursor:pointer;position: absolute;width:300px;left:6px; line-height:15px;color: white;"><span style="font-size: 14px;color:#ffffff">' +
-        option.dis +
-        "</span></div>"; //-webkit-text-stroke:0.6px #000;
+        '<div style="cursor:pointer;position: absolute;width:300px;left:6px; line-height:15px;color: white;">'
+        + '<span style=\"padding:2px;border-radius: 2px;text-stroke:2px #000;font-size: 14px;color:#ffffff;background-color: rgba(50,50,50,0.5)\">'
+        + option.dis + "</span></div>"; //-webkit-text-stroke:0.6px #000;
       p.position = option.pos;
       p._pin.show = false;
 
