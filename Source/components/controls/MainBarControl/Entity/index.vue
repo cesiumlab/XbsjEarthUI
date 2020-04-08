@@ -258,7 +258,7 @@
         </div>
         <!-- 挖坑 -->
         <div class="xbsj-item-btnbox ml20" @click="cutSurfaceBtn">
-          <div class="xbsj-item-btn surfacebutton"></div>
+          <div class="xbsj-item-btn cutsurfacebutton"></div>
           <span class="xbsj-item-name">{{lang.cutsurface}}</span>
         </div>
         <!-- <div class="xbsj-item-btnbox ml20">
@@ -1391,6 +1391,18 @@ export default {
 .surfacebutton.highlight,
 .surfacebutton:hover {
   background: url(../../../../images/fillsurface_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.cutsurfacebutton {
+  background: url(../../../../images/cutsurface.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.cutsurfacebutton.highlight,
+.cutsurfacebutton:hover {
+  background: url(../../../../images/cutsurface_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
