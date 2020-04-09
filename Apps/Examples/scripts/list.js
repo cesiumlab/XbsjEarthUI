@@ -100,6 +100,10 @@ vueApp.examples = [
                 "url": "./earth-customPrimitive-tube.html"
             },
             {
+                "title": "挖坑-编辑",
+                "url": "./earth-cutsurface-editing.html"
+            },
+            {
                 "title": "圆柱体集群",
                 "url": "./earth-cylinders.html"
             },
