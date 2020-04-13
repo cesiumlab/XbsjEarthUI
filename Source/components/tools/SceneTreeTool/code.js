@@ -101,7 +101,7 @@ function getCzmCode (tilesetCzmObj) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta name="xbsj-labels" content="Earth起步"></meta>
-        <title>EarthSDK场景加载</title>
+        <title>EarthSDK以cesium方式加载影像</title>
         <!-- 0 引入js文件 -->
         <script src="//earthsdk.com/v/last/XbsjEarth/XbsjEarth.js"></script>
         <style>            
@@ -158,12 +158,10 @@ function getCzmImageCode (imageCzmObj) {
 
   var rect = "";
   if(imageCzmObj.rectangle !== undefined){
-    rect = `if(${imageCzmObj.rectangle}  !== undefined){
-      rect = Cesium.Rectangle.fromRadians(${imageCzmObj.rectangle[0]}, 
+    rect = `rect = Cesium.Rectangle.fromRadians(${imageCzmObj.rectangle[0]}, 
         ${imageCzmObj.rectangle[1]}, 
         ${imageCzmObj.rectangle[2]}, 
-        ${imageCzmObj.rectangle[3]})
-    }`;
+        ${imageCzmObj.rectangle[3]})`;
   }
   var loadTilesetString = `
               
@@ -173,7 +171,9 @@ function getCzmImageCode (imageCzmObj) {
               ${rect}
               viewer.imageryLayers.addImageryProvider(new Cesium.UrlTemplateImageryProvider({
                 url: '${imageCzmObj.xbsjImageryProvider.XbsjImageryProvider.url}',
-                rectangle: rect
+                rectangle: rect,
+                //minimumLevel:${imageCzmObj.xbsjImageryProvider.XbsjImageryProvider.minimumLevel},
+                //maximumLevel:${imageCzmObj.xbsjImageryProvider.XbsjImageryProvider.maximumLevel}
               }));
               
               if(rect){
@@ -235,7 +235,6 @@ ${loadTilesetString}
               // 仅为测试
               window.earth = earth;
               window.viewer = viewer;
-              window.tileset = tileset;
           }
   
           // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
