@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { getCodeUrl, getCode, getCzmCode } from "./code";
+import { getCodeUrl, getCode, getCzmCode, getCzmImageCode } from "./code";
 
 function destroyVueNode(ivuNode, parent) {
   if (ivuNode._inner.disposer) {
@@ -476,6 +476,24 @@ export default {
                   // 查看Cesium加载代码
                   const tilesetCzmObject = item._inner.sn.czmObject;
                   const code = getCzmCode(tilesetCzmObject);
+                  const url = getCodeUrl(code);
+                  this.$root.$earthUI.openURL(url);
+                }
+              }
+            ]
+          );
+        }
+
+        // 如果是影像 那么增加几个属性   样式，移动，分层着色
+        if (item._inner.sn.czmObject.xbsjType == "Imagery") {
+          baseItems.push(
+            ...[
+              {
+                text: this.lang.viewCzmSource,
+                func: () => {
+                  // 查看Cesium加载代码
+                  const imageCzmObject = item._inner.sn.czmObject;
+                  const code = getCzmImageCode(imageCzmObject);
                   const url = getCodeUrl(code);
                   this.$root.$earthUI.openURL(url);
                 }

@@ -252,10 +252,10 @@ export default {
             if (isNaN(this.areaGroud)) {
               this.areaGroud = 0;
             }
-            if (this.areaGroudinterval === 0 && this.areaGroud > 1) {
-              this._areaGroud.interpolation = true;
+            if (this.areaGroudinterval === 0 && this.areaGroud > 1) {              
               this._areaGroud.interpolationDistance = Math.sqrt(this.areaGroud) / 10;
               this._areaGroud.offsetHeight = 0.5;
+              this._areaGroud.interpolation = true;
             }
 
             var temPrimitve = new XE.Obj.CustomPrimitive(this.$root.$earth);
@@ -276,7 +276,7 @@ export default {
             }
             temPrimitve.indices = indices;
             this._temGeometry.push(temPrimitve);
-            window.t = temPrimitve;
+
             this._labels.forEach(l => l.destroy());
             this._labels = [];
             var lb = this.createLabel({
