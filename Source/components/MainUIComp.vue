@@ -153,6 +153,8 @@ import OnlineSymbol from "./tools/SymbolTool/OnlineSymbol";
 import TilesTest from "./tools/TilesTest";
 
 import GeoPolygonImage from "./viztools/GeoPolygonImage";
+import CesiumDataSource from "./viztools/CesiumDataSource";
+
 
 export default {
   components: {
@@ -234,7 +236,8 @@ export default {
     LabSymbol,
     OnlineSymbol,
     TilesTest,
-    GeoPolygonImage
+    GeoPolygonImage,
+    CesiumDataSource
   },
   data: function() {
     return {
@@ -285,7 +288,10 @@ export default {
         GroundImage: "GroundImageTool",
         GeoPin: "PinDivTool",
         TilesTest: "TilesTest",
-        CustomPrimitiveExt_Image: "GeoPolygonImage"
+        CustomPrimitiveExt_Image: "GeoPolygonImage",
+        XbsjGeoJSON:"CesiumDataSource",
+        XbsjKML:"CesiumDataSource",
+        XbsjCzml:"CesiumDataSource"
       },
       tools: [
         {

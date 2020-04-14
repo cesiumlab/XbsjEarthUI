@@ -7,7 +7,8 @@ const zh = {
   analysis: "分析",
   effect: "效果",
   plotting: "标绘",
-  test: "弹出框测试"
+  test: "弹出框测试",
+  other:"其他"
 };
 
 const en = {
@@ -19,7 +20,8 @@ const en = {
   analysis: "Analysis",
   effect: "Effect",
   plotting: "Marker",
-  test: "modeltest"
+  test: "modeltest",
+  other: "other"
 };
 
 export default { zh, en };
