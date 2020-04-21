@@ -21,6 +21,7 @@
     <script src="./scripts/codemirror/vue-codemirror.js"></script>
     <script src="./scripts/pako.min.js"></script>
     <script src="./scripts/zip.js"></script>
+    <script src="./scripts/monacoeditor/loader.js"></script>
 
     <script>
         Vue.use(VueCodemirror,
@@ -127,23 +128,26 @@
 
         /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-            background-color: #001c35;
+            width: 12px;
+            height: 12px;
+            /* background-color: #001c35; */
+            background-color: rgb(30, 30, 30);
         }
 
         /*定义滚动条轨道 内阴影+圆角*/
         ::-webkit-scrollbar-track {
-            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
             border-radius: 3px;
-            background-color: #001c35;
+            background-color: #001c35; */
+            background-color: rgb(30, 30, 30);
         }
 
         /*定义滑块 内阴影+圆角*/
         ::-webkit-scrollbar-thumb {
-            border-radius: 3px;
+            /* border-radius: 3px;
             -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-            background-color: #3f78d1;
+            background-color: #3f78d1; */
+            background-color: hsla(0, 0%, 47%, .4);
         }
 
         .sclbtn {
@@ -236,17 +240,17 @@
             axios.get("//lab2.cesiumlab.com/api/examples/get", {
                 params: submitData
             })
-            .then(res => {
-                if (res.status !== 200) return;
-                if (res.data.status !== "ok") return;
-                var data = res.data.result;
-                // console.log(data);
-                const code = data[0].content;
-                vueApp.code = code;
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
+                .then(res => {
+                    if (res.status !== 200) return;
+                    if (res.data.status !== "ok") return;
+                    var data = res.data.result;
+                    // console.log(data);
+                    const code = data[0].content;
+                    vueApp.code = code;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         } else {
             vueApp.setCodeFromUrl('./startup-createEarth.html');
         }
