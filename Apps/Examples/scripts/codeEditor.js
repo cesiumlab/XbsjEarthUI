@@ -77,7 +77,8 @@ var CodeEditor = {
     return {
       curTheme: 'vs-dark',
       language: 'html',
-      isChange: false
+      isChange: false,
+      enabled: false,
     };
   },
   watch: {
@@ -90,34 +91,32 @@ var CodeEditor = {
   },
   methods: {
     getdata(val) {
-      let self = this;
-      // 配置路径别名
-      require.config({ paths: { 'vs': './scripts/monacoeditor/vs' } });
-      // 加载editor.main依赖(editor.main为编辑器的主入口)
-      require(['vs/editor/editor.main'], function () {
-
-        //销毁实例
-        if (self.editor && !self.isChange) {
-          self.editor.dispose();
-        }
-        self.editor = monaco.editor.create(self.$refs.monaco, {
-          value: val,
-          language: self.language,
-          theme: self.curTheme,
+      //销毁实例
+      // if (this.editor && !this.isChange) {
+      //   this.editor.dispose();
+      // }
+      if (this.editor === undefined) {
+        this.editor = monaco.editor.create(this.$refs.monaco, {
+          language: this.language,
+          theme: this.curTheme,
           // 自适应layout
-          automaticLayout: true
+          automaticLayout: true,
+          // 右侧预览
+          minimap: {
+            enabled: this.enabled
+          }
         });
+      }
 
-        var editor = self.editor;
-        editor.onDidChangeModelContent(function (event) {//编辑器内容change事件
-          self.isChange = true;
-          self.$emit("input", editor.getValue()); //通过如此调用可以改变父组件上v-model绑定的值
-        });
+      this.editor.setValue(val);
+
+      var editor = this.editor;
+      editor.onDidChangeModelContent(event => {//编辑器内容change事件
+        this.isChange = true;
+        this.$emit("input", editor.getValue()); //通过如此调用可以改变父组件上v-model绑定的值
       });
-
     }
-  },
-  mounted() { },
+  }
 };
 
 var vueApp = new Vue({

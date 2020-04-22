@@ -9,28 +9,9 @@
 
     <script src="../../XbsjEarth/thirdParty/rxjs/6.5.2/rxjs.umd.min.js"></script>
     <script src="./scripts/vue.min.js"></script>
-
-    <link href="./scripts/codemirror/codemirror.min.css" rel="stylesheet">
-    <link href="./scripts/codemirror/theme/base16-dark.css" rel="stylesheet">
-    <link href="./scripts/codemirror/theme/seti.min.css" rel="stylesheet">
-    <link href="./scripts/codemirror/theme/base16-light.min.css" rel="stylesheet">
-    <script src="./scripts/codemirror/codemirror.min.js"></script>
-    <script src="./scripts/codemirror/mode/htmlmixed/htmlmixed.min.js"></script>
-    <script src="./scripts/codemirror/mode/xml/xml.min.js"></script>
-    <script src="./scripts/codemirror/mode/javascript/javascript.min.js"></script>
-    <script src="./scripts/codemirror/vue-codemirror.js"></script>
     <script src="./scripts/pako.min.js"></script>
     <script src="./scripts/zip.js"></script>
-    <script src="./scripts/monacoeditor/loader.js"></script>
 
-    <script>
-        Vue.use(VueCodemirror,
-            /* {
-                   options: { theme: 'base16-dark', ... },
-                   events: ['scroll', ...]
-                   } */
-        );
-    </script>
     <style>
         html,
         body {
@@ -223,6 +204,11 @@
     <script src="./scripts/codeEditor.js"></script>
     <script src='./scripts/list.js'></script>
     <script src="./scripts/axios.min.js"></script>
+    <script>var require = { paths: { 'vs': './scripts/monacoeditor/vs' } };</script>
+    <link rel="stylesheet" data-name="vs/editor/editor.main" href="./scripts/monacoeditor/vs/editor/editor.main.css">
+    <script src="./scripts/monacoeditor/vs/loader.js"></script>
+    <script src="./scripts/monacoeditor/vs/editor/editor.main.nls.js"></script>
+    <script src="./scripts/monacoeditor/vs/editor/editor.main.js"></script>
     <script>
         var q = {};
         location.search.replace(/([^?&=]+)=([^&]+)/g, (_, k, v) => q[k] = v);
