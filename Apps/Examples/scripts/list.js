@@ -432,6 +432,10 @@ vueApp.examples = [
                 "url": "./earth-terrain-china14.html"
             },
             {
+                "title": "基础-添加天地图地名资源",
+                "url": "./earth-tianditu.html"
+            },
+            {
                 "title": "3dtiles强制双面显示",
                 "url": "./earth-tileset-forceDoubleSide.html"
             },
