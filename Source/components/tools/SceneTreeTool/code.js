@@ -57,7 +57,16 @@ function getCode (jsonObject) {
             }
     
             // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
-            XE.ready().then(startup);            
+            // XE.ready().then(startup); // 不加载插件时，可以直接这样使用
+            XE.ready().then(() => {
+                // 加载标绘插件
+                const p1 = XE.HTML.loadJS('../../XbsjEarth-Plugins/plottingSymbol/plottingSymbol.js');
+                const p2 = XE.HTML.loadJS('../../XbsjEarth-Plugins/customPrimitive/customPrimitive.js');
+                const p3 = XE.HTML.loadJS('../../XbsjEarth-Plugins/customPrimitiveImage/customPrimitiveImage.js');
+                return Promise.all([p1, p2, p3]);
+            }).then(() => {
+                startup()
+            });
         </script>
     </body>
     
