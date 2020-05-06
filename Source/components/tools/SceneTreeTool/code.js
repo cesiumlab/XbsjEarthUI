@@ -63,6 +63,7 @@ function getCode (jsonObject) {
                 const p1 = XE.HTML.loadJS('../../XbsjEarth-Plugins/plottingSymbol/plottingSymbol.js');
                 const p2 = XE.HTML.loadJS('../../XbsjEarth-Plugins/customPrimitive/customPrimitive.js');
                 const p3 = XE.HTML.loadJS('../../XbsjEarth-Plugins/customPrimitiveImage/customPrimitiveImage.js');
+                const p4 = XE.HTML.loadJS('//earthsdk.com/v/last/Apps/Demos/Viewer/scripts/three.min.js'); // 部分图元需要加载three.js
                 return Promise.all([p1, p2, p3]);
             }).then(() => {
                 startup()
@@ -158,6 +159,7 @@ ${loadTilesetString}
                 const p1 = XE.HTML.loadJS('../../XbsjEarth-Plugins/plottingSymbol/plottingSymbol.js');
                 const p2 = XE.HTML.loadJS('../../XbsjEarth-Plugins/customPrimitive/customPrimitive.js');
                 const p3 = XE.HTML.loadJS('../../XbsjEarth-Plugins/customPrimitiveImage/customPrimitiveImage.js');
+                const p4 = XE.HTML.loadJS('//earthsdk.com/v/last/Apps/Demos/Viewer/scripts/three.min.js'); // 部分图元需要加载three.js
                 return Promise.all([p1, p2, p3]);
             }).then(() => {
                 startup()
