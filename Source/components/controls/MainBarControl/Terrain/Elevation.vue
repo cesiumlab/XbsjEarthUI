@@ -22,17 +22,14 @@
     </div>
   </div>
 </template>
-<script>  
-
-
+<script>
 export default {
-   
   data() {
     return {
       height: [0, 10000],
       langs: {
         zh: {
-          kdfw: "高度度范围",
+          kdfw: "高度范围",
           sedai: "色带"
         },
         en: {
@@ -43,12 +40,8 @@ export default {
       lang: undefined
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
-  
-
     this.$nextTick(() => {
       this.autorunDisposer = XE.MVVM.watch(() => {
         this.height[0] = this.$root.$earth.terrainEffect.elevation.minHeight;

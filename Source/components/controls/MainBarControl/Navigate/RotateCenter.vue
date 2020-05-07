@@ -2,21 +2,30 @@
   <div class="xbsj-mainbar-popup popup">
     <div>
       <label class="xbsj-label">{{lang.angle}}</label>
-      <input type="text" v-model.number="pitch">
+      <!-- <input type="text" v-model.number="pitch"> -->
+      <div class="xbsj-slide-box">
+        <XbsjSlider :min="-90" :max="0" :step="1" showTip="always" v-model="pitch"></XbsjSlider>
+      </div>
       <label>°</label>
       <button @click="currentPitch">{{lang.current}}</button>
     </div>
 
     <div>
       <label class="xbsj-label">{{lang.distance}}</label>
-      <input type="text" v-model.number="range">
+      <!-- <input type="text" v-model.number="range" /> -->
+      <div class="xbsj-slide-box">
+        <XbsjSlider :min="10000" :max="5000000" :step="10000" showTip="always" v-model="range"></XbsjSlider>
+      </div>
       <label>{{lang.mi}}</label>
       <button @click="currentRange">{{lang.current}}</button>
     </div>
 
     <div>
       <label class="xbsj-label">{{lang.rotate}}</label>
-      <input type="text" v-model.number="cycle">
+      <!-- <input type="text" v-model.number="cycle" /> -->
+      <div class="xbsj-slide-box">
+        <XbsjSlider :min="1" :max="600" :step="1" showTip="always" v-model="cycle"></XbsjSlider>
+      </div>
       <label>{{lang.miao}}</label>
     </div>
   </div>
@@ -30,17 +39,14 @@ export default {
       range: 0,
       cycle: 0,
       lang: {},
-      langs:languagejs
+      langs: languagejs
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
-     
     this._rotate = this.$root.$earth.cameraFlight.rotateCenter;
-    XE.MVVM.watch(()=>{
-      var t =  this.$root.$earth.cameraFlight.rotateCenter;
+    XE.MVVM.watch(() => {
+      var t = this.$root.$earth.cameraFlight.rotateCenter;
       this.update(t);
     });
 
@@ -94,7 +100,7 @@ export default {
 <style scoped>
 .popup {
   width: 365px;
-  height: 160px; 
+  height: 160px;
 }
 .xbsj-label {
   display: inline-block;
@@ -126,5 +132,11 @@ div {
   width: 70px;
   border-radius: 5px;
   cursor: pointer;
+}
+.xbsj-slide-box {
+  display: inline-block;
+  width: 182px;
+  padding-top: 12px;
+  vertical-align: middle;
 }
 </style>

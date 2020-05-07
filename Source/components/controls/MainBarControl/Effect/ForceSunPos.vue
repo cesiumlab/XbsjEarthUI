@@ -39,8 +39,8 @@ export default {
         zh: {
           usecamerapos: "相机方向",
           position: "位置",
-          jingdu: "经度",
-          weidu: "纬度"
+          jingdu: "经度:",
+          weidu: "纬度:"
         },
         en: {
           usecamerapos: "cameraposition",
@@ -96,7 +96,7 @@ export default {
   width: 64px;
   text-align: right;
   margin-right: 5px;
-  vertical-align: top;
+  vertical-align: middle;
   line-height: 29px;
 }
 .row {
@@ -106,6 +106,7 @@ export default {
   padding-left: 4px;
   display: inline-block;
   width: 220px;
+  vertical-align: middle;
 }
 .divnotClick {
   pointer-events: none;

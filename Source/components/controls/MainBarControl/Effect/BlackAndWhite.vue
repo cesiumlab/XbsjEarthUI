@@ -10,9 +10,8 @@
   </div>
 </template>
 
-<script> 
+<script>
 export default {
-  
   data() {
     return {
       langs: {
@@ -27,11 +26,8 @@ export default {
       gradations: 5
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
-   
     this.bind("gradations");
   },
   methods: {
@@ -65,7 +61,7 @@ export default {
   width: 32px;
   text-align: right;
   margin-right: 5px;
-  vertical-align: top;
+  vertical-align: middle;
   line-height: 29px;
 }
 .row {
@@ -75,5 +71,6 @@ export default {
   padding-left: 4px;
   display: inline-block;
   width: 220px;
+  vertical-align: middle;
 }
 </style>

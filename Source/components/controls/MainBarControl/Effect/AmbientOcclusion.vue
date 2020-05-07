@@ -44,9 +44,8 @@
   </div>
 </template>
 
-<script> 
+<script>
 export default {
- 
   data() {
     return {
       langs: {
@@ -70,12 +69,8 @@ export default {
       blurStepSize: 0.86
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
-     
-
     this.bind("ambientOcclusionOnly");
     this.bind("intensity");
     this.bind("bias");
@@ -114,7 +109,7 @@ export default {
   width: 64px;
   text-align: right;
   margin-right: 5px;
-  vertical-align: top;
+  vertical-align: middle;
   line-height: 29px;
 }
 .row {
@@ -124,5 +119,6 @@ export default {
   padding-left: 4px;
   display: inline-block;
   width: 220px;
+  vertical-align: middle;
 }
 </style>

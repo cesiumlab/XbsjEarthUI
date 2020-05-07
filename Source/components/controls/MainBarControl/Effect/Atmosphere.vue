@@ -24,9 +24,7 @@
 </template>
 
 <script>
- 
 export default {
- 
   data() {
     return {
       langs: {
@@ -47,12 +45,8 @@ export default {
       saturationShift: 0
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
-    
-
     this.bind("brightnessShift");
     this.bind("hueShift");
     this.bind("saturationShift");
@@ -61,12 +55,7 @@ export default {
     bind(prp) {
       this._viewUnbinds = this._viewUnbinds || [];
       this._viewUnbinds.push(
-        XE.MVVM.bind(
-          this,
-          prp,
-          this.$root.$earth.weather.atmosphere,
-          prp
-        )
+        XE.MVVM.bind(this, prp, this.$root.$earth.weather.atmosphere, prp)
       );
     }
   },
@@ -88,7 +77,7 @@ export default {
   width: 64px;
   text-align: right;
   margin-right: 5px;
-  vertical-align: top;
+  vertical-align: middle;
   line-height: 29px;
 }
 .row {
@@ -98,5 +87,6 @@ export default {
   padding-left: 4px;
   display: inline-block;
   width: 220px;
+  vertical-align: middle;
 }
 </style>

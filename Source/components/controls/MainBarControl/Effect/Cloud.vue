@@ -9,9 +9,8 @@
   </div>
 </template>
 
-<script> 
+<script>
 export default {
- 
   data() {
     return {
       langs: {
@@ -26,23 +25,15 @@ export default {
       aroundTime: 120
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
-   
     this.bind("aroundTime");
   },
   methods: {
     bind(prp) {
       this._viewUnbinds = this._viewUnbinds || [];
       this._viewUnbinds.push(
-        XE.MVVM.bind(
-          this,
-          prp,
-          this.$root.$earth.weather.cloud,
-          prp
-        )
+        XE.MVVM.bind(this, prp, this.$root.$earth.weather.cloud, prp)
       );
     }
   },
@@ -64,7 +55,7 @@ export default {
   width: 52px;
   text-align: right;
   margin-right: 5px;
-  vertical-align: top;
+  vertical-align: middle;
   line-height: 29px;
 }
 .row {
@@ -74,5 +65,6 @@ export default {
   padding-left: 4px;
   display: inline-block;
   width: 220px;
+  vertical-align: middle;
 }
 </style>

@@ -18,9 +18,8 @@
   </div>
 </template>
 
-<script> 
+<script>
 export default {
- 
   data() {
     return {
       langs: {
@@ -39,12 +38,8 @@ export default {
       uicolor: undefined
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
-    
-
     this.bind("length");
     this.bind("color");
   },
@@ -52,12 +47,7 @@ export default {
     bind(prp) {
       this._viewUnbinds = this._viewUnbinds || [];
       this._viewUnbinds.push(
-        XE.MVVM.bind(
-          this,
-          prp,
-          this.$root.$earth.postProcess.silhouette,
-          prp
-        )
+        XE.MVVM.bind(this, prp, this.$root.$earth.postProcess.silhouette, prp)
       );
     },
     fromColor(fromcolor) {
@@ -106,7 +96,7 @@ export default {
   width: 32px;
   text-align: right;
   margin-right: 5px;
-  vertical-align: top;
+  vertical-align: middle;
   line-height: 29px;
 }
 .row {
@@ -116,6 +106,7 @@ export default {
   padding-left: 4px;
   display: inline-block;
   width: 220px;
+  vertical-align: middle;
 }
 .colorstartDiv {
   margin-left: 40px;

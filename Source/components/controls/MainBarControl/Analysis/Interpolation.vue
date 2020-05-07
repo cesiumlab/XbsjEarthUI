@@ -9,19 +9,17 @@
     </div>
   </div>
 </template>
-<script>  
-
-
+<script>
 export default {
-  props: ['interval'],
-  data () {
+  props: ["interval"],
+  data() {
     return {
       langs: {
         zh: {
           jianju: "采样间隔"
         },
         en: {
-          jianju: "sampling interval",
+          jianju: "sampling interval"
         }
       },
       lang: undefined,
@@ -30,19 +28,15 @@ export default {
     };
   },
   watch: {
-    samplinginterval (v) {
-      this.$emit('changeInterval', v);
+    samplinginterval(v) {
+      this.$emit("changeInterval", v);
     }
   },
-  created () {
-
-  },
-  mounted () {
-  },
-  methods: {
-  },
+  created() {},
+  mounted() {},
+  methods: {},
   computed: {},
-  beforeDestroy () {
+  beforeDestroy() {
     this._viewUnbinds.forEach(u => u());
     this._viewUnbinds.length = 0;
   }
@@ -58,7 +52,7 @@ export default {
   width: 60px;
   text-align: right;
   margin-right: 5px;
-  vertical-align: top;
+  vertical-align: middle;
 }
 .row {
   margin-top: 10px;

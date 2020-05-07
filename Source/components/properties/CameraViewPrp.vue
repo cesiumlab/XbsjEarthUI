@@ -2,9 +2,9 @@
   <!-- 编辑提示框 -->
   <Window
     :title="lang.title"
-    :width="470"
+    :width="490"
     :minWidth="450"
-    :height="388"
+    :height="396"
     :top="210"
     :left="590"
     @ok="ok"
@@ -18,7 +18,10 @@
       </div>
       <div class="setting-item">
         <label class="xbsj-label">{{lang.flytime}}</label>
-        <input class="inputItem" type="text" v-model.number="editing.duration" />
+        <!-- <input class="inputItem" type="text" v-model.number="editing.duration" /> -->
+        <div class="xbsj-slide-box">
+          <XbsjSlider :min="0" :max="10" :step="0.1" showTip="always" v-model="editing.duration"></XbsjSlider>
+        </div>
       </div>
     </div>
     <div class="suoluetu">
@@ -243,9 +246,16 @@ textarea {
 .setting-box {
   display: flex;
   width: 100%;
+  margin-top: 10px;
 }
 .setting-item {
   width: 50%;
+}
+.xbsj-slide-box {
+  display: inline-block;
+  width: 154px;
+  vertical-align: middle;
+  margin-left: 2px;
 }
 </style>
 
