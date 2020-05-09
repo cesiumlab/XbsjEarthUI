@@ -91,8 +91,8 @@
         <!-- 贴地距离 -->
         <div class="xbsj-item-btnbox" @click="disGroudMeasure()">
           <div
-            class="xbsj-item-btn areaGroudbutton"
-            :class="measurementType === 'SPACE_DIS_GROUD' ? 'areaGroudbuttonActive' : ''"
+            class="xbsj-item-btn disGroudbutton"
+            :class="measurementType === 'SPACE_DIS_GROUD' ? 'disGroudbuttonActive' : ''"
           ></div>
           <span class="xbsj-item-name">{{lang.disGroud}}</span>
         </div>
@@ -119,7 +119,7 @@
 
         <!-- 剖面 -->
         <div class="xbsj-item-btnbox" @click="sectionPlane()">
-          <div class="xbsj-item-btn disGroudbutton"></div>
+          <div class="xbsj-item-btn sectionGroudbutton"></div>
           <span class="xbsj-item-name">{{lang.sectionPlane}}</span>
         </div>
 
@@ -893,17 +893,17 @@ export default {
   background-size: contain;
   cursor: pointer;
 }
-.disGroudbutton {
+.sectionGroudbutton {
   background: url(../../../../images/profileanalysis.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
-.disGroudbutton:hover {
+.sectionGroudbutton:hover {
   background: url(../../../../images/profileanalysis_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
-.disGroudbuttonActive {
+.sectionGroudbuttonActive {
   background: url(../../../../images/profileanalysis_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
@@ -920,6 +920,21 @@ export default {
 }
 .areaGroudbuttonActive {
   background: url(../../../../images/landarea_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.disGroudbutton {
+  background: url(../../../../images/disgroud.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.disGroudbutton:hover {
+  background: url(../../../../images/disgroud_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.disGroudbuttonActive {
+  background: url(../../../../images/disgroud_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
