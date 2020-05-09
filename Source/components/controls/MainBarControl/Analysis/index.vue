@@ -87,6 +87,21 @@
           ></div>
           <span class="xbsj-item-name">{{lang.distance}}</span>
         </div>
+
+        <!-- 贴地距离 -->
+        <div class="xbsj-item-btnbox" @click="disGroudMeasure()">
+          <div
+            class="xbsj-item-btn areaGroudbutton"
+            :class="measurementType === 'SPACE_DIS_GROUD' ? 'areaGroudbuttonActive' : ''"
+          ></div>
+          <span class="xbsj-item-name">{{lang.disGroud}}</span>
+        </div>
+        <span
+          class="xbsj-select"
+          :class="{highlight:popup == 'dis_interpolation'}"
+          @click.stop="togglePopup('dis_interpolation',$event)"
+        ></span>
+
         <div class="xbsj-item-btnbox" @click="measurementType='TRIANGLE_DISTANCE'">
           <div
             class="xbsj-item-btn heightbutton"
@@ -103,9 +118,9 @@
         </div>
 
         <!-- 剖面 -->
-        <div class="xbsj-item-btnbox" @click="disGroudMeasure()">
+        <div class="xbsj-item-btnbox" @click="sectionPlane()">
           <div class="xbsj-item-btn disGroudbutton"></div>
-          <span class="xbsj-item-name">{{lang.disGroud}}</span>
+          <span class="xbsj-item-name">{{lang.sectionPlane}}</span>
         </div>
 
         <!-- 贴地面积 -->
@@ -170,6 +185,13 @@
       @changeInterval="changeInterval"
       :interval="areaGroudinterval"
     ></Interpolation>
+
+    <Interpolation
+      ref="dis_interpolation"
+      v-show="popup =='dis_interpolation'"
+      @changeInterval="changeDisInterval"
+      :interval="disGroudinterval"
+    ></Interpolation>
   </div>
 </template>
 
@@ -178,6 +200,7 @@ import languagejs from "./index_locale";
 import Interpolation from "./Interpolation";
 import { getPickRay } from "../../../utils/measure";
 import { createPolylinePrimitive } from "../../../utils/DepthPolyline";
+import { getDisAndLabelPos } from "../../../utils/measure";
 
 export default {
   components: {
@@ -195,7 +218,9 @@ export default {
       measuring: false,
       areaGroud: 0,
       areaGroudinterval: 0,
-      popup: ""
+      disGroudinterval: 0,
+      popup: "",
+      disGroudMeasureing: false
     };
   },
   created () { },
@@ -222,6 +247,7 @@ export default {
         })
       );
       this._labels = [];
+      this._disGroudLabels = [];
       this._temGeometry = [];
       this._temPrimitive = [];
       this._creating = [];
@@ -252,7 +278,7 @@ export default {
             if (isNaN(this.areaGroud)) {
               this.areaGroud = 0;
             }
-            if (this.areaGroudinterval === 0 && this.areaGroud > 1) {              
+            if (this.areaGroudinterval === 0 && this.areaGroud > 1) {
               this._areaGroud.interpolationDistance = Math.sqrt(this.areaGroud) / 10;
               this._areaGroud.offsetHeight = 0.5;
               this._areaGroud.interpolation = true;
@@ -293,11 +319,28 @@ export default {
       if (this._areaGroud && this.measurementType !== "SPACE_AREA_GROUD") {
         this._areaGroud.creating = false;
       }
+    },
+    disGroudMeasureing (v) {
+      if (v === false) {
+        this._creating.forEach(d => d());
+        this._creating = [];
+        let self = this;
+        if (this._disGroudLabels.length > 0) {
+          this._disGroudLabels.forEach(l => {
+            self._temGeometry.push(l);
+          });
+          this._disGroudLabels = [];
+          this.measurementType = "NONE";
+        }
+      }
     }
   },
   methods: {
     changeInterval (v) {
       this.areaGroudinterval = v;
+    },
+    changeDisInterval (v) {
+      this.disGroudinterval = v;
     },
     getPopupComp () {
       if (this.$refs.hasOwnProperty(this.popup)) {
@@ -458,7 +501,7 @@ export default {
       }
     },
     areaGroudMeasure () {
-      this.areaGroudinterval = 0;
+      // this.areaGroudinterval = 0;
       if (!this.$root.$earth.terrainEffect.depthTest) {
         this.$root.$earthUI.promptInfo("使用此功能前请先打开深度检测！", "warning");
         return;
@@ -476,7 +519,6 @@ export default {
         this._creating.push(
           XE.MVVM.bind(this, "measuring", this._areaGroud, "creating")
         );
-        window.p = this._areaGroud;
         this._temGeometry.push(this._areaGroud);
         this.measurementType = "SPACE_AREA_GROUD";
       } else {
@@ -487,8 +529,49 @@ export default {
         }
       }
     },
+    updateMeasure (p) {
+      this._disGroudLabels.forEach(l => l.destroy());
+      this._disGroudLabels = [];
+      if (p.length > 1) {
+        var it = this.disGroudinterval;
+        var result = getDisAndLabelPos(p, it, this.$root.$earth);
+        if (!result) {
+          return;
+        }
+        this._result = result;
+        var labels = result.label;
+
+        labels.forEach(l => {
+          var lb = this.createLabel(l);
+          this._disGroudLabels.push(lb);
+        });
+      }
+    },
     disGroudMeasure () {
-      this.measurementType = "SPACE_DIS_GROUD";
+      // this.disGroudinterval = 0;
+      if (this.measurementType !== "SPACE_DIS_GROUD") {
+        this._disGroud = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+        this._disGroud.creating = true;
+        this.updateCreatingBind();
+        this._creating.push(
+          XE.MVVM.bind(this, "disGroudMeasureing", this._disGroud, "creating")
+        );
+        this._creating.push(
+          XE.MVVM.watch(
+            () => ({
+              positions: [...this._disGroud.positions]
+            }),
+            () => {
+              this.updateMeasure(this._disGroud.positions);
+            }
+          )
+        );
+        this._temGeometry.push(this._disGroud);
+        this.measurementType = "SPACE_DIS_GROUD";
+      }
+    },
+    sectionPlane () {
+      this.measurementType = "SPACE_SECTION_GROUD";
       this.$root.$earthUI.showPropertyWindow(
         {},
         {
