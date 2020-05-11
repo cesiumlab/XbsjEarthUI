@@ -681,7 +681,7 @@ export default {
 
       cutsurface.isCreating = true;
       cutsurface.creating = true;
-      // console.log(cutsurface);
+      console.log(cutsurface);
       this.$root.$earthUI.showPropertyWindow(cutsurface);
     },
     // 贴地图像

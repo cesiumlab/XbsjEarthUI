@@ -1,8 +1,8 @@
 <template>
   <Window
-    :width="500"
+    :width="536"
     :minWidth="490"
-    :height="410"
+    :height="448"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -38,6 +38,12 @@
       <div class="flatten">
         <label>{{lang.name}}</label>
         <input style="float:left;" type="text" v-model="model.name" />
+      </div>
+      <div class="flatten" style="display:flex;">
+        <div>
+          <label></label>
+          <XbsjCheckBox v-model="model.terrainDiscard">{{lang.terraindiscard}}</XbsjCheckBox>
+        </div>
       </div>
       <div class="flatten-flex">
         <!-- 鼠标点选 -->
@@ -167,7 +173,8 @@ export default {
         bottomImageUrl: "",
         bottomImageHeight: 3,
         bottomImageWidthScale: 1,
-        bottomTextureRotationEditing: false
+        bottomTextureRotationEditing: false,
+        terrainDiscard: false
       },
       connections: [],
       connectedTileset: "",
@@ -198,7 +205,8 @@ export default {
         bottomImageUrl: "model.bottomImageUrl",
         bottomImageHeight: "model.bottomImageHeight",
         bottomImageWidthScale: "model.bottomImageWidthScale",
-        bottomTextureRotationEditing: "model.bottomTextureRotationEditing"
+        bottomTextureRotationEditing: "model.bottomTextureRotationEditing",
+        terrainDiscard: "model.terrainDiscard"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -323,6 +331,19 @@ export default {
       if (czmObj && czmObj.positions !== undefined) {
         this._czmObj.creating = false;
         this.$root.$earthUI.getCzmObjectPositionFromDrags(czmObj, this._czmObj);
+      }
+    }
+  },
+  watch: {
+    "model.terrainDiscard"(val) {
+      if (val) {
+        if (!this.$root.$earth.terrainEffect.depthTest) {
+          this.$root.$earthUI.promptInfo(
+            "使用此功能时请先打开深度检测！",
+            "warning"
+          );
+          return;
+        }
       }
     }
   },
