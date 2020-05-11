@@ -261,6 +261,11 @@
           <div class="xbsj-item-btn cutsurfacebutton"></div>
           <span class="xbsj-item-name">{{lang.cutsurface}}</span>
         </div>
+        <!-- 贴地图像 -->
+        <div class="xbsj-item-btnbox ml20" @click="groundImageBtn">
+          <div class="xbsj-item-btn groundimagebutton"></div>
+          <span class="xbsj-item-name">{{lang.groundimage}}</span>
+        </div>
         <!-- <div class="xbsj-item-btnbox ml20">
           <div class="xbsj-item-btn odbutton"></div>
           <span class="xbsj-item-name">{{lang.od}}</span>
@@ -676,8 +681,20 @@ export default {
 
       cutsurface.isCreating = true;
       cutsurface.creating = true;
-      console.log(cutsurface);
+      // console.log(cutsurface);
       this.$root.$earthUI.showPropertyWindow(cutsurface);
+    },
+    // 贴地图像
+    groundImageBtn() {
+      var groundimage = new XE.Obj.GroundImage(this.$root.$earth);
+      groundimage.name = "贴地图像";
+      groundimage.autoRegisterEditing = true;
+
+      groundimage.isCreating = true;
+      groundimage.creating = true;
+      groundimage.imageUrls = ["./assets/baidu.png"];
+      console.log(groundimage);
+      this.$root.$earthUI.showPropertyWindow(groundimage);
     },
 
     getCzmObjectFromDrag(dataTransfer) {
@@ -1403,6 +1420,17 @@ export default {
 .cutsurfacebutton.highlight,
 .cutsurfacebutton:hover {
   background: url(../../../../images/cutsurface_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.groundimagebutton {
+  background: url(../../../../images/groundimage.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.groundimagebutton.highlight,
+.groundimagebutton:hover {
+  background: url(../../../../images/groundimage_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }

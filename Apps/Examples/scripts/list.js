@@ -64,6 +64,10 @@ vueApp.examples = [
                 "url": "./earth-basic-destroy2.html"
             },
             {
+                "title": "广告牌",
+                "url": "./earth-billboard.html"
+            },
+            {
                 "title": "漫游-第一人称",
                 "url": "./earth-camera-firstpersion.html"
             },

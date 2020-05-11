@@ -1,8 +1,8 @@
 <template>
   <Window
-    :width="480"
+    :width="492"
     :minWidth="480"
-    :height="420"
+    :height="470"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -46,10 +46,45 @@
         </div>
       </div>
 
-      <!-- ground自定义外部图标 -->
       <div class="flatten">
-        <label>{{lang.imageUrls}}</label>
-        <input style="float:left;" type="text" v-model="ground.imageUrls" />
+        <!-- 图像播放 -->
+        <div class="flatten" style="display: inline-block;">
+          <label>{{lang.playing}}</label>
+          <XbsjSwitch v-model="ground.playing"></XbsjSwitch>
+        </div>
+        <!-- 循环播放 -->
+        <div class="flatten" style="display: inline-block;">
+          <label>{{lang.loopplay}}</label>
+          <XbsjSwitch v-model="ground.loopPlay"></XbsjSwitch>
+        </div>
+      </div>
+
+      <!-- 持续时间 -->
+      <div class="flatten">
+        <label>{{lang.nowtime}}</label>
+        <div class="field">
+          <XbsjSlider
+            :min="0"
+            :max="5"
+            :step="0.1"
+            v-model.number="ground.timeDuration"
+            ref="glowFactor"
+          ></XbsjSlider>
+        </div>
+      </div>
+
+      <!-- 当前时刻 -->
+      <div class="flatten">
+        <label>{{lang.nowtime}}</label>
+        <div class="field">
+          <XbsjSlider
+            :min="0"
+            :max="ground.timeDuration"
+            :step="0.01"
+            v-model.number="ground.currentTime"
+            ref="glowFactor"
+          ></XbsjSlider>
+        </div>
       </div>
 
       <!-- 原点 -->
@@ -104,6 +139,33 @@
           <XbsjInputNumber v-model.number="rotation" :step="1"></XbsjInputNumber>
         </div>
       </div>
+
+      <!-- ground自定义外部图标 -->
+      <div class="flatten" style="height:90px;">
+        <label>{{lang.imageUrls}}</label>
+        <!-- <input style="float:left;" type="text" v-model="ground.imageUrls" /> -->
+        <div class="inputbox" style="margin-left:72px;">
+          <div class="arrbox">
+            <div
+              style="width: 300px;"
+              v-for="(item,index) in labelarr"
+              :key="index"
+              class="spanbox"
+            >
+              <span>{{item}}</span>
+              <i class="spanclose" @click="removeitem(index,item)"></i>
+            </div>
+            <input
+              style="background:transparent;outline:none;color:white;width:320px !important;padding:0;"
+              placeholder="输入后回车"
+              v-model="currentval"
+              @keyup.enter="addlabel"
+              class="input"
+              type="text"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   </Window>
 </template>
@@ -120,7 +182,7 @@ export default {
   components: {
     XbsjInputNumber
   },
-  data () {
+  data() {
     return {
       showGroundSelect: false,
       groundshowGroundSelect: false,
@@ -130,6 +192,10 @@ export default {
         creating: true,
         editing: false,
         imageUrl: "",
+        playing: false,
+        loopPlay: true,
+        timeDuration: 1,
+        currentTime: 0,
         width: 100,
         height: 100,
         autoWidth: false,
@@ -162,11 +228,15 @@ export default {
       connections: [],
       connectedTileset: "",
       pathGuidarr: [],
-      lang: {}
+      lang: {},
+      imageUrls: [],
+      labelarr: ["./assets/baidu.png"],
+      currentval: "",
+      _uw: undefined
     };
   },
-  created () { },
-  mounted () {
+  created() {},
+  mounted() {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
@@ -178,6 +248,9 @@ export default {
         creating: "ground.creating",
         editing: "ground.editing",
         imageUrls: "ground.imageUrls",
+        playing: "ground.playing",
+        loopPlay: "ground.loopPlay",
+        currentTime: "ground.currentTime",
         show: "ground.show",
         origin: "ground.origin",
         position: "ground.position",
@@ -190,81 +263,128 @@ export default {
 
       for (var prop in bindData) {
         if (typeof bindData[prop] === "string") {
-          this._disposers.push(XE.MVVM.bind(this, bindData[prop], this._czmObj, prop));
+          this._disposers.push(
+            XE.MVVM.bind(this, bindData[prop], this._czmObj, prop)
+          );
         } else {
-          this._disposers.push(vm.handler(this, bindData[prop], this._czmObj, prop));
+          this._disposers.push(
+            vm.handler(this, bindData[prop], this._czmObj, prop)
+          );
         }
       }
 
       for (var prop in this.ground) {
-        this.groundClone[prop] = this.ground[prop]
+        this.groundClone[prop] = this.ground[prop];
       }
+
+      if (this._uw) {
+        this._uw = this._uw();
+      } else {
+        this._uw = XE.MVVM.watch(
+          () => czmObj.timeDuration,
+          () => {
+            this.ground.timeDuration = czmObj.timeDuration;
+          }
+        );
+      }
+
+      // this.$watch("ground.timeDuration", function(newVal, oldVal) {
+      //   if (newVal > 0.2) {
+      //     czmObj.timeDuration = newVal;
+      //   }
+      // });
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
     // this._disposers = this._disposers && this._disposers();
   },
   computed: {
-    name () {
+    name() {
       return this.ground.name;
     },
-    guid () {
+    guid() {
       return this.getBind().guid;
     },
     "ground.width": {
-      get () {
+      get() {
         return this.getBind().width;
       },
-      set (newValue) {
+      set(newValue) {
         this.ground.height = this.getBind().height;
       }
     },
     "ground.height": {
-      get () {
+      get() {
         return this.getBind().height;
       },
-      set (newValue) {
+      set(newValue) {
         this.ground.width = this.getBind().width;
       }
     },
     rotation: {
-      get () {
-        return Math.round(this.ground.rotation * 180 / Math.PI, 0)
+      get() {
+        return Math.round((this.ground.rotation * 180) / Math.PI, 0);
       },
-      set (v) {
-        this.ground.rotation = v * Math.PI / 180
+      set(v) {
+        this.ground.rotation = (v * Math.PI) / 180;
       }
     }
   },
   watch: {
-    "ground.width" (e) {
+    "ground.width"(e) {
       if (e !== "" && this.ground.autoHeight) {
         this.ground.height = this.getBind().height;
       }
     },
-    "ground.height" (e) {
+    "ground.height"(e) {
       if (e !== "" && this.ground.autoWidth) {
         this.ground.width = this.getBind().width;
       }
     },
-    "ground.autoWidth" (e) {
+    "ground.autoWidth"(e) {
       if (e === true) {
-        this.ground.autoHeight = false
+        this.ground.autoHeight = false;
       }
     },
-    "ground.autoHeight" (e) {
+    "ground.autoHeight"(e) {
       if (e === true) {
-        this.ground.autoWidth = false
+        this.ground.autoWidth = false;
+      }
+    },
+    "ground.timeDuration"(newVal, oldVal) {
+      if (newVal > 0.2) {
+        this._czmObj.timeDuration = newVal;
       }
     }
   },
   methods: {
-    groundoptionssure (c) {
+    // 移除标签
+    removeitem(index, item) {
+      this.labelarr.splice(index, 1);
+      this._czmObj.imageUrls = this.labelarr;
+    },
+    // input回车加入labelarr中
+    addlabel() {
+      this.labelarr.push(this.currentval);
+      this.currentval = "";
+      if (this.labelarr.length > 0) {
+        this.imageUrls = [];
+        for (let i = 0; i < this.labelarr.length; i++) {
+          if (this.labelarr[i] !== "") {
+            this.imageUrls.push(this.labelarr[i]);
+          } else {
+            return;
+          }
+        }
+      }
+      this._czmObj.imageUrls = this.imageUrls;
+    },
+    groundoptionssure(c) {
       this.ground.attachedPathGuid = c.guid;
       this.groundshowGroundSelect = !this.groundshowGroundSelect;
     },
-    groundselectinput () {
+    groundselectinput() {
       this.pathGuidarr = [];
       let guidobj = {};
       this.pathGuidarr.push({ name: "空", guid: "" });
@@ -282,20 +402,20 @@ export default {
       }
       this.groundshowGroundSelect = !this.groundshowGroundSelect;
     },
-    optionssure (c) {
+    optionssure(c) {
       this.ground.groundBuilder.makiIcon = c;
       this.showGroundSelect = !this.showGroundSelect;
     },
-    selectinput () {
+    selectinput() {
       this.showGroundSelect = !this.showGroundSelect;
       // console.log(this.showSelect);
     },
-    close () {
+    close() {
       this.$parent.destroyTool(this);
     },
-    cancel () {
+    cancel() {
       for (var prop in this.groundClone) {
-        this._czmObj[prop] = this.groundClone[prop]
+        this._czmObj[prop] = this.groundClone[prop];
       }
       this.close();
       const groundToolObj = this._czmObj;
@@ -310,10 +430,10 @@ export default {
       }
 
       if (groundToolObj.modifyEnd) {
-        groundToolObj.modifyEnd(false, groundToolObj)
+        groundToolObj.modifyEnd(false, groundToolObj);
       }
     },
-    ok () {
+    ok() {
       if (this.ground.imageUrls === "") {
         this.$root.$earthUI.promptInfo("请输入图片地址！", "error");
         return;
@@ -334,11 +454,11 @@ export default {
       groundToolObj.creating = false;
 
       if (groundToolObj.modifyEnd) {
-        groundToolObj.modifyEnd(true, groundToolObj)
+        groundToolObj.modifyEnd(true, groundToolObj);
       }
     },
 
-    flyto (index) {
+    flyto(index) {
       this._czmObj.polygons[index].flyTo();
     }
   }
@@ -646,5 +766,97 @@ button:focus {
 }
 .btncoloron {
   color: #1fffff !important;
+}
+
+.inputbox {
+  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 12px;
+  /* border: 1px solid #dcdee2; */
+  border-radius: 6px;
+  margin-bottom: 18px;
+  padding: 6px 1px 1px 6px;
+  text-align: left;
+  font-size: 0;
+  margin-bottom: 0;
+  width: 346px;
+}
+
+.input {
+  font-size: 14px;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  width: auto !important;
+  max-width: inherit;
+  min-width: 80px;
+  vertical-align: top;
+  height: 30px;
+  color: #34495e;
+  margin: 2px;
+  line-height: 30px;
+}
+
+.arrbox {
+  border-radius: 6px;
+  margin-bottom: 10px;
+  padding: 6px 1px 1px 6px;
+  text-align: left;
+  font-size: 0;
+}
+
+.spanbox {
+  line-height: 30px;
+  margin: 2px;
+  padding: 0 10px;
+  background-color: #1abc9c;
+  color: white;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  overflow: hidden;
+  transition: 0.25s linear;
+}
+
+.spanbox:hover {
+  padding: 0px 17px 0 3px;
+}
+
+.spanclose {
+  color: white;
+  padding: 0 10px 0 0;
+  cursor: pointer;
+  font-size: 12px;
+  position: absolute;
+  right: -3px;
+  text-align: right;
+  text-decoration: none;
+  top: 0;
+  width: 100%;
+  bottom: 0;
+  z-index: 2;
+  opacity: 0;
+  filter: "alpha(opacity=0)";
+  transition: opacity 0.25s linear;
+  font-style: normal;
+}
+
+.spanbox:hover .spanclose {
+  padding: 0 10px 5px 0;
+  opacity: 1;
+  -webkit-filter: none;
+  filter: none;
+}
+
+.spanclose:after {
+  content: "x";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 27px;
 }
 </style>

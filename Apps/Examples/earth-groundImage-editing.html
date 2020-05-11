@@ -72,7 +72,7 @@
                             <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':editing}"  @click="editing = !editing">编辑</div><br/>
                             <span @click="show = !show" style="cursor: pointer;"><input class="poyline" type="checkbox" style="width: 14px; cursor: pointer;" v-model="show">热力图显隐</span><br/>
                             <span>热力图宽度：{{width}}像素</span><br/><input type="range" min="0" max="500" step="1" v-model.number="width"><br/>
-                            <span>热力图高度：{{height}}像素</span><br/><input type="range" min="0" max="500" step="1" v-model.number="height"><br/>
+                            <span>热力图高度：{{height | numFilter}}像素</span><br/><input type="range" min="0" max="500" step="1" v-model.number="height"><br/>
                         </div>
                 </div>
             `,
@@ -138,6 +138,7 @@
 
                 var tileset = earth.sceneTree.$refs.tileset.czmObject;
                 var groundImage1 = earth.sceneTree.$refs.groundImage1.czmObject;
+                groundImage1.imageUrls = ["./images/baidu.png"];
 
                 // 设置相机位置
                 // earth.camera.position.toString()和earth.camera.toAllJSONStr()这两个方法可获取相机位置
@@ -157,6 +158,13 @@
                 window.tileset = tileset;
                 window.groundImage1 = groundImage1;
                 window.earth = earth;
+            },
+            filters: {
+                numFilter(value) {
+                    // 截取当前数据到小数点后五位
+                    let realVal = parseFloat(value).toFixed()
+                    return realVal
+                }
             },
             // 1.2 资源销毁
             beforeDestroy() {
