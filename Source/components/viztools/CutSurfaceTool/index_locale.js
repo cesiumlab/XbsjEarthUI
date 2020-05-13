@@ -2,7 +2,7 @@ const zh = {
   title: "挖坑属性",
   cutsurfacetiles: '挖坑瓦片',
   name: "名称",
-  terraindiscard: '挖坑地形',
+  terraindiscard: '作用到地形',
   weizhi: '位置',
   creating: '创建',
   editing: '编辑',

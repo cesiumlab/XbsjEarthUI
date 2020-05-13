@@ -60,7 +60,6 @@ const zh = {
   surface: '填充面',
   polygonStretch: '多边形',
   classificationpolygon: '单体化',
-  cutsurface: '挖坑',
   groundimage: '贴地图像'
 };
 
@@ -126,7 +125,6 @@ const en = {
   surface: 'Surface',
   polygonStretch: 'Polygon',
   classificationpolygon: 'Classification Polygon',
-  cutsurface: 'cutsurface',
   groundimage: 'groundimage'
 };
 

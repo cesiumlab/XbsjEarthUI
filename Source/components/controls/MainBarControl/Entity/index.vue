@@ -256,11 +256,6 @@
           <div class="xbsj-item-btn surfacebutton"></div>
           <span class="xbsj-item-name">{{lang.surface}}</span>
         </div>
-        <!-- 挖坑 -->
-        <div class="xbsj-item-btnbox ml20" @click="cutSurfaceBtn">
-          <div class="xbsj-item-btn cutsurfacebutton"></div>
-          <span class="xbsj-item-name">{{lang.cutsurface}}</span>
-        </div>
         <!-- 贴地图像 -->
         <div class="xbsj-item-btnbox ml20" @click="groundImageBtn">
           <div class="xbsj-item-btn groundimagebutton"></div>
@@ -673,17 +668,6 @@ export default {
       // console.log(surface);
       this.$root.$earthUI.showPropertyWindow(surface);
     },
-    // 挖坑
-    cutSurfaceBtn() {
-      var cutsurface = new XE.Obj.CutSurface(this.$root.$earth);
-      cutsurface.name = "挖坑";
-      cutsurface.autoRegisterEditing = true;
-
-      cutsurface.isCreating = true;
-      cutsurface.creating = true;
-      console.log(cutsurface);
-      this.$root.$earthUI.showPropertyWindow(cutsurface);
-    },
     // 贴地图像
     groundImageBtn() {
       var groundimage = new XE.Obj.GroundImage(this.$root.$earth);
@@ -692,7 +676,7 @@ export default {
 
       groundimage.isCreating = true;
       groundimage.creating = true;
-      groundimage.imageUrls = ["./assets/baidu.png"];
+      groundimage.imageUrls = ["./assets/logo.png"];
       console.log(groundimage);
       this.$root.$earthUI.showPropertyWindow(groundimage);
     },
@@ -1408,18 +1392,6 @@ export default {
 .surfacebutton.highlight,
 .surfacebutton:hover {
   background: url(../../../../images/fillsurface_on.png) no-repeat;
-  background-size: contain;
-  cursor: pointer;
-}
-
-.cutsurfacebutton {
-  background: url(../../../../images/cutsurface.png) no-repeat;
-  background-size: contain;
-  cursor: pointer;
-}
-.cutsurfacebutton.highlight,
-.cutsurfacebutton:hover {
-  background: url(../../../../images/cutsurface_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }

@@ -109,6 +109,20 @@
           @click.stop="togglePopup('fog',$event)"
         ></span>
 
+        <div class="xbsj-item-btnbox">
+          <div
+            class="xbsj-item-btn fogbutton"
+            :class="{'fogbutton-on':weather.fogPostProcess}"
+            @click="weather.fogPostProcess=!weather.fogPostProcess"
+          ></div>
+          <span class="xbsj-item-name">{{lang.fogpostprocess}}</span>
+        </div>
+        <span
+          class="xbsj-select"
+          :class="{highlight:popup == 'fogPostProcess'}"
+          @click.stop="togglePopup('fogPostProcess',$event)"
+        ></span>
+
         <!-- 星空显隐 -->
         <div class="xbsj-item-btnbox">
           <div
@@ -288,6 +302,7 @@
     <Rain ref="rainPostProcess" v-show="popup =='rainPostProcess'"></Rain>
     <Snow ref="snowPostProcess" v-show="popup =='snowPostProcess'"></Snow>
     <Fog ref="fog" v-show="popup =='fog'"></Fog>
+    <FogPostProcess ref="fogPostProcess" v-show="popup =='fogPostProcess'"></FogPostProcess>
     <LensFlare ref="lensFlare" v-show="popup =='lensFlare'"></LensFlare>
     <Bloom ref="bloom" v-show="popup =='bloom'"></Bloom>
     <Brightness ref="brightness" v-show="popup =='brightness'"></Brightness>
@@ -311,6 +326,7 @@ import Moon from "./Moon";
 import Rain from "./Rain";
 import Snow from "./Snow";
 import Fog from "./Fog";
+import FogPostProcess from "./FogPostProcess";
 import LensFlare from "./LensFlare";
 import Bloom from "./Bloom";
 import Brightness from "./Brightness";
@@ -332,6 +348,7 @@ export default {
     Rain,
     Snow,
     Fog,
+    FogPostProcess,
     LensFlare,
     Bloom,
     Brightness,
@@ -356,6 +373,7 @@ export default {
         rainPostProcess: false,
         snowPostProcess: false,
         fog: false,
+        fogPostProcess: false,
         skyBox: true
       },
       popup: "",
@@ -406,6 +424,7 @@ export default {
       this.binVue("weather.rainPostProcess");
       this.binVue("weather.snowPostProcess");
       this.binVue("weather.fog");
+      this.binVue("weather.fogPostProcess");
       this.binVue("weather.skyBox");
 
       this.binVue("effect.shadow");
