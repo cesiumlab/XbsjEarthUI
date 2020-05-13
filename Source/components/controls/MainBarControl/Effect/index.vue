@@ -111,8 +111,8 @@
 
         <div class="xbsj-item-btnbox">
           <div
-            class="xbsj-item-btn fogbutton"
-            :class="{'fogbutton-on':weather.fogPostProcess}"
+            class="xbsj-item-btn fogpostprocessbutton"
+            :class="{'fogpostprocessbutton-on':weather.fogPostProcess}"
             @click="weather.fogPostProcess=!weather.fogPostProcess"
           ></div>
           <span class="xbsj-item-name">{{lang.fogpostprocess}}</span>
@@ -667,6 +667,16 @@ export default {
 .fogbutton:hover,
 .fogbutton-on {
   background: url(../../../../images/fog_on.png) no-repeat;
+  background-size: contain;
+}
+
+.fogpostprocessbutton {
+  background: url(../../../../images/fogpostprocess.png) no-repeat;
+  background-size: contain;
+}
+.fogpostprocessbutton:hover,
+.fogpostprocessbutton-on {
+  background: url(../../../../images/fogpostprocess_on.png) no-repeat;
   background-size: contain;
 }
 
