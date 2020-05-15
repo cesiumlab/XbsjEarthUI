@@ -64,7 +64,7 @@ vueApp.examples = [
                 "url": "./earth-basic-destroy2.html"
             },
             {
-                "title": "广告牌",
+                "title": "动态图标点",
                 "url": "./earth-billboard.html"
             },
             {
