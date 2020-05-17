@@ -151,6 +151,7 @@ export default {
     testNextTileset () {
       this.currentTilesetIndex++;
       this._tileset.destroy();
+      this._tileset = null;
       if (this.currentTilesetIndex === this.tiles.length) {
         this.stopTest();
         return;
@@ -168,7 +169,7 @@ export default {
       }, this.interval);
     },
     record () {
-      if (this._tileset._tileset) {
+      if (this._tileset && this._tileset._tileset) {
         var record = {};
         record.time = this.resultIndex * this.interval;
         record.fps = this.$root.$earth.status.fps;
@@ -287,6 +288,12 @@ export default {
     },
     endMove (envent) {
       this.moving = false;
+    },
+    destroy () {
+      if (this._tileset) {
+        this._tileset.destroy();
+        this._tileset = null;
+      }
     }
   }
 };

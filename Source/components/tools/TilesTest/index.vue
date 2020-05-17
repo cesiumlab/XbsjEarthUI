@@ -23,8 +23,8 @@
         </ul>
       </div>
       <div id="tab-content" class="xbsj-flatten">
-        <PathFlyTest v-show="tabShow == '1'" @testfinished="testFinished"></PathFlyTest>
-        <Viewpoint v-show="tabShow == '2'" @testfinished="testFinished"></Viewpoint>
+        <PathFlyTest ref="pathtest" v-show="tabShow == '1'" @testfinished="testFinished"></PathFlyTest>
+        <Viewpoint ref="viewpoint" v-show="tabShow == '2'" @testfinished="testFinished"></Viewpoint>
         <TestResult ref="testResult" v-show="tabShow == '3'"></TestResult>
       </div>
     </div>
@@ -65,6 +65,8 @@ export default {
       this.$parent.destroyTool(this);
     },
     cancel() {
+      this.$refs.pathtest.destroy();
+      this.$refs.viewpoint.destroy();
       this.show = false;
     }
   }
