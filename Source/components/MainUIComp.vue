@@ -710,12 +710,16 @@ export default {
         this._topWindow(index);
         return;
       }
-
+      
+      var guid = czmObject.guid;
+      if(typeof component == "string"){
+        guid += "_" + component;
+      }
       //新建窗口
       this.tools.push({
         component: component,
-        ref: czmObject.guid,
-        guid: czmObject.guid,
+        ref: guid,
+        guid: guid,
         item: () => {
           return czmObject;
         },
