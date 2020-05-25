@@ -3,7 +3,7 @@ function _loadJS(jsFilePath, loadCallback) {
     var script = document.createElement('script');
     script.setAttribute('type', 'text/javascript');
     script.setAttribute('src', jsFilePath);
-    script.onload = script.onreadystatechange = function() {
+    script.onload = script.onreadystatechange = function () {
         if (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete') {
             // console.log('loadJS done: ' + jsFilePath);
         }
@@ -150,6 +150,7 @@ function create(earthDom, options) {
             const xbsjEarthPlottingSymbolUri = getScriptBaseUrl('xbsj') + '../XbsjEarth-Plugins/plottingSymbol/plottingSymbol.js';
             const xbsjEarthCustomPrimitiveUri = getScriptBaseUrl('xbsj') + '../XbsjEarth-Plugins/customPrimitive/customPrimitive.js';
             const xbsjEarthCustomPrimitiveImageUri = getScriptBaseUrl('xbsj') + '../XbsjEarth-Plugins/customPrimitiveImage/customPrimitiveImage.js';
+            const xbsjEarthPlottingSymbol2Uri = getScriptBaseUrl('xbsj') + '../XbsjEarth-Plugins/plottingSymbol2/plottingSymbol2.js';
 
             Promise.all([loadJS(xbsjEarthUIUri), loadJS(xbsjEarthUri)]).then(() => {
                 XE.ready().then(() => {
@@ -158,6 +159,8 @@ function create(earthDom, options) {
                     return loadJS(xbsjEarthCustomPrimitiveUri);
                 }).then(() => {
                     return loadJS(xbsjEarthCustomPrimitiveImageUri);
+                }).then(() => {
+                    return loadJS(xbsjEarthPlottingSymbol2Uri);
                 }).then(() => {
                     //创建earthUI 
                     let earthUI = new XbsjEarthUI.MainUI(earthDom);

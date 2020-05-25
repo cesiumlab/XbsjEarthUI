@@ -104,6 +104,7 @@ import ForestTool from "./viztools/ForestTool";
 import ModelTool from "./viztools/ModelTool";
 import PolylineTool from "./viztools/PolylineTool";
 import GeoCurveArrow from "./viztools/GeoCurveArrow";
+import GeoFlatArrow from "./viztools/GeoFlatArrow";
 import GeoCurve from "./viztools/GeoCurve";
 import GeoDoubleArrow from "./viztools/GeoDoubleArrow";
 import GeoCircle from "./viztools/GeoCircle";
@@ -155,7 +156,6 @@ import TilesTest from "./tools/TilesTest";
 import GeoPolygonImage from "./viztools/GeoPolygonImage";
 import CesiumDataSource from "./viztools/CesiumDataSource";
 
-
 export default {
   components: {
     StatusBarControl,
@@ -198,6 +198,7 @@ export default {
     GeoParallelSearch,
     GeoTriFlag,
     GeoSector,
+    GeoFlatArrow,
     RoadTool,
     WallTool,
     SurfaceTool,
@@ -278,6 +279,7 @@ export default {
         GeoTriFlag: "GeoTriFlag",
         GeoDoubleArrow: "GeoDoubleArrow",
         GeoCircle: "GeoCircle",
+        GeoArrow: "GeoFlatArrow",
         GeoRectangle: "GeoRectangle",
         GeoCurveFlag: "GeoCurveFlag",
         GeoRightAngleFlag: "GeoRightAngleFlag",
@@ -289,9 +291,9 @@ export default {
         GeoPin: "PinDivTool",
         TilesTest: "TilesTest",
         CustomPrimitiveExt_Image: "GeoPolygonImage",
-        XbsjGeoJSON:"CesiumDataSource",
-        XbsjKML:"CesiumDataSource",
-        XbsjCzml:"CesiumDataSource"
+        XbsjGeoJSON: "CesiumDataSource",
+        XbsjKML: "CesiumDataSource",
+        XbsjCzml: "CesiumDataSource"
       },
       tools: [
         {
@@ -710,9 +712,9 @@ export default {
         this._topWindow(index);
         return;
       }
-      
+
       var guid = czmObject.guid;
-      if(typeof component == "string"){
+      if (typeof component == "string") {
         guid += "_" + component;
       }
       //新建窗口

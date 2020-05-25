@@ -115,6 +115,11 @@
           <div class="xbsj-item-btn facebutton"></div>
           <span class="xbsj-item-name">{{lang.polygonStretch}}</span>
         </div>
+        <!-- 平尾箭头 -->
+        <div class="xbsj-item-btnbox" @click="FlatArrow">
+          <div class="xbsj-item-btn flatArrowbutton"></div>
+          <span class="xbsj-item-name">{{lang.flatarrow}}</span>
+        </div>
         <!-- 单体化 -->
         <div class="xbsj-item-btnbox" @click="ClassificationPolygon">
           <div class="xbsj-item-btn classificationpolygonbutton"></div>
@@ -624,6 +629,15 @@ export default {
       // console.log(polygonStretch);
       this.$root.$earthUI.showPropertyWindow(polygonStretch);
     },
+    //平尾箭头
+    FlatArrow() {
+      var flatArrow = new XE.Obj.Plots.GeoArrow(this.$root.$earth);
+      flatArrow.name = "平尾箭头";
+      flatArrow.isCreating = true;
+      flatArrow.creating = true;
+      console.log(flatArrow);
+      this.$root.$earthUI.showPropertyWindow(flatArrow);
+    },
     //单体化
     ClassificationPolygon() {
       var classificationPolygon = new XE.Obj.ClassificationPolygon(
@@ -1047,6 +1061,16 @@ export default {
 }
 .facebutton:hover {
   background: url(../../../../images/face_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.flatArrowbutton {
+  background: url(../../../../images/flatarrow.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.flatArrowbutton:hover {
+  background: url(../../../../images/flatarrow_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
