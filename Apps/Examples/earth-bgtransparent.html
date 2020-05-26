@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="xbsj-labels" content="Earth起步"></meta>
+    <meta name="xbsj-labels" content="Earth起步">
+    </meta>
     <title>创建地球-背景透明</title>
 
     <!-- 强制提前加载Cesium.js，其中Cesium相关路径可以换成自定义的 -->
@@ -13,7 +14,7 @@
     <!-- <link rel="stylesheet" href="../../XbsjCesium/Widgets/Widgets.css"> -->
 
     <!-- 0 引入js文件 -->
-    <!-- <script src="../../XbsjEarth/XbsjEarth.js"></script> -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <!-- <script src="http://earthsdk.com/v/last/XbsjEarth/XbsjEarth.js"></script> -->
     <style>
         html,
@@ -27,7 +28,8 @@
 </head>
 
 <body>
-    <div id="earthContainer" style="width: 100%; height: 100%; background-image: url(http://cesiumlab.com/static/img/bg.1b3c462.png);">
+    <div id="earthContainer"
+        style="width: 100%; height: 100%; background-image: url(http://cesiumlab.com/static/img/bg.1b3c462.png);">
     </div>
     <script>
         var earth;
@@ -39,18 +41,18 @@
                 // 这里设置Viewer的配置，和new Viewer(container, options)中的options一致
                 //homeButton: true,
                 //timeline: true,
-				orderIndependentTranslucency: false,
-				contextOptions: {
-					webgl: {
-						alpha: true,
-					}
-				},
+                orderIndependentTranslucency: false,
+                contextOptions: {
+                    webgl: {
+                        alpha: true,
+                    }
+                },
             });
 
-			const viewer = earth.czm.viewer;
+            const viewer = earth.czm.viewer;
 
-		    viewer.scene.skyBox.show = false;
-		    viewer.scene.backgroundColor = new Cesium.Color(0.0, 0.0, 0.0, 0.0);
+            viewer.scene.skyBox.show = false;
+            viewer.scene.backgroundColor = new Cesium.Color(0.0, 0.0, 0.0, 0.0);
 
             earth.sceneTree.root = {
                 "children": [
