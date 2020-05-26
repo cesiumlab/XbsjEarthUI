@@ -69,6 +69,11 @@
           </div>
           <span class="xbsj-item-name">{{lang.expansion}}</span>
         </div>
+        <!-- 挖坑 -->
+        <div class="xbsj-item-btnbox ml20" @click="cutSurfaceBtn">
+          <div class="xbsj-item-btn cutsurfacebutton"></div>
+          <span class="xbsj-item-name">{{lang.cutsurface}}</span>
+        </div>
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{lang.measure}}</span>
@@ -87,6 +92,21 @@
           ></div>
           <span class="xbsj-item-name">{{lang.distance}}</span>
         </div>
+
+        <!-- 贴地距离 -->
+        <div class="xbsj-item-btnbox" @click="disGroudMeasure()">
+          <div
+            class="xbsj-item-btn disGroudbutton"
+            :class="measurementType === 'SPACE_DIS_GROUD' ? 'disGroudbuttonActive' : ''"
+          ></div>
+          <span class="xbsj-item-name">{{lang.disGroud}}</span>
+        </div>
+        <span
+          class="xbsj-select"
+          :class="{highlight:popup == 'dis_interpolation'}"
+          @click.stop="togglePopup('dis_interpolation',$event)"
+        ></span>
+
         <div class="xbsj-item-btnbox" @click="measurementType='TRIANGLE_DISTANCE'">
           <div
             class="xbsj-item-btn heightbutton"
@@ -103,9 +123,9 @@
         </div>
 
         <!-- 剖面 -->
-        <div class="xbsj-item-btnbox" @click="disGroudMeasure()">
-          <div class="xbsj-item-btn disGroudbutton"></div>
-          <span class="xbsj-item-name">{{lang.disGroud}}</span>
+        <div class="xbsj-item-btnbox" @click="sectionPlane()">
+          <div class="xbsj-item-btn sectionGroudbutton"></div>
+          <span class="xbsj-item-name">{{lang.sectionPlane}}</span>
         </div>
 
         <!-- 贴地面积 -->
@@ -170,6 +190,13 @@
       @changeInterval="changeInterval"
       :interval="areaGroudinterval"
     ></Interpolation>
+
+    <Interpolation
+      ref="dis_interpolation"
+      v-show="popup =='dis_interpolation'"
+      @changeInterval="changeDisInterval"
+      :interval="disGroudinterval"
+    ></Interpolation>
   </div>
 </template>
 
@@ -178,12 +205,13 @@ import languagejs from "./index_locale";
 import Interpolation from "./Interpolation";
 import { getPickRay } from "../../../utils/measure";
 import { createPolylinePrimitive } from "../../../utils/DepthPolyline";
+import { getDisAndLabelPos } from "../../../utils/measure";
 
 export default {
   components: {
     Interpolation
   },
-  data () {
+  data() {
     return {
       lang: {},
       measurementType: "NONE",
@@ -195,11 +223,13 @@ export default {
       measuring: false,
       areaGroud: 0,
       areaGroudinterval: 0,
-      popup: ""
+      disGroudinterval: 0,
+      popup: "",
+      disGroudMeasureing: false
     };
   },
-  created () { },
-  mounted () {
+  created() {},
+  mounted() {
     this.$nextTick(() => {
       this._disposers = this._disposers || [];
       this._disposers.push(
@@ -222,16 +252,17 @@ export default {
         })
       );
       this._labels = [];
+      this._disGroudLabels = [];
       this._temGeometry = [];
       this._temPrimitive = [];
       this._creating = [];
     });
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this._disposers.forEach(d => d());
   },
   watch: {
-    measuring (v) {
+    measuring(v) {
       if (v == false) {
         if (this.measurementType === "SPACE_Circle_Intervisible") {
           this._circle.positions[0][2] += 0.5;
@@ -253,9 +284,10 @@ export default {
               this.areaGroud = 0;
             }
             if (this.areaGroudinterval === 0 && this.areaGroud > 1) {
-              this._areaGroud.interpolation = true;
-              this._areaGroud.interpolationDistance = Math.sqrt(this.areaGroud) / 10;
+              this._areaGroud.interpolationDistance =
+                Math.sqrt(this.areaGroud) / 10;
               this._areaGroud.offsetHeight = 0.5;
+              this._areaGroud.interpolation = true;
             }
 
             var temPrimitve = new XE.Obj.CustomPrimitive(this.$root.$earth);
@@ -263,7 +295,11 @@ export default {
             temPrimitve.positions = this._areaGroud._customPrimitive.positions;
             temPrimitve.primitiveType = 1;
             var indices = [];
-            for (var i = 0; i < this._areaGroud._customPrimitive.indices.length - 2; i += 3) {
+            for (
+              var i = 0;
+              i < this._areaGroud._customPrimitive.indices.length - 2;
+              i += 3
+            ) {
               var i1 = this._areaGroud._customPrimitive.indices[i];
               var i2 = this._areaGroud._customPrimitive.indices[i + 1];
               var i3 = this._areaGroud._customPrimitive.indices[i + 2];
@@ -276,11 +312,11 @@ export default {
             }
             temPrimitve.indices = indices;
             this._temGeometry.push(temPrimitve);
-            window.t = temPrimitve;
+
             this._labels.forEach(l => l.destroy());
             this._labels = [];
             var lb = this.createLabel({
-              pos: this._areaGroud.positions[0],
+              pos: this._areaGroud._customPrimitive.position,
               dis: Math.round(this._areaGroud.totalArea * 100) / 100 + "平方米"
             });
             this._labels.push(lb);
@@ -289,31 +325,48 @@ export default {
         this.updateCreatingBind();
       }
     },
-    measurementType (v) {
+    measurementType(v) {
       if (this._areaGroud && this.measurementType !== "SPACE_AREA_GROUD") {
         this._areaGroud.creating = false;
+      }
+    },
+    disGroudMeasureing(v) {
+      if (v === false) {
+        this._creating.forEach(d => d());
+        this._creating = [];
+        let self = this;
+        if (this._disGroudLabels.length > 0) {
+          this._disGroudLabels.forEach(l => {
+            self._temGeometry.push(l);
+          });
+          this._disGroudLabels = [];
+          this.measurementType = "NONE";
+        }
       }
     }
   },
   methods: {
-    changeInterval (v) {
+    changeInterval(v) {
       this.areaGroudinterval = v;
     },
-    getPopupComp () {
+    changeDisInterval(v) {
+      this.disGroudinterval = v;
+    },
+    getPopupComp() {
       if (this.$refs.hasOwnProperty(this.popup)) {
         return this.$refs[this.popup];
       } else {
         return undefined;
       }
     },
-    showPopup (v) {
+    showPopup(v) {
       let comp = this.getPopupComp();
       if (comp && typeof comp.show == "function") {
         comp.show(v);
       }
       return comp;
     },
-    togglePopup (p, event) {
+    togglePopup(p, event) {
       //调用上一个组件的隐藏
       this.showPopup(false);
 
@@ -340,7 +393,7 @@ export default {
         console.log(ex);
       }
     },
-    drawIntervisibleLine (p1, p2, obj) {
+    drawIntervisibleLine(p1, p2, obj) {
       var p = getPickRay(p1, p2, this.$root.$earth);
       if (p) {
         var mid = [p.longitude, p.latitude, p.height];
@@ -358,9 +411,10 @@ export default {
       }
       obj.creating = false;
       obj.destroy();
+      obj = null;
       this.measurementType = "NONE";
     },
-    circleIntervisible () {
+    circleIntervisible() {
       if (this.measurementType !== "SPACE_Circle_Intervisible") {
         this._circle = new XE.Obj.Plots.GeoCircle(this.$root.$earth);
         this._circle.isCreating = true;
@@ -375,7 +429,7 @@ export default {
         this.measurementType = "SPACE_Circle_Intervisible";
       }
     },
-    startIntervisible () {
+    startIntervisible() {
       if (this.measurementType !== "SPACE_Intervisible") {
         this.updateCreatingBind();
         this._intervisible = new XE.Obj.Polyline(this.$root.$earth);
@@ -406,7 +460,7 @@ export default {
         this.measurementType = "SPACE_Intervisible";
       }
     },
-    angleMeasure () {
+    angleMeasure() {
       if (this.measurementType !== "SPACE_ANGLE") {
         this.updateCreatingBind();
         this._angle = new XE.Obj.Plots.GeoPolylineArrow(this.$root.$earth);
@@ -425,21 +479,21 @@ export default {
               positions: [...this._angle.positions]
             }),
             () => {
+              self._labels.forEach(l => l.destroy());
+              self._labels = [];
               if (self._angle.positions.length == 2) {
                 var result = XE.Tool.Math.hpr(
                   self._angle.positions[0],
                   self._angle.positions[1]
                 );
                 if (result) {
-                  self._labels.forEach(l => l.destroy());
-                  self._labels = [];
                   var lb = self.createLabel({
                     pos: self._angle.positions[1],
                     dis:
                       Math.round(
                         (((result[0] * 180) / Math.PI + 90) % 360) * 100
                       ) /
-                      100 +
+                        100 +
                       "度"
                   });
                   self._labels.push(lb);
@@ -455,10 +509,13 @@ export default {
         this.measurementType = "SPACE_ANGLE";
       }
     },
-    areaGroudMeasure () {
-      this.areaGroudinterval = 0;
+    areaGroudMeasure() {
+      // this.areaGroudinterval = 0;
       if (!this.$root.$earth.terrainEffect.depthTest) {
-        this.$root.$earthUI.promptInfo("使用此功能前请先打开深度检测！", "warning");
+        this.$root.$earthUI.promptInfo(
+          "使用此功能前请先打开深度检测！",
+          "warning"
+        );
         return;
       }
       if (this.measurementType !== "SPACE_AREA_GROUD") {
@@ -474,18 +531,59 @@ export default {
         this._creating.push(
           XE.MVVM.bind(this, "measuring", this._areaGroud, "creating")
         );
-        window.p = this._areaGroud;
         this._temGeometry.push(this._areaGroud);
         this.measurementType = "SPACE_AREA_GROUD";
       } else {
         this.measurementType = "NONE";
         if (this._areaGroud) {
           this._areaGroud.destroy();
+          this._areaGroud = null;
         }
       }
     },
-    disGroudMeasure () {
-      this.measurementType = "SPACE_DIS_GROUD";
+    updateMeasure(p) {
+      this._disGroudLabels.forEach(l => l.destroy());
+      this._disGroudLabels = [];
+      if (p.length > 1) {
+        var it = this.disGroudinterval;
+        var result = getDisAndLabelPos(p, it, this.$root.$earth);
+        if (!result) {
+          return;
+        }
+        this._result = result;
+        var labels = result.label;
+
+        labels.forEach(l => {
+          var lb = this.createLabel(l);
+          this._disGroudLabels.push(lb);
+        });
+      }
+    },
+    disGroudMeasure() {
+      // this.disGroudinterval = 0;
+      if (this.measurementType !== "SPACE_DIS_GROUD") {
+        this._disGroud = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
+        this._disGroud.creating = true;
+        this.updateCreatingBind();
+        this._creating.push(
+          XE.MVVM.bind(this, "disGroudMeasureing", this._disGroud, "creating")
+        );
+        this._creating.push(
+          XE.MVVM.watch(
+            () => ({
+              positions: [...this._disGroud.positions]
+            }),
+            () => {
+              this.updateMeasure(this._disGroud.positions);
+            }
+          )
+        );
+        this._temGeometry.push(this._disGroud);
+        this.measurementType = "SPACE_DIS_GROUD";
+      }
+    },
+    sectionPlane() {
+      this.measurementType = "SPACE_SECTION_GROUD";
       this.$root.$earthUI.showPropertyWindow(
         {},
         {
@@ -493,7 +591,7 @@ export default {
         }
       );
     },
-    updateCreatingBind () {
+    updateCreatingBind() {
       this._creating.forEach(d => d());
       this._creating = [];
       let self = this;
@@ -505,21 +603,25 @@ export default {
         this.measurementType = "NONE";
       }
     },
-    createLabel (option) {
+    createLabel(option) {
       let p = new XE.Obj.Plots.GeoPin(this.$root.$earth);
-      p.innerHTML = "<div style=\"cursor:pointer;position: absolute;width:300px;left:6px; line-height:15px;color: white;\"><span style=\"text-stroke:2px #000;font-size: 14px;color:#ffffff\">" + option.dis + "</span></div>";
+      p.innerHTML =
+        '<div style="cursor:pointer;position: absolute;width:300px;left:6px; line-height:15px;color: white;">' +
+        '<span style="padding:2px;border-radius: 2px;text-stroke:2px #000;font-size: 14px;color:#ffffff;background-color: rgba(50,50,50,0.5)">' +
+        option.dis +
+        "</span></div>";
       p.position = option.pos;
       p._pin.show = false;
       return p;
     },
-    setTileset (tileset) {
+    setTileset(tileset) {
       if (this._tileset !== tileset) {
         this._tileset = tileset;
       }
 
       this.enabled = !!this._tileset;
     },
-    startCameraVideo () {
+    startCameraVideo() {
       var demoVideo =
         XE.HTML.getScriptBaseUrl("XbsjEarthUI") + "/assets/demo.mp4";
       // 视频融合
@@ -532,7 +634,7 @@ export default {
 
       this.$root.$earthUI.showPropertyWindow(cameraVideo);
     },
-    startViewshed () {
+    startViewshed() {
       var viewshed = new XE.Obj.Viewshed(this.$root.$earth);
       viewshed.setPositionWithCurrentCamera();
       viewshed.far = 50;
@@ -541,7 +643,7 @@ export default {
 
       this.$root.$earthUI.showPropertyWindow(viewshed);
     },
-    startFlattenning () {
+    startFlattenning() {
       var flattenedPolygons = new XE.Obj.FlattenedPolygonCollection(
         this.$root.$earth
       );
@@ -549,14 +651,14 @@ export default {
       flattenedPolygons.isCreating = true;
       this.$root.$earthUI.showPropertyWindow(flattenedPolygons);
     },
-    startClipping () {
+    startClipping() {
       var clippingPlane = new XE.Obj.ClippingPlane(this.$root.$earth);
       clippingPlane.name = "未命名剖切面";
       clippingPlane.positionPicking = true;
       clippingPlane.isCreating = true;
       this.$root.$earthUI.showPropertyWindow(clippingPlane);
     },
-    startWater () {
+    startWater() {
       var water = new XE.Obj.Water(this.$root.$earth);
       water.name = "未命名水面";
       water.isCreating = true;
@@ -564,13 +666,13 @@ export default {
       water.creating = true;
       this.$root.$earthUI.showPropertyWindow(water);
     },
-    expansionEditor () {
+    expansionEditor() {
       //显示模型编辑器
       this.$root.$earthUI.showPropertyWindow(this._tileset, {
         component: "TilesetExpansionEditor"
       });
     },
-    modelexpansion_dragover (e) {
+    modelexpansion_dragover(e) {
       e.preventDefault();
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj instanceof XE.Obj.Tileset) {
@@ -581,7 +683,7 @@ export default {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    modelexpansion_dragleave () {
+    modelexpansion_dragleave() {
       this.modelexpansion_over = false;
       const csn3 = this.$root.$earth.sceneTree.currentSelectedNode;
       if (csn3 && csn3.czmObject && csn3.czmObject instanceof XE.Obj.Tileset) {
@@ -590,7 +692,7 @@ export default {
         this.enabled = false;
       }
     },
-    modelexpansion_drop (e) {
+    modelexpansion_drop(e) {
       this.modelexpansion_over = false;
       e.preventDefault();
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
@@ -612,7 +714,7 @@ export default {
         }
       }
     },
-    clearResults () {
+    clearResults() {
       this.$root.$earth.analyzation.measurement.clearResults();
       this.$root.$earth.analyzation.cutFillComputing.clearResults();
       this.$root.$earth.analyzation.cutFillComputing.positions = [];
@@ -621,6 +723,7 @@ export default {
         this._temGeometry.forEach(e => {
           e.destroy();
         });
+        this._temGeometry = [];
       }
       if (this._temPrimitive) {
         this._temPrimitive.forEach(e => {
@@ -630,7 +733,7 @@ export default {
       this.measurementType = "NONE";
       this.$root.$earth.analyzation.cutFillComputingOld.clearResults();
     },
-    startMove (event) {
+    startMove(event) {
       //如果事件的目标不是本el 返回
       if (
         event.target.parentElement !== this.$refs.container &&
@@ -641,7 +744,7 @@ export default {
       }
       this.moving = true;
     },
-    onMoving (event) {
+    onMoving(event) {
       //获取鼠标和为开始位置的插值，滚动滚动条
       if (!this.moving) return;
 
@@ -651,8 +754,19 @@ export default {
         dom.scrollLeft = wleft;
       }
     },
-    endMove (envent) {
+    endMove(envent) {
       this.moving = false;
+    },
+    // 挖坑
+    cutSurfaceBtn() {
+      var cutsurface = new XE.Obj.CutSurface(this.$root.$earth);
+      cutsurface.name = "挖坑";
+      cutsurface.autoRegisterEditing = true;
+
+      cutsurface.isCreating = true;
+      cutsurface.creating = true;
+      console.log(cutsurface);
+      this.$root.$earthUI.showPropertyWindow(cutsurface);
     }
   }
 };
@@ -804,17 +918,17 @@ export default {
   background-size: contain;
   cursor: pointer;
 }
-.disGroudbutton {
+.sectionGroudbutton {
   background: url(../../../../images/profileanalysis.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
-.disGroudbutton:hover {
+.sectionGroudbutton:hover {
   background: url(../../../../images/profileanalysis_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
-.disGroudbuttonActive {
+.sectionGroudbuttonActive {
   background: url(../../../../images/profileanalysis_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
@@ -831,6 +945,21 @@ export default {
 }
 .areaGroudbuttonActive {
   background: url(../../../../images/landarea_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.disGroudbutton {
+  background: url(../../../../images/disgroud.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.disGroudbutton:hover {
+  background: url(../../../../images/disgroud_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.disGroudbuttonActive {
+  background: url(../../../../images/disgroud_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
@@ -948,6 +1077,17 @@ export default {
   height: 100%;
   border: none;
   outline: none;
+}
+.cutsurfacebutton {
+  background: url(../../../../images/cutsurface.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.cutsurfacebutton.highlight,
+.cutsurfacebutton:hover {
+  background: url(../../../../images/cutsurface_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
 }
 </style>
 

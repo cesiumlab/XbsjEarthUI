@@ -1,8 +1,8 @@
 <template>
   <Window
-    :width="480"
+    :width="550"
     :minWidth="480"
-    :height="420"
+    :height="574"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -46,10 +46,45 @@
         </div>
       </div>
 
-      <!-- ground自定义外部图标 -->
       <div class="flatten">
-        <label>{{lang.imageUrls}}</label>
-        <input style="float:left;" type="text" v-model="ground.imageUrls" />
+        <!-- 图像播放 -->
+        <div class="flatten" style="display: inline-block;">
+          <label>{{lang.playing}}</label>
+          <XbsjSwitch v-model="ground.playing"></XbsjSwitch>
+        </div>
+        <!-- 循环播放 -->
+        <div class="flatten" style="display: inline-block;">
+          <label>{{lang.loopplay}}</label>
+          <XbsjSwitch v-model="ground.loopPlay"></XbsjSwitch>
+        </div>
+      </div>
+
+      <!-- 持续时间 -->
+      <div class="flatten">
+        <label style="margin-top:8px;">{{lang.timeduration}}</label>
+        <div class="field">
+          <XbsjSlider
+            :min="0"
+            :max="5"
+            :step="0.1"
+            v-model.number="ground.timeDuration"
+            ref="glowFactor"
+          ></XbsjSlider>
+        </div>
+      </div>
+
+      <!-- 当前时刻 -->
+      <div class="flatten">
+        <label style="margin-top:8px;">{{lang.nowtime}}</label>
+        <div class="field">
+          <XbsjSlider
+            :min="0"
+            :max="ground.timeDuration"
+            :step="0.01"
+            v-model.number="ground.currentTime"
+            ref="glowFactor"
+          ></XbsjSlider>
+        </div>
       </div>
 
       <!-- 原点 -->
@@ -77,7 +112,7 @@
       </div>
 
       <!-- 宽高 -->
-      <div class="flatten" style="display:flex;">
+      <!-- <div class="flatten" style="display:flex;">
         <div>
           <label></label>
           <XbsjCheckBox v-model="ground.autoWidth">{{lang.autoWidth}}</XbsjCheckBox>
@@ -86,22 +121,48 @@
           <label></label>
           <XbsjCheckBox v-model="ground.autoHeight">{{lang.autoHeight}}</XbsjCheckBox>
         </div>
-      </div>
+      </div>-->
       <div class="flatten" style="display:flex;">
         <div>
           <label>{{lang.width}}</label>
-          <input style="float:left;" type="text" v-model.number="ground.width" />
+          <XbsjInputNumber v-model="ground.width" :step="1"></XbsjInputNumber>
         </div>
         <div>
           <label>{{lang.height}}</label>
-          <input style="float:left;" type="text" v-model.number="ground.height" />
+          <XbsjInputNumber v-model="ground.height" :precision="0.1" :step="1"></XbsjInputNumber>
         </div>
       </div>
 
       <div class="flatten">
         <div>
           <label>{{lang.rotation}}</label>
-          <XbsjInputNumber v-model.number="rotation" :step="1"></XbsjInputNumber>
+          <XbsjInputNumber v-model="rotation" :step="1"></XbsjInputNumber>
+        </div>
+      </div>
+
+      <!-- ground自定义外部图标 -->
+      <div class="flatten" style="height:90px;">
+        <label>{{lang.imageUrls}}</label>
+        <div class="inputbox" style="margin-left:72px;">
+          <div class="arrbox">
+            <div
+              style="width: 300px;"
+              v-for="(item,index) in labelarr"
+              :key="index"
+              class="spanbox"
+            >
+              <span>{{item}}</span>
+              <i class="spanclose" @click="removeitem(index,item)"></i>
+            </div>
+            <input
+              style="background:transparent;outline:none;color:white;width:320px !important;padding:0;"
+              placeholder="输入后回车"
+              v-model="currentval"
+              @keyup.enter="addlabel"
+              class="input"
+              type="text"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -111,16 +172,12 @@
 <script>
 import { copyobj } from "../../utils/tools";
 import languagejs from "./index_locale";
-import XbsjInputNumber from "../../common/Slider/input-number";
 
 export default {
   props: {
     getBind: Function
   },
-  components: {
-    XbsjInputNumber
-  },
-  data () {
+  data() {
     return {
       showGroundSelect: false,
       groundshowGroundSelect: false,
@@ -129,7 +186,10 @@ export default {
         name: "",
         creating: true,
         editing: false,
-        imageUrl: "",
+        playing: false,
+        loopPlay: true,
+        timeDuration: 1,
+        currentTime: 0,
         width: 100,
         height: 100,
         autoWidth: false,
@@ -139,34 +199,20 @@ export default {
         show: true,
         position: [0, 0, 0]
       },
-      bgbaseColorUI: {
-        rgba: {
-          r: 0,
-          g: 0,
-          b: 255,
-          a: 1
-        }
-      },
-      bgbaseColor: [0, 0, 0.5, 1],
-      borderbaseColorUI: {
-        rgba: {
-          r: 0,
-          g: 0,
-          b: 255,
-          a: 1
-        }
-      },
-      borderbaseColor: [0, 0, 0.5, 1],
       langs: languagejs,
       dighole: false,
       connections: [],
       connectedTileset: "",
       pathGuidarr: [],
-      lang: {}
+      lang: {},
+      imageUrls: [],
+      labelarr: [],
+      currentval: "",
+      _uw: undefined
     };
   },
-  created () { },
-  mounted () {
+  created() {},
+  mounted() {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
@@ -177,125 +223,142 @@ export default {
         name: "ground.name",
         creating: "ground.creating",
         editing: "ground.editing",
-        imageUrls: "ground.imageUrls",
+        playing: "ground.playing",
+        loopPlay: "ground.loopPlay",
+        currentTime: "ground.currentTime",
         show: "ground.show",
         origin: "ground.origin",
         position: "ground.position",
         width: "ground.width",
         height: "ground.height",
-        rotation: "ground.rotation",
-        autoWidth: "ground.autoWidth",
-        autoHeight: "ground.autoHeight"
+        rotation: "ground.rotation"
+        // autoWidth: "ground.autoWidth",
+        // autoHeight: "ground.autoHeight"
       };
 
       for (var prop in bindData) {
         if (typeof bindData[prop] === "string") {
-          this._disposers.push(XE.MVVM.bind(this, bindData[prop], this._czmObj, prop));
+          this._disposers.push(
+            XE.MVVM.bind(this, bindData[prop], this._czmObj, prop)
+          );
         } else {
-          this._disposers.push(vm.handler(this, bindData[prop], this._czmObj, prop));
+          this._disposers.push(
+            vm.handler(this, bindData[prop], this._czmObj, prop)
+          );
         }
       }
 
       for (var prop in this.ground) {
-        this.groundClone[prop] = this.ground[prop]
+        this.groundClone[prop] = this.ground[prop];
       }
+
+      this.labelarr = [...czmObj.imageUrls];
+
+      if (this._uw) {
+        this._uw = this._uw();
+      } else {
+        this._uw = XE.MVVM.watch(
+          () => czmObj.timeDuration,
+          () => {
+            this.ground.timeDuration = czmObj.timeDuration;
+          }
+        );
+      }
+
+      this.$watch("ground.timeDuration", function(newVal, oldVal) {
+        if (newVal > 0.2) {
+          czmObj.timeDuration = newVal;
+        }
+      });
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
     // this._disposers = this._disposers && this._disposers();
+    this._uw = this._uw && this._uw();
   },
   computed: {
-    name () {
+    name() {
       return this.ground.name;
     },
-    guid () {
+    guid() {
       return this.getBind().guid;
     },
-    "ground.width": {
-      get () {
-        return this.getBind().width;
-      },
-      set (newValue) {
-        this.ground.height = this.getBind().height;
-      }
-    },
-    "ground.height": {
-      get () {
-        return this.getBind().height;
-      },
-      set (newValue) {
-        this.ground.width = this.getBind().width;
-      }
-    },
+    // "ground.width": {
+    //   get() {
+    //     return this.getBind().width;
+    //   },
+    //   set(newValue) {
+    //     this.ground.height = this.getBind().height;
+    //   }
+    // },
+    // "ground.height": {
+    //   get() {
+    //     return this.getBind().height;
+    //   },
+    //   set(newValue) {
+    //     this.ground.width = this.getBind().width;
+    //   }
+    // },
     rotation: {
-      get () {
-        return Math.round(this.ground.rotation * 180 / Math.PI, 0)
+      get() {
+        return Math.round((this.ground.rotation * 180) / Math.PI, 0);
       },
-      set (v) {
-        this.ground.rotation = v * Math.PI / 180
+      set(v) {
+        this.ground.rotation = (v * Math.PI) / 180;
       }
     }
   },
   watch: {
-    "ground.width" (e) {
-      if (e !== "" && this.ground.autoHeight) {
-        this.ground.height = this.getBind().height;
-      }
-    },
-    "ground.height" (e) {
-      if (e !== "" && this.ground.autoWidth) {
-        this.ground.width = this.getBind().width;
-      }
-    },
-    "ground.autoWidth" (e) {
-      if (e === true) {
-        this.ground.autoHeight = false
-      }
-    },
-    "ground.autoHeight" (e) {
-      if (e === true) {
-        this.ground.autoWidth = false
-      }
-    }
+    // "ground.width"(e) {
+    //   if (e !== "" && this.ground.autoHeight) {
+    //     this.ground.height = this.getBind().height;
+    //   }
+    // },
+    // "ground.height"(e) {
+    //   if (e !== "" && this.ground.autoWidth) {
+    //     this.ground.width = this.getBind().width;
+    //   }
+    // },
+    // "ground.autoWidth"(e) {
+    //   if (e === true) {
+    //     this.ground.autoHeight = false;
+    //   }
+    // },
+    // "ground.autoHeight"(e) {
+    //   if (e === true) {
+    //     this.ground.autoWidth = false;
+    //   }
+    // }
   },
   methods: {
-    groundoptionssure (c) {
-      this.ground.attachedPathGuid = c.guid;
-      this.groundshowGroundSelect = !this.groundshowGroundSelect;
+    // 移除标签
+    removeitem(index, item) {
+      this.labelarr.splice(index, 1);
+      this._czmObj.imageUrls.splice(index, 1);
     },
-    groundselectinput () {
-      this.pathGuidarr = [];
-      let guidobj = {};
-      this.pathGuidarr.push({ name: "空", guid: "" });
-      this.$root.$earth.pathCollection.forEach(e => {
-        guidobj.name = e.name;
-        guidobj.guid = e.guid;
-        this.pathGuidarr.push(guidobj);
-      });
-      if (this.pathGuidarr.length < 2) {
-        this.$root.$earthUI.promptInfo(
-          "There is no path in the current scenario",
-          "warning"
-        );
-        return;
+    // input回车加入labelarr中
+    addlabel() {
+      this.labelarr.push(this.currentval);
+      this.currentval = "";
+      if (this.labelarr.length > 0) {
+        this.imageUrls = [];
+        for (let i = 0; i < this.labelarr.length; i++) {
+          if (this.labelarr[i] !== "") {
+            this.imageUrls.push(this.labelarr[i]);
+          } else {
+            return;
+          }
+        }
       }
-      this.groundshowGroundSelect = !this.groundshowGroundSelect;
+      this._czmObj.imageUrls = this.imageUrls;
     },
-    optionssure (c) {
-      this.ground.groundBuilder.makiIcon = c;
-      this.showGroundSelect = !this.showGroundSelect;
-    },
-    selectinput () {
-      this.showGroundSelect = !this.showGroundSelect;
-      // console.log(this.showSelect);
-    },
-    close () {
+    close() {
       this.$parent.destroyTool(this);
     },
-    cancel () {
+    cancel() {
       for (var prop in this.groundClone) {
-        this._czmObj[prop] = this.groundClone[prop]
+        this._czmObj[prop] = this.groundClone[prop];
       }
       this.close();
       const groundToolObj = this._czmObj;
@@ -303,6 +366,7 @@ export default {
         return;
       }
 
+      groundToolObj.positionEditing = false;
       groundToolObj.editing = false;
       groundToolObj.creating = false;
       if (groundToolObj.isCreating) {
@@ -310,21 +374,21 @@ export default {
       }
 
       if (groundToolObj.modifyEnd) {
-        groundToolObj.modifyEnd(false, groundToolObj)
+        groundToolObj.modifyEnd(false, groundToolObj);
       }
     },
-    ok () {
-      if (this.ground.imageUrls === "") {
+    ok() {
+      const groundToolObj = this._czmObj;
+      if (groundToolObj.imageUrls.length === 0) {
         this.$root.$earthUI.promptInfo("请输入图片地址！", "error");
         return;
       }
       this.close();
-      const groundToolObj = this._czmObj;
       if (!groundToolObj) {
         return;
       }
+      groundToolObj.positionEditing = false;
       groundToolObj.editing = false;
-      // groundToolObj.imageUrls = this.ground.imageUrls;
       if (groundToolObj.isCreating) {
         groundToolObj.isCreating = false;
         const sceneObject = new XE.SceneTree.Leaf(groundToolObj);
@@ -334,11 +398,11 @@ export default {
       groundToolObj.creating = false;
 
       if (groundToolObj.modifyEnd) {
-        groundToolObj.modifyEnd(true, groundToolObj)
+        groundToolObj.modifyEnd(true, groundToolObj);
       }
     },
 
-    flyto (index) {
+    flyto(index) {
       this._czmObj.polygons[index].flyTo();
     }
   }
@@ -646,5 +710,97 @@ button:focus {
 }
 .btncoloron {
   color: #1fffff !important;
+}
+
+.inputbox {
+  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 12px;
+  /* border: 1px solid #dcdee2; */
+  border-radius: 6px;
+  margin-bottom: 18px;
+  padding: 6px 1px 1px 6px;
+  text-align: left;
+  font-size: 0;
+  margin-bottom: 0;
+  width: 346px;
+}
+
+.input {
+  font-size: 14px;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  width: auto !important;
+  max-width: inherit;
+  min-width: 80px;
+  vertical-align: top;
+  height: 30px;
+  color: #34495e;
+  margin: 2px;
+  line-height: 30px;
+}
+
+.arrbox {
+  border-radius: 6px;
+  margin-bottom: 10px;
+  padding: 6px 1px 1px 6px;
+  text-align: left;
+  font-size: 0;
+}
+
+.spanbox {
+  line-height: 30px;
+  margin: 2px;
+  padding: 0 10px;
+  background-color: #1abc9c;
+  color: white;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  overflow: hidden;
+  transition: 0.25s linear;
+}
+
+.spanbox:hover {
+  padding: 0px 17px 0 3px;
+}
+
+.spanclose {
+  color: white;
+  padding: 0 10px 0 0;
+  cursor: pointer;
+  font-size: 12px;
+  position: absolute;
+  right: -3px;
+  text-align: right;
+  text-decoration: none;
+  top: 0;
+  width: 100%;
+  bottom: 0;
+  z-index: 2;
+  opacity: 0;
+  filter: "alpha(opacity=0)";
+  transition: opacity 0.25s linear;
+  font-style: normal;
+}
+
+.spanbox:hover .spanclose {
+  padding: 0 10px 5px 0;
+  opacity: 1;
+  -webkit-filter: none;
+  filter: none;
+}
+
+.spanclose:after {
+  content: "x";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 27px;
 }
 </style>

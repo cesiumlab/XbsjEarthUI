@@ -1,6 +1,6 @@
 var lastForceCodeTimeStamp = 0;
 
-var delayApply = (function() {
+var delayApply = (function () {
   var _settingCodeDelay = new rxjs.Subject();
   var _settingCodeDelaySubscription;
 
@@ -21,7 +21,7 @@ var delayApply = (function() {
   return delayApply_;
 })();
 
-var setCodeFromUrl = (function() {
+var setCodeFromUrl = (function () {
   var _setCodeFromUrlSubscription;
 
   function setCodeFromUrl_(url, vueApp) {
@@ -71,75 +71,52 @@ var CodeEditor = {
     value: String
   },
   template: `
-        <codemirror ref="myCm"
-            :value="value" 
-            :options="cmOptions"
-            @ready="onCmReady"
-            @focus="onCmFocus"
-            @input="onCmCodeChange">
-        </codemirror>
+      <div ref="monaco"></div>
     `,
   data() {
     return {
-      // code: '',
-      cmOptions: {
-        // codemirror options
-        tabSize: 4,
-        // mode: 'text/javascript',
-        mode: "htmlmixed",
-        // theme: 'base16-dark',
-        // theme: 'base16-light',
-        lineNumbers: true,
-        line: true,
-        // more codemirror options, 更多 codemirror 的高级配置...
-
-        // 以什么格式进行高亮 -->
-        // mode: "text/x-sql",
-        // 主题 -->
-        theme: "seti",
-        // 是否代码折叠 -->
-        lineWrapping: false,
-
-        // 是否在编辑器左侧显示行号 -->
-        lineNumbers: true,
-        // 行号从哪个数开始计数，默认为1 -->
-        firstLineNumber: 1,
-
-        // tab字符的宽度，默认为4 -->
-        indentWithTabs: true,
-        // 自动缩进，设置是否根据上下文自动缩进,默认为true-->
-        smartIndent: true,
-
-        // 括号匹配 -->
-        matchBrackets: true,
-        // 是否在初始化时自动获取焦点 -->
-        autofocus: true,
-        // 智能提示  -->
-        // extraKeys: {"Ctrl-Space": "autocomplete"},
-        // 编辑器是否只读,并且不能获得焦点 -->
-        // readOnly:'nocursor',
-        // 在选择时是否显示光标，默认为false -->
-        showCursorWhenSelecting: true
-      }
+      curTheme: 'vs-dark',
+      language: 'html',
+      isChange: false,
+      enabled: false,
     };
   },
+  watch: {
+    value(val) {
+      if (!this.isChange) {
+        this.getdata(val);
+      }
+      this.isChange = false;
+    }
+  },
   methods: {
-    onCmReady(cm) {},
-    onCmFocus(cm) {},
-    onCmCodeChange(newCode) {
-      this.$emit("input", newCode);
+    getdata(val) {
+      //销毁实例
+      // if (this.editor && !this.isChange) {
+      //   this.editor.dispose();
+      // }
+      if (this.editor === undefined) {
+        this.editor = monaco.editor.create(this.$refs.monaco, {
+          language: this.language,
+          theme: this.curTheme,
+          // 自适应layout
+          automaticLayout: true,
+          // 右侧预览
+          minimap: {
+            enabled: this.enabled
+          }
+        });
+      }
+
+      this.editor.setValue(val);
+
+      var editor = this.editor;
+      editor.onDidChangeModelContent(event => {//编辑器内容change事件
+        this.isChange = true;
+        this.$emit("input", editor.getValue()); //通过如此调用可以改变父组件上v-model绑定的值
+      });
     }
-  },
-  computed: {
-    codemirror() {
-      return this.$refs.myCm.codemirror;
-    }
-  },
-  mounted() {
-    // console.log('this is current codemirror object', this.codemirror)
-    // you can use this.codemirror to do something...
-  },
-  beforeDestroy() {}
+  }
 };
 
 var vueApp = new Vue({
@@ -158,8 +135,6 @@ var vueApp = new Vue({
     reduce: false
   },
   mounted() {
-    // console.log('this is current codemirror object', this.codemirror)
-    // you can use this.codemirror to do something...
     var q = {};
     location.search.replace(/([^?&=]+)=([^&]+)/g, (_, k, v) => (q[k] = v));
     this.menu = q.menu;
@@ -170,20 +145,20 @@ var vueApp = new Vue({
     }
   },
   methods: {
-    changemenu(){
+    changemenu() {
       var q = {};
       location.search.replace(/([^?&=]+)=([^&]+)/g, (_, k, v) => q[k] = v);
-      this.menu = !this.menu; 
-      if(q.url){
+      this.menu = !this.menu;
+      if (q.url) {
         window.history.replaceState(null, null, `?menu=${this.menu}&url=${q.url}`);
-      }else if(q.code){
+      } else if (q.code) {
         window.history.replaceState(null, null, `?menu=${this.menu}&code=${q.code}`);
-      }else if(q.id){
+      } else if (q.id) {
         window.history.replaceState(null, null, `?menu=${this.menu}&id=${q.id}`);
-      }else{
+      } else {
         window.history.replaceState(null, null, `?menu=${this.menu}&url=./startup-createEarth.html`);
       }
-      
+
     },
     sclcontrl() {
       this.scl = !this.scl;
@@ -206,12 +181,12 @@ var vueApp = new Vue({
       document.title = "示例集合---" + this.title;
     },
     getCodeUrl() {
-      return getCodeUrl(this.code,this.menu);
+      return getCodeUrl(this.code, this.menu);
     },
     showCodeUrl() {
       const codeUrl = this.getCodeUrl();
       console.log(codeUrl)
-      this.copyText(codeUrl, function() {
+      this.copyText(codeUrl, function () {
         alert("url复制成功");
       });
     },

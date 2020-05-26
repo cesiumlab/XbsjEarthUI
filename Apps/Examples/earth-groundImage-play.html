@@ -280,16 +280,11 @@
                 } else {
                     this._uw = XE.MVVM.watch(() => groundImage1.timeDuration, () => {
                         this.timeDuration = groundImage1.timeDuration;
-                        // if (groundImage1.timeDuration == 0) {
-                        //     this.timeDuration = 1.0;
-                        // } else {
-                        //     this.timeDuration = groundImage1.timeDuration;
-                        // }
                     });
                 }
 
                 this.$watch('timeDuration', function (newVal, oldVal) {
-                    if (newVal > 0) {
+                    if (newVal > 0.2) {
                         groundImage1.timeDuration = newVal;
                     }
                 });

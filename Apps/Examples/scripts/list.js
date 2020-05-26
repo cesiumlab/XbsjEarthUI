@@ -64,6 +64,10 @@ vueApp.examples = [
                 "url": "./earth-basic-destroy2.html"
             },
             {
+                "title": "动态图标点",
+                "url": "./earth-billboard.html"
+            },
+            {
                 "title": "漫游-第一人称",
                 "url": "./earth-camera-firstpersion.html"
             },
@@ -98,6 +102,10 @@ vueApp.examples = [
             {
                 "title": "自定义图元-tube",
                 "url": "./earth-customPrimitive-tube.html"
+            },
+            {
+                "title": "挖坑-编辑",
+                "url": "./earth-cutsurface-editing.html"
             },
             {
                 "title": "圆柱体集群",
@@ -426,6 +434,10 @@ vueApp.examples = [
             {
                 "title": "地形-中国14级",
                 "url": "./earth-terrain-china14.html"
+            },
+            {
+                "title": "基础-添加天地图地名资源",
+                "url": "./earth-tianditu.html"
             },
             {
                 "title": "3dtiles强制双面显示",

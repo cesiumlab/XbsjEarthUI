@@ -7,7 +7,10 @@
     <div>
       <label class="xbsj-label">{{lang.flytime}}</label>
 
-      <input type="text" v-model.number="duration" />
+      <!-- <input type="text" v-model.number="duration" /> -->
+      <div class="xbsj-slide-box">
+        <XbsjSlider :min="0" :max="10" :step="0.1" showTip="always" v-model="duration"></XbsjSlider>
+      </div>
     </div>
 
     <div>
@@ -37,9 +40,7 @@ export default {
       langs: languagejs
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
     //直接绑定
     this.bind("duration");
@@ -50,12 +51,7 @@ export default {
     bind(prp) {
       this._viewUnbinds = this._viewUnbinds || [];
       this._viewUnbinds.push(
-        XE.MVVM.bind(
-          this,
-          prp,
-          this.$root.$earth.cameraViewManager.china,
-          prp
-        )
+        XE.MVVM.bind(this, prp, this.$root.$earth.cameraViewManager.china, prp)
       );
     },
     reset() {
@@ -136,6 +132,13 @@ export default {
 .popup div:nth-child(3) button {
   position: absolute;
   right: 0;
+}
+.xbsj-slide-box {
+  display: inline-block;
+  width: 242px;
+  padding-top: 6px;
+  vertical-align: middle;
+  margin-left: 2px;
 }
 </style>
 

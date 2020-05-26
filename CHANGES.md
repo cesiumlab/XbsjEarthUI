@@ -1,14 +1,26 @@
 Change Log
 ==========
 
-### 1.3.5 - 2020-4-18
-##### Fixes :wrench:
-* ODLines改进
+### 1.3.8 - 2020-5-18 
 
-### 1.3.4 - 2020-4-18
+##### Additions :tada:
+* Earth增加了ionDefaultAccessToken属性，方便存储accessToken。
+* 增加对GeoJSON/KML/Czml的支持
+* CutSurface类增加terrainDiscard属性，开启后可以进行地形挖坑，但是目前只能挖一个地形的坑
+* 增加雾效，可以调整颜色和强度，可以保存
+
 ##### Fixes :wrench:
-* 示例改进
-* ODLines改进
+* 修复查看加载代码看不到图元的问题
+* 填充面的飞入功能改进
+* 修复填充面较小时导致面片不显示的问题
+* 修复后处理模式的雨雪特效的不能保存的问题
+* 修复贴地图像(GroundImage)关闭循环播放时程序崩溃的问题
+* 填充面和挖坑中增加默认纹理
+* 修复挖坑的飞入功能
+
+### 1.3.6 - 2020-4-19
+##### Fixes :wrench:
+* 键盘漫游改进
 
 ### 1.3.3 - 2020-4-3
 ##### Additions :tada:

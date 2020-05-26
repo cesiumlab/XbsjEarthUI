@@ -59,7 +59,8 @@ const zh = {
   polygonImage: '立面贴图',
   surface: '填充面',
   polygonStretch: '多边形',
-  classificationpolygon: '单体化'
+  classificationpolygon: '单体化',
+  groundimage: '贴地图像'
 };
 
 const en = {
@@ -123,7 +124,8 @@ const en = {
   polygonImage: 'polygon Image',
   surface: 'Surface',
   polygonStretch: 'Polygon',
-  classificationpolygon: 'Classification Polygon'
+  classificationpolygon: 'Classification Polygon',
+  groundimage: 'groundimage'
 };
 
 export default { zh, en };

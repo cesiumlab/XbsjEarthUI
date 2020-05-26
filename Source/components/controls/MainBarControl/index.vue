@@ -5,18 +5,12 @@
         @click="switchPage('navigate')"
         :class="{'xbsj-title-item-on':page=='navigate'}"
       >{{lang.roam}}</li>
-      <li
-        @click="switchPage('view')"
-        :class="{'xbsj-title-item-on':page=='view'}"
-      >{{lang.view}}</li>
+      <li @click="switchPage('view')" :class="{'xbsj-title-item-on':page=='view'}">{{lang.view}}</li>
       <li
         @click="switchPage('imagery')"
         :class="{'xbsj-title-item-on':page=='imagery'}"
       >{{lang.images}}</li>
-      <li
-        @click="switchPage('model')"
-        :class="{'xbsj-title-item-on':page=='model'}"
-      >{{lang.model}}</li>
+      <li @click="switchPage('model')" :class="{'xbsj-title-item-on':page=='model'}">{{lang.model}}</li>
       <li
         @click="switchPage('terrain')"
         :class="{'xbsj-title-item-on':page=='terrain'}"
@@ -29,29 +23,50 @@
         @click="switchPage('effect')"
         :class="{'xbsj-title-item-on':page=='effect'}"
       >{{lang.effect}}</li>
-      
+
       <li
         @click="switchPage('entity')"
         :class="{'xbsj-title-item-on':page=='entity'}"
       >{{lang.plotting}}</li>
+
+      <li
+        @click="switchPage('other')"
+        :class="{'xbsj-title-item-on':page=='other'}"
+      >{{lang.other}}</li>
       <!-- <li @click="openmodel">测试model对话框</li> -->
     </ul>
- 
+
     <!-- <Modal :visible="visible" @cancel="cancelmodal" @confirm="confirm">
       <p>我是想要提示的内容</p>
         <p>我是想要提示的内容</p>
           <p>我是想要提示的内容</p>  
-    </Modal> -->
+    </Modal>-->
     <!-- 七大组件部分 -->
     <div>
       <NavigateComp ref="navigate" v-show="page=='navigate'" :labServiceUI="labServiceUI"></NavigateComp>
       <XbsjViewComp ref="view" v-show="page=='view'"></XbsjViewComp>
-      <ImageryComp ref="imagery" v-show="page=='imagery'" :cloudServiceUI="cloudServiceUI" :labServiceUI="labServiceUI"></ImageryComp>
-      <TilesetComp ref="model" v-show="page=='model'" :cloudServiceUI="cloudServiceUI" :labServiceUI="labServiceUI"></TilesetComp>
-      <TerrainComp ref="terrain" v-show="page=='terrain'" :cloudServiceUI="cloudServiceUI" :labServiceUI="labServiceUI"></TerrainComp>
+      <ImageryComp
+        ref="imagery"
+        v-show="page=='imagery'"
+        :cloudServiceUI="cloudServiceUI"
+        :labServiceUI="labServiceUI"
+      ></ImageryComp>
+      <TilesetComp
+        ref="model"
+        v-show="page=='model'"
+        :cloudServiceUI="cloudServiceUI"
+        :labServiceUI="labServiceUI"
+      ></TilesetComp>
+      <TerrainComp
+        ref="terrain"
+        v-show="page=='terrain'"
+        :cloudServiceUI="cloudServiceUI"
+        :labServiceUI="labServiceUI"
+      ></TerrainComp>
       <AnalysisComp ref="analysis" v-show="page=='analysis'"></AnalysisComp>
       <EffectComp ref="effect" v-show="page=='effect'"></EffectComp>
       <EntityComp ref="entity" v-show="page=='entity'"></EntityComp>
+      <OtherComp ref="other" v-show="page=='other'"></OtherComp>
     </div>
   </div>
 </template>
@@ -64,7 +79,8 @@ import TilesetComp from "./Tileset";
 import TerrainComp from "./Terrain";
 import AnalysisComp from "./Analysis";
 import EffectComp from "./Effect";
-import EntityComp from "./Entity"; 
+import EntityComp from "./Entity";
+import OtherComp from "./Other";
 import languagejs from "./index_locale";
 
 export default {
@@ -76,44 +92,45 @@ export default {
     TerrainComp,
     AnalysisComp,
     EffectComp,
-    EntityComp 
+    EntityComp,
+    OtherComp
   },
-  data: function() {
+  data: function () {
     return {
-      show:true,
+      show: true,
       page: "navigate", //当前显示的页面
       lang: {},
-      visible:false,
+      visible: false,
       labServiceUI: true,
       cloudServiceUI: false,
-      langs:languagejs
+      langs: languagejs
     };
   },
-  created() {
-    
+  created () {
+
   },
-  mounted() {
-   
+  mounted () {
+
   },
   methods: {
-    openmodel(){
-       this.$root.$earthUI.confirm("xxxx",()=>{
+    openmodel () {
+      this.$root.$earthUI.confirm("xxxx", () => {
 
-       },()=>{
+      }, () => {
 
-       });
+      });
     },
-    cancelmodal(){
+    cancelmodal () {
       this.visible = false;
     },
-    confirm(){
+    confirm () {
       alert("我点击了确定");
       this.visible = false;
     },
-    hidePopup(event) {
-     
+    hidePopup (event) {
+
     },
-    switchPage(page) {
+    switchPage (page) {
       this.$emit("hidePopup");
       //控制组件显示隐藏
       if (this.page == page) {
@@ -122,11 +139,11 @@ export default {
         this.page = page;
       }
     },
-    showPage(page){
-        this.$emit("hidePopup");
-        this.page = page;
+    showPage (page) {
+      this.$emit("hidePopup");
+      this.page = page;
     },
-    getSize() {
+    getSize () {
       //获取当前组件的大小
       return {
         width: this.$el.offsetWidth,

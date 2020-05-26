@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>基础-添加天地图地名资源</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 24px;
+            padding: 0 6px;
+            line-height: 24px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="padding:2px 5px; font-size:18px; font-family: 宋体;">
+        <div class="defultbtn" onclick="create()">创建地球</div>
+        <div class="defultbtn" onclick="destroy()">销毁地球</div>
+    </div>
+
+    <div id="vueApp" style="width:100%; height: calc(100% - 30px); background: grey">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        var earthApp;
+
+        const evalString = `
+        async function loadCesiumTdt() {
+            if (!Cesium.GeoOptions) {
+                class FalseModel {};
+                const om = Cesium.Model;
+                Cesium.Model = FalseModel;
+                // await XE.HTML.loadJS('//api.tianditu.gov.cn/cdn/plugins/cesium/cesiumTdt.js');
+                await XE.HTML.loadJS('./scripts/cesiumTdt.js');
+                Cesium.Model = om;
+            }
+        }
+
+        function loadDM(p) {
+            if (p._wtfs) {
+                p._wtfs.destroy();
+            }
+
+            const viewer = p._viewer;
+
+            var token = '8713a0f23bd52d0a86c0fd75548a9a11';
+            // 服务域名
+            var tdtUrl = '//t{s}.tianditu.gov.cn/';
+            // 服务负载子域
+            var subdomains = ['0', '1', '2', '3', '4', '5', '6', '7'];
+
+            // 叠加三维地名服务
+            var wtfs = new Cesium.GeoWTFS({
+                viewer,
+                subdomains: subdomains,
+                metadata: {
+                    boundBox: {
+                        minX: -180,
+                        minY: -90,
+                        maxX: 180,
+                        maxY: 90
+                    },
+                    minLevel: 1,
+                    maxLevel: 20
+                },
+                aotuCollide: true, //是否开启避让
+                collisionPadding: [5, 10, 8, 5], //开启避让时，标注碰撞增加内边距，上、右、下、左
+                serverFirstStyle: true, //服务端样式优先
+                labelGraphics: {
+                    font: "28px sans-serif",
+                    fontSize: 28,
+                    fillColor: Cesium.Color.WHITE,
+                    scale: 0.5,
+                    outlineColor: Cesium.Color.BLACK,
+                    outlineWidth: 5,
+                    style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                    showBackground: false,
+                    backgroundColor: Cesium.Color.RED,
+                    backgroundPadding: new Cesium.Cartesian2(10, 10),
+                    horizontalOrigin: Cesium.HorizontalOrigin.MIDDLE,
+                    verticalOrigin: Cesium.VerticalOrigin.TOP,
+                    eyeOffset: Cesium.Cartesian3.ZERO,
+                    pixelOffset: new Cesium.Cartesian2(0, 8)
+                },
+                billboardGraphics: {
+                    horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
+                    verticalOrigin: Cesium.VerticalOrigin.CENTER,
+                    eyeOffset: Cesium.Cartesian3.ZERO,
+                    pixelOffset: Cesium.Cartesian2.ZERO,
+                    alignedAxis: Cesium.Cartesian3.ZERO,
+                    color: Cesium.Color.WHITE,
+                    rotation: 0,
+                    scale: 1,
+                    width: 18,
+                    height: 18
+                }
+            });
+
+            //三维地名服务，使用wtfs服务
+            wtfs.getTileUrl = function () {
+                return tdtUrl + 'mapservice/GetTiles?lxys={z},{x},{y}&tk=' + token;
+            }
+
+            wtfs.getIcoUrl = function () {
+                return tdtUrl + 'mapservice/GetIcon?id={id}&tk=' + token;
+            }
+
+            wtfs.initTDT([{ "x": 6, "y": 1, "level": 2, "boundBox": { "minX": 90, "minY": 0, "maxX": 135, "maxY": 45 } }, { "x": 7, "y": 1, "level": 2, "boundBox": { "minX": 135, "minY": 0, "maxX": 180, "maxY": 45 } }, { "x": 6, "y": 0, "level": 2, "boundBox": { "minX": 90, "minY": 45, "maxX": 135, "maxY": 90 } }, { "x": 7, "y": 0, "level": 2, "boundBox": { "minX": 135, "minY": 45, "maxX": 180, "maxY": 90 } }, { "x": 5, "y": 1, "level": 2, "boundBox": { "minX": 45, "minY": 0, "maxX": 90, "maxY": 45 } }, { "x": 4, "y": 1, "level": 2, "boundBox": { "minX": 0, "minY": 0, "maxX": 45, "maxY": 45 } }, { "x": 5, "y": 0, "level": 2, "boundBox": { "minX": 45, "minY": 45, "maxX": 90, "maxY": 90 } }, { "x": 4, "y": 0, "level": 2, "boundBox": { "minX": 0, "minY": 45, "maxX": 45, "maxY": 90 } }, { "x": 6, "y": 2, "level": 2, "boundBox": { "minX": 90, "minY": -45, "maxX": 135, "maxY": 0 } }, { "x": 6, "y": 3, "level": 2, "boundBox": { "minX": 90, "minY": -90, "maxX": 135, "maxY": -45 } }, { "x": 7, "y": 2, "level": 2, "boundBox": { "minX": 135, "minY": -45, "maxX": 180, "maxY": 0 } }, { "x": 5, "y": 2, "level": 2, "boundBox": { "minX": 45, "minY": -45, "maxX": 90, "maxY": 0 } }, { "x": 4, "y": 2, "level": 2, "boundBox": { "minX": 0, "minY": -45, "maxX": 45, "maxY": 0 } }, { "x": 3, "y": 1, "level": 2, "boundBox": { "minX": -45, "minY": 0, "maxX": 0, "maxY": 45 } }, { "x": 3, "y": 0, "level": 2, "boundBox": { "minX": -45, "minY": 45, "maxX": 0, "maxY": 90 } }, { "x": 2, "y": 0, "level": 2, "boundBox": { "minX": -90, "minY": 45, "maxX": -45, "maxY": 90 } }, { "x": 0, "y": 1, "level": 2, "boundBox": { "minX": -180, "minY": 0, "maxX": -135, "maxY": 45 } }, { "x": 1, "y": 0, "level": 2, "boundBox": { "minX": -135, "minY": 45, "maxX": -90, "maxY": 90 } }, { "x": 0, "y": 0, "level": 2, "boundBox": { "minX": -180, "minY": 45, "maxX": -135, "maxY": 90 } }]);
+
+            p._wtfs = wtfs;
+        }
+
+        // 这里的p是evalString中的内置变量，指向当前的czmObject对象
+        if (p.show) {
+            loadCesiumTdt().then(() => loadDM(p));
+        }
+
+        // 这里用来监控show属性的变化，来对地名进行显隐，因为天地图的对象没有show属性，只能通过增删来实现显隐效果了
+        p.disposers.push(XE.MVVM.watch(() => p.show, () => {
+            if (p.show) {
+                if (!p._wtfs) {
+                    loadCesiumTdt().then(() => loadDM(p));
+                }
+            } else if (!p.show) {
+                if (p._wtfs) {
+                    p._wtfs.destroy();
+                    p._wtfs = undefined;
+                }
+            }
+        }));
+
+        `;
+
+        const destroyEvalString = `
+        function destroyDM(p) {
+            if (p._wtfs) {
+                p._wtfs.destroy();
+                p._wtfs = undefined;
+            }
+        }
+
+        // 这里的p是evalString中的内置变量，指向当前的czmObject对象
+        destroyDM(p);
+        `;
+
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%; position: relative;">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div style="position: absolute; left: 18px; top: 18px;">
+                        <button style="font-size:18px; font-family: 宋体;">{{ message }}</button>
+                    </div>
+                </div>
+            `,
+            data() {
+                return {
+                    message: '页面加载于 ' + new Date().toLocaleString(),
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                };
+            },
+            mounted() {
+                // 1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                // 1.2 添加默认地球影像
+                earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "czmObject": {
+                                "name": "默认离线影像",
+                                "xbsjType": "Imagery",
+                                "xbsjImageryProvider": {
+                                    "createTileMapServiceImageryProvider": {
+                                        url: XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                        fileExtension: 'jpg',
+                                    },
+                                    "type": "createTileMapServiceImageryProvider"
+                                }
+                            }
+                        },
+                        {
+                            "czmObject": {
+                                "name": "天地图地名",
+                                "xbsjType": "Proxy",
+                                "evalString": evalString,
+                                "destroyEvalString": destroyEvalString,
+                            }
+                        }
+                    ]
+                };
+                bgImagery = earth.sceneTree.root.children[0].czmObject;
+
+                this._earth = earth;
+
+                // only for Debug
+                window.earth = earth;
+            },
+            // 1.3 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._earth = this._earth && this._earth.destroy();
+            }
+        }
+
+        // 2 创建vue程序
+        function createVueEarth() {
+            return new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        }
+
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(create);
+
+        function create() {
+            // XE.isReady()用来判断资源是否加载成功
+            if (XE.isReady() && !earthApp) {
+                earthApp = createVueEarth();
+
+                // loadCesiumTdt().then(() => {
+                //     loadDM({_viewer: earth.czm.viewer});
+                // });
+            }
+        }
+
+        function destroy() {
+            if (earthApp) {
+                earthApp.$destroy();
+                earthApp = undefined;
+                const vueAppElement = document.getElementById('vueApp');
+                vueAppElement.innerHTML = `<earth-comp></earth-comp>`;
+            }
+        }
+    </script>
+
+</body>
+
+</html>
