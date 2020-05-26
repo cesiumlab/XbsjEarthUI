@@ -371,6 +371,18 @@ export default {
       } else if (czmObj.xbsjPosition !== undefined) {
         this.addPointPosition(czmObj.xbsjPosition);
         this.updateRender();
+      } else if (czmObj.xbsjType === "Polygon" || (czmObj._polygon !== undefined && czmObj.positions !== undefined)) {
+        this.$root.$earthUI.showPropertyWindow({
+          czmObj: czmObj,
+          callback: (points) => {
+            points.forEach(e => {
+              this.addPointPosition(e);
+            })
+            this.updateRender();
+          }
+        }, {
+          component: "FacePlate"
+        });
       } else if (czmObj._polyline !== undefined && czmObj.positions !== undefined) {
         this.$root.$earthUI.showPropertyWindow({
           czmObj: czmObj,
@@ -382,18 +394,6 @@ export default {
           }
         }, {
           component: "LinearPanel"
-        });
-      } else if (czmObj._polygon !== undefined && czmObj.positions !== undefined) {
-        this.$root.$earthUI.showPropertyWindow({
-          czmObj: czmObj,
-          callback: (points) => {
-            points.forEach(e => {
-              this.addPointPosition(e);
-            })
-            this.updateRender();
-          }
-        }, {
-          component: "FacePlate"
         });
       }
     },
