@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+### 1.3.10 - 2020-5-26
+
+##### Additions :tada:
+* 增加对顶点纹理坐标偏移的扩展(XBSJ_vertex_texture_transform)
+
+##### Fixes :wrench:
+* 修复ODLines渲染性能下降的问题
+* 修复实例模型数量为1时程序异常的问题
+* 修复部分没有根矩阵的3dtiles数据不能显示的问题
+
 ### 1.3.8 - 2020-5-18 
 
 ##### Additions :tada:
