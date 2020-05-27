@@ -115,15 +115,25 @@
           <div class="xbsj-item-btn facebutton"></div>
           <span class="xbsj-item-name">{{lang.polygonStretch}}</span>
         </div>
+        <!-- 单体化 -->
+        <div class="xbsj-item-btnbox" @click="ClassificationPolygon">
+          <div class="xbsj-item-btn classificationpolygonbutton"></div>
+          <span class="xbsj-item-name">{{lang.classificationpolygon}}</span>
+        </div>
         <!-- 平尾箭头 -->
         <div class="xbsj-item-btnbox" @click="FlatArrow">
           <div class="xbsj-item-btn flatArrowbutton"></div>
           <span class="xbsj-item-name">{{lang.flatarrow}}</span>
         </div>
-        <!-- 单体化 -->
-        <div class="xbsj-item-btnbox" @click="ClassificationPolygon">
-          <div class="xbsj-item-btn classificationpolygonbutton"></div>
-          <span class="xbsj-item-name">{{lang.classificationpolygon}}</span>
+        <!-- 粒子 -->
+        <div class="xbsj-item-btnbox" @click="ParticleSystem">
+          <div class="xbsj-item-btn flatArrowbutton"></div>
+          <span class="xbsj-item-name">{{lang.particlesystem}}</span>
+        </div>
+        <!-- 平滑多边形 -->
+        <div class="xbsj-item-btnbox" @click="GeoSmoothPolygon">
+          <div class="xbsj-item-btn flatArrowbutton"></div>
+          <span class="xbsj-item-name">{{lang.GeoSmoothPolygon}}</span>
         </div>
         <!-- 标绘更多 -->
         <!-- <div class="xbsj-item-btnbox" @click="EntityMoreShow=!EntityMoreShow">
@@ -635,8 +645,29 @@ export default {
       flatArrow.name = "平尾箭头";
       flatArrow.isCreating = true;
       flatArrow.creating = true;
-      console.log(flatArrow);
+      // console.log(flatArrow);
       this.$root.$earthUI.showPropertyWindow(flatArrow);
+    },
+    //粒子
+    ParticleSystem() {
+      var particleSystem = new XE.Obj.Plots.ParticleSystem(this.$root.$earth);
+      particleSystem.name = "粒子";
+      particleSystem.isCreating = true;
+      particleSystem.creating = true;
+      console.log(particleSystem);
+      particleSystem.image = "./assets/smoke.png";
+      this.$root.$earthUI.showPropertyWindow(particleSystem);
+    },
+    //平滑多边形
+    GeoSmoothPolygon() {
+      var geoSmoothPolygon = new XE.Obj.Plots.GeoSmoothPolygon(
+        this.$root.$earth
+      );
+      geoSmoothPolygon.name = "平滑多边形";
+      geoSmoothPolygon.isCreating = true;
+      geoSmoothPolygon.creating = true;
+      console.log(geoSmoothPolygon);
+      this.$root.$earthUI.showPropertyWindow(geoSmoothPolygon);
     },
     //单体化
     ClassificationPolygon() {

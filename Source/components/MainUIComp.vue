@@ -105,6 +105,8 @@ import ModelTool from "./viztools/ModelTool";
 import PolylineTool from "./viztools/PolylineTool";
 import GeoCurveArrow from "./viztools/GeoCurveArrow";
 import GeoFlatArrow from "./viztools/GeoFlatArrow";
+import GeoParticleSystem from "./viztools/GeoParticleSystem";
+import GeoSmoothPolygon from "./viztools/GeoSmoothPolygon";
 import GeoCurve from "./viztools/GeoCurve";
 import GeoDoubleArrow from "./viztools/GeoDoubleArrow";
 import GeoCircle from "./viztools/GeoCircle";
@@ -199,6 +201,8 @@ export default {
     GeoTriFlag,
     GeoSector,
     GeoFlatArrow,
+    GeoParticleSystem,
+    GeoSmoothPolygon,
     RoadTool,
     WallTool,
     SurfaceTool,
@@ -280,6 +284,8 @@ export default {
         GeoDoubleArrow: "GeoDoubleArrow",
         GeoCircle: "GeoCircle",
         GeoArrow: "GeoFlatArrow",
+        ParticleSystem: "GeoParticleSystem",
+        GeoSmoothPolygon: "GeoSmoothPolygon",
         GeoRectangle: "GeoRectangle",
         GeoCurveFlag: "GeoCurveFlag",
         GeoRightAngleFlag: "GeoRightAngleFlag",

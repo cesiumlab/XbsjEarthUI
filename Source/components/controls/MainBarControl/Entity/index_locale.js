@@ -61,7 +61,9 @@ const zh = {
   polygonStretch: '多边形',
   flatarrow: '平尾箭头',
   classificationpolygon: '单体化',
-  groundimage: '贴地图像'
+  groundimage: '贴地图像',
+  particlesystem: '粒子',
+  GeoSmoothPolygon: '平滑多边形'
 };
 
 const en = {
@@ -127,7 +129,9 @@ const en = {
   polygonStretch: 'Polygon',
   flatarrow: 'Flatarrow',
   classificationpolygon: 'Classification Polygon',
-  groundimage: 'groundimage'
+  groundimage: 'groundimage',
+  particlesystem: 'particlesystem',
+  GeoSmoothPolygon: 'GeoSmoothPolygon'
 };
 
 export default { zh, en };
