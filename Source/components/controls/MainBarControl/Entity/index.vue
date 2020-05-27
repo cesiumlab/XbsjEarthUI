@@ -127,7 +127,7 @@
         </div>
         <!-- 粒子 -->
         <div class="xbsj-item-btnbox" @click="ParticleSystem">
-          <div class="xbsj-item-btn flatArrowbutton"></div>
+          <div class="xbsj-item-btn particleSystembutton"></div>
           <span class="xbsj-item-name">{{lang.particlesystem}}</span>
         </div>
         <!-- 平滑多边形 -->
@@ -1102,6 +1102,16 @@ export default {
 }
 .flatArrowbutton:hover {
   background: url(../../../../images/flatarrow_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.particleSystembutton {
+  background: url(../../../../images/particlesystem.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.particleSystembutton:hover {
+  background: url(../../../../images/particlesystem_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
