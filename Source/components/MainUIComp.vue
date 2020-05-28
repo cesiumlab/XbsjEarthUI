@@ -94,6 +94,7 @@ import FlattenningTool from "./viztools/FlattenningTool";
 import ClippingPlaneTool from "./viztools/ClippingPlaneTool";
 import WaterTool from "./viztools/WaterTool";
 import PinTool from "./viztools/PinTool";
+import PinDiv from "./viztools/PinDiv";
 import PinPictureTool from "./viztools/PinPictureTool";
 import GroundImageTool from "./viztools/GroundImageTool";
 import PinDivTool from "./viztools/PinDivTool";
@@ -174,6 +175,7 @@ export default {
     ClippingPlaneTool,
     WaterTool,
     PinTool,
+    PinDiv,
     PinPictureTool,
     GroundImageTool,
     PinDivTool,
@@ -256,6 +258,7 @@ export default {
         ClippingPlane: "ClippingPlaneTool",
         Water: "WaterTool",
         Pin: "PinTool",
+        GeoPin:'PinDiv',
         PinDivTool: "PinDivTool",
         // Pin: "PinPictureTool",
         Path: "PathTool",
@@ -294,7 +297,7 @@ export default {
         ["CameraView.View"]: "CameraViewPrp",
         ProfileAnalysis: "ProfileAnalysis",
         GroundImage: "GroundImageTool",
-        GeoPin: "PinDivTool",
+        // GeoPin: "PinDivTool",
         TilesTest: "TilesTest",
         CustomPrimitiveExt_Image: "GeoPolygonImage",
         XbsjGeoJSON: "CesiumDataSource",

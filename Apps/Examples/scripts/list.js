@@ -470,7 +470,16 @@ vueApp.examples = [
             {
                 "title": "路径-pin",
                 "url": "./eath-path-pin.html"
+            },
+            {
+                "title":"面状-平尾箭头",
+                "url":"./earth-plane-arrow.html"
+            },
+            {
+                "title":"粒子效果",
+                "url":'./earth-particle-effect.html'
             }
+
         ]
     },
     {

@@ -125,34 +125,33 @@
           </div>
         </div>
         <!-- 粒子存在的时间  -->
-        <!-- <div class="flatten" style="margin-top:10px;">
+        <div class="flatten" style="margin-top:10px;">
           <label>{{lang.lifetime}}</label>
           <div class="field">
             <XbsjSlider :min="2" :max="60" :step="1" showTip="always" v-model="model.lifetime"></XbsjSlider>
           </div>
-        </div>-->
+        </div>
       </div>
       <!-- 粒子图像 -->
       <div class="flatten">
         <label>{{lang.image}}</label>
         <input style="float:left;" type="text" v-model="model.image" />
       </div>
-      <!-- <div class="flatten-flex">
+      <div class="flatten-flex">
         <div class="flatten">
           <div class="flatten">
             <label>{{lang.outlineShow}}</label>
             <XbsjSwitch v-model="model.outlineShow"></XbsjSwitch>
           </div>
-        </div>
-        颜色
+        </div>颜色
         <div class="flatten">
           <label>{{lang.color}}</label>
           <XbsjColorButton style="float:left;" v-model="bgbaseColorUI" ref="bgbaseColor"></XbsjColorButton>
         </div>
-      </div>-->
+      </div>
 
       <!-- 宽度 -->
-      <!-- <div class="flatten-flex" style="margin-top:30px;">
+      <div class="flatten-flex" style="margin-top:30px;">
         <label>{{lang.outlineWidth}}</label>
         <div class="field">
           <XbsjSlider
@@ -168,7 +167,7 @@
           <label>{{lang.outlineColor}}</label>
           <XbsjColorButton style="float:left;" v-model="borderbaseColorUI" ref="borderbaseColor"></XbsjColorButton>
         </div>
-      </div>-->
+      </div>
     </div>
   </Window>
 </template>
@@ -208,7 +207,8 @@ export default {
         minWidthScale: 0.06,
         dynamicWidthScale: 0.1,
         arrowMaxHeightScale: 0.1,
-        arrowWingWidthScale: 2
+        arrowWingWidthScale: 2,
+        color:'#00FF00',
       },
       bgbaseColorUI: {
         rgba: {
@@ -253,13 +253,13 @@ export default {
         endScale: "model.endScale",
         particleSize: "model.particleSize",
         // lifetime: "model.lifetime"
-        image: "model.image"
+        image: "model.image",
         // show: "model.show"
-        // creating: "model.creating",
-        // editing: "model.editing",
+        creating: "model.creating",
+        editing: "model.editing",
         // outlineWidth: "model.outlineWidth",
         // ground: "model.ground",
-        // outlineWidth: "model.outlineWidth",
+        outlineWidth: "model.outlineWidth"
         // outlineShow: "model.outlineShow",
         // minWidthScale: "model.minWidthScale",
         // dynamicWidthScale: "model.dynamicWidthScale",
@@ -275,10 +275,10 @@ export default {
         }
       });
 
-      // this._disposers.push(XE.MVVM.bind(this, "bgbaseColor", czmObj, "color"));
-      // this._disposers.push(
-      //   XE.MVVM.bind(this, "borderbaseColor", czmObj, "outlineColor")
-      // );
+      this._disposers.push(XE.MVVM.bind(this, "bgbaseColor", czmObj, "color"));
+      this._disposers.push(
+        XE.MVVM.bind(this, "borderbaseColor", czmObj, "outlineColor")
+      );
     }
   },
   computed: {
