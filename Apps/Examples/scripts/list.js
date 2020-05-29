@@ -478,8 +478,11 @@ vueApp.examples = [
             {
                 "title":"粒子效果",
                 "url":'./earth-particle-effect.html'
+            },
+            {
+                "title":'flyTo与flyAround',
+                "url":'./earth-flyTo.html'
             }
-
         ]
     },
     {
