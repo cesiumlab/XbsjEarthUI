@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>粒子系统</title>
+    <title>flyTo和flyAround</title>
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <script src="./scripts/vue.min.js"></script>
     <style>
@@ -77,7 +77,7 @@
                         <button @click="flyToShanghai2()" style="padding:8px 12px">{{ but2 }}</button>
                         <button @click="flyToShanghai3()" style="padding:8px 12px;">{{ but3 }}</button></br>
                         <button @click="flyToShanghai4()" style="padding:8px 12px;margin-top:10px;">{{ but4 }}</button>
-                        <button @click="flyAroundShanghai5()" style="padding:8px 12px;margin-top:10px;">{{ but5 }}</button>
+                        <button @click="flyAroundShanghai5() " style="padding:8px 12px;margin-top:10px;">{{ but5 }}</button>
                     </div>
                 </div>
             `,
@@ -119,15 +119,15 @@
                         {
                             "czmObject": {
                                 "xbsjType": "Pin",
-                                "xbsjGuid": "050491f8-c18b-42b1-aa2c-9a84c9cb1367",
-                                "name": "图片",
-                                "position": [2.1258864033205063, 0.5437229680608485, 0],
-                                "imageUrl": "./assets/earth.png",
-                                "pinBuilder": {
-                                    "size": 21
-                                },
-                                "near": 1,
-                                "far": 708405415
+                                "xbsjGuid": "9d5c14d6-5139-483b-acc6-535f2ad92bdf",
+                                "name": "图标点",
+                                "position": [
+                                    2.125887863999793,
+                                    0.5437270241157011,
+                                    0
+                                ],
+                                "pinBuilder": {},
+                                "far": 1073741824
                             }
                         }
                     ]
