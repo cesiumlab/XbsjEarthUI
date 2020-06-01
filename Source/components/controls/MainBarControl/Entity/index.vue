@@ -616,10 +616,10 @@ export default {
     PolygonImageShow() {
       if (!this.$root.$earth.terrainEffect.depthTest) {
         this.$root.$earthUI.promptInfo(
-          "使用此功能前请先打开深度检测！",
+          "使用此功能需要打开深度检测，已为您自动打开！",
           "warning"
         );
-        return;
+        this.$root.$earth.terrainEffect.depthTest = true;
       }
       var customPrimitive = new XE.Obj.CustomPrimitiveExt.Image(
         this.$root.$earth
