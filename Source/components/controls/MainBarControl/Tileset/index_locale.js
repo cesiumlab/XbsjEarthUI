@@ -19,7 +19,10 @@ const zh = {
   direct: "光照强度",
   yapingzu: "压平组",
   custom: '自定义',
-  techonlogy: '科技感'
+  techonlogy: '科技感',
+  skipLevelOfDetail:'详细级别',
+  maximumMemoryUsage:'内存使用',
+  debugShowBoundingVolume:'调试包围盒',
 };
 
 const en = {
@@ -43,7 +46,11 @@ const en = {
   direct: "direct",
   yapingzu: "yapingzu",
   custom: 'Custom',
-  techonlogy: 'techonlogy'
+  techonlogy: 'techonlogy',
+  skipLevelOfDetail:'skipLevelOfDetail',
+  maximumMemoryUsage:'maximumMemoryUsage',
+  debugShowBoundingVolume:'debugShowBoundingVolume',
+
 };
 
 export default { zh, en };

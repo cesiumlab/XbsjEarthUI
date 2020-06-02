@@ -482,6 +482,10 @@ vueApp.examples = [
             {
                 "title":'flyTo与flyAround',
                 "url":'./earth-flyTo.html'
+            },
+            {
+                'title':'平滑多边形',
+                "url":'./earth-smooth-polygon.html'
             }
         ]
     },

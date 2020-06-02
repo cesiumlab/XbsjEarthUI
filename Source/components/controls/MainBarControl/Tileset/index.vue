@@ -155,6 +155,42 @@
           </div>
           <span class="xbsj-item-name">{{lang.techonlogy}}</span>
         </div>
+        <!-- 跳过详细级别 -->
+        <div class="xbsj-item-btnbox">
+          <div class="xbsj-item-btn">
+            <button
+              class="movebutton"
+              :class="skipLevelOfDetail ? 'skipLevelActive' : ''"
+              @click="skipLevelOfDetail =! skipLevelOfDetail"
+              :disabled="!enabled"
+            ></button>
+          </div>
+          <span class="xbsj-item-name">{{lang.skipLevelOfDetail}}</span>
+        </div>
+        <!-- 最大内存使用  -->
+        <div class="xbsj-item-btnbox">
+          <div class="xbsj-item-btn">
+            <button
+              class="movebutton"
+              :class="maximumMemoryUsage ? 'aximumMemoryActive': ''"
+              @click="maximumMemoryUsage =! maximumMemoryUsage"
+              :disabled="!enabled"
+            ></button>
+          </div>
+          <span class="xbsj-item-name">{{lang.maximumMemoryUsage}}</span>
+        </div>
+        <!-- 调试包围盒-->
+        <div class="xbsj-item-btnbox">
+          <div class="xbsj-item-btn">
+            <button
+              class="movebutton"
+              :class="debugShowBoundingVolume ? 'debugShowBoundingActive' :''"
+              :disabled="!enabled"
+              @click="debugShowBoundingVolume != debugShowBoundingVolume"
+            ></button>
+          </div>
+          <span class="xbsj-item-name">{{lang.debugShowBoundingVolume}}</span>
+        </div>
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{lang.visible}}</span>
@@ -288,7 +324,10 @@ export default {
       selectshow: false,
       langs: languagejs,
       customBtns: [],
-      technologyShader: false
+      technologyShader: false,
+      skipLevelOfDetail: false,
+      maximumMemoryUsage: false,
+      debugShowBoundingVolume: false
     };
   },
   created() {},
@@ -483,6 +522,9 @@ export default {
           this._bind("positionEditing");
           this._bind("xbsjUseOriginTransform");
           this._bind("rotationEditing");
+          this._bind("skipLevelOfDetail");
+          this._bind("maximumMemoryUsage");
+          this._bind("debugShowBoundingVolume");
         }
       }
 
@@ -650,6 +692,16 @@ export default {
   cursor: pointer;
 }
 
+.aximumMemoryActive {
+  background-color: pink;
+  cursor: pointer;
+}
+
+.debugShowBoundingActive {
+  background-color: pink;
+  cursor: pointer;
+}
+
 .rotatebutton {
   background: url(../../../../images/rotate.png) no-repeat;
   background-size: contain;
@@ -741,6 +793,12 @@ export default {
   background-color: rgba(31, 255, 255, 1);
   cursor: pointer;
 }
+
+.skipLevelActive {
+  background-color: pink;
+  cursor: pointer;
+}
+
 .righttopButton {
   width: 17px;
   height: 17px;
