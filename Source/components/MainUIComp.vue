@@ -107,6 +107,8 @@ import PolylineTool from "./viztools/PolylineTool";
 import GeoCurveArrow from "./viztools/GeoCurveArrow";
 import GeoFlatArrow from "./viztools/GeoFlatArrow";
 import GeoParticleSystem from "./viztools/GeoParticleSystem";
+import GeoParticleSystemFireWork from "./viztools/GeoParticleSystemFireWork";
+import GeoParticleSystemTails from "./viztools/GeoParticleSystemTails";
 import GeoSmoothPolygon from "./viztools/GeoSmoothPolygon";
 import GeoCurve from "./viztools/GeoCurve";
 import GeoDoubleArrow from "./viztools/GeoDoubleArrow";
@@ -204,6 +206,8 @@ export default {
     GeoSector,
     GeoFlatArrow,
     GeoParticleSystem,
+    GeoParticleSystemFireWork,
+    GeoParticleSystemTails,
     GeoSmoothPolygon,
     RoadTool,
     WallTool,
@@ -258,7 +262,7 @@ export default {
         ClippingPlane: "ClippingPlaneTool",
         Water: "WaterTool",
         Pin: "PinTool",
-        GeoPin:'PinDiv',
+        GeoPin: "PinDiv",
         PinDivTool: "PinDivTool",
         // Pin: "PinPictureTool",
         Path: "PathTool",
@@ -288,6 +292,8 @@ export default {
         GeoCircle: "GeoCircle",
         GeoArrow: "GeoFlatArrow",
         ParticleSystem: "GeoParticleSystem",
+        ParticleSystemFireWork: "GeoParticleSystemFireWork",
+        ParticleSystemTails: "GeoParticleSystemTails",
         GeoSmoothPolygon: "GeoSmoothPolygon",
         GeoRectangle: "GeoRectangle",
         GeoCurveFlag: "GeoCurveFlag",

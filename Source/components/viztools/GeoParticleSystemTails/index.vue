@@ -1,8 +1,8 @@
 <template>
   <Window
-    :width="590"
+    :width="594"
     :minWidth="582"
-    :height="598"
+    :height="608"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -53,141 +53,130 @@
           >{{lang.rotationEditing}}</button>
         </div>
       </div>
-      <div class="flatten-flex">
-        <!-- 开始颜色 -->
-        <label>{{lang.startcolor}}</label>
-        <XbsjColorButton v-model="startColorUI"></XbsjColorButton>
-        <!-- 结束颜色 -->
-        <label>{{lang.endcolor}}</label>
-        <XbsjColorButton v-model="endColorUI"></XbsjColorButton>
-      </div>
-      <!-- 发射器类型 -->
+      <!-- 类型(分别看起来像彗星的彗尾和火箭的喷射) -->
       <div class="flatten" style="display:flex;">
         <div style="position: relative;">
-          <label>{{lang.emitterType}}</label>
+          <label>{{lang.type}}</label>
           <input
             type="text"
-            v-model="model.emitterType"
+            v-model="model.type"
             @click="selectinput"
             readonly
             style="cursor: pointer;"
           />
           <button class="selectButton"></button>
-          <div class="cutselectbox" v-show="showEmitterSelect">
-            <div @click="optionssure(c)" v-for="(c,index) in emitterTypeObj" :key="index">
+          <div class="cutselectbox" v-show="showTypeSelect">
+            <div @click="optionssure(c)" v-for="(c,index) in typeObj" :key="index">
               <span>{{c}}</span>
             </div>
           </div>
         </div>
       </div>
-
-      <div class="flatten">
-        <!-- 发射器半径  -->
-        <label>{{lang.emitterRadius}}</label>
-        <div class="flatten-box">
-          <XbsjInputNumber
-            style="float:left; width: calc(50% - 90px);"
-            v-model.number="model.emitterRadius"
-            :disabled="radiusdisabled"
-          ></XbsjInputNumber>
-        </div>
-        <!-- 发射器弧度  -->
-        <label>{{lang.emitterAngle}}</label>
-        <div class="flatten-box">
-          <XbsjInputNumber
-            style="float:left; width: calc(50% - 90px);"
-            v-model.number="model.emitterAngle"
-            :disabled="angledisabled"
-          ></XbsjInputNumber>
-        </div>
-      </div>
       <div class="flatten-flex">
         <!-- 发射速率(个/秒)  -->
         <div class="flatten" style="margin-top:10px;">
-          <label @click="model.emissionRate=5">{{lang.emissionrate}}</label>
+          <label @click="model.emissionRate=30">{{lang.emissionRate}}</label>
           <div class="field">
-            <XbsjSlider :min="1" :max="100" :step="1" showTip="always" v-model="model.emissionRate"></XbsjSlider>
+            <XbsjSlider
+              :min="10"
+              :max="200"
+              :step="1"
+              showTip="always"
+              v-model="model.emissionRate"
+            ></XbsjSlider>
           </div>
         </div>
         <!-- 粒子的尺寸(单位：pixel)  -->
         <div class="flatten" style="margin-top:10px;">
-          <label @click="model.particleSize=25">{{lang.particleSize}}</label>
+          <label @click="model.particleSize=15">{{lang.particleSize}}</label>
           <div class="field">
-            <XbsjSlider :min="2" :max="60" :step="1" showTip="always" v-model="model.particleSize"></XbsjSlider>
+            <XbsjSlider :min="5" :max="30" :step="1" showTip="always" v-model="model.particleSize"></XbsjSlider>
           </div>
         </div>
       </div>
       <div class="flatten-flex">
-        <!-- 粒子存在的时间  -->
+        <!-- 构成一圈的粒子数量(粒子发射器的总数)  -->
         <div class="flatten" style="margin-top:10px;">
-          <label @click="model.minimumParticleLife=2">{{lang.minimumParticleLife}}</label>
+          <label @click="model.particleNumber=100">{{lang.particleNumber}}</label>
           <div class="field">
             <XbsjSlider
-              :min="0.1"
-              :max="29.1"
-              :step="1.0"
+              :min="10"
+              :max="200"
+              :step="1"
               showTip="always"
-              v-model="model.minimumParticleLife"
+              v-model="model.particleNumber"
             ></XbsjSlider>
           </div>
         </div>
+        <!-- 粒子的存在时间  -->
         <div class="flatten" style="margin-top:10px;">
-          <label @click="model.maximumParticleLife=2">{{lang.maximumParticleLife}}</label>
+          <label @click="model.particleLife=3.5">{{lang.particleLife}}</label>
           <div class="field">
             <XbsjSlider
-              :min="0.1"
-              :max="29.1"
-              :step="1.0"
+              :min="1"
+              :max="20"
+              :step="0.1"
               showTip="always"
-              v-model="model.maximumParticleLife"
+              v-model="model.particleLife"
             ></XbsjSlider>
           </div>
         </div>
       </div>
-      <div class="flatten-flex">
-        <!-- 粒子的初速度  -->
-        <div class="flatten" style="margin-top:10px;">
-          <label @click="model.minimumSpeed=1">{{lang.minimumSpeed}}</label>
-          <div class="field">
-            <XbsjSlider :min="0" :max="30" :step="1" showTip="always" v-model="model.minimumSpeed"></XbsjSlider>
-          </div>
-        </div>
-        <div class="flatten" style="margin-top:10px;">
-          <label @click="model.maximumSpeed=4">{{lang.maximumSpeed}}</label>
-          <div class="field">
-            <XbsjSlider :min="0" :max="30" :step="1" showTip="always" v-model="model.maximumSpeed"></XbsjSlider>
-          </div>
-        </div>
-      </div>
-      <div class="flatten-flex">
-        <!-- 粒子的初始比例(相对于粒子的像素)  -->
-        <div class="flatten" style="margin-top:10px;">
-          <label @click="model.startScale=1">{{lang.startScale}}</label>
-          <div class="field">
-            <XbsjSlider :min="0" :max="10" :step="1" showTip="always" v-model="model.startScale"></XbsjSlider>
-          </div>
-        </div>
-        <!-- 粒子的结束比例(相对于粒子的像素)  -->
-        <div class="flatten" style="margin-top:10px;">
-          <label @click="model.endScale=5">{{lang.endScale}}</label>
-          <div class="field">
-            <XbsjSlider :min="0" :max="10" :step="1" showTip="always" v-model="model.endScale"></XbsjSlider>
-          </div>
-        </div>
-      </div>
-      <div class="flatten-flex">
-        <!--  重力加速度，设置为负则向下  -->
-        <div class="flatten" style="margin-top:10px;">
-          <label @click="model.gravity=0">{{lang.gravity}}</label>
-          <div class="field">
-            <XbsjSlider :min="-20" :max="20" :step="1" showTip="always" v-model="model.gravity"></XbsjSlider>
-          </div>
-        </div>
-      </div>
-      <!-- 粒子图像 -->
       <div class="flatten">
-        <label>{{lang.image}}</label>
-        <input style="float:left;" type="text" v-model="model.image" />
+        <!-- 圆圈可能扩散到的最大半径(只有在自转ratate保持低速时才能看到最大半径)，单位m  -->
+        <label>{{lang.radius}}</label>
+        <div class="flatten-box">
+          <XbsjInputNumber
+            style="float:left; width: calc(50% - 90px);"
+            v-model.number="model.radius"
+          ></XbsjInputNumber>
+        </div>
+      </div>
+      <div class="flatten">
+        <!-- 粒子的存在时间过程中总共旋转经过的弧度  -->
+        <label>{{lang.rotate}}</label>
+        <div class="flatten-box">
+          <XbsjInputNumber
+            style="float:left; width: calc(50% - 90px);"
+            v-model.number="model.rotate"
+          ></XbsjInputNumber>
+        </div>
+        <!-- 粒子发射器竖直方向上移动的总距离，单位m  -->
+        <label>{{lang.height}}</label>
+        <div class="flatten-box">
+          <XbsjInputNumber
+            style="float:left; width: calc(50% - 90px);"
+            v-model.number="model.height"
+          ></XbsjInputNumber>
+        </div>
+      </div>
+      <div>
+        <label>{{lang.color}}</label>
+
+        <div class="flatten-table">
+          <table class="item-btn-box">
+            <thead>
+              <tr>
+                <th>{{lang.order}}</th>
+                <th>{{lang.color}}</th>
+                <th class="header-add">
+                  <button class="flatten-btn add" @click="add"></button>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item,index) in colors" :key="index">
+                <td>{{index+1}}</td>
+                <td>
+                  <XbsjColorButton v-model="colors[index]"></XbsjColorButton>
+                </td>
+                <td>
+                  <input type="button" class="flatten-btn del" @click="del(index)" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </Window>
@@ -214,52 +203,23 @@ export default {
         rotationEditing: false,
         position: [0, 0, 0],
         rotation: [0, 0, 0],
-        particleSize: 25.0,
-        emissionRate: 5.0,
-        gravity: 0.0,
-        minimumParticleLife: 12,
-        maximumParticleLife: 12,
-        minimumSpeed: 1.0,
-        maximumSpeed: 4.0,
-        startScale: 1.0,
-        endScale: 5.0,
-        image: "",
-        outlineWidth: 1,
-        outlineShow: false,
-        minWidthScale: 0.06,
-        dynamicWidthScale: 0.1,
-        arrowMaxHeightScale: 0.1,
-        arrowWingWidthScale: 2,
-        emitterType: "CircleEmitter",
-        emitterRadius: 2,
-        emitterAngle: 1
+        type: "CometTail",
+        emissionRate: 30,
+        particleSize: 15,
+        particleNumber: 100,
+        radius: 30,
+        particleLife: 0.8,
+        rotate: 0.01,
+        height: 50,
+        colors: []
       },
-      startColorUI: {
-        rgba: {
-          r: 0,
-          g: 0,
-          b: 255,
-          a: 1
-        }
-      },
-      startColor: [0, 0, 0.5, 1],
-      endColorUI: {
-        rgba: {
-          r: 0,
-          g: 255,
-          b: 0,
-          a: 1
-        }
-      },
-      endColor: [0, 1, 0, 1],
+      colors: [],
       pinstyletype: true,
       langs: languagejs,
-      showEmitterSelect: false,
-      emitterTypeObj: {
-        BoxEmitter: "BoxEmitter",
-        CircleEmitter: "CircleEmitter",
-        ConeEmitter: "ConeEmitter",
-        SphereEmitter: "SphereEmitter"
+      showTypeSelect: false,
+      typeObj: {
+        CometTail: "CometTail",
+        RocketThruster: "RocketThruster"
       },
       radiusdisabled: false,
       angledisabled: true
@@ -281,19 +241,14 @@ export default {
         rotationEditing: "model.rotationEditing",
         position: "model.position",
         rotation: "model.rotation",
+        type: "model.type",
         emissionRate: "model.emissionRate",
-        gravity: "model.gravity",
-        minimumParticleLife: "model.minimumParticleLife",
-        maximumParticleLife: "model.maximumParticleLife",
-        minimumSpeed: "model.minimumSpeed",
-        maximumSpeed: "model.maximumSpeed",
-        startScale: "model.startScale",
-        endScale: "model.endScale",
         particleSize: "model.particleSize",
-        image: "model.image",
-        emitterType: "model.emitterType",
-        emitterRadius: "model.emitterRadius",
-        emitterAngle: "model.emitterAngle"
+        particleNumber: "model.particleNumber",
+        radius: "model.radius",
+        particleLife: "model.particleLife",
+        rotate: "model.rotate",
+        height: "model.height"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -304,10 +259,9 @@ export default {
         }
       });
 
-      this._disposers.push(
-        XE.MVVM.bind(this, "startColor", czmObj, "startColor")
-      );
-      this._disposers.push(XE.MVVM.bind(this, "endColor", czmObj, "endColor"));
+      this._colorsUnbind = this._colorsUnbind && this._colorsUnbind();
+      this._colorsUnbind = XE.MVVM.bind(this, "model.colors", czmObj, "colors");
+      this.changeColors(this.model);
     }
   },
   computed: {
@@ -319,56 +273,62 @@ export default {
     }
   },
   watch: {
-    startColorUI(color) {
-      let v = color.rgba;
-      var cc = [v.r / 255.0, v.g / 255.0, v.b / 255.0, v.a];
-      if (!this.startColor.every((c, index) => c === cc[index])) {
-        this.startColor = cc;
-      }
+    colors: {
+      handler(n, o) {
+        var ccc = [];
+        n.forEach(element => {
+          let v = element.rgba;
+          var cc = [v.r / 255.0, v.g / 255.0, v.b / 255.0, v.a];
+          cc.forEach(value => {
+            ccc.push(value);
+          });
+        });
+        this._czmObj.colors = ccc;
+      },
+      deep: true // 可以深度检测到 colors 对象的属性值的变化
     },
-    startColor(c) {
-      this.startColorUI = {
-        rgba: {
-          r: c[0] * 255,
-          g: c[1] * 255,
-          b: c[2] * 255,
-          a: c[3]
-        }
-      };
-    },
-    endColorUI(color) {
-      let v = color.rgba;
-
-      var cc = [v.r / 255.0, v.g / 255.0, v.b / 255.0, v.a];
-      if (!this.endColor.every((c, index) => c === cc[index])) {
-        this.endColor = cc;
-      }
-    },
-    endColor(c) {
-      this.endColorUI = {
-        rgba: {
-          r: c[0] * 255,
-          g: c[1] * 255,
-          b: c[2] * 255,
-          a: c[3]
-        }
-      };
+    "model.type"(val) {
+      this.$nextTick(() => {
+        (this.model.colors = []), (this.colors = []);
+        this._colorsUnbind = this._colorsUnbind && this._colorsUnbind();
+        this._colorsUnbind = XE.MVVM.bind(
+          this,
+          "model.colors",
+          this._czmObj,
+          "colors"
+        );
+        this.changeColors(this.model);
+      });
     }
   },
   methods: {
     selectinput() {
-      this.showEmitterSelect = !this.showEmitterSelect;
+      this.showTypeSelect = !this.showTypeSelect;
     },
     optionssure(c) {
-      this.model.emitterType = c;
-      if (this.model.emitterType === "ConeEmitter") {
-        this.radiusdisabled = true;
-        this.angledisabled = false;
-      } else {
-        this.radiusdisabled = false;
-        this.angledisabled = true;
+      this.model.type = c;
+      this.showTypeSelect = !this.showTypeSelect;
+    },
+    changeColors(model) {
+      for (var i = 0, l = model.colors.length; i < l; i += 4) {
+        this.colors.push({
+          rgba: {
+            r: model.colors[i] * 255,
+            g: model.colors[i + 1] * 255,
+            b: model.colors[i + 2] * 255,
+            a: model.colors[i + 3]
+          }
+        });
       }
-      this.showEmitterSelect = !this.showEmitterSelect;
+    },
+    add() {
+      this.colors.push({ rgba: { r: 255, g: 255, b: 255, a: 1 } });
+    },
+    del(index) {
+      //弹出提示
+      this.$root.$earthUI.confirm("确认删除该颜色?", () => {
+        this.colors.splice(index, 1);
+      });
     },
     close() {
       this.$parent.destroyTool(this);

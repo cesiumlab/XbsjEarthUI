@@ -130,6 +130,16 @@
           <div class="xbsj-item-btn particleSystembutton"></div>
           <span class="xbsj-item-name">{{lang.particlesystem}}</span>
         </div>
+        <!-- 粒子烟火 -->
+        <div class="xbsj-item-btnbox" @click="ParticleSystemFireWork">
+          <div class="xbsj-item-btn particleSystembutton"></div>
+          <span class="xbsj-item-name">{{lang.ParticleSystemFireWork}}</span>
+        </div>
+        <!-- 粒子喷射 -->
+        <div class="xbsj-item-btnbox" @click="ParticleSystemTails">
+          <div class="xbsj-item-btn particleSystembutton"></div>
+          <span class="xbsj-item-name">{{lang.ParticleSystemTails}}</span>
+        </div>
         <!-- 平滑多边形 -->
         <div class="xbsj-item-btnbox" @click="GeoSmoothPolygon">
           <div class="xbsj-item-btn flatArrowbutton"></div>
@@ -654,9 +664,31 @@ export default {
       particleSystem.name = "粒子";
       particleSystem.isCreating = true;
       particleSystem.creating = true;
-      console.log(particleSystem);
+      // console.log(particleSystem);
       particleSystem.image = "./assets/smoke.png";
       this.$root.$earthUI.showPropertyWindow(particleSystem);
+    },
+    //粒子烟火
+    ParticleSystemFireWork() {
+      var particleSystemFireWork = new XE.Obj.Plots.ParticleSystemFireWork(
+        this.$root.$earth
+      );
+      particleSystemFireWork.name = "粒子烟火";
+      particleSystemFireWork.isCreating = true;
+      particleSystemFireWork.creating = true;
+      // console.log(particleSystemFireWork);
+      this.$root.$earthUI.showPropertyWindow(particleSystemFireWork);
+    },
+    //粒子喷射
+    ParticleSystemTails() {
+      var particleSystemTails = new XE.Obj.Plots.ParticleSystemTails(
+        this.$root.$earth
+      );
+      particleSystemTails.name = "粒子喷射";
+      particleSystemTails.isCreating = true;
+      particleSystemTails.creating = true;
+      console.log(particleSystemTails);
+      this.$root.$earthUI.showPropertyWindow(particleSystemTails);
     },
     //平滑多边形
     GeoSmoothPolygon() {

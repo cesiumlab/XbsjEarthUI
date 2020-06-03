@@ -63,6 +63,8 @@ const zh = {
   classificationpolygon: '单体化',
   groundimage: '贴地图像',
   particlesystem: '粒子',
+  ParticleSystemFireWork: '粒子烟火',
+  ParticleSystemTails: '粒子喷射',
   GeoSmoothPolygon: '平滑多边形'
 };
 
@@ -130,7 +132,9 @@ const en = {
   flatarrow: 'Flatarrow',
   classificationpolygon: 'Classification Polygon',
   groundimage: 'groundimage',
-  particlesystem: 'particlesystem',
+  particlesystem: 'ParticleSystem',
+  ParticleSystemFireWork: 'ParticleSystemFireWork',
+  ParticleSystemTails: 'ParticleSystemTails',
   GeoSmoothPolygon: 'GeoSmoothPolygon'
 };
 

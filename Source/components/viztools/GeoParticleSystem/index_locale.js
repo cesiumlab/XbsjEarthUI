@@ -3,11 +3,15 @@ const zh = {
   name: '名称',
   show: '显示',
   creating: '创建',
-  editing: '编辑',
+  positionEditing: '平移',
+  rotationEditing: '旋转',
+  position: '位置',
+  rotation: '角度',
   drag: '拖拽',
-  ground: '贴地',
-  particleSize: '尺寸',
-  emissionrate: '发射速度',
+  startcolor: '开始颜色',
+  endcolor: '结束颜色',
+  particleSize: '尺寸(像素)',
+  emissionrate: '发射速率(个/秒)',
   gravity: '重力加速度',
   minimumParticleLife: '最小存在时间',
   maximumParticleLife: '最大存在时间',
@@ -17,15 +21,9 @@ const zh = {
   endScale: '结束比例',
   lifetime: '存在时间',
   image: '图像',
-  outlineWidth: '边框宽度',
-  outlineShow: '边框显示',
-  outlineColor: '边框颜色',
-  color: '填充颜色',
-  transparency: '透明度',
-  minwidthscale: '宽度比例',
-  dynamicwidthscale: '宽幅比例',
-  arrowmaxheightscale: '箭头高度比例',
-  arrowwingwidthscale: '箭头宽度比例'
+  emitterType: '发射器类型',
+  emitterRadius: '发射器半径',
+  emitterAngle: '发射器弧度'
 };
 
 const en = {
@@ -33,9 +31,13 @@ const en = {
   name: 'name',
   show: 'show',
   creating: 'creating',
-  editing: 'editing',
+  positionEditing: 'positionEditing',
+  rotationEditing: 'rotationEditing',
+  position: 'position',
+  rotation: 'rotation',
+  startcolor: 'startcolor',
+  endcolor: 'endcolor',
   drag: 'drag',
-  ground: 'ground',
   particleSize: 'Size',
   emissionrate: 'Rate',
   gravity: 'gravity',
@@ -47,15 +49,9 @@ const en = {
   endScale: 'endScale',
   lifetime: 'lifetime',
   image: 'image',
-  outlineWidth: 'width',
-  outlineShow: 'outlineShow',
-  outlineColor: 'outlineColor',
-  color: 'color',
-  transparency: 'transparency',
-  minwidthscale: 'minwidthscale',
-  dynamicwidthscale: 'dynamicwidthscale',
-  arrowmaxheightscale: 'arrowmaxheightscale',
-  arrowwingwidthscale: 'arrowwingwidthscale'
+  emitterType: 'emitterType',
+  emitterRadius: 'emitterRadius',
+  emitterAngle: 'emitterAngle'
 };
 
 export default {
