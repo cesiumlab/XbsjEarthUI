@@ -18,7 +18,7 @@
         style="margin-top:5px;"
         v-model="alphadistanceShow"
       >{{lang.frontFaceAlphaByDistance}}</XbsjCheckBox>
-      <input type="text" v-model="frontFaceAlphaByDistancestr" />
+      <input type="text" :disabled="!alphadistanceShow" v-model="frontFaceAlphaByDistancestr" />
     </div>
   </div>
 </template>
@@ -135,5 +135,8 @@ input {
 }
 input:focus {
   outline: 1px solid rgba(31, 255, 255, 1);
+}
+input:disabled {
+  cursor: not-allowed;
 }
 </style>
