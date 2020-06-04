@@ -28,7 +28,7 @@
       style="font-size: 16px;"
     ></XbsjVirtualTree>
 
-    <div style="width:100%;height:30px;position:absolute;left:0;bottom:14px;">
+    <div style="width:100%;height:30px;position:absolute;left:10px;bottom:14px;">
       <span>ref:</span>
       <input :disabled="enabled" type="text" v-model="refvalue" />
     </div>
@@ -684,7 +684,7 @@ export default {
 
 <style scoped>
 input {
-  width: calc(100% - 54px);
+  width: calc(100% - 70px);
   height: 28px;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
