@@ -20,9 +20,18 @@ const zh = {
   yapingzu: "压平组",
   custom: '自定义',
   techonlogy: '科技感',
-  skipLevelOfDetail:'详细级别',
-  maximumMemoryUsage:'内存使用',
-  debugShowBoundingVolume:'调试包围盒',
+  skipLevelOfDetail: '详细级别',
+  maximumMemoryUsage: '最大内存',
+  debugShowBoundingVolume: '调试包围盒',
+  debuginform: '调试信息',
+  totalMemoryUsageInBytes: '总显存',
+  geometryByteLength: '几何体显存',
+  texturesByteLength: '纹理显存',
+  numberOfCommands: '渲染批次',
+  visited: '遍历个数',
+  selected: '显示个数',
+  numberOfTrianglesSelected: '三角面个数',
+  batchTableByteLength: '属性数据长度'
 };
 
 const en = {
@@ -47,10 +56,19 @@ const en = {
   yapingzu: "yapingzu",
   custom: 'Custom',
   techonlogy: 'techonlogy',
-  skipLevelOfDetail:'skipLevelOfDetail',
-  maximumMemoryUsage:'maximumMemoryUsage',
-  debugShowBoundingVolume:'debugShowBoundingVolume',
-
+  skipLevelOfDetail: 'skipLevelOfDetail',
+  maximumMemoryUsage: 'maximumMemoryUsage',
+  debugShowBoundingVolume: 'debugShowBoundingVolume',
+  maximumMemoryUsage: 'maximumMemoryUsage',
+  debuginform: 'debuginform',
+  totalMemoryUsageInBytes: 'totalMemoryUsageInBytes',
+  geometryByteLength: 'geometryByteLength',
+  texturesByteLength: 'texturesByteLength',
+  numberOfCommands: 'numberOfCommands',
+  visited: 'visited',
+  selected: 'selected',
+  numberOfTrianglesSelected: 'numberOfTrianglesSelected',
+  batchTableByteLength: 'batchTableByteLength'
 };
 
 export default { zh, en };

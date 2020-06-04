@@ -155,7 +155,7 @@
           </div>
           <span class="xbsj-item-name">{{lang.techonlogy}}</span>
         </div>
-        <!-- 跳过详细级别 -->
+        <!-- skipLevelOfDetail -->
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn">
             <button
@@ -165,19 +165,7 @@
               :disabled="!enabled"
             ></button>
           </div>
-          <span class="xbsj-item-name">{{lang.skipLevelOfDetail}}</span>
-        </div>
-        <!-- 最大内存使用  -->
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn">
-            <button
-              class="movebutton"
-              :class="maximumMemoryUsage ? 'aximumMemoryActive': ''"
-              @click="maximumMemoryUsage =! maximumMemoryUsage"
-              :disabled="!enabled"
-            ></button>
-          </div>
-          <span class="xbsj-item-name">{{lang.maximumMemoryUsage}}</span>
+          <span class="xbsj-item-name">SkipLOD</span>
         </div>
         <!-- 调试包围盒-->
         <div class="xbsj-item-btnbox">
@@ -185,14 +173,14 @@
             <button
               class="movebutton"
               :class="debugShowBoundingVolume ? 'debugShowBoundingActive' :''"
+              @click="debugShowBoundingVolume = !debugShowBoundingVolume"
               :disabled="!enabled"
-              @click="debugShowBoundingVolume != debugShowBoundingVolume"
             ></button>
           </div>
           <span class="xbsj-item-name">{{lang.debugShowBoundingVolume}}</span>
         </div>
       </div>
-      <div class="xbsj-list-item xbsj-list-lastitem">
+      <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.visible}}</span>
         <div class="xbsj-slide-group">
           <div class="xbsj-slide-top">
@@ -254,6 +242,22 @@
             <span class="xbsj-slide-span">{{imageBasedLightingFactor[1]}}</span>
           </div>
         </div>
+        <div class="xbsj-slide-group">
+          <div class="xbsj-slide-top">
+            <label class="xbsj-slide-label">{{lang.maximumMemoryUsage}}</label>
+            <div class="xbsj-slide-div">
+              <XbsjSlider
+                :min="512"
+                :max="5120"
+                :step="1"
+                v-model="maximumMemoryUsage"
+                :disabled="!enabled"
+                :show-tip="showTip"
+              ></XbsjSlider>
+            </div>
+            <span class="xbsj-slide-span">{{maximumMemoryUsage}}</span>
+          </div>
+        </div>
         <!--  先注释这两块的调整
         <div class="xbsj-slide-group">
           <div class="xbsj-slide-top">
@@ -286,6 +290,49 @@
         </div>
         -->
       </div>
+      <div class="xbsj-list-item xbsj-list-lastitem" v-show="debugShow">
+        <span class="xbsj-list-name">{{lang.debuginform}}</span>
+        <div class="debuglist">
+          <div style="margin-top:26px;">
+            <label>{{lang.totalMemoryUsageInBytes}}</label>
+            <span>{{totalMemoryUsageInBytes}}</span>
+          </div>
+          <div style="margin-top:10px;">
+            <label>{{lang.geometryByteLength}}</label>
+            <span>{{geometryByteLength}}</span>
+          </div>
+        </div>
+        <div class="debuglist">
+          <div style="margin-top:26px;">
+            <label>{{lang.texturesByteLength}}</label>
+            <span>{{texturesByteLength}}</span>
+          </div>
+          <div style="margin-top:10px;">
+            <label>{{lang.numberOfCommands}}</label>
+            <span>{{numberOfCommands}}</span>
+          </div>
+        </div>
+        <div class="debuglist">
+          <div style="margin-top:26px;">
+            <label>{{lang.visited}}</label>
+            <span>{{visited}}</span>
+          </div>
+          <div style="margin-top:10px;">
+            <label>{{lang.selected}}</label>
+            <span>{{selected}}</span>
+          </div>
+        </div>
+        <div class="debuglist">
+          <div style="margin-top:26px;">
+            <label>{{lang.numberOfTrianglesSelected}}</label>
+            <span>{{numberOfTrianglesSelected}}</span>
+          </div>
+          <div style="margin-top:10px;">
+            <label>{{lang.batchTableByteLength}}</label>
+            <span>{{batchTableByteLength}}</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -304,6 +351,7 @@ export default {
       ssePower: 4,
       maximumScreenSpaceError: 16,
       luminanceAtZenith: 0.2, // Cesium 1.62以后默认值变成了0.2！
+      maximumMemoryUsage: 512,
       imageBasedLightingFactor: [1.0, 1.0],
       // lightColorOne: 1,
       lightColor: [1, 1, 1],
@@ -326,12 +374,27 @@ export default {
       customBtns: [],
       technologyShader: false,
       skipLevelOfDetail: false,
-      maximumMemoryUsage: false,
-      debugShowBoundingVolume: false
+      debugShowBoundingVolume: false,
+      totalMemoryUsageInBytes: 0,
+      geometryByteLength: 0,
+      texturesByteLength: 0,
+      numberOfCommands: 0,
+      visited: 0,
+      selected: 0,
+      numberOfTrianglesSelected: 0,
+      batchTableByteLength: 0,
+      timer: "",
+      debugShow: false
     };
   },
   created() {},
   mounted() {
+    this.timer = setInterval(() => {
+      const csn = this.$root.$earth.sceneTree.currentSelectedNode;
+      if (csn && csn.czmObject && csn.czmObject instanceof XE.Obj.Tileset) {
+        this.getDebugData(csn.czmObject);
+      }
+    }, 2000);
     this.$nextTick(() => {
       this._unBinds = [];
       this._unBinds.push(
@@ -339,8 +402,11 @@ export default {
           const csn = this.$root.$earth.sceneTree.currentSelectedNode;
           if (csn && csn.czmObject && csn.czmObject instanceof XE.Obj.Tileset) {
             this.setTileset(csn.czmObject);
+            this.debugShow = true;
+            this.getDebugData(csn.czmObject);
           } else {
             this.setTileset(undefined);
+            this.debugShow = false;
           }
         })
       );
@@ -376,8 +442,24 @@ export default {
       this._unBinds.forEach(u => u());
       this._unBinds.length = 0;
     }
+
+    clearInterval(this.timer);
   },
   methods: {
+    getDebugData(czmObject) {
+      this.totalMemoryUsageInBytes = czmObject._tileset.totalMemoryUsageInBytes;
+      this.geometryByteLength =
+        czmObject._tileset.statistics.geometryByteLength;
+      this.texturesByteLength =
+        czmObject._tileset.statistics.texturesByteLength;
+      this.numberOfCommands = czmObject._tileset.statistics.numberOfCommands;
+      this.visited = czmObject._tileset.statistics.visited;
+      this.selected = czmObject._tileset.statistics.selected;
+      this.numberOfTrianglesSelected =
+        czmObject._tileset.statistics.numberOfTrianglesSelected;
+      this.batchTableByteLength =
+        czmObject._tileset.statistics.batchTableByteLength;
+    },
     // 打开实例模型属性窗口
     forestbtn() {
       var forest = new XE.Obj.Forest(this.$root.$earth);
@@ -523,8 +605,8 @@ export default {
           this._bind("xbsjUseOriginTransform");
           this._bind("rotationEditing");
           this._bind("skipLevelOfDetail");
-          this._bind("maximumMemoryUsage");
           this._bind("debugShowBoundingVolume");
+          this._bind("maximumMemoryUsage");
         }
       }
 
@@ -693,12 +775,14 @@ export default {
 }
 
 .aximumMemoryActive {
-  background-color: pink;
+  background: url(../../../../images/move_on.png) no-repeat;
+  background-size: contain;
   cursor: pointer;
 }
 
 .debugShowBoundingActive {
-  background-color: pink;
+  background: url(../../../../images/move_on.png) no-repeat;
+  background-size: contain;
   cursor: pointer;
 }
 
@@ -795,7 +879,8 @@ export default {
 }
 
 .skipLevelActive {
-  background-color: pink;
+  background: url(../../../../images/move_on.png) no-repeat;
+  background-size: contain;
   cursor: pointer;
 }
 
@@ -953,6 +1038,19 @@ select::-ms-expand {
 
 .xbsj-tileset-selectOption li:hover {
   background: rgba(107, 107, 107, 1);
+}
+
+.debuglist div {
+  display: flex;
+}
+.debuglist label {
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+}
+.debuglist span {
+  display: inline-block;
+  margin-left: 10px;
 }
 </style>
 
