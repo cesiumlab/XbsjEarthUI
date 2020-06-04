@@ -19,12 +19,15 @@ const zh = {
   transparent: "地表不透明",
   tocolor: "着色",
   wireFrame: "三角网",
-  show:'显示地球',
-  enableLighting:'地形光照',
-  tailoring:'地形裁剪',
-  redraw:'重新绘制',
-  edit:'编辑',
-  borehole:'挖孔'
+  show: '显示地球',
+  enableLighting: '地形光照',
+  tailoring: '地形裁剪',
+  redraw: '重新绘制',
+  edit: '编辑',
+  borehole: '挖孔',
+  globeTranslucency: '地表透明',
+  frontFaceAlpha: '正面透明度',
+  frontFaceAlphaByDistance: '近点远点'
 };
 
 const en = {
@@ -49,12 +52,15 @@ const en = {
   kuazhang: "kuazhang",
   tocolor: "Shade",
   wireFrame: "Wireframe",
-  show:'Show',
-  enableLighting:'Lighting',
-  tailoring:'Tailoring',
-  redraw:'Redraw',
-  edit:'Edit',
-  borehole:'Borehole'
+  show: 'Show',
+  enableLighting: 'Lighting',
+  tailoring: 'Tailoring',
+  redraw: 'Redraw',
+  edit: 'Edit',
+  borehole: 'Borehole',
+  globeTranslucency: 'globeTranslucency',
+  frontFaceAlpha: 'frontFaceAlpha',
+  frontFaceAlphaByDistance: 'alphaByDistance'
 };
 
 export default { zh, en };

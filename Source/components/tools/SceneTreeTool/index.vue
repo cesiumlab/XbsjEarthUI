@@ -27,6 +27,11 @@
       @on-item-canmove="canMoveItem"
       style="font-size: 16px;"
     ></XbsjVirtualTree>
+
+    <div style="width:100%;height:30px;position:absolute;left:10px;bottom:14px;">
+      <span>ref:</span>
+      <input :disabled="enabled" type="text" v-model="refvalue" />
+    </div>
   </Window>
 </template>
 
@@ -168,6 +173,8 @@ export default {
       ],
       canmove: true,
       checkBoxShow: true,
+      refvalue: "",
+      enabled: true,
       langs: {
         zh: {
           confirm: "确认删除图层?",
@@ -222,6 +229,23 @@ export default {
   created() {},
   mounted() {
     this.setSceneTree(this.$root.$earth.sceneTree);
+    this.$nextTick(() => {
+      XE.MVVM.watch(
+        () => {
+          return this.$root.$earth.sceneTree.currentSelectedNode;
+        },
+        () => {
+          const csn = this.$root.$earth.sceneTree.currentSelectedNode;
+          this._refUnbind = this._refUnbind && this._refUnbind();
+          if (csn) {
+            this._refUnbind = XE.MVVM.bind(this, "refvalue", csn, "ref");
+            this.enabled = false;
+          } else {
+            this.enabled = true;
+          }
+        }
+      );
+    });
   },
   methods: {
     onContexMenu() {
@@ -659,4 +683,20 @@ export default {
 </script>
 
 <style scoped>
+input {
+  width: calc(100% - 70px);
+  height: 28px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  border: none;
+  color: #dddddd;
+  padding: 0 10px;
+  margin-left: 2px;
+}
+input:focus {
+  outline: 1px solid rgba(31, 255, 255, 1);
+}
+input:disabled {
+  cursor: not-allowed;
+}
 </style>

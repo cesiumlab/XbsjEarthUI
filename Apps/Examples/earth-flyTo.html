@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>flyTo和flyAround</title>
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .checkbox {
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .curvearrow {
+            width: 20px;
+            height: 16px;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 38px;
+            padding: 0 10px;
+            line-height: 38px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
+            cursor: pointer;
+            margin-bottom: 4px;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+
+        .btnon {
+            background-color: #1E9FFF;
+            color: #fff;
+            border: 1px solid #1E9FFF;
+        }
+
+        .colorbox {
+            width: 50px;
+        }
+
+        input {
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div style="position: absolute; left: 18px; top: 18px">
+                        <button @click="flyToShanghai()" style="padding:8px 12px;">{{ but1 }}</button>
+                        <button @click="flyToShanghai2()" style="padding:8px 12px">{{ but2 }}</button>
+                        <button @click="flyToShanghai3()" style="padding:8px 12px;">{{ but3 }}</button></br>
+                        <button @click="flyToShanghai4()" style="padding:8px 12px;margin-top:10px;">{{ but4 }}</button>
+                        <button @click="flyAroundShanghai5() " style="padding:8px 12px;margin-top:10px;">{{ but5 }}</button>
+                    </div>
+                </div>
+            `,
+            data() {
+                return {
+                    but1: '飞到位置',
+                    but2: '飞到距位置近',
+                    but3: '飞到距位置远',
+                    but4: '飞到位置且有相机飞入后的姿态控制',
+                    but5: '飞到位置且可以控制相机姿态与飞入的时间',
+
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    _bgImagery: undefined,
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                // 1.1.2 添加默认地球影像
+                earth.sceneTree.root = {
+                    "children": [{
+                            "czmObject": {
+                                "xbsjType": "Imagery",
+                                "xbsjGuid": "e450b8c6-a4da-4a68-83c4-c373ce23b84a",
+                                "name": "谷歌影像",
+                                "xbsjImageryProvider": {
+                                    "XbsjImageryProvider": {
+                                        "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}",
+                                        "srcCoordType": "GCJ02"
+                                    },
+                                    "UrlTemplateImageryProvider": {},
+                                    "WebMapTileServiceImageryProvider": {},
+                                    "createTileMapServiceImageryProvider": {}
+                                }
+                            }
+                        },
+                        {
+                            "czmObject": {
+                                "xbsjType": "Pin",
+                                "xbsjGuid": "9d5c14d6-5139-483b-acc6-535f2ad92bdf",
+                                "name": "图标点",
+                                "position": [
+                                    2.125887863999793,
+                                    0.5437270241157011,
+                                    0
+                                ],
+                                "pinBuilder": {},
+                                "far": 1073741824
+                            }
+                        }
+                    ]
+                };
+
+                this._earth = earth;
+
+                // 仅为调试方便用
+                window.earth = earth;
+            },
+            methods: {
+                /**
+                 * 相机飞入
+                 * @param {number[]} position 目标位置, 形式如：[经度, 纬度, 高度] 其中经纬度的单位是弧度，高度的单位是米。
+                 * @param {number} [viewDistance] 距离目标多远距离时停下，默认为0，即直接飞到目标点处，单位是米。
+                 * @param {number[]} [rotation] 相机飞入后的姿态控制，从什么角度观察目标，形式如: [偏航角, 俯仰角, 翻转角], 单位是弧度。
+                 * @param {number} [duration] 飞行持续时间，如果是0，则直接跳转，单位是秒。
+                 */
+
+                // 示例1
+                // 相机直接飞入上海(21.8044028, 180, 31.1532636,352.85)的位置，高度100米。相机位于目标点上。
+                flyToShanghai() { //只有位置
+                    earth.camera.flyTo([121.8044028 * Math.PI / 180, 31.1532636 * Math.PI / 180, 352.85]);
+                },
+                // 示例2
+                // 相机直接飞向上海(21.8044028, 180, 31.1532636,352.85)的位置，高度100米的目标，再距离目标点1000米的距离停下来，此时目标点刚好位置屏幕中心位置。
+                flyToShanghai2() {
+                    earth.camera.flyTo([121.8044028 * Math.PI / 180, 31.1532636 * Math.PI / 180, 352.85], 10000);
+                },
+                flyToShanghai3() {
+                    earth.camera.flyTo([121.8044028 * Math.PI / 180, 31.1532636 * Math.PI / 180, 352.85], 50000);
+                },
+
+                /*
+                    示例3
+                    相机直接飞向北京(116.39, 39.9)的位置，高度100米的目标，再距离目标点1000米的距离停下来，此时目标点刚好位置屏幕中心位置。
+                    同时相机的方向是正东向，向下倾斜30度。
+                    相机方向是这样的 朝北是0度，朝东是90度，朝南是180度，朝西是270度。抬头看天的俯仰角是90度，俯视地面是-90度。
+                    特别说明：
+                    注意示例中使用度数是方便理解，实际使用时，需要转换成弧度（乘上Math.PI/180)
+                    为了和Cesium保持一致(Cartographic，Cartesian)，EarthSDK里面凡是涉及到角度的单位一律用弧度，凡是使用长度的单位一律用米。
+                    实际上计算机地层中关于角度的计算都是使用弧度的，比如JS中的Math.cos/Math.sin等所有的角度计算操作。
+                */
+                flyToShanghai4() {
+                    earth.camera.flyTo([121.8044028 * Math.PI / 180, 31.1532636 * Math.PI / 180, 352.85], 10000, [
+                        360.0 * Math.PI / 180, -90 * Math.PI / 180, 0
+                    ]);
+                },
+
+
+                /**
+                 * 相机环绕飞行
+                 * @param {number[]} position 目标位置, 形式如：[经度, 纬度, 高度] 其中经纬度的单位是弧度，高度的单位是米。
+                 * @param {number} [viewDistance] 环绕距离，默认为当前相机到目标点距离, 单位是米。
+                 * @param {number[]} [rotation] 相机飞入后的姿态控制，从什么角度观察目标，形式如: [偏航角, 俯仰角, 翻转角], 单位是弧度。
+                 * @param {number} [flyToDuration] 环绕飞行之前飞向目标代理的时间，如果是0，则直接跳转，默认为3秒
+                 * @param {number} [aroundSpeed] 环绕速度，单位是弧度/秒
+                 */
+                flyAroundShanghai5() {
+                    earth.camera.flyTo([121.8044028 * Math.PI / 180, 31.1532636 * Math.PI / 180, 352.85], 10000, [
+                        360.0 * Math.PI / 180, -90 * Math.PI / 180, 0
+                    ], 10, 3);
+                }
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>

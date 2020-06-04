@@ -59,8 +59,13 @@ const zh = {
   polygonImage: '立面贴图',
   surface: '填充面',
   polygonStretch: '多边形',
+  flatarrow: '平尾箭头',
   classificationpolygon: '单体化',
-  groundimage: '贴地图像'
+  groundimage: '贴地图像',
+  particlesystem: '粒子',
+  ParticleSystemFireWork: '粒子烟火',
+  ParticleSystemTails: '粒子喷射',
+  GeoSmoothPolygon: '平滑多边形'
 };
 
 const en = {
@@ -124,8 +129,13 @@ const en = {
   polygonImage: 'polygon Image',
   surface: 'Surface',
   polygonStretch: 'Polygon',
+  flatarrow: 'Flatarrow',
   classificationpolygon: 'Classification Polygon',
-  groundimage: 'groundimage'
+  groundimage: 'groundimage',
+  particlesystem: 'ParticleSystem',
+  ParticleSystemFireWork: 'ParticleSystemFireWork',
+  ParticleSystemTails: 'ParticleSystemTails',
+  GeoSmoothPolygon: 'GeoSmoothPolygon'
 };
 
 export default { zh, en };

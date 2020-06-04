@@ -175,6 +175,19 @@
           </div>
           <span class="xbsj-item-name">{{lang.transparent}}</span>
         </div>
+        <div class="xbsj-item-btnbox ml20">
+          <div
+            class="xbsj-item-btn globeTranslucencybutton"
+            @click="globeTranslucencyShow=!globeTranslucencyShow"
+            :class="{highlight:globeTranslucencyShow}"
+          ></div>
+          <span class="xbsj-item-name">{{lang.globeTranslucency}}</span>
+        </div>
+        <span
+          class="xbsj-select"
+          :class="{highlight:popup == 'globeTranslucency'}"
+          @click.stop="togglePopup('globeTranslucency',$event)"
+        ></span>
       </div>
     </div>
     <Elevation ref="elevation" v-show="popup =='elevation'"></Elevation>
@@ -182,6 +195,7 @@
     <Slope ref="slope" v-show="popup =='slope'"></Slope>
     <Contour ref="contour" v-show="popup =='contour'"></Contour>
     <Tailoring ref="tailoring" v-show="popup =='tailoring'"></Tailoring>
+    <GlobeTranslucency ref="globeTranslucency" v-show="popup =='globeTranslucency'"></GlobeTranslucency>
   </div>
 </template>
 
@@ -193,19 +207,21 @@ import Aspect from "./Aspect";
 import Slope from "./Slope";
 import Contour from "./Contour";
 import Tailoring from "./Tailoring";
+import GlobeTranslucency from "./GlobeTranslucency";
 
 import { addOutterEventListener } from "../../../utils/xbsjUtil";
 
 export default {
-  props:["labServiceUI","cloudServiceUI"],
+  props: ["labServiceUI", "cloudServiceUI"],
   components: {
     Elevation,
     Slope,
     Aspect,
     Contour,
-    Tailoring
+    Tailoring,
+    GlobeTranslucency
   },
-  data () {
+  data() {
     return {
       showTip: "never",
       lang: {},
@@ -223,11 +239,12 @@ export default {
       langs: languagejs,
       globeShow: true,
       tailoringShow: false,
+      globeTranslucencyShow: false,
       enableLighting: false
     };
   },
-  created () {},
-  mounted () {
+  created() {},
+  mounted() {
     //给所有popup的el上添加外部事件
     Object.keys(this.$refs).forEach(key => {
       addOutterEventListener(this.$refs[key].$el, "mousedown", el => {
@@ -319,6 +336,15 @@ export default {
       this.unbind.push(
         XE.MVVM.bind(
           this,
+          "globeTranslucencyShow",
+          this.$root.$earth.terrainEffect.globeTranslucency,
+          "enabled"
+        )
+      );
+
+      this.unbind.push(
+        XE.MVVM.bind(
+          this,
           "enableLighting",
           this.$root.$earth.terrainEffect,
           "enableLighting"
@@ -327,13 +353,13 @@ export default {
     });
 
     let tailoringbutton = this.$refs.tailoringbutton;
-    function handleDragOver (e) {
+    function handleDragOver(e) {
       e.stopPropagation();
       e.preventDefault();
     }
 
     var that = this;
-    function handleFileSelect (e) {
+    function handleFileSelect(e) {
       // e.stopPropagation();
       e.preventDefault();
       let obj = e.dataTransfer.getData("obj");
@@ -345,7 +371,7 @@ export default {
         arr[j].pop();
       }
       arr = arr.toString().split(",");
-      arr = arr.map(function (el) {
+      arr = arr.map(function(el) {
         return +el;
       });
 
@@ -358,11 +384,11 @@ export default {
     tailoringbutton.addEventListener("drop", handleFileSelect, false);
   },
   methods: {
-    contoure () {
+    contoure() {
       this.$root.$earth.terrainEffect.contour.enabled = !this.$root.$earth
         .terrainEffect.contour.enabled;
     },
-    elevationRamp () {
+    elevationRamp() {
       let te = this.$root.$earth.terrainEffect;
       if (te.shading && te.shading != te.elevation) {
         te.shading.enabled = false;
@@ -371,7 +397,7 @@ export default {
         te.elevation.enabled = !te.elevation.enabled;
       }
     },
-    slopeRamp () {
+    slopeRamp() {
       let te = this.$root.$earth.terrainEffect;
       if (te.shading && te.shading != te.slope) {
         te.shading.enabled = false;
@@ -380,7 +406,7 @@ export default {
         te.slope.enabled = !te.slope.enabled;
       }
     },
-    aspectRamp () {
+    aspectRamp() {
       let te = this.$root.$earth.terrainEffect;
       if (te.shading && te.shading != te.aspect) {
         te.shading.enabled = false;
@@ -389,21 +415,21 @@ export default {
         te.aspect.enabled = !te.aspect.enabled;
       }
     },
-    getPopupComp () {
+    getPopupComp() {
       if (this.$refs.hasOwnProperty(this.popup)) {
         return this.$refs[this.popup];
       } else {
         return undefined;
       }
     },
-    showPopup (v) {
+    showPopup(v) {
       let comp = this.getPopupComp();
       if (comp && typeof comp.show == "function") {
         comp.show(v);
       }
       return comp;
     },
-    togglePopup (p, event) {
+    togglePopup(p, event) {
       //调用上一个组件的隐藏
       this.showPopup(false);
 
@@ -430,7 +456,7 @@ export default {
         console.log(ex);
       }
     },
-    startMove (event) {
+    startMove(event) {
       //如果事件的目标不是本el 返回
       if (event.target.parentElement !== this.$refs.container) {
         this.moving = false;
@@ -438,7 +464,7 @@ export default {
       }
       this.moving = true;
     },
-    onMoving (event) {
+    onMoving(event) {
       //获取鼠标和为开始位置的插值，滚动滚动条
       if (!this.moving) return;
 
@@ -448,11 +474,11 @@ export default {
         dom.scrollLeft = wleft;
       }
     },
-    endMove (envent) {
+    endMove(envent) {
       this.moving = false;
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     for (let i = 0; i < this.unbind.length; i++) {
       var ud = this.unbind[i];
       ud();
@@ -478,6 +504,18 @@ export default {
 .tailoringbutton.highlight,
 .tailoringbutton:hover {
   background: url(../../../../images/tailoring_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.globeTranslucencybutton {
+  background: url(../../../../images/globeTranslucency.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.globeTranslucencybutton.highlight,
+.globeTranslucencybutton:hover {
+  background: url(../../../../images/globeTranslucency_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }

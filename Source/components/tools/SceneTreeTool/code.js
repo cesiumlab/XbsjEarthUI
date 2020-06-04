@@ -1,34 +1,34 @@
 import { deflate, inflate } from "pako";
 
-function base64ToString (base64String) {
-  var jsonString = inflate(atob(base64String), { raw: true, to: "string" });
-  return jsonString;
+function base64ToString(base64String) {
+    var jsonString = inflate(atob(base64String), { raw: true, to: "string" });
+    return jsonString;
 }
 
-function stringToBase64 (data) {
-  var base64String = btoa(deflate(data, { raw: true, to: "string", level: 9 }));
-  return base64String;
+function stringToBase64(data) {
+    var base64String = btoa(deflate(data, { raw: true, to: "string", level: 9 }));
+    return base64String;
 }
 
-function getCodeUrl (code) {
-  const json = {
-    code
-  };
+function getCodeUrl(code) {
+    const json = {
+        code
+    };
 
-  const jsonStr = JSON.stringify(json);
-  const base64 = stringToBase64(jsonStr);
-  const base64Encode = encodeURIComponent(base64);
-  const url =
-    "//www.earthsdk.com/v/last/Apps/Examples/" + `?code=${base64Encode}`;
-  console.log(url);
-  return url;
+    const jsonStr = JSON.stringify(json);
+    const base64 = stringToBase64(jsonStr);
+    const base64Encode = encodeURIComponent(base64);
+    const url =
+        "//www.earthsdk.com/v/last/Apps/Examples/" + `?code=${base64Encode}`;
+    console.log(url);
+    return url;
 }
 
-function getCode (jsonObject) {
-  let jsonStr = JSON.stringify(jsonObject, undefined, "    ");
-  jsonStr = jsonStr.replace(/\n/g, '\n                    ');
+function getCode(jsonObject) {
+    let jsonStr = JSON.stringify(jsonObject, undefined, "    ");
+    jsonStr = jsonStr.replace(/\n/g, '\n                    ');
 
-  const code = `<!DOCTYPE html>
+    const code = `<!DOCTYPE html>
     <html lang="zh-CN">
     
     <head>
@@ -63,8 +63,9 @@ function getCode (jsonObject) {
                 const p1 = XE.HTML.loadJS('../../XbsjEarth-Plugins/plottingSymbol/plottingSymbol.js');
                 const p2 = XE.HTML.loadJS('../../XbsjEarth-Plugins/customPrimitive/customPrimitive.js');
                 const p3 = XE.HTML.loadJS('../../XbsjEarth-Plugins/customPrimitiveImage/customPrimitiveImage.js');
+                const p5 = XE.HTML.loadJS('../../XbsjEarth-Plugins/plottingSymbol2/plottingSymbol2.js');
                 const p4 = XE.HTML.loadJS('//earthsdk.com/v/last/Apps/Demos/Viewer/scripts/three.min.js'); // 部分图元需要加载three.js
-                return Promise.all([p1, p2, p3]);
+                return Promise.all([p1, p2, p3, p5]);
             }).then(() => {
                 startup()
             });
@@ -74,15 +75,15 @@ function getCode (jsonObject) {
     </html>
 `;
 
-  return code;
+    return code;
 }
 
-function getCzmCode (tilesetCzmObj) {
-  const earth = tilesetCzmObj.earth;
-  const ls = tilesetCzmObj.toJSONStr();
-  const lss = ls.replace(/\n/g, '\n                    ');
+function getCzmCode(tilesetCzmObj) {
+    const earth = tilesetCzmObj.earth;
+    const ls = tilesetCzmObj.toJSONStr();
+    const lss = ls.replace(/\n/g, '\n                    ');
 
-  var loadTilesetString = `
+    var loadTilesetString = `
                 // earth加载代码
                 /*
                 earth.sceneTree.root.children.push({
@@ -103,7 +104,7 @@ function getCzmCode (tilesetCzmObj) {
                 viewer.flyTo(tileset);
     `;
 
-  const code = `<!DOCTYPE html>
+    const code = `<!DOCTYPE html>
     <html lang="zh-CN">
     
     <head>
@@ -159,8 +160,9 @@ ${loadTilesetString}
                 const p1 = XE.HTML.loadJS('../../XbsjEarth-Plugins/plottingSymbol/plottingSymbol.js');
                 const p2 = XE.HTML.loadJS('../../XbsjEarth-Plugins/customPrimitive/customPrimitive.js');
                 const p3 = XE.HTML.loadJS('../../XbsjEarth-Plugins/customPrimitiveImage/customPrimitiveImage.js');
+                const p5 = XE.HTML.loadJS('../../XbsjEarth-Plugins/plottingSymbol2/plottingSymbol2.js');
                 const p4 = XE.HTML.loadJS('//earthsdk.com/v/last/Apps/Demos/Viewer/scripts/three.min.js'); // 部分图元需要加载three.js
-                return Promise.all([p1, p2, p3]);
+                return Promise.all([p1, p2, p3, p5]);
             }).then(() => {
                 startup()
             });
@@ -170,20 +172,20 @@ ${loadTilesetString}
     </html>
   `;
 
-  return code;
+    return code;
 }
 
 
-function getCzmImageCode (imageCzmObj) {
+function getCzmImageCode(imageCzmObj) {
 
-  var rect = "";
-  if(imageCzmObj.rectangle !== undefined){
-    rect = `rect = Cesium.Rectangle.fromRadians(${imageCzmObj.rectangle[0]}, 
+    var rect = "";
+    if (imageCzmObj.rectangle !== undefined) {
+        rect = `rect = Cesium.Rectangle.fromRadians(${imageCzmObj.rectangle[0]}, 
         ${imageCzmObj.rectangle[1]}, 
         ${imageCzmObj.rectangle[2]}, 
         ${imageCzmObj.rectangle[3]})`;
-  }
-  var loadTilesetString = `
+    }
+    var loadTilesetString = `
               
               // cesium加载代码
               var viewer = earth.czm.viewer;
@@ -209,7 +211,7 @@ function getCzmImageCode (imageCzmObj) {
               }
   `;
 
-  const code = `<!DOCTYPE html>
+    const code = `<!DOCTYPE html>
   <html lang="zh-CN">
   
   <head>
@@ -265,7 +267,7 @@ ${loadTilesetString}
   </html>
 `;
 
-  return code;
+    return code;
 }
 
 export { getCodeUrl, getCode, getCzmCode, getCzmImageCode };

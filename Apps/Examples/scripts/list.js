@@ -470,6 +470,22 @@ vueApp.examples = [
             {
                 "title": "路径-pin",
                 "url": "./eath-path-pin.html"
+            },
+            {
+                "title": "面状-平尾箭头",
+                "url": "./earth-plane-arrow.html"
+            },
+            // {
+            //     "title":"粒子效果",
+            //     "url":'./earth-particle-effect.html'
+            // },
+            {
+                "title": 'flyTo与flyAround',
+                "url": './earth-flyTo.html'
+            },
+            {
+                'title': '平滑多边形',
+                "url": './earth-smooth-polygon.html'
             }
         ]
     },

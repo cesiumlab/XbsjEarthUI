@@ -94,6 +94,7 @@ import FlattenningTool from "./viztools/FlattenningTool";
 import ClippingPlaneTool from "./viztools/ClippingPlaneTool";
 import WaterTool from "./viztools/WaterTool";
 import PinTool from "./viztools/PinTool";
+import PinDiv from "./viztools/PinDiv";
 import PinPictureTool from "./viztools/PinPictureTool";
 import GroundImageTool from "./viztools/GroundImageTool";
 import PinDivTool from "./viztools/PinDivTool";
@@ -104,6 +105,11 @@ import ForestTool from "./viztools/ForestTool";
 import ModelTool from "./viztools/ModelTool";
 import PolylineTool from "./viztools/PolylineTool";
 import GeoCurveArrow from "./viztools/GeoCurveArrow";
+import GeoFlatArrow from "./viztools/GeoFlatArrow";
+import GeoParticleSystem from "./viztools/GeoParticleSystem";
+import GeoParticleSystemFireWork from "./viztools/GeoParticleSystemFireWork";
+import GeoParticleSystemTails from "./viztools/GeoParticleSystemTails";
+import GeoSmoothPolygon from "./viztools/GeoSmoothPolygon";
 import GeoCurve from "./viztools/GeoCurve";
 import GeoDoubleArrow from "./viztools/GeoDoubleArrow";
 import GeoCircle from "./viztools/GeoCircle";
@@ -155,7 +161,6 @@ import TilesTest from "./tools/TilesTest";
 import GeoPolygonImage from "./viztools/GeoPolygonImage";
 import CesiumDataSource from "./viztools/CesiumDataSource";
 
-
 export default {
   components: {
     StatusBarControl,
@@ -172,6 +177,7 @@ export default {
     ClippingPlaneTool,
     WaterTool,
     PinTool,
+    PinDiv,
     PinPictureTool,
     GroundImageTool,
     PinDivTool,
@@ -198,6 +204,11 @@ export default {
     GeoParallelSearch,
     GeoTriFlag,
     GeoSector,
+    GeoFlatArrow,
+    GeoParticleSystem,
+    GeoParticleSystemFireWork,
+    GeoParticleSystemTails,
+    GeoSmoothPolygon,
     RoadTool,
     WallTool,
     SurfaceTool,
@@ -251,6 +262,7 @@ export default {
         ClippingPlane: "ClippingPlaneTool",
         Water: "WaterTool",
         Pin: "PinTool",
+        GeoPin: "PinDiv",
         PinDivTool: "PinDivTool",
         // Pin: "PinPictureTool",
         Path: "PathTool",
@@ -278,6 +290,11 @@ export default {
         GeoTriFlag: "GeoTriFlag",
         GeoDoubleArrow: "GeoDoubleArrow",
         GeoCircle: "GeoCircle",
+        GeoArrow: "GeoFlatArrow",
+        ParticleSystem: "GeoParticleSystem",
+        ParticleSystemFireWork: "GeoParticleSystemFireWork",
+        ParticleSystemTails: "GeoParticleSystemTails",
+        GeoSmoothPolygon: "GeoSmoothPolygon",
         GeoRectangle: "GeoRectangle",
         GeoCurveFlag: "GeoCurveFlag",
         GeoRightAngleFlag: "GeoRightAngleFlag",
@@ -286,12 +303,12 @@ export default {
         ["CameraView.View"]: "CameraViewPrp",
         ProfileAnalysis: "ProfileAnalysis",
         GroundImage: "GroundImageTool",
-        GeoPin: "PinDivTool",
+        // GeoPin: "PinDivTool",
         TilesTest: "TilesTest",
         CustomPrimitiveExt_Image: "GeoPolygonImage",
-        XbsjGeoJSON:"CesiumDataSource",
-        XbsjKML:"CesiumDataSource",
-        XbsjCzml:"CesiumDataSource"
+        XbsjGeoJSON: "CesiumDataSource",
+        XbsjKML: "CesiumDataSource",
+        XbsjCzml: "CesiumDataSource"
       },
       tools: [
         {
@@ -711,11 +728,15 @@ export default {
         return;
       }
 
+      var guid = czmObject.guid;
+      if (typeof component == "string") {
+        guid += "_" + component;
+      }
       //新建窗口
       this.tools.push({
         component: component,
-        ref: czmObject.guid,
-        guid: czmObject.guid,
+        ref: guid,
+        guid: guid,
         item: () => {
           return czmObject;
         },

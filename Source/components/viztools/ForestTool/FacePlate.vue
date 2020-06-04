@@ -52,6 +52,9 @@ export default {
     if (!this._polygonPoints) {
       this._polygonPoints = this.obj.czmObj._polygon.positions;
     }
+    if (this._polygonPoints.length === 0 || !this._polygonPoints[0].length) {
+      this._polygonPoints = this.obj.czmObj._polyline.positions;
+    }
     // XE.HTML.loadJS("../../../XbsjEarth/thirdParty/turf.min.js")
   },
   methods: {

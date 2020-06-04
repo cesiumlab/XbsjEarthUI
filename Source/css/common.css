@@ -709,6 +709,10 @@
    color: #fff;
  }
 
+ .xbsj-input-number-input:disabled {
+  cursor: not-allowed;
+}
+
  .xbsj-input-number-handler-up-disabled {
    cursor: not-allowed;
  }

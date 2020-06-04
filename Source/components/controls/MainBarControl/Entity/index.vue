@@ -120,6 +120,31 @@
           <div class="xbsj-item-btn classificationpolygonbutton"></div>
           <span class="xbsj-item-name">{{lang.classificationpolygon}}</span>
         </div>
+        <!-- 平尾箭头 -->
+        <div class="xbsj-item-btnbox" @click="FlatArrow">
+          <div class="xbsj-item-btn flatArrowbutton"></div>
+          <span class="xbsj-item-name">{{lang.flatarrow}}</span>
+        </div>
+        <!-- 粒子 -->
+        <div class="xbsj-item-btnbox" @click="ParticleSystem">
+          <div class="xbsj-item-btn particleSystembutton"></div>
+          <span class="xbsj-item-name">{{lang.particlesystem}}</span>
+        </div>
+        <!-- 粒子烟火 -->
+        <div class="xbsj-item-btnbox" @click="ParticleSystemFireWork">
+          <div class="xbsj-item-btn particleSystemFireWorkbutton"></div>
+          <span class="xbsj-item-name">{{lang.ParticleSystemFireWork}}</span>
+        </div>
+        <!-- 粒子喷射 -->
+        <div class="xbsj-item-btnbox" @click="ParticleSystemTails">
+          <div class="xbsj-item-btn particleSystemTailsbutton"></div>
+          <span class="xbsj-item-name">{{lang.ParticleSystemTails}}</span>
+        </div>
+        <!-- 平滑多边形 -->
+        <div class="xbsj-item-btnbox" @click="GeoSmoothPolygon">
+          <div class="xbsj-item-btn smoothPolygonbutton"></div>
+          <span class="xbsj-item-name">{{lang.GeoSmoothPolygon}}</span>
+        </div>
         <!-- 标绘更多 -->
         <!-- <div class="xbsj-item-btnbox" @click="EntityMoreShow=!EntityMoreShow">
           <div class="xbsj-item-btn more"></div>
@@ -601,10 +626,10 @@ export default {
     PolygonImageShow() {
       if (!this.$root.$earth.terrainEffect.depthTest) {
         this.$root.$earthUI.promptInfo(
-          "使用此功能前请先打开深度检测！",
+          "使用此功能需要打开深度检测，已为您自动打开！",
           "warning"
         );
-        return;
+        this.$root.$earth.terrainEffect.depthTest = true;
       }
       var customPrimitive = new XE.Obj.CustomPrimitiveExt.Image(
         this.$root.$earth
@@ -623,6 +648,58 @@ export default {
       polygonStretch.creating = true;
       // console.log(polygonStretch);
       this.$root.$earthUI.showPropertyWindow(polygonStretch);
+    },
+    //平尾箭头
+    FlatArrow() {
+      var flatArrow = new XE.Obj.Plots.GeoArrow(this.$root.$earth);
+      flatArrow.name = "平尾箭头";
+      flatArrow.isCreating = true;
+      flatArrow.creating = true;
+      // console.log(flatArrow);
+      this.$root.$earthUI.showPropertyWindow(flatArrow);
+    },
+    //粒子
+    ParticleSystem() {
+      var particleSystem = new XE.Obj.Plots.ParticleSystem(this.$root.$earth);
+      particleSystem.name = "粒子";
+      particleSystem.isCreating = true;
+      particleSystem.creating = true;
+      // console.log(particleSystem);
+      particleSystem.image = "./assets/smoke.png";
+      this.$root.$earthUI.showPropertyWindow(particleSystem);
+    },
+    //粒子烟火
+    ParticleSystemFireWork() {
+      var particleSystemFireWork = new XE.Obj.Plots.ParticleSystemFireWork(
+        this.$root.$earth
+      );
+      particleSystemFireWork.name = "粒子烟火";
+      particleSystemFireWork.isCreating = true;
+      particleSystemFireWork.creating = true;
+      // console.log(particleSystemFireWork);
+      this.$root.$earthUI.showPropertyWindow(particleSystemFireWork);
+    },
+    //粒子喷射
+    ParticleSystemTails() {
+      var particleSystemTails = new XE.Obj.Plots.ParticleSystemTails(
+        this.$root.$earth
+      );
+      particleSystemTails.name = "粒子喷射";
+      particleSystemTails.isCreating = true;
+      particleSystemTails.creating = true;
+      console.log(particleSystemTails);
+      this.$root.$earthUI.showPropertyWindow(particleSystemTails);
+    },
+    //平滑多边形
+    GeoSmoothPolygon() {
+      var geoSmoothPolygon = new XE.Obj.Plots.GeoSmoothPolygon(
+        this.$root.$earth
+      );
+      geoSmoothPolygon.name = "平滑多边形";
+      geoSmoothPolygon.isCreating = true;
+      geoSmoothPolygon.creating = true;
+      console.log(geoSmoothPolygon);
+      this.$root.$earthUI.showPropertyWindow(geoSmoothPolygon);
     },
     //单体化
     ClassificationPolygon() {
@@ -1047,6 +1124,56 @@ export default {
 }
 .facebutton:hover {
   background: url(../../../../images/face_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.flatArrowbutton {
+  background: url(../../../../images/flatarrow.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.flatArrowbutton:hover {
+  background: url(../../../../images/flatarrow_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.smoothPolygonbutton {
+  background: url(../../../../images/smoothPolygon.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.smoothPolygonbutton:hover {
+  background: url(../../../../images/smoothPolygon_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.particleSystembutton {
+  background: url(../../../../images/particlesystem.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.particleSystembutton:hover {
+  background: url(../../../../images/particlesystem_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.particleSystemFireWorkbutton {
+  background: url(../../../../images/particleSystemFireWork.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.particleSystemFireWorkbutton:hover {
+  background: url(../../../../images/particleSystemFireWork_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.particleSystemTailsbutton {
+  background: url(../../../../images/particleSystemTails.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.particleSystemTailsbutton:hover {
+  background: url(../../../../images/particleSystemTails_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }

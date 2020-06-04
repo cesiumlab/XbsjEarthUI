@@ -282,8 +282,8 @@ export default {
   },
   methods: {
     setViewport(splitX, splitY) {
-      this.splitX = splitX;
-      this.splitY = splitY;
+      this.splitX = splitX/3;
+      this.splitY = splitY/3;
     },
     viewportshow(v) {
       this.viewport = v;

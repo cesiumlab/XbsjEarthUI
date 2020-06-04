@@ -583,9 +583,15 @@ export default {
       if (this.obj) {
         this.objToArr();
       }
-      this._czmObj.evalString = this.evalString;
-      this._czmObj.preUpdateEvalString = this.preUpdateEvalString;
-      this._czmObj.destroyEvalString = this.destroyEvalString;
+      if (this.createcodeShow) {
+        this._czmObj.evalString = this.evalString;
+      }
+      if (this.framecodeShow) {
+        this._czmObj.preUpdateEvalString = this.preUpdateEvalString;
+      }
+      if (this.destorycodeShow) {
+        this._czmObj.destroyEvalString = this.destroyEvalString;
+      }
       if (this.vertexShaderSource) {
         this._czmObj.vertexShaderSource = this.vertexShaderSource;
       }

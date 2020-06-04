@@ -1,0 +1,60 @@
+const zh = {
+  title: '粒子',
+  name: '名称',
+  show: '显示',
+  creating: '创建',
+  positionEditing: '平移',
+  rotationEditing: '旋转',
+  position: '位置',
+  rotation: '角度',
+  drag: '拖拽',
+  startcolor: '开始颜色',
+  endcolor: '结束颜色',
+  particleSize: '尺寸(像素)',
+  emissionrate: '发射速率(个/秒)',
+  gravity: '重力加速度',
+  minimumParticleLife: '最小存在时间',
+  maximumParticleLife: '最大存在时间',
+  minimumSpeed: '最小速度',
+  maximumSpeed: '最大速度',
+  startScale: '初始比例',
+  endScale: '结束比例',
+  lifetime: '存在时间',
+  image: '图像',
+  emitterType: '发射器类型',
+  emitterRadius: '发射器半径',
+  emitterAngle: '发射器弧度'
+};
+
+const en = {
+  title: 'ParticleSystem',
+  name: 'name',
+  show: 'show',
+  creating: 'creating',
+  positionEditing: 'positionEditing',
+  rotationEditing: 'rotationEditing',
+  position: 'position',
+  rotation: 'rotation',
+  startcolor: 'startcolor',
+  endcolor: 'endcolor',
+  drag: 'drag',
+  particleSize: 'Size',
+  emissionrate: 'Rate',
+  gravity: 'gravity',
+  minimumParticleLife: 'Min Life',
+  maximumParticleLife: 'Max Life',
+  minimumSpeed: 'Min Speed',
+  maximumSpeed: 'Max Speed',
+  startScale: 'startScale',
+  endScale: 'endScale',
+  lifetime: 'lifetime',
+  image: 'image',
+  emitterType: 'emitterType',
+  emitterRadius: 'emitterRadius',
+  emitterAngle: 'emitterAngle'
+};
+
+export default {
+  zh,
+  en
+};
