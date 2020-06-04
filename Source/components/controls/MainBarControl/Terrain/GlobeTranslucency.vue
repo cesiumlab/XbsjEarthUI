@@ -14,11 +14,70 @@
       </div>
     </div>
     <div class="row">
+      <label class="label">{{lang.backFaceAlpha}}:</label>
+      <div class="field">
+        <XbsjSlider
+          :min="0"
+          :max="1"
+          :step="0.1"
+          showTip="always"
+          v-model="backFaceAlpha"
+          ref="widthXbsjSlider"
+        ></XbsjSlider>
+      </div>
+    </div>
+    <div class="row">
       <XbsjCheckBox
         style="margin-top:5px;"
-        v-model="alphadistanceShow"
+        v-model="frontAlphadistanceShow"
       >{{lang.frontFaceAlphaByDistance}}</XbsjCheckBox>
-      <input type="text" :disabled="!alphadistanceShow" v-model="frontFaceAlphaByDistancestr" />
+      <input type="text" :disabled="!frontAlphadistanceShow" v-model="frontFaceAlphaByDistancestr" />
+    </div>
+    <div class="row">
+      <XbsjCheckBox
+        style="margin-top:5px;"
+        v-model="backAlphadistanceShow"
+      >{{lang.backFaceAlphaByDistance}}</XbsjCheckBox>
+      <input type="text" :disabled="!backAlphadistanceShow" v-model="backFaceAlphaByDistancestr" />
+    </div>
+    <div class="row">
+      <XbsjCheckBox style="margin-top:5px;" v-model="rectangleShow">{{lang.rectangle}}</XbsjCheckBox>
+    </div>
+    <div class="row">
+      <label class="labelitem">{{lang.west}}:</label>
+      <input
+        class="inputitem"
+        type="text"
+        :disabled="!rectangleShow"
+        v-model.number="rectangleArr[0]"
+      />
+      <span class="spanitem">°</span>
+      <label class="labelitem">{{lang.south}}:</label>
+      <input
+        class="inputitem"
+        type="text"
+        :disabled="!rectangleShow"
+        v-model.number="rectangleArr[1]"
+      />
+      <span class="spanitem">°</span>
+    </div>
+    <div class="row">
+      <label class="labelitem">{{lang.east}}:</label>
+      <input
+        class="inputitem"
+        type="text"
+        :disabled="!rectangleShow"
+        v-model.number="rectangleArr[2]"
+      />
+      <span class="spanitem">°</span>
+      <label class="labelitem">{{lang.north}}:</label>
+      <input
+        class="inputitem"
+        type="text"
+        :disabled="!rectangleShow"
+        v-model.number="rectangleArr[3]"
+      />
+      <span class="spanitem">°</span>
     </div>
   </div>
 </template>
@@ -30,12 +89,19 @@ export default {
     return {
       langs: languagejs,
       frontFaceAlpha: 1,
-      alphadistanceShow: false,
-      frontFaceAlphaByDistancestr: ""
+      backFaceAlpha: 1,
+      frontAlphadistanceShow: false,
+      frontFaceAlphaByDistancestr: "",
+      backAlphadistanceShow: false,
+      backFaceAlphaByDistancestr: "",
+      rectangleShow: false,
+      rectangle: [],
+      rectangleArr: []
     };
   },
   mounted() {
     this.bind("frontFaceAlpha");
+    this.bind("backFaceAlpha");
   },
   methods: {
     bind(prp) {
@@ -51,7 +117,7 @@ export default {
     }
   },
   watch: {
-    alphadistanceShow(val) {
+    frontAlphadistanceShow(val) {
       if (val) {
         this.frontFaceAlphaByDistancestr = "0, 0, 1, 0";
         this.$root.$earth.terrainEffect.globeTranslucency.frontFaceAlphaByDistance = [
@@ -66,7 +132,7 @@ export default {
       }
     },
     frontFaceAlphaByDistancestr(val) {
-      if (this.alphadistanceShow) {
+      if (this.frontAlphadistanceShow) {
         var frontFaceAlphaByDistanceArr = this.frontFaceAlphaByDistancestr.split(
           ","
         );
@@ -74,6 +140,57 @@ export default {
           Number
         );
       }
+    },
+    backAlphadistanceShow(val) {
+      if (val) {
+        this.backFaceAlphaByDistancestr = "0, 0, 1, 0";
+        this.$root.$earth.terrainEffect.globeTranslucency.backFaceAlphaByDistance = [
+          0,
+          0,
+          1,
+          0
+        ];
+      } else {
+        this.$root.$earth.terrainEffect.globeTranslucency.backFaceAlphaByDistance = undefined;
+        this.backFaceAlphaByDistancestr = "";
+      }
+    },
+    backFaceAlphaByDistancestr(val) {
+      if (this.backAlphadistanceShow) {
+        var backFaceAlphaByDistanceArr = this.backFaceAlphaByDistancestr.split(
+          ","
+        );
+        this.$root.$earth.terrainEffect.globeTranslucency.backFaceAlphaByDistance = backFaceAlphaByDistanceArr.map(
+          Number
+        );
+      }
+    },
+    rectangleShow(val) {
+      if (val) {
+        this.rectangleArr = [-180, -90, 180, 90];
+        this.$root.$earth.terrainEffect.globeTranslucency.rectangle = [
+          -Math.PI,
+          -Math.PI * 0.5,
+          Math.PI,
+          Math.PI * 0.5
+        ];
+      } else {
+        this.rectangleArr = [];
+        this.$root.$earth.terrainEffect.globeTranslucency.rectangle = undefined;
+      }
+    },
+    rectangleArr: {
+      handler(n, o) {
+        if (this.rectangleShow) {
+          this.$root.$earth.terrainEffect.globeTranslucency.rectangle = [
+            (n[0] * Math.PI) / 180,
+            (n[1] * Math.PI) / 180,
+            (n[2] * Math.PI) / 180,
+            (n[3] * Math.PI) / 180
+          ];
+        }
+      },
+      deep: true
     }
   },
   beforeDestroy() {
@@ -94,8 +211,8 @@ export default {
   color: #1fffff !important;
 }
 .popup {
-  width: 254px;
-  height: 128px;
+  width: 278px;
+  height: 270px;
 }
 .popup button {
   height: 28px;
@@ -138,5 +255,17 @@ input:focus {
 }
 input:disabled {
   cursor: not-allowed;
+}
+.labelitem {
+  line-height: 28px;
+  margin-right: 6px;
+}
+.inputitem {
+  width: 74px;
+  margin-right: 18px;
+}
+.spanitem {
+  margin-left: -16px;
+  margin-right: 26px;
 }
 </style>
