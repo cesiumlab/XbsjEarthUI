@@ -171,7 +171,7 @@
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn">
             <button
-              class="movebutton"
+              class="debugShowBoundingVolumebutton"
               :class="debugShowBoundingVolume ? 'debugShowBoundingActive' :''"
               @click="debugShowBoundingVolume = !debugShowBoundingVolume"
               :disabled="!enabled"
@@ -774,6 +774,18 @@ export default {
   cursor: pointer;
 }
 
+.debugShowBoundingVolumebutton {
+  background: url(../../../../images/debugShowBoundingVolume.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.debugShowBoundingVolumebutton.highlight,
+.debugShowBoundingVolumebutton:hover {
+  background: url(../../../../images/debugShowBoundingVolume_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
 .aximumMemoryActive {
   background: url(../../../../images/move_on.png) no-repeat;
   background-size: contain;
@@ -781,7 +793,7 @@ export default {
 }
 
 .debugShowBoundingActive {
-  background: url(../../../../images/move_on.png) no-repeat;
+  background: url(../../../../images/debugShowBoundingVolume_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
@@ -847,13 +859,21 @@ export default {
   cursor: not-allowed;
 }
 
+.debugShowBoundingVolumebutton:disabled {
+  background: url(../../../../images/debugShowBoundingVolume_disabled.png)
+    no-repeat;
+  background-size: contain;
+  cursor: not-allowed;
+}
+
 .fenleititlesbutton,
 .fenleiterrainbutton,
 .stylebutton,
 .movebutton,
 .rotatebutton,
 .techonlogybutton,
-.custombutton {
+.custombutton,
+.debugShowBoundingVolumebutton {
   width: 100%;
   height: 100%;
   border: none;
