@@ -125,7 +125,7 @@
             <XbsjSlider
               :min="0.1"
               :max="29.1"
-              :step="1.0"
+              :step="0.1"
               showTip="always"
               v-model="model.minimumParticleLife"
             ></XbsjSlider>
@@ -137,7 +137,7 @@
             <XbsjSlider
               :min="0.1"
               :max="29.1"
-              :step="1.0"
+              :step="0.1"
               showTip="always"
               v-model="model.maximumParticleLife"
             ></XbsjSlider>

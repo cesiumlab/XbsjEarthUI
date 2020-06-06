@@ -148,6 +148,10 @@ vueApp.examples = [
                 "url": "./earth-effect-SunMoonSkyBox.html"
             },
             {
+                "title": "flyTo和flyAround",
+                "url": "./earth-flyTo.html"
+            },
+            {
                 "title": "强制光照",
                 "url": "./earth-forceSunPos.html"
             },
@@ -286,6 +290,18 @@ vueApp.examples = [
             {
                 "title": "OD线集群-中国航班线路",
                 "url": "./earth-odlines-flight-lines.html"
+            },
+            {
+                "title": "粒子系统",
+                "url": "./earth-particle-system.html"
+            },
+            {
+                "title": "粒子烟火",
+                "url": "./earth-particle-systemFireWork.html"
+            },
+            {
+                "title": "粒子喷射",
+                "url": "./earth-particle-systemTails.html"
             },
             {
                 "title": "路径-环球飞行",
@@ -470,22 +486,6 @@ vueApp.examples = [
             {
                 "title": "路径-pin",
                 "url": "./eath-path-pin.html"
-            },
-            {
-                "title": "面状-平尾箭头",
-                "url": "./earth-plane-arrow.html"
-            },
-            {
-                "title": "粒子效果",
-                "url": './earth-particle-effect.html'
-            },
-            {
-                "title": 'flyTo与flyAround',
-                "url": './earth-flyTo.html'
-            },
-            {
-                'title': '平滑多边形',
-                "url": './earth-smooth-polygon.html'
             }
         ]
     },
@@ -495,6 +495,14 @@ vueApp.examples = [
             {
                 "title": "创建地球-背景透明",
                 "url": "./earth-bgtransparent.html"
+            },
+            {
+                "title": "面状-单箭头",
+                "url": "./earth-plane-arrow.html"
+            },
+            {
+                "title": "面状-平滑多边形",
+                "url": "./earth-smooth-polygon.html"
             },
             {
                 "title": "数据双向绑定-理论模型",
