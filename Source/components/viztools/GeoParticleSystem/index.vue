@@ -1,8 +1,8 @@
 <template>
   <Window
-    :width="590"
+    :width="596"
     :minWidth="582"
-    :height="598"
+    :height="630"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -51,6 +51,15 @@
             @click="model.rotationEditing =!model.rotationEditing"
             :class="model.rotationEditing?'btncoloron':''"
           >{{lang.rotationEditing}}</button>
+        </div>
+      </div>
+      <div class="flatten-flex">
+        <label>{{lang.type}}</label>
+        <!-- 烟雾状 -->
+        <div class="buttonGroup">
+          <button class="attitudeEditCameraButton" @click="toBeSmoke">{{lang.smoke}}</button>
+          <!-- 喷泉状 -->
+          <button class="attitudeEditCameraButton" @click="toBeFountain">{{lang.fountain}}</button>
         </div>
       </div>
       <div class="flatten-flex">
@@ -356,6 +365,12 @@ export default {
     }
   },
   methods: {
+    toBeSmoke() {
+      this._czmObj.toBeSmoke();
+    },
+    toBeFountain() {
+      this._czmObj.toBeFountain();
+    },
     selectinput() {
       this.showEmitterSelect = !this.showEmitterSelect;
     },

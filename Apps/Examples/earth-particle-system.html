@@ -81,6 +81,9 @@
                                 <div class="defultbtn" :class="{'btnon':creating}"  @click="creating = !creating">创建</div>
                                 <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':positionEditing}"  @click="positionEditing = !positionEditing">平移</div>
                                 <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':rotationEditing}"  @click="rotationEditing = !rotationEditing">旋转</div><br/>
+                                <span>粒子类型：</span>
+                                <div class="defultbtn" @click="toBeSmoke">烟雾状</div>
+                                <div class="defultbtn" @click="toBeFountain">喷泉状</div>
                                 <div style="display:flex;">
                                     <div style="display:flex;flex-direction:column;margin-right:30px;">
                                         <span>起始透明度: {{ startColor[3] }}</span>
@@ -264,9 +267,14 @@
                 //only for debug
                 window.earth = earth;
                 window.particleSystem = particleSystem;
-                window.viewer = earth.czm.viewer;
             },
             methods: {
+                toBeSmoke() {
+                    particleSystem.toBeSmoke();
+                },
+                toBeFountain() {
+                    particleSystem.toBeFountain();
+                },
                 startColorchange(event) {
                     var startColor = event.target.value;
                     particleSystem.startColor = startColor.xeColor;

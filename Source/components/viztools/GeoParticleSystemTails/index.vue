@@ -54,22 +54,13 @@
         </div>
       </div>
       <!-- 类型(分别看起来像彗星的彗尾和火箭的喷射) -->
-      <div class="flatten" style="display:flex;">
-        <div style="position: relative;">
-          <label>{{lang.type}}</label>
-          <input
-            type="text"
-            v-model="model.type"
-            @click="selectinput"
-            readonly
-            style="cursor: pointer;"
-          />
-          <button class="selectButton"></button>
-          <div class="cutselectbox" v-show="showTypeSelect">
-            <div @click="optionssure(c)" v-for="(c,index) in typeObj" :key="index">
-              <span>{{c}}</span>
-            </div>
-          </div>
+      <div class="flatten-flex">
+        <label>{{lang.type}}</label>
+        <!-- 彗尾状 -->
+        <div class="buttonGroup">
+          <button class="attitudeEditCameraButton" @click="toBeCometTail">{{lang.comatosetail}}</button>
+          <!-- 火焰喷射状 -->
+          <button class="attitudeEditCameraButton" @click="toBeRocketThruster">{{lang.flamejet}}</button>
         </div>
       </div>
       <div class="flatten-flex">
@@ -138,6 +129,7 @@
         <div class="flatten-box">
           <XbsjInputNumber
             style="float:left; width: calc(50% - 90px);"
+            :step="0.01"
             v-model.number="model.rotate"
           ></XbsjInputNumber>
         </div>
@@ -203,7 +195,6 @@ export default {
         rotationEditing: false,
         position: [0, 0, 0],
         rotation: [0, 0, 0],
-        type: "CometTail",
         emissionRate: 30,
         particleSize: 15,
         particleNumber: 100,
@@ -217,10 +208,6 @@ export default {
       pinstyletype: true,
       langs: languagejs,
       showTypeSelect: false,
-      typeObj: {
-        CometTail: "CometTail",
-        RocketThruster: "RocketThruster"
-      },
       radiusdisabled: false,
       angledisabled: true
     };
@@ -241,7 +228,6 @@ export default {
         rotationEditing: "model.rotationEditing",
         position: "model.position",
         rotation: "model.rotation",
-        type: "model.type",
         emissionRate: "model.emissionRate",
         particleSize: "model.particleSize",
         particleNumber: "model.particleNumber",
@@ -286,8 +272,11 @@ export default {
         this._czmObj.colors = ccc;
       },
       deep: true // 可以深度检测到 colors 对象的属性值的变化
-    },
-    "model.type"(val) {
+    }
+  },
+  methods: {
+    toBeCometTail() {
+      this._czmObj.toBeCometTail();
       this.$nextTick(() => {
         (this.model.colors = []), (this.colors = []);
         this._colorsUnbind = this._colorsUnbind && this._colorsUnbind();
@@ -299,15 +288,20 @@ export default {
         );
         this.changeColors(this.model);
       });
-    }
-  },
-  methods: {
-    selectinput() {
-      this.showTypeSelect = !this.showTypeSelect;
     },
-    optionssure(c) {
-      this.model.type = c;
-      this.showTypeSelect = !this.showTypeSelect;
+    toBeRocketThruster() {
+      this._czmObj.toBeRocketThruster();
+      this.$nextTick(() => {
+        (this.model.colors = []), (this.colors = []);
+        this._colorsUnbind = this._colorsUnbind && this._colorsUnbind();
+        this._colorsUnbind = XE.MVVM.bind(
+          this,
+          "model.colors",
+          this._czmObj,
+          "colors"
+        );
+        this.changeColors(this.model);
+      });
     },
     changeColors(model) {
       for (var i = 0, l = model.colors.length; i < l; i += 4) {

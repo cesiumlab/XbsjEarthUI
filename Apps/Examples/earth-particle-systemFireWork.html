@@ -130,8 +130,7 @@
                         { name: 'radius' },
                         { name: 'particleLife' },
                         { name: 'burstInterval' }
-                    ],
-
+                    ]
                 }
             },
             watch: {
@@ -180,12 +179,10 @@
                 //only for debug
                 window.earth = earth;
                 window.particleSystemFireWork = particleSystemFireWork;
-                window.viewer = earth.czm.viewer;
             },
             methods: {
                 startColorchange(event) {
                     var startColor = event.target.value;
-                    console.log(startColor.xeColor);
                     particleSystemFireWork.startColor = startColor.xeColor;
                 },
                 endColorchange(event) {
