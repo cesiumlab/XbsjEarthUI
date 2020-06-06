@@ -475,10 +475,10 @@ vueApp.examples = [
                 "title": "面状-平尾箭头",
                 "url": "./earth-plane-arrow.html"
             },
-            // {
-            //     "title":"粒子效果",
-            //     "url":'./earth-particle-effect.html'
-            // },
+            {
+                "title": "粒子效果",
+                "url": './earth-particle-effect.html'
+            },
             {
                 "title": 'flyTo与flyAround',
                 "url": './earth-flyTo.html'

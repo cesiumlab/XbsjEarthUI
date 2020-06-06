@@ -183,6 +183,7 @@
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.visible}}</span>
         <div class="xbsj-slide-group">
+          <!-- 显示精度 -->
           <div class="xbsj-slide-top">
             <label class="xbsj-slide-label" @click="maximumScreenSpaceError=16">{{lang.accuracy}}</label>
             <div class="xbsj-slide-div">
@@ -197,6 +198,7 @@
             </div>
             <span class="xbsj-slide-span">{{maximumScreenSpaceError|f_one}}</span>
           </div>
+          <!-- 材质底色 -->
           <div class="xbsj-slide-bottom">
             <label class="xbsj-slide-label">{{lang.material}}</label>
             <div class="xbsj-slide-div">
@@ -213,6 +215,7 @@
           </div>
         </div>
         <div class="xbsj-slide-group">
+          <!-- 散射强度 -->
           <div class="xbsj-slide-top">
             <label class="xbsj-slide-label">{{lang.scatter}}</label>
             <div class="xbsj-slide-div">
@@ -227,7 +230,8 @@
             </div>
             <span class="xbsj-slide-span">{{imageBasedLightingFactor[0]}}</span>
           </div>
-          <div class="xbsj-slide-bottom">
+          <!-- 镜面强度 -->
+          <!-- <div class="xbsj-slide-bottom">
             <label class="xbsj-slide-label">{{lang.mirror}}</label>
             <div class="xbsj-slide-div">
               <XbsjSlider
@@ -240,10 +244,9 @@
               ></XbsjSlider>
             </div>
             <span class="xbsj-slide-span">{{imageBasedLightingFactor[1]}}</span>
-          </div>
-        </div>
-        <div class="xbsj-slide-group">
-          <div class="xbsj-slide-top">
+          </div>-->
+          <!-- 最大内存 -->
+          <div class="xbsj-slide-bottom">
             <label class="xbsj-slide-label">{{lang.maximumMemoryUsage}}</label>
             <div class="xbsj-slide-div">
               <XbsjSlider
@@ -293,43 +296,51 @@
       <div class="xbsj-list-item xbsj-list-lastitem" v-show="debugShow">
         <span class="xbsj-list-name">{{lang.debuginform}}</span>
         <div class="debuglist">
-          <div style="margin-top:26px;">
-            <label>{{lang.totalMemoryUsageInBytes}}</label>
-            <span>{{totalMemoryUsageInBytes}}</span>
-          </div>
-          <div style="margin-top:10px;">
-            <label>{{lang.geometryByteLength}}</label>
-            <span>{{geometryByteLength}}</span>
-          </div>
-        </div>
-        <div class="debuglist">
-          <div style="margin-top:26px;">
-            <label>{{lang.texturesByteLength}}</label>
-            <span>{{texturesByteLength}}</span>
-          </div>
-          <div style="margin-top:10px;">
-            <label>{{lang.numberOfCommands}}</label>
-            <span>{{numberOfCommands}}</span>
-          </div>
-        </div>
-        <div class="debuglist">
+          <!-- 遍历个数 -->
           <div style="margin-top:26px;">
             <label>{{lang.visited}}</label>
             <span>{{visited}}</span>
           </div>
+          <!-- 总显存 -->
           <div style="margin-top:10px;">
-            <label>{{lang.selected}}</label>
-            <span>{{selected}}</span>
+            <label>{{lang.totalMemoryUsageInBytes}}</label>
+            <span>{{(totalMemoryUsageInBytes/1000000).toFixed()}}MB</span>
           </div>
         </div>
         <div class="debuglist">
+          <!-- 三角面个数 -->
           <div style="margin-top:26px;">
             <label>{{lang.numberOfTrianglesSelected}}</label>
-            <span>{{numberOfTrianglesSelected}}</span>
+            <span>{{(numberOfTrianglesSelected/1000).toFixed()}}K</span>
           </div>
+          <!-- 纹理显存 -->
+          <div style="margin-top:10px;">
+            <label>{{lang.texturesByteLength}}</label>
+            <span>{{(texturesByteLength/1000000).toFixed()}}MB</span>
+          </div>
+        </div>
+        <div class="debuglist">
+          <!-- 显示个数 -->
+          <div style="margin-top:26px;">
+            <label>{{lang.selected}}</label>
+            <span>{{selected}}</span>
+          </div>
+          <!-- 几何体显存 -->
+          <div style="margin-top:10px;">
+            <label>{{lang.geometryByteLength}}</label>
+            <span>{{(geometryByteLength/1000000).toFixed()}}MB</span>
+          </div>
+        </div>
+        <div class="debuglist">
+          <!-- 渲染批次 -->
+          <div style="margin-top:26px;">
+            <label>{{lang.numberOfCommands}}</label>
+            <span>{{numberOfCommands}}</span>
+          </div>
+          <!-- 属性数据长度 -->
           <div style="margin-top:10px;">
             <label>{{lang.batchTableByteLength}}</label>
-            <span>{{batchTableByteLength}}</span>
+            <span>{{(batchTableByteLength/1000).toFixed()}}KB</span>
           </div>
         </div>
       </div>
