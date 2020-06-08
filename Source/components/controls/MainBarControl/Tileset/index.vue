@@ -159,8 +159,8 @@
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn">
             <button
-              class="movebutton"
-              :class="skipLevelOfDetail ? 'skipLevelActive' : ''"
+              class="skipLevelOfDetailbutton"
+              :class="skipLevelOfDetail ? 'skipLevelOfDetailActive' : ''"
               @click="skipLevelOfDetail =! skipLevelOfDetail"
               :disabled="!enabled"
             ></button>
@@ -785,6 +785,18 @@ export default {
   cursor: pointer;
 }
 
+.skipLevelOfDetailbutton {
+  background: url(../../../../images/skipLevelOfDetail.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.skipLevelOfDetailbutton.highlight,
+.skipLevelOfDetailbutton:hover {
+  background: url(../../../../images/skipLevelOfDetail_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
 .debugShowBoundingVolumebutton {
   background: url(../../../../images/debugShowBoundingVolume.png) no-repeat;
   background-size: contain;
@@ -870,6 +882,12 @@ export default {
   cursor: not-allowed;
 }
 
+.skipLevelOfDetailbutton:disabled {
+  background: url(../../../../images/skipLevelOfDetail_disabled.png) no-repeat;
+  background-size: contain;
+  cursor: not-allowed;
+}
+
 .debugShowBoundingVolumebutton:disabled {
   background: url(../../../../images/debugShowBoundingVolume_disabled.png)
     no-repeat;
@@ -884,7 +902,8 @@ export default {
 .rotatebutton,
 .techonlogybutton,
 .custombutton,
-.debugShowBoundingVolumebutton {
+.debugShowBoundingVolumebutton,
+.skipLevelOfDetailbutton {
   width: 100%;
   height: 100%;
   border: none;
@@ -909,8 +928,8 @@ export default {
   cursor: pointer;
 }
 
-.skipLevelActive {
-  background: url(../../../../images/move_on.png) no-repeat;
+.skipLevelOfDetailActive {
+  background: url(../../../../images/skipLevelOfDetail_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
