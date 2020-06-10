@@ -132,6 +132,11 @@
           ></div>
           <span class="xbsj-item-name">{{lang.starrysky}}</span>
         </div>
+        <span
+          class="xbsj-select"
+          :class="{highlight:popup == 'skyBox'}"
+          @click.stop="togglePopup('skyBox',$event)"
+        ></span>
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{lang.effect}}</span>
@@ -303,6 +308,7 @@
     <Snow ref="snowPostProcess" v-show="popup =='snowPostProcess'"></Snow>
     <Fog ref="fog" v-show="popup =='fog'"></Fog>
     <FogPostProcess ref="fogPostProcess" v-show="popup =='fogPostProcess'"></FogPostProcess>
+    <SkyBox ref="skyBox" v-show="popup =='skyBox'"></SkyBox>
     <LensFlare ref="lensFlare" v-show="popup =='lensFlare'"></LensFlare>
     <Bloom ref="bloom" v-show="popup =='bloom'"></Bloom>
     <Brightness ref="brightness" v-show="popup =='brightness'"></Brightness>
@@ -327,6 +333,7 @@ import Rain from "./Rain";
 import Snow from "./Snow";
 import Fog from "./Fog";
 import FogPostProcess from "./FogPostProcess";
+import SkyBox from "./SkyBox";
 import LensFlare from "./LensFlare";
 import Bloom from "./Bloom";
 import Brightness from "./Brightness";
@@ -349,6 +356,7 @@ export default {
     Snow,
     Fog,
     FogPostProcess,
+    SkyBox,
     LensFlare,
     Bloom,
     Brightness,
