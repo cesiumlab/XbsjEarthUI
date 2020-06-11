@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+##### Additions :tada:
+* 增加天空盒功能和示例
+* GeoPin增加定位功能
+
+##### Fixes :wrench:
+* 修复删除3dtitles时报错的bug
+
 ### 1.4.2 - 2020-6-4
 
 ##### Additions :tada:
