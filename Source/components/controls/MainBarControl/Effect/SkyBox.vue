@@ -7,30 +7,32 @@
       </div>
     </div>
     <div class="row">
-      <label class="label">{{lang.topSkyBoxOnGroundImageUri}}:</label>
-      <input type="text" v-model="topSkyBoxOnGroundImageUri" />
+      <label class="label">{{lang.skyBoxType}}:</label>
+      <XbsjSelect
+        :class="!skyBoxOnGround ? 'selectdisabled' : ''"
+        v-model="skyBoxTypeItem"
+        :list="skyBoxType1"
+      ></XbsjSelect>
     </div>
     <div class="row">
+      <label class="label">{{lang.topSkyBoxOnGroundImageUri}}:</label>
+      <input type="text" :disabled="!skyBoxOnGround" v-model="topSkyBoxOnGroundImageUri" />
       <label class="label">{{lang.bottomSkyBoxOnGroundImageUri}}:</label>
-      <input type="text" v-model="bottomSkyBoxOnGroundImageUri" />
+      <input type="text" :disabled="!skyBoxOnGround" v-model="bottomSkyBoxOnGroundImageUri" />
     </div>
     <div class="row">
       <label class="label">{{lang.eastSkyBoxOnGroundImageUri}}:</label>
-      <input type="text" v-model="eastSkyBoxOnGroundImageUri" />
-    </div>
-    <div class="row">
+      <input type="text" :disabled="!skyBoxOnGround" v-model="eastSkyBoxOnGroundImageUri" />
       <label class="label">{{lang.southSkyBoxOnGroundImageUri}}:</label>
-      <input type="text" v-model="southSkyBoxOnGroundImageUri" />
+      <input type="text" :disabled="!skyBoxOnGround" v-model="southSkyBoxOnGroundImageUri" />
     </div>
     <div class="row">
       <label class="label">{{lang.westSkyBoxOnGroundImageUri}}:</label>
-      <input type="text" v-model="westSkyBoxOnGroundImageUri" />
-    </div>
-    <div class="row">
+      <input type="text" :disabled="!skyBoxOnGround" v-model="westSkyBoxOnGroundImageUri" />
       <label class="label">{{lang.northSkyBoxOnGroundImageUri}}:</label>
-      <input type="text" v-model="northSkyBoxOnGroundImageUri" />
+      <input type="text" :disabled="!skyBoxOnGround" v-model="northSkyBoxOnGroundImageUri" />
     </div>
-    <div class="row">
+    <div class="rows">
       <label class="label">{{lang.backgroundImageUri}}:</label>
       <input type="text" v-model="backgroundImageUri" />
     </div>
@@ -43,24 +45,26 @@ export default {
     return {
       langs: {
         zh: {
-          skyBoxOnGround: "开启天空盒",
-          topSkyBoxOnGroundImageUri: "顶部背景图片",
-          bottomSkyBoxOnGroundImageUri: "底部背景图片",
-          eastSkyBoxOnGroundImageUri: "东部背景图片",
-          southSkyBoxOnGroundImageUri: "南部背景图片",
-          westSkyBoxOnGroundImageUri: "西部背景图片",
-          northSkyBoxOnGroundImageUri: "北部背景图片",
-          backgroundImageUri: "天空盒背景图片"
+          skyBoxOnGround: "天空盒",
+          skyBoxType: "类型",
+          topSkyBoxOnGroundImageUri: "上",
+          bottomSkyBoxOnGroundImageUri: "下",
+          eastSkyBoxOnGroundImageUri: "东",
+          southSkyBoxOnGroundImageUri: "南",
+          westSkyBoxOnGroundImageUri: "西",
+          northSkyBoxOnGroundImageUri: "北",
+          backgroundImageUri: "背景图片"
         },
         en: {
           skyBoxOnGround: "skyBoxOnGround",
-          topSkyBoxOnGroundImageUri: "topSkyBoxOnGroundImageUri",
-          bottomSkyBoxOnGroundImageUri: "bottomSkyBoxOnGroundImageUri",
-          eastSkyBoxOnGroundImageUri: "eastSkyBoxOnGroundImageUri",
-          southSkyBoxOnGroundImageUri: "southSkyBoxOnGroundImageUri",
-          westSkyBoxOnGroundImageUri: "westSkyBoxOnGroundImageUri",
-          northSkyBoxOnGroundImageUri: "northSkyBoxOnGroundImageUri",
-          backgroundImageUri: "backgroundImageUri"
+          skyBoxType: "Type",
+          topSkyBoxOnGroundImageUri: "top",
+          bottomSkyBoxOnGroundImageUri: "bottom",
+          eastSkyBoxOnGroundImageUri: "east",
+          southSkyBoxOnGroundImageUri: "south",
+          westSkyBoxOnGroundImageUri: "west",
+          northSkyBoxOnGroundImageUri: "north",
+          backgroundImageUri: "backgroundImage"
         }
       },
       lang: undefined,
@@ -71,10 +75,89 @@ export default {
       southSkyBoxOnGroundImageUri: "",
       westSkyBoxOnGroundImageUri: "",
       northSkyBoxOnGroundImageUri: "",
-      backgroundImageUri: ""
+      backgroundImageUri: "",
+      skyBoxTypeItem: "",
+      skyBoxType1: [
+        "天空盒1",
+        "天空盒2",
+        "天空盒3",
+        "天空盒4",
+        "天空盒5",
+        "天空盒6",
+        "天空盒7"
+      ],
+      skyBoxType2: [
+        {
+          top: "./assets/skyboxes/sky1/top.jpg",
+          bottom: "./assets/skyboxes/sky1/bottom.jpg",
+          east: "./assets/skyboxes/sky1/east.jpg",
+          south: "./assets/skyboxes/sky1/south.jpg",
+          west: "./assets/skyboxes/sky1/west.jpg",
+          north: "./assets/skyboxes/sky1/north.jpg"
+        },
+        {
+          top: "./assets/skyboxes/sky2/top.jpg",
+          bottom: "./assets/skyboxes/sky2/bottom.jpg",
+          east: "./assets/skyboxes/sky2/east.jpg",
+          south: "./assets/skyboxes/sky2/south.jpg",
+          west: "./assets/skyboxes/sky2/west.jpg",
+          north: "./assets/skyboxes/sky2/north.jpg"
+        },
+        {
+          top: "./assets/skyboxes/sky3/top.jpg",
+          bottom: "./assets/skyboxes/sky3/bottom.jpg",
+          east: "./assets/skyboxes/sky3/east.jpg",
+          south: "./assets/skyboxes/sky3/south.jpg",
+          west: "./assets/skyboxes/sky3/west.jpg",
+          north: "./assets/skyboxes/sky3/north.jpg"
+        },
+        {
+          top: "./assets/skyboxes/sky4/top.jpg",
+          bottom: "./assets/skyboxes/sky4/bottom.jpg",
+          east: "./assets/skyboxes/sky4/east.jpg",
+          south: "./assets/skyboxes/sky4/south.jpg",
+          west: "./assets/skyboxes/sky4/west.jpg",
+          north: "./assets/skyboxes/sky4/north.jpg"
+        },
+        {
+          top: "./assets/skyboxes/sky5/top.jpg",
+          bottom: "./assets/skyboxes/sky5/bottom.jpg",
+          east: "./assets/skyboxes/sky5/east.jpg",
+          south: "./assets/skyboxes/sky5/south.jpg",
+          west: "./assets/skyboxes/sky5/west.jpg",
+          north: "./assets/skyboxes/sky5/north.jpg"
+        },
+        {
+          top: "./assets/skyboxes/sky6/top.jpg",
+          bottom: "./assets/skyboxes/sky6/bottom.jpg",
+          east: "./assets/skyboxes/sky6/east.jpg",
+          south: "./assets/skyboxes/sky6/south.jpg",
+          west: "./assets/skyboxes/sky6/west.jpg",
+          north: "./assets/skyboxes/sky6/north.jpg"
+        },
+        {
+          top: "./assets/skyboxes/sky7/top.jpg",
+          bottom: "./assets/skyboxes/sky7/bottom.jpg",
+          east: "./assets/skyboxes/sky7/east.jpg",
+          south: "./assets/skyboxes/sky7/south.jpg",
+          west: "./assets/skyboxes/sky7/west.jpg",
+          north: "./assets/skyboxes/sky7/north.jpg"
+        }
+      ]
     };
   },
   created() {},
+  watch: {
+    skyBoxTypeItem(val) {
+      var index = this.skyBoxType1.indexOf(val);
+      this.topSkyBoxOnGroundImageUri = this.skyBoxType2[index].top;
+      this.bottomSkyBoxOnGroundImageUri = this.skyBoxType2[index].bottom;
+      this.eastSkyBoxOnGroundImageUri = this.skyBoxType2[index].east;
+      this.southSkyBoxOnGroundImageUri = this.skyBoxType2[index].south;
+      this.westSkyBoxOnGroundImageUri = this.skyBoxType2[index].west;
+      this.northSkyBoxOnGroundImageUri = this.skyBoxType2[index].north;
+    }
+  },
   mounted() {
     this.bind("skyBoxOnGround");
     this.bind("topSkyBoxOnGroundImageUri");
@@ -108,13 +191,15 @@ export default {
 
 .label {
   display: inline-block;
-  width: 88px;
+  width: 52px;
   text-align: right;
   margin-right: 5px;
   vertical-align: middle;
   line-height: 29px;
 }
-.row {
+.row,
+.rows {
+  display: flex;
   margin-top: 10px;
 }
 .field {
@@ -131,8 +216,9 @@ export default {
   margin-right: 30px;
   vertical-align: middle;
 }
-.row input {
-  width: 192px;
+.row input,
+.rows input {
+  width: 80px;
   height: 28px;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
@@ -140,7 +226,19 @@ export default {
   color: #dddddd;
   padding: 0 10px;
 }
+.rows input {
+  width: 232px;
+}
 input:focus {
   outline: 1px solid rgba(31, 255, 255, 1);
+}
+input:disabled {
+  cursor: not-allowed;
+}
+.selectdisabled {
+  pointer-events: none;
+}
+.xbsjselect {
+  width: 242px !important;
 }
 </style>

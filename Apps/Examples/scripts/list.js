@@ -140,6 +140,10 @@ vueApp.examples = [
                 "url": "./earth-effect-shadow.html"
             },
             {
+                "title": "效果-星空",
+                "url": "./earth-effect-skyBox.html"
+            },
+            {
                 "title": "效果-雪",
                 "url": "./earth-effect-snow.html"
             },
