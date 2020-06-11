@@ -458,18 +458,21 @@ export default {
   },
   methods: {
     getDebugData(czmObject) {
-      this.totalMemoryUsageInBytes = czmObject._tileset.totalMemoryUsageInBytes;
-      this.geometryByteLength =
-        czmObject._tileset.statistics.geometryByteLength;
-      this.texturesByteLength =
-        czmObject._tileset.statistics.texturesByteLength;
-      this.numberOfCommands = czmObject._tileset.statistics.numberOfCommands;
-      this.visited = czmObject._tileset.statistics.visited;
-      this.selected = czmObject._tileset.statistics.selected;
-      this.numberOfTrianglesSelected =
-        czmObject._tileset.statistics.numberOfTrianglesSelected;
-      this.batchTableByteLength =
-        czmObject._tileset.statistics.batchTableByteLength;
+      if (czmObject && czmObject._tileset) {
+        this.totalMemoryUsageInBytes =
+          czmObject._tileset.totalMemoryUsageInBytes;
+        this.geometryByteLength =
+          czmObject._tileset.statistics.geometryByteLength;
+        this.texturesByteLength =
+          czmObject._tileset.statistics.texturesByteLength;
+        this.numberOfCommands = czmObject._tileset.statistics.numberOfCommands;
+        this.visited = czmObject._tileset.statistics.visited;
+        this.selected = czmObject._tileset.statistics.selected;
+        this.numberOfTrianglesSelected =
+          czmObject._tileset.statistics.numberOfTrianglesSelected;
+        this.batchTableByteLength =
+          czmObject._tileset.statistics.batchTableByteLength;
+      }
     },
     // 打开实例模型属性窗口
     forestbtn() {
