@@ -4,6 +4,7 @@ Change Log
 ##### Additions :tada:
 * 增加天空盒功能和示例
 * GeoPin增加定位功能
+* 粒子、粒子烟火和粒子喷射增加拖拽功能
 
 ##### Fixes :wrench:
 * 修复删除3dtitles时报错的bug
