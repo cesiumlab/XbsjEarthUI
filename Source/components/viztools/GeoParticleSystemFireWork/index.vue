@@ -39,6 +39,16 @@
             :class="model.editing?'btncoloron':''"
           >{{lang.editing}}</button>
         </div>
+        <!-- 拖拽 -->
+        <div
+          :title="lang.drag"
+          class="dragBox"
+          @dragover="dragOver"
+          @drop="drop"
+          @dragleave="dragLeave"
+        >
+          <div class="dragButton" :class="{highlight:drag_over}">{{lang.dragcontent}}</div>
+        </div>
       </div>
       <div class="flatten-flex">
         <!-- 开始颜色 -->
@@ -104,6 +114,7 @@ export default {
       lang: {},
       showPinSelect: false,
       makiIconObj: {},
+      drag_over: false,
       model: {
         name: "",
         show: false,
@@ -256,6 +267,40 @@ export default {
 
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        (czmObj.positions !== undefined || czmObj.position !== undefined)
+      ) {
+        e.dataTransfer.dropEffect = "copy";
+        this.drag_over = true;
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    dragLeave() {
+      this.drag_over = false;
+    },
+    //拖拽放置
+    drop(e) {
+      this.drag_over = false;
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        (czmObj.position !== undefined || czmObj.positions !== undefined)
+      ) {
+        this._czmObj.creating = false;
+        if (czmObj.position !== undefined) {
+          this._czmObj.position = [...czmObj.position];
+        } else {
+          this._czmObj.position = [...czmObj.positions[0]];
+        }
+      }
     }
   },
   beforeDestroy() {
@@ -558,5 +603,21 @@ button:focus {
   border-radius: 3px;
   color: #dddddd;
   margin-right: 20px;
+}
+.dragBox {
+  display: inline-block;
+}
+.dragBox .dragButton {
+  width: 120px;
+  height: 25px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+  text-align: center;
+  line-height: 25px;
+}
+.dragBox .dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
+  color: #1fffff;
 }
 </style>

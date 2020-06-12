@@ -6,6 +6,7 @@ const zh = {
   editing: '编辑',
   position: '位置',
   drag: '拖拽',
+  dragcontent: '请把对象拖到这里',
   startcolor: '开始颜色',
   endcolor: '结束颜色',
   radius: '半径',
@@ -23,6 +24,7 @@ const en = {
   startcolor: 'startcolor',
   endcolor: 'endcolor',
   drag: 'drag',
+  dragcontent: 'Drag the object here',
   radius: 'radius',
   particleLife: 'particleLife',
   burstInterval: 'burstInterval'
