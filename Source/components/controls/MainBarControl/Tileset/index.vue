@@ -311,7 +311,7 @@
           <!-- 三角面个数 -->
           <div style="margin-top:26px;">
             <label>{{lang.numberOfTrianglesSelected}}</label>
-            <span>{{(numberOfTrianglesSelected/1000).toFixed()}}K</span>
+            <span>{{numberOfTrianglesSelected}}</span>
           </div>
           <!-- 纹理显存 -->
           <div style="margin-top:10px;">
@@ -468,8 +468,15 @@ export default {
         this.numberOfCommands = czmObject._tileset.statistics.numberOfCommands;
         this.visited = czmObject._tileset.statistics.visited;
         this.selected = czmObject._tileset.statistics.selected;
-        this.numberOfTrianglesSelected =
-          czmObject._tileset.statistics.numberOfTrianglesSelected;
+        if (czmObject._tileset.statistics.numberOfTrianglesSelected < 1000) {
+          this.numberOfTrianglesSelected =
+            czmObject._tileset.statistics.numberOfTrianglesSelected;
+        } else {
+          this.numberOfTrianglesSelected =
+            (
+              czmObject._tileset.statistics.numberOfTrianglesSelected / 1000
+            ).toFixed() + "K";
+        }
         this.batchTableByteLength =
           czmObject._tileset.statistics.batchTableByteLength;
       }
