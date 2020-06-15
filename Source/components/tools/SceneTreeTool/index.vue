@@ -9,6 +9,7 @@
     :top="138"
     :title="lang.title"
     @contextMenu="onContexMenu"
+    class="xbsjSceneTreeBox"
   >
     <!-- <p>Tzst Virtual Tree</p> -->
     <XbsjVirtualTree
@@ -682,6 +683,11 @@ export default {
 };
 </script>
 
+<style>
+.xbsjSceneTreeBox .xbsj-model-content-box {
+  height: calc(100% - 44px);
+}
+</style>
 <style scoped>
 input {
   width: calc(100% - 70px);
