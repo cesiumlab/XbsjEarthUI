@@ -2,7 +2,7 @@
   <Window
     :width="602"
     :minWidth="480"
-    :height="456"
+    :height="530"
     :top="164"
     :floatright="true"
     :title="lang.title"
@@ -31,7 +31,14 @@
         <div class="flatten" style="margin-top:20px;display:flex;">
           <label>{{lang.nearfar}}</label>
           <div class="field">
-            <XbsjSlider range :min="0" :max="30" :step="0.1" v-model="nearfar" ref="glowFactor"></XbsjSlider>
+            <XbsjSlider
+              range
+              :min="0"
+              :max="1073741824"
+              :step="1"
+              v-model="nearfar"
+              ref="glowFactor"
+            ></XbsjSlider>
           </div>
         </div>
         <!-- 近远裁 -->
@@ -128,6 +135,43 @@
           </div>
         </div>
 
+        <!-- pin内置样式 -->
+        <div class="flatten" style="display:flex;">
+          <div>
+            <label>{{lang.pinBuilder.text}}</label>
+            <input style="float:left;" type="text" v-model="pin.pinBuilder.text" />
+          </div>
+          <div style="position: relative;">
+            <label>{{lang.pinBuilder.pinstyle}}</label>
+            <input
+              type="text"
+              v-model="pin.pinBuilder.makiIcon"
+              @click="selectinput"
+              readonly
+              style="cursor: pointer;"
+            />
+            <button class="selectButton"></button>
+            <div
+              class="cutselectbox"
+              v-show="showPinSelect"
+              style="  overflow:scroll;height:100px;"
+            >
+              <div @click="optionssure(c)" v-for="(c,index) in makiIconObj" :key="index">
+                <span>{{c}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flatten" style="display:flex;">
+          <!-- 图标背景 -->
+          <label style="margin-top:4px;">{{lang.pinBuilder.fillColor}}</label>
+          <XbsjColorButton v-model="fillColorUI" ref="fillColor"></XbsjColorButton>
+          <!-- 边框/文字 -->
+          <label style="margin-top:4px;">{{lang.pinBuilder.outlineColor}}</label>
+          <XbsjColorButton v-model="outlineColorUI" ref="outlineColor"></XbsjColorButton>
+        </div>
+
         <!-- 锚点  -->
         <div class="flatten">
           <label>{{lang.origin}}</label>
@@ -172,33 +216,6 @@
       </div>
 
       <div class="xbsj-flatten" v-show="tabShow == '2'">
-        <!-- pin内置样式 -->
-        <div class="flatten" style="display:flex;">
-          <div>
-            <label>{{lang.pinBuilder.text}}</label>
-            <input style="float:left;" type="text" v-model="pin.pinBuilder.text" />
-          </div>
-          <div style="position: relative;">
-            <label>{{lang.pinBuilder.pinstyle}}</label>
-            <input
-              type="text"
-              v-model="pin.pinBuilder.makiIcon"
-              @click="selectinput"
-              readonly
-              style="cursor: pointer;"
-            />
-            <button class="selectButton"></button>
-            <div
-              class="cutselectbox"
-              v-show="showPinSelect"
-              style="  overflow:scroll;height:100px;"
-            >
-              <div @click="optionssure(c)" v-for="(c,index) in makiIconObj" :key="index">
-                <span>{{c}}</span>
-              </div>
-            </div>
-          </div>
-        </div>
         <!-- pin自定义外部图标 -->
         <div class="flatten">
           <label>{{lang.imageUrl}}</label>
@@ -301,7 +318,8 @@ export default {
         evalString: ""
       },
       pinstyletype: true,
-      bgbaseColorUI: {
+      nearfar: [0, 0],
+      fillColorUI: {
         rgba: {
           r: 0,
           g: 0,
@@ -309,8 +327,8 @@ export default {
           a: 1
         }
       },
-      bgbaseColor: [0, 0, 0.5, 1],
-      borderbaseColorUI: {
+      fillColor: [0, 0, 0.5, 1],
+      outlineColorUI: {
         rgba: {
           r: 0,
           g: 0,
@@ -318,7 +336,7 @@ export default {
           a: 1
         }
       },
-      borderbaseColor: [0, 0, 0.5, 1],
+      outlineColor: [0, 0, 0.5, 1],
       langs: languagejs,
       dighole: false,
       connections: [],
@@ -362,10 +380,10 @@ export default {
       });
 
       this._disposers.push(
-        XE.MVVM.bind(this, "bgbaseColor", czmObj, "pinBuilder.fillColor")
+        XE.MVVM.bind(this, "fillColor", czmObj, "pinBuilder.fillColor")
       );
       this._disposers.push(
-        XE.MVVM.bind(this, "borderbaseColor", czmObj, "pinBuilder.outlineColor")
+        XE.MVVM.bind(this, "outlineColor", czmObj, "pinBuilder.outlineColor")
       );
       this._disposers.push(
         XE.MVVM.bind(
@@ -380,6 +398,7 @@ export default {
       this.makiIconObj.null = "";
       this._czmObj.far = 1073741824;
       this.pin.evalString = this._czmObj.evalString;
+      this.nearfar = [this.pin.near, this.pin.far];
     }
   },
 
@@ -389,34 +408,46 @@ export default {
     },
     guid() {
       return this.getBind().guid;
-    },
-    nearfar: {
-      get() {
-        return [0, 30];
-      },
-      set(newValue) {
-        this.pin.near = Math.round(Math.pow(2, newValue[0]));
-        this.pin.far = Math.round(Math.pow(2, newValue[1]));
-      }
     }
+    // nearfar: {
+    //   get() {
+    //     return [0, 30];
+    //   },
+    //   set(newValue) {
+    //     this.pin.near = Math.round(Math.pow(2, newValue[0]));
+    //     this.pin.far = Math.round(Math.pow(2, newValue[1]));
+    //   }
+    // }
   },
   watch: {
-    nearfar(e) {},
+    nearfar: {
+      handler(nval, oval) {
+        this.pin.near = nval[0];
+        this.pin.far = nval[1];
+      },
+      deep: true
+    },
+    "pin.near"(nearval) {
+      this.nearfar = [nearval, this.pin.far];
+    },
+    "pin.far"(farval) {
+      this.nearfar = [this.pin.near, farval];
+    },
     "pin.pinBuilder.text"(e) {
       if (e !== "") {
         this.pin.pinBuilder.makiIcon = "";
       }
     },
-    bgbaseColorUI(color) {
+    fillColorUI(color) {
       let v = color.rgba;
 
       var cc = [v.r / 255.0, v.g / 255.0, v.b / 255.0, v.a];
-      if (!this.bgbaseColor.every((c, index) => c === cc[index])) {
-        this.bgbaseColor = cc;
+      if (!this.fillColor.every((c, index) => c === cc[index])) {
+        this.fillColor = cc;
       }
     },
-    bgbaseColor(c) {
-      this.bgbaseColorUI = {
+    fillColor(c) {
+      this.fillColorUI = {
         rgba: {
           r: c[0] * 255,
           g: c[1] * 255,
@@ -425,16 +456,16 @@ export default {
         }
       };
     },
-    borderbaseColorUI(color) {
+    outlineColorUI(color) {
       let v = color.rgba;
 
       var cc = [v.r / 255.0, v.g / 255.0, v.b / 255.0, v.a];
-      if (!this.borderbaseColor.every((c, index) => c === cc[index])) {
-        this.borderbaseColor = cc;
+      if (!this.outlineColor.every((c, index) => c === cc[index])) {
+        this.outlineColor = cc;
       }
     },
-    borderbgbaseColor(c) {
-      this.borderbaseColorUI = {
+    outlineColor(c) {
+      this.outlineColorUI = {
         rgba: {
           r: c[0] * 255,
           g: c[1] * 255,
@@ -770,10 +801,10 @@ button:focus {
 }
 
 .cutselectbox {
-  width: calc(100% - 102px);
+  width: calc(100% - 92px);
   background: rgba(138, 138, 138, 1);
   position: absolute;
-  left: 78px;
+  left: 74px;
   border-radius: 0px 0px 4px 4px;
   overflow: auto;
   z-index: 999;
