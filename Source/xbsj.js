@@ -159,7 +159,7 @@ function create(earthDom, options) {
 
             Promise.all([loadJS(xbsjEarthUIUri), loadJS(xbsjEarthUri)]).then(() => {
                 return XE.ready().then(() => {
-                    const loadPlugins = pluginUris.map(e => loadJS(xbsjUri + e));
+                    const loadPlugins = pluginUris.map(e => loadJS(e));
                     return Promise.all(loadPlugins)
                 }).then(() => {
                     //创建earthUI 
