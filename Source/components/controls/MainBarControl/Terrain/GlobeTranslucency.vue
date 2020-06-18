@@ -1,44 +1,104 @@
 <template>
   <div class="xbsj-mainbar-popup popup" ref="globeTranslucency">
     <div class="row">
-      <label class="label">{{lang.frontFaceAlpha}}:</label>
+      <label class="label">{{lang.frontFace}}</label>
+    </div>
+    <div class="row">
+      <XbsjCheckBox v-model="frontFixAlphaShow"></XbsjCheckBox>
+      <label class="label">{{lang.fixAlpha}}:</label>
       <div class="field">
         <XbsjSlider
           :min="0"
           :max="1"
           :step="0.1"
           showTip="always"
+          :disabled="!frontFixAlphaShow"
           v-model="frontFaceAlpha"
           ref="widthXbsjSlider"
         ></XbsjSlider>
       </div>
     </div>
     <div class="row">
-      <label class="label">{{lang.backFaceAlpha}}:</label>
+      <XbsjCheckBox v-model="frontGradientAlphaShow"></XbsjCheckBox>
+      <label class="label">{{lang.gradientAlpha}}:</label>
+      <div class="field">
+        <XbsjSlider
+          range
+          :min="0"
+          :max="1"
+          :step="0.1"
+          showTip="always"
+          :disabled="!frontGradientAlphaShow"
+          v-model="frontGradientAlpha"
+          ref="widthXbsjSlider"
+        ></XbsjSlider>
+      </div>
+    </div>
+    <div class="row">
+      <XbsjCheckBox v-model="frontGradientDistanceShow"></XbsjCheckBox>
+      <label class="label">{{lang.gradientDistance}}:</label>
+      <div class="field">
+        <XbsjSlider
+          range
+          :min="0"
+          :max="1000000"
+          :step="1"
+          showTip="always"
+          :disabled="!frontGradientDistanceShow"
+          v-model="frontGradientDistance"
+          ref="widthXbsjSlider"
+        ></XbsjSlider>
+      </div>
+    </div>
+    <div class="row">
+      <label class="label">{{lang.backFace}}</label>
+    </div>
+    <div class="row">
+      <XbsjCheckBox v-model="backFixAlphaShow"></XbsjCheckBox>
+      <label class="label">{{lang.fixAlpha}}:</label>
       <div class="field">
         <XbsjSlider
           :min="0"
           :max="1"
           :step="0.1"
           showTip="always"
+          :disabled="!backFixAlphaShow"
           v-model="backFaceAlpha"
           ref="widthXbsjSlider"
         ></XbsjSlider>
       </div>
     </div>
     <div class="row">
-      <XbsjCheckBox
-        style="margin-top:5px;"
-        v-model="frontAlphadistanceShow"
-      >{{lang.frontFaceAlphaByDistance}}</XbsjCheckBox>
-      <input type="text" :disabled="!frontAlphadistanceShow" v-model="frontFaceAlphaByDistancestr" />
+      <XbsjCheckBox v-model="backGradientAlphaShow"></XbsjCheckBox>
+      <label class="label">{{lang.gradientAlpha}}:</label>
+      <div class="field">
+        <XbsjSlider
+          range
+          :min="0"
+          :max="1"
+          :step="0.1"
+          showTip="always"
+          :disabled="!backGradientAlphaShow"
+          v-model="backGradientAlpha"
+          ref="widthXbsjSlider"
+        ></XbsjSlider>
+      </div>
     </div>
     <div class="row">
-      <XbsjCheckBox
-        style="margin-top:5px;"
-        v-model="backAlphadistanceShow"
-      >{{lang.backFaceAlphaByDistance}}</XbsjCheckBox>
-      <input type="text" :disabled="!backAlphadistanceShow" v-model="backFaceAlphaByDistancestr" />
+      <XbsjCheckBox v-model="backGradientDistanceShow"></XbsjCheckBox>
+      <label class="label">{{lang.gradientDistance}}:</label>
+      <div class="field">
+        <XbsjSlider
+          range
+          :min="0"
+          :max="1000000"
+          :step="1"
+          showTip="always"
+          :disabled="!backGradientDistanceShow"
+          v-model="backGradientDistance"
+          ref="widthXbsjSlider"
+        ></XbsjSlider>
+      </div>
     </div>
     <div class="row">
       <XbsjCheckBox style="margin-top:5px;" v-model="rectangleShow">{{lang.rectangle}}</XbsjCheckBox>
@@ -90,10 +150,16 @@ export default {
       langs: languagejs,
       frontFaceAlpha: 1,
       backFaceAlpha: 1,
-      frontAlphadistanceShow: false,
-      frontFaceAlphaByDistancestr: "",
-      backAlphadistanceShow: false,
-      backFaceAlphaByDistancestr: "",
+      frontGradientAlpha: [0, 0],
+      frontGradientDistance: [0, 1],
+      frontFixAlphaShow: true,
+      frontGradientAlphaShow: false,
+      frontGradientDistanceShow: false,
+      backGradientAlpha: [0, 0],
+      backGradientDistance: [0, 1],
+      backFixAlphaShow: true,
+      backGradientAlphaShow: false,
+      backGradientDistanceShow: false,
       rectangleShow: false,
       rectangle: [],
       rectangleArr: []
@@ -117,62 +183,128 @@ export default {
     }
   },
   watch: {
-    frontAlphadistanceShow(val) {
-      if (val) {
-        this.frontFaceAlphaByDistancestr = "0, 0, 1, 0";
-        this.$root.$earth.terrainEffect.globeTranslucency.frontFaceAlphaByDistance = [
-          0,
-          0,
-          1,
-          0
-        ];
-      } else {
+    frontGradientAlphaShow(val) {
+      if (!val) {
         this.$root.$earth.terrainEffect.globeTranslucency.frontFaceAlphaByDistance = undefined;
-        this.frontFaceAlphaByDistancestr = "";
+        this.frontGradientAlpha = [0, 0];
       }
     },
-    frontFaceAlphaByDistancestr(val) {
-      if (this.frontAlphadistanceShow) {
-        var frontFaceAlphaByDistanceArr = this.frontFaceAlphaByDistancestr.split(
-          ","
-        );
-        this.$root.$earth.terrainEffect.globeTranslucency.frontFaceAlphaByDistance = frontFaceAlphaByDistanceArr.map(
-          Number
-        );
+    frontGradientAlpha: {
+      handler(newval, oldval) {
+        if (this.frontGradientAlphaShow) {
+          let frontFaceAlphaByDistanceArr1 = new Array(4);
+          if (
+            this.$root.$earth.terrainEffect.globeTranslucency
+              .frontFaceAlphaByDistance !== undefined
+          ) {
+            frontFaceAlphaByDistanceArr1 = [
+              ...this.$root.$earth.terrainEffect.globeTranslucency
+                .frontFaceAlphaByDistance
+            ];
+          }
+          frontFaceAlphaByDistanceArr1[1] = newval[1];
+          frontFaceAlphaByDistanceArr1[3] = newval[0];
+          this.$root.$earth.terrainEffect.globeTranslucency.frontFaceAlphaByDistance = [
+            ...frontFaceAlphaByDistanceArr1
+          ];
+        }
+      },
+      deep: true
+    },
+    frontGradientDistanceShow(val) {
+      if (!val) {
+        this.$root.$earth.terrainEffect.globeTranslucency.frontFaceAlphaByDistance = undefined;
+        this.frontGradientDistance = [0, 1];
       }
     },
-    backAlphadistanceShow(val) {
-      if (val) {
-        this.backFaceAlphaByDistancestr = "0, 0, 1, 0";
-        this.$root.$earth.terrainEffect.globeTranslucency.backFaceAlphaByDistance = [
-          0,
-          0,
-          1,
-          0
-        ];
-      } else {
+    frontGradientDistance: {
+      handler(newval, oldval) {
+        if (this.frontGradientDistanceShow) {
+          let frontFaceAlphaByDistance2 = new Array(4);
+          if (
+            this.$root.$earth.terrainEffect.globeTranslucency
+              .frontFaceAlphaByDistance !== undefined
+          ) {
+            frontFaceAlphaByDistance2 = [
+              ...this.$root.$earth.terrainEffect.globeTranslucency
+                .frontFaceAlphaByDistance
+            ];
+          }
+          frontFaceAlphaByDistance2[0] = newval[0];
+          frontFaceAlphaByDistance2[2] = newval[1];
+          this.$root.$earth.terrainEffect.globeTranslucency.frontFaceAlphaByDistance = [
+            ...frontFaceAlphaByDistance2
+          ];
+        }
+      },
+      deep: true
+    },
+    backGradientAlphaShow(val) {
+      if (!val) {
         this.$root.$earth.terrainEffect.globeTranslucency.backFaceAlphaByDistance = undefined;
-        this.backFaceAlphaByDistancestr = "";
+        this.backGradientAlpha = [0, 0];
       }
     },
-    backFaceAlphaByDistancestr(val) {
-      if (this.backAlphadistanceShow) {
-        var backFaceAlphaByDistanceArr = this.backFaceAlphaByDistancestr.split(
-          ","
-        );
-        this.$root.$earth.terrainEffect.globeTranslucency.backFaceAlphaByDistance = backFaceAlphaByDistanceArr.map(
-          Number
-        );
+    backGradientAlpha: {
+      handler(newval, oldval) {
+        if (this.backGradientAlphaShow) {
+          let backFaceAlphaByDistanceArr1 = new Array(4);
+          if (
+            this.$root.$earth.terrainEffect.globeTranslucency
+              .backFaceAlphaByDistance !== undefined
+          ) {
+            backFaceAlphaByDistanceArr1 = [
+              ...this.$root.$earth.terrainEffect.globeTranslucency
+                .backFaceAlphaByDistance
+            ];
+          }
+          backFaceAlphaByDistanceArr1[1] = newval[0];
+          backFaceAlphaByDistanceArr1[3] = newval[1];
+          this.$root.$earth.terrainEffect.globeTranslucency.backFaceAlphaByDistance = [
+            ...backFaceAlphaByDistanceArr1
+          ];
+        }
+      },
+      deep: true
+    },
+    backGradientDistanceShow(val) {
+      if (!val) {
+        this.$root.$earth.terrainEffect.globeTranslucency.backFaceAlphaByDistance = undefined;
+        this.backGradientDistance = [0, 1];
       }
+    },
+    backGradientDistance: {
+      handler(newval, oldval) {
+        if (this.backGradientDistanceShow) {
+          let backFaceAlphaByDistanceArr2 = new Array(4);
+          if (
+            this.$root.$earth.terrainEffect.globeTranslucency
+              .backFaceAlphaByDistance !== undefined
+          ) {
+            backFaceAlphaByDistanceArr2 = [
+              ...this.$root.$earth.terrainEffect.globeTranslucency
+                .backFaceAlphaByDistance
+            ];
+          }
+          backFaceAlphaByDistanceArr2[0] = newval[0];
+          backFaceAlphaByDistanceArr2[2] = newval[1];
+          this.$root.$earth.terrainEffect.globeTranslucency.backFaceAlphaByDistance = [
+            ...backFaceAlphaByDistanceArr2
+          ];
+        }
+      },
+      deep: true
     },
     rectangleShow(val) {
       if (val) {
-        this.rectangleArr = [-180, -90, 180, 90];
+        if (this.rectangleArr.length === 0) {
+          this.rectangleArr = [-180, -90, 180, 90];
+        }
         this.$root.$earth.terrainEffect.globeTranslucency.rectangle = [
-          -Math.PI,
-          -Math.PI * 0.5,
-          Math.PI,
-          Math.PI * 0.5
+          (this.rectangleArr[0] * Math.PI) / 180,
+          (this.rectangleArr[1] * Math.PI) / 180,
+          (this.rectangleArr[2] * Math.PI) / 180,
+          (this.rectangleArr[3] * Math.PI) / 180
         ];
       } else {
         this.rectangleArr = [];
@@ -211,8 +343,8 @@ export default {
   color: #1fffff !important;
 }
 .popup {
-  width: 278px;
-  height: 270px;
+  width: 288px;
+  height: 340px;
 }
 .popup button {
   height: 28px;
@@ -234,7 +366,7 @@ export default {
 }
 .row {
   display: flex;
-  margin-top: 14px;
+  margin-top: 10px;
 }
 .field {
   width: 170px;
