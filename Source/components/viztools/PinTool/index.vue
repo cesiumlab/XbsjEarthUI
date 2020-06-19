@@ -121,7 +121,7 @@
           </div>
         </div>-->
 
-        <div class="flatten" style="margin-top:20px;">
+        <div v-show="pin.imageUrl===''" class="flatten" style="margin-top:20px;">
           <label>{{lang.pinBuilder.size}}</label>
           <div class="field">
             <XbsjSlider
