@@ -472,6 +472,10 @@ vueApp.examples = [
                 "url": "./earth-view-navigator.html"
             },
             {
+                "title": "VR",
+                "url": "./earth-VR.html"
+            },
+            {
                 "title": "挡土墙-编辑",
                 "url": "./earth-wall-editing.html"
             },

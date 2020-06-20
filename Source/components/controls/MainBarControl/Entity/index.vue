@@ -281,7 +281,7 @@
           <div class="xbsj-item-btn surfacebutton"></div>
           <span class="xbsj-item-name">{{lang.surface}}</span>
         </div>
-        <!-- 贴地图像 -->
+        <!-- 立面贴图 -->
         <div class="xbsj-item-btnbox ml20" @click="groundImageBtn">
           <div class="xbsj-item-btn groundimagebutton"></div>
           <span class="xbsj-item-name">{{lang.groundimage}}</span>

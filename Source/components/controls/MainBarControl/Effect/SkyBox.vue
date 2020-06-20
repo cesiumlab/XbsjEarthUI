@@ -1,12 +1,6 @@
 <template>
   <div class="xbsj-mainbar-popup popup">
     <div class="row">
-      <label class="label">{{lang.skyBoxOnGround}}:</label>
-      <div class="field">
-        <XbsjSwitch v-model="skyBoxOnGround" :value="skyBoxOnGround"></XbsjSwitch>
-      </div>
-    </div>
-    <div class="row">
       <label class="label">{{lang.skyBoxType}}:</label>
       <XbsjSelect
         :class="!skyBoxOnGround ? 'selectdisabled' : ''"
@@ -78,12 +72,12 @@ export default {
       backgroundImageUri: "",
       skyBoxTypeItem: "",
       skyBoxType1: [
-        "天空盒1",
-        "天空盒2",
-        "天空盒3",
-        "天空盒4",
-        "天空盒5",
-        "天空盒6"
+        "晴空万里",
+        "落霞",
+        "梦幻",
+        "白云朵朵",
+        "浪漫星空",
+        "碧海蓝天"
       ],
       skyBoxType2: [
         {

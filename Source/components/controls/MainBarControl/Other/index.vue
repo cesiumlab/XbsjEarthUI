@@ -18,9 +18,8 @@
           <span class="xbsj-item-name">Czml</span>
         </div>
       </div>
-      <div class="xbsj-list-item">
+      <!-- <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.userDefined}}</span>
-        <!-- 自定义 -->
         <div class="xbsj-item-btnbox" @click="pinpicturebtn() ">
           <div class="xbsj-item-btn pinpicbutton"></div>
           <span class="xbsj-item-name">{{lang.pinpicturebtn}}</span>
@@ -33,7 +32,7 @@
           <div class="xbsj-item-btn divData"></div>
           <span class="xbsj-item-name">数据展示</span>
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
