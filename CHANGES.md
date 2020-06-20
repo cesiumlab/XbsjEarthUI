@@ -5,6 +5,7 @@ Change Log
 
 ##### Additions :tada:
 * 增加视频模型示例
+* 自定义图元增加videoUrl和objUrl属性，分别用来展示视频和obj模型
 
 ### 1.4.7 - 2020-6-18
 
