@@ -464,6 +464,10 @@ vueApp.examples = [
                 "url": "./earth-tileset-forceDoubleSide.html"
             },
             {
+                "title": "视频模型展示",
+                "url": "./earth-videoModels.html"
+            },
+            {
                 "title": "视图-多视口",
                 "url": "./earth-view-multiviewport.html"
             },

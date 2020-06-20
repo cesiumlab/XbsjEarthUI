@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例"></meta>
+    <title>视频模型展示</title>
+
+    <!-- 强制提前加载Cesium.js，其中Cesium相关路径可以换成自定义的 -->
+    <!-- <script src="../../XbsjCesium/Cesium.js"></script> -->
+    <!-- <link rel="stylesheet" href="../../XbsjCesium/Widgets/Widgets.css"> -->
+
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function startup() {
+            // earth = new XE.Earth('earthContainer');
+            earth = new XE.Earth('earthContainer', {
+                // 这里设置Viewer的配置，和new Viewer(container, options)中的options一致
+                homeButton: true,
+                timeline: true,
+            });
+
+            // http://earthsdk.com//t/videoModels/video/1.mp4
+
+            const videoModel = {
+                "title": "视频模型",
+                "children": [
+                    {
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "xbsjGuid": "e18e3dcf-4d82-4d5c-82af-8bc4d92a0470",
+                            "name": "谷歌影像",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}",
+                                    "srcCoordType": "GCJ02"
+                                },
+                                "UrlTemplateImageryProvider": {},
+                                "WebMapTileServiceImageryProvider": {},
+                                "createTileMapServiceImageryProvider": {}
+                            }
+                        }
+                    },
+                    {
+                        "czmObject": {
+                            "xbsjType": "CustomPrimitive",
+                            "xbsjGuid": "ce5a57cf-0bfc-4074-904b-52296666ba71",
+                            "name": "自定义图元1",
+                            "position": [
+                                2.0313887163962,
+                                0.6963863715457375,
+                                1.2
+                            ],
+                            "renderState": {
+                                "cull": {},
+                                "polygonOffset": {},
+                                "scissorTest": {
+                                    "rectangle": {}
+                                },
+                                "depthRange": {},
+                                "depthTest": {
+                                    "enabled": true
+                                },
+                                "colorMask": {},
+                                "blending": {
+                                    "color": {}
+                                },
+                                "stencilTest": {
+                                    "frontOperation": {},
+                                    "backOperation": {}
+                                },
+                                "sampleCoverage": {}
+                            },
+                            "canvasWidth": 1280,
+                            "canvasHeight": 720,
+                            "autoRegisterEditing": true,
+                            "videoUrl": "http://localhost:81/%E8%A7%86%E9%A2%91/1.mp4",
+                            "objUrl": "http://localhost:81/%E6%9E%AA%E6%9C%BA/1/obj/1.obj"
+                        }
+                    },
+                    {
+                        "czmObject": {
+                            "xbsjType": "CustomPrimitive",
+                            "xbsjGuid": "a2c2d0bc-7c3b-46a8-98c9-c9b86f27b72e",
+                            "name": "自定义图元2",
+                            "position": [
+                                2.0313887163962,
+                                0.6963863715457375,
+                                1
+                            ],
+                            "renderState": {
+                                "cull": {},
+                                "polygonOffset": {},
+                                "scissorTest": {
+                                    "rectangle": {}
+                                },
+                                "depthRange": {},
+                                "depthTest": {
+                                    "enabled": true
+                                },
+                                "colorMask": {},
+                                "blending": {
+                                    "color": {}
+                                },
+                                "stencilTest": {
+                                    "frontOperation": {},
+                                    "backOperation": {}
+                                },
+                                "sampleCoverage": {}
+                            },
+                            "canvasWidth": 1280,
+                            "canvasHeight": 720,
+                            "autoRegisterEditing": true,
+                            "videoUrl": "http://localhost:81/%E8%A7%86%E9%A2%91/2.mp4",
+                            "objUrl": "http://localhost:81/%E6%9E%AA%E6%9C%BA/2/obj/2.obj"
+                        }
+                    },
+                    {
+                        "czmObject": {
+                            "xbsjType": "CustomPrimitive",
+                            "xbsjGuid": "0d0b06d1-c867-41d0-a389-af3b7a7536d4",
+                            "name": "自定义图元3",
+                            "position": [
+                                2.0313887163962,
+                                0.6963863715457375,
+                                1
+                            ],
+                            "renderState": {
+                                "cull": {},
+                                "polygonOffset": {},
+                                "scissorTest": {
+                                    "rectangle": {}
+                                },
+                                "depthRange": {},
+                                "depthTest": {
+                                    "enabled": true
+                                },
+                                "colorMask": {},
+                                "blending": {
+                                    "color": {}
+                                },
+                                "stencilTest": {
+                                    "frontOperation": {},
+                                    "backOperation": {}
+                                },
+                                "sampleCoverage": {}
+                            },
+                            "canvasWidth": 1280,
+                            "canvasHeight": 720,
+                            "autoRegisterEditing": true,
+                            "videoUrl": "http://localhost:81/%E8%A7%86%E9%A2%91/3.mp4",
+                            "objUrl": "http://localhost:81/%E6%9E%AA%E6%9C%BA/3/obj/3.obj"
+                        }
+                    }
+                ]
+            }
+
+            earth.sceneTree.root = {
+                "children": [
+                    videoModel,
+                ]
+            };
+            
+            earth.camera.flyTo([2.0313747370414443,0.6963921624732469,79.9349488198691], 0, [2.7183477009336547,-0.7674586089838598,0.0018797893170097169]);
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);
+    </script>
+</body>
+
+</html>
