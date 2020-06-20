@@ -83,7 +83,6 @@
     var bgImagery;
 
     function startup() {
-      // earth = new XE.Earth('earthContainer');
       earth = new XE.Earth('earthContainer', {
         // 这里设置Viewer的配置，和new Viewer(container, options)中的options一致
         homeButton: true,
@@ -283,8 +282,6 @@
       const path1 = earth.sceneTree.$refs.path1.czmObject;
       const path2 = earth.sceneTree.$refs.path2.czmObject;
       const tileset = earth.sceneTree.$refs.tileset.czmObject;
-      // path1.cameraAttached = true;
-      // path1.playing = true;
 
       function flyToChina() {
         const position = [1.9541895875590976, 0.5250470593581142, 7977677.725770064];
@@ -354,9 +351,6 @@
     // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
     async function loadXE() {
       await XE.ready();
-      // await XE.HTML.loadJS("../../earthsdk-webxr.js");
-      // const r = await fetch('./scripts/scene.json');
-      // const sceneJson = await r.json();
       startup();
     }
 
