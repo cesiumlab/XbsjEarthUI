@@ -31,7 +31,10 @@ const zh = {
   apply: '应用',
   tipcontent: '请填入顶点坐标和indices',
   scale: 'x,y,z缩放值',
-  dragcontent: '请把对象拖到这里'
+  dragcontent: '请把对象拖到这里',
+  imageUrl: '图片路径',
+  objUrl: 'obj路径',
+  videoUrl: '视频路径'
 };
 
 const en = {
@@ -67,7 +70,10 @@ const en = {
   apply: 'apply',
   tipcontent: 'Please fill in vertex coordinates and indices',
   scale: 'scale',
-  dragcontent: 'Drag the object here'
+  dragcontent: 'Drag the object here',
+  imageUrl: 'imageUrl',
+  objUrl: 'objUrl',
+  videoUrl: 'videoUrl'
 };
 
 export default {

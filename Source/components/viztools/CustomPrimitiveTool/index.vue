@@ -2,7 +2,7 @@
   <Window
     :width="712"
     :minWidth="712"
-    :height="680"
+    :height="712"
     :top="158"
     :floatright="true"
     :title="lang.title"
@@ -150,6 +150,21 @@
         </div>
       </div>
 
+      <div class="flatten-flex">
+        <div class="flatten">
+          <label>{{lang.imageUrl}}</label>
+          <input type="text" v-model="model.imageUrl" />
+        </div>
+        <div class="flatten">
+          <label>{{lang.objUrl}}</label>
+          <input type="text" v-model="model.objUrl" />
+        </div>
+        <div class="flatten">
+          <label>{{lang.videoUrl}}</label>
+          <input type="text" v-model="model.videoUrl" />
+        </div>
+      </div>
+
       <!-- 预定义 -->
       <!-- <div class="flatten" style="display:flex;">
         <div style="position: relative;">
@@ -268,7 +283,10 @@ export default {
         rotation: [0, 0, 0],
         primitiveType: Number,
         pass: Number,
-        scale: [0, 0, 0]
+        scale: [0, 0, 0],
+        imageUrl: "",
+        objUrl: "",
+        videoUrl: ""
       },
       pinstyletype: true,
       langs: languagejs,
@@ -367,7 +385,10 @@ export default {
         canvasHeight: "model.canvasHeight",
         primitiveType: "model.primitiveType",
         pass: "model.pass",
-        scale: "model.scale"
+        scale: "model.scale",
+        imageUrl: "model.imageUrl",
+        objUrl: "model.objUrl",
+        videoUrl: "model.videoUrl"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
