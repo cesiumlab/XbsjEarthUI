@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CesiumLab2.0</title>
+
+    <!-- <script src="http://localhost:8080/Build/CesiumUnminified/Cesium.js"></script>
+    <link rel="stylesheet" href="http://localhost:8080/Build/CesiumUnminified/Widgets/widgets.css"> -->
+
+    <!-- 若需要使用自定义的Cesium版本时，只需要引入以下资源即可 -->
+    <!-- <script src="http://earthsdk.com/c/1.60/Build/Cesium/Cesium.js"></script>
+    <link rel="stylesheet" href="http://earthsdk.com/c/1.60/Build/Cesium/Widgets/widgets.css"> -->
+
+    <!-- 临时引入three.js，因为自定义图元扩展中的tube需要使用Three.js中的定点计算方法 -->
+    <!-- <script src="https://cdn.bootcss.com/three.js/r83/three.min.js"></script> -->
+    <script src="./scripts/three.min.js"></script>
+    <script src="./scripts/turf.min.js"></script>
+    <script src="./scripts/sceneTreeCreationExample.js"></script>
+    <script src="../../../XbsjEarthUI/xbsj.js"></script>
+    <script src="./custom.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <button onclick="create()">创建</button>
+    <button onclick="destroy()">销毁</button> -->
+    <div id="main">
+    </div>
+
+    <script>
+        var xbsjEarthUI = undefined;
+
+        function initEarthWithTilesetUrl(earth, tilesetUrl, tilesetTitle) {
+            var earthJsonObject = {
+                "sceneTree": {
+                    "root": {
+                        "expand": true,
+                        "title": "预览场景",
+                        "children": [{
+                            "expand": true,
+                            "title": "三维瓦片组",
+                            "children": [{
+                                "czmObject": {
+                                    "xbsjType": "XbsjTileset",
+                                    // "guid": "c681a2cc-7f08-45a4-a8d3-2a03859b2c35",
+                                    "url": tilesetUrl
+                                },
+                                "enabled": true,
+                                "title": tilesetTitle
+                            }],
+                        }]
+                    }
+                }
+            };
+            earth.fromJson(earthJsonObject);
+        }
+
+        XbsjEarthUI.create('main').then((earthUI) => {
+            window.uia = earthUI;
+
+            //如果有url参数，那么只添加url参数数据
+            var urlOptions = Cesium.queryToObject(window.location.search.substring(1));
+            const tilesetUrl = urlOptions.tilesetUrl;
+            const tilesetTitle = urlOptions.tilesetTitle || '未命名三维瓦片';
+
+
+            //获取url参数，如果有场景地址，那么先获取场景信息 
+            if (urlOptions.scene) {
+                earthUI.labScene.loadScene(urlOptions.scene);
+            } else if (tilesetUrl) {
+                initEarthWithTilesetUrl(earthUI.earth, tilesetUrl, tilesetTitle);
+            }
+            //否则按照示例代码方法创建
+            else {
+                earthUI.earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "title": "新建场景",
+                            "children": [
+                                {
+                                    // "czmObject": {
+                                    //     "xbsjType": "Imagery",
+                                    //     "name": "离线影像",
+                                    //     "show": true,
+                                    //     "xbsjImageryProvider": {
+                                    //         "createTileMapServiceImageryProvider": {
+                                    //             "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    //             "fileExtension": 'jpg',
+                                    //         },
+                                    //         "type": 'createTileMapServiceImageryProvider',
+                                    //     },
+                                    // }
+                                    "czmObject": {
+                                        "name": "谷歌影像",
+                                        "xbsjType": "Imagery",
+                                        "xbsjImageryProvider": {
+                                            "XbsjImageryProvider": {
+                                                "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}",
+                                                "srcCoordType": "GCJ02",
+                                                "dstCoordType": "WGS84",
+                                            },
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                    ]
+                }
+
+                const geImagery = {
+                    "czmObject": {
+                        "xbsjType": "Imagery",
+                        "xbsjGuid": "44dad6b6-37e0-4c30-b91a-ade537540398",
+                        "name": "geearth",
+                        "rectangle": [
+                            -3.141592653589793,
+                            -1.5707963267948966,
+                            3.141592653589793,
+                            1.5707963267948966
+                        ],
+                        "xbsjImageryProvider": {
+                            "XbsjImageryProvider": {},
+                            "UrlTemplateImageryProvider": {},
+                            "WebMapTileServiceImageryProvider": {
+                                "url": "http://www.huaruiview.cn:3500/bigGeoDataEngine/services/wgs84/startlvlone/wmts?REQUEST=GetTile&VERSION=1.0.0&SERVICE=wmts&LAYER=geearth&STYLE={style}&TILEMATRIXSET={TileMatrixSet}&TILEMATRIX={TileMatrix}&TILEROW={TileRow}&TILECOL={TileCol}",
+                                "format": "tiles",
+                                "layer": "geearth",
+                                "style": "default",
+                                "tileMatrixSetID": "ge",
+                                "tileMatrixLabels": [
+                                    "1",
+                                    "2",
+                                    "3",
+                                    "4",
+                                    "5",
+                                    "6",
+                                    "7",
+                                    "8",
+                                    "9",
+                                    "10",
+                                    "11",
+                                    "12",
+                                    "13",
+                                    "14",
+                                    "15",
+                                    "16",
+                                    "17",
+                                    "18"
+                                ],
+                                "tilingScheme": "Geographic",
+                                "maximumLevel": 17
+                            },
+                            "createTileMapServiceImageryProvider": {},
+                            "type": "WebMapTileServiceImageryProvider"
+                        }
+                    }
+                };
+
+                const earth = earthUI.earth;
+
+                // 删掉默认的谷歌影像
+                earth.sceneTree.root.children[0].children.pop();
+                // 增加新的影像
+                earth.sceneTree.root.children[0].children.push(geImagery)
+
+                var viewer = earth.czm.viewer;
+                var geeMetadata = new Cesium.GoogleEarthEnterpriseMetadata(
+                    new Cesium.Resource({
+                        url: "http://www.huaruiview.cn:9997/bigGeoDataEngine/services/",
+                    })
+                );
+
+                viewer.terrainProvider = new Cesium.GoogleEarthEnterpriseTerrainProvider({
+                    metadata: geeMetadata
+                });
+            }
+
+            if (urlOptions.lang) {
+                earthUI.language = (urlOptions.lang == 'en-US' ? 'en' : 'zh');
+            }
+
+
+            // //显示自定义对象的，自定义属性窗口
+            // var obj1 = {
+            //     name: 'obj1'
+            // };
+            // earthUI.showPropertyWindow(obj1, {
+            //     component: myTool
+            // });
+
+            /*
+            //注意myTool只是个模板，还不是vue组件，对于两个不同的对象 我们使用同一个模板myTool 会创建两个 vue组件实例
+            var obj2 = {
+                name: 'obj2'
+            }
+            earthUI.showPropertyWindow(obj2, {
+                component: myTool
+            });
+            */
+        });
+    </script>
+</body>
+
+</html>
