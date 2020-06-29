@@ -35,8 +35,7 @@
       </div>
     </div>
     <div class="row">
-      <XbsjCheckBox v-model="frontGradientDistanceShow"></XbsjCheckBox>
-      <label class="label">{{lang.gradientDistance}}:</label>
+      <label class="label" style="margin-left:12px;">{{lang.gradientDistance}}:</label>
       <div class="field">
         <XbsjSlider
           range
@@ -44,7 +43,6 @@
           :max="1000000"
           :step="1"
           showTip="always"
-          :disabled="!frontGradientDistanceShow"
           v-model="frontGradientDistance"
           ref="widthXbsjSlider"
         ></XbsjSlider>
@@ -85,8 +83,7 @@
       </div>
     </div>
     <div class="row">
-      <XbsjCheckBox v-model="backGradientDistanceShow"></XbsjCheckBox>
-      <label class="label">{{lang.gradientDistance}}:</label>
+      <label class="label" style="margin-left:12px;">{{lang.gradientDistance}}:</label>
       <div class="field">
         <XbsjSlider
           range
@@ -94,7 +91,6 @@
           :max="1000000"
           :step="1"
           showTip="always"
-          :disabled="!backGradientDistanceShow"
           v-model="backGradientDistance"
           ref="widthXbsjSlider"
         ></XbsjSlider>
@@ -183,10 +179,20 @@ export default {
     }
   },
   watch: {
+    frontFixAlphaShow(val) {
+      if (val) {
+        this.frontGradientAlphaShow = false;
+      } else {
+        this.frontGradientAlphaShow = true;
+      }
+    },
     frontGradientAlphaShow(val) {
       if (!val) {
         this.$root.$earth.terrainEffect.globeTranslucency.frontFaceAlphaByDistance = undefined;
         this.frontGradientAlpha = [0, 0];
+        this.frontFixAlphaShow = true;
+      } else {
+        this.frontFixAlphaShow = false;
       }
     },
     frontGradientAlpha: {
@@ -239,10 +245,20 @@ export default {
       },
       deep: true
     },
+    backFixAlphaShow(val) {
+      if (val) {
+        this.backGradientAlphaShow = false;
+      } else {
+        this.backGradientAlphaShow = true;
+      }
+    },
     backGradientAlphaShow(val) {
       if (!val) {
         this.$root.$earth.terrainEffect.globeTranslucency.backFaceAlphaByDistance = undefined;
         this.backGradientAlpha = [0, 0];
+        this.backFixAlphaShow = true;
+      } else {
+        this.backFixAlphaShow = false;
       }
     },
     backGradientAlpha: {

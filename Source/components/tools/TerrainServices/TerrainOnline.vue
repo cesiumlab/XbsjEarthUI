@@ -16,6 +16,29 @@
       <label>{{lang.address}}:</label>
       <input v-model="selectedUrl" />
     </div>
+    <div class="onlineTerrainDiv">
+      <label>{{lang.type}}:</label>
+      <input
+        class="inputcheck"
+        type="radio"
+        id="cesiumtype"
+        v-model="terrainType"
+        value="XbsjCesiumTerrainProvider"
+        name="terrainType"
+        style="vertical-align: top;"
+      />
+      <label style="cursor:pointer;width:26px;" for="cesiumtype">{{lang.cesiumterrain}}</label>
+      <input
+        class="inputcheck"
+        type="radio"
+        id="googletype"
+        v-model="terrainType"
+        value="GoogleEarthEnterpriseTerrainProvider"
+        name="terrainType"
+        style="vertical-align: top;"
+      />
+      <label style="cursor:pointer;width:26px;" for="googletype">{{lang.googleterrain}}</label>
+    </div>
     <!-- <label v-show="error!=''" class="error">{{error}}</label> -->
     <div v-if="selected!=null">
       <!-- <div class="onlineTerrainDiv">
@@ -35,32 +58,6 @@
         <div class="onlineTerrainDiv">
           <label>{{lang.water}}:</label>
           <input class="inputcheck" type="checkbox" v-model="water" />
-        </div>
-      </div>
-
-      <div v-if="!selected.notSupportWater">
-        <div class="onlineTerrainDiv">
-          <label>{{lang.type}}:</label>
-          <input
-            class="inputcheck"
-            type="radio"
-            id="cesiumtype"
-            v-model="terrainType"
-            value="XbsjCesiumTerrainProvider"
-            name="terrainType"
-            style="vertical-align: top;"
-          />
-          <label style="cursor:pointer;width:26px;" for="cesiumtype">{{lang.cesiumterrain}}</label>
-          <input
-            class="inputcheck"
-            type="radio"
-            id="googletype"
-            v-model="terrainType"
-            value="GoogleEarthEnterpriseTerrainProvider"
-            name="terrainType"
-            style="vertical-align: top;"
-          />
-          <label style="cursor:pointer;width:26px;" for="googletype">{{lang.googleterrain}}</label>
         </div>
       </div>
 
@@ -183,14 +180,23 @@ export default {
         var terrain = new XE.Obj.Terrain(this.$root.$earth);
 
         //如何设置全球数据，如何附加法向量和水面属性
-        terrain.xbsjTerrainProvider = {
-          type: this.type,
-          XbsjCesiumTerrainProvider: {
-            url: this.selectedUrl,
-            requestVertexNormals: this.normal,
-            requestWaterMask: this.water
-          }
-        };
+        if (this.type === "XbsjCesiumTerrainProvider") {
+          terrain.xbsjTerrainProvider = {
+            type: this.type,
+            XbsjCesiumTerrainProvider: {
+              url: this.selectedUrl,
+              requestVertexNormals: this.normal,
+              requestWaterMask: this.water
+            }
+          };
+        } else {
+          terrain.xbsjTerrainProvider = {
+            type: this.type,
+            GoogleEarthEnterpriseTerrainProvider: {
+              url: this.selectedUrl
+            }
+          };
+        }
 
         //添加到场景树中
         this.$root.$earthUI.tools.sceneTree.addSceneObject(
