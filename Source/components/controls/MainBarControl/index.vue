@@ -106,9 +106,9 @@ export default {
   created() {},
   mounted() {
     var search = window.location.search;
-    var labserver = this.getSearchString("labserver", search);
-    if (labserver !== undefined) {
-      this.$root.$labServer.server = labserver;
+    window.labserver = this.getSearchString("labserver", search);
+    if (window.labserver !== undefined) {
+      this.$root.$labServer.server = window.labserver;
     }
   },
   methods: {

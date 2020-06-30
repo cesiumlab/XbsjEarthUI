@@ -65,11 +65,19 @@ class LabScene {
         this.unbinds.push(XE.MVVM.watch(() => {
 
             if (this.sceneID) {
-                history.pushState(
-                    "cesiumlab",
-                    document.title,
-                    "./index.html?scene=" + this.sceneID
-                );
+                if (window.labserver) {
+                    history.pushState(
+                        "cesiumlab",
+                        document.title,
+                        "./index.html?scene=" + this.sceneID + "&labserver=" + window.labserver
+                    );
+                } else {
+                    history.pushState(
+                        "cesiumlab",
+                        document.title,
+                        "./index.html?scene=" + this.sceneID
+                    );
+                }
             }
 
         }));

@@ -154,6 +154,7 @@ export default {
     },
     collapse() {
       this.collapsed = !this.collapsed;
+      this.$parent.refShow = !this.$parent.refShow;
     },
     cancel() {
       this.$emit("cancel");
