@@ -74,6 +74,29 @@
             const tilesetUrl = urlOptions.tilesetUrl;
             const tilesetTitle = urlOptions.tilesetTitle || '未命名三维瓦片';
 
+            XE.MVVM.watch(() => ({
+                labserver: earthUI.labServer.server,
+                sceneID: earthUI.labScene.sceneID,
+            }), params => {
+                let searchObj = {};
+                if (params.sceneID) {
+                    searchObj.scene = params.sceneID;
+                }
+                if (params.labserver && params.labserver !== '//localhost:9000/') {
+                    searchObj.labserver = params.labserver;
+                }
+
+                const searchStr = Cesium.objectToQuery(searchObj);
+
+                (searchStr.length > 0) && window.history.replaceState(null, null, '?' + searchStr);
+            });
+
+            if (urlOptions.labserver) {
+                if (!urlOptions.labserver.endsWith('/')) {
+                    urlOptions.labserver += '/';
+                }
+                earthUI.labServer.server = urlOptions.labserver;
+            }
 
             //获取url参数，如果有场景地址，那么先获取场景信息 
             if (urlOptions.scene) {
