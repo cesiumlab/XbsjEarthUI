@@ -41,7 +41,7 @@
               <XbsjSelect
                 v-model="objdeflut[list]"
                 :list="jsonSchema.properties[list].enum"
-                style="width: 54%;margin-left: calc(35% + 34px);"
+                style="width: 52%;margin-left: calc(35% + 34px);"
                 v-if="jsonSchema.properties[list].type==='string' && jsonSchema.properties[list].enum"
               ></XbsjSelect>
               <div class="attribut-element" v-if="jsonSchema.properties[list].type==='array'">
@@ -245,7 +245,7 @@ export default {
 .xbsj-treecommon .treecommon input,
 .xbsj-treecommon .attributePath input {
   /* width: 216px; */
-  width: 54%;
+  width: 52%;
   height: 28px;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;

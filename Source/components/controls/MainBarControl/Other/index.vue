@@ -18,14 +18,13 @@
           <span class="xbsj-item-name">Czml</span>
         </div>
       </div>
-      <div class="xbsj-list-item">
+      <!-- <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{lang.userDefined}}</span>
-        <!-- 自定义 -->
         <div class="xbsj-item-btnbox" @click="pinpicturebtn() ">
           <div class="xbsj-item-btn pinpicbutton"></div>
           <span class="xbsj-item-name">{{lang.pinpicturebtn}}</span>
         </div>
-      <div class="xbsj-item-btnbox ml20" @click="groundImageBtn">
+        <div class="xbsj-item-btnbox ml20" @click="groundImageBtn">
           <div class="xbsj-item-btn groundimagebutton"></div>
           <span class="xbsj-item-name">{{lang.groundimage}}</span>
         </div>
@@ -33,7 +32,7 @@
           <div class="xbsj-item-btn divData"></div>
           <span class="xbsj-item-name">数据展示</span>
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
@@ -85,18 +84,17 @@ export default {
 
       groundimage.isCreating = true;
       groundimage.creating = true;
-      groundimage.imageUrls = ["./assets/logo.png"];
+      groundimage.imageUrls = ["./assets/ico/6.png"];
       console.log(groundimage);
       this.$root.$earthUI.showPropertyWindow(groundimage);
     },
-    divData(){
+    divData() {
       var PinDiv = new XE.Obj.Plots.GeoPin(this.$root.$earth);
-      console.log(PinDiv)
-      PinDiv.name = '111';
+      console.log(PinDiv);
+      PinDiv.name = "111";
       PinDiv.isCreating = true;
       PinDiv.creating = true;
-      PinDiv.innerHTML =
-          `<!DOCTYPE HTML>
+      PinDiv.innerHTML = `<!DOCTYPE HTML>
         <html>
 
         <head>

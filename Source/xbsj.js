@@ -145,22 +145,22 @@ function create(earthDom, options) {
 
         //去加载 xbsjEarthUI.js
         if (typeof XbsjEarthUI.ready === 'undefined') {
+            const xbsjUri = getScriptBaseUrl('xbsj');
             const xbsjEarthUIUri = getScriptBaseUrl('xbsj') + 'XbsjEarthUI.js';
             const xbsjEarthUri = (window.xbsjEarthDir || getScriptBaseUrl('xbsj')) + '../XbsjEarth/XbsjEarth.js';
-            const xbsjEarthPlottingSymbolUri = getScriptBaseUrl('xbsj') + '../XbsjEarth-Plugins/plottingSymbol/plottingSymbol.js';
-            const xbsjEarthCustomPrimitiveUri = getScriptBaseUrl('xbsj') + '../XbsjEarth-Plugins/customPrimitive/customPrimitive.js';
-            const xbsjEarthCustomPrimitiveImageUri = getScriptBaseUrl('xbsj') + '../XbsjEarth-Plugins/customPrimitiveImage/customPrimitiveImage.js';
-            const xbsjEarthPlottingSymbol2Uri = getScriptBaseUrl('xbsj') + '../XbsjEarth-Plugins/plottingSymbol2/plottingSymbol2.js';
+
+            const pluginUris = [
+                xbsjUri + '../XbsjEarth-Plugins/plottingSymbol/plottingSymbol.js',
+                xbsjUri + '../XbsjEarth-Plugins/customPrimitive/customPrimitive.js',
+                xbsjUri + '../XbsjEarth-Plugins/customPrimitiveImage/customPrimitiveImage.js',
+                xbsjUri + '../XbsjEarth-Plugins/plottingSymbol2/plottingSymbol2.js',
+                // xbsjUri + '../XbsjEarth-Plugins/webxr/xbsj-cesium-webxr.js',
+            ];
 
             Promise.all([loadJS(xbsjEarthUIUri), loadJS(xbsjEarthUri)]).then(() => {
-                XE.ready().then(() => {
-                    return loadJS(xbsjEarthPlottingSymbolUri);
-                }).then(() => {
-                    return loadJS(xbsjEarthCustomPrimitiveUri);
-                }).then(() => {
-                    return loadJS(xbsjEarthCustomPrimitiveImageUri);
-                }).then(() => {
-                    return loadJS(xbsjEarthPlottingSymbol2Uri);
+                return XE.ready().then(() => {
+                    const loadPlugins = pluginUris.map(e => loadJS(e));
+                    return Promise.all(loadPlugins)
                 }).then(() => {
                     //创建earthUI 
                     let earthUI = new XbsjEarthUI.MainUI(earthDom);

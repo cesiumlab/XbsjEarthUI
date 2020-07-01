@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>视频模型展示</title>
+
+    <!-- 强制提前加载Cesium.js，其中Cesium相关路径可以换成自定义的 -->
+    <!-- <script src="../../XbsjCesium/Cesium.js"></script> -->
+    <!-- <link rel="stylesheet" href="../../XbsjCesium/Widgets/Widgets.css"> -->
+
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function startup() {
+            // earth = new XE.Earth('earthContainer');
+            earth = new XE.Earth('earthContainer', {
+                // 这里设置Viewer的配置，和new Viewer(container, options)中的options一致
+                homeButton: true,
+                timeline: true,
+            });
+
+            // http://earthsdk.com/t/videoModels/video/1.mp4
+
+            const videoModel = {
+                "title": "视频模型",
+                "children": [
+                    {
+                        "czmObject": {
+                            "xbsjType": "CustomPrimitive",
+                            "xbsjGuid": "3e22614c-ff79-45d6-a948-03a441222c7f",
+                            "name": "自定义图元3",
+                            "position": [
+                                2.0313887163962,
+                                0.6963863715457375,
+                                1.0
+                            ],
+                            "renderState": {
+                                "cull": {},
+                                "polygonOffset": {},
+                                "scissorTest": {
+                                    "rectangle": {}
+                                },
+                                "depthRange": {},
+                                "depthTest": {
+                                    "enabled": true
+                                },
+                                "colorMask": {},
+                                "blending": {
+                                    "color": {}
+                                },
+                                "stencilTest": {
+                                    "frontOperation": {},
+                                    "backOperation": {}
+                                },
+                                "sampleCoverage": {}
+                            },
+                            "canvasWidth": 1920,
+                            "canvasHeight": 1080,
+                            "autoRegisterEditing": true,
+                            // "imageUrl": "//earthsdk.com/t/videoModels/qiangji/3/obj/32_result.jpg",
+                            "videoUrl": "//earthsdk.com/t/videoModels/video/3.mp4",
+                            "objUrl": "//earthsdk.com/t/videoModels/qiangji/3/obj/3.obj"
+                        }
+                    },
+                    {
+                        "czmObject": {
+                            "xbsjType": "CustomPrimitive",
+                            "xbsjGuid": "fc1a0fef-594a-4bc8-afea-f701fe0ac580",
+                            "name": "自定义图元2",
+                            "position": [
+                                2.0313887163962,
+                                0.6963863715457375,
+                                1.0
+                            ],
+                            "renderState": {
+                                "cull": {},
+                                "polygonOffset": {},
+                                "scissorTest": {
+                                    "rectangle": {}
+                                },
+                                "depthRange": {},
+                                "depthTest": {
+                                    "enabled": true
+                                },
+                                "colorMask": {},
+                                "blending": {
+                                    "color": {}
+                                },
+                                "stencilTest": {
+                                    "frontOperation": {},
+                                    "backOperation": {}
+                                },
+                                "sampleCoverage": {}
+                            },
+                            "canvasWidth": 1920,
+                            "canvasHeight": 1080,
+                            "autoRegisterEditing": true,
+                            // "imageUrl": "//earthsdk.com/t/videoModels/qiangji/2/obj/31_result.jpg",
+                            "videoUrl": "//earthsdk.com/t/videoModels/video/2.mp4",
+                            "objUrl": "//earthsdk.com/t/videoModels/qiangji/2/obj/2.obj"
+                        }
+                    },
+                    {
+                        "czmObject": {
+                            "xbsjType": "CustomPrimitive",
+                            "xbsjGuid": "ff9e84ac-e107-4829-93f5-e182a503b577",
+                            "name": "自定义图元1",
+                            "position": [
+                                2.0313887163962,
+                                0.6963863715457375,
+                                1.0
+                            ],
+                            "renderState": {
+                                "cull": {},
+                                "polygonOffset": {},
+                                "scissorTest": {
+                                    "rectangle": {}
+                                },
+                                "depthRange": {},
+                                "depthTest": {
+                                    "enabled": true
+                                },
+                                "colorMask": {},
+                                "blending": {
+                                    "color": {}
+                                },
+                                "stencilTest": {
+                                    "frontOperation": {},
+                                    "backOperation": {}
+                                },
+                                "sampleCoverage": {}
+                            },
+                            "canvasWidth": 1920,
+                            "canvasHeight": 1080,
+                            "autoRegisterEditing": true,
+                            // "imageUrl": "//earthsdk.com/t/videoModels/qiangji/1/obj/30_result.jpg",
+                            "videoUrl": "//earthsdk.com/t/videoModels/video/1.mp4",
+                            "objUrl": "//earthsdk.com/t/videoModels/qiangji/1/obj/1.obj"
+                        }
+                    },
+                    {
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "xbsjGuid": "fb33a8b3-9421-4cbd-bab7-7d4b721881e1",
+                            "name": "谷歌影像",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "http://www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}"
+                                },
+                                "UrlTemplateImageryProvider": {},
+                                "WebMapTileServiceImageryProvider": {},
+                                "createTileMapServiceImageryProvider": {}
+                            }
+                        }
+                    }
+                ]
+            }
+
+            earth.sceneTree.root = {
+                "children": [
+                    videoModel,
+                ]
+            };
+
+            const camraPosition = [2.0312798026380365,0.6964231950889537,90.95567511623312];
+            const cameraRotation = [6.000295371685467,-0.7479184035661341,6.281923805567388];
+            earth.camera.flyTo(camraPosition, 0, cameraRotation);
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);
+    </script>
+</body>
+
+</html>

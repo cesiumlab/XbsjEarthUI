@@ -16,7 +16,7 @@ const zh = {
   bottomimageheight: '底面纹理高度',
   bottomimagewidthscale: '宽度缩放比例',
   bottomrotation: '底面旋转',
-  confirmOther: '该数据已经绑定其他压平组，确认替换到当前组上?',
+  confirmOther: '该数据已经绑定其他组，确认替换到当前组上?',
   other: '等',
   count: '个'
 };
@@ -39,7 +39,7 @@ const en = {
   bottomimageheight: 'bottomimageheight',
   bottomimagewidthscale: 'bottomimagewidthscale',
   bottomrotation: 'bottomrotation',
-  confirmOther: 'the tileset has binded other flatern,confirm to replace it?',
+  confirmOther: 'the tileset has binded other,confirm to replace it?',
   other: ' etc ',
   count: ' tilesets'
 };

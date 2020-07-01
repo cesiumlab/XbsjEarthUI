@@ -466,11 +466,13 @@ input[type="text"]:read-only:focus {
 
 .cutselectbox {
   width: calc(100% - 123px);
+  max-height: calc(100% - 60px);
   background: rgba(138, 138, 138, 1);
   position: absolute;
   left: 100px;
   border-radius: 0px 0px 4px 4px;
   overflow: auto;
+  z-index: 1;
 }
 
 .cutselectbox span {

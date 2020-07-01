@@ -179,6 +179,11 @@
           :class="{highlight:popup == 'pickObject'}"
           @click.stop="togglePopup('pickObject',$event)"
         ></span>
+        <!-- vr -->
+        <div class="xbsj-item-btnbox" @click="vrClick">
+          <div class="xbsj-item-btn vrbutton"></div>
+          <span class="xbsj-item-name">VR</span>
+        </div>
       </div>
     </div>
     <GlobeViewComp ref="globeView" v-show="popup =='globeView'"></GlobeViewComp>
@@ -240,7 +245,8 @@ export default {
       moving: false,
       langs: languagejs,
       cameraAttached: false,
-      cameraAttachOver: false
+      cameraAttachOver: false,
+      clicknum: -1
     };
   },
   created() {},
@@ -476,6 +482,26 @@ export default {
         newFly.start();
       }
     },
+    vrClick() {
+      this.clicknum++;
+      switch (this.clicknum) {
+        case 0:
+          XE.HTML.loadJS("./assets/js/earthsdk-webxr.js");
+          this.$root.$earthUI.promptInfo(this.lang.initvr);
+          break;
+        case 1:
+          this.$root.$earthUI.promptInfo(this.lang.openvr);
+          this.$root.$earth.camera.useWebXR = true;
+          break;
+        case 2:
+          this.$root.$earthUI.promptInfo(this.lang.startvr);
+          this.$root.$earth.camera.useWebXR = true;
+          break;
+        default:
+          this.$root.$earth.camera.useWebXR = !this.$root.$earth.camera
+            .useWebXR;
+      }
+    },
     startMove(event) {
       //如果事件的目标不是本el 返回
       if (
@@ -574,6 +600,21 @@ export default {
 }
 .defaultbuttonActive {
   background: url(../../../../images/default_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.vrbutton {
+  background: url(../../../../images/vr.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.vrbutton:hover {
+  background: url(../../../../images/vr_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.vrbuttonActive {
+  background: url(../../../../images/vr_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }

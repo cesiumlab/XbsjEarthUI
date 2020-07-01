@@ -26,8 +26,19 @@ const zh = {
   edit: '编辑',
   borehole: '挖孔',
   globeTranslucency: '地表透明',
-  frontFaceAlpha: '正面透明度',
-  frontFaceAlphaByDistance: '近点远点'
+  frontFace: '正面',
+  fixAlpha: '固定透明度',
+  gradientDistance: '渐变距离',
+  gradientAlpha: '渐变透明度',
+  backFace: '背面',
+  backFaceAlpha: '背面透明度',
+  frontFaceAlphaByDistance: '正面近点远点',
+  backFaceAlphaByDistance: '背面近点远点',
+  rectangle: '区域限制',
+  west: '西',
+  south: '南',
+  east: '东',
+  north: '北'
 };
 
 const en = {
@@ -59,8 +70,19 @@ const en = {
   edit: 'Edit',
   borehole: 'Borehole',
   globeTranslucency: 'globeTranslucency',
-  frontFaceAlpha: 'frontFaceAlpha',
-  frontFaceAlphaByDistance: 'alphaByDistance'
+  frontFace: 'frontFace',
+  frontFaceAlpha: 'fixAlpha',
+  gradientDistance: 'gradientDistance',
+  gradientAlpha: 'gradientAlpha',
+  backFace: 'backFace',
+  backFaceAlpha: 'backFaceAlpha',
+  frontFaceAlphaByDistance: 'alphaByDistance',
+  backFaceAlphaByDistance: 'backFaceAlphaByDistance',
+  rectangle: 'rectangle',
+  west: 'west',
+  south: 'south',
+  east: 'east',
+  north: 'north'
 };
 
 export default { zh, en };

@@ -61,18 +61,26 @@ class LabScene {
             document.title = this.sceneName;
         }));
 
-        //更新url参数
-        this.unbinds.push(XE.MVVM.watch(() => {
+        // //更新url参数
+        // this.unbinds.push(XE.MVVM.watch(() => {
 
-            if (this.sceneID) {
-                history.pushState(
-                    "cesiumlab",
-                    document.title,
-                    "./index.html?scene=" + this.sceneID
-                );
-            }
+        //     if (this.sceneID) {
+        //         if (window.labserver) {
+        //             history.pushState(
+        //                 "cesiumlab",
+        //                 document.title,
+        //                 "./index.html?scene=" + this.sceneID + "&labserver=" + window.labserver
+        //             );
+        //         } else {
+        //             history.pushState(
+        //                 "cesiumlab",
+        //                 document.title,
+        //                 "./index.html?scene=" + this.sceneID
+        //             );
+        //         }
+        //     }
 
-        }));
+        // }));
 
     }
     destroy() {

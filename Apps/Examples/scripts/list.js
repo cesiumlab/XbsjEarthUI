@@ -140,12 +140,20 @@ vueApp.examples = [
                 "url": "./earth-effect-shadow.html"
             },
             {
+                "title": "效果-星空",
+                "url": "./earth-effect-skyBox.html"
+            },
+            {
                 "title": "效果-雪",
                 "url": "./earth-effect-snow.html"
             },
             {
                 "title": "效果-太阳/月亮/星空",
                 "url": "./earth-effect-SunMoonSkyBox.html"
+            },
+            {
+                "title": "flyTo和flyAround",
+                "url": "./earth-flyTo.html"
             },
             {
                 "title": "强制光照",
@@ -286,6 +294,18 @@ vueApp.examples = [
             {
                 "title": "OD线集群-中国航班线路",
                 "url": "./earth-odlines-flight-lines.html"
+            },
+            {
+                "title": "粒子系统",
+                "url": "./earth-particle-system.html"
+            },
+            {
+                "title": "粒子烟火",
+                "url": "./earth-particle-systemFireWork.html"
+            },
+            {
+                "title": "粒子喷射",
+                "url": "./earth-particle-systemTails.html"
             },
             {
                 "title": "路径-环球飞行",
@@ -444,12 +464,20 @@ vueApp.examples = [
                 "url": "./earth-tileset-forceDoubleSide.html"
             },
             {
+                "title": "视频模型展示",
+                "url": "./earth-videoModels.html"
+            },
+            {
                 "title": "视图-多视口",
                 "url": "./earth-view-multiviewport.html"
             },
             {
                 "title": "视图-指北针",
                 "url": "./earth-view-navigator.html"
+            },
+            {
+                "title": "VR",
+                "url": "./earth-VR.html"
             },
             {
                 "title": "挡土墙-编辑",
@@ -470,22 +498,6 @@ vueApp.examples = [
             {
                 "title": "路径-pin",
                 "url": "./eath-path-pin.html"
-            },
-            {
-                "title": "面状-平尾箭头",
-                "url": "./earth-plane-arrow.html"
-            },
-            // {
-            //     "title":"粒子效果",
-            //     "url":'./earth-particle-effect.html'
-            // },
-            {
-                "title": 'flyTo与flyAround',
-                "url": './earth-flyTo.html'
-            },
-            {
-                'title': '平滑多边形',
-                "url": './earth-smooth-polygon.html'
             }
         ]
     },
@@ -495,6 +507,14 @@ vueApp.examples = [
             {
                 "title": "创建地球-背景透明",
                 "url": "./earth-bgtransparent.html"
+            },
+            {
+                "title": "面状-单箭头",
+                "url": "./earth-plane-arrow.html"
+            },
+            {
+                "title": "面状-平滑多边形",
+                "url": "./earth-smooth-polygon.html"
             },
             {
                 "title": "数据双向绑定-理论模型",

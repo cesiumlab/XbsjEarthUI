@@ -29,10 +29,7 @@
         :class="{'xbsj-title-item-on':page=='entity'}"
       >{{lang.plotting}}</li>
 
-      <li
-        @click="switchPage('other')"
-        :class="{'xbsj-title-item-on':page=='other'}"
-      >{{lang.other}}</li>
+      <li @click="switchPage('other')" :class="{'xbsj-title-item-on':page=='other'}">{{lang.other}}</li>
       <!-- <li @click="openmodel">测试model对话框</li> -->
     </ul>
 
@@ -71,7 +68,7 @@
   </div>
 </template>
 
-<script> 
+<script>
 import NavigateComp from "./Navigate";
 import XbsjViewComp from "./View";
 import ImageryComp from "./Imagery";
@@ -95,7 +92,7 @@ export default {
     EntityComp,
     OtherComp
   },
-  data: function () {
+  data: function() {
     return {
       show: true,
       page: "navigate", //当前显示的页面
@@ -106,31 +103,45 @@ export default {
       langs: languagejs
     };
   },
-  created () {
-
-  },
-  mounted () {
-
+  created() {},
+  mounted() {
+    // var search = window.location.search;
+    // window.labserver = this.getSearchString("labserver", search);
+    // if (window.labserver !== undefined) {
+    //   this.$root.$labServer.server = window.labserver;
+    // }
   },
   methods: {
-    openmodel () {
-      this.$root.$earthUI.confirm("xxxx", () => {
-
-      }, () => {
-
-      });
+    // //key(需要检索的键） url(传入的需要分割的url地址)
+    // getSearchString(key, Url) {
+    //   var str = Url;
+    //   str = str.substring(1, str.length); // 获取URL中?之后的字符（去掉第一位的问号）
+    //   // 以&分隔字符串，获得类似name=xiaoli这样的元素数组
+    //   var arr = str.split("&");
+    //   var obj = new Object();
+    //   // 将每一个数组元素以=分隔并赋给obj对象
+    //   for (var i = 0; i < arr.length; i++) {
+    //     var tmp_arr = arr[i].split("=");
+    //     obj[decodeURIComponent(tmp_arr[0])] = decodeURIComponent(tmp_arr[1]);
+    //   }
+    //   return obj[key];
+    // },
+    openmodel() {
+      this.$root.$earthUI.confirm(
+        "xxxx",
+        () => {},
+        () => {}
+      );
     },
-    cancelmodal () {
+    cancelmodal() {
       this.visible = false;
     },
-    confirm () {
+    confirm() {
       alert("我点击了确定");
       this.visible = false;
     },
-    hidePopup (event) {
-
-    },
-    switchPage (page) {
+    hidePopup(event) {},
+    switchPage(page) {
       this.$emit("hidePopup");
       //控制组件显示隐藏
       if (this.page == page) {
@@ -139,11 +150,11 @@ export default {
         this.page = page;
       }
     },
-    showPage (page) {
+    showPage(page) {
       this.$emit("hidePopup");
       this.page = page;
     },
-    getSize () {
+    getSize() {
       //获取当前组件的大小
       return {
         width: this.$el.offsetWidth,

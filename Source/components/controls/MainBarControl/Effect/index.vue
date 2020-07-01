@@ -132,6 +132,20 @@
           ></div>
           <span class="xbsj-item-name">{{lang.starrysky}}</span>
         </div>
+        <!-- 天空盒 -->
+        <div class="xbsj-item-btnbox">
+          <div
+            class="xbsj-item-btn skyboxbutton"
+            :class="{'skyboxbutton-on':skyBoxOnGround}"
+            @click="skyBoxOnGround = !skyBoxOnGround"
+          ></div>
+          <span class="xbsj-item-name">{{lang.skyBoxOnGround}}</span>
+        </div>
+        <span
+          class="xbsj-select"
+          :class="{highlight:popup == 'skyBox'}"
+          @click.stop="togglePopup('skyBox',$event)"
+        ></span>
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{lang.effect}}</span>
@@ -303,6 +317,7 @@
     <Snow ref="snowPostProcess" v-show="popup =='snowPostProcess'"></Snow>
     <Fog ref="fog" v-show="popup =='fog'"></Fog>
     <FogPostProcess ref="fogPostProcess" v-show="popup =='fogPostProcess'"></FogPostProcess>
+    <SkyBox ref="skyBox" v-show="popup =='skyBox'"></SkyBox>
     <LensFlare ref="lensFlare" v-show="popup =='lensFlare'"></LensFlare>
     <Bloom ref="bloom" v-show="popup =='bloom'"></Bloom>
     <Brightness ref="brightness" v-show="popup =='brightness'"></Brightness>
@@ -327,6 +342,7 @@ import Rain from "./Rain";
 import Snow from "./Snow";
 import Fog from "./Fog";
 import FogPostProcess from "./FogPostProcess";
+import SkyBox from "./SkyBox";
 import LensFlare from "./LensFlare";
 import Bloom from "./Bloom";
 import Brightness from "./Brightness";
@@ -349,6 +365,7 @@ export default {
     Snow,
     Fog,
     FogPostProcess,
+    SkyBox,
     LensFlare,
     Bloom,
     Brightness,
@@ -376,6 +393,7 @@ export default {
         fogPostProcess: false,
         skyBox: true
       },
+      skyBoxOnGround: false,
       popup: "",
       effect: {
         shadow: false,
@@ -426,6 +444,7 @@ export default {
       this.binVue("weather.fog");
       this.binVue("weather.fogPostProcess");
       this.binVue("weather.skyBox");
+      this.bindVue("skyBoxOnGround");
 
       this.binVue("effect.shadow");
       this.binVue("effect.forceSunPos");
@@ -524,6 +543,12 @@ export default {
       this._viewUnbinds = this._viewUnbinds || [];
       this._viewUnbinds.push(
         XE.MVVM.bind(this, prp, this.$root.$earth, prp + ".enabled")
+      );
+    },
+    bindVue(prp) {
+      this._viewUnbinds = this._viewUnbinds || [];
+      this._viewUnbinds.push(
+        XE.MVVM.bind(this, prp, this.$root.$earth.weather.skyBox, prp)
       );
     },
     getPopupComp() {
@@ -687,6 +712,16 @@ export default {
 .starryskybutton:hover,
 .starryskybutton-on {
   background: url(../../../../images/starrysky_on.png) no-repeat;
+  background-size: contain;
+}
+
+.skyboxbutton {
+  background: url(../../../../images/skybox.png) no-repeat;
+  background-size: contain;
+}
+.skyboxbutton:hover,
+.skyboxbutton-on {
+  background: url(../../../../images/skybox_on.png) no-repeat;
   background-size: contain;
 }
 

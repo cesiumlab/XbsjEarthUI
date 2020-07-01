@@ -14,7 +14,10 @@ const zh = {
   dilifanwei: "地理范围",
   updatethumb: "更新缩略图",
   selectservice: "请选择服务",
-  unName:'未命名地形'
+  unName: '未命名地形',
+  type: '服务类型',
+  cesiumterrain: '标准',
+  googleterrain: '谷歌'
 };
 
 const en = {
@@ -33,7 +36,10 @@ const en = {
   dilifanwei: "Rectangle",
   updatethumb: "updatethumb",
   selectservice: "Please choose the service",
-  unName:'no name terrain'
+  unName: 'no name terrain',
+  type: 'Type',
+  cesiumterrain: 'standard',
+  googleterrain: 'google'
 };
 
 export default { zh, en };

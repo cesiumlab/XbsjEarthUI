@@ -1,8 +1,8 @@
 <template>
   <Window
-    :width="590"
+    :width="596"
     :minWidth="582"
-    :height="598"
+    :height="630"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -51,6 +51,25 @@
             @click="model.rotationEditing =!model.rotationEditing"
             :class="model.rotationEditing?'btncoloron':''"
           >{{lang.rotationEditing}}</button>
+        </div>
+        <!-- 拖拽 -->
+        <div
+          :title="lang.drag"
+          class="dragBox"
+          @dragover="dragOver"
+          @drop="drop"
+          @dragleave="dragLeave"
+        >
+          <div class="dragButton" :class="{highlight:drag_over}">{{lang.dragcontent}}</div>
+        </div>
+      </div>
+      <div class="flatten-flex">
+        <label>{{lang.type}}</label>
+        <!-- 烟雾状 -->
+        <div class="buttonGroup">
+          <button class="attitudeEditCameraButton" @click="toBeSmoke">{{lang.smoke}}</button>
+          <!-- 喷泉状 -->
+          <button class="attitudeEditCameraButton" @click="toBeFountain">{{lang.fountain}}</button>
         </div>
       </div>
       <div class="flatten-flex">
@@ -125,7 +144,7 @@
             <XbsjSlider
               :min="0.1"
               :max="29.1"
-              :step="1.0"
+              :step="0.1"
               showTip="always"
               v-model="model.minimumParticleLife"
             ></XbsjSlider>
@@ -137,7 +156,7 @@
             <XbsjSlider
               :min="0.1"
               :max="29.1"
-              :step="1.0"
+              :step="0.1"
               showTip="always"
               v-model="model.maximumParticleLife"
             ></XbsjSlider>
@@ -206,6 +225,7 @@ export default {
       lang: {},
       showPinSelect: false,
       makiIconObj: {},
+      drag_over: false,
       model: {
         name: "",
         show: false,
@@ -356,6 +376,12 @@ export default {
     }
   },
   methods: {
+    toBeSmoke() {
+      this._czmObj.toBeSmoke();
+    },
+    toBeFountain() {
+      this._czmObj.toBeFountain();
+    },
     selectinput() {
       this.showEmitterSelect = !this.showEmitterSelect;
     },
@@ -402,6 +428,40 @@ export default {
 
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        (czmObj.positions !== undefined || czmObj.position !== undefined)
+      ) {
+        e.dataTransfer.dropEffect = "copy";
+        this.drag_over = true;
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    dragLeave() {
+      this.drag_over = false;
+    },
+    //拖拽放置
+    drop(e) {
+      this.drag_over = false;
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        (czmObj.position !== undefined || czmObj.positions !== undefined)
+      ) {
+        this._czmObj.creating = false;
+        if (czmObj.position !== undefined) {
+          this._czmObj.position = [...czmObj.position];
+        } else {
+          this._czmObj.position = [...czmObj.positions[0]];
+        }
+      }
     }
   },
   beforeDestroy() {
@@ -704,5 +764,21 @@ button:focus {
   border-radius: 3px;
   color: #dddddd;
   margin-right: 20px;
+}
+.dragBox {
+  display: inline-block;
+}
+.dragBox .dragButton {
+  width: 120px;
+  height: 25px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+  text-align: center;
+  line-height: 25px;
+}
+.dragBox .dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
+  color: #1fffff;
 }
 </style>

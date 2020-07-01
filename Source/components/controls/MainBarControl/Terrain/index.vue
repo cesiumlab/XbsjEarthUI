@@ -179,7 +179,10 @@
           <div
             class="xbsj-item-btn globeTranslucencybutton"
             @click="globeTranslucencyShow=!globeTranslucencyShow"
-            :class="{highlight:globeTranslucencyShow}"
+            @dragover="dragOver"
+            @drop="drop"
+            @dragleave="dragLeave"
+            :class="{highlight:globeTranslucencyShow || drag_over}"
           ></div>
           <span class="xbsj-item-name">{{lang.globeTranslucency}}</span>
         </div>
@@ -240,7 +243,8 @@ export default {
       globeShow: true,
       tailoringShow: false,
       globeTranslucencyShow: false,
-      enableLighting: false
+      enableLighting: false,
+      drag_over: false
     };
   },
   created() {},
@@ -476,6 +480,55 @@ export default {
     },
     endMove(envent) {
       this.moving = false;
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        czmObj.positions !== undefined &&
+        czmObj.xbsjType === "Polygon"
+      ) {
+        e.dataTransfer.dropEffect = "copy";
+        this.drag_over = true;
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    dragLeave() {
+      this.drag_over = false;
+    },
+    //拖拽放置
+    drop(e) {
+      this.drag_over = false;
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        czmObj.positions !== undefined &&
+        czmObj.xbsjType === "Polygon"
+      ) {
+        var longitudeArr = [],
+          latitudeArr = [];
+        for (var i = 0, l = czmObj.positions.length; i < l; i += 2) {
+          longitudeArr.push(czmObj.positions[i]);
+        }
+        for (var j = 1, l = czmObj.positions.length; j < l; j += 2) {
+          latitudeArr.push(czmObj.positions[j]);
+        }
+        this.$refs.globeTranslucency.rectangleShow = true;
+        var west = Math.min.apply(Math, longitudeArr),
+          south = Math.min.apply(Math, latitudeArr),
+          east = Math.max.apply(Math, longitudeArr),
+          north = Math.max.apply(Math, latitudeArr);
+        this.$refs.globeTranslucency.rectangleArr = [
+          ((west * 180) / Math.PI).toFixed(7),
+          ((south * 180) / Math.PI).toFixed(7),
+          ((east * 180) / Math.PI).toFixed(7),
+          ((north * 180) / Math.PI).toFixed(7)
+        ];
+      }
     }
   },
   beforeDestroy() {

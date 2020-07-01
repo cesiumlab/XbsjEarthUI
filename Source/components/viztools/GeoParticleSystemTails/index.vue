@@ -52,24 +52,25 @@
             :class="model.rotationEditing?'btncoloron':''"
           >{{lang.rotationEditing}}</button>
         </div>
+        <!-- 拖拽 -->
+        <div
+          :title="lang.drag"
+          class="dragBox"
+          @dragover="dragOver"
+          @drop="drop"
+          @dragleave="dragLeave"
+        >
+          <div class="dragButton" :class="{highlight:drag_over}">{{lang.dragcontent}}</div>
+        </div>
       </div>
       <!-- 类型(分别看起来像彗星的彗尾和火箭的喷射) -->
-      <div class="flatten" style="display:flex;">
-        <div style="position: relative;">
-          <label>{{lang.type}}</label>
-          <input
-            type="text"
-            v-model="model.type"
-            @click="selectinput"
-            readonly
-            style="cursor: pointer;"
-          />
-          <button class="selectButton"></button>
-          <div class="cutselectbox" v-show="showTypeSelect">
-            <div @click="optionssure(c)" v-for="(c,index) in typeObj" :key="index">
-              <span>{{c}}</span>
-            </div>
-          </div>
+      <div class="flatten-flex">
+        <label>{{lang.type}}</label>
+        <!-- 彗尾状 -->
+        <div class="buttonGroup">
+          <button class="attitudeEditCameraButton" @click="toBeCometTail">{{lang.comatosetail}}</button>
+          <!-- 火焰喷射状 -->
+          <button class="attitudeEditCameraButton" @click="toBeRocketThruster">{{lang.flamejet}}</button>
         </div>
       </div>
       <div class="flatten-flex">
@@ -138,6 +139,7 @@
         <div class="flatten-box">
           <XbsjInputNumber
             style="float:left; width: calc(50% - 90px);"
+            :step="0.01"
             v-model.number="model.rotate"
           ></XbsjInputNumber>
         </div>
@@ -195,6 +197,7 @@ export default {
       lang: {},
       showPinSelect: false,
       makiIconObj: {},
+      drag_over: false,
       model: {
         name: "",
         show: false,
@@ -203,7 +206,6 @@ export default {
         rotationEditing: false,
         position: [0, 0, 0],
         rotation: [0, 0, 0],
-        type: "CometTail",
         emissionRate: 30,
         particleSize: 15,
         particleNumber: 100,
@@ -217,10 +219,6 @@ export default {
       pinstyletype: true,
       langs: languagejs,
       showTypeSelect: false,
-      typeObj: {
-        CometTail: "CometTail",
-        RocketThruster: "RocketThruster"
-      },
       radiusdisabled: false,
       angledisabled: true
     };
@@ -241,7 +239,6 @@ export default {
         rotationEditing: "model.rotationEditing",
         position: "model.position",
         rotation: "model.rotation",
-        type: "model.type",
         emissionRate: "model.emissionRate",
         particleSize: "model.particleSize",
         particleNumber: "model.particleNumber",
@@ -286,8 +283,11 @@ export default {
         this._czmObj.colors = ccc;
       },
       deep: true // 可以深度检测到 colors 对象的属性值的变化
-    },
-    "model.type"(val) {
+    }
+  },
+  methods: {
+    toBeCometTail() {
+      this._czmObj.toBeCometTail();
       this.$nextTick(() => {
         (this.model.colors = []), (this.colors = []);
         this._colorsUnbind = this._colorsUnbind && this._colorsUnbind();
@@ -299,15 +299,20 @@ export default {
         );
         this.changeColors(this.model);
       });
-    }
-  },
-  methods: {
-    selectinput() {
-      this.showTypeSelect = !this.showTypeSelect;
     },
-    optionssure(c) {
-      this.model.type = c;
-      this.showTypeSelect = !this.showTypeSelect;
+    toBeRocketThruster() {
+      this._czmObj.toBeRocketThruster();
+      this.$nextTick(() => {
+        (this.model.colors = []), (this.colors = []);
+        this._colorsUnbind = this._colorsUnbind && this._colorsUnbind();
+        this._colorsUnbind = XE.MVVM.bind(
+          this,
+          "model.colors",
+          this._czmObj,
+          "colors"
+        );
+        this.changeColors(this.model);
+      });
     },
     changeColors(model) {
       for (var i = 0, l = model.colors.length; i < l; i += 4) {
@@ -362,6 +367,40 @@ export default {
 
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
+    },
+    //拖拽移动上面
+    dragOver(e) {
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        (czmObj.positions !== undefined || czmObj.position !== undefined)
+      ) {
+        e.dataTransfer.dropEffect = "copy";
+        this.drag_over = true;
+      } else {
+        e.dataTransfer.dropEffect = "none";
+      }
+    },
+    dragLeave() {
+      this.drag_over = false;
+    },
+    //拖拽放置
+    drop(e) {
+      this.drag_over = false;
+      e.preventDefault();
+      let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
+      if (
+        czmObj &&
+        (czmObj.position !== undefined || czmObj.positions !== undefined)
+      ) {
+        this._czmObj.creating = false;
+        if (czmObj.position !== undefined) {
+          this._czmObj.position = [...czmObj.position];
+        } else {
+          this._czmObj.position = [...czmObj.positions[0]];
+        }
+      }
     }
   },
   beforeDestroy() {
@@ -664,5 +703,21 @@ button:focus {
   border-radius: 3px;
   color: #dddddd;
   margin-right: 20px;
+}
+.dragBox {
+  display: inline-block;
+}
+.dragBox .dragButton {
+  width: 120px;
+  height: 25px;
+  background: url(../../../images/drag.png) no-repeat;
+  background-size: contain;
+  text-align: center;
+  line-height: 25px;
+}
+.dragBox .dragButton.highlight {
+  background: url(../../../images/drag_on.png) no-repeat;
+  background-size: contain;
+  color: #1fffff;
 }
 </style>

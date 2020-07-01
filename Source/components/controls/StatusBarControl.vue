@@ -269,7 +269,7 @@ export default {
             this.$root.$earth.interaction.editingPolygonBinding.target !==
             undefined
           ) {
-            this.$root.$earthUI.promptInfo(this.lang.createFlattenedPolygonTip);
+            this.$root.$earthUI.promptInfo(this.lang.editFlattenedPolygonTip);
           }
         }
       );

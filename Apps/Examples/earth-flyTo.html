@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="xbsj-labels" content="Earth示例">
     <title>flyTo和flyAround</title>
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <script src="./scripts/vue.min.js"></script>
@@ -101,35 +102,35 @@
                 // 1.1.2 添加默认地球影像
                 earth.sceneTree.root = {
                     "children": [{
-                            "czmObject": {
-                                "xbsjType": "Imagery",
-                                "xbsjGuid": "e450b8c6-a4da-4a68-83c4-c373ce23b84a",
-                                "name": "谷歌影像",
-                                "xbsjImageryProvider": {
-                                    "XbsjImageryProvider": {
-                                        "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}",
-                                        "srcCoordType": "GCJ02"
-                                    },
-                                    "UrlTemplateImageryProvider": {},
-                                    "WebMapTileServiceImageryProvider": {},
-                                    "createTileMapServiceImageryProvider": {}
-                                }
-                            }
-                        },
-                        {
-                            "czmObject": {
-                                "xbsjType": "Pin",
-                                "xbsjGuid": "9d5c14d6-5139-483b-acc6-535f2ad92bdf",
-                                "name": "图标点",
-                                "position": [
-                                    2.125887863999793,
-                                    0.5437270241157011,
-                                    0
-                                ],
-                                "pinBuilder": {},
-                                "far": 1073741824
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "xbsjGuid": "e450b8c6-a4da-4a68-83c4-c373ce23b84a",
+                            "name": "谷歌影像",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}",
+                                    "srcCoordType": "GCJ02"
+                                },
+                                "UrlTemplateImageryProvider": {},
+                                "WebMapTileServiceImageryProvider": {},
+                                "createTileMapServiceImageryProvider": {}
                             }
                         }
+                    },
+                    {
+                        "czmObject": {
+                            "xbsjType": "Pin",
+                            "xbsjGuid": "9d5c14d6-5139-483b-acc6-535f2ad92bdf",
+                            "name": "图标点",
+                            "position": [
+                                2.125887863999793,
+                                0.5437270241157011,
+                                0
+                            ],
+                            "pinBuilder": {},
+                            "far": 1073741824
+                        }
+                    }
                     ]
                 };
 

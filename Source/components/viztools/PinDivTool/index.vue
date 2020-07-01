@@ -4,7 +4,7 @@
     <Window
       :width="480"
       :minWidth="480"
-      :height="490"
+      :height="452"
       :title="lang.title"
       :floatright="true"
       @cancel="cancel"
@@ -20,14 +20,14 @@
         </div>
 
         <!-- 近远裁 -->
-        <div class="flatten" style="margin-top:20px;display:flex;">
+        <!-- <div class="flatten" style="margin-top:20px;display:flex;">
           <label>{{lang.nearfar}}</label>
           <div class="field">
             <XbsjSlider range :min="0" :max="30" :step="0.1" v-model="nearfar" ref="glowFactor"></XbsjSlider>
           </div>
-        </div>
+        </div>-->
         <!-- 近远裁 -->
-        <div class="flatten">
+        <!-- <div class="flatten">
           <label></label>
           <div class="flatten-box">
             <input v-model="pin.near" placeholder="lang.near" style="width: 25%;" type="text" />
@@ -38,7 +38,7 @@
               type="text"
             />
           </div>
-        </div>
+        </div>-->
 
         <!-- 位置 -->
         <div class="flatten">
@@ -668,7 +668,7 @@ button:focus {
   border: none;
   color: #dddddd;
   position: absolute;
-  height: calc(100% - 290px);
+  height: calc(100% - 188px);
   resize: none;
 }
 .apply {

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="xbsj-labels" content="Earth示例">
+    <title>粒子喷射</title>
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .checkbox {
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .curvearrow {
+            width: 20px;
+            height: 16px;
+        }
+
+        .defultbtn {
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            height: 38px;
+            padding: 0 10px;
+            line-height: 38px;
+            border-radius: 100px;
+            border: 1px solid #C9C9C9;
+            background-color: #FFF;
+            color: #555;
+            cursor: pointer;
+            margin-bottom: 4px;
+        }
+
+        .defultbtn:hover {
+            background-color: #b3daf8;
+        }
+
+        .btnon {
+            background-color: #1E9FFF;
+            color: #fff;
+            border: 1px solid #1E9FFF;
+        }
+
+        .colorbox {
+            width: 50px;
+        }
+
+        input {
+            width: 200px;
+        }
+
+        input:disabled {
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; position: relative;">
+        <earth-comp></earth-comp>
+    </div>
+    <script>
+
+        var EarthComp = {
+            template: `
+                    <div style="width: 100%; height: 100%">
+                        <div ref="earthContainer" style="width: 100%; height: 100%">
+                        </div>
+                            <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:200px; font-size:24px; font-family: 宋体;">
+                                <div class="defultbtn" :class="{'btnon':creating}"  @click="creating = !creating">创建</div>
+                                <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':positionEditing}"  @click="positionEditing = !positionEditing">平移</div>
+                                <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':rotationEditing}"  @click="rotationEditing = !rotationEditing">旋转</div><br/>
+                                <span>粒子类型：</span>
+                                <div class="defultbtn" @click="toBeCometTail">彗尾状</div>
+                                <div class="defultbtn" @click="toBeRocketThruster">火焰喷射状</div>
+                                <div style="display:flex;">
+                                    <div style="display:flex;flex-direction:column;margin-right:30px;">
+                                        <span>发射速率(个/秒): {{ emissionRate }}</span>
+                                        <span><input type="range" min="10" max="200" step="1" v-model.number="emissionRate"></span>    
+                                    </div>
+                                    <div style="display:flex;flex-direction:column;">
+                                        <span>尺寸(像素): {{ particleSize }}</span>
+                                        <span><input type="range" min="5" max="30" step="1" v-model.number="particleSize"></span> 
+                                    </div>                                    
+                                </div>
+                                <div style="display:flex;">
+                                    <div style="display:flex;flex-direction:column;margin-right:30px;">
+                                        <span>粒子数量:{{particleNumber}}</span>
+                                        <span><input type="range" min="10" max="200" step="1" v-model.number="particleNumber"></span>   
+                                    </div>
+                                    <div style="display:flex;flex-direction:column;">
+                                        <span>存在时间:{{particleLife}}</span>
+                                        <span><input type="range" min="1" max="20" step="0.1" v-model.number="particleLife"></span>
+                                    </div>                                    
+                                </div>
+                                <div style="display:flex;">
+                                    <div style="display:flex;flex-direction:column;margin-right:30px;">
+                                        <span>半径(米):</span>
+                                        <input type="number" v-model="radius">
+                                    </div>                              
+                                </div>
+                                <div style="display:flex;">
+                                    <div style="display:flex;flex-direction:column;margin-right:30px;">
+                                        <span>弧度:</span>
+                                        <input type="number" step="0.01" v-model="rotate">
+                                    </div> 
+                                    <div style="display:flex;flex-direction:column;">
+                                        <span>高度(米)：</span>
+                                        <input type="number" v-model="height">
+                                    </div>                                   
+                                </div>                              
+                            </div>
+                    </div>
+                `,
+            data() {
+                return {
+                    _earth: null,
+                    creating: false,
+                    positionEditing: false,
+                    rotationEditing: false,
+                    typeObj: {
+                        CometTail: "CometTail",
+                        RocketThruster: "RocketThruster"
+                    },
+                    emissionRate: 30, // 粒子发射速度(个/秒)
+                    particleSize: 15, // 粒子的尺寸(单位：pixel)
+                    particleNumber: 100, // 构成一圈的粒子数量(粒子发射器的总数)
+                    particleLife: 0.8, // 粒子的存在时间
+                    radius: 30, // 圆圈可能扩散到的最大半径(只有在自转ratate保持低速时才能看到最大半径)，单位m
+                    rotate: 0.01, // 粒子的存在时间过程中总共旋转经过的弧度
+                    height: 50, // 粒子发射器竖直方向上移动的总距离，单位m
+                    bindList: [
+                        { name: 'creating' },
+                        { name: 'positionEditing' },
+                        { name: 'rotationEditing' },
+                        { name: 'emissionRate' },
+                        { name: 'particleSize' },
+                        { name: 'particleNumber' },
+                        { name: 'particleLife' },
+                        { name: 'radius' },
+                        { name: 'rotate' },
+                        { name: 'height' }
+                    ],
+
+                }
+            },
+            watch: {
+                type(val) {
+                    if (val === "ConeEmitter") {
+                        this.radiusdisabled = true;
+                        this.angledisabled = false;
+                    } else {
+                        this.radiusdisabled = false;
+                        this.angledisabled = true;
+                    }
+                }
+            },
+            mounted() {
+
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "czmObject": {
+                                "name": "默认离线影像",
+                                "xbsjType": "Imagery",
+                                "xbsjImageryProvider": {
+                                    "createTileMapServiceImageryProvider": {
+                                        "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                        "fileExtension": 'jpg',
+                                    },
+                                    "type": "createTileMapServiceImageryProvider"
+                                }
+                            }
+                        }
+                    ]
+                };
+
+                let particleSystemTails = new XE.Obj.Plots.ParticleSystemTails(earth);
+
+                particleSystemTails.flyTo();
+                this.bindList.forEach(el => {
+                    el.unbind = XE.MVVM.bind(this, el.name, particleSystemTails, el.name);
+                })
+
+                window.bindList = this.bindList
+                this._earth = earth;
+
+                //only for debug
+                window.earth = earth;
+                window.particleSystemTails = particleSystemTails;
+            },
+            methods: {
+                toBeCometTail() {
+                    particleSystemTails.toBeCometTail();
+                },
+                toBeRocketThruster() {
+                    particleSystemTails.toBeRocketThruster();
+                },
+            },
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this.bindList.forEach(el => {
+                    el.unbind();
+                })
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        XE.ready().then(() => {
+            // 加载标绘插件
+            return XE.HTML.loadJS('../../XbsjEarth-Plugins/plottingSymbol2/plottingSymbol2.js');
+        }).then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+
+        });
+    </script>
+</body>
+
+</html>

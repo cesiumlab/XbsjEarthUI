@@ -42,10 +42,10 @@
           <span class="xbsj-item-name">{{lang.pin}}</span>
         </div>
         <!-- 图片 -->
-        <div class="xbsj-item-btnbox ml20" @click="pinpicturebtn" title="图片">
+        <!-- <div class="xbsj-item-btnbox ml20" @click="pinpicturebtn" title="图片">
           <div class="xbsj-item-btn pinpicbutton"></div>
           <span class="xbsj-item-name">{{lang.pinpicturebtn}}</span>
-        </div>
+        </div>-->
         <!-- div图标 -->
         <!-- <div class="xbsj-item-btnbox ml20" @click="pindivbtn" title="div图标">
           <div class="xbsj-item-btn pindivbutton"></div>
@@ -247,25 +247,25 @@
           <span class="xbsj-item-name">{{lang.diffusionsurface}}</span>
         </div>-->
         <!-- OD线 -->
-        <div class="xbsj-item-btnbox" @click="odLine" title="OD线">
+        <!-- <div class="xbsj-item-btnbox" @click="odLine" title="OD线">
           <div class="xbsj-item-btn odbutton"></div>
           <span class="xbsj-item-name">{{lang.odLine}}</span>
-        </div>
+        </div>-->
         <!-- 扫描线 -->
-        <div class="xbsj-item-btnbox ml20" @click="scanLineBtn">
+        <!-- <div class="xbsj-item-btnbox ml20" @click="scanLineBtn">
           <div class="xbsj-item-btn radarbutton"></div>
           <span class="xbsj-item-name">{{lang.Scanline}}</span>
-        </div>
+        </div>-->
         <!-- 管道 -->
-        <div class="xbsj-item-btnbox ml20" @click="tubeBtn">
+        <!-- <div class="xbsj-item-btnbox ml20" @click="tubeBtn">
           <div class="xbsj-item-btn tubebutton"></div>
           <span class="xbsj-item-name">{{lang.tube}}</span>
-        </div>
+        </div>-->
         <!-- 自定义图元 -->
-        <div class="xbsj-item-btnbox ml20" @click="customPrimitiveBtn">
+        <!-- <div class="xbsj-item-btnbox ml20" @click="customPrimitiveBtn">
           <div class="xbsj-item-btn customprimitivebutton"></div>
           <span class="xbsj-item-name">{{lang.CustomPrimitive}}</span>
-        </div>
+        </div>-->
         <!-- 道路 -->
         <div class="xbsj-item-btnbox ml20" @click="roadBtn">
           <div class="xbsj-item-btn roadbutton"></div>
@@ -281,7 +281,7 @@
           <div class="xbsj-item-btn surfacebutton"></div>
           <span class="xbsj-item-name">{{lang.surface}}</span>
         </div>
-        <!-- 贴地图像 -->
+        <!-- 立面贴图 -->
         <div class="xbsj-item-btnbox ml20" @click="groundImageBtn">
           <div class="xbsj-item-btn groundimagebutton"></div>
           <span class="xbsj-item-name">{{lang.groundimage}}</span>

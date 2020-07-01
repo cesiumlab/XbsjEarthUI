@@ -221,35 +221,37 @@ export default {
       );
     }
 
-    let water = this.$refs.water;
-    function handleDragOver(e) {
-      e.stopPropagation();
-      e.preventDefault();
-    }
+    // let water = this.$refs.water;
+    // function handleDragOver(e) {
+    //   e.stopPropagation();
+    //   e.preventDefault();
+    // }
 
-    var that = this;
-    function handleFileSelect(e) {
-      // e.stopPropagation();
-      e.preventDefault();
-      that._czmObj.creating = false;
-      that._czmObj.edit = true;
+    // var that = this;
+    // function handleFileSelect(e) {
+    //   e.stopPropagation();
+    //   e.preventDefault();
+    //   that._czmObj.creating = false;
+    //   that._czmObj.edit = true;
 
-      let obj = e.dataTransfer.getData("obj");
-      let arr = [];
-      arr = JSON.parse(obj).positions;
-      for (var j = 0; j < arr.length; j++) {
-        arr[j].pop();
-      }
-      arr = arr.toString().split(",");
-      arr = arr.map(function(el) {
-        return +el;
-      });
-      that._czmObj.positions = arr;
-      that._czmObj.flyTo();
-    }
+    //   let obj = e.dataTransfer.getData("obj");
+    //   console.log(obj);
+    //   let arr = [];
+    //   arr = JSON.parse(obj).positions;
+    //   console.log(arr);
+    //   for (var j = 0; j < arr.length; j++) {
+    //     arr[j].pop();
+    //   }
+    //   arr = arr.toString().split(",");
+    //   arr = arr.map(function(el) {
+    //     return +el;
+    //   });
+    //   that._czmObj.positions = arr;
+    //   that._czmObj.flyTo();
+    // }
 
-    water.addEventListener("dragover", handleDragOver, false);
-    water.addEventListener("drop", handleFileSelect, false);
+    // water.addEventListener("dragover", handleDragOver, false);
+    // water.addEventListener("drop", handleFileSelect, false);
   },
   methods: {
     //拖拽移动上面
@@ -273,7 +275,7 @@ export default {
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj.positions !== undefined) {
         this._czmObj.creating = false;
-        this.$root.$earthUI.getCzmObjectPositionFromDrag(czmObj, this._czmObj);
+        this.$root.$earthUI.getCzmObjectPositionFromDrags(czmObj, this._czmObj);
       }
     },
     close() {
