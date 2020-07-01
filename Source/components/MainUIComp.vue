@@ -160,7 +160,7 @@ import TilesTest from "./tools/TilesTest";
 
 import GeoPolygonImage from "./viztools/GeoPolygonImage";
 import CesiumDataSource from "./viztools/CesiumDataSource";
-
+import WMTSHistory from "./viztools/WMTSHistory";
 export default {
   components: {
     StatusBarControl,
@@ -218,6 +218,7 @@ export default {
     TubeTool,
     CamerVideoTool,
     ViewshedTool,
+    WMTSHistory,
 
     ImageryLab,
     ImageryCloud,
