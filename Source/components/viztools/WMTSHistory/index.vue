@@ -77,6 +77,7 @@ export default {
           (Math.PI * Cesium.Ellipsoid.WGS84._maximumRadius) / 256 / resolution
         ) + 1
       );
+      zoom  = Math.min(17,zoom);
       //console.log(zoom);
 
       var longlat = Cesium.Cartographic.fromCartesian(position);
