@@ -12,7 +12,9 @@ const zh = {
   saturate: "饱和度",
   gamma: "gamma",
   viewport:'视口',
-  wms:"WMTS"
+  wms:"WMTS",
+  history:"历史影像",
+  selectWMTS:"请选中WMTS图层"
 };
 
 const en = {
@@ -29,7 +31,9 @@ const en = {
   saturate: "Saturate",
   gamma: "Gamma",
   viewport:'Viewport',
-  wms:"WMTS"
+  wms:"WMTS",
+  history:"History",
+  selectWMTS:"please select a wmts layer"
 };
 
 export default { zh, en };

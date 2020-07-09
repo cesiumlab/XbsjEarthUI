@@ -1,6 +1,20 @@
 Change Log
 ==========
 
+### 1.4.13 - 2020-7-9
+##### Additions :tada:
+* 视频融合支持贴jpg/png图片、mp4视频、m3u8直播视频
+* 自定义图元中imageUrl和videoUrl属性统一，imageUrl可以加载jpg/png/mp4/m3u8链接，videoUrl去除
+* 自定义贴地矩形可以支持视频直播
+##### Fixes :wrench:
+* 修复自定义贴图矩形设置图片地址导致崩溃的问题
+
+### 1.4.12 - 2020-7-7
+##### Fixes :wrench:
+* 修复自定义图元加载某些obj文件性能缓慢的问题
+* 修复自定义图元obj模型重复加载的问题
+* 非手机端自动调整分辨率，避免出现锯齿
+
 ### 1.4.10 - 2020-7-1
 ##### Additions :tada:
 * 增加对BASIS纹理的支持

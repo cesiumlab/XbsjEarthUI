@@ -51,6 +51,10 @@
           <div class="xbsj-item-btn arcgisbutton"></div>
           <span class="xbsj-item-name">{{lang.arcgis}}</span>
         </div>
+        <div class="xbsj-item-btnbox" v-show="true">
+          <div class="xbsj-item-btn arcgisbutton" @click="showHistory"></div>
+          <span class="xbsj-item-name">{{lang.history}}</span>
+        </div>
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{title}}</span>
@@ -224,6 +228,18 @@ export default {
     }
   },
   methods: {
+    showHistory(){
+        //判定当前选中的是否是wmts影像图层
+         const csn = this.$root.$earth.sceneTree.currentSelectedNode;
+         if(!csn || !csn.czmObject ||  csn.czmObject.xbsjType!="Imagery" ||  csn.czmObject.xbsjImageryProvider.type!="WebMapTileServiceImageryProvider"){
+            this.$root.$earthUI.promptInfo(this.lang.selectWMTS);
+            return;
+         } 
+
+         this.$root.$earthUI.showPropertyWindow(csn.czmObject, {
+          component: "WMTSHistory"
+          });
+    },
     clickLeft() {
       //如果不是左分割，修改为左分割
       if (this.splitDirection != "ImagerySplitDirection.LEFT") {
