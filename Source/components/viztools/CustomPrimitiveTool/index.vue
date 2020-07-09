@@ -159,10 +159,10 @@
           <label>{{lang.objUrl}}</label>
           <input type="text" v-model="model.objUrl" />
         </div>
-        <div class="flatten">
+        <!-- <div class="flatten">
           <label>{{lang.videoUrl}}</label>
           <input type="text" v-model="model.videoUrl" />
-        </div>
+        </div>-->
       </div>
 
       <!-- 预定义 -->
@@ -285,8 +285,8 @@ export default {
         pass: Number,
         scale: [0, 0, 0],
         imageUrl: "",
-        objUrl: "",
-        videoUrl: ""
+        objUrl: ""
+        // videoUrl: ""
       },
       pinstyletype: true,
       langs: languagejs,
@@ -387,8 +387,8 @@ export default {
         pass: "model.pass",
         scale: "model.scale",
         imageUrl: "model.imageUrl",
-        objUrl: "model.objUrl",
-        videoUrl: "model.videoUrl"
+        objUrl: "model.objUrl"
+        // videoUrl: "model.videoUrl"
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
