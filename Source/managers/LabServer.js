@@ -10,7 +10,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 class LabServer {
   constructor(root) {
     this._root = root;
-
+    this._defaultServer = 'http://localhost:9000/';
     //定义一个响应式变量 server
     XE.MVVM.extend(this, {
       /**
@@ -20,7 +20,7 @@ class LabServer {
       * @instance
       * @memberof LabServer
       */
-      server: '//localhost:9000/',
+      server: this._defaultServer,
       /**
   * CesiumLab在线服务服务地址
   * @type {string}
