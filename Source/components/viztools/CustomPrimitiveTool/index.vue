@@ -151,11 +151,11 @@
       </div>
 
       <div class="flatten-flex">
-        <div class="flatten">
+        <div class="flatten" style="width:50%;">
           <label>{{lang.imageUrl}}</label>
           <input type="text" v-model="model.imageUrl" />
         </div>
-        <div class="flatten">
+        <div class="flatten" style="width:50%;">
           <label>{{lang.objUrl}}</label>
           <input type="text" v-model="model.objUrl" />
         </div>

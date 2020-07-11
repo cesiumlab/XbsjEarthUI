@@ -396,7 +396,6 @@ export default {
 
       this.makiIconObj = XE.Obj.Pin.MakiIcon;
       this.makiIconObj.null = "";
-      this._czmObj.far = 1073741824;
       this.pin.evalString = this._czmObj.evalString;
       this.nearfar = [this.pin.near, this.pin.far];
     }
