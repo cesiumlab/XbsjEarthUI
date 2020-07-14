@@ -1,5 +1,5 @@
 const zh = {
-  title: "自定义图元属性",
+  title: "自定义贴地图元属性",
   name: "名称",
   weizhi: '位置',
   zitai: '姿态',
@@ -40,7 +40,7 @@ const zh = {
 };
 
 const en = {
-  title: "CustomPrimitive Property",
+  title: "CustomGroundRectangle Property",
   name: "Name",
   weizhi: 'position',
   zitai: 'rotation',
