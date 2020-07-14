@@ -266,6 +266,11 @@
           <div class="xbsj-item-btn customprimitivebutton"></div>
           <span class="xbsj-item-name">{{lang.CustomPrimitive}}</span>
         </div>-->
+        <!-- 自定义贴地图元 -->
+        <div class="xbsj-item-btnbox ml20" @click="customGroundRectangleBtn">
+          <div class="xbsj-item-btn customprimitivebutton"></div>
+          <span class="xbsj-item-name">{{lang.CustomGroundRectangle}}</span>
+        </div>
         <!-- 道路 -->
         <div class="xbsj-item-btnbox ml20" @click="roadBtn">
           <div class="xbsj-item-btn roadbutton"></div>
@@ -621,6 +626,18 @@ export default {
       CustomPrimitive.creating = true;
       // console.log(CustomPrimitive);
       this.$root.$earthUI.showPropertyWindow(CustomPrimitive);
+    },
+    //打开自定义贴地图元
+    customGroundRectangleBtn() {
+      var customGroundRectangle = new XE.Obj.CustomGroundRectangle(
+        this.$root.$earth
+      );
+      customGroundRectangle.name = "贴地图元";
+      customGroundRectangle.isCreating = true;
+      customGroundRectangle.registerEditing();
+      customGroundRectangle.creating = true;
+      // console.log(customGroundRectangle);
+      this.$root.$earthUI.showPropertyWindow(customGroundRectangle);
     },
     //多边形贴图
     PolygonImageShow() {

@@ -128,6 +128,7 @@ import GeoTriFlag from "./viztools/GeoTriFlag";
 import GeoSector from "./viztools/GeoSector";
 import ScanlineTool from "./viztools/ScanlineTool";
 import CustomPrimitiveTool from "./viztools/CustomPrimitiveTool";
+import CustomGroundRectangleTool from "./viztools/CustomGroundRectangleTool";
 import RoadTool from "./viztools/RoadTool";
 import WallTool from "./viztools/WallTool";
 import SurfaceTool from "./viztools/SurfaceTool";
@@ -215,6 +216,7 @@ export default {
     CutSurfaceTool,
     ScanlineTool,
     CustomPrimitiveTool,
+    CustomGroundRectangleTool,
     TubeTool,
     CamerVideoTool,
     ViewshedTool,
@@ -272,6 +274,7 @@ export default {
         Forest: "ForestTool",
         Scanline: "ScanlineTool",
         CustomPrimitive: "CustomPrimitiveTool",
+        CustomGroundRectangle: "CustomGroundRectangleTool",
         Road: "RoadTool",
         Wall: "WallTool",
         Surface: "SurfaceTool",
