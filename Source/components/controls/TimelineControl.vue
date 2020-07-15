@@ -39,9 +39,11 @@
         <div class="defultbtn" style="margin-left:20px;"  @click="normalPlay()">normal</div>
         <div class="defultbtn" style="margin-left:20px;"  @click="changeShowType()">showType</div><br/>
         <br/>
-        <div class="defultbtn" style="margin-left:20px;" @click="_storeStatus = 'start';">开始时间</div>
+        <!-- <div class="defultbtn" style="margin-left:20px;" @click="_storeStatus = 'start';">开始时间</div>
         <div class="defultbtn" style="margin-left:20px;" @click="useStore()">使用</div>
-        <div class="defultbtn" style="margin-left:20px;" @click="_storeStatus = 'stop';">结束时间</div>
+        <div class="defultbtn" style="margin-left:20px;" @click="_storeStatus = 'stop';">结束时间</div> -->
+        <div class="defultbtn" style="margin-left:20px;" @click="setStart()">开始时间</div>
+        <div class="defultbtn" style="margin-left:20px;" @click="setStop()">结束时间</div>
 
         <div>{{showType}}</div>
         <div>开始时间： {{startString}}</div>
@@ -287,25 +289,34 @@ export default {
         this.updateFromClock();
     },
     methods:{
-        useStore(){
-            this._storeStatus = undefined;
-            if( this.storeStart && this.storeStop){
-                let different = Cesium.JulianDate.secondsDifference( this.storeStop, this.storeStart);
-                if( different < 0){
-                    let comp = this.storeStart;
-                    this.storeStart = this.storeStop;
-                    this.storeStop = comp;
-                }
-                this.startTime = Cesium.JulianDate.clone( this.storeStart, this.startTime);
-                this.stopTime = Cesium.JulianDate.clone( this.storeStop, this.stopTime);
-                this.zoomTo( this.startTime, this.stopTime);
-
-                setTimeout( ()=>{
-
-                    this.computeStartAndStop();
-                },10)
-            }
+        setStart(){
+            //将当前时间设置为timeline的起始时间
+            this.startTime = Cesium.JulianDate.clone( this.currentTime, this.startTime);
+            this.currentTime = Cesium.JulianDate.addSeconds( this.currentTime, 0.001, this.currentTime);
         },
+        setStop(){
+            this.stopTime = Cesium.JulianDate.clone( this.currentTime, this.stopTime);
+            this.currentTime = Cesium.JulianDate.addSeconds( this.currentTime, 0.001, this.currentTime);
+        },
+        // useStore(){
+        //     this._storeStatus = undefined;
+        //     if( this.storeStart && this.storeStop){
+        //         let different = Cesium.JulianDate.secondsDifference( this.storeStop, this.storeStart);
+        //         if( different < 0){
+        //             let comp = this.storeStart;
+        //             this.storeStart = this.storeStop;
+        //             this.storeStop = comp;
+        //         }
+        //         this.startTime = Cesium.JulianDate.clone( this.storeStart, this.startTime);
+        //         this.stopTime = Cesium.JulianDate.clone( this.storeStop, this.stopTime);
+        //         this.zoomTo( this.startTime, this.stopTime);
+
+        //         setTimeout( ()=>{
+
+        //             this.computeStartAndStop();
+        //         },10)
+        //     }
+        // },
         changeStart(str){
             if( (new Date(str)).getTime() < (new Date( this.stop)).getTime()){
 
@@ -331,19 +342,23 @@ export default {
             }
         },
         normalPlay(){
-            this.shouldAnimate = true;
-            this.multiplier = 1;
+            // this.shouldAnimate = true;
+            // this.multiplier = 1;
+            this.clockStep = 'SYSTEM_CLOCK';
         },
         backPlay(){
             this.shouldAnimate = true;
             this.multiplier = -Math.abs( this.multiplier);
+            this.clockStep = "SYSTEM_CLOCK_MULTIPLIER";
         },
         pause(){
             this.shouldAnimate = false;
+            this.clockStep = "SYSTEM_CLOCK_MULTIPLIER";
         },
         play(){
             this.shouldAnimate = true;
             this.multiplier = Math.abs( this.multiplier);
+            this.clockStep = "SYSTEM_CLOCK_MULTIPLIER";
         },
         // setCurrent(){
 
