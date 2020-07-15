@@ -48,6 +48,7 @@ import StatusBar from "./controls/StatusBar";
 import SceneTree from "./tools/SceneTree";
 import ContextMenu from "./ContextMenu";
 import MainBar from "./controls/MainBar";
+import TimelineBar from "./controls/TimelineBar";
 
 import ImageryLab from "./tools/ImageryLab";
 import ImageryCloud from "./tools/ImageryCloud";
@@ -172,6 +173,7 @@ class MainUI {
     //控件初始化
     this._statusBar = new StatusBar(this);
     this._mainbar = new MainBar(this);
+    this._timelinebar = new TimelineBar(this);
 
 
     /**
@@ -212,6 +214,9 @@ class MainUI {
           */
           get mainBar() {
             return mainUI._mainbar;
+          },
+          get timelinebar(){
+            return mainUI._timelinebar;
           }
         };
       }

@@ -10,6 +10,7 @@
     </div>
     <StatusBarControl ref="statusBarControl"></StatusBarControl>
     <!-- <NavigatorControl ref="navigator"></NavigatorControl> -->
+    <TimelinBarControl ref="timelineBarControl"></TimelinBarControl>
 
     <component
       v-for="(tool,index) in tools"
@@ -68,6 +69,7 @@
 
 <script>
 import MainBarControl from "./controls/MainBarControl";
+import TimelinBarControl from "./controls/TimelineControl";
 import StatusBarControl from "./controls/StatusBarControl.vue";
 import NavigatorControl from "./controls/NavigatorControl.vue";
 import ViewportLine from "./controls/ViewportLine";
@@ -167,6 +169,7 @@ export default {
     StatusBarControl,
     NavigatorControl,
     MainBarControl,
+    TimelinBarControl,
     SceneTreeTool,
     ContextMenu,
     ViewportLine,
