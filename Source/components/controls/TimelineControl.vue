@@ -20,7 +20,6 @@
                 <div>
                     <span class="timeline-storetime" :style="{left: startTimeStore-1+'px'}"></span>
                     <span class="timeline-storetime" :style="{left: stopTimeStore-1+'px'}"></span>
-
                 </div>
                 <span class="cesium-timeline-icon16" :style="{left: icon16+'px'}" style="bottom:0;background-position: 0 0;"></span>
             </div>
