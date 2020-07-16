@@ -37,10 +37,6 @@
               :style="{left: ticLabel[0]+'px'}"
             >{{ticLabel[1]}}</span>
           </div>
-          <div>
-            <span class="timeline-storetime" :style="{left: startTimeStore-1+'px'}"></span>
-            <span class="timeline-storetime" :style="{left: stopTimeStore-1+'px'}"></span>
-          </div>
           <span
             class="cesium-timeline-icon16"
             :style="{left: icon16+'px'}"
@@ -69,11 +65,12 @@
           <span class="sliderreduce" @click="multiplier--">-</span>
           <span class="slideradd" @click="multiplier++">+</span>
           <XbsjSlider
-            :min="-1000"
-            :max="1000"
-            :step="1"
+            :min="-6.648"
+            :max="6.648"
+            :step="0.01"
             :show-tip="showTip"
-            v-model.number="multiplier"
+            v-model.number="multiplierScale"
+            @on-input="changeMultiplier(multiplierScale)"
           ></XbsjSlider>
         </div>
         <span
@@ -98,58 +95,6 @@
         <button v-show="clockRange=='UNBOUNDED'" class="unbounded" @click="clockRange='LOOP_STOP'"></button>
       </div>
     </div>
-
-    <!-- <div ref="animation" class="animationContainer2">
-      <div class="defultbtn" :class="{btnon:status=='backPlay'}" @click="backPlay()">倒放</div>
-      <div
-        class="defultbtn"
-        style="margin-left:20px;"
-        :class="{btnon:status=='pause'}"
-        @click="pause()"
-      >暂停</div>
-      <div
-        class="defultbtn"
-        style="margin-left:20px;"
-        :class="{btnon:status=='play'}"
-        @click="play()"
-      >播放</div>
-      <br />
-      <div class="defultbtn" style="margin-left:20px;" @click="normalPlay()">normal</div>
-      <div class="defultbtn" style="margin-left:20px;" @click="changeShowType()">showType</div>
-      <br />
-      <br />
-      <div class="defultbtn" style="margin-left:20px;" @click="setStart()">开始时间</div>
-      <div class="defultbtn" style="margin-left:20px;" @click="setStop()">结束时间</div>
-
-      <div>{{showType}}</div>
-      <div>开始时间： {{startString}}</div>
-      <input type="datetime-local" v-model="start" @change="changeStart(start)" :max="stop" />
-      <div>结束时间： {{stopString}}</div>
-      <input type="datetime-local" v-model="stop" @change="changeStop(stop)" :min="start" />
-      <div>当前时间： {{currentString}}</div>
-      <input
-        type="datetime-local"
-        v-model="current"
-        @change="changeCurrent(current)"
-        :max="stop"
-        :min="start"
-      />
-      <br />
-      <a>播放速率：</a>
-      <input type="range" min="-1000" max="1000" step="1" v-model.number="multiplier" />
-
-      <br />
-      <span>clockRange:</span>
-      <select style="width: 246px; cursor: pointer;" v-model="clockRange">
-        <option v-for="item in clockRanges" :key="item">{{item}}</option>
-      </select>
-      <br />
-      <span>clockStep:</span>
-      <select style="width: 246px; cursor: pointer;" v-model="clockStep">
-        <option v-for="item in clockSteps" :key="item">{{item}}</option>
-      </select>
-      <br />
-    </div>-->
   </div>
 </template>
 
@@ -297,11 +242,9 @@ export default {
       stop: "",
       //_storeStatus: undefined,
 
-      clockRanges: ["LOOP_STOP", "CLAMPED", "UNBOUNDED"],
-      clockSteps: ["TICK_DEPENDENT", "SYSTEM_CLOCK_MULTIPLIER", "SYSTEM_CLOCK"],
-
       shouldAnimate: true,
       multiplier: 1,
+      multiplierScale: 3,
       showType: "local",
       clockRange: "",
       clockStep: "",
@@ -316,9 +259,6 @@ export default {
       ticMains: [],
       ticLabels: [],
       icon16: "",
-
-      startTimeStore: 0,
-      stopTimeStore: 0
     };
   },
   created() {
@@ -327,34 +267,6 @@ export default {
   mounted() {
     this._earth = this.$root.$earth;
     this._clock = this._earth.clock;
-
-    // let map = {
-    //     'startTime': 'startTime',
-    //     'stopTime': 'stopTime',
-    //     'currentTime': 'currentTime',
-    //     'shouldAnimate': 'shouldAnimate',
-    //     'multiplier': 'multiplier',
-    //     'showType': 'showType',
-    //     'clockRange': 'clockRange',
-    //     'clockStep': 'clockStep',
-    // };
-    // this._unbind = [];
-    // for(let key in map){
-    //     this._unbind.push( XE.MVVM.bind(this, map[key], this._clock, key));
-    // }
-    let map = [
-      "startTime",
-      "stopTime",
-      "currentTime",
-      "shouldAnimate",
-      "multiplier",
-      "showType",
-      "clockRange",
-      "clockStep"
-    ];
-    this._unbind = map.map(e => {
-      return XE.MVVM.bind(this, e, this._clock, e);
-    });
 
     this.startTime = Cesium.JulianDate.fromDate(new Date());
     this.stopTime = Cesium.JulianDate.addHours(
@@ -462,8 +374,30 @@ export default {
     this._resize = this.resize.bind(this);
     window.addEventListener("resize", this._resize);
     this.updateFromClock();
+
+    let map = [
+      "startTime",
+      "stopTime",
+      "currentTime",
+      "shouldAnimate",
+      "multiplier",
+      "showType",
+      "clockRange",
+      "clockStep"
+    ];
+    this._unbind = map.map(e => {
+      return XE.MVVM.bind(this, e, this._clock, e);
+    });
   },
   methods: {
+    changeMultiplier( val){
+        let value = Math.abs( val);
+
+        this.multiplier = (( value % 1.0 == 0 ? 0.1 : value % 1.0) * Math.pow( 10, Math.floor(value))).toFixed(2);
+        if( val < 0){
+            this.multiplier = -this.multiplier;
+        }
+    },
     setStart() {
       //将当前时间设置为timeline的起始时间
       this.startTime = Cesium.JulianDate.clone(
@@ -484,25 +418,6 @@ export default {
         this.currentTime
       );
     },
-    // useStore(){
-    //     this._storeStatus = undefined;
-    //     if( this.storeStart && this.storeStop){
-    //         let different = Cesium.JulianDate.secondsDifference( this.storeStop, this.storeStart);
-    //         if( different < 0){
-    //             let comp = this.storeStart;
-    //             this.storeStart = this.storeStop;
-    //             this.storeStop = comp;
-    //         }
-    //         this.startTime = Cesium.JulianDate.clone( this.storeStart, this.startTime);
-    //         this.stopTime = Cesium.JulianDate.clone( this.storeStop, this.stopTime);
-    //         this.zoomTo( this.startTime, this.stopTime);
-
-    //         setTimeout( ()=>{
-
-    //             this.computeStartAndStop();
-    //         },10)
-    //     }
-    // },
     changeStart(str) {
       if (new Date(str).getTime() < new Date(this.stop).getTime()) {
         Cesium.JulianDate.fromDate(new Date(str), this.startTime);
@@ -1223,26 +1138,29 @@ export default {
         evt.clock = this._clock;
         this._topDiv.dispatchEvent(evt);
       }
-    },
-    computeStartAndStop() {
-      let d1 = Cesium.JulianDate.secondsDifference(
-        this._endJulian,
-        this._startJulian
-      );
-      let d2 = Cesium.JulianDate.secondsDifference(
-        this.storeStart,
-        this._startJulian
-      );
-
-      let d3 = Cesium.JulianDate.secondsDifference(
-        this.storeStop,
-        this._startJulian
-      );
-      this.startTimeStore = (this._topDiv.clientWidth * d2) / d1;
-      this.stopTimeStore = (this._topDiv.clientWidth * d3) / d1;
     }
   },
   watch: {
+    multiplier( val, oldVal){
+        if( val == oldVal) return;
+        //根据multiplier反算出multiplierScale
+        //首先得到multiplier有多少个0
+        let value = Math.abs( val);
+        let length = value.toFixed(2).length;
+        let va = value;
+        let i;
+        for( i = length ; i >= 0 ; i --){
+            if( va < 1){
+                break;
+            }
+            va = va / 10;
+        };
+        length = length - i;
+
+        let v = (value / Math.pow( 10, length)).toFixed(2);
+        this.multiplierScale = Number(length) + Number(v);
+        if( val < 0) this.multiplierScale = -this.multiplierScale;
+    },
     currentTime(val) {
       //执行回调，修改timeLine中的当前时间
       this.updateFromClock();
@@ -1347,7 +1265,6 @@ function createMouseUpCallback(timeline) {
     }
     timeline._timelineDrag = 0;
     timeline._timelineDragLocation = undefined;
-    timeline.computeStartAndStop();
   };
 }
 
@@ -1389,7 +1306,6 @@ function createMouseMoveCallback(timeline) {
         timeline.zoomFrom(Math.pow(1.01, dx));
       }
     }
-    timeline.computeStartAndStop();
   };
 }
 
@@ -1402,7 +1318,6 @@ function createMouseWheelCallback(timeline) {
     );
     dy /= timelineWheelDelta;
     timeline.zoomFrom(Math.pow(1.05, -dy));
-    timeline.computeStartAndStop();
   };
 }
 
