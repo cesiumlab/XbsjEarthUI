@@ -66,7 +66,7 @@
         <div class="flatten-box">
           <XbsjInputNumber style="float:left; width: calc(50% - 90px);" v-model="model.width"></XbsjInputNumber>
         </div>
-        <!-- 图片路径  -->
+        <!-- 高度  -->
         <label>{{lang.height}}</label>
         <div class="flatten-box">
           <XbsjInputNumber style="float:left; width: calc(50% - 90px);" v-model="model.height"></XbsjInputNumber>

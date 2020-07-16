@@ -34,8 +34,8 @@
         </div>
         <div class="xbsj-item-btnbox" @click="timelinecontrolShow=!timelinecontrolShow">
           <div
-            class="xbsj-item-btn statebutton"
-            :class="timelinecontrolShow ? 'statebuttonActive' : ''"
+            class="xbsj-item-btn timebutton"
+            :class="timelinecontrolShow ? 'timebuttonActive' : ''"
           ></div>
           <span class="xbsj-item-name">{{lang.timelinecontrol}}</span>
         </div>
@@ -161,7 +161,7 @@ export default {
       navcontrolShow: true,
       scalecontrolShow: true,
       statecontrolShow: true,
-      
+
       timelinecontrolShow: true,
       modelTreeShow: false,
       show: true,
@@ -431,6 +431,11 @@ export default {
   cursor: pointer;
 }
 .timebutton:hover {
+  background: url(../../../../images/time_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.timebuttonActive {
   background: url(../../../../images/time_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
