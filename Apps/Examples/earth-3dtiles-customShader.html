@@ -113,6 +113,12 @@
         var tileset = earth.sceneTree.$refs.tileset.czmObject;
         earth.sceneTree.$refs.tileset.czmObject.flyTo();
 
+        // tileset.xbsjCustomTexture
+        tileset.xbsjCustomShader.vsHeader = 'varying vec2 v_cst_st; ';
+        tileset.xbsjCustomShader.vsBody = 'v_cst_st = a_position.xy * vec2(0.01, 0.01);';
+        tileset.xbsjCustomShader.fsHeader = 'varying vec2 v_cst_st; ';
+        tileset.xbsjCustomShader.fsBody = 'gl_FragColor.rgba *= vec4(v_cst_st, 0.0, 1.0);';
+
         this._earth = earth;
         this._tileset = tileset;
 

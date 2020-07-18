@@ -28,6 +28,10 @@ vueApp.examples = [
         "title": "Earth示例",
         "list": [
             {
+                "title": "3dtiles-自定义shader",
+                "url": "./earth-3dtiles-customShader.html"
+            },
+            {
                 "title": "3dtiles-平移旋转",
                 "url": "./earth-3dtiles-editing.html"
             },
