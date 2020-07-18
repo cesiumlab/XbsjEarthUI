@@ -113,11 +113,32 @@
         var tileset = earth.sceneTree.$refs.tileset.czmObject;
         earth.sceneTree.$refs.tileset.czmObject.flyTo();
 
-        // tileset.xbsjCustomTexture
+        const context = earth.czm.scene.context;
+        var t = new Cesium.Texture({ context, width: 80, height: 80, flipY: false });
+        
+        var imageData = new Uint8Array(80*80*4);
+        imageData.fill(255);
+        for (let j=0; j<80; ++j) {
+          for (let i=0; i<80; ++i) {
+            imageData[4*(j*80+i)+0] = 255 * i / 79;
+            imageData[4*(j*80+i)+1] = 255 * j / 79;
+            imageData[4*(j*80+i)+2] = 0;
+            imageData[4*(j*80+i)+3] = 255;
+          }
+        }
+        t.copyFrom({arrayBufferView: imageData, width: 80, height: 80});
+
+        tileset.xbsjCustomTexture = t;
         tileset.xbsjCustomShader.vsHeader = 'varying vec2 v_cst_st; ';
         tileset.xbsjCustomShader.vsBody = 'v_cst_st = a_position.xy * vec2(0.01, 0.01);';
         tileset.xbsjCustomShader.fsHeader = 'varying vec2 v_cst_st; ';
-        tileset.xbsjCustomShader.fsBody = 'gl_FragColor.rgba *= vec4(v_cst_st, 0.0, 1.0);';
+        // tileset.xbsjCustomShader.fsBody = 'gl_FragColor.rgba *= vec4(v_cst_st, 0.0, 1.0);';
+        tileset.xbsjCustomShader.fsBody = `
+          vec4 color = texture2D(u_xbsjCustomTexture, floor(v_cst_st * vec2(7.0, 7.0))/vec2(8.0, 8.0) + vec2(0.5/8.0, 0.5/8.0)); 
+          if (all(greaterThanEqual(v_cst_st, vec2(0.0, 0.0))) && all(lessThanEqual(v_cst_st, vec2(1.0, 1.0)))) {
+            gl_FragColor.rgba *= vec4(color.xyz, 1.0);
+          }
+        `;
 
         this._earth = earth;
         this._tileset = tileset;
