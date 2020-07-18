@@ -85,9 +85,7 @@
         <div class="playbtn" :class="{playbtnactive:status=='play'}" @click="play()">
           <span></span>
         </div>
-        <span
-          style="display:inline-block;line-height:32px;margin-left:20px;"
-        >{{currentString}} {{showType}}</span>
+        <span style="display:inline-block;line-height:32px;margin-left:20px;">{{currentString}}</span>
       </div>
       <div class="button-group">
         <button v-show="clockRange=='LOOP_STOP'" class="loop" @click="clockRange='CLAMPED'"></button>
@@ -258,7 +256,7 @@ export default {
       ticSubs: [],
       ticMains: [],
       ticLabels: [],
-      icon16: "",
+      icon16: ""
     };
   },
   created() {
@@ -390,13 +388,15 @@ export default {
     });
   },
   methods: {
-    changeMultiplier( val){
-        let value = Math.abs( val);
+    changeMultiplier(val) {
+      let value = Math.abs(val);
 
-        this.multiplier = (( value % 1.0 == 0 ? 0.1 : value % 1.0) * Math.pow( 10, Math.floor(value))).toFixed(2);
-        if( val < 0){
-            this.multiplier = -this.multiplier;
-        }
+      this.multiplier = (
+        (value % 1.0 == 0 ? 0.1 : value % 1.0) * Math.pow(10, Math.floor(value))
+      ).toFixed(2);
+      if (val < 0) {
+        this.multiplier = -this.multiplier;
+      }
     },
     setStart() {
       //将当前时间设置为timeline的起始时间
@@ -1141,25 +1141,25 @@ export default {
     }
   },
   watch: {
-    multiplier( val, oldVal){
-        if( val == oldVal) return;
-        //根据multiplier反算出multiplierScale
-        //首先得到multiplier有多少个0
-        let value = Math.abs( val);
-        let length = value.toFixed(2).length;
-        let va = value;
-        let i;
-        for( i = length ; i >= 0 ; i --){
-            if( va < 1){
-                break;
-            }
-            va = va / 10;
-        };
-        length = length - i;
+    multiplier(val, oldVal) {
+      if (val == oldVal) return;
+      //根据multiplier反算出multiplierScale
+      //首先得到multiplier有多少个0
+      let value = Math.abs(val);
+      let length = value.toFixed(2).length;
+      let va = value;
+      let i;
+      for (i = length; i >= 0; i--) {
+        if (va < 1) {
+          break;
+        }
+        va = va / 10;
+      }
+      length = length - i;
 
-        let v = (value / Math.pow( 10, length)).toFixed(2);
-        this.multiplierScale = Number(length) + Number(v);
-        if( val < 0) this.multiplierScale = -this.multiplierScale;
+      let v = (value / Math.pow(10, length)).toFixed(2);
+      this.multiplierScale = Number(length) + Number(v);
+      if (val < 0) this.multiplierScale = -this.multiplierScale;
     },
     currentTime(val) {
       //执行回调，修改timeLine中的当前时间
@@ -1460,7 +1460,7 @@ function createTouchMoveCallback(timeline) {
 .left,
 .right {
   position: absolute;
-  bottom: 60px;
+  bottom: 30px;
   width: 20px;
   height: 30px;
   outline: none;
@@ -1489,7 +1489,7 @@ function createTouchMoveCallback(timeline) {
   height: 30px;
   left: 19px;
   right: 20px;
-  bottom: 60px;
+  bottom: 30px;
 }
 .cesium-timeline-main {
   border-color: #5c5e61;
@@ -1510,57 +1510,12 @@ function createTouchMoveCallback(timeline) {
 .cesium-timeline-needle {
   background: #1fffff;
 }
-.animationContainer2 {
-  position: absolute;
-  left: 0px;
-  bottom: 600px;
-  height: 20px;
-}
-
-.defultbtn {
-  display: inline-block;
-  text-align: center;
-  min-width: 60px;
-  height: 38px;
-  padding: 0 10px;
-  line-height: 38px;
-  border-radius: 100px;
-  border: 1px solid #c9c9c9;
-  background-color: #fff;
-  color: #555;
-  cursor: pointer;
-}
-
-.defultbtn:hover {
-  background-color: #b3daf8;
-}
-
-.btnon {
-  background-color: #1e9fff;
-  color: #fff;
-  border: 1px solid #1e9fff;
-}
-
-input {
-  width: 222px;
-}
-
-.colorbox {
-  width: 50px;
-}
-
-.timeline-storetime {
-  height: 18px;
-  width: 2px;
-  background-color: #1e9fff;
-  position: absolute;
-}
 
 .animationBox {
   position: absolute;
   width: 664px;
   height: 32px;
-  bottom: 92px;
+  bottom: 62px;
   left: 50%;
   margin-left: -332px;
   display: flex;
