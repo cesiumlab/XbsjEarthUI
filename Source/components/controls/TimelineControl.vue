@@ -4,6 +4,9 @@
     <button class="right" @click="setStop()"></button>
     <div ref="timelineContainer" class="cesium-viewer-timelineContainer">
       <div ref="topDiv" class="cesium-timeline-main">
+        
+        <span class="startAndStop" :style="{left:startPosition-1+'px'}" v-show="clockRange=='UNBOUNDED'"></span>
+        <span class="startAndStop" :style="{left:stopPosition+1+'px'}" v-show="clockRange=='UNBOUNDED'"></span>
         <div ref="bar" class="cesium-timeline-bar">
           <div>
             <span
@@ -56,7 +59,7 @@
         <button
           class="clockstepbutton"
           :class="{clockstepbuttonactive:clockStep == 'SYSTEM_CLOCK'}"
-          @click="clockStep = 'SYSTEM_CLOCK'"
+          @click="multiplier=1; clockStep = 'SYSTEM_CLOCK'"
         ></button>
       </div>
       <div ref="animation" class="animationContainer">
@@ -256,7 +259,10 @@ export default {
       ticSubs: [],
       ticMains: [],
       ticLabels: [],
-      icon16: ""
+      icon16: "",
+
+      startPosition: 0,
+      stopPosition: 0,
     };
   },
   created() {
@@ -662,6 +668,14 @@ export default {
       evt.totalSpan = this._timeBarSecondsSpan;
       evt.mainTicSpan = this._mainTicSpan;
       this._topDiv.dispatchEvent(evt);
+
+      //重新计算startPosition和stopPosition的位置
+      let seconds = JulianDate.secondsDifference( this._endJulian, this._startJulian);
+      let second1 = JulianDate.secondsDifference( this.startTime, this._startJulian);
+      let second2 = JulianDate.secondsDifference( this.stopTime, this._startJulian);
+      this.startPosition = second1 * this._topDiv.clientWidth / seconds;
+      this.stopPosition = second2 * this._topDiv.clientWidth / seconds;
+      let xPos = Math.round((seconds * this._topDiv.clientWidth) / this._timeBarSecondsSpan);
     },
 
     zoomFrom(amount) {
@@ -1185,11 +1199,11 @@ export default {
   },
   computed: {
     status() {
-      if (this.shouldAnimate && this.multiplier > 0) {
+      if (this.shouldAnimate && this.multiplier > 0 && this.clockStep != 'SYSTEM_CLOCK') {
         return "play";
-      } else if (this.shouldAnimate && this.multiplier < 0) {
+      } else if (this.shouldAnimate && this.multiplier < 0 && this.clockStep != 'SYSTEM_CLOCK') {
         return "backPlay";
-      } else {
+      } else if( this.clockStep != 'SYSTEM_CLOCK'){
         return "pause";
       }
     },
@@ -1457,6 +1471,12 @@ function createTouchMoveCallback(timeline) {
 }
 </script>
 <style scoped>
+.startAndStop{
+  position: absolute;
+  width: 2px;
+  height: 26px;
+  background-color: #1e9fff;
+}
 .left,
 .right {
   position: absolute;
