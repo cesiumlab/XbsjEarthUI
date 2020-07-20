@@ -4,9 +4,16 @@
     <button class="right" @click="setStop()"></button>
     <div ref="timelineContainer" class="cesium-viewer-timelineContainer">
       <div ref="topDiv" class="cesium-timeline-main">
-        
-        <span class="startAndStop" :style="{left:startPosition-1+'px'}" v-show="clockRange=='UNBOUNDED'"></span>
-        <span class="startAndStop" :style="{left:stopPosition+1+'px'}" v-show="clockRange=='UNBOUNDED'"></span>
+        <span
+          class="startAndStop"
+          :style="{left:startPosition-1+'px'}"
+          v-show="clockRange=='UNBOUNDED'"
+        ></span>
+        <span
+          class="startAndStop"
+          :style="{left:stopPosition+1+'px'}"
+          v-show="clockRange=='UNBOUNDED'"
+        ></span>
         <div ref="bar" class="cesium-timeline-bar">
           <div>
             <span
@@ -91,9 +98,9 @@
         <span style="display:inline-block;line-height:32px;margin-left:20px;">{{currentString}}</span>
       </div>
       <div class="button-group">
-        <button v-show="clockRange=='LOOP_STOP'" class="loop" @click="clockRange='CLAMPED'"></button>
-        <button v-show="clockRange=='CLAMPED'" class="clamped" @click="clockRange='UNBOUNDED'"></button>
-        <button v-show="clockRange=='UNBOUNDED'" class="unbounded" @click="clockRange='LOOP_STOP'"></button>
+        <button v-show="clockRange=='LOOP_STOP'" class="loop" @click="clampedClick"></button>
+        <button v-show="clockRange=='CLAMPED'" class="clamped" @click="unboundedClick"></button>
+        <button v-show="clockRange=='UNBOUNDED'" class="unbounded" @click="loopClick"></button>
       </div>
     </div>
   </div>
@@ -263,6 +270,19 @@ export default {
 
       startPosition: 0,
       stopPosition: 0,
+      langs: {
+        zh: {
+          loop: "时间段内无限循环",
+          clamped: "时间段内循环一次",
+          unbounded: "无限制循环"
+        },
+        eb: {
+          loop: "Infinite cycle in time period",
+          clamped: "Once in a time period",
+          unbounded: "Unlimited circulation"
+        }
+      },
+      lang: undefined
     };
   },
   created() {
@@ -423,6 +443,18 @@ export default {
         0.001,
         this.currentTime
       );
+    },
+    loopClick() {
+      this.clockRange = "LOOP_STOP";
+      this.$root.$earthUI.promptInfo(this.lang.loop);
+    },
+    unboundedClick() {
+      this.clockRange = "UNBOUNDED";
+      this.$root.$earthUI.promptInfo(this.lang.unbounded);
+    },
+    clampedClick() {
+      this.clockRange = "CLAMPED";
+      this.$root.$earthUI.promptInfo(this.lang.clamped);
     },
     changeStart(str) {
       if (new Date(str).getTime() < new Date(this.stop).getTime()) {
@@ -670,12 +702,23 @@ export default {
       this._topDiv.dispatchEvent(evt);
 
       //重新计算startPosition和stopPosition的位置
-      let seconds = JulianDate.secondsDifference( this._endJulian, this._startJulian);
-      let second1 = JulianDate.secondsDifference( this.startTime, this._startJulian);
-      let second2 = JulianDate.secondsDifference( this.stopTime, this._startJulian);
-      this.startPosition = second1 * this._topDiv.clientWidth / seconds;
-      this.stopPosition = second2 * this._topDiv.clientWidth / seconds;
-      let xPos = Math.round((seconds * this._topDiv.clientWidth) / this._timeBarSecondsSpan);
+      let seconds = JulianDate.secondsDifference(
+        this._endJulian,
+        this._startJulian
+      );
+      let second1 = JulianDate.secondsDifference(
+        this.startTime,
+        this._startJulian
+      );
+      let second2 = JulianDate.secondsDifference(
+        this.stopTime,
+        this._startJulian
+      );
+      this.startPosition = (second1 * this._topDiv.clientWidth) / seconds;
+      this.stopPosition = (second2 * this._topDiv.clientWidth) / seconds;
+      let xPos = Math.round(
+        (seconds * this._topDiv.clientWidth) / this._timeBarSecondsSpan
+      );
     },
 
     zoomFrom(amount) {
@@ -1199,11 +1242,19 @@ export default {
   },
   computed: {
     status() {
-      if (this.shouldAnimate && this.multiplier > 0 && this.clockStep != 'SYSTEM_CLOCK') {
+      if (
+        this.shouldAnimate &&
+        this.multiplier > 0 &&
+        this.clockStep != "SYSTEM_CLOCK"
+      ) {
         return "play";
-      } else if (this.shouldAnimate && this.multiplier < 0 && this.clockStep != 'SYSTEM_CLOCK') {
+      } else if (
+        this.shouldAnimate &&
+        this.multiplier < 0 &&
+        this.clockStep != "SYSTEM_CLOCK"
+      ) {
         return "backPlay";
-      } else if( this.clockStep != 'SYSTEM_CLOCK'){
+      } else if (this.clockStep != "SYSTEM_CLOCK") {
         return "pause";
       }
     },
@@ -1471,7 +1522,7 @@ function createTouchMoveCallback(timeline) {
 }
 </script>
 <style scoped>
-.startAndStop{
+.startAndStop {
   position: absolute;
   width: 2px;
   height: 26px;
