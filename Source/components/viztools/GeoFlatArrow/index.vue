@@ -2,7 +2,7 @@
   <Window
     :width="582"
     :minWidth="582"
-    :height="354"
+    :height="360"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -136,7 +136,7 @@ import languagejs from "./index_locale";
 
 export default {
   props: {
-    getBind: Function
+    getBind: Function,
   },
   data() {
     return {
@@ -154,15 +154,15 @@ export default {
         minWidthScale: 0.06,
         dynamicWidthScale: 0.1,
         arrowMaxHeightScale: 0.1,
-        arrowWingWidthScale: 2
+        arrowWingWidthScale: 2,
       },
       bgbaseColorUI: {
         rgba: {
           r: 0,
           g: 255,
           b: 0,
-          a: 0.1
-        }
+          a: 0.1,
+        },
       },
       bgbaseColor: [0, 1, 0, 0.1],
       borderbaseColorUI: {
@@ -170,12 +170,12 @@ export default {
           r: 0,
           g: 255,
           b: 0,
-          a: 1
-        }
+          a: 1,
+        },
       },
       borderbaseColor: [0, 1, 0, 1],
       pinstyletype: true,
-      langs: languagejs
+      langs: languagejs,
     };
   },
   created() {},
@@ -199,7 +199,7 @@ export default {
         minWidthScale: "model.minWidthScale",
         dynamicWidthScale: "model.dynamicWidthScale",
         arrowMaxHeightScale: "model.arrowMaxHeightScale",
-        arrowWingWidthScale: "model.arrowWingWidthScale"
+        arrowWingWidthScale: "model.arrowWingWidthScale",
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -225,7 +225,7 @@ export default {
     },
     guid() {
       return this.getBind().guid;
-    }
+    },
   },
   watch: {
     bgbaseColorUI(color) {
@@ -241,8 +241,8 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
     },
     borderbaseColorUI(color) {
@@ -259,10 +259,10 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
-    }
+    },
   },
   methods: {
     close() {
@@ -297,14 +297,14 @@ export default {
 
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
-    }
+    },
   },
   beforeDestroy() {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers.forEach(e => e());
+    this._disposers.forEach((e) => e());
     this._disposers.length = 0;
-  }
+  },
 };
 </script>
 

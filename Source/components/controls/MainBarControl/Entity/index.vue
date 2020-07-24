@@ -366,7 +366,7 @@ import { addOutterEventListener } from "../../../utils/xbsjUtil";
 export default {
   components: {
     PlottingMore,
-    Parabolic
+    Parabolic,
   },
   data() {
     return {
@@ -382,14 +382,14 @@ export default {
       popup: "",
       parabolicShow: false,
       parabolic_over: false,
-      odlines_over: false
+      odlines_over: false,
     };
   },
   created() {},
   mounted() {
     //给所有popup的el上添加外部事件
-    Object.keys(this.$refs).forEach(key => {
-      addOutterEventListener(this.$refs[key].$el, "mousedown", el => {
+    Object.keys(this.$refs).forEach((key) => {
+      addOutterEventListener(this.$refs[key].$el, "mousedown", (el) => {
         let comp = this.getPopupComp();
         if (comp && comp.$el === el) {
           if (typeof comp.show == "function") {
@@ -639,7 +639,7 @@ export default {
       // console.log(customGroundRectangle);
       this.$root.$earthUI.showPropertyWindow(customGroundRectangle);
     },
-    //多边形贴图
+    //立面贴图
     PolygonImageShow() {
       if (!this.$root.$earth.terrainEffect.depthTest) {
         this.$root.$earthUI.promptInfo(
@@ -651,7 +651,7 @@ export default {
       var customPrimitive = new XE.Obj.CustomPrimitiveExt.Image(
         this.$root.$earth
       );
-      customPrimitive.name = "自定义图元";
+      customPrimitive.name = "立面贴图";
       customPrimitive.isCreating = true;
       customPrimitive.creating = true;
       customPrimitive.imageUrl = "./assets/earth.png";
@@ -839,10 +839,10 @@ export default {
             color: czmobj.color ? [...czmobj.color] : [1, 1, 0, 1],
             width: czmobj.width ? czmobj.width : 3,
             startTime: timeDuration * Math.random(),
-            duration: moveBaseDuration + 1.0 * Math.random()
+            duration: moveBaseDuration + 1.0 * Math.random(),
           };
           // var positions=[];
-          czmobj.positions.map(e => {
+          czmobj.positions.map((e) => {
             obj.positions.push([...e]);
           });
           //obj.posititons.push(positions);
@@ -891,7 +891,7 @@ export default {
           minDistance,
           heightRatio
         );
-        const poss = cartesians.map(ee => {
+        const poss = cartesians.map((ee) => {
           const carto = Cesium.Cartographic.fromCartesian(ee);
           return [carto.longitude, carto.latitude, carto.height];
         });
@@ -992,8 +992,8 @@ export default {
     },
     endMove(envent) {
       this.moving = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

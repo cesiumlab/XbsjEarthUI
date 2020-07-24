@@ -2,7 +2,7 @@
   <Window
     :width="560"
     :minWidth="512"
-    :height="630"
+    :height="638"
     :top="158"
     :floatright="true"
     :title="lang.title"
@@ -132,7 +132,7 @@ import axios from "axios";
 
 export default {
   props: {
-    getBind: Function
+    getBind: Function,
   },
   data() {
     return {
@@ -159,7 +159,7 @@ export default {
         height: 1000,
         width: 1000,
         imageUrl: "",
-        color: [1, 1, 1, 1]
+        color: [1, 1, 1, 1],
       },
       langs: languagejs,
       bgbaseColorUI: {
@@ -167,10 +167,10 @@ export default {
           r: 0,
           g: 0,
           b: 255,
-          a: 1
-        }
+          a: 1,
+        },
       },
-      bgbaseColor: [0, 0, 0.5, 1]
+      bgbaseColor: [0, 0, 0.5, 1],
     };
   },
   created() {},
@@ -186,22 +186,22 @@ export default {
             title: this.lang.createcode,
             expand: false,
             checkStatus: "checked",
-            createcodeShows: true
+            createcodeShows: true,
           },
           {
             title: this.lang.framecode,
             expand: false,
             checkStatus: "checked",
-            framecodeShows: true
+            framecodeShows: true,
           },
           {
             title: this.lang.destorycode,
             expand: false,
             checkStatus: "checked",
-            destorycodeShows: true
-          }
-        ]
-      }
+            destorycodeShows: true,
+          },
+        ],
+      },
     ];
     // 数据关联
     this._disposers = this._disposers || [];
@@ -220,7 +220,7 @@ export default {
         canvasWidth: "model.canvasWidth",
         canvasHeight: "model.canvasHeight",
         imageUrl: "model.imageUrl",
-        color: "model.color"
+        color: "model.color",
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -239,7 +239,7 @@ export default {
     },
     guid() {
       return this.getBind().guid;
-    }
+    },
   },
   watch: {
     bgbaseColorUI(color) {
@@ -255,10 +255,10 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
-    }
+    },
   },
   methods: {
     itemClick(item) {
@@ -364,14 +364,14 @@ export default {
           this._czmObj.position = [...czmObj.positions[0]];
         }
       }
-    }
+    },
   },
   beforeDestroy() {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers.forEach(e => e());
+    this._disposers.forEach((e) => e());
     this._disposers.length = 0;
-  }
+  },
 };
 </script>
 

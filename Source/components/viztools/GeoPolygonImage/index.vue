@@ -1,6 +1,6 @@
 <template>
   <Window
-    :width="480"
+    :width="482"
     :minWidth="480"
     :height="386"
     :floatright="true"
@@ -98,7 +98,7 @@ import languagejs from "./index_locale";
 
 export default {
   props: {
-    getBind: Function
+    getBind: Function,
   },
   data() {
     return {
@@ -116,11 +116,11 @@ export default {
         interpolation: false,
         interpolationDistance: 10,
         offsetHeight: 1,
-        totalArea: 0
+        totalArea: 0,
       },
       positions: [],
       pinstyletype: true,
-      langs: languagejs
+      langs: languagejs,
     };
   },
   created() {},
@@ -141,7 +141,7 @@ export default {
         interpolation: "model.interpolation",
         interpolationDistance: "model.interpolationDistance",
         offsetHeight: "model.offsetHeight",
-        totalArea: "model.totalArea"
+        totalArea: "model.totalArea",
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -159,7 +159,7 @@ export default {
     },
     guid() {
       return this.getBind().guid;
-    }
+    },
   },
   watch: {},
   methods: {
@@ -215,13 +215,13 @@ export default {
         this._czmObj.creating = false;
         this.$root.$earthUI.getCzmObjectPositionFromDrag(czmObj, this._czmObj);
       }
-    }
+    },
   },
   beforeDestroy() {
     // 解绑数据关联
-    this._disposers.forEach(e => e());
+    this._disposers.forEach((e) => e());
     this._disposers.length = 0;
-  }
+  },
 };
 </script>
 

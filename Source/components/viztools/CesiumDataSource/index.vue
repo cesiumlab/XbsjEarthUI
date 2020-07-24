@@ -1,6 +1,6 @@
 <template>
   <Window
-    :width="480"
+    :width="482"
     :minWidth="480"
     :height="218"
     :floatright="true"
@@ -25,26 +25,25 @@
 </template>
 
 <script>
-
 import languagejs from "./index_locale";
 
 export default {
   props: {
-    getBind: Function
+    getBind: Function,
   },
-  data () {
+  data() {
     return {
       lang: {},
-      title: '',
+      title: "",
       datasource: {
         name: "",
-        url: ''
+        url: "",
       },
-      langs: languagejs
+      langs: languagejs,
     };
   },
-  created () { },
-  mounted () {
+  created() {},
+  mounted() {
     // 数据关联
     this._disposers = this._disposers || [];
     var czmObj = this.getBind();
@@ -54,13 +53,13 @@ export default {
     } else if (czmObj.xbsjType === "XbsjKML") {
       this.title = "KML";
     } else if (czmObj.xbsjType === "XbsjCzml") {
-      this.title = "Czml"
+      this.title = "Czml";
     }
     if (czmObj) {
       this._czmObj = czmObj;
       const bindData = {
         name: "datasource.name",
-        url: "datasource.url"
+        url: "datasource.url",
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -73,18 +72,18 @@ export default {
     }
   },
   computed: {
-    name () {
+    name() {
       return this.datasource.name;
     },
-    guid () {
+    guid() {
       return this.getBind().guid;
-    }
+    },
   },
   methods: {
-    close () {
+    close() {
       this.$parent.destroyTool(this);
     },
-    cancel () {
+    cancel() {
       this.close();
       const modelToolObj = this._czmObj;
       if (!modelToolObj) {
@@ -94,7 +93,7 @@ export default {
         modelToolObj.destroy();
       }
     },
-    ok () {
+    ok() {
       this.close();
       const modelToolObj = this._czmObj;
       if (!modelToolObj) {
@@ -107,12 +106,12 @@ export default {
       }
     },
   },
-  beforeDestroy () {
+  beforeDestroy() {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers.forEach(e => e());
+    this._disposers.forEach((e) => e());
     this._disposers.length = 0;
-  }
+  },
 };
 </script>
 

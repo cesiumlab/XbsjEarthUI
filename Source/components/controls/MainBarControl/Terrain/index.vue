@@ -222,7 +222,7 @@ export default {
     Aspect,
     Contour,
     Tailoring,
-    GlobeTranslucency
+    GlobeTranslucency,
   },
   data() {
     return {
@@ -244,14 +244,14 @@ export default {
       tailoringShow: false,
       globeTranslucencyShow: false,
       enableLighting: false,
-      drag_over: false
+      drag_over: false,
     };
   },
   created() {},
   mounted() {
     //给所有popup的el上添加外部事件
-    Object.keys(this.$refs).forEach(key => {
-      addOutterEventListener(this.$refs[key].$el, "mousedown", el => {
+    Object.keys(this.$refs).forEach((key) => {
+      addOutterEventListener(this.$refs[key].$el, "mousedown", (el) => {
         let comp = this.getPopupComp();
         if (comp && comp.$el === el) {
           if (typeof comp.show == "function") {
@@ -375,7 +375,7 @@ export default {
         arr[j].pop();
       }
       arr = arr.toString().split(",");
-      arr = arr.map(function(el) {
+      arr = arr.map(function (el) {
         return +el;
       });
 
@@ -526,10 +526,10 @@ export default {
           ((west * 180) / Math.PI).toFixed(7),
           ((south * 180) / Math.PI).toFixed(7),
           ((east * 180) / Math.PI).toFixed(7),
-          ((north * 180) / Math.PI).toFixed(7)
+          ((north * 180) / Math.PI).toFixed(7),
         ];
       }
-    }
+    },
   },
   beforeDestroy() {
     for (let i = 0; i < this.unbind.length; i++) {
@@ -537,7 +537,7 @@ export default {
       ud();
     }
     this.unbind = [];
-  }
+  },
 };
 </script>
 

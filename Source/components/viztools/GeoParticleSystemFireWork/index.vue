@@ -2,7 +2,7 @@
   <Window
     :width="582"
     :minWidth="582"
-    :height="332"
+    :height="340"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -107,7 +107,7 @@ import languagejs from "./index_locale";
 
 export default {
   props: {
-    getBind: Function
+    getBind: Function,
   },
   data() {
     return {
@@ -123,15 +123,15 @@ export default {
         position: [0, 0, 0],
         radius: 200,
         particleLife: 0.8,
-        burstInterval: 1.0
+        burstInterval: 1.0,
       },
       startColorUI: {
         rgba: {
           r: 0,
           g: 0,
           b: 255,
-          a: 1
-        }
+          a: 1,
+        },
       },
       startColor: [0, 0, 0.5, 1],
       endColorUI: {
@@ -139,8 +139,8 @@ export default {
           r: 0,
           g: 255,
           b: 0,
-          a: 1
-        }
+          a: 1,
+        },
       },
       endColor: [0, 1, 0, 1],
       pinstyletype: true,
@@ -150,10 +150,10 @@ export default {
         BoxEmitter: "BoxEmitter",
         CircleEmitter: "CircleEmitter",
         ConeEmitter: "ConeEmitter",
-        SphereEmitter: "SphereEmitter"
+        SphereEmitter: "SphereEmitter",
       },
       radiusdisabled: false,
-      angledisabled: true
+      angledisabled: true,
     };
   },
   created() {},
@@ -172,7 +172,7 @@ export default {
         position: "model.position",
         radius: "model.radius",
         particleLife: "model.particleLife",
-        burstInterval: "model.burstInterval"
+        burstInterval: "model.burstInterval",
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -195,7 +195,7 @@ export default {
     },
     guid() {
       return this.getBind().guid;
-    }
+    },
   },
   watch: {
     startColorUI(color) {
@@ -211,8 +211,8 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
     },
     endColorUI(color) {
@@ -229,10 +229,10 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
-    }
+    },
   },
   methods: {
     close() {
@@ -301,14 +301,14 @@ export default {
           this._czmObj.position = [...czmObj.positions[0]];
         }
       }
-    }
+    },
   },
   beforeDestroy() {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers.forEach(e => e());
+    this._disposers.forEach((e) => e());
     this._disposers.length = 0;
-  }
+  },
 };
 </script>
 

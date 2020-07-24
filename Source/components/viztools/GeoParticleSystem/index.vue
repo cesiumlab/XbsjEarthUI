@@ -2,7 +2,7 @@
   <Window
     :width="596"
     :minWidth="582"
-    :height="630"
+    :height="634"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -218,7 +218,7 @@ import languagejs from "./index_locale";
 
 export default {
   props: {
-    getBind: Function
+    getBind: Function,
   },
   data() {
     return {
@@ -252,15 +252,15 @@ export default {
         arrowWingWidthScale: 2,
         emitterType: "CircleEmitter",
         emitterRadius: 2,
-        emitterAngle: 1
+        emitterAngle: 1,
       },
       startColorUI: {
         rgba: {
           r: 0,
           g: 0,
           b: 255,
-          a: 1
-        }
+          a: 1,
+        },
       },
       startColor: [0, 0, 0.5, 1],
       endColorUI: {
@@ -268,8 +268,8 @@ export default {
           r: 0,
           g: 255,
           b: 0,
-          a: 1
-        }
+          a: 1,
+        },
       },
       endColor: [0, 1, 0, 1],
       pinstyletype: true,
@@ -279,10 +279,10 @@ export default {
         BoxEmitter: "BoxEmitter",
         CircleEmitter: "CircleEmitter",
         ConeEmitter: "ConeEmitter",
-        SphereEmitter: "SphereEmitter"
+        SphereEmitter: "SphereEmitter",
       },
       radiusdisabled: false,
-      angledisabled: true
+      angledisabled: true,
     };
   },
   created() {},
@@ -313,7 +313,7 @@ export default {
         image: "model.image",
         emitterType: "model.emitterType",
         emitterRadius: "model.emitterRadius",
-        emitterAngle: "model.emitterAngle"
+        emitterAngle: "model.emitterAngle",
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -336,7 +336,7 @@ export default {
     },
     guid() {
       return this.getBind().guid;
-    }
+    },
   },
   watch: {
     startColorUI(color) {
@@ -352,8 +352,8 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
     },
     endColorUI(color) {
@@ -370,10 +370,10 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
-    }
+    },
   },
   methods: {
     toBeSmoke() {
@@ -462,14 +462,14 @@ export default {
           this._czmObj.position = [...czmObj.positions[0]];
         }
       }
-    }
+    },
   },
   beforeDestroy() {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers.forEach(e => e());
+    this._disposers.forEach((e) => e());
     this._disposers.length = 0;
-  }
+  },
 };
 </script>
 

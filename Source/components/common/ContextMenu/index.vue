@@ -20,18 +20,18 @@
 <script>
 import { addOutterEventListener } from "../../utils/xbsjUtil";
 export default {
-  data () {
+  data() {
     return {
       items: [],
       show: false,
       cursor: {
         x: 0,
-        y: 0
+        y: 0,
       },
-      position: "left:0px;top:0px;"
+      position: "left:0px;top:0px;",
     };
   },
-  mounted () {
+  mounted() {
     /*
     //防止浏览器默认菜单
     document.body.oncontextmenu = () => {
@@ -40,15 +40,18 @@ export default {
     */
 
     let container = this.$root.$refs.mainUI.$el;
+    let xbsjviewer = document.getElementsByClassName("xbsj-viewer")[0];
 
     //监控鼠标位置
-    document.body.addEventListener("mousemove", event => {
-      let left = container.offsetLeft;
-      let top = container.offsetTop;
+    document.body.addEventListener("mousemove", (event) => {
+      // let left = container.offsetLeft;
+      // let top = container.offsetTop;
+      let left = xbsjviewer.offsetLeft;
+      let top = xbsjviewer.offsetTop;
 
       this.cursor = {
         x: event.clientX - left,
-        y: event.clientY - top
+        y: event.clientY - top,
       };
     });
 
@@ -78,21 +81,21 @@ export default {
     */
   },
   methods: {
-    click (it) {
+    click(it) {
       if (typeof it.func === "function") {
         it.func();
       }
       this.show = false;
       this.items = [];
     },
-    pop (items, x, y) {
+    pop(items, x, y) {
       if (this.show) return;
       this.items = items;
       this.show = true;
       if (x == undefined) x = this.cursor.x;
       if (y == undefined) y = this.cursor.y;
       let bottom = 0;
-      items.forEach(element => {
+      items.forEach((element) => {
         if (element.type === "divider") {
           bottom += 2;
         } else {
@@ -107,15 +110,15 @@ export default {
       }
       this.position = `left:${x}px; top:${y}px;`;
     },
-    close () {
+    close() {
       if (!this.show) return;
       this.show = false;
       this.items = [];
-    }
+    },
   },
-  destroyed () {
+  destroyed() {
     document.body.oncontextmenu = null;
-  }
+  },
 };
 </script>
 

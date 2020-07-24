@@ -376,7 +376,7 @@ export default {
     Silhouette,
     NightVision,
     DepthOfField,
-    ForceSunPos
+    ForceSunPos,
   },
   data() {
     return {
@@ -391,13 +391,13 @@ export default {
         snowPostProcess: false,
         fog: false,
         fogPostProcess: false,
-        skyBox: true
+        skyBox: true,
       },
       skyBoxOnGround: false,
       popup: "",
       effect: {
         shadow: false,
-        forceSunPos: false
+        forceSunPos: false,
       },
       postProcess: {
         bloom: false,
@@ -408,16 +408,16 @@ export default {
         blackAndWhite: false,
         nightVision: false,
         lensFlare: false,
-        mosaic: false
+        mosaic: false,
       },
-      langs: languagejs
+      langs: languagejs,
     };
   },
   created() {},
   mounted() {
     //给所有popup的el上添加外部事件
-    Object.keys(this.$refs).forEach(key => {
-      addOutterEventListener(this.$refs[key].$el, "mousedown", el => {
+    Object.keys(this.$refs).forEach((key) => {
+      addOutterEventListener(this.$refs[key].$el, "mousedown", (el) => {
         let comp = this.getPopupComp();
         if (comp && comp.$el === el) {
           if (typeof comp.show == "function") {
@@ -484,7 +484,7 @@ export default {
         orientation: {
           heading: 0,
           pitch: Cesium.Math.toRadians(-90.0),
-          roll: 0.0
+          roll: 0.0,
         },
         cancel: () => {
           this.weather.sun = !this.weather.sun;
@@ -492,7 +492,7 @@ export default {
         complete: () => {
           this.weather.sun = !this.weather.sun;
         },
-        duration: 0.5
+        duration: 0.5,
       });
     },
     toggleFlare() {
@@ -508,7 +508,7 @@ export default {
         orientation: {
           heading: 0,
           pitch: Cesium.Math.toRadians(-90.0),
-          roll: 0.0
+          roll: 0.0,
         },
         cancel: () => {
           this.postProcess.lensFlare = !this.postProcess.lensFlare;
@@ -516,7 +516,7 @@ export default {
         complete: () => {
           this.postProcess.lensFlare = !this.postProcess.lensFlare;
         },
-        duration: 0.5
+        duration: 0.5,
       });
     },
     toggleMoon() {
@@ -528,7 +528,7 @@ export default {
         orientation: {
           heading: 0,
           pitch: Cesium.Math.toRadians(90.0),
-          roll: 0.0
+          roll: 0.0,
         },
         cancel: () => {
           this.weather.moon = !this.weather.moon;
@@ -536,7 +536,7 @@ export default {
         complete: () => {
           this.weather.moon = !this.weather.moon;
         },
-        duration: 0.5
+        duration: 0.5,
       });
     },
     binVue(prp) {
@@ -583,7 +583,11 @@ export default {
         //   event.target.offsetParent.offsetLeft -
         //   40 +
         //   "px";
-        el.style.left = event.clientX - 40 + "px";
+        el.style.left =
+          event.target.offsetLeft +
+          event.target.offsetParent.offsetLeft -
+          40 +
+          "px";
         el.style.top =
           event.target.offsetTop +
           event.target.offsetParent.offsetTop +
@@ -616,12 +620,12 @@ export default {
     },
     endMove(envent) {
       this.moving = false;
-    }
+    },
   },
   beforeDestroy() {
-    this._viewUnbinds.forEach(u => u());
+    this._viewUnbinds.forEach((u) => u());
     this._viewUnbinds.length = 0;
-  }
+  },
 };
 </script>
 

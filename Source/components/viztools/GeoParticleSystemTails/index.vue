@@ -2,7 +2,7 @@
   <Window
     :width="594"
     :minWidth="582"
-    :height="608"
+    :height="610"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -190,7 +190,7 @@ import languagejs from "./index_locale";
 
 export default {
   props: {
-    getBind: Function
+    getBind: Function,
   },
   data() {
     return {
@@ -213,14 +213,14 @@ export default {
         particleLife: 0.8,
         rotate: 0.01,
         height: 50,
-        colors: []
+        colors: [],
       },
       colors: [],
       pinstyletype: true,
       langs: languagejs,
       showTypeSelect: false,
       radiusdisabled: false,
-      angledisabled: true
+      angledisabled: true,
     };
   },
   created() {},
@@ -245,7 +245,7 @@ export default {
         radius: "model.radius",
         particleLife: "model.particleLife",
         rotate: "model.rotate",
-        height: "model.height"
+        height: "model.height",
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -267,23 +267,23 @@ export default {
     },
     guid() {
       return this.getBind().guid;
-    }
+    },
   },
   watch: {
     colors: {
       handler(n, o) {
         var ccc = [];
-        n.forEach(element => {
+        n.forEach((element) => {
           let v = element.rgba;
           var cc = [v.r / 255.0, v.g / 255.0, v.b / 255.0, v.a];
-          cc.forEach(value => {
+          cc.forEach((value) => {
             ccc.push(value);
           });
         });
         this._czmObj.colors = ccc;
       },
-      deep: true // 可以深度检测到 colors 对象的属性值的变化
-    }
+      deep: true, // 可以深度检测到 colors 对象的属性值的变化
+    },
   },
   methods: {
     toBeCometTail() {
@@ -321,8 +321,8 @@ export default {
             r: model.colors[i] * 255,
             g: model.colors[i + 1] * 255,
             b: model.colors[i + 2] * 255,
-            a: model.colors[i + 3]
-          }
+            a: model.colors[i + 3],
+          },
         });
       }
     },
@@ -401,14 +401,14 @@ export default {
           this._czmObj.position = [...czmObj.positions[0]];
         }
       }
-    }
+    },
   },
   beforeDestroy() {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers.forEach(e => e());
+    this._disposers.forEach((e) => e());
     this._disposers.length = 0;
-  }
+  },
 };
 </script>
 

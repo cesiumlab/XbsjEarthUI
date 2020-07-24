@@ -2,7 +2,7 @@
   <Window
     :width="494"
     :minWidth="480"
-    :height="302"
+    :height="312"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -106,7 +106,7 @@ import languagejs from "./index_locale";
 
 export default {
   props: {
-    getBind: Function
+    getBind: Function,
   },
   data() {
     return {
@@ -125,16 +125,16 @@ export default {
         depthTest: false,
         outline: {
           show: true,
-          width: 2
-        }
+          width: 2,
+        },
       },
       bgbaseColorUI: {
         rgba: {
           r: 0,
           g: 0,
           b: 255,
-          a: 1
-        }
+          a: 1,
+        },
       },
       bgbaseColor: [0, 0, 0.5, 1],
       borderbaseColorUI: {
@@ -142,11 +142,11 @@ export default {
           r: 0,
           g: 0,
           b: 255,
-          a: 1
-        }
+          a: 1,
+        },
       },
       borderbaseColor: [0, 0, 0.5, 1],
-      langs: languagejs
+      langs: languagejs,
     };
   },
   created() {},
@@ -168,7 +168,7 @@ export default {
         ground: "model.ground",
         depthTest: "model.depthTest",
         "outline.show": "model.outline.show",
-        "outline.width": "model.outline.width"
+        "outline.width": "model.outline.width",
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -195,7 +195,7 @@ export default {
     },
     guid() {
       return this.getBind().guid;
-    }
+    },
   },
   watch: {
     bgbaseColorUI(color) {
@@ -211,8 +211,8 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
     },
     borderbaseColorUI(color) {
@@ -229,18 +229,18 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
     },
     "model.extrudedHeight": {
-      handler: function(val) {
+      handler: function (val) {
         if (typeof val == "string") {
           this._czmObj.extrudedHeight = null;
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     close() {
@@ -299,14 +299,14 @@ export default {
         this._czmObj.creating = false;
         this.$root.$earthUI.getCzmObjectPositionFromDrags(czmObj, this._czmObj);
       }
-    }
+    },
   },
   beforeDestroy() {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers.forEach(e => e());
+    this._disposers.forEach((e) => e());
     this._disposers.length = 0;
-  }
+  },
 };
 </script>
 
