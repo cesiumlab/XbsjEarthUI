@@ -1,5 +1,7 @@
 Change Log
 ==========
+##### Additions :tada:
+* 增加贴地图元功能
 
 ### 1.4.14 - 2020-7-13
 ##### Fixes :wrench:
