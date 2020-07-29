@@ -91,7 +91,7 @@ class MainUI {
 
     var earth = new XE.Earth(cesiumContainer);
     earth.camera.navigator.showCompass = true; // 显示指北针
-    earth.camera.navigator.distanceLegendStyle.bottom = 40; // 比例尺位置调整
+    earth.camera.navigator.distanceLegendStyle.bottom = 62; // 比例尺位置调整
     earth.camera.navigator.showDistanceLegend = true; // 显示比例尺
     this._earth = earth;
 
@@ -215,7 +215,7 @@ class MainUI {
           get mainBar() {
             return mainUI._mainbar;
           },
-          get timelinebar(){
+          get timelinebar() {
             return mainUI._timelinebar;
           }
         };
