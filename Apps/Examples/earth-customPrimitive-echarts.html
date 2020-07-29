@@ -173,7 +173,14 @@
 
 
             myChart.on('rendered', function () {
-                p.imageUrl = myChart.getDataURL();
+                // 方式1，使用简单
+                // p.imageUrl = myChart.getDataURL();
+
+                // 方式2，渲染性能高
+                const canvas = myChart.getRenderedCanvas();
+                p.drawCanvas(ctx => {
+                    ctx.drawImage(canvas, 0, 0);
+                });
             });
         }
 
