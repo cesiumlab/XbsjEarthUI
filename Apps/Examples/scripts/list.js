@@ -80,6 +80,18 @@ vueApp.examples = [
                 "url": "./earth-classificationPolygon-editing.html"
             },
             {
+                "title": "自定义贴地矩形-div",
+                "url": "./earth-customGroundRectangle-div.html"
+            },
+            {
+                "title": "自定义贴地矩形-动态echarts",
+                "url": "./earth-customGroundRectangle-dynamicEcharts.html"
+            },
+            {
+                "title": "自定义贴地矩形-echarts",
+                "url": "./earth-customGroundRectangle-echarts.html"
+            },
+            {
                 "title": "自定义贴地矩形-image",
                 "url": "./earth-customGroundRectangle-image.html"
             },
@@ -88,12 +100,24 @@ vueApp.examples = [
                 "url": "./earth-customGroundRectangle-text.html"
             },
             {
+                "title": "自定义图元-双面电子标牌",
+                "url": "./earth-customPrimitive-billboard.html"
+            },
+            {
                 "title": "自定义图元-毛笔字",
                 "url": "./earth-customPrimitive-character.html"
             },
             {
                 "title": "自定义图元-圆",
                 "url": "./earth-customPrimitive-circle.html"
+            },
+            {
+                "title": "自定义图元-div",
+                "url": "./earth-customPrimitive-div.html"
+            },
+            {
+                "title": "自定义图元-echarts",
+                "url": "./earth-customPrimitive-echarts.html"
             },
             {
                 "title": "自定义图元-image",
