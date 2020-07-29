@@ -78,8 +78,6 @@
 
             // 方式2，性能提升
             p.imageUrl = '';
-            const canvas = document.createElement('canvas');
-            // const canvas2 = await XE.HTML.div2Canvas(htmlText, { canvas, width: 512, height: 512 });
             const canvas2 = await XE.HTML.div2Canvas(htmlText, { width: 256, height: 512 });
             p.drawCanvas(ctx => {
                 ctx.clearRect(0, 0, 256, 512);
@@ -168,7 +166,7 @@
 
             // p.flyTo();
             // 环绕飞行
-            earth.camera.flyAround([2.174033927183021, 0.10999357244211576, 0], 650, [0, -0.6, 0]);
+            earth.camera.flyAround([2.174033927183021, 0.10999357244211576, 0], 1650, [0, -0.6, 0]);
 
             window.p = p; // 方便调试
         }
