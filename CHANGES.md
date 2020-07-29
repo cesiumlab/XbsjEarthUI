@@ -3,6 +3,8 @@ Change Log
 ##### Additions :tada:
 * 增加贴地图元功能
 * 修复timeLine的速率的bug
+* 增加贴地图元上绘制echart图标的示例
+* 增加贴地土塬上绘制div元素的示例
 
 ### 1.4.14 - 2020-7-13
 ##### Fixes :wrench:
