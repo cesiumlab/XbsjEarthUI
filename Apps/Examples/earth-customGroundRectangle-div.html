@@ -10,7 +10,6 @@
     <title>自定义贴地矩形-div</title>
     <!-- 0 引入js文件 -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
-    <script src="./scripts/echarts/echarts.js"></script>
     <style>
         html,
         body {
@@ -101,8 +100,17 @@
             `;
 
             // 方式1，但是性能消耗较大
-            const canvas = await XE.HTML.div2Canvas(htmlText)
-            p.imageUrl = canvas.toDataURL();
+            // const canvas = await XE.HTML.div2Canvas(htmlText);
+            // p.imageUrl = canvas.toDataURL();
+
+            // 方式2，性能提升
+            p.imageUrl = '';
+            const canvas = document.createElement('canvas');
+            // const canvas2 = await XE.HTML.div2Canvas(htmlText, { canvas, width: 512, height: 512 });
+            const canvas2 = await XE.HTML.div2Canvas(htmlText);
+            p.drawCanvas(ctx => {
+                ctx.drawImage(canvas2, 0, 0);
+            });
 
             return p;
         }
