@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="xbsj-labels" content="Earth示例">
     </meta>
-    <title>自定义贴地矩形-echarts</title>
+    <title>自定义贴地矩形-动态echarts</title>
     <!-- 0 引入js文件 -->
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <script src="./scripts/echarts/echarts.js"></script>
@@ -156,9 +156,84 @@
                     }
                 ]
             };
+            // myChart.setOption(option);
+
+            function randomData() {
+                now = new Date(+now + oneDay);
+                value = value + Math.random() * 21 - 10;
+                return {
+                    name: now.toString(),
+                    value: [
+                        [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
+                        Math.round(value)
+                    ]
+                };
+            }
+
+            var data = [];
+            var now = +new Date(1997, 9, 3);
+            var oneDay = 24 * 3600 * 1000;
+            var value = Math.random() * 1000;
+            for (var i = 0; i < 1000; i++) {
+                data.push(randomData());
+            }
+
+            var option = {
+                backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                title: {
+                    text: '动态数据 + 时间坐标轴'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: function (params) {
+                        params = params[0];
+                        var date = new Date(params.name);
+                        return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+                    },
+                    axisPointer: {
+                        animation: false
+                    }
+                },
+                xAxis: {
+                    type: 'time',
+                    splitLine: {
+                        show: false
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    boundaryGap: [0, '100%'],
+                    splitLine: {
+                        show: false
+                    }
+                },
+                series: [{
+                    name: '模拟数据',
+                    type: 'line',
+                    showSymbol: false,
+                    hoverAnimation: false,
+                    data: data
+                }]
+            };
+
             myChart.setOption(option);
 
-            myChart.on('finished', function () {
+            setInterval(function () {
+
+                for (var i = 0; i < 5; i++) {
+                    data.shift();
+                    data.push(randomData());
+                }
+
+                myChart.setOption({
+                    series: [{
+                        data: data
+                    }]
+                });
+            }, 1000);
+
+
+            myChart.on('rendered', function () {
                 p.imageUrl = myChart.getDataURL();
             });
 
