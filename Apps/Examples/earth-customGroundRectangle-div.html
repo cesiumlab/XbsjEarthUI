@@ -18,14 +18,6 @@
             margin: 0px;
             padding: 0px;
         }
-
-        #canvas-container {
-            width: 600px;
-            height: 600px;
-            position: absolute;
-            right: 0px;
-            top: 0px;
-        }
     </style>
 </head>
 
@@ -87,15 +79,53 @@
             p.height = 3000;
             p.canvasWidth = 512;
             p.canvasHeight = 512;
-            // p.color = [0.5, 0.8, 1, 2];
 
-            var container = document.createElement('div');
-            container.style.width = '512px';
-            container.style.height = '512px';
+            // var htmlText = `
+            //     <div style="width: 512px; height: 512px; background: green;">
+            //         <p>Test DivImage!</p>
+            //     </div>
+            // `;
 
             var htmlText = `
-                <div style="width: 512px; height: 512px; background: green;">
-                    <p>Test DivImage!</p>
+                <style>
+                    .box span {
+                        display: block;
+                        margin-top: 10px;
+                    }
+
+                    .defultbtn {
+                        display: inline-block;
+                        text-align: center;
+                        min-width: 60px;
+                        height: 38px;
+                        padding: 0 10px;
+                        line-height: 38px;
+                        border-radius: 15px;
+                        border: 1px solid #C9C9C9;
+                        background-color: #FFF;
+                        color: #555;
+                        cursor: pointer;
+                    }
+
+                    .defultbtn:hover {
+                        background-color: #b3daf8;
+                    }
+
+                    .btnon {
+                        background-color: #1E9FFF;
+                        color: #fff;
+                        border: 1px solid #1E9FFF;
+                    }
+                </style>
+                <div class="box" style="color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 5px; min-width:200px; font-size:24px; font-family: 宋体;">
+                    <div class="defultbtn" >平移</div>
+                    <div class="defultbtn" style="margin-left:20px;">旋转</div><br/>
+                    <span>经度：136.39°</span> 
+                    <span>纬度：39.9°</span> 
+                    <span>高度：120m</span> 
+                    <span>偏航角：120°</span> 
+                    <span>俯仰角：90°</span> 
+                    <span>翻滚角：0°</span> 
                 </div>
             `;
 
