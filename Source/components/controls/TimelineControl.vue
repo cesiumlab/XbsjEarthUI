@@ -417,12 +417,17 @@ export default {
     changeMultiplier(val) {
       let value = Math.abs(val);
 
+      this.unchangeMultiplier = true;
       this.multiplier = (
-        (value % 1.0 == 0 ? 0.1 : value % 1.0) * Math.pow(10, Math.floor(value))
+        //(value % 1.0 == 0 ? 0.1 : value % 1.0) * Math.pow(10, Math.floor(value))
+        (value % 1.0 == 0 ? 0.1 : value % 1.0 + 0.11) * Math.pow(10, Math.floor(value))
       ).toFixed(2);
       if (val < 0) {
         this.multiplier = -this.multiplier;
       }
+      setTimeout( ()=>{
+        this.unchangeMultiplier = false;
+      },20)
     },
     setStart() {
       //将当前时间设置为timeline的起始时间
@@ -1202,6 +1207,7 @@ export default {
       if (val == oldVal) return;
       //根据multiplier反算出multiplierScale
       //首先得到multiplier有多少个0
+      if( this.unchangeMultiplier) return;
       let value = Math.abs(val);
       let length = value.toFixed(2).length;
       let va = value;
@@ -1214,7 +1220,7 @@ export default {
       }
       length = length - i;
 
-      let v = (value / Math.pow(10, length)).toFixed(2);
+      let v = ((value - 0.11) / Math.pow(10, length)).toFixed(2);
       this.multiplierScale = Number(length) + Number(v);
       if (val < 0) this.multiplierScale = -this.multiplierScale;
     },

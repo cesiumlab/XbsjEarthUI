@@ -2,6 +2,7 @@ Change Log
 ==========
 ##### Additions :tada:
 * 增加贴地图元功能
+* 修复timeLine的速率的bug
 
 ### 1.4.14 - 2020-7-13
 ##### Fixes :wrench:
