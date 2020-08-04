@@ -1,5 +1,5 @@
 const zh = {
-    title: '多边形贴图',
+    title: '立面贴图',
     name: '名称',
     show: '显示',
     creating: '创建',

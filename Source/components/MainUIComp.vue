@@ -10,6 +10,7 @@
     </div>
     <StatusBarControl ref="statusBarControl"></StatusBarControl>
     <!-- <NavigatorControl ref="navigator"></NavigatorControl> -->
+    <TimelineBarControl ref="timelineBarControl"></TimelineBarControl>
 
     <component
       v-for="(tool,index) in tools"
@@ -68,6 +69,7 @@
 
 <script>
 import MainBarControl from "./controls/MainBarControl";
+import TimelineBarControl from "./controls/TimelineControl";
 import StatusBarControl from "./controls/StatusBarControl.vue";
 import NavigatorControl from "./controls/NavigatorControl.vue";
 import ViewportLine from "./controls/ViewportLine";
@@ -128,6 +130,7 @@ import GeoTriFlag from "./viztools/GeoTriFlag";
 import GeoSector from "./viztools/GeoSector";
 import ScanlineTool from "./viztools/ScanlineTool";
 import CustomPrimitiveTool from "./viztools/CustomPrimitiveTool";
+import CustomGroundRectangleTool from "./viztools/CustomGroundRectangleTool";
 import RoadTool from "./viztools/RoadTool";
 import WallTool from "./viztools/WallTool";
 import SurfaceTool from "./viztools/SurfaceTool";
@@ -166,6 +169,7 @@ export default {
     StatusBarControl,
     NavigatorControl,
     MainBarControl,
+    TimelineBarControl,
     SceneTreeTool,
     ContextMenu,
     ViewportLine,
@@ -215,6 +219,7 @@ export default {
     CutSurfaceTool,
     ScanlineTool,
     CustomPrimitiveTool,
+    CustomGroundRectangleTool,
     TubeTool,
     CamerVideoTool,
     ViewshedTool,
@@ -249,9 +254,9 @@ export default {
     OnlineSymbol,
     TilesTest,
     GeoPolygonImage,
-    CesiumDataSource
+    CesiumDataSource,
   },
-  data: function() {
+  data: function () {
     return {
       modal: false,
       confirmInfo: "",
@@ -272,6 +277,7 @@ export default {
         Forest: "ForestTool",
         Scanline: "ScanlineTool",
         CustomPrimitive: "CustomPrimitiveTool",
+        CustomGroundRectangle: "CustomGroundRectangleTool",
         Road: "RoadTool",
         Wall: "WallTool",
         Surface: "SurfaceTool",
@@ -309,96 +315,96 @@ export default {
         CustomPrimitiveExt_Image: "GeoPolygonImage",
         XbsjGeoJSON: "CesiumDataSource",
         XbsjKML: "CesiumDataSource",
-        XbsjCzml: "CesiumDataSource"
+        XbsjCzml: "CesiumDataSource",
       },
       tools: [
         {
           component: "SceneTreeTool",
-          ref: "sceneTreeTool"
+          ref: "sceneTreeTool",
         },
         {
           component: "ImageryLab",
-          ref: "imageryLab"
+          ref: "imageryLab",
         },
         {
           component: "ImageryCloud",
-          ref: "ImageryCloud"
+          ref: "ImageryCloud",
         },
         {
           component: "ImageryOnline",
-          ref: "imageryOnline"
+          ref: "imageryOnline",
         },
         {
           component: "ImageryWMTS",
-          ref: "imageryWMTS"
+          ref: "imageryWMTS",
         },
         {
           component: "ModelLab",
-          ref: "modelLab"
+          ref: "modelLab",
         },
         {
           component: "ModelCloud",
-          ref: "modelCloud"
+          ref: "modelCloud",
         },
         {
           component: "ModelOnline",
-          ref: "modelOnline"
+          ref: "modelOnline",
         },
         {
           component: "TerrainLab",
-          ref: "terrainLab"
+          ref: "terrainLab",
         },
         {
           component: "TerrainCloud",
-          ref: "terrainCloud"
+          ref: "terrainCloud",
         },
         {
           component: "TerrainOnline",
-          ref: "terrainOnline"
+          ref: "terrainOnline",
         },
         {
           component: "CameraViewManager",
-          ref: "cameraViewManager"
+          ref: "cameraViewManager",
         },
         {
           component: "CutFillComputing",
-          ref: "cutFillComputing"
+          ref: "cutFillComputing",
         },
         {
           component: "FeatureProperty",
-          ref: "featureProperty"
+          ref: "featureProperty",
         },
         {
           component: "ModelTreeTool",
-          ref: "modelTreeTool"
+          ref: "modelTreeTool",
         },
         {
           component: "EntityMoreTool",
-          ref: "entitymoreTool"
+          ref: "entitymoreTool",
         },
         {
           component: "CustomSymbol",
-          ref: "customSymbol"
+          ref: "customSymbol",
         },
         {
           component: "LabSymbol",
-          ref: "labSymbol"
+          ref: "labSymbol",
         },
         {
           component: "OnlineSymbol",
-          ref: "onlineSymbol"
+          ref: "onlineSymbol",
         },
         {
           component: "TilesTest",
-          ref: "tilesTest"
-        }
+          ref: "tilesTest",
+        },
       ],
       infos: [],
       jsontext: "",
       loadGeoJSONShow: false,
       types: null,
       categoryIndex: 0,
-      selectedType: null
+      selectedType: null,
     };
   },
   mounted() {
@@ -418,7 +424,7 @@ export default {
       var files = [];
       [].forEach.call(
         e.dataTransfer.files,
-        function(file) {
+        function (file) {
           files.push(file);
         },
         false
@@ -428,7 +434,7 @@ export default {
         var reader = new FileReader();
         reader.readAsText(f);
         //读取文件的内容
-        reader.onload = function() {
+        reader.onload = function () {
           that.jsontext = JSON.parse(this.result);
           that.analysisJson();
         };
@@ -442,10 +448,10 @@ export default {
       {
         name: "线",
         typeName: "Plots.GeoPolyline",
-        getObj: function(earth) {
+        getObj: function (earth) {
           return new XE.Obj.Plots.GeoPolyline(earth);
-        }
-      }
+        },
+      },
       // {
       //   name: "管道",
       //   typeName: "CustomPrimitiveExt.Tube",
@@ -462,16 +468,16 @@ export default {
         {
           name: "面",
           typeName: "Plots.GeoPolygon",
-          getObj: function(earth) {
+          getObj: function (earth) {
             return new XE.Obj.Plots.GeoPolygon(earth);
-          }
-        }
+          },
+        },
       ]);
   },
   computed: {
     type() {
       return this.viewporttype;
-    }
+    },
   },
   methods: {
     confirmLoadGeoJson() {
@@ -573,12 +579,15 @@ export default {
           "是否替换当前场景？",
           () => {
             self.$root.$earth.xbsjFromJSON(this.jsontext);
-          },
-          () => {
             self.$root.$earth.sceneTree.root.children.push(
               this.jsontext.sceneTree.root
             );
           }
+          // () => {
+          //   self.$root.$earth.sceneTree.root.children.push(
+          //     this.jsontext.sceneTree.root
+          //   );
+          // }
         );
       } else if (this.jsontext.czmObject) {
         this.$root.$earth.sceneTree.root.children.push(this.jsontext);
@@ -631,7 +640,7 @@ export default {
       if (!tool.guid) {
         tool.guid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
           /[xy]/g,
-          function(c) {
+          function (c) {
             var r = (Math.random() * 16) | 0;
             var v = c === "x" ? r : (r & 0x3) | 0x8;
             return v.toString(16);
@@ -649,7 +658,7 @@ export default {
     modalCancel() {
       this.modal = false;
       if (typeof this._cancel == "function") {
-        this._ok();
+        this._cancel();
       }
     },
     modalConfirm() {
@@ -717,7 +726,7 @@ export default {
         }
       }
       //判定是否有属性窗口
-      const index = this.tools.findIndex(e => {
+      const index = this.tools.findIndex((e) => {
         //类型不一致，直接返回
         if (e.component != component) return false;
         //绑定的对象一致的
@@ -742,7 +751,7 @@ export default {
           return czmObject;
         },
         //mrq添加
-        nextczm: options && options.jsonSchema
+        nextczm: options && options.jsonSchema,
       });
     },
     _topWindow(index) {
@@ -768,12 +777,12 @@ export default {
       var _info = {
         info,
         type,
-        key: Cesium.createGuid()
+        key: Cesium.createGuid(),
       };
       this.infos.push(_info);
       //开始计时，3s之后移除这个info
       setTimeout(() => {
-        const index = this.infos.findIndex(i => {
+        const index = this.infos.findIndex((i) => {
           return i.key === _info.key;
         });
         if (index >= 0) {
@@ -807,7 +816,7 @@ export default {
         for (var i = 0; i < dragczmObj._polygon.positions.length; i += 2) {
           polygonPositions.push(dragczmObj._polygon.positions.slice(i, i + 2));
         }
-        polygonPositions2 = polygonPositions.map(e => {
+        polygonPositions2 = polygonPositions.map((e) => {
           e[2] = dragczmObj._polygon.height;
           return e;
         });
@@ -826,7 +835,7 @@ export default {
         for (var i = 0; i < dragczmObj._polyline.positions.length; i++) {
           polylinePositions.push(dragczmObj._polyline.positions[i].slice(0, 2));
         }
-        polylinePositions.forEach(element => {
+        polylinePositions.forEach((element) => {
           polylinePositions2.push(element[0]);
           polylinePositions2.push(element[1]);
         });
@@ -838,8 +847,8 @@ export default {
       } else {
         czmObj.positions = [...dragczmObj.positions];
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

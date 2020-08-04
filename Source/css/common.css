@@ -798,3 +798,29 @@
 .xbsj-input-number-handler-wrap, .xbsj-input-number-handler {
   background: none;
 }
+
+.timelineBox .xbsj-slider-wrap {
+  height: 18px;
+  margin-top: 6px;
+}
+.timelineBox .xbsj-slider-bar {
+  height: 18px;
+  background-color: #333333;
+}
+.timelineBox .xbsj-slider-bar {
+  height: 18px;
+  background: transparent;
+}
+.timelineBox .xbsj-slider-button {
+  width: 6px;
+  height: 18px;
+  background: url("../images/sliderbtn.png") center no-repeat;
+  background-size: contain;
+}
+.timelineBox .xbsj-slider-button-wrap {
+  width: 6px;
+  top: 0px;
+}
+.timelineBox .xbsj-slider-button {
+  border-radius: 0;
+}

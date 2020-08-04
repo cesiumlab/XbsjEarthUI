@@ -1,8 +1,8 @@
 <template>
   <Window
-    :width="480"
+    :width="486"
     :minWidth="480"
-    :height="354"
+    :height="360"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -92,7 +92,7 @@ import languagejs from "./index_locale";
 
 export default {
   props: {
-    getBind: Function
+    getBind: Function,
   },
   data() {
     return {
@@ -106,15 +106,15 @@ export default {
         editing: false,
         ground: false,
         outlineWidth: 1,
-        outlineShow: false
+        outlineShow: false,
       },
       bgbaseColorUI: {
         rgba: {
           r: 0,
           g: 255,
           b: 0,
-          a: 0.1
-        }
+          a: 0.1,
+        },
       },
       bgbaseColor: [0, 1, 0, 0.1],
       borderbaseColorUI: {
@@ -122,12 +122,12 @@ export default {
           r: 0,
           g: 255,
           b: 0,
-          a: 1
-        }
+          a: 1,
+        },
       },
       borderbaseColor: [0, 1, 0, 1],
       pinstyletype: true,
-      langs: languagejs
+      langs: languagejs,
     };
   },
   created() {},
@@ -147,7 +147,7 @@ export default {
         outlineWidth: "model.outlineWidth",
         ground: "model.ground",
         outlineWidth: "model.outlineWidth",
-        outlineShow: "model.outlineShow"
+        outlineShow: "model.outlineShow",
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -174,7 +174,7 @@ export default {
     },
     guid() {
       return this.getBind().guid;
-    }
+    },
   },
   watch: {
     bgbaseColorUI(color) {
@@ -190,8 +190,8 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
     },
     borderbaseColorUI(color) {
@@ -208,10 +208,10 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
-    }
+    },
   },
   methods: {
     close() {
@@ -246,14 +246,14 @@ export default {
 
     flyto(index) {
       this._czmObj.polygons[index].flyTo();
-    }
+    },
   },
   beforeDestroy() {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers.forEach(e => e());
+    this._disposers.forEach((e) => e());
     this._disposers.length = 0;
-  }
+  },
 };
 </script>
 

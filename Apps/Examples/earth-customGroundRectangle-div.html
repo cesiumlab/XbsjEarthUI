@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>自定义贴地矩形-div</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function startup() {
+            earth = new XE.Earth('earthContainer');
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "谷歌影像",
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}",
+                                    "srcCoordType": "GCJ02",
+                                    "dstCoordType": "WGS84",
+                                    "maximumLevel": 21,
+                                },
+                            }
+                        },
+                    }, {
+                        "czmObject": {
+                            "xbsjType": "Terrain",
+                            "name": "中国14级（测试）",
+                            "xbsjTerrainProvider": {
+                                "type": "XbsjCesiumTerrainProvider",
+                                "XbsjCesiumTerrainProvider": {
+                                    "url": "//lab.earthsdk.com/terrain/577fd5b0ac1f11e99dbd8fd044883638",
+                                    "requestVertexNormals": true,
+                                    "requestWaterMask": true
+                                }
+                            }
+                        }
+                    }
+                ]
+            };
+
+            createGroundCircle(earth).then(p => {
+                p.flyTo();
+                window.p = p; // 方便调试
+            });
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);
+
+        async function createGroundCircle(earth) {
+            var p = new XE.Obj.CustomGroundRectangle(earth)
+            p.position = [2.02729390339372, 0.6980810742548738, 755.036813823199];
+            p.width = 3000;
+            p.height = 3000;
+            p.canvasWidth = 512;
+            p.canvasHeight = 512;
+
+            // var htmlText = `
+            //     <div style="width: 512px; height: 512px; background: green;">
+            //         <p>Test DivImage!</p>
+            //     </div>
+            // `;
+
+            var htmlText = `
+                <style>
+                    .box span {
+                        display: block;
+                        margin-top: 10px;
+                    }
+
+                    .defultbtn {
+                        display: inline-block;
+                        text-align: center;
+                        min-width: 60px;
+                        height: 38px;
+                        padding: 0 10px;
+                        line-height: 38px;
+                        border-radius: 15px;
+                        border: 1px solid #C9C9C9;
+                        background-color: #FFF;
+                        color: #555;
+                        cursor: pointer;
+                    }
+
+                    .defultbtn:hover {
+                        background-color: #b3daf8;
+                    }
+
+                    .btnon {
+                        background-color: #1E9FFF;
+                        color: #fff;
+                        border: 1px solid #1E9FFF;
+                    }
+                </style>
+                <div class="box" style="color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 5px; min-width:200px; font-size:24px; font-family: 宋体;">
+                    <div class="defultbtn" >平移</div>
+                    <div class="defultbtn" style="margin-left:20px;">旋转</div><br/>
+                    <span>经度：136.39°</span> 
+                    <span>纬度：39.9°</span> 
+                    <span>高度：120m</span> 
+                    <span>偏航角：120°</span> 
+                    <span>俯仰角：90°</span> 
+                    <span>翻滚角：0°</span> 
+                </div>
+            `;
+
+            // 方式1，但是性能消耗较大
+            // const canvas = await XE.HTML.div2Canvas(htmlText);
+            // p.imageUrl = canvas.toDataURL();
+
+            // 方式2，性能提升
+            p.imageUrl = '';
+            const canvas = document.createElement('canvas');
+            // const canvas2 = await XE.HTML.div2Canvas(htmlText, { canvas, width: 512, height: 512 });
+            const canvas2 = await XE.HTML.div2Canvas(htmlText);
+            p.drawCanvas(ctx => {
+                ctx.drawImage(canvas2, 0, 0);
+            });
+
+            return p;
+        }
+    </script>
+</body>
+
+</html>

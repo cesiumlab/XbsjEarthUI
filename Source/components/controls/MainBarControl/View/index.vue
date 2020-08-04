@@ -32,12 +32,18 @@
           ></div>
           <span class="xbsj-item-name">{{lang.statecontrol}}</span>
         </div>
+        <div class="xbsj-item-btnbox" @click="timelinecontrolShow=!timelinecontrolShow">
+          <div
+            class="xbsj-item-btn timebutton"
+            :class="timelinecontrolShow ? 'timebuttonActive' : ''"
+          ></div>
+          <span class="xbsj-item-name">{{lang.timelinecontrol}}</span>
+        </div>
 
         <div class="xbsj-item-btnbox" @click="modelTreeShow=!modelTreeShow">
           <div class="xbsj-item-btn scenebutton" :class="{highlight :modelTreeShow}"></div>
           <span class="xbsj-item-name">{{lang.modelTree}}</span>
         </div>
-
         <div class="xbsj-item-btnbox" @click="tilesTestShow=!tilesTestShow">
           <div class="xbsj-item-btn testbutton" :class="{highlight: tilesTestShow}"></div>
           <span class="xbsj-item-name">{{lang.autoTest}}</span>
@@ -155,6 +161,8 @@ export default {
       navcontrolShow: true,
       scalecontrolShow: true,
       statecontrolShow: true,
+
+      timelinecontrolShow: true,
       modelTreeShow: false,
       show: true,
       selectlist: false,
@@ -423,6 +431,11 @@ export default {
   cursor: pointer;
 }
 .timebutton:hover {
+  background: url(../../../../images/time_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.timebuttonActive {
   background: url(../../../../images/time_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;

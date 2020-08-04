@@ -2,7 +2,7 @@
   <Window
     :width="490"
     :minWidth="490"
-    :height="334"
+    :height="342"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -122,7 +122,7 @@ import languagejs from "./index_locale";
 
 export default {
   props: {
-    getBind: Function
+    getBind: Function,
   },
   data() {
     return {
@@ -141,10 +141,10 @@ export default {
         imageHeight: 3.0,
         innerCreating: false,
         innerEditing: false,
-        showHelper: true
+        showHelper: true,
       },
       pinstyletype: true,
-      langs: languagejs
+      langs: languagejs,
     };
   },
   created() {},
@@ -169,7 +169,7 @@ export default {
         imageHeight: "model.imageHeight",
         innerCreating: "model.innerCreating",
         innerEditing: "model.innerEditing",
-        showHelper: "model.showHelper"
+        showHelper: "model.showHelper",
         // roofImageUrl: "model.roofImageUrl",
         // roofImageHeight: "model.roofImageHeight",
         // enabled: "model.enabled"
@@ -190,7 +190,7 @@ export default {
     },
     guid() {
       return this.getBind().guid;
-    }
+    },
   },
   methods: {
     close() {
@@ -249,14 +249,14 @@ export default {
         this._czmObj.creating = false;
         this.$root.$earthUI.getCzmObjectPositionFromDrag(czmObj, this._czmObj);
       }
-    }
+    },
   },
   beforeDestroy() {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers.forEach(e => e());
+    this._disposers.forEach((e) => e());
     this._disposers.length = 0;
-  }
+  },
 };
 </script>
 

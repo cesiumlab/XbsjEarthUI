@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="xbsj-labels" content="Earth示例">
+  </meta>
+  <title>3dtiles-自定义shader</title>
+  <!-- 0 引入js文件 -->
+  <script src="../../XbsjEarth/XbsjEarth.js"></script>
+  <script src="./scripts/vue.min.js"></script>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+    }
+
+    .box span {
+      display: block;
+      margin-top: 10px;
+    }
+
+    .defultbtn {
+      display: inline-block;
+      text-align: center;
+      min-width: 60px;
+      height: 38px;
+      padding: 0 10px;
+      line-height: 38px;
+      border-radius: 100px;
+      border: 1px solid #C9C9C9;
+      background-color: #FFF;
+      color: #555;
+      cursor: pointer;
+    }
+
+    .defultbtn:hover {
+      background-color: #b3daf8;
+    }
+
+    .btnon {
+      background-color: #1E9FFF;
+      color: #fff;
+      border: 1px solid #1E9FFF;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;">
+    <earth-comp></earth-comp>
+  </div>
+
+  <script>
+    // 1 创建Earth的vue组件
+    var EarthComp = {
+      template: `
+          <div style="width: 100%; height: 100%">
+              <div ref="earthContainer" style="width: 100%; height: 100%">
+              </div>
+              <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px; font-size:24px; font-family: 宋体;">
+                  <div class="defultbtn" @click="flyTo">定位</div>
+              </div>
+          </div>
+      `,
+      data() {
+        return {
+          _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+          _tileset: undefined
+        };
+      },
+      // 1.1 资源加载
+      mounted() {
+        // 1.2.1 创建地球
+        var earth = new XE.Earth(this.$refs.earthContainer);
+
+        // 1.2.2 添加默认地球影像
+        earth.sceneTree.root = {
+          "title": "当前场景",
+          "isSelected": true,
+          "children": [{
+            "czmObject": {
+              "xbsjType": "Imagery",
+              "enabled": true,
+              "name": "谷歌影像",
+              "show": true,
+              "xbsjImageryProvider": {
+                "XbsjImageryProvider": {
+                  "url": "//www.google.cn/maps/vt?lyrs=s&x={x}&y={y}&z={z}",
+                }
+              }
+            }
+          },
+          {
+            "czmObject": {
+              "xbsjType": "Tileset",
+              "name": "三维瓦片1x",
+              "url": "../assets/dayanta/tileset.json",
+              "xbsjClippingPlanes": {},
+              "xbsjUseOriginTransform": false, //是否启用原先的状态
+              "skipLevelOfDetail": false
+            },
+            "ref": 'tileset'
+          },
+          ]
+        };
+        var tileset = earth.sceneTree.$refs.tileset.czmObject;
+        earth.sceneTree.$refs.tileset.czmObject.flyTo();
+
+        const context = earth.czm.scene.context;
+        var t = new Cesium.Texture({ context, width: 80, height: 80, flipY: false });
+        
+        var imageData = new Uint8Array(80*80*4);
+        imageData.fill(255);
+        for (let j=0; j<80; ++j) {
+          for (let i=0; i<80; ++i) {
+            imageData[4*(j*80+i)+0] = 255 * i / 79;
+            imageData[4*(j*80+i)+1] = 255 * j / 79;
+            imageData[4*(j*80+i)+2] = 0;
+            imageData[4*(j*80+i)+3] = 255;
+          }
+        }
+        t.copyFrom({arrayBufferView: imageData, width: 80, height: 80});
+
+        tileset.xbsjCustomTexture = t;
+        tileset.xbsjCustomShader.vsHeader = 'varying vec2 v_cst_st; ';
+        tileset.xbsjCustomShader.vsBody = 'v_cst_st = a_position.xy * vec2(0.01, 0.01);';
+        tileset.xbsjCustomShader.fsHeader = 'varying vec2 v_cst_st; ';
+        // tileset.xbsjCustomShader.fsBody = 'gl_FragColor.rgba *= vec4(v_cst_st, 0.0, 1.0);';
+        tileset.xbsjCustomShader.fsBody = `
+          vec4 color = texture2D(u_xbsjCustomTexture, floor(v_cst_st * vec2(7.0, 7.0))/vec2(8.0, 8.0) + vec2(0.5/8.0, 0.5/8.0)); 
+          if (all(greaterThanEqual(v_cst_st, vec2(0.0, 0.0))) && all(lessThanEqual(v_cst_st, vec2(1.0, 1.0)))) {
+            gl_FragColor.rgba *= vec4(color.xyz, 1.0);
+          }
+        `;
+
+        this._earth = earth;
+        this._tileset = tileset;
+
+        // only for Debug
+        window.app = this;
+        window.tileset = this._tileset;
+        window.earth = earth;
+      },
+      methods: {
+        flyTo() {
+          this._earth.sceneTree.$refs.tileset.czmObject.flyTo();
+        }
+      },
+      // 1.2 资源销毁
+      beforeDestroy() {
+        // vue程序销毁时，需要清理相关资源
+        this._tileset = this._tileset && this._tileset.destroy();
+        this._earth = this._earth && this._earth.destroy();
+      },
+    }
+
+    // 2 创建vue程序
+    // XE.ready()用来加载Cesium.js等相关资源
+    XE.ready().then(() => {
+      var app = new Vue({
+        el: '#vueApp',
+        components: {
+          EarthComp,
+        },
+      });
+    });
+  </script>
+
+
+</body>
+
+</html>

@@ -4,7 +4,7 @@
     :title="lang.title"
     :width="490"
     :minWidth="450"
-    :height="396"
+    :height="400"
     :top="210"
     :left="590"
     @ok="ok"
@@ -51,7 +51,7 @@
 <script>
 export default {
   props: {
-    getBind: Function
+    getBind: Function,
   },
   data() {
     return {
@@ -65,7 +65,7 @@ export default {
           cameraparm: "相机参数",
           curcamera: "当前相机",
           position: "位置",
-          rotation: "朝向"
+          rotation: "朝向",
         },
         en: {
           title: "Camvera View",
@@ -76,8 +76,8 @@ export default {
           cameraparm: "Camera Param",
           curcamera: "Camera",
           position: "Position",
-          rotation: "Rotation"
-        }
+          rotation: "Rotation",
+        },
       },
       lang: undefined,
       editing: {
@@ -85,8 +85,8 @@ export default {
         thumbnail: "",
         duration: 0.5,
         position: [0, 0, 0],
-        rotation: [0, 0, 0]
-      }
+        rotation: [0, 0, 0],
+      },
     };
   },
   created() {
@@ -106,7 +106,7 @@ export default {
         duration: view.duration,
         thumbnail: view.thumbnail,
         position: [view.position[0], view.position[1], view.position[2]],
-        rotation: [view.rotation[0], view.rotation[1], view.rotation[2]]
+        rotation: [view.rotation[0], view.rotation[1], view.rotation[2]],
       };
     },
     ok() {
@@ -136,15 +136,15 @@ export default {
       (this.editing.position = [
         this.editingCamera.position[0],
         this.editingCamera.position[1],
-        this.editingCamera.position[2]
+        this.editingCamera.position[2],
       ]),
         (this.editing.rotation = [
           this.editingCamera.rotation[0],
           this.editingCamera.rotation[1],
-          this.editingCamera.rotation[2]
+          this.editingCamera.rotation[2],
         ]);
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

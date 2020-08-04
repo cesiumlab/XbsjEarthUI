@@ -1,6 +1,21 @@
 Change Log
 ==========
 
+### 1.4.18 - 2020-8-4
+##### Additions :tada:
+* 修复earth.destroy()报错的问题
+* 增加对flv格式的支持，如果flv视频资源没有后缀flv后缀名，路径中需要加入 -.flv
+* 增加div转canvas的方法
+* 增加贴地图元功能
+* 增加贴地图元上绘制echart图标的示例
+* 增加贴地土塬上绘制div元素的示例
+* 增加时间轴功能(wcx)
+
+##### Fixes :wrench:
+* 修复支持ogg等视频不能播放的问题
+* 修复js文件重复加载报错的问题(感谢vue-cesium大神zouyaoji)
+* 修复timeLine的速率的bug
+
 ### 1.4.14 - 2020-7-13
 ##### Fixes :wrench:
 * 修复上一个版本视频融合编辑无反应的问题

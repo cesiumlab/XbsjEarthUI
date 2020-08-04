@@ -2,7 +2,7 @@
   <Window
     :width="622"
     :minWidth="622"
-    :height="450"
+    :height="454"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -159,7 +159,7 @@ import languagejs from "./index_locale";
 
 export default {
   props: {
-    getBind: Function
+    getBind: Function,
   },
   data() {
     return {
@@ -193,14 +193,14 @@ export default {
         targetPicking: false,
         currentPosition: [0, 0, 0],
         currentRotation: [0, 0, 0],
-        length: 0
+        length: 0,
       },
       pinstyletype: true,
 
       langs: languagejs,
       dighole: false,
       connections: [],
-      connectedTileset: ""
+      connectedTileset: "",
     };
   },
   created() {},
@@ -238,7 +238,7 @@ export default {
         slices: "path.slices",
         targetPicking: "path.targetPicking",
         cameraAttached: "path.cameraAttached",
-        length: "path.length"
+        length: "path.length",
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -278,7 +278,7 @@ export default {
     },
     guid() {
       return this.getBind().guid;
-    }
+    },
   },
   watch: {
     bgbaseColorUI(color) {
@@ -295,8 +295,8 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
     },
     borderbaseColorUI(color) {
@@ -313,10 +313,10 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
-    }
+    },
   },
   methods: {
     directionAlongThePath() {
@@ -387,14 +387,14 @@ export default {
         this._czmObj.creating = false;
         this.$root.$earthUI.getCzmObjectPositionFromDrag(czmObj, this._czmObj);
       }
-    }
+    },
   },
   beforeDestroy() {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers.forEach(e => e());
+    this._disposers.forEach((e) => e());
     this._disposers.length = 0;
-  }
+  },
 };
 </script>
 

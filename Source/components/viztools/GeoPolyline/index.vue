@@ -1,6 +1,6 @@
 <template>
   <Window
-    :width="480"
+    :width="482"
     :minWidth="480"
     :height="332"
     :floatright="true"
@@ -82,7 +82,7 @@ import languagejs from "./index_locale";
 
 export default {
   props: {
-    getBind: Function
+    getBind: Function,
   },
   data() {
     return {
@@ -96,19 +96,19 @@ export default {
         creating: false,
         editing: false,
         ground: false,
-        width: 1
+        width: 1,
       },
       bgbaseColorUI: {
         rgba: {
           r: 0,
           g: 0,
           b: 255,
-          a: 1
-        }
+          a: 1,
+        },
       },
       bgbaseColor: [0, 0, 0.5, 1],
       pinstyletype: true,
-      langs: languagejs
+      langs: languagejs,
     };
   },
   created() {},
@@ -126,7 +126,7 @@ export default {
         creating: "model.creating",
         editing: "model.editing",
         width: "model.width",
-        ground: "model.ground"
+        ground: "model.ground",
         // color: "bgbaseColor"
       };
 
@@ -148,7 +148,7 @@ export default {
     },
     guid() {
       return this.getBind().guid;
-    }
+    },
   },
   watch: {
     bgbaseColorUI(color) {
@@ -164,10 +164,10 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
-    }
+    },
   },
   methods: {
     close() {
@@ -225,14 +225,14 @@ export default {
         this._czmObj.creating = false;
         this.$root.$earthUI.getCzmObjectPositionFromDrag(czmObj, this._czmObj);
       }
-    }
+    },
   },
   beforeDestroy() {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers.forEach(e => e());
+    this._disposers.forEach((e) => e());
     this._disposers.length = 0;
-  }
+  },
 };
 </script>
 

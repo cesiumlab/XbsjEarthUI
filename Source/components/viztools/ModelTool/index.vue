@@ -2,7 +2,7 @@
   <Window
     :width="546"
     :minWidth="480"
-    :height="356"
+    :height="358"
     :floatright="true"
     :title="lang.title"
     @cancel="cancel"
@@ -165,7 +165,7 @@ import languagejs from "./index_locale";
 
 export default {
   props: {
-    getBind: Function
+    getBind: Function,
   },
   data() {
     return {
@@ -187,7 +187,7 @@ export default {
         minimumPixelSize: 0,
         attachedPathGuid: "",
         luminanceAtZenith: 0.2,
-        distanceDisplayCondition: [0, 0]
+        distanceDisplayCondition: [0, 0],
       },
       pinstyletype: true,
       langs: languagejs,
@@ -196,10 +196,10 @@ export default {
           r: 255,
           g: 255,
           b: 255,
-          a: 1
-        }
+          a: 1,
+        },
       },
-      bgbaseColor: [1, 1, 1, 1]
+      bgbaseColor: [1, 1, 1, 1],
     };
   },
   created() {},
@@ -225,7 +225,7 @@ export default {
         distanceDisplayCondition: "model.distanceDisplayCondition",
         minimumPixelSize: "model.minimumPixelSize",
         attachedPathGuid: "model.attachedPathGuid",
-        luminanceAtZenith: "model.luminanceAtZenith"
+        luminanceAtZenith: "model.luminanceAtZenith",
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -244,7 +244,7 @@ export default {
     },
     guid() {
       return this.getBind().guid;
-    }
+    },
   },
   watch: {
     bgbaseColorUI(color) {
@@ -261,10 +261,10 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
-    }
+    },
   },
   methods: {
     optionssure(c) {
@@ -275,7 +275,7 @@ export default {
       this.pathGuidarr = [];
       let guidobj = {};
       this.pathGuidarr.push({ name: "空", guid: "" });
-      this.$root.$earth.pathCollection.forEach(e => {
+      this.$root.$earth.pathCollection.forEach((e) => {
         guidobj.name = e.name;
         guidobj.guid = e.guid;
         this.pathGuidarr.push(guidobj);
@@ -323,14 +323,14 @@ export default {
     },
     reset() {
       this.model.xbsjRotation = [0, 0, 0];
-    }
+    },
   },
   beforeDestroy() {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers.forEach(e => e());
+    this._disposers.forEach((e) => e());
     this._disposers.length = 0;
-  }
+  },
 };
 </script>
 

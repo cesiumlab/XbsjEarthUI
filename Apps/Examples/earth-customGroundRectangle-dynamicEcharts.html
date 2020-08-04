@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>自定义贴地矩形-动态echarts</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/echarts/echarts.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #canvas-container {
+            width: 600px;
+            height: 600px;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function startup() {
+            earth = new XE.Earth('earthContainer');
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "谷歌影像",
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}",
+                                    "srcCoordType": "GCJ02",
+                                    "dstCoordType": "WGS84",
+                                    "maximumLevel": 21,
+                                },
+                            }
+                        },
+                    }, {
+                        "czmObject": {
+                            "xbsjType": "Terrain",
+                            "name": "中国14级（测试）",
+                            "xbsjTerrainProvider": {
+                                "type": "XbsjCesiumTerrainProvider",
+                                "XbsjCesiumTerrainProvider": {
+                                    "url": "//lab.earthsdk.com/terrain/577fd5b0ac1f11e99dbd8fd044883638",
+                                    "requestVertexNormals": true,
+                                    "requestWaterMask": true
+                                }
+                            }
+                        }
+                    }
+                ]
+            };
+
+            var p = createGroundCircle(earth);
+
+            p.flyTo();
+
+            window.p = p; // 方便调试
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);
+
+        function createGroundCircle(earth) {
+            var p = new XE.Obj.CustomGroundRectangle(earth)
+            p.position = [2.02729390339372, 0.6980810742548738, 755.036813823199];
+            p.width = 3000;
+            p.height = 3000;
+            p.canvasWidth = 512;
+            p.canvasHeight = 512;
+            // p.color = [0.5, 0.8, 1, 2];
+
+            var container = document.createElement('div');
+            container.style.width = '512px';
+            container.style.height = '512px';
+
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(container);
+            option = {
+                backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false
+                },
+                yAxis: {
+                    type: 'value',
+                    boundaryGap: [0, '30%']
+                },
+                visualMap: {
+                    type: 'piecewise',
+                    show: false,
+                    dimension: 0,
+                    seriesIndex: 0,
+                    pieces: [{
+                        gt: 1,
+                        lt: 3,
+                        color: 'rgba(0, 180, 0, 0.5)'
+                    }, {
+                        gt: 5,
+                        lt: 7,
+                        color: 'rgba(0, 180, 0, 0.5)'
+                    }]
+                },
+                series: [
+                    {
+                        type: 'line',
+                        smooth: 0.6,
+                        symbol: 'none',
+                        lineStyle: {
+                            color: 'green',
+                            width: 5
+                        },
+                        markLine: {
+                            symbol: ['none', 'none'],
+                            label: { show: false },
+                            data: [
+                                { xAxis: 1 },
+                                { xAxis: 3 },
+                                { xAxis: 5 },
+                                { xAxis: 7 }
+                            ]
+                        },
+                        areaStyle: {},
+                        data: [
+                            ['2019-10-10', 200],
+                            ['2019-10-11', 400],
+                            ['2019-10-12', 650],
+                            ['2019-10-13', 500],
+                            ['2019-10-14', 250],
+                            ['2019-10-15', 300],
+                            ['2019-10-16', 450],
+                            ['2019-10-17', 300],
+                            ['2019-10-18', 100]
+                        ]
+                    }
+                ]
+            };
+            // myChart.setOption(option);
+
+            function randomData() {
+                now = new Date(+now + oneDay);
+                value = value + Math.random() * 21 - 10;
+                return {
+                    name: now.toString(),
+                    value: [
+                        [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
+                        Math.round(value)
+                    ]
+                };
+            }
+
+            var data = [];
+            var now = +new Date(1997, 9, 3);
+            var oneDay = 24 * 3600 * 1000;
+            var value = Math.random() * 1000;
+            for (var i = 0; i < 1000; i++) {
+                data.push(randomData());
+            }
+
+            var option = {
+                backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                title: {
+                    text: '动态数据 + 时间坐标轴'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: function (params) {
+                        params = params[0];
+                        var date = new Date(params.name);
+                        return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+                    },
+                    axisPointer: {
+                        animation: false
+                    }
+                },
+                xAxis: {
+                    type: 'time',
+                    splitLine: {
+                        show: false
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    boundaryGap: [0, '100%'],
+                    splitLine: {
+                        show: false
+                    }
+                },
+                series: [{
+                    name: '模拟数据',
+                    type: 'line',
+                    showSymbol: false,
+                    hoverAnimation: false,
+                    data: data
+                }]
+            };
+
+            myChart.setOption(option);
+
+            setInterval(function () {
+
+                for (var i = 0; i < 5; i++) {
+                    data.shift();
+                    data.push(randomData());
+                }
+
+                myChart.setOption({
+                    series: [{
+                        data: data
+                    }]
+                });
+            }, 1000);
+
+
+            myChart.on('rendered', function () {
+                p.imageUrl = myChart.getDataURL();
+            });
+
+            return p;
+        }
+    </script>
+</body>
+
+</html>
