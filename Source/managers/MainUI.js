@@ -89,7 +89,9 @@ class MainUI {
     const cesiumContainer = document.createElement("div");
     cesiumContainer.style.cssText = "width: 100%; height: 100%;";
 
-    var earth = new XE.Earth(cesiumContainer);
+    var earth = new XE.Earth(cesiumContainer, {
+      // mapProjection: new Cesium.WebMercatorProjection(), 墨卡托投影
+    });
     earth.camera.navigator.showCompass = true; // 显示指北针
     earth.camera.navigator.distanceLegendStyle.bottom = 62; // 比例尺位置调整
     earth.camera.navigator.showDistanceLegend = true; // 显示比例尺
