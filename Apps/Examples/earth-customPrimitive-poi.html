@@ -58,42 +58,47 @@
                 ]
             };
 
-            // var p = new XE.Obj.CustomPrimitive(earth)
-            // p.xbsjFromJSON(config);
-            // p.flyTo();
-
-            const fragmentShaderSource =
-                `
-                varying vec3 v_positionEC;
-                varying vec3 v_normalEC;
-                varying vec2 v_st;
-                varying vec4 v_color;
-                uniform sampler2D u_image;
-                uniform vec4 u_color;
-                void main()
+            function createPOI() {
                 {
-                    float powerRatio = fract(czm_frameNumber / 30.0) + 1.0;
-                    float alpha = pow(1.0 - v_st.t, powerRatio);
-                    gl_FragColor = vec4(u_color.rgb, alpha*u_color.a);
-                }
-                `;
-            const renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
-            renderState.cull.enabled = false;
-            const cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(0.3, 2.0, 1.0, 6);
-            const config = {
-                position: [ 2.031423431127962, 0.6964939445755296, 0],
-                scale: [3, 3, 300],
-                positions: cylinder.positions,
-                sts: cylinder.sts,
-                indices: cylinder.indices,
-                renderState,
-                color: [1.0, 1.0, 0.0, 1.0],
-                canvasWidth: 1.0,
-                fragmentShaderSource,
-            };
+                    const fragmentShaderSource = `
+                        varying vec3 v_positionEC;
+                        varying vec3 v_normalEC;
+                        varying vec2 v_st;
+                        varying vec4 v_color;
+                        uniform sampler2D u_image;
+                        uniform vec4 u_color;
+                        void main()
+                        {
+                            float powerRatio = fract(czm_frameNumber / 30.0) + 1.0;
+                            float alpha = pow(v_st.t, powerRatio);
+                            gl_FragColor = vec4(u_color.rgb, alpha*u_color.a);
+                        }
+                    `;
+                    const renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+                    renderState.cull.enabled = false;
+                    const cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(2.0, 2.0, 1.0, 6);
+                    const config = {
+                        position: [2.031423431127962, 0.6964939445755296, 0],
+                        scale: [3, 3, 300],
+                        positions: cylinder.positions,
+                        sts: cylinder.sts,
+                        indices: cylinder.indices,
+                        renderState,
+                        color: [1.0, 1.0, 0.0, 1.0],
+                        canvasWidth: 1.0,
+                        fragmentShaderSource,
+                    };
 
-            let p = new XE.Obj.CustomPrimitive(earth);
-            p.xbsjFromJSON(config);
+                    let p = new XE.Obj.CustomPrimitive(earth);
+                    p.xbsjFromJSON(config);
+                }
+
+
+
+            }
+
+            createPOI();
+
 
             earth.camera.rotation = [5.815324435443062, -0.8341929317354486, 6.28096043989156];
             earth.camera.position = [2.0315161826006545, 0.6963826213887396, 927.0683115108468];
