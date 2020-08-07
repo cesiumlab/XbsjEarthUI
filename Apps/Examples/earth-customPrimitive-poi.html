@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>自定义图元-POI</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #canvas-container {
+            width: 600px;
+            height: 600px;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function startup() {
+            earth = new XE.Earth('earthContainer');
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "默认离线影像",
+                            "brightness": 0.2,
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "createTileMapServiceImageryProvider": {
+                                    "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    "fileExtension": 'jpg',
+                                },
+                                "type": "createTileMapServiceImageryProvider"
+                            }
+                        }
+                    }
+                ]
+            };
+
+            // var p = new XE.Obj.CustomPrimitive(earth)
+            // p.xbsjFromJSON(config);
+            // p.flyTo();
+
+            const fragmentShaderSource =
+                `
+                varying vec3 v_positionEC;
+                varying vec3 v_normalEC;
+                varying vec2 v_st;
+                varying vec4 v_color;
+                uniform sampler2D u_image;
+                uniform vec4 u_color;
+                void main()
+                {
+                    float powerRatio = fract(czm_frameNumber / 30.0) + 1.0;
+                    float alpha = pow(1.0 - v_st.t, powerRatio);
+                    gl_FragColor = vec4(u_color.rgb, alpha*u_color.a);
+                }
+                `;
+            const renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+            renderState.cull.enabled = false;
+            const cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(0.3, 2.0, 1.0, 6);
+            const config = {
+                position: [ 2.031423431127962, 0.6964939445755296, 0],
+                scale: [3, 3, 300],
+                positions: cylinder.positions,
+                sts: cylinder.sts,
+                indices: cylinder.indices,
+                renderState,
+                color: [1.0, 1.0, 0.0, 1.0],
+                canvasWidth: 1.0,
+                fragmentShaderSource,
+            };
+
+            let p = new XE.Obj.CustomPrimitive(earth);
+            p.xbsjFromJSON(config);
+
+            earth.camera.rotation = [5.815324435443062, -0.8341929317354486, 6.28096043989156];
+            earth.camera.position = [2.0315161826006545, 0.6963826213887396, 927.0683115108468];
+
+            window.p = p; // 方便调试
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);
+
+
+        // ctx：Canvas绘图环境
+        // fromX, fromY：起点坐标（也可以换成p1，只不过它是一个数组）
+        // toX, toY：终点坐标 (也可以换成p2，只不过它是一个数组)
+        // theta：三角斜边一直线夹角
+        // headlen：三角斜边长度
+        // width：箭头线宽度
+        // color：箭头颜色
+        function drawArrow(ctx, fromX, fromY, toX, toY, theta, headlen, width, color) {
+
+            theta = typeof (theta) != 'undefined' ? theta : 30;
+            headlen = typeof (theta) != 'undefined' ? headlen : 10;
+            width = typeof (width) != 'undefined' ? width : 1;
+            color = typeof (color) != 'color' ? color : '#000';
+
+            // 计算各角度和对应的P2,P3坐标
+            var angle = Math.atan2(fromY - toY, fromX - toX) * 180 / Math.PI,
+                angle1 = (angle + theta) * Math.PI / 180,
+                angle2 = (angle - theta) * Math.PI / 180,
+                topX = headlen * Math.cos(angle1),
+                topY = headlen * Math.sin(angle1),
+                botX = headlen * Math.cos(angle2),
+                botY = headlen * Math.sin(angle2);
+
+            ctx.save();
+            ctx.beginPath();
+
+            var arrowX = fromX - topX,
+                arrowY = fromY - topY;
+
+            ctx.moveTo(arrowX, arrowY);
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            arrowX = toX + topX;
+            arrowY = toY + topY;
+            ctx.moveTo(arrowX, arrowY);
+            ctx.lineTo(toX, toY);
+            arrowX = toX + botX;
+            arrowY = toY + botY;
+            ctx.lineTo(arrowX, arrowY);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function drawDoubleArrow(ctx, fromX, fromY, toX, toY, theta, headlen, width, color) {
+            theta = typeof (theta) != 'undefined' ? theta : 30;
+            headlen = typeof (theta) != 'undefined' ? headlen : 10;
+            width = typeof (width) != 'undefined' ? width : 1;
+            color = typeof (color) != 'color' ? color : '#000';
+
+            var angle = Math.atan2(fromY - toY, fromX - toX) * 180 / Math.PI,
+                angle1 = (angle + theta) * Math.PI / 180,
+                angle2 = (angle - theta) * Math.PI / 180,
+                topX = headlen * Math.cos(angle1),
+                topY = headlen * Math.sin(angle1),
+                botX = headlen * Math.cos(angle2),
+                botY = headlen * Math.sin(angle2);
+
+
+            ctx.save();
+            ctx.beginPath();
+
+            var arrowX = fromX - topX,
+                arrowY = fromY - topY;
+            ctx.moveTo(arrowX, arrowY);
+            ctx.lineTo(fromX, fromY);
+            arrowX = fromX - botX;
+            arrowY = fromY - botY;
+            ctx.lineTo(arrowX, arrowY);
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+
+            // Reverse length on the other side
+            arrowX = toX + topX;
+            arrowY = toY + topY;
+            ctx.moveTo(arrowX, arrowY);
+            ctx.lineTo(toX, toY);
+            arrowX = toX + botX;
+            arrowY = toY + botY;
+            ctx.lineTo(arrowX, arrowY);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
+            ctx.stroke();
+            ctx.restore();
+        }
+
+    </script>
+</body>
+
+</html>
