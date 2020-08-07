@@ -59,6 +59,8 @@
             };
 
             function createPOI() {
+                const position = [2.031423431127962, 0.6964939445755296, 0];
+                const color = [1.0, 1.0, 0.0, 1.0];
                 {
                     const fragmentShaderSource = `
                         varying vec3 v_positionEC;
@@ -76,15 +78,15 @@
                     `;
                     const renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
                     renderState.cull.enabled = false;
-                    const cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(2.0, 2.0, 1.0, 6);
+                    const cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(6.0, 6.0, 1.0, 12);
                     const config = {
-                        position: [2.031423431127962, 0.6964939445755296, 0],
+                        position: [...position],
                         scale: [3, 3, 300],
                         positions: cylinder.positions,
                         sts: cylinder.sts,
                         indices: cylinder.indices,
                         renderState,
-                        color: [1.0, 1.0, 0.0, 1.0],
+                        color: [...color],
                         canvasWidth: 1.0,
                         fragmentShaderSource,
                     };
@@ -93,15 +95,70 @@
                     p.xbsjFromJSON(config);
                 }
 
+                {
+                    const fragmentShaderSource = `
+                        varying vec3 v_positionEC;
+                        varying vec3 v_normalEC;
+                        varying vec2 v_st;
+                        varying vec4 v_color;
+                        uniform sampler2D u_image;
+                        uniform vec4 u_color;
+                        void main()
+                        {
+                            float dt = fract(czm_frameNumber / 100.0);
+                            vec2 st = fract(vec2(1.0) + v_st * vec2(1.0, 0.2) - vec2(0, dt));
+                            vec4 imageColor = texture2D(u_image, st);
 
+                            vec3 diffuse = imageColor.rgb;
+                            float alpha = imageColor.a;
 
+                            diffuse *= v_color.rgb;
+                            alpha *= v_color.a;
+
+                            diffuse *= u_color.rgb;
+                            alpha *= u_color.a;
+
+                            gl_FragColor = vec4(diffuse, alpha * 0.5 * (1.0 - cos(2.0 * 3.1415926 * v_st.t)));
+                        }
+                    `;
+
+                    const evalString = `
+                        p.canvasWidth = 32;
+                        p.canvasHeight = 256;
+                        Cesium.Resource.createIfNeeded('./images/city/lines.png').fetchImage().then(function(image) {
+                            p.drawCanvas(ctx => {
+                                ctx.clearRect(0, 0, 32, 256);
+                                ctx.drawImage(image, 0, 0);
+                            });
+                        });
+                    `;
+
+                    const renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+                    renderState.cull.enabled = false;
+                    const cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(14.0, 14.0, 1.0, 12);
+                    const config = {
+                        fragmentShaderSource,
+                        evalString,
+                        position: [...position],
+                        scale: [3, 3, 300],
+                        positions: cylinder.positions,
+                        sts: cylinder.sts,
+                        indices: cylinder.indices,
+                        color: [...color],
+                        canvasWidth: 32,
+                        canvasHeight: 256,
+                        renderState,
+                    };
+
+                    const p = new XE.Obj.CustomPrimitive(earth);
+                    p.xbsjFromJSON(config);
+                }
             }
 
             createPOI();
 
-
-            earth.camera.rotation = [5.815324435443062, -0.8341929317354486, 6.28096043989156];
-            earth.camera.position = [2.0315161826006545, 0.6963826213887396, 927.0683115108468];
+            earth.camera.position = [2.031590478510072, 0.6962844209528167, 664.1516898951063];
+            earth.camera.rotation = [5.806860477917896, -0.38481891902363796, 0];
 
             window.p = p; // 方便调试
         }
