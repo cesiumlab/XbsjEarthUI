@@ -100,71 +100,63 @@
                                 },
                             }
                         }
-                    },
-                    {
-                        "ref": "billboard",
-                        "czmObject": {
-                            "xbsjType": "CustomPrimitive",
-                            "xbsjGuid": "2812b3dc-1584-4ad3-8023-debe334b2817",
-                            //"evalString": "Cesium.Resource.createIfNeeded('./assets/city/billboard.png').fetchImage().then(function(image) { p.drawCanvas(ctx => {ctx.clearRect(0, 0, 512, 256); ctx.drawImage(image, 0, 0);}); });",
-                            "position": [
-                                2.174033927183021,
-                                0.10999357244211576,
-                                0
-                            ],
-                            "scale": [
-                                150,
-                                150,
-                                100
-                            ],
-                            "positions": [0, -1, 0, 0, 1, 0, 0, 1, 2, 0, -1, 2, 0, 1, 0, 0, -1, 0, 0, -1, 2, 0, 1, 2],
-                            "sts": [0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1],
-                            "indices": [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7],
-                            "renderState": {
-                                "cull": {
-                                    "enabled": true
-                                },
-                                "polygonOffset": {},
-                                "scissorTest": {
-                                    "rectangle": {}
-                                },
-                                "depthRange": {},
-                                "depthTest": {
-                                    "enabled": true
-                                },
-                                "colorMask": {},
-                                "depthMask": false,
-                                "blending": {
-                                    "enabled": true,
-                                    "color": {},
-                                    "equationRgb": 32774,
-                                    "equationAlpha": 32774,
-                                    "functionSourceRgb": 770,
-                                    "functionDestinationRgb": 771,
-                                    "functionDestinationAlpha": 771
-                                },
-                                "stencilTest": {
-                                    "frontOperation": {},
-                                    "backOperation": {}
-                                },
-                                "sampleCoverage": {}
-                            },
-                            "color": [1, 1, 1, 1],
-                            "canvasWidth": 500,
-                            "canvasHeight": 298,
-                            "autoRegisterEditing": true
-                        }
                     }
                 ]
             };
 
-            var p = earth.sceneTree.$refs.billboard.czmObject;
-            setDiv(p);
+            let position = [];
+            for (var i = 0; i < 100; i++) {
+                position.push([2.174033927183021 + Math.random() * i / 100000, 0.10999357244211576 + Math.random() * i / 200000, 0]);
+            }
+            position.forEach((element, index) => {
+                const config = {
+                    "position": element,
+                    "scale": [150, 150, 100],
+                    "positions": [0, -1, 0, 0, 1, 0, 0, 1, 2, 0, -1, 2, 0, 1, 0, 0, -1, 0, 0, -1, 2, 0, 1, 2],
+                    "sts": [0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1],
+                    "indices": [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7],
+                    "renderState": {
+                        "cull": {
+                            "enabled": true
+                        },
+                        "polygonOffset": {},
+                        "scissorTest": {
+                            "rectangle": {}
+                        },
+                        "depthRange": {},
+                        "depthTest": {
+                            "enabled": true
+                        },
+                        "colorMask": {},
+                        "depthMask": false,
+                        "blending": {
+                            "enabled": true,
+                            "color": {},
+                            "equationRgb": 32774,
+                            "equationAlpha": 32774,
+                            "functionSourceRgb": 770,
+                            "functionDestinationRgb": 771,
+                            "functionDestinationAlpha": 771
+                        },
+                        "stencilTest": {
+                            "frontOperation": {},
+                            "backOperation": {}
+                        },
+                        "sampleCoverage": {}
+                    },
+                    "canvasWidth": 500,
+                    "canvasHeight": 298,
+                    "autoRegisterEditing": true
+                }
 
-            earth.camera.position = [2.174123410280131, 0.10998282230158442, 226.82196877567083];
+                var p = new XE.Obj.CustomPrimitive(earth);
+                p.xbsjFromJSON(config);
+                setDiv(p);
+                window.p = p; // 方便调试
+            })
+
+            earth.camera.position = [2.175117857841175, 0.11019179030898733, 1020.6532980658766];
             earth.camera.rotation = [4.713022428235233, -0.32323589635947103, 6.282414845220519];
-
-            window.p = p; // 方便调试
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
