@@ -100,6 +100,10 @@ vueApp.examples = [
                 "url": "./earth-customGroundRectangle-text.html"
             },
             {
+                "title": "自定义图元-动画",
+                "url": "./earth-customPrimitive-animation.html"
+            },
+            {
                 "title": "自定义图元-双面电子标牌",
                 "url": "./earth-customPrimitive-billboard.html"
             },
