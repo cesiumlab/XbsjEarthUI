@@ -158,11 +158,11 @@
                     vec3 diffuse = imageColor.rgb;
                     float alpha = imageColor.a;
 
-                    diffuse *= v_color.rgb;
-                    alpha *= v_color.a;
+                    // diffuse *= v_color.rgb;
+                    // alpha *= v_color.a;
 
-                    diffuse *= u_color.rgb;
-                    alpha *= u_color.a;
+                    // diffuse *= u_color.rgb;
+                    // alpha *= u_color.a;
 
                     // gl_FragColor = vec4(czm_inverseGamma(diffuse), alpha);
                     gl_FragColor = vec4((diffuse), alpha);
