@@ -154,7 +154,7 @@
                     normalEC = faceforward(normalEC, vec3(0.0, 0.0, 1.0), -normalEC);
 
                     vec4 imageColor = texture2D(u_image, fract(u_customParams.xy + v_st * u_customParams.zw));
-
+                    // imageColor = czm_gammaCorrect(imageColor);
                     vec3 diffuse = imageColor.rgb;
                     float alpha = imageColor.a;
 
@@ -164,7 +164,8 @@
                     diffuse *= u_color.rgb;
                     alpha *= u_color.a;
 
-                    gl_FragColor = vec4(diffuse, alpha);
+                    // gl_FragColor = vec4(czm_inverseGamma(diffuse), alpha);
+                    gl_FragColor = vec4((diffuse), alpha);
                 }
             `;
 
