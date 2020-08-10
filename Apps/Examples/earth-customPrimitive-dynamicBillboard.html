@@ -176,11 +176,12 @@
 
             earth.camera.flyAround([2.174033927183021, 0.10999357244211576, 0], 650, [0, -0.6, 0]);
 
-            const json = await fetJson("./assets/guangzhu/guangzhu_1.png.json");
-
-            const { count, files, width, height } = json;
-            p._xx_files = files;
-            // console.log(count);
+            p.evalString = `
+                Cesium.Resource.fetchJson('./assets/guangzhu/guangzhu_1.png.json').then(json => {
+                    const { count, files, width, height } = json;
+                    p._xx_files = files;
+                });
+            `;
 
             p.preUpdateEvalString = `
                 if (p._xx_files) {
