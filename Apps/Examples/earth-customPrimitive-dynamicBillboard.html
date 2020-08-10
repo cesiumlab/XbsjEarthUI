@@ -194,8 +194,6 @@
                 const p = new XE.Obj.CustomPrimitive(earth);
                 p.xbsjFromJSON(config0);
 
-                p.show = false;
-
                 window.p = p;
             }
 
@@ -262,15 +260,18 @@
                 `;
 
                 const evalString = `
-                    // Cesium.Resource.fetchJson('./assets/guangzhu/guangzhu_1.png.json').then(json => {
-                    //     const { count, files } = json;
-                    //     if (files.length > 0) {
-                    //         const { width, height } = files[0];
-                    //         p.scale[1] = width;
-                    //         p.scale[2] = height;
-                    //         p._xx_files = files;
-                    //     }
-                    // });
+                    const files = [];
+                    for (let j=0; j<32; ++j) {
+                        for (let i=0; i<32; ++i) {
+                            const offsetU = 1/32 * i;
+                            const offsetV = 1/32 * j;
+                            const scaleU = 1/32;
+                            const scaleV = 1/32;
+                            files.push({ offsetU, offsetV, scaleU, scaleV });
+                        }
+                    }
+
+                    p._xx_files = files;
                 `;
 
                 const preUpdateEvalString = `
@@ -297,8 +298,8 @@
 
                 const config0 = {
                     "imageUrl": "./assets/guangzhu/numbers/numbers-sdf.png", // Apps\Examples\assets\guangzhu\numbers\numbers-white.png
-                    "position": [2.174033927183021, 0.10999357244211576, 0],
-                    "scale": [1, 256, 256],
+                    "position": [2.174033927183021, 0.10999357244211576, 226*2],
+                    "scale": [1, 32, 32],
                     "positions": [0, -1, 0, 0, 1, 0, 0, 1, 2, 0, -1, 2, 0, 1, 0, 0, -1, 0, 0, -1, 2, 0, 1, 2],
                     "sts": [0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1],
                     "indices": [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7],
@@ -345,20 +346,7 @@
                 const p = new XE.Obj.CustomPrimitive(earth);
                 p.xbsjFromJSON(config0);
 
-                const files = [];
-                for (let j=0; j<32; ++j) {
-                    for (let i=0; i<32; ++i) {
-                        const offsetU = 1/32 * i;
-                        const offsetV = 1/32 * j;
-                        const scaleU = 1/32;
-                        const scaleV = 1/32;
-                        files.push({ offsetU, offsetV, scaleU, scaleV });
-                    }
-                }
-
-                p._xx_files = files;
-
-                window.p = p;
+                window.p2 = p;
             }
 
             earth.camera.flyAround([2.174033927183021, 0.10999357244211576, 0], 650, [0, -0.6, 0]);
