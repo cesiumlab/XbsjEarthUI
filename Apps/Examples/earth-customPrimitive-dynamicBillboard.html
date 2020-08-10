@@ -179,24 +179,30 @@
             const json = await fetJson("./assets/guangzhu/guangzhu_1.png.json");
 
             const { count, files, width, height } = json;
-            console.log(count);
+            p._xx_files = files;
+            // console.log(count);
 
-            window.i = 0;
-            window.files = files;
-            var s = setInterval(() => {
-                i = (++i) % (count);
+            p.preUpdateEvalString = `
+                if (p._xx_files) {
+                    if (typeof p._xx_i === 'undefined') {
+                        p._xx_i = 0;
+                    }
+                    p._xx_i = (++p._xx_i) % (p._xx_files.length);
 
-                const {
-                    file,
-                    // height,
-                    offsetU,
-                    offsetV,
-                    scaleU,
-                    scaleV,
-                    // width,
-                } = files[i];
-                p.customParams = [offsetU, 1.0 - (offsetV + scaleV), scaleU, scaleV];
-            }, 50);
+                    const {
+                        file,
+                        // height,
+                        offsetU,
+                        offsetV,
+                        scaleU,
+                        scaleV,
+                        // width,
+                    } = p._xx_files[p._xx_i];
+                    p.customParams = [offsetU, 1.0 - (offsetV + scaleV), scaleU, scaleV];
+                }
+
+                p.rotation[0] = p.earth.camera.rotation[0] + Math.PI*0.5;
+            `;
 
             // p.flyTo();
             // 环绕飞行
