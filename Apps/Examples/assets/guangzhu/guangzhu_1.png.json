@@ -1,0 +1,439 @@
+{
+    "count": 48,
+    "files": [
+        {
+            "file": "guangzhu_00000",
+            "height": 226,
+            "offsetU": 0.0,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00001",
+            "height": 226,
+            "offsetU": 0.03125,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00002",
+            "height": 226,
+            "offsetU": 0.0625,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00003",
+            "height": 226,
+            "offsetU": 0.09375,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00004",
+            "height": 226,
+            "offsetU": 0.125,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00005",
+            "height": 226,
+            "offsetU": 0.15625,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00006",
+            "height": 226,
+            "offsetU": 0.1875,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00007",
+            "height": 226,
+            "offsetU": 0.21875,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00008",
+            "height": 226,
+            "offsetU": 0.25,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00009",
+            "height": 226,
+            "offsetU": 0.28125,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00010",
+            "height": 226,
+            "offsetU": 0.3125,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00011",
+            "height": 226,
+            "offsetU": 0.34375,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00012",
+            "height": 226,
+            "offsetU": 0.375,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00013",
+            "height": 226,
+            "offsetU": 0.40625,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00014",
+            "height": 226,
+            "offsetU": 0.4375,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00015",
+            "height": 226,
+            "offsetU": 0.46875,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00016",
+            "height": 226,
+            "offsetU": 0.5,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00017",
+            "height": 226,
+            "offsetU": 0.53125,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00018",
+            "height": 226,
+            "offsetU": 0.5625,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00019",
+            "height": 226,
+            "offsetU": 0.59375,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00020",
+            "height": 226,
+            "offsetU": 0.625,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00021",
+            "height": 226,
+            "offsetU": 0.65625,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00022",
+            "height": 226,
+            "offsetU": 0.6875,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00023",
+            "height": 226,
+            "offsetU": 0.71875,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00024",
+            "height": 226,
+            "offsetU": 0.75,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00025",
+            "height": 226,
+            "offsetU": 0.78125,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00026",
+            "height": 226,
+            "offsetU": 0.8125,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00027",
+            "height": 226,
+            "offsetU": 0.84375,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00028",
+            "height": 226,
+            "offsetU": 0.875,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00029",
+            "height": 226,
+            "offsetU": 0.90625,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00030",
+            "height": 226,
+            "offsetU": 0.9375,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00031",
+            "height": 226,
+            "offsetU": 0.96875,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00032",
+            "height": 226,
+            "offsetU": 0.0,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00033",
+            "height": 226,
+            "offsetU": 0.03125,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00034",
+            "height": 226,
+            "offsetU": 0.0625,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00035",
+            "height": 226,
+            "offsetU": 0.09375,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00036",
+            "height": 226,
+            "offsetU": 0.125,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00037",
+            "height": 226,
+            "offsetU": 0.15625,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00038",
+            "height": 226,
+            "offsetU": 0.1875,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00039",
+            "height": 226,
+            "offsetU": 0.21875,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00040",
+            "height": 226,
+            "offsetU": 0.25,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00041",
+            "height": 226,
+            "offsetU": 0.28125,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00042",
+            "height": 226,
+            "offsetU": 0.3125,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00043",
+            "height": 226,
+            "offsetU": 0.34375,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00044",
+            "height": 226,
+            "offsetU": 0.375,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00045",
+            "height": 226,
+            "offsetU": 0.40625,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00046",
+            "height": 226,
+            "offsetU": 0.4375,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_00047",
+            "height": 226,
+            "offsetU": 0.46875,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        }
+    ],
+    "height": 452,
+    "width": 4096
+}
