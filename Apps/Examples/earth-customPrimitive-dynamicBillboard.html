@@ -56,164 +56,149 @@
                             }
                         }
                     },
-                    {
-                        "ref": "billboard",
-                        "czmObject": {
-                            "xbsjType": "CustomPrimitive",
-                            "xbsjGuid": "2812b3dc-1584-4ad3-8023-debe334b2817",
-                            "imageUrl": "./assets/guangzhu/guangzhu_1.png",
-                            "position": [
-                                2.174033927183021,
-                                0.10999357244211576,
-                                0
-                            ],
-                            "scale": [
-                                1,
-                                256,
-                                256
-                            ],
-                            "positions": [0, -1, 0, 0, 1, 0, 0, 1, 2, 0, -1, 2, 0, 1, 0, 0, -1, 0, 0, -1, 2, 0, 1, 2],
-                            "sts": [0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1],
-                            "indices": [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7],
-                            "renderState": {
-                                "cull": {
-                                    "enabled": true
-                                },
-                                "polygonOffset": {},
-                                "scissorTest": {
-                                    "rectangle": {}
-                                },
-                                "depthRange": {},
-                                "depthTest": {
-                                    "enabled": true
-                                },
-                                "colorMask": {},
-                                "depthMask": false,
-                                "blending": {
-                                    "enabled": true,
-                                    "color": {},
-                                    "equationRgb": 32774,
-                                    "equationAlpha": 32774,
-                                    "functionSourceRgb": 770,
-                                    "functionDestinationRgb": 771,
-                                    "functionDestinationAlpha": 771
-                                },
-                                "stencilTest": {
-                                    "frontOperation": {},
-                                    "backOperation": {}
-                                },
-                                "sampleCoverage": {}
-                            },
-                            "color": [
-                                0.5,
-                                0.8,
-                                1,
-                                2
-                            ],
-                            // "canvasWidth": 128,
-                            // "canvasHeight": 226,
-                            "autoRegisterEditing": true
-                        }
-                    }
                 ]
             };
 
-            var vertexShader = `
-                attribute vec3 position;
-                attribute vec3 normal;
-                attribute vec2 st;
-                attribute vec4 color;
-                attribute float batchId;
-                varying vec3 v_positionEC;
-                varying vec3 v_normalEC;
-                varying vec2 v_st;
-                varying vec4 v_color;
-                void main()
-                {
-                    v_positionEC = (czm_modelView * vec4(position, 1.0)).xyz;       // position in eye coordinates
-                    v_normalEC = czm_normal * normal;                               // normal in eye coordinates
-                    v_st = st;
-                    v_color = color;
-                    gl_Position = czm_modelViewProjection * vec4(position, 1.0);
+            {
+                var vertexShaderSource = `
+                    attribute vec3 position;
+                    attribute vec3 normal;
+                    attribute vec2 st;
+                    attribute vec4 color;
+                    attribute float batchId;
+                    varying vec3 v_positionEC;
+                    varying vec3 v_normalEC;
+                    varying vec2 v_st;
+                    varying vec4 v_color;
+                    void main()
+                    {
+                        v_positionEC = (czm_modelView * vec4(position, 1.0)).xyz;       // position in eye coordinates
+                        v_normalEC = czm_normal * normal;                               // normal in eye coordinates
+                        v_st = st;
+                        v_color = color;
+                        gl_Position = czm_modelViewProjection * vec4(position, 1.0);
+                    }
+                `;
+
+                var fragmentShaderSource = `
+                    varying vec3 v_positionEC;
+                    varying vec3 v_normalEC;
+                    varying vec2 v_st;
+                    varying vec4 v_color;
+                    uniform sampler2D u_image;
+                    uniform vec4 u_color;
+                    uniform vec4 u_customParams; // 用来指定图像的部分区域 x y width height 都在0-1之间，是比例！
+                    void main()
+                    {
+                        vec3 positionToEyeEC = -v_positionEC;
+                        vec3 normalEC = normalize(v_normalEC);
+                        normalEC = faceforward(normalEC, vec3(0.0, 0.0, 1.0), -normalEC);
+
+                        vec4 imageColor = texture2D(u_image, fract(u_customParams.xy + v_st * u_customParams.zw));
+                        // imageColor = czm_gammaCorrect(imageColor);
+                        vec3 diffuse = imageColor.rgb;
+                        float alpha = imageColor.a;
+
+                        // diffuse *= v_color.rgb;
+                        // alpha *= v_color.a;
+
+                        // diffuse *= u_color.rgb;
+                        // alpha *= u_color.a;
+
+                        // gl_FragColor = vec4(czm_inverseGamma(diffuse), alpha);
+                        gl_FragColor = vec4((diffuse), alpha);
+                    }
+                `;
+
+                const evalString = `
+                    Cesium.Resource.fetchJson('./assets/guangzhu/guangzhu_1.png.json').then(json => {
+                        const { count, files } = json;
+                        if (files.length > 0) {
+                            const { width, height } = files[0];
+                            p.scale[1] = width;
+                            p.scale[2] = height;
+                            p._xx_files = files;
+                        }
+                    });
+                `;
+
+                const preUpdateEvalString = `
+                    if (p._xx_files) {
+                        if (typeof p._xx_i === 'undefined') {
+                            p._xx_i = 0;
+                        }
+                        p._xx_i = (++p._xx_i) % (p._xx_files.length);
+
+                        const {
+                            file,
+                            // height,
+                            offsetU,
+                            offsetV,
+                            scaleU,
+                            scaleV,
+                            // width,
+                        } = p._xx_files[p._xx_i];
+                        p.customParams = [offsetU, 1.0 - (offsetV + scaleV), scaleU, scaleV];
+                    }
+
+                    p.rotation[0] = p.earth.camera.rotation[0] + Math.PI*0.5;
+                `;
+
+                const config0 = {
+                    "imageUrl": "./assets/guangzhu/guangzhu_1.png",
+                    "position": [2.174033927183021, 0.10999357244211576, 0],
+                    "scale": [1, 256, 256],
+                    "positions": [0, -1, 0, 0, 1, 0, 0, 1, 2, 0, -1, 2, 0, 1, 0, 0, -1, 0, 0, -1, 2, 0, 1, 2],
+                    "sts": [0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1],
+                    "indices": [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7],
+                    "customParams": [0, 0, 1, 1],
+                    vertexShaderSource,
+                    fragmentShaderSource,
+                    evalString,
+                    preUpdateEvalString,
+                    "renderState": {
+                        "cull": {
+                            "enabled": true
+                        },
+                        "polygonOffset": {},
+                        "scissorTest": {
+                            "rectangle": {}
+                        },
+                        "depthRange": {},
+                        "depthTest": {
+                            "enabled": true
+                        },
+                        "colorMask": {},
+                        "depthMask": false,
+                        "blending": {
+                            "enabled": true,
+                            "color": {},
+                            "equationRgb": 32774,
+                            "equationAlpha": 32774,
+                            "functionSourceRgb": 770,
+                            "functionDestinationRgb": 771,
+                            "functionDestinationAlpha": 771
+                        },
+                        "stencilTest": {
+                            "frontOperation": {},
+                            "backOperation": {}
+                        },
+                        "sampleCoverage": {}
+                    },
+                    "color": [0.5, 0.8, 1, 2],
+                    // "canvasWidth": 128,
+                    // "canvasHeight": 226,
+                    "autoRegisterEditing": true
                 }
-            `;
 
-            var fragmentShader = `
-                varying vec3 v_positionEC;
-                varying vec3 v_normalEC;
-                varying vec2 v_st;
-                varying vec4 v_color;
-                uniform sampler2D u_image;
-                uniform vec4 u_color;
-                uniform vec4 u_customParams; // 用来指定图像的部分区域 x y width height 都在0-1之间，是比例！
-                void main()
-                {
-                    vec3 positionToEyeEC = -v_positionEC;
-                    vec3 normalEC = normalize(v_normalEC);
-                    normalEC = faceforward(normalEC, vec3(0.0, 0.0, 1.0), -normalEC);
+                const p = new XE.Obj.CustomPrimitive(earth);
+                p.xbsjFromJSON(config0);
 
-                    vec4 imageColor = texture2D(u_image, fract(u_customParams.xy + v_st * u_customParams.zw));
-                    // imageColor = czm_gammaCorrect(imageColor);
-                    vec3 diffuse = imageColor.rgb;
-                    float alpha = imageColor.a;
-
-                    // diffuse *= v_color.rgb;
-                    // alpha *= v_color.a;
-
-                    // diffuse *= u_color.rgb;
-                    // alpha *= u_color.a;
-
-                    // gl_FragColor = vec4(czm_inverseGamma(diffuse), alpha);
-                    gl_FragColor = vec4((diffuse), alpha);
-                }
-            `;
-
-            var p = earth.sceneTree.$refs.billboard.czmObject;
-
-            p.vertexShaderSource = vertexShader;
-            p.fragmentShaderSource = fragmentShader;
-            p.customParams = [0, 0, 1, 1];
+                window.p = p;
+            }
 
             earth.camera.flyAround([2.174033927183021, 0.10999357244211576, 0], 650, [0, -0.6, 0]);
 
-            p.evalString = `
-                Cesium.Resource.fetchJson('./assets/guangzhu/guangzhu_1.png.json').then(json => {
-                    const { count, files } = json;
-                    if (files.length > 0) {
-                        const { width, height } = files[0];
-                        p.scale[1] = width;
-                        p.scale[2] = height;
-                        p._xx_files = files;
-                    }
-                });
-            `;
-
-            p.preUpdateEvalString = `
-                if (p._xx_files) {
-                    if (typeof p._xx_i === 'undefined') {
-                        p._xx_i = 0;
-                    }
-                    p._xx_i = (++p._xx_i) % (p._xx_files.length);
-
-                    const {
-                        file,
-                        // height,
-                        offsetU,
-                        offsetV,
-                        scaleU,
-                        scaleV,
-                        // width,
-                    } = p._xx_files[p._xx_i];
-                    p.customParams = [offsetU, 1.0 - (offsetV + scaleV), scaleU, scaleV];
-                }
-
-                p.rotation[0] = p.earth.camera.rotation[0] + Math.PI*0.5;
-            `;
-
-            // p.flyTo();
-            // 环绕飞行
-
-            window.p = p; // 方便调试
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
