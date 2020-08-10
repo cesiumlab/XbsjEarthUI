@@ -28,7 +28,16 @@
         var earth;
         var bgImagery;
 
-        function startup() {
+        async function fetJson(filePath) {
+            const r = await fetch(filePath);
+            if (!r.ok) {
+                return undefined;
+            }
+            const json = await r.json();
+            return json;
+        }
+
+        async function startup() {
             earth = new XE.Earth('earthContainer');
 
             earth.sceneTree.root = {
@@ -165,44 +174,32 @@
             p.fragmentShaderSource = fragmentShader;
             p.customParams = [0, 0, 1, 1];
 
-            async function fetJson(filePath) {
-                const r = await fetch(filePath);
-                if (!r.ok) {
-                    return undefined;
-                }
-                const json = await r.json();
-                return json;
-            }
-            
-            fetJson("./assets/guangzhu/guangzhu_1.png.json").then((json) => {
-                const { count, files, width, height } = json;
-                console.log(count);
+            earth.camera.flyAround([2.174033927183021, 0.10999357244211576, 0], 650, [0, -0.6, 0]);
 
-                let i = -1;
-                const boundingRect = new Cesium.BoundingRectangle(0, 0, 1, 1);
-                var s = setInterval(() => {
-                    ++i;
-                    if (i >= count) {
-                        // if (i >= 3) {
-                        i = 0;
-                    }
+            const json = await fetJson("./assets/guangzhu/guangzhu_1.png.json");
 
-                    const {
-                        file,
-                        // height,
-                        offsetU,
-                        offsetV,
-                        scaleU,
-                        scaleV,
-                        // width,
-                    } = files[i];
-                    p.customParams = [offsetU, offsetV, scaleU, scaleV];
-                }, 50);
-            });
+            const { count, files, width, height } = json;
+            console.log(count);
+
+            window.i = 0;
+            window.files = files;
+            var s = setInterval(() => {
+                i = (++i) % (count);
+
+                const {
+                    file,
+                    // height,
+                    offsetU,
+                    offsetV,
+                    scaleU,
+                    scaleV,
+                    // width,
+                } = files[i];
+                p.customParams = [offsetU, 1.0 - (offsetV + scaleV), scaleU, scaleV];
+            }, 50);
 
             // p.flyTo();
             // 环绕飞行
-            earth.camera.flyAround([2.174033927183021, 0.10999357244211576, 0], 650, [0, -0.6, 0]);
 
             window.p = p; // 方便调试
         }
