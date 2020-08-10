@@ -259,43 +259,6 @@
                     }
                 `;
 
-                const evalString = `
-                    const files = [];
-                    for (let j=0; j<32; ++j) {
-                        for (let i=0; i<32; ++i) {
-                            const offsetU = 1/32 * i;
-                            const offsetV = 1/32 * j;
-                            const scaleU = 1/32;
-                            const scaleV = 1/32;
-                            files.push({ offsetU, offsetV, scaleU, scaleV });
-                        }
-                    }
-
-                    p._xx_files = files;
-                `;
-
-                const preUpdateEvalString = `
-                    if (p._xx_files) {
-                        if (typeof p._xx_i === 'undefined') {
-                            p._xx_i = 0;
-                        }
-                        p._xx_i = (++p._xx_i) % (p._xx_files.length);
-
-                        const {
-                            // file,
-                            // height,
-                            offsetU,
-                            offsetV,
-                            scaleU,
-                            scaleV,
-                            // width,
-                        } = p._xx_files[p._xx_i];
-                        p.customParams = [offsetU, 1.0 - (offsetV + scaleV), scaleU, scaleV];
-                    }
-
-                    p.rotation[0] = p.earth.camera.rotation[0] + Math.PI*0.5;
-                `;
-
                 const config0 = {
                     "imageUrl": "./assets/guangzhu/numbers/numbers-sdf.png", // Apps\Examples\assets\guangzhu\numbers\numbers-white.png
                     "position": [2.174033927183021, 0.10999357244211576, 226*2],
@@ -304,10 +267,9 @@
                     "sts": [0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1],
                     "indices": [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7],
                     "customParams": [0, 0, 1, 1],
+                    preUpdateEvalString: 'p.rotation[0] = p.earth.camera.rotation[0] + Math.PI*0.5;',
                     vertexShaderSource,
                     fragmentShaderSource,
-                    evalString,
-                    preUpdateEvalString,
                     "renderState": {
                         "cull": {
                             "enabled": true
@@ -344,12 +306,33 @@
                 }
 
                 const p = new XE.Obj.CustomPrimitive(earth);
+
+                function setNumber(num) {
+                    const offsetU = (num % 32) / 32;
+                    const offsetV = (num / 32 | 0) / 32;
+                    const scaleU = 1 / 32;
+                    const scaleV = 1 / 32;
+                    this.customParams = [offsetU, 1.0 - (offsetV + scaleV), scaleU, scaleV];
+                }
+                p.setNumber = setNumber.bind(p);
+                // function setFinal(final) {
+                //     const { offsetU, offsetV, scaleU, scaleV } = p._xx_files[0];
+                //     this.customParams = [offsetU, 1.0 - (offsetV + scaleV), scaleU, scaleV];
+                //     this._xx_i = 0;
+                //     this._xx_final = final;
+                // }
+                // p.setFinal = setFinal.bind(p);
+
                 p.xbsjFromJSON(config0);
+
+                // p.setFinal(0);
+
+                p.setNumber(255);
 
                 window.p2 = p;
             }
 
-            earth.camera.flyAround([2.174033927183021, 0.10999357244211576, 0], 650, [0, -0.6, 0]);
+            earth.camera.flyAround([2.174033927183021, 0.10999357244211576, 0], 1650, [0, -0.6, 0]);
 
         }
 
