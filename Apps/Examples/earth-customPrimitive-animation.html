@@ -33,53 +33,40 @@
 <body>
     <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
     </div>
-    <img class="left" src="./images/left.png">
-    <img class="right" src="./images/right.png">
+    <img class="videobox" src="./images/video_bg.png">
     <video id="mvideo" controls loop muted autoplay src="./images/合成.mp4"></video>
     <script>
         var earth;
         var bgImagery;
 
         function setDiv(p) {
-            var leftX = 174, leftY = 0, leftStepX = -4, rightX = 236, rightY = 0, rightStepX = 4, scaleNum = 0;
-            var leftImg = document.getElementsByClassName('left')[0];
-            var rightImg = document.getElementsByClassName('right')[0];
+            var scaleNum = 0;
+            var videobox = document.getElementsByClassName('videobox')[0];
             var video = document.getElementById("mvideo");
 
             var scaletimer = setInterval(function () {
                 p.drawCanvas(ctx => {
                     ctx.clearRect(0, 0, 500, 298);
-                    scaleNum += 1;
-                    ctx.drawImage(leftImg, leftX, leftY, leftImg.width * (scaleNum / 10), leftImg.height * (scaleNum / 10));
-                    ctx.drawImage(rightImg, rightX, rightY, rightImg.width * (scaleNum / 10), rightImg.height * (scaleNum / 10));
-                    ctx.globalAlpha = 0.3;
-                });
-                if ((scaleNum / 10) >= 1) {
+                    ctx.save();
+                    // 使用translate将画布中心放在画布中间可以实现围绕图片的中心进行缩放
+                    ctx.translate(500 / 2 - videobox.width / 2 * scaleNum, 298 / 2 - videobox.height / 2 * scaleNum);
+                    ctx.scale(scaleNum, scaleNum);
+                    ctx.drawImage(videobox, 0, 0);
+                    ctx.restore();
+                    scaleNum += 0.04;
+                })
+                if ((scaleNum) >= 0.5) {
                     clearInterval(scaletimer);
-                    var movetimer = setInterval(function () {
+                    var videotimer = setInterval(function () {
                         p.drawCanvas(ctx => {
-                            ctx.clearRect(0, 0, 500, 298);
-                            leftX += leftStepX;
-                            rightX += rightStepX;
-                            ctx.drawImage(leftImg, leftX, leftY);
-                            ctx.drawImage(rightImg, rightX, rightY);
-                            ctx.globalAlpha = 1;
+                            ctx.drawImage(video, 34, 36, 430, 226);
+                            if (video.ended) {
+                                clearInterval(videotimer);
+                            }
                         });
-                        if (leftX <= 2) {
-                            clearInterval(movetimer);
-                            var videotimer = setInterval(function () {
-                                p.drawCanvas(ctx => {
-                                    ctx.drawImage(video, 14, 14, 444, 270);
-                                    if (video.ended) {
-                                        clearInterval(videotimer);
-                                    }
-                                });
-                            }, 20);
-                        }
-                    }, 1);
+                    }, 20);
                 }
             }, 30)
-
         }
 
         function startup() {
@@ -151,12 +138,15 @@
 
                 var p = new XE.Obj.CustomPrimitive(earth);
                 p.xbsjFromJSON(config);
-                setDiv(p);
+                // setDiv(p);
+                setTimeout(() => setDiv(p), 500);
                 window.p = p; // 方便调试
             })
 
             earth.camera.position = [2.175117857841175, 0.11019179030898733, 1020.6532980658766];
             earth.camera.rotation = [4.713022428235233, -0.32323589635947103, 6.282414845220519];
+            // earth.camera.position = [2.174119347574382, 0.10999279616727672, 226.45524048720515];
+            // earth.camera.rotation = [4.713022428235233, -0.32323589635947103, 6.282414845220519];
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
