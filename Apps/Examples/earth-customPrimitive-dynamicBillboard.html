@@ -234,7 +234,18 @@
                         vec3 normalEC = normalize(v_normalEC);
                         normalEC = faceforward(normalEC, vec3(0.0, 0.0, 1.0), -normalEC);
 
-                        vec4 imageColor = texture2D(u_image, fract(u_customParams.xy + v_st * u_customParams.zw));
+                        vec4 sdfColor = texture2D(u_image, fract(u_customParams.xy + v_st * u_customParams.zw));
+                        float distance = sdfColor.r;
+
+                        float _SmoothDelta = 0.02;
+                        float _DistanceMark = 0.7;
+
+                        // do some anti-aliasing
+                        vec4 imageColor = vec4(1.0, 1.0, 1.0, 1.0);
+                        imageColor.a = smoothstep(_DistanceMark - _SmoothDelta, _DistanceMark + _SmoothDelta, distance);
+
+                        //vec4 imageColor = texture2D(u_image, fract(u_customParams.xy + v_st * u_customParams.zw));
+
                         // imageColor = czm_gammaCorrect(imageColor);
                         vec3 diffuse = imageColor.rgb;
                         float alpha = imageColor.a;
@@ -285,7 +296,7 @@
                 `;
 
                 const config0 = {
-                    "imageUrl": "./assets/guangzhu/numbers/numbers-white.png", // Apps\Examples\assets\guangzhu\numbers\numbers-white.png
+                    "imageUrl": "./assets/guangzhu/numbers/numbers-sdf.png", // Apps\Examples\assets\guangzhu\numbers\numbers-white.png
                     "position": [2.174033927183021, 0.10999357244211576, 0],
                     "scale": [1, 256, 256],
                     "positions": [0, -1, 0, 0, 1, 0, 0, 1, 2, 0, -1, 2, 0, 1, 0, 0, -1, 0, 0, -1, 2, 0, 1, 2],
@@ -349,11 +360,6 @@
 
                 window.p = p;
             }
-
-
-
-
-
 
             earth.camera.flyAround([2.174033927183021, 0.10999357244211576, 0], 650, [0, -0.6, 0]);
 
