@@ -61,7 +61,6 @@
                         "czmObject": {
                             "xbsjType": "CustomPrimitive",
                             "xbsjGuid": "2812b3dc-1584-4ad3-8023-debe334b2817",
-                            // "evalString": "Cesium.Resource.createIfNeeded('./assets/guangzhu/guangzhu_1.png').fetchImage().then(function(image) { p.drawCanvas(ctx => {ctx.clearRect(0, 0, 512, 256); ctx.drawImage(image, 0, 0);}); });",
                             "imageUrl": "./assets/guangzhu/guangzhu_1.png",
                             "position": [
                                 2.174033927183021,
@@ -70,8 +69,8 @@
                             ],
                             "scale": [
                                 1,
-                                128,
-                                226
+                                256,
+                                256
                             ],
                             "positions": [0, -1, 0, 0, 1, 0, 0, 1, 2, 0, -1, 2, 0, 1, 0, 0, -1, 0, 0, -1, 2, 0, 1, 2],
                             "sts": [0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1],
@@ -179,8 +178,13 @@
 
             p.evalString = `
                 Cesium.Resource.fetchJson('./assets/guangzhu/guangzhu_1.png.json').then(json => {
-                    const { count, files, width, height } = json;
-                    p._xx_files = files;
+                    const { count, files } = json;
+                    if (files.length > 0) {
+                        const { width, height } = files[0];
+                        p.scale[1] = width;
+                        p.scale[2] = height;
+                        p._xx_files = files;
+                    }
                 });
             `;
 
