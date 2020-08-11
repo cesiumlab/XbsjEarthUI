@@ -63,21 +63,19 @@
 
             function createPoi({
                 earth,
-                imageUrl,
-                configUrl,
                 color,
                 position,
             }) {
-                const p = XE.Obj.CustomPrimitive.createDynamicPoi({
+                const bg = XE.Obj.CustomPrimitive.createDynamicPoi({
                     earth,
-                    imageUrl,
-                    configUrl,
+                    imageUrl: './assets/guangzhu/guangzhu_bai/guangzhu_bai.png',
+                    configUrl: './assets/guangzhu/guangzhu_bai/guangzhu_bai.png.json',
                     position: [...position],
                     scale: 1.0,
                     color: [...color],
                 });
 
-                const p2 = XE.Obj.CustomPrimitive.createDynamicPoi({
+                const bg2 = XE.Obj.CustomPrimitive.createDynamicPoi({
                     earth,
                     imageUrl: './assets/guangzhu/kuang_bai/kuang02.png',
                     configUrl: './assets/guangzhu/kuang_bai/kuang02.png.json',
@@ -86,25 +84,25 @@
                     color: [...color],
                 });
 
-                const t1 = XE.Obj.CustomPrimitive.creatNumberPoi({
+                const text = XE.Obj.CustomPrimitive.creatNumberPoi({
                     position: [position[0], position[1], position[2] + 160*2],
                     scale: 32,
                     color: [1, 1, 1, 1],
                 });
+
+                return {
+                    bg, bg2, text
+                }
             }
 
             createPoi({
                 earth,
-                imageUrl: './assets/guangzhu/guangzhu_bai/guangzhu_bai.png',
-                configUrl: './assets/guangzhu/guangzhu_bai/guangzhu_bai.png.json',
                 color: [0.8, 0.8, 0, 1],
                 position: [2.174033927183021, 0.10999357244211576, 0],
             });
 
             createPoi({
                 earth,
-                imageUrl: './assets/guangzhu/guangzhu_bai/guangzhu_bai.png',
-                configUrl: './assets/guangzhu/guangzhu_bai/guangzhu_bai.png.json',
                 color: [0.1, 0.7, 0.1, 1],
                 position: [2.1740604884893173, 0.10997282231122428, 0],
             });
