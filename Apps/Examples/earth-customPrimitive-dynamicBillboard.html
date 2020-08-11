@@ -61,157 +61,7 @@
                 ]
             };
 
-            function createDynamicPoi({
-                earth,
-                imageUrl, 
-                configUrl,
-                position,
-                scale = 100,
-                color = [1, 1, 1, 1],
-            }) {
-                var vertexShaderSource = `
-                    attribute vec3 position;
-                    attribute vec3 normal;
-                    attribute vec2 st;
-                    attribute vec4 color;
-                    attribute float batchId;
-                    varying vec3 v_positionEC;
-                    varying vec3 v_normalEC;
-                    varying vec2 v_st;
-                    varying vec4 v_color;
-                    void main()
-                    {
-                        v_positionEC = (czm_modelView * vec4(position, 1.0)).xyz;       // position in eye coordinates
-                        v_normalEC = czm_normal * normal;                               // normal in eye coordinates
-                        v_st = st;
-                        v_color = color;
-                        gl_Position = czm_modelViewProjection * vec4(position, 1.0);
-                    }
-                `;
-
-                var fragmentShaderSource = `
-                    varying vec3 v_positionEC;
-                    varying vec3 v_normalEC;
-                    varying vec2 v_st;
-                    varying vec4 v_color;
-                    uniform sampler2D u_image;
-                    uniform vec4 u_color;
-                    uniform vec4 u_customParams; // 用来指定图像的部分区域 x y width height 都在0-1之间，是比例！
-                    void main()
-                    {
-                        vec3 positionToEyeEC = -v_positionEC;
-                        vec3 normalEC = normalize(v_normalEC);
-                        normalEC = faceforward(normalEC, vec3(0.0, 0.0, 1.0), -normalEC);
-
-                        vec4 imageColor = texture2D(u_image, fract(u_customParams.xy + v_st * u_customParams.zw));
-                        // imageColor = czm_gammaCorrect(imageColor);
-                        vec3 diffuse = imageColor.rgb;
-                        float alpha = imageColor.a;
-
-                        diffuse *= v_color.rgb;
-                        alpha *= v_color.a;
-
-                        diffuse *= u_color.rgb;
-                        alpha *= u_color.a;
-
-                        // gl_FragColor = vec4(czm_inverseGamma(diffuse), alpha);
-                        gl_FragColor = vec4((diffuse), alpha);
-                    }
-                `;
-
-                    //Cesium.Resource.fetchJson('./assets/guangzhu/guangzhu_1.png.json').then(json => {
-                const evalString = `
-                    Cesium.Resource.fetchJson('${configUrl}').then(json => {
-                        const { count, files } = json;
-                        if (files.length > 0) {
-                            const { width, height } = files[0];
-                            p.scale[1] = ${scale} * width;
-                            p.scale[2] = ${scale} * height;
-                            p._xx_files = files;
-                        }
-                    });
-                `;
-
-                const preUpdateEvalString = `
-                    if (p._xx_files) {
-                        if (typeof p._xx_i === 'undefined') {
-                            p._xx_i = 0;
-                        }
-                        p._xx_i = (++p._xx_i) % (p._xx_files.length);
-
-                        const {
-                            file,
-                            // height,
-                            offsetU,
-                            offsetV,
-                            scaleU,
-                            scaleV,
-                            // width,
-                        } = p._xx_files[p._xx_i];
-                        p.customParams = [offsetU, 1.0 - (offsetV + scaleV), scaleU, scaleV];
-                    }
-
-                    p.rotation[0] = p.earth.camera.rotation[0] + Math.PI*0.5;
-                `;
-
-                const config0 = {
-                    // "imageUrl": "./assets/guangzhu/guangzhu_1.png",
-                    "imageUrl": imageUrl,
-                    // "position": [2.174033927183021, 0.10999357244211576, 0],
-                    "position": [...position],
-                    "scale": [1, 256, 256],
-                    "positions": [0, -1, 0, 0, 1, 0, 0, 1, 2, 0, -1, 2, 0, 1, 0, 0, -1, 0, 0, -1, 2, 0, 1, 2],
-                    "sts": [0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1],
-                    "indices": [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7],
-                    "customParams": [0, 0, 1, 1],
-                    vertexShaderSource,
-                    fragmentShaderSource,
-                    evalString,
-                    pass: Cesium.Pass.TRANSLUCENT,
-                    preUpdateEvalString,
-                    "renderState": {
-                        "cull": {
-                            "enabled": true
-                        },
-                        "polygonOffset": {},
-                        "scissorTest": {
-                            "rectangle": {}
-                        },
-                        "depthRange": {},
-                        "depthTest": {
-                            "enabled": true
-                        },
-                        "colorMask": {},
-                        "depthMask": false,
-                        "blending": {
-                            "enabled": true,
-                            "color": {},
-                            "equationRgb": 32774,
-                            "equationAlpha": 32774,
-                            "functionSourceRgb": 770,
-                            "functionDestinationRgb": 771,
-                            "functionDestinationAlpha": 771
-                        },
-                        "stencilTest": {
-                            "frontOperation": {},
-                            "backOperation": {}
-                        },
-                        "sampleCoverage": {}
-                    },
-                    "color": [...color],
-                    // "canvasWidth": 128,
-                    // "canvasHeight": 226,
-                    "autoRegisterEditing": true
-                }
-
-                const p = new XE.Obj.CustomPrimitive(earth);
-                p.xbsjFromJSON(config0);
-
-                // window.p = p;
-                return p;
-            }
-
-            const p = createDynamicPoi({
+            const p = XE.Obj.CustomPrimitive.createDynamicPoi({
                 earth,
                 imageUrl: './assets/guangzhu/guangzhu_bai/guangzhu_bai.png',
                 configUrl: './assets/guangzhu/guangzhu_bai/guangzhu_bai.png.json',
@@ -220,7 +70,7 @@
                 color: [1, 1, 1, 1],
             });
 
-            const p2 = createDynamicPoi({
+            const p2 = XE.Obj.CustomPrimitive.createDynamicPoi({
                 earth,
                 imageUrl: './assets/guangzhu/kuang_bai/kuang02.png',
                 configUrl: './assets/guangzhu/kuang_bai/kuang02.png.json',
@@ -229,7 +79,7 @@
                 color: [0.5, 0.5, 0.5, 1],
             });
 
-            const p3 = createDynamicPoi({
+            const p3 = XE.Obj.CustomPrimitive.createDynamicPoi({
                 earth,
                 imageUrl: './assets/guangzhu/guangzhu_bai/guangzhu_bai.png',
                 configUrl: './assets/guangzhu/guangzhu_bai/guangzhu_bai.png.json',
@@ -238,7 +88,7 @@
                 color: [1, 1, 1, 1],
             });
 
-            const p4 = createDynamicPoi({
+            const p4 = XE.Obj.CustomPrimitive.createDynamicPoi({
                 earth,
                 imageUrl: './assets/guangzhu/kuang_bai/kuang02.png',
                 configUrl: './assets/guangzhu/kuang_bai/kuang02.png.json',
