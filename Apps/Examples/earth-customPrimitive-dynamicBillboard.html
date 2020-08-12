@@ -74,6 +74,8 @@
                     scale: 1.0,
                     color: [...color],
                 });
+                bg.setStartTime(Math.random());
+                bg.setFPS(120 * Math.random());
 
                 const bg2 = XE.Obj.CustomPrimitive.createDynamicPoi({
                     earth,
@@ -83,6 +85,7 @@
                     scale: 0.15,
                     color: [...color],
                 });
+                bg2.setStartTime(Math.random());
 
                 const text = XE.Obj.CustomPrimitive.creatNumberPoi({
                     earth,
