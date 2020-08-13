@@ -579,9 +579,9 @@ export default {
           "是否替换当前场景？",
           () => {
             self.$root.$earth.xbsjFromJSON(this.jsontext);
-            self.$root.$earth.sceneTree.root.children.push(
-              this.jsontext.sceneTree.root
-            );
+            // self.$root.$earth.sceneTree.root.children.push(
+            //   this.jsontext.sceneTree.root
+            // );
           }
           // () => {
           //   self.$root.$earth.sceneTree.root.children.push(
