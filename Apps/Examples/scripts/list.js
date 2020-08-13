@@ -120,6 +120,10 @@ vueApp.examples = [
                 "url": "./earth-customPrimitive-div.html"
             },
             {
+                "title": "自定义图元-div2",
+                "url": "./earth-customPrimitive-div2.html"
+            },
+            {
                 "title": "自定义图元-echarts",
                 "url": "./earth-customPrimitive-echarts.html"
             },
