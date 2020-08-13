@@ -39,6 +39,7 @@
                         "czmObject": {
                             "name": "谷歌影像",
                             "xbsjType": "Imagery",
+                            "brightness": 0.3,
                             "xbsjImageryProvider": {
                                 "XbsjImageryProvider": {
                                     "url": "//mt1.google.cn/vt/hyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali",
@@ -85,16 +86,26 @@
                 ]
             ];
 
-            const bg = XE.Obj.CustomPrimitive.createDynamicCountour2({
+            const l = XE.Obj.CustomPrimitive.createDynamicCountour({
                 earth,
-                // imageUrl: './assets/countour/l/l.png',
-                // configUrl: './assets/countour/l/l.png.json',
+                imageUrl: './assets/countour/l/l.png',
+                configUrl: './assets/countour/l/l.png.json',
+                positions,
+                height: 30,
+                loop: true,
+                color: [1, 1, 1, 1],
+            });
+
+            const p = XE.Obj.CustomPrimitive.createDynamicCountour2({
+                earth,
                 imageUrl: './assets/countour/h/h.png',
                 configUrl: './assets/countour/h/h.png.json',
                 positions,
                 height: 30,
+                loop: true,
                 color: [1, 1, 1, 1],
             });
+
             // bg.setStartTime(Math.random());
             // bg.setFPS(120 * Math.random());
 
