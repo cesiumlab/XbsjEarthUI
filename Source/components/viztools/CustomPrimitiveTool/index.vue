@@ -373,12 +373,11 @@ export default {
 
     if (czmObj) {
       this._czmObj = czmObj;
-      if (czmObj.creating) {
-        czmObj.creating = true;
-      } else {
+
+      if (typeof czmObj.creating === "undefined") {
         czmObj.autoRegisterEditing = true;
-        czmObj.creating = true;
       }
+
       const bindData = {
         name: "model.name",
         creating: "model.creating",
