@@ -77,7 +77,7 @@
                 [
                     2.031443171776006,
                     0.6964036091529164,
-                    9.313225746154785e-10
+                    0
                 ],
                 [
                     2.0314415642281167,
@@ -95,22 +95,34 @@
                 loop: true,
                 color: [1, 1, 1, 1],
             });
+            l.show = false;
 
+            positions.forEach(e => e[2] = 30);
             const p = XE.Obj.CustomPrimitive.createDynamicCountour2({
                 earth,
                 imageUrl: './assets/countour/h/h.png',
                 configUrl: './assets/countour/h/h.png.json',
+                // imageUrl: './assets/countour/l/l.png',
+                // configUrl: './assets/countour/l/l.png.json',
                 positions,
-                height: 30,
+                width: 30,
                 loop: true,
                 color: [1, 1, 1, 1],
             });
+
+            window.l = l;
+            window.p = p;
+
+            // l.setFPS(5);
+            // p.setFPS(5);
 
             // bg.setStartTime(Math.random());
             // bg.setFPS(120 * Math.random());
 
             // earth.camera.flyAround([2.174033927183021, 0.10999357244211576, 0], 1650, [0, -0.6, 0]);
-            earth.camera.flyAround([2.031416100812992, 0.6963996977152307, 0], 650, [0, -0.6, 0]);
+            // earth.camera.flyAround([2.031416100812992, 0.6963996977152307, 0], 650, [0, -0.6, 0]);
+
+            l.flyTo();
         }
 
         // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
