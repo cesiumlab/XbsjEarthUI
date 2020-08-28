@@ -124,12 +124,24 @@ vueApp.examples = [
                 "url": "./earth-customPrimitive-div2.html"
             },
             {
+                "title": "自定义图元-动态双面电子标牌",
+                "url": "./earth-customPrimitive-dynamicBillboard.html"
+            },
+            {
+                "title": "自定义图元-动态轮廓",
+                "url": "./earth-customPrimitive-dynamicCountor.html"
+            },
+            {
                 "title": "自定义图元-echarts",
                 "url": "./earth-customPrimitive-echarts.html"
             },
             {
                 "title": "自定义图元-image",
                 "url": "./earth-customPrimitive-image.html"
+            },
+            {
+                "title": "自定义图元-POI",
+                "url": "./earth-customPrimitive-poi.html"
             },
             {
                 "title": "自定义图元-SVG",
