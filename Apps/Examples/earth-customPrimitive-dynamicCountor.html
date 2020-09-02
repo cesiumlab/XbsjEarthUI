@@ -86,6 +86,7 @@
                 ]
             ];
 
+            // 竖立的动态墙
             const l = XE.Obj.CustomPrimitive.createDynamicCountour({
                 earth,
                 imageUrl: './assets/countour/l/l.png',
@@ -95,9 +96,8 @@
                 loop: true,
                 color: [1, 1, 1, 1],
             });
-            l.show = false;
 
-            positions.forEach(e => e[2] = 30);
+            // 平躺在地面的轮廓
             const p = XE.Obj.CustomPrimitive.createDynamicCountour2({
                 earth,
                 imageUrl: './assets/countour/h/h.png',
@@ -110,6 +110,7 @@
                 color: [1, 1, 1, 1],
             });
 
+            // 方便调试
             window.l = l;
             window.p = p;
 
