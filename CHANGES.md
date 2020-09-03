@@ -1,6 +1,19 @@
 Change Log
 ==========
 
+### 1.4.21 - 2020-9-3
+##### Additions :tada:
+* 增加CustomPrimitive.createDynamicCountour和CustomPrimitive.createDynamicCountour2方法
+* 增加CustomPrimitive.createDynamicPoi和CustomPrimitive.creatNumberPoi方法
+##### Fixes :wrench:
+* 修复面积测量始终出现一个0平方米的标签的问题
+* 3dtiels的内置科技感shader完善，增加部分注释，方便客户自行修改
+* 修正clock，修复gltf动画加载后动画播放不正常的问题(wcx)
+* 修复包括跨平台压缩纹理(BASIS)的3dtiles数据在EarthSDK示例中不能展示的问题
+* 修复Pin的背景会被填充棉遮挡的问题
+* 自定义图元针对imageUrl属性，采用共享纹理模式，即imageUrl相同的纹理，讲只加载一次
+* XbsjEliipsoidTerrainProvider增加tilingScheme属性，方便进行墨卡托分块测试
+
 ### 1.4.18 - 2020-8-4
 ##### Additions :tada:
 * 修复earth.destroy()报错的问题
