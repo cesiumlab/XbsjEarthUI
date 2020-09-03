@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="xbsj-labels" content="Earth示例">
+    <meta name="xbsj-labels" content="内部测试">
     </meta>
     <title>自定义图元-动态轮廓</title>
     <!-- 0 引入js文件 -->
@@ -89,8 +89,8 @@
             // 竖立的动态墙
             const l = XE.Obj.CustomPrimitive.createDynamicCountour({
                 earth,
-                imageUrl: './assets/countour/l/l.png',
-                configUrl: './assets/countour/l/l.png.json',
+                imageUrl: './assets/contour/l/l.png',
+                configUrl: './assets/contour/l/l.png.json',
                 positions,
                 height: 30,
                 loop: true,
@@ -100,15 +100,14 @@
             // 平躺在地面的轮廓
             const p = XE.Obj.CustomPrimitive.createDynamicCountour2({
                 earth,
-                imageUrl: './assets/countour/h/h.png',
-                configUrl: './assets/countour/h/h.png.json',
-                // imageUrl: './assets/countour/l/l.png',
-                // configUrl: './assets/countour/l/l.png.json',
+                imageUrl: './assets/contour/h/h.png',
+                configUrl: './assets/contour/h/h.png.json',
                 positions,
                 width: 30,
                 loop: true,
                 color: [1, 1, 1, 1],
             });
+            p.show = false;
 
             // 方便调试
             window.l = l;

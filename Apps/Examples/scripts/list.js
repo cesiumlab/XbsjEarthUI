@@ -124,14 +124,6 @@ vueApp.examples = [
                 "url": "./earth-customPrimitive-div2.html"
             },
             {
-                "title": "自定义图元-动态双面电子标牌",
-                "url": "./earth-customPrimitive-dynamicBillboard.html"
-            },
-            {
-                "title": "自定义图元-动态轮廓",
-                "url": "./earth-customPrimitive-dynamicCountor.html"
-            },
-            {
                 "title": "自定义图元-echarts",
                 "url": "./earth-customPrimitive-echarts.html"
             },
@@ -595,25 +587,16 @@ vueApp.examples = [
         ]
     },
     {
-        "title": "Earth案例",
-        "list": [
-            {
-                "title": "数字城市",
-                "url": "./earth-digitalCity.html"
-            },
-            {
-                "title": "数字工厂",
-                "url": "./earth-digitalFactory.html"
-            },
-            {
-                "title": "批量化Lod模型",
-                "url": "./earth-lodModels.html"
-            }
-        ]
-    },
-    {
         "title": "内部测试",
         "list": [
+            {
+                "title": "自定义图元-动态双面电子标牌",
+                "url": "./earth-customPrimitive-dynamicBillboard.html"
+            },
+            {
+                "title": "自定义图元-动态轮廓",
+                "url": "./earth-customPrimitive-dynamicContour.html"
+            },
             {
                 "title": "模型-环境贴图（勿用）",
                 "url": "./earth-model-envirement.html"
@@ -629,6 +612,23 @@ vueApp.examples = [
             {
                 "title": "多选-框选&任意选择",
                 "url": "./test-polygonPicking.html"
+            }
+        ]
+    },
+    {
+        "title": "Earth案例",
+        "list": [
+            {
+                "title": "数字城市",
+                "url": "./earth-digitalCity.html"
+            },
+            {
+                "title": "数字工厂",
+                "url": "./earth-digitalFactory.html"
+            },
+            {
+                "title": "批量化Lod模型",
+                "url": "./earth-lodModels.html"
             }
         ]
     },
