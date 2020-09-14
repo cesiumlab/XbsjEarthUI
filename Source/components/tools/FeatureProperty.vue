@@ -35,16 +35,16 @@ export default {
     return {
       langs: {
         zh: {
-          title: "对象属性"
+          title: "对象属性",
         },
         en: {
-          title: "Feature Property"
-        }
+          title: "Feature Property",
+        },
       },
       lang: undefined,
       show: false,
       groups: [],
-      disabled: false
+      disabled: false,
     };
   },
   created() {},
@@ -53,18 +53,22 @@ export default {
     const picking = this.$root.$earth.interaction.picking;
     // 修复feature属性窗口自动弹出的问题，XE.MVVM.watch(picking, 'clickedObj' 会导致莫名奇妙被调用，虽然clickObj中的值并未发生变化。
     // this.unAutorun = XE.MVVM.watch(picking, 'clickedObj', () => {
-    this.unAutorun = XE.MVVM.watch(() => picking.clickedObj, () => {
-      // var feature =
-      //   this.$root.$earth.pickedObject.clicked &&
-      //   this.$root.$earth.pickedObject.clicked.rawObject;
-      const co = picking.clickedObj;
-      const pickedObject = co && picking.clickedAttachedInfo;
-      const feature = pickedObject instanceof Cesium.Cesium3DTileFeature && pickedObject;
+    this.unAutorun = XE.MVVM.watch(
+      () => picking.clickedObj,
+      () => {
+        // var feature =
+        //   this.$root.$earth.pickedObject.clicked &&
+        //   this.$root.$earth.pickedObject.clicked.rawObject;
+        const co = picking.clickedObj;
+        const pickedObject = co && picking.clickedAttachedInfo;
+        const feature =
+          pickedObject instanceof Cesium.Cesium3DTileFeature && pickedObject;
 
-      //如果有对象并且没有禁用弹出，那么弹出
-      if (feature && !this.disabled) this.onPicked(feature);
-      else this.show = false;
-    });
+        //如果有对象并且没有禁用弹出，那么弹出
+        if (feature && !this.disabled) this.onPicked(feature);
+        else this.show = false;
+      }
+    );
   },
   methods: {
     getProperties(feature) {
@@ -93,18 +97,18 @@ export default {
       var groups = [
         {
           name: "通用",
-          props: []
-        }
+          props: [],
+        },
       ];
 
       function findDef(fieldname) {
         if (!fileParams) return;
 
-        return fileParams.find(g => g.name == fieldname);
+        return fileParams.find((g) => g.name == fieldname);
       }
 
       function findGroup(groupname) {
-        return groups.find(g => g.name == groupname);
+        return groups.find((g) => g.name == groupname);
       }
       function findGroupByField(fieldname) {
         var def = findDef(fieldname);
@@ -114,7 +118,7 @@ export default {
         if (!g) {
           g = {
             name: def.group,
-            props: []
+            props: [],
           };
           groups.push(g);
         }
@@ -133,7 +137,7 @@ export default {
         var group = findGroupByField(n);
         group.props.push({
           name: n,
-          value: feature.getProperty(n)
+          value: feature.getProperty(n),
         });
       }
 
@@ -151,7 +155,7 @@ export default {
       if (!this.groups) this.groups = [];
 
       // console.log(this.groups);
-      this.groups.forEach(element => {
+      this.groups.forEach((element) => {
         //动态添加一个close控制展开和收起
         this.$set(element, "close", false);
       });
@@ -160,19 +164,19 @@ export default {
         //设置window的位置永远靠右
         this.show = true;
       }
-    }
+    },
   },
   computed: {},
   filters: {},
   beforeDestroy() {},
-  watch: {}
+  watch: {},
 };
 </script>
 
 <style scoped>
 .group .groupname {
   display: inline-block;
-  width: 100%;
+  width: calc(100% - 10px);
   height: 25px;
   text-align: left;
   line-height: 25px;
