@@ -42,24 +42,104 @@
     </div>
 
     <script>
-        function createIFrame(url, width, height) {
-            const wrapper = document.createElement('div');
-            wrapper.style.position = 'absolute';
-            // wrapper.style.left = '10px';
-            // wrapper.style.top = '10px';
-            wrapper.style.width = `${width}px`;
-            wrapper.style.height = `${height}px`;
-            wrapper.style.background = 'red';
-            wrapper.style.background = 'black';
-            document.body.appendChild(wrapper);
-            var iframe = document.createElement('iframe');
-            iframe.src = url;
-            iframe.style.width = '100%';
-            iframe.style.height = '100%';
-            wrapper.appendChild(iframe);
+        class PopupIFrame {
+            constructor() {
+                const width = 500;
+                const height = 400;
 
-            return wrapper;
+                const wrapper = document.createElement('div');
+                wrapper.style.position = 'absolute';
+                wrapper.style.width = `${width}px`;
+                wrapper.style.height = `${height}px`;
+                wrapper._width = width;
+                wrapper._height = height;
+
+                wrapper.style.left = `0px`;
+                wrapper._left = 0;
+                wrapper.style.bottom = `0px`;
+                wrapper._bottom = 0;
+
+                // wrapper.style.background = 'black';
+                document.body.appendChild(wrapper);
+                const iframe = document.createElement('iframe');
+                // iframe.src = ;
+                iframe.style.width = '100%';
+                iframe.style.height = '100%';
+                wrapper.appendChild(iframe);
+
+                wrapper.style.display = 'none';
+                wrapper._show = false;
+
+                this._wrapper = wrapper;
+                this._iframe = iframe;
+            }
+
+            setPosition(left, bottom) {
+                const wrapper = this._wrapper;
+                if (wrapper._left !== left || wrapper._bottom !== bottom) {
+                    wrapper.style.left = `${left}px`;
+                    wrapper._left = left;
+                    wrapper.style.bottom = `${bottom}px`;
+                    wrapper._bottom = bottom;
+                }
+            }
+
+            set show(value) {
+                const wrapper = this._wrapper;
+                if (wrapper._show !== !!value) {
+                    wrapper._show = !!value;
+                    if (wrapper._show) {
+                        wrapper.style.display = 'block';
+                    } else {
+                        wrapper.style.display = 'none';
+                    }
+                }
+            }
+
+            get show() {
+                const wrapper = this._wrapper;
+                return wrapper._show;
+            }
+
+            set uri(value) {
+                const iframe = this._iframe;
+                if (iframe.src !== value) {
+                    iframe.src = value;
+                }
+            }
+
+            get uri() {
+                const iframe = this._iframe;
+                return iframe.src;
+            }
+
+            set width(value) {
+                const wrapper = this._wrapper;
+                if (wrapper.width !== value) {
+                    wrapper._width = value;
+                    wrapper.style.width = `${width}px`;
+                }
+            }
+
+            get width() {
+                return this._wrapper._width;
+            }
+
+            set height(value) {
+                const wrapper = this._wrapper;
+                if (wrapper.height !== value) {
+                    wrapper._height = value;
+                    wrapper.style.height = `${height}px`;
+                }
+            }
+
+            get height() {
+                return this._wrapper._height;
+            }
+
         }
+
+        const popup = new PopupIFrame();
 
         // 1 创建Earth的vue组件
         var EarthComp = {
@@ -139,18 +219,30 @@
 
                 this._earth = earth;
 
-                const wrapper = createIFrame('//www.baidu.com', 500, 400);
+                // const wrapper = createIFrame('//www.baidu.com', 500, 400);
 
                 // 监控数据
                 this.uw = XE.MVVM.watch(() => [...pin1.winPos], () => {
-                    const { winPos: [left, top, right, bottom] } = pin1;
-                    if (wrapper._left !== left || wrapper._bottom !== bottom) {
-                        wrapper.style.left = `${left}px`;
-                        wrapper._left = left;
-                        wrapper.style.bottom = `${bottom}px`;
-                        wrapper._bottom = bottom;
+                    if (popup.show) {
+                        const { winPos: [left, top, right, bottom] } = pin1;
+                        popup.setPosition(left, bottom);
                     }
                 });
+
+                pin1.onclick = () => {
+                    if (!popup.show) {
+                        popup.uri = '//www.baidu.com';
+                        popup.show = true;
+                        const { winPos: [left, top, right, bottom] } = pin1;
+                        popup.setPosition(left, bottom);
+                    } else {
+                        popup.show = false;
+                    }
+                }
+
+                pin1.onclickout = () => {
+                    popup.show = false;
+                }
 
                 // only for Debug
                 window.earth = earth;
