@@ -137,6 +137,11 @@
                 return this._wrapper._height;
             }
 
+            destroy() {
+                document.body.removeChild(this._wrapper);
+                this._wrapper = undefined;
+                this._iframe = undefined;
+            }
         }
 
         const popup = new PopupIFrame();
