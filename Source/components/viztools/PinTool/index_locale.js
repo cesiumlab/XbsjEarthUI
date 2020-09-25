@@ -39,7 +39,14 @@ const zh = {
   image: '图片',
   text: '文本',
   evalstring: '创建代码',
-  dragcontent: '请把对象拖到这里'
+  dragcontent: '请把对象拖到这里',
+  iframeUrl: 'iframe路径',
+  iframe: {
+    width: '宽度',
+    height: '高度',
+    offsetX: '左右偏移',
+    offsetY: '上下偏移'
+  }
 }
 
 const en = {
@@ -82,7 +89,14 @@ const en = {
   image: 'image',
   text: 'text',
   evalstring: 'evalstring',
-  dragcontent: 'Drag the object here'
+  dragcontent: 'Drag the object here',
+  iframeUrl: 'iframeUrl',
+  iframe: {
+    width: 'width',
+    height: 'height',
+    offsetX: 'offsetX',
+    offsetY: 'offsetY'
+  }
 }
 
 export default { zh, en }
