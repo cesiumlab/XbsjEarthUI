@@ -420,6 +420,10 @@ vueApp.examples = [
                 "url": "./earth-pin-iframe.html"
             },
             {
+                "title": "Pin-iframe2",
+                "url": "./earth-pin-iframe2.html"
+            },
+            {
                 "title": "Pin-外部图像",
                 "url": "./earth-pin-imageUrl.html"
             },
