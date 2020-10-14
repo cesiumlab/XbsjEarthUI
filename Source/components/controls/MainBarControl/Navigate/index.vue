@@ -209,7 +209,7 @@
               style="margin-top: 34px"
             ></XbsjSlider>
           </div>
-          <span class="xbsj-item-name">fov</span>
+          <span class="xbsj-item-name">FOV</span>
         </div>
       </div>
     </div>

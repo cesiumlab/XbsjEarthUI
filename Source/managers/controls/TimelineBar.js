@@ -8,14 +8,14 @@ class TimelineBar {
         this._comp = root._comp.$refs.timelineBarControl;
 
         XE.MVVM.extend(this, {
-             /**
-            * 是否可见
-            * @type {boolean}
-            * @default true 
-            * @instance
-            * @memberof TimelineBar
-            */
-            show: true,
+            /**
+           * 是否可见
+           * @type {boolean}
+           * @default true 
+           * @instance
+           * @memberof TimelineBar
+           */
+            show: false,
         });
 
 
@@ -49,11 +49,11 @@ class TimelineBar {
     }
 
     destroy() {
-    
+
 
         this.unbind1 = this.unbind1 && this.unbind1();
         // this.unbind2 = this.unbind2 && this.unbind2();
- 
+
     }
 }
 

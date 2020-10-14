@@ -3,6 +3,8 @@ Change Log
 
 ##### Additions :tada:
 * 漫游菜单增加相机的fov角度
+##### Fixes :wrench:
+* 时间轴默认改为隐藏
 
 ### 1.4.21 - 2020-9-3
 ##### Additions :tada:
