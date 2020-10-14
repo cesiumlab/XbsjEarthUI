@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+##### Additions :tada:
+* 漫游菜单增加相机的fov角度
+
 ### 1.4.21 - 2020-9-3
 ##### Additions :tada:
 * 增加CustomPrimitive.createDynamicCountour和CustomPrimitive.createDynamicCountour2方法
