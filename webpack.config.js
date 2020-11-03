@@ -154,7 +154,7 @@ module.exports = {
     // devtool: '#eval-source-map',
     devServer: {
         historyApiFallback: true,
-        noInfo: true,
+        noInfo: false, // 升级webpack4以后，需要打开才能正常调试... vtxf 20201103
         overlay: true,
         contentBase: path.join(__dirname, "dist"), // 只有加载静态文件时才需要，比如文档
         port: 9530,
