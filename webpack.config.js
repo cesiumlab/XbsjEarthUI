@@ -270,6 +270,12 @@ module.exports.plugins = (module.exports.plugins || []).concat([
 
 if (process.env.NODE_ENV === 'production') {
     module.exports.devtool = false // 不生成source map
+
+    // webpack 4.0升级以后需要的 vtxf 20200812
+    // module.exports.optimization = module.exports.optimization || {};
+    // module.exports.optimization.minimize = false;
+    module.exports.mode = "production";
+
     // http://vue-loader.vuejs.org/en/workflow/production.html
     module.exports.plugins = (module.exports.plugins || []).concat([
         new CleanWebpackPlugin('./dist'),
@@ -278,12 +284,12 @@ if (process.env.NODE_ENV === 'production') {
                 NODE_ENV: '"production"'
             }
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            sourceMap: false,
-            compress: {
-                warnings: false
-            }
-        }),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     sourceMap: false,
+        //     compress: {
+        //         warnings: false
+        //     }
+        // }),
         new webpack.LoaderOptionsPlugin({
             minimize: true
         }),
