@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  data: function() {
+  data: function () {
     return {
       show: true,
       cameraString: "",
@@ -45,7 +45,7 @@ export default {
             "鼠标左键点击坐标轴x,y,z任意一个轴，轴变黄色，可沿着相应位置进行移动，再次点击，轴恢复原色，停止移动，点击右键坐标轴消失",
           rotatableObjectTip:
             "鼠标左键点击旋转坐标轴任意一个轴，轴变黄色，可沿着相应位置进行旋转，再次点击，轴恢复原色，停止旋转，点击右键旋转坐标轴消失",
-          positionPickingTip: "点击鼠标左键拾取位置"
+          positionPickingTip: "点击鼠标左键拾取位置",
         },
         en: {
           longitude: "LNG",
@@ -82,8 +82,8 @@ export default {
           rotatableObjectTip:
             "Click any axis of the rotation coordinate axis with the left mouse button, the axis turns yellow, and you can rotate along the corresponding position. Click again, the axis will return to its original color, stop rotating, and click the right button to rotate the coordinate axis and disappear",
           positionPickingTip:
-            "Click the left mouse button to pick up the position"
-        }
+            "Click the left mouse button to pick up the position",
+        },
       },
       lang: undefined,
       _uw1: undefined,
@@ -93,7 +93,7 @@ export default {
       _uw5: undefined,
       _uw6: undefined,
       _uw7: undefined,
-      _uw8: undefined
+      _uw8: undefined,
     };
   },
   created() {},
@@ -238,7 +238,7 @@ export default {
             this.$root.$earth.interaction.creatingPolygonBinding.target !==
             undefined
           ) {
-            this.$root.$earthUI.promptInfo(this.lang.createPolygonTip);
+            this.$root.$earthUI.promptInfo(this.lang.createPolylineTip);
           }
         }
       );
@@ -330,10 +330,10 @@ export default {
       )} km/h (${this.baseVelocity.toFixed(1)} × ${this.velocityRatio.toFixed(
         1
       )})`;
-    }
+    },
   },
   beforeDestroy() {
-    this._disposers.forEach(d => d());
+    this._disposers.forEach((d) => d());
     this._disposers.length = 0;
     this._uw1 = this._uw1 && this._uw1();
     this._uw2 = this._uw2 && this._uw2();
@@ -343,7 +343,7 @@ export default {
     this._uw6 = this._uw6 && this._uw6();
     this._uw7 = this._uw7 && this._uw7();
     this._uw8 = this._uw8 && this._uw8();
-  }
+  },
 };
 </script>
 

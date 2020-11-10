@@ -1,0 +1,439 @@
+{
+    "count": 48,
+    "files": [
+        {
+            "file": "guangzhu_bai_00000",
+            "height": 160,
+            "offsetU": 0.0,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00001",
+            "height": 160,
+            "offsetU": 0.03125,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00002",
+            "height": 160,
+            "offsetU": 0.0625,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00003",
+            "height": 160,
+            "offsetU": 0.09375,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00004",
+            "height": 160,
+            "offsetU": 0.125,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00005",
+            "height": 160,
+            "offsetU": 0.15625,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00006",
+            "height": 160,
+            "offsetU": 0.1875,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00007",
+            "height": 160,
+            "offsetU": 0.21875,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00008",
+            "height": 160,
+            "offsetU": 0.25,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00009",
+            "height": 160,
+            "offsetU": 0.28125,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00010",
+            "height": 160,
+            "offsetU": 0.3125,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00011",
+            "height": 160,
+            "offsetU": 0.34375,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00012",
+            "height": 160,
+            "offsetU": 0.375,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00013",
+            "height": 160,
+            "offsetU": 0.40625,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00014",
+            "height": 160,
+            "offsetU": 0.4375,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00015",
+            "height": 160,
+            "offsetU": 0.46875,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00016",
+            "height": 160,
+            "offsetU": 0.5,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00017",
+            "height": 160,
+            "offsetU": 0.53125,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00018",
+            "height": 160,
+            "offsetU": 0.5625,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00019",
+            "height": 160,
+            "offsetU": 0.59375,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00020",
+            "height": 160,
+            "offsetU": 0.625,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00021",
+            "height": 160,
+            "offsetU": 0.65625,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00022",
+            "height": 160,
+            "offsetU": 0.6875,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00023",
+            "height": 160,
+            "offsetU": 0.71875,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00024",
+            "height": 160,
+            "offsetU": 0.75,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00025",
+            "height": 160,
+            "offsetU": 0.78125,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00026",
+            "height": 160,
+            "offsetU": 0.8125,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00027",
+            "height": 160,
+            "offsetU": 0.84375,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00028",
+            "height": 160,
+            "offsetU": 0.875,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00029",
+            "height": 160,
+            "offsetU": 0.90625,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00030",
+            "height": 160,
+            "offsetU": 0.9375,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00031",
+            "height": 160,
+            "offsetU": 0.96875,
+            "offsetV": 0.0,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00032",
+            "height": 160,
+            "offsetU": 0.0,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00033",
+            "height": 160,
+            "offsetU": 0.03125,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00034",
+            "height": 160,
+            "offsetU": 0.0625,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00035",
+            "height": 160,
+            "offsetU": 0.09375,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00036",
+            "height": 160,
+            "offsetU": 0.125,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00037",
+            "height": 160,
+            "offsetU": 0.15625,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00038",
+            "height": 160,
+            "offsetU": 0.1875,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00039",
+            "height": 160,
+            "offsetU": 0.21875,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00040",
+            "height": 160,
+            "offsetU": 0.25,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00041",
+            "height": 160,
+            "offsetU": 0.28125,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00042",
+            "height": 160,
+            "offsetU": 0.3125,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00043",
+            "height": 160,
+            "offsetU": 0.34375,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00044",
+            "height": 160,
+            "offsetU": 0.375,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00045",
+            "height": 160,
+            "offsetU": 0.40625,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00046",
+            "height": 160,
+            "offsetU": 0.4375,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        },
+        {
+            "file": "guangzhu_bai_00047",
+            "height": 160,
+            "offsetU": 0.46875,
+            "offsetV": 0.5,
+            "scaleU": 0.03125,
+            "scaleV": 0.5,
+            "width": 128
+        }
+    ],
+    "height": 320,
+    "width": 4096
+}

@@ -9,27 +9,40 @@
     @cancel="cancel"
     @ok="ok"
     :footervisible="true"
-    @showclick="showSelect=false"
+    @showclick="showSelect = false"
   >
-    <div style="height: 100%;">
-      <div style="text-align: center; width: 100%; background: rgba(0,0,0,0.5);">
+    <div style="height: 100%">
+      <div
+        style="text-align: center; width: 100%; background: rgba(0, 0, 0, 0.5)"
+      >
         <ul class="tab">
-          <li @click="tabShow='1'" :class="{highlight: tabShow=='1'}">{{lang.routine}}</li>
-          <li @click="tabShow='2'" :class="{highlight: tabShow=='2'}">{{lang.image}}</li>
-          <li @click="tabShow='3'" :class="{highlight: tabShow=='3'}">{{lang.text}}</li>
-          <li @click="tabShow='4'" :class="{highlight: tabShow=='4'}">{{lang.code}}</li>
+          <li @click="tabShow = '1'" :class="{ highlight: tabShow == '1' }">
+            {{ lang.routine }}
+          </li>
+          <li @click="tabShow = '2'" :class="{ highlight: tabShow == '2' }">
+            {{ lang.image }}
+          </li>
+          <li @click="tabShow = '3'" :class="{ highlight: tabShow == '3' }">
+            {{ lang.text }}
+          </li>
+          <li @click="tabShow = '4'" :class="{ highlight: tabShow == '4' }">
+            iframe
+          </li>
+          <li @click="tabShow = '5'" :class="{ highlight: tabShow == '5' }">
+            {{ lang.code }}
+          </li>
         </ul>
       </div>
-      <div class="xbsj-flatten" v-show="tabShow == '1'">
+      <div class="xbsj-flatten" v-show="tabShow == '1'">
         <!-- 名字 -->
         <div class="flatten">
-          <label>{{lang.name}}</label>
-          <input style="float:left;" type="text" v-model="pin.name" />
+          <label>{{ lang.name }}</label>
+          <input style="float: left" type="text" v-model="pin.name" />
         </div>
 
         <!-- 近远裁 -->
-        <div class="flatten" style="margin-top:20px;display:flex;">
-          <label>{{lang.nearfar}}</label>
+        <div class="flatten" style="margin-top: 20px; display: flex">
+          <label>{{ lang.nearfar }}</label>
           <div class="field">
             <XbsjSlider
               range
@@ -45,11 +58,16 @@
         <div class="flatten">
           <label></label>
           <div class="flatten-box">
-            <input v-model="pin.near" placeholder="lang.near" style="width: 25%;" type="text" />
+            <input
+              v-model="pin.near"
+              placeholder="lang.near"
+              style="width: 25%"
+              type="text"
+            />
             <input
               v-model="pin.far"
               placeholder="lang.far"
-              style="width: 25%;margin-left:5%;"
+              style="width: 25%; margin-left: 5%"
               type="text"
             />
           </div>
@@ -57,7 +75,7 @@
 
         <!-- 位置 -->
         <div class="flatten">
-          <label>{{lang.weizhi}}</label>
+          <label>{{ lang.weizhi }}</label>
           <div class="flatten-box">
             <XbsjLngLatHeight v-model="pin.position"></XbsjLngLatHeight>
           </div>
@@ -70,16 +88,20 @@
             <div>
               <button
                 class="attitudeEditCameraButton"
-                @click="pin.creating =!pin.creating"
-                :class="pin.creating?'btncoloron':''"
-              >{{lang.creating}}</button>
+                @click="pin.creating = !pin.creating"
+                :class="pin.creating ? 'btncoloron' : ''"
+              >
+                {{ lang.creating }}
+              </button>
             </div>
             <div>
               <button
                 class="attitudeEditCameraButton"
-                @click="pin.editing =!pin.editing"
-                :class="pin.editing?'btncoloron':''"
-              >{{lang.editing}}</button>
+                @click="pin.editing = !pin.editing"
+                :class="pin.editing ? 'btncoloron' : ''"
+              >
+                {{ lang.editing }}
+              </button>
             </div>
           </div>
           <div
@@ -89,7 +111,9 @@
             @drop="drop"
             @dragleave="dragLeave"
           >
-            <div class="dragButton" :class="{highlight:drag_over}">{{lang.dragcontent}}</div>
+            <div class="dragButton" :class="{ highlight: drag_over }">
+              {{ lang.dragcontent }}
+            </div>
           </div>
         </div>
 
@@ -121,8 +145,12 @@
           </div>
         </div>-->
 
-        <div v-show="pin.imageUrl===''" class="flatten" style="margin-top:20px;">
-          <label>{{lang.pinBuilder.size}}</label>
+        <div
+          v-show="pin.imageUrl === ''"
+          class="flatten"
+          style="margin-top: 20px"
+        >
+          <label>{{ lang.pinBuilder.size }}</label>
           <div class="field">
             <XbsjSlider
               :min="1"
@@ -136,52 +164,74 @@
         </div>
 
         <!-- pin内置样式 -->
-        <div class="flatten" style="display:flex;">
+        <div class="flatten" style="display: flex">
           <div>
-            <label>{{lang.pinBuilder.text}}</label>
-            <input style="float:left;" type="text" v-model="pin.pinBuilder.text" />
+            <label>{{ lang.pinBuilder.text }}</label>
+            <input
+              style="float: left"
+              type="text"
+              v-model="pin.pinBuilder.text"
+            />
           </div>
-          <div style="position: relative;">
-            <label>{{lang.pinBuilder.pinstyle}}</label>
+          <div style="position: relative">
+            <label>{{ lang.pinBuilder.pinstyle }}</label>
             <input
               type="text"
               v-model="pin.pinBuilder.makiIcon"
               @click="selectinput"
               readonly
-              style="cursor: pointer;"
+              style="cursor: pointer"
             />
             <button class="selectButton"></button>
             <div
               class="cutselectbox"
               v-show="showPinSelect"
-              style="  overflow:scroll;height:100px;"
+              style="overflow: scroll; height: 100px"
             >
-              <div @click="optionssure(c)" v-for="(c,index) in makiIconObj" :key="index">
-                <span>{{c}}</span>
+              <div
+                @click="optionssure(c)"
+                v-for="(c, index) in makiIconObj"
+                :key="index"
+              >
+                <span>{{ c }}</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="flatten" style="display:flex;">
+        <div class="flatten" style="display: flex">
           <!-- 图标背景 -->
-          <label style="margin-top:4px;">{{lang.pinBuilder.fillColor}}</label>
-          <XbsjColorButton v-model="fillColorUI" ref="fillColor"></XbsjColorButton>
+          <label style="margin-top: 4px">{{ lang.pinBuilder.fillColor }}</label>
+          <XbsjColorButton
+            v-model="fillColorUI"
+            ref="fillColor"
+          ></XbsjColorButton>
           <!-- 边框/文字 -->
-          <label style="margin-top:4px;">{{lang.pinBuilder.outlineColor}}</label>
-          <XbsjColorButton v-model="outlineColorUI" ref="outlineColor"></XbsjColorButton>
+          <label style="margin-top: 4px">{{
+            lang.pinBuilder.outlineColor
+          }}</label>
+          <XbsjColorButton
+            v-model="outlineColorUI"
+            ref="outlineColor"
+          ></XbsjColorButton>
         </div>
 
         <!-- 锚点  -->
         <div class="flatten">
-          <label>{{lang.origin}}</label>
+          <label>{{ lang.origin }}</label>
           <input
             type="text"
-            style="float:left; width: 25%; margin-right: 20px;"
+            style="float: left; width: 25%; margin-right: 20px"
             v-model="pin.origin[0]"
           />
-          <input type="text" style="float:left; width: 25%;" v-model="pin.origin[1]" />
-          <XbsjCheckBox v-model="pin.isDivImage">{{lang.isDivImage}}</XbsjCheckBox>
+          <input
+            type="text"
+            style="float: left; width: 25%"
+            v-model="pin.origin[1]"
+          />
+          <XbsjCheckBox v-model="pin.isDivImage">{{
+            lang.isDivImage
+          }}</XbsjCheckBox>
         </div>
 
         <!-- <div class="flatten" style="display:flex;">
@@ -192,39 +242,43 @@
         </div>-->
 
         <div class="flatten">
-          <div style="position: relative;">
-            <label>{{lang.pathAnimation}}</label>
+          <div style="position: relative">
+            <label>{{ lang.pathAnimation }}</label>
             <input
               type="text"
               v-model="pin.attachedPathGuid"
               @click="pinselectinput"
               readonly
-              style="cursor: pointer;"
+              style="cursor: pointer"
             />
             <button class="selectButton"></button>
             <div
               class="cutselectbox"
               v-show="pinshowPinSelect"
-              style="overflow:scroll;height:100px;"
+              style="overflow: scroll; height: 100px"
             >
-              <div @click="pinoptionssure(c)" v-for="(c,index) in pathGuidarr" :key="index">
-                <span>{{c.name}}</span>
+              <div
+                @click="pinoptionssure(c)"
+                v-for="(c, index) in pathGuidarr"
+                :key="index"
+              >
+                <span>{{ c.name }}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="xbsj-flatten" v-show="tabShow == '2'">
+      <div class="xbsj-flatten" v-show="tabShow == '2'">
         <!-- pin自定义外部图标 -->
         <div class="flatten">
-          <label>{{lang.imageUrl}}</label>
-          <input style="float:left;" type="text" v-model="pin.imageUrl" />
+          <label>{{ lang.imageUrl }}</label>
+          <input style="float: left" type="text" v-model="pin.imageUrl" />
         </div>
 
         <!-- 缩放 -->
-        <div class="flatten" style="margin-top:20px;">
-          <label>{{lang.scale}}</label>
+        <div class="flatten" style="margin-top: 20px">
+          <label>{{ lang.scale }}</label>
           <!-- <input style="float:left;" type="text" v-model="pin.scale" /> -->
           <div class="field">
             <XbsjSlider
@@ -239,40 +293,87 @@
         </div>
       </div>
 
-      <div class="xbsj-flatten" v-show="tabShow == '3'">
-        <div class="flatten" style="display:flex;">
+      <div class="xbsj-flatten" v-show="tabShow == '3'">
+        <div class="flatten" style="display: flex">
           <!-- pin文本内容 -->
           <div>
-            <label>{{lang.pinBuilder.exttext}}</label>
-            <input style="float:left;" type="text" v-model="pin.pinBuilder.extText" />
+            <label>{{ lang.pinBuilder.exttext }}</label>
+            <input
+              style="float: left"
+              type="text"
+              v-model="pin.pinBuilder.extText"
+            />
           </div>
           <!-- pin文本内容字体样式 -->
           <div>
-            <label>{{lang.pinBuilder.exttextfont}}</label>
-            <input style="float:left;" type="text" v-model="pin.pinBuilder.extTextFont" />
+            <label>{{ lang.pinBuilder.exttextfont }}</label>
+            <input
+              style="float: left"
+              type="text"
+              v-model="pin.pinBuilder.extTextFont"
+            />
           </div>
         </div>
         <!-- 文本内容偏移 -->
-        <div class="flatten" style="display:flex;">
+        <div class="flatten" style="display: flex">
           <!-- 左右偏移 -->
           <div>
-            <label>{{lang.pinBuilder.lroffset}}</label>
+            <label>{{ lang.pinBuilder.lroffset }}</label>
             <XbsjInputNumber v-model="extTextPixelOffset[0]"></XbsjInputNumber>
           </div>
           <!-- 上下偏移 -->
           <div>
-            <label>{{lang.pinBuilder.tboffset}}</label>
+            <label>{{ lang.pinBuilder.tboffset }}</label>
             <XbsjInputNumber v-model="extTextPixelOffset[1]"></XbsjInputNumber>
           </div>
         </div>
       </div>
 
-      <div class="xbsj-flatten" style="height: calc(100% - 38px);" v-show="tabShow == '4'">
+      <div class="xbsj-flatten" v-show="tabShow == '4'">
+        <div class="flatten">
+          <!-- iframe路径 -->
+          <div>
+            <label>{{ lang.iframeUrl }}</label>
+            <input style="float: left" type="text" v-model="iframe.uri" />
+          </div>
+        </div>
+        <div class="flatten" style="display: flex">
+          <!-- 宽度 -->
+          <div>
+            <label>{{ lang.iframe.width }}</label>
+            <XbsjInputNumber v-model="iframe.width"></XbsjInputNumber>
+          </div>
+          <!-- 高度 -->
+          <div>
+            <label>{{ lang.iframe.height }}</label>
+            <XbsjInputNumber v-model="iframe.height"></XbsjInputNumber>
+          </div>
+        </div>
+        <!-- 文本内容偏移 -->
+        <div class="flatten" style="display: flex">
+          <!-- 左右偏移 -->
+          <div>
+            <label>{{ lang.iframe.offsetX }}</label>
+            <XbsjInputNumber v-model="iframe.offsetX"></XbsjInputNumber>
+          </div>
+          <!-- 上下偏移 -->
+          <div>
+            <label>{{ lang.iframe.offsetY }}</label>
+            <XbsjInputNumber v-model="iframe.offsetY"></XbsjInputNumber>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="xbsj-flatten"
+        style="height: calc(100% - 38px)"
+        v-show="tabShow == '5'"
+      >
         <div style="height: 100%">
-          <label>{{lang.evalstring}}</label>
+          <label>{{ lang.evalstring }}</label>
           <textarea v-model="pin.evalString"></textarea>
           <div class="footbox">
-            <button @click="apply">{{lang.apply}}</button>
+            <button @click="apply">{{ lang.apply }}</button>
           </div>
         </div>
         <!-- <div class="footbox">
@@ -289,7 +390,7 @@ import languagejs from "./index_locale";
 
 export default {
   props: {
-    getBind: Function
+    getBind: Function,
   },
   data() {
     return {
@@ -315,7 +416,14 @@ export default {
         attachedPathGuid: "",
         origin: [0, 0],
         isDivImage: true,
-        evalString: ""
+        evalString: "",
+      },
+      iframe: {
+        uri: "",
+        width: 0,
+        height: 0,
+        offsetX: 0,
+        offsetY: 0,
       },
       pinstyletype: true,
       nearfar: [0, 0],
@@ -324,8 +432,8 @@ export default {
           r: 0,
           g: 0,
           b: 255,
-          a: 1
-        }
+          a: 1,
+        },
       },
       fillColor: [0, 0, 0.5, 1],
       outlineColorUI: {
@@ -333,8 +441,8 @@ export default {
           r: 0,
           g: 0,
           b: 255,
-          a: 1
-        }
+          a: 1,
+        },
       },
       outlineColor: [0, 0, 0.5, 1],
       langs: languagejs,
@@ -342,7 +450,7 @@ export default {
       connections: [],
       connectedTileset: "",
       pathGuidarr: [],
-      extTextPixelOffset: []
+      extTextPixelOffset: [],
     };
   },
   created() {},
@@ -368,7 +476,7 @@ export default {
         pinBuilder: "pin.pinBuilder",
         attachedPathGuid: "pin.attachedPathGuid",
         origin: "pin.origin",
-        isDivImage: "pin.isDivImage"
+        isDivImage: "pin.isDivImage",
       };
 
       Object.entries(bindData).forEach(([sm, vm]) => {
@@ -385,6 +493,7 @@ export default {
       this._disposers.push(
         XE.MVVM.bind(this, "outlineColor", czmObj, "pinBuilder.outlineColor")
       );
+      this._disposers.push(XE.MVVM.bind(this, "iframe", czmObj, "iframe"));
       this._disposers.push(
         XE.MVVM.bind(
           this,
@@ -407,7 +516,7 @@ export default {
     },
     guid() {
       return this.getBind().guid;
-    }
+    },
     // nearfar: {
     //   get() {
     //     return [0, 30];
@@ -424,7 +533,7 @@ export default {
         this.pin.near = nval[0];
         this.pin.far = nval[1];
       },
-      deep: true
+      deep: true,
     },
     "pin.near"(nearval) {
       this.nearfar = [nearval, this.pin.far];
@@ -451,8 +560,8 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
     },
     outlineColorUI(color) {
@@ -469,10 +578,10 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
-    }
+    },
   },
   methods: {
     pinoptionssure(c) {
@@ -483,7 +592,7 @@ export default {
       this.pathGuidarr = [];
       let guidobj = {};
       this.pathGuidarr.push({ name: "空", guid: "" });
-      this.$root.$earth.pathCollection.forEach(e => {
+      this.$root.$earth.pathCollection.forEach((e) => {
         guidobj.name = e.name;
         guidobj.guid = e.guid;
         this.pathGuidarr.push(guidobj);
@@ -576,14 +685,14 @@ export default {
           this._czmObj.position = [...czmObj.positions[0]];
         }
       }
-    }
+    },
   },
   beforeDestroy() {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers.forEach(e => e());
+    this._disposers.forEach((e) => e());
     this._disposers.length = 0;
-  }
+  },
 };
 </script>
 

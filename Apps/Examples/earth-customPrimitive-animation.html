@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>自定义图元-动画</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            overflow: hidden;
+        }
+
+        #mvideo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <img class="videobox" src="./images/video_bg.png">
+    <video id="mvideo" controls loop muted autoplay src="./images/test.mp4"></video>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function setDiv(p) {
+            var scaleNum = 0;
+            var videobox = document.getElementsByClassName('videobox')[0];
+            var video = document.getElementById("mvideo");
+
+            var scaletimer = setInterval(function () {
+                p.drawCanvas(ctx => {
+                    ctx.clearRect(0, 0, 500, 298);
+                    ctx.save();
+                    // 使用translate将画布中心放在画布中间可以实现围绕图片的中心进行缩放
+                    ctx.translate(500 / 2 - videobox.width / 2 * scaleNum, 298 / 2 - videobox.height / 2 * scaleNum);
+                    ctx.scale(scaleNum, scaleNum);
+                    ctx.drawImage(videobox, 0, 0);
+                    ctx.restore();
+                    scaleNum += 0.04;
+                })
+                if ((scaleNum) >= 0.5) {
+                    clearInterval(scaletimer);
+                    var videotimer = setInterval(function () {
+                        p.drawCanvas(ctx => {
+                            ctx.drawImage(video, 34, 36, 430, 226);
+                            if (video.ended) {
+                                clearInterval(videotimer);
+                            }
+                        });
+                    }, 20);
+                }
+            }, 30)
+        }
+
+        function startup() {
+            earth = new XE.Earth('earthContainer');
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "谷歌影像",
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali",
+                                    "srcCoordType": "GCJ02",
+                                    "dstCoordType": "WGS84",
+                                    "maximumLevel": 21,
+                                },
+                            }
+                        }
+                    }
+                ]
+            };
+
+            let position = [];
+            for (var i = 0; i < 100; i++) {
+                position.push([2.174033927183021 + Math.random() * i / 100000, 0.10999357244211576 + Math.random() * i / 200000, 0]);
+            }
+            position.forEach((element, index) => {
+                const config = {
+                    "position": element,
+                    "scale": [150, 150, 100],
+                    "positions": [0, -1, 0, 0, 1, 0, 0, 1, 2, 0, -1, 2, 0, 1, 0, 0, -1, 0, 0, -1, 2, 0, 1, 2],
+                    "sts": [0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1],
+                    "indices": [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7],
+                    "renderState": {
+                        "cull": {
+                            "enabled": true
+                        },
+                        "polygonOffset": {},
+                        "scissorTest": {
+                            "rectangle": {}
+                        },
+                        "depthRange": {},
+                        "depthTest": {
+                            "enabled": true
+                        },
+                        "colorMask": {},
+                        "depthMask": true,
+                        "blending": {
+                            "enabled": true,
+                            "color": {},
+                            "equationRgb": 32774,
+                            "equationAlpha": 32774,
+                            "functionSourceRgb": 770,
+                            "functionDestinationRgb": 771,
+                            "functionDestinationAlpha": 771
+                        },
+                        "stencilTest": {
+                            "frontOperation": {},
+                            "backOperation": {}
+                        },
+                        "sampleCoverage": {}
+                    },
+                    "canvasWidth": 500,
+                    "canvasHeight": 298,
+                    "autoRegisterEditing": true
+                }
+
+                var p = new XE.Obj.CustomPrimitive(earth);
+                p.xbsjFromJSON(config);
+                // setDiv(p);
+                setTimeout(() => setDiv(p), 500);
+                window.p = p; // 方便调试
+            })
+
+            earth.camera.position = [2.175117857841175, 0.11019179030898733, 1020.6532980658766];
+            earth.camera.rotation = [4.713022428235233, -0.32323589635947103, 6.282414845220519];
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);
+    </script>
+</body>
+
+</html>

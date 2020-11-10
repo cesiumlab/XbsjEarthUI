@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>Pin-iframe2</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .checkbox {
+            cursor: pointer;
+        }
+
+        .dialog {
+            position: absolute;
+            width: 80px;
+            min-height: 60px;
+            color: white;
+            background-image: url("./images/dialog.png");
+            background-size: 100% 100%;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        span {
+            display: inline-block;
+            width: 144px;
+            text-align: right;
+        }
+
+        input {
+            width: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative; overflow: hidden;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%;">
+                    <div ref="earthContainer" style="width: 100%; height: 100%">
+                    </div>
+                    <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:210px; font-size:24px; font-family: 宋体;">
+                        <span>iframe路径：</span>
+                        <input type="text" v-model="iframe.uri"><br/>
+                        <span>宽度：</span>
+                        <input type="number" v-model.number="iframe.width"><br/>
+                        <span>高度：</span>
+                        <input type="number" v-model.number="iframe.height"><br/>
+                        <span>左右偏移：</span>
+                        <input type="number" v-model.number="iframe.offsetX"><br/>
+                        <span>上下偏移：</span>
+                        <input type="number" v-model.number="iframe.offsetY">
+                    </div>
+                </div>
+            `,
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    iframe: {
+                        uri: "",
+                        width: 0,
+                        height: 0,
+                        offsetX: 0,
+                        offsetY: 0,
+                    },
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+                earth.interaction.picking.enabled = true;
+
+                // 1.1.2 场景配置
+                earth.sceneTree.root = {
+                    "expand": true,
+                    "title": "预览场景",
+                    "children": [{
+                        "ref": 'pin1',
+                        "czmObject": {
+                            "name": 'Pin1',
+                            "xbsjType": "Pin",
+                            "position": [1.9017005694855162, 0.5972477268978722, 488.7695178987821]
+                        },
+                    }, {
+                        "czmObject": {
+                            "name": '默认影像',
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": XE.Obj.Imagery.defaultImageryProviderConfig,
+                        },
+                    }]
+                };
+
+                var pin1 = earth.sceneTree.$refs.pin1.czmObject;
+
+                // 1.1.5 数据绑定
+                this._iframeUnbind = XE.MVVM.bind(this, 'iframe', pin1, 'iframe');
+
+                this._earth = earth;
+
+                // only for Debug
+                window.earth = earth;
+                window.pin1 = pin1;
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._iframeUnbind = this._iframeUnbind && this._iframeUnbind();
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="内部测试">
+    </meta>
+    <title>自定义图元-动态轮廓</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        async function startup() {
+            earth = new XE.Earth('earthContainer', {
+                orderIndependentTranslucency: false,
+            });
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "谷歌影像",
+                            "xbsjType": "Imagery",
+                            "brightness": 0.3,
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//mt1.google.cn/vt/hyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali",
+                                    "srcCoordType": "GCJ02",
+                                    "dstCoordType": "WGS84",
+                                    "maximumLevel": 21,
+                                },
+                            }
+                        }
+                    },
+                ]
+            };
+
+            const positions = [
+                [
+                    2.0313883773527257,
+                    0.6963816606821617,
+                    0
+                ],
+                [
+                    2.0313860887896356,
+                    0.6964034459592617,
+                    0
+                ],
+                [
+                    2.0313925082704367,
+                    0.6964276732870953,
+                    0
+                ],
+                [
+                    2.031424995953029,
+                    0.6964294589732781,
+                    0
+                ],
+                [
+                    2.031443171776006,
+                    0.6964036091529164,
+                    0
+                ],
+                [
+                    2.0314415642281167,
+                    0.6963846317770588,
+                    0
+                ]
+            ];
+
+            // 竖立的动态墙
+            const l = XE.Obj.CustomPrimitive.createDynamicCountour({
+                earth,
+                imageUrl: './assets/contour/l/l.png',
+                configUrl: './assets/contour/l/l.png.json',
+                positions,
+                height: 30,
+                loop: true,
+                color: [1, 1, 1, 1],
+            });
+
+            // 平躺在地面的轮廓
+            const p = XE.Obj.CustomPrimitive.createDynamicCountour2({
+                earth,
+                imageUrl: './assets/contour/h/h.png',
+                configUrl: './assets/contour/h/h.png.json',
+                positions,
+                width: 30,
+                loop: true,
+                color: [1, 1, 1, 1],
+            });
+            p.show = false;
+
+            // 方便调试
+            window.l = l;
+            window.p = p;
+
+            // l.setFPS(5);
+            // p.setFPS(5);
+
+            // bg.setStartTime(Math.random());
+            // bg.setFPS(120 * Math.random());
+
+            // earth.camera.flyAround([2.174033927183021, 0.10999357244211576, 0], 1650, [0, -0.6, 0]);
+            // earth.camera.flyAround([2.031416100812992, 0.6963996977152307, 0], 650, [0, -0.6, 0]);
+
+            l.flyTo();
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);
+    </script>
+</body>
+
+</html>

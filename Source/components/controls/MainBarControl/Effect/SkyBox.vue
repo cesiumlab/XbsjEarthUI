@@ -47,7 +47,7 @@ export default {
           southSkyBoxOnGroundImageUri: "南",
           westSkyBoxOnGroundImageUri: "西",
           northSkyBoxOnGroundImageUri: "北",
-          backgroundImageUri: "背景图片"
+          backgroundImageUri: "背景图片",
         },
         en: {
           skyBoxOnGround: "skyBoxOnGround",
@@ -58,8 +58,8 @@ export default {
           southSkyBoxOnGroundImageUri: "south",
           westSkyBoxOnGroundImageUri: "west",
           northSkyBoxOnGroundImageUri: "north",
-          backgroundImageUri: "backgroundImage"
-        }
+          backgroundImageUri: "backgroundImage",
+        },
       },
       lang: undefined,
       skyBoxOnGround: false,
@@ -77,7 +77,8 @@ export default {
         "梦幻",
         "白云朵朵",
         "浪漫星空",
-        "碧海蓝天"
+        "碧海蓝天",
+        "风和日丽",
       ],
       skyBoxType2: [
         {
@@ -86,7 +87,7 @@ export default {
           east: "./assets/skyboxes/sky1/east.jpg",
           south: "./assets/skyboxes/sky1/south.jpg",
           west: "./assets/skyboxes/sky1/west.jpg",
-          north: "./assets/skyboxes/sky1/north.jpg"
+          north: "./assets/skyboxes/sky1/north.jpg",
         },
         {
           top: "./assets/skyboxes/sky3/top.jpg",
@@ -94,7 +95,7 @@ export default {
           east: "./assets/skyboxes/sky3/east.jpg",
           south: "./assets/skyboxes/sky3/south.jpg",
           west: "./assets/skyboxes/sky3/west.jpg",
-          north: "./assets/skyboxes/sky3/north.jpg"
+          north: "./assets/skyboxes/sky3/north.jpg",
         },
         {
           top: "./assets/skyboxes/sky4/top.jpg",
@@ -102,7 +103,7 @@ export default {
           east: "./assets/skyboxes/sky4/east.jpg",
           south: "./assets/skyboxes/sky4/south.jpg",
           west: "./assets/skyboxes/sky4/west.jpg",
-          north: "./assets/skyboxes/sky4/north.jpg"
+          north: "./assets/skyboxes/sky4/north.jpg",
         },
         {
           top: "./assets/skyboxes/sky5/top.jpg",
@@ -110,7 +111,7 @@ export default {
           east: "./assets/skyboxes/sky5/east.jpg",
           south: "./assets/skyboxes/sky5/south.jpg",
           west: "./assets/skyboxes/sky5/west.jpg",
-          north: "./assets/skyboxes/sky5/north.jpg"
+          north: "./assets/skyboxes/sky5/north.jpg",
         },
         {
           top: "./assets/skyboxes/sky6/top.jpg",
@@ -118,7 +119,7 @@ export default {
           east: "./assets/skyboxes/sky6/east.jpg",
           south: "./assets/skyboxes/sky6/south.jpg",
           west: "./assets/skyboxes/sky6/west.jpg",
-          north: "./assets/skyboxes/sky6/north.jpg"
+          north: "./assets/skyboxes/sky6/north.jpg",
         },
         {
           top: "./assets/skyboxes/sky7/top.jpg",
@@ -126,9 +127,17 @@ export default {
           east: "./assets/skyboxes/sky7/east.jpg",
           south: "./assets/skyboxes/sky7/south.jpg",
           west: "./assets/skyboxes/sky7/west.jpg",
-          north: "./assets/skyboxes/sky7/north.jpg"
-        }
-      ]
+          north: "./assets/skyboxes/sky7/north.jpg",
+        },
+        {
+          top: "./assets/skyboxes/sky8/top.jpg",
+          bottom: "./assets/skyboxes/sky8/bottom.jpg",
+          east: "./assets/skyboxes/sky8/east.jpg",
+          south: "./assets/skyboxes/sky8/south.jpg",
+          west: "./assets/skyboxes/sky8/west.jpg",
+          north: "./assets/skyboxes/sky8/north.jpg",
+        },
+      ],
     };
   },
   created() {},
@@ -141,7 +150,7 @@ export default {
       this.southSkyBoxOnGroundImageUri = this.skyBoxType2[index].south;
       this.westSkyBoxOnGroundImageUri = this.skyBoxType2[index].west;
       this.northSkyBoxOnGroundImageUri = this.skyBoxType2[index].north;
-    }
+    },
   },
   mounted() {
     this.bind("skyBoxOnGround");
@@ -159,12 +168,12 @@ export default {
       this._viewUnbinds.push(
         XE.MVVM.bind(this, prp, this.$root.$earth.weather.skyBox, prp)
       );
-    }
+    },
   },
   beforeDestroy() {
-    this._viewUnbinds.forEach(u => u());
+    this._viewUnbinds.forEach((u) => u());
     this._viewUnbinds.length = 0;
-  }
+  },
 };
 </script>
 

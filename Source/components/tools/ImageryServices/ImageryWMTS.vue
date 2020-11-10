@@ -56,7 +56,7 @@
       <div class="values">
         <XbsjSelect v-model="selected.format" :list="selected.layer.urls" :title="'format'"></XbsjSelect>
       </div>
-      <input class="geshi" v-if="selected.format" v-model="selected.format.template" readonly />
+      <input class="geshi" v-if="selected.format" v-model="url" />
     </div>
 
     <div v-if="selected.layer">
@@ -97,7 +97,7 @@
 <script>
 import { addOutterEventListener } from "../../utils/xbsjUtil";
 export default {
-  data() {
+  data () {
     return {
       langs: {
         zh: {
@@ -168,23 +168,24 @@ export default {
         style: undefined,
         tileMatrixSet: undefined
       },
-      rectangle: ""
+      rectangle: "",
+      url: "",
     };
   },
-  created() {},
-  mounted() {
+  created () { },
+  mounted () {
     //添加一个外部事件，如果点击后隐藏
     addOutterEventListener(this.$refs.wmtsselectbox, "mousedown", () => {
       this.showServers = false;
     });
   },
   methods: {
-    selectServer(s) {
+    selectServer (s) {
       this.server = s.addr;
       this.updateServer();
       this.showServers = false;
     },
-    updateServer() {
+    updateServer () {
       //请求xml 并解析
       let url = this.server;
       if (!url.startsWith("http")) {
@@ -236,13 +237,13 @@ export default {
           );
         });
     },
-    cancel() {
+    cancel () {
       if (this._imagelayer) this._imagelayer.destroy();
       this._imagelayer = undefined;
 
       this.show = false;
     },
-    ok() {
+    ok () {
       if (!this._imagelayer) return;
 
       //添加到场景树中
@@ -254,7 +255,7 @@ export default {
       this.show = false;
       this._imagelayer = undefined;
     },
-    preview() {
+    preview () {
       //根据当前选择构造预览图层
       if (this._imagelayer) this._imagelayer.destroy();
       this._imagelayer = undefined;
@@ -263,7 +264,8 @@ export default {
       var layer = this.selected.layer.title;
 
       if (!this.selected.format) return;
-      var url = this.selected.format.template;
+      // var url = this.selected.format.template;
+      var url = this.url;
 
       if (this.useProxy) {
         url = this.$root.$labServer.server + "other/proxy?url=" + url;
@@ -299,7 +301,7 @@ export default {
         }
       };
     },
-    flyTo(l) {
+    flyTo (l) {
       if (!l || !l.rectangle) {
         this.rectangle = "";
         return;
@@ -319,9 +321,9 @@ export default {
     }
   },
 
-  beforeDestroy() {},
+  beforeDestroy () { },
   watch: {
-    "selected.layer": function(l) {
+    "selected.layer": function (l) {
       if (!l) return;
 
       this.flyTo(l);
@@ -348,14 +350,18 @@ export default {
       } else {
         this.selected.style = undefined;
       }
+      this.url = this.selected.format.template;
     },
-    "selected.format": function() {
+    url: function () {
       this.preview();
     },
-    "selected.style": function() {
+    "selected.format": function () {
       this.preview();
     },
-    "selected.tileMatrixSet": function() {
+    "selected.style": function () {
+      this.preview();
+    },
+    "selected.tileMatrixSet": function () {
       this.preview();
     }
   }

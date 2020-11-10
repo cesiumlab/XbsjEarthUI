@@ -154,7 +154,7 @@ module.exports = {
     // devtool: '#eval-source-map',
     devServer: {
         historyApiFallback: true,
-        noInfo: true,
+        noInfo: false, // 升级webpack4以后，需要打开才能正常调试... vtxf 20201103
         overlay: true,
         contentBase: path.join(__dirname, "dist"), // 只有加载静态文件时才需要，比如文档
         port: 9530,
@@ -270,6 +270,12 @@ module.exports.plugins = (module.exports.plugins || []).concat([
 
 if (process.env.NODE_ENV === 'production') {
     module.exports.devtool = false // 不生成source map
+
+    // webpack 4.0升级以后需要的 vtxf 20200812
+    // module.exports.optimization = module.exports.optimization || {};
+    // module.exports.optimization.minimize = false;
+    module.exports.mode = "production";
+
     // http://vue-loader.vuejs.org/en/workflow/production.html
     module.exports.plugins = (module.exports.plugins || []).concat([
         new CleanWebpackPlugin('./dist'),
@@ -278,12 +284,12 @@ if (process.env.NODE_ENV === 'production') {
                 NODE_ENV: '"production"'
             }
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            sourceMap: false,
-            compress: {
-                warnings: false
-            }
-        }),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     sourceMap: false,
+        //     compress: {
+        //         warnings: false
+        //     }
+        // }),
         new webpack.LoaderOptionsPlugin({
             minimize: true
         }),

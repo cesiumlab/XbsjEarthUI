@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="Earth示例">
+    </meta>
+    <title>自定义图元-POI</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #canvas-container {
+            width: 600px;
+            height: 600px;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        function startup() {
+            earth = new XE.Earth('earthContainer');
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "默认离线影像",
+                            "brightness": 0.2,
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "createTileMapServiceImageryProvider": {
+                                    "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    "fileExtension": 'jpg',
+                                },
+                                "type": "createTileMapServiceImageryProvider"
+                            }
+                        }
+                    }
+                ]
+            };
+
+            function createPOI() {
+                const position = [2.031423431127962, 0.6964939445755296, 0];
+                const color = [1.0, 1.0, 0.0, 1.0];
+                {
+                    const fragmentShaderSource = `
+                        varying vec3 v_positionEC;
+                        varying vec3 v_normalEC;
+                        varying vec2 v_st;
+                        varying vec4 v_color;
+                        uniform sampler2D u_image;
+                        uniform vec4 u_color;
+                        void main()
+                        {
+                            float powerRatio = fract(czm_frameNumber / 30.0) + 1.0;
+                            float alpha = pow(v_st.t, powerRatio);
+                            gl_FragColor = vec4(u_color.rgb, alpha*u_color.a);
+                        }
+                    `;
+                    const renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+                    renderState.cull.enabled = false;
+                    const cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(6.0, 6.0, 1.0, 12);
+                    const config = {
+                        position: [...position],
+                        scale: [3, 3, 300],
+                        positions: cylinder.positions,
+                        sts: cylinder.sts,
+                        indices: cylinder.indices,
+                        renderState,
+                        color: [...color],
+                        canvasWidth: 1.0,
+                        fragmentShaderSource,
+                    };
+
+                    let p = new XE.Obj.CustomPrimitive(earth);
+                    p.xbsjFromJSON(config);
+                }
+
+                {
+                    const fragmentShaderSource = `
+                        varying vec3 v_positionEC;
+                        varying vec3 v_normalEC;
+                        varying vec2 v_st;
+                        varying vec4 v_color;
+                        uniform sampler2D u_image;
+                        uniform vec4 u_color;
+                        void main()
+                        {
+                            float dt = fract(czm_frameNumber / 100.0);
+                            vec2 st = fract(vec2(1.0) + v_st * vec2(1.0, 0.2) - vec2(0, dt));
+                            vec4 imageColor = texture2D(u_image, st);
+
+                            vec3 diffuse = imageColor.rgb;
+                            float alpha = imageColor.a;
+
+                            diffuse *= v_color.rgb;
+                            alpha *= v_color.a;
+
+                            diffuse *= u_color.rgb;
+                            alpha *= u_color.a;
+
+                            gl_FragColor = vec4(diffuse, alpha * 0.5 * (1.0 - cos(2.0 * 3.1415926 * v_st.t)));
+                        }
+                    `;
+
+                    const evalString = `
+                        p.canvasWidth = 32;
+                        p.canvasHeight = 256;
+                        Cesium.Resource.createIfNeeded('./images/city/lines.png').fetchImage().then(function(image) {
+                            p.drawCanvas(ctx => {
+                                ctx.clearRect(0, 0, 32, 256);
+                                ctx.drawImage(image, 0, 0);
+                            });
+                        });
+                    `;
+
+                    const renderState = XE.Obj.CustomPrimitive.getRenderState(true, true);
+                    renderState.cull.enabled = false;
+                    const cylinder = XE.Obj.CustomPrimitive.Geometry.createCylinder(14.0, 14.0, 1.0, 12);
+                    const config = {
+                        fragmentShaderSource,
+                        evalString,
+                        position: [...position],
+                        scale: [3, 3, 300],
+                        positions: cylinder.positions,
+                        sts: cylinder.sts,
+                        indices: cylinder.indices,
+                        color: [...color],
+                        canvasWidth: 32,
+                        canvasHeight: 256,
+                        renderState,
+                    };
+
+                    const p = new XE.Obj.CustomPrimitive(earth);
+                    p.xbsjFromJSON(config);
+                }
+            }
+
+            createPOI();
+
+            earth.camera.position = [2.031590478510072, 0.6962844209528167, 664.1516898951063];
+            earth.camera.rotation = [5.806860477917896, -0.38481891902363796, 0];
+
+            window.p = p; // 方便调试
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);
+
+    </script>
+</body>
+
+</html>

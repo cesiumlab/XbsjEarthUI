@@ -9,54 +9,59 @@
       @mouseup="endMove($event)"
     >
       <div class="xbsj-list-item" v-show="labServiceUI">
-        <span class="xbsj-list-name">{{lang.scene}}</span>
+        <span class="xbsj-list-name">{{ lang.scene }}</span>
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn savebutton" @click="saveScene"></div>
-          <span class="xbsj-item-name">{{lang.save}}</span>
+          <span class="xbsj-item-name">{{ lang.save }}</span>
         </div>
         <span
           class="xbsj-select"
-          :class="{highlight:popup == 'sceneView'}"
-          @click.stop="togglePopup('sceneView',$event)"
+          :class="{ highlight: popup == 'sceneView' }"
+          @click.stop="togglePopup('sceneView', $event)"
         ></span>
       </div>
       <div class="xbsj-list-item">
-        <span class="xbsj-list-name">{{lang.view}}</span>
+        <span class="xbsj-list-name">{{ lang.view }}</span>
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn globalbutton" @click="flyToGlobe"></div>
-          <span class="xbsj-item-name">{{lang.global}}</span>
+          <span class="xbsj-item-name">{{ lang.global }}</span>
         </div>
         <span
           class="xbsj-select"
-          :class="{highlight:popup == 'globeView'}"
-          @click.stop="togglePopup('globeView',$event)"
+          :class="{ highlight: popup == 'globeView' }"
+          @click.stop="togglePopup('globeView', $event)"
         ></span>
 
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn chinabutton" @click="flyToChina"></div>
-          <span class="xbsj-item-name">{{lang.china}}</span>
+          <span class="xbsj-item-name">{{ lang.china }}</span>
         </div>
         <span
           class="xbsj-select"
-          :class="{highlight:popup == 'chinaView'}"
-          @click.stop="togglePopup('chinaView',$event)"
+          :class="{ highlight: popup == 'chinaView' }"
+          @click.stop="togglePopup('chinaView', $event)"
         ></span>
 
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn custombutton" @click="flyToCustom"></div>
-          <span class="xbsj-item-name">{{lang.custom}}</span>
+          <span class="xbsj-item-name">{{ lang.custom }}</span>
         </div>
         <span
           class="xbsj-select"
-          :class="{highlight:cameraViewManagerShow}"
+          :class="{ highlight: cameraViewManagerShow }"
           @click.stop="toggleCameraViewManager()"
         ></span>
       </div>
       <div class="xbsj-list-item">
-        <span class="xbsj-list-name">{{lang.location}}</span>
-        <input type="text" class="xbsj-search-box" @keyup.enter="search" v-model="key" />
+        <span class="xbsj-list-name">{{ lang.location }}</span>
+        <input
+          type="text"
+          class="xbsj-search-box"
+          @keyup.enter="search"
+          v-model="key"
+        />
         <div class="xbsj-search"></div>
-        <div v-show="searchItem!==undefined">
+        <div v-show="searchItem !== undefined">
           <button type="button" class="xbsj-clear" @click="clear"></button>
         </div>
       </div>
@@ -77,40 +82,46 @@
         </div>
       </div>-->
       <div class="xbsj-list-item">
-        <span class="xbsj-list-name">{{lang.autofly}}</span>
+        <span class="xbsj-list-name">{{ lang.autofly }}</span>
         <div class="xbsj-item-btnbox">
           <div
             class="xbsj-item-btn globalrotationbutton"
-            :class="{highlight: cameraMode=='rotateGlobe'}"
+            :class="{ highlight: cameraMode == 'rotateGlobe' }"
             @click="toggleCameraFlight('rotateGlobe')"
           ></div>
-          <span class="xbsj-item-name">{{lang.globalrotation}}</span>
+          <span class="xbsj-item-name">{{ lang.globalrotation }}</span>
         </div>
         <span
           class="xbsj-select"
-          :class="{highlight:popup == 'rotateGlobe'}"
-          @click.stop="togglePopup('rotateGlobe',$event)"
+          :class="{ highlight: popup == 'rotateGlobe' }"
+          @click.stop="togglePopup('rotateGlobe', $event)"
         ></span>
         <div class="xbsj-item-btnbox">
           <div
             class="xbsj-item-btn centerrotationbutton"
-            :class="{highlight: cameraMode=='rotateCenter'}"
+            :class="{ highlight: cameraMode == 'rotateCenter' }"
             @click="toggleCameraFlight('rotateCenter')"
           ></div>
-          <span class="xbsj-item-name">{{lang.centerrotation}}</span>
+          <span class="xbsj-item-name">{{ lang.centerrotation }}</span>
         </div>
         <span
           class="xbsj-select"
-          :class="{highlight:popup == 'rotateCenter'}"
-          @click.stop="togglePopup('rotateCenter',$event)"
+          :class="{ highlight: popup == 'rotateCenter' }"
+          @click.stop="togglePopup('rotateCenter', $event)"
         ></span>
         <!-- 绑定相机 -->
-        <div class="xbsj-item-btnbox" ref="cameraAttach" @click="cameraattachbtn">
+        <div
+          class="xbsj-item-btnbox"
+          ref="cameraAttach"
+          @click="cameraattachbtn"
+        >
           <div
             class="xbsj-item-btn cameraattachbutton"
-            :class=" {  cameraattachbuttonActive : cameraAttached || cameraAttachOver }"
+            :class="{
+              cameraattachbuttonActive: cameraAttached || cameraAttachOver,
+            }"
           ></div>
-          <span class="xbsj-item-name">{{lang.cameraattach}}</span>
+          <span class="xbsj-item-name">{{ lang.cameraattach }}</span>
         </div>
         <!--
         <div class="xbsj-item-btnbox">
@@ -143,59 +154,97 @@
         -->
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
-        <span class="xbsj-list-name">{{lang.interactivemode}}</span>
+        <span class="xbsj-list-name">{{ lang.interactivemode }}</span>
         <div class="xbsj-item-btnbox" @click="useCesiumNavigator = true">
           <div
             class="xbsj-item-btn defaultbutton"
-            :class=" { defaultbuttonActive : useCesiumNavigator }"
+            :class="{ defaultbuttonActive: useCesiumNavigator }"
           ></div>
-          <span class="xbsj-item-name">{{lang.default}}</span>
+          <span class="xbsj-item-name">{{ lang.default }}</span>
         </div>
         <div class="xbsj-item-btnbox" @click="useCesiumNavigator = false">
           <div
             class="xbsj-item-btn gooleearthbutton"
-            :class=" { gooleearthbuttonActive : !useCesiumNavigator }"
+            :class="{ gooleearthbuttonActive: !useCesiumNavigator }"
           ></div>
-          <span class="xbsj-item-name">{{lang.gooleearth}}</span>
+          <span class="xbsj-item-name">{{ lang.gooleearth }}</span>
         </div>
         <div class="xbsj-item-btnbox" @click="ghostMode = !ghostMode">
           <div
             class="xbsj-item-btn firstpersonbutton"
             :class="{ firstpersonbuttonActive: ghostMode }"
           ></div>
-          <span class="xbsj-item-name">{{lang.firstperson}}</span>
+          <span class="xbsj-item-name">{{ lang.firstperson }}</span>
         </div>
         <span
           class="xbsj-select"
-          :class="{highlight:popup == 'firstPerson'}"
-          @click.stop="togglePopup('firstPerson',$event)"
+          :class="{ highlight: popup == 'firstPerson' }"
+          @click.stop="togglePopup('firstPerson', $event)"
         ></span>
         <div class="xbsj-item-btnbox" @click="picking = !picking">
-          <div class="xbsj-item-btn mousebutton" :class="{ mousebuttonActive: picking }"></div>
-          <span class="xbsj-item-name">{{lang.mouseshiqu}}</span>
+          <div
+            class="xbsj-item-btn mousebutton"
+            :class="{ mousebuttonActive: picking }"
+          ></div>
+          <span class="xbsj-item-name">{{ lang.mouseshiqu }}</span>
         </div>
         <span
           class="xbsj-select"
-          :class="{highlight:popup == 'pickObject'}"
-          @click.stop="togglePopup('pickObject',$event)"
+          :class="{ highlight: popup == 'pickObject' }"
+          @click.stop="togglePopup('pickObject', $event)"
         ></span>
         <!-- vr -->
         <div class="xbsj-item-btnbox" @click="vrClick">
           <div class="xbsj-item-btn vrbutton"></div>
           <span class="xbsj-item-name">VR</span>
         </div>
+        <div class="xbsj-item-btnbox" style="width: 100px">
+          <div class="XbsjSlider">
+            <XbsjSlider
+              :min="10"
+              :max="170"
+              :step="1"
+              showTip="hover"
+              v-model="fovFormat"
+              style="margin-top: 34px"
+            ></XbsjSlider>
+          </div>
+          <span class="xbsj-item-name">FOV</span>
+        </div>
       </div>
     </div>
-    <GlobeViewComp ref="globeView" v-show="popup =='globeView'"></GlobeViewComp>
-    <ChinaViewComp ref="chinaView" v-show="popup =='chinaView'"></ChinaViewComp>
-    <SearchComp ref="search" v-show="popup =='search'" @itemSelected="searchResult"></SearchComp>
-    <RotateGlobeComp ref="rotateGlobe" v-show="popup =='rotateGlobe'"></RotateGlobeComp>
-    <RotateCenterComp ref="rotateCenter" v-show="popup =='rotateCenter'"></RotateCenterComp>
-    <TrackComp ref="track" v-show="popup =='track'"></TrackComp>
-    <PathFlyComp ref="pathFly" v-show="popup =='pathFly'"></PathFlyComp>
-    <FirstPersonComp ref="firstPerson" v-show="popup =='firstPerson'"></FirstPersonComp>
-    <PickObjectComp ref="pickObject" v-show="popup =='pickObject'"></PickObjectComp>
-    <SceneComp ref="sceneView" v-show="popup =='sceneView'"></SceneComp>
+    <GlobeViewComp
+      ref="globeView"
+      v-show="popup == 'globeView'"
+    ></GlobeViewComp>
+    <ChinaViewComp
+      ref="chinaView"
+      v-show="popup == 'chinaView'"
+    ></ChinaViewComp>
+    <SearchComp
+      ref="search"
+      v-show="popup == 'search'"
+      @itemSelected="searchResult"
+    ></SearchComp>
+    <RotateGlobeComp
+      ref="rotateGlobe"
+      v-show="popup == 'rotateGlobe'"
+    ></RotateGlobeComp>
+    <RotateCenterComp
+      ref="rotateCenter"
+      v-show="popup == 'rotateCenter'"
+    ></RotateCenterComp>
+    <TrackComp ref="track" v-show="popup == 'track'"></TrackComp>
+    <PathFlyComp ref="pathFly" v-show="popup == 'pathFly'"></PathFlyComp>
+    <FirstPersonComp
+      ref="firstPerson"
+      v-show="popup == 'firstPerson'"
+    ></FirstPersonComp>
+    <PickObjectComp
+      ref="pickObject"
+      v-show="popup == 'pickObject'"
+    ></PickObjectComp>
+    <SceneComp ref="sceneView" v-show="popup == 'sceneView'"></SceneComp>
   </div>
 </template>
 
@@ -226,7 +275,7 @@ export default {
     GlobeViewComp,
     ChinaViewComp,
     TrackComp,
-    SceneComp
+    SceneComp,
   },
   data() {
     return {
@@ -246,14 +295,15 @@ export default {
       langs: languagejs,
       cameraAttached: false,
       cameraAttachOver: false,
-      clicknum: -1
+      clicknum: -1,
+      fov: 0,
     };
   },
   created() {},
   mounted() {
     //给所有popup的el上添加外部事件
-    Object.keys(this.$refs).forEach(key => {
-      addOutterEventListener(this.$refs[key].$el, "mousedown", el => {
+    Object.keys(this.$refs).forEach((key) => {
+      addOutterEventListener(this.$refs[key].$el, "mousedown", (el) => {
         let comp = this.getPopupComp();
         if (comp && comp.$el === el) {
           if (typeof comp.show == "function") {
@@ -281,7 +331,7 @@ export default {
 
     this.$nextTick(() => {
       if (this._disposers) {
-        this._disposers.forEach(d => d());
+        this._disposers.forEach((d) => d());
         this._disposers.length = 0;
       }
       this._disposers = this._disposers || [];
@@ -320,6 +370,9 @@ export default {
           "enabled"
         )
       );
+      this._disposers.push(
+        XE.MVVM.bind(this, "fov", this.$root.$earth.camera, "fov")
+      );
     });
 
     let cameraAttach = this.$refs.cameraAttach;
@@ -341,7 +394,7 @@ export default {
     //拖拽移动上面
     cameraAttach.addEventListener(
       "dragover",
-      e => {
+      (e) => {
         //e.stopPropagation();
         e.preventDefault();
         let czmObj = getCzmObjectFromDrag(e.dataTransfer);
@@ -357,7 +410,7 @@ export default {
 
     cameraAttach.addEventListener(
       "dragleave",
-      e => {
+      (e) => {
         that.cameraAttachOver = false;
       },
       false
@@ -366,7 +419,7 @@ export default {
     //拖拽放置
     cameraAttach.addEventListener(
       "drop",
-      e => {
+      (e) => {
         // e.stopPropagation();
         e.preventDefault();
 
@@ -381,7 +434,7 @@ export default {
   },
   beforeDestroy() {
     if (this._disposers) {
-      this._disposers.forEach(d => d());
+      this._disposers.forEach((d) => d());
       this._disposers.length = 0;
     }
   },
@@ -525,9 +578,18 @@ export default {
     },
     endMove(envent) {
       this.moving = false;
-    }
+    },
   },
-  computed: {}
+  computed: {
+    fovFormat: {
+      get: function () {
+        return (180 / Math.PI) * this.fov;
+      },
+      set: function (newVal) {
+        this.fov = (Math.PI / 180) * newVal;
+      },
+    },
+  },
 };
 </script>
 

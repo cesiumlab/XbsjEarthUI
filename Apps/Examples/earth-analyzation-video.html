@@ -66,7 +66,8 @@
                         <div class="defultbtn" :class="{'btnon':rotationEditing}"  @click="rotationEditing = !rotationEditing">旋转</div>
                         <div class="defultbtn" :class="{'btnon':showHelper}"  @click="showHelper = !showHelper">辅助线</div>
                         
-                        <div>url：<input type="text" style="width:400px;" v-model="videoUrl" /></div>
+                        <div>视频url：<input type="text" style="width:400px;" v-model="videoUrl" /></div>
+                        <div>掩码url：<input type="text" style="width:400px;" v-model="maskUrl" /></div>
                         <div>
                             <span>经度：{{position[0] | numFilter2}}°</span> 
                             <span>纬度：{{position[1] | numFilter2}}°</span> 
@@ -102,6 +103,7 @@
                     fovH: 0,
                     fovV: 0,
                     videoUrl: '',
+                    maskUrl: '',
                     showHelper: true,
                     _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
                 };
@@ -143,6 +145,7 @@
                                         "xbsjGuid": "19e84dea-2faa-4949-95c2-8d333a03e0c7",
                                         "name": "视频融合1",
                                         "videoUrl": "//www.earthsdk.com/v/last/XbsjEarthUI/assets/demo.mp4",
+                                        "maskUrl": "./images/cameraVideoMask.png",
                                         "position": [
                                             1.9017043698837766,
                                             0.5972379094016695,
@@ -197,6 +200,7 @@
                     this._disposers.push(XE.MVVM.bind(this, 'far', cameravideo, 'far'));
                     this._disposers.push(XE.MVVM.bind(this, 'showHelper', cameravideo, 'showHelper'));
                     this._disposers.push(XE.MVVM.bind(this, 'videoUrl', cameravideo, 'videoUrl'));
+                    this._disposers.push(XE.MVVM.bind(this, 'maskUrl', cameravideo, 'maskUrl'));
                     this._disposers.push(XE.MVVM.bindDegreeRadian(this, 'fovH', cameravideo, 'fovH'));
                     this._disposers.push(XE.MVVM.bindDegreeRadian(this, 'fovV', cameravideo, 'fovV'));
                 }

@@ -54,7 +54,7 @@
 <script>
 import languagejs from "./locale";
 export default {
-  data () {
+  data() {
     return {
       show: true,
       confirmInfo: "",
@@ -63,11 +63,11 @@ export default {
       selected: [],
       lang: {},
       canMultiSelected: false,
-      langs: languagejs
+      langs: languagejs,
     };
   },
-  created () { },
-  mounted () {
+  created() {},
+  mounted() {
     this.cvm = this.$root.$earth.cameraViewManager;
 
     this.autorunDisposer = XE.MVVM.watch(() => {
@@ -77,7 +77,7 @@ export default {
     this.getData(this.$root.$earth.cameraViewManager.views);
   },
   methods: {
-    movetreeitem (index,$event) {
+    movetreeitem(index, $event) {
       let self = this;
       let source = $event.target;
       // 按下鼠标键并开始移动鼠标时，会在被拖放的元素上触发dragstart事件。
@@ -91,29 +91,29 @@ export default {
               index
               // this.$root.$earth.cameraViewManager.views[parseInt(index)].toJSON()
             ); //兼容火狐浏览器，拖动时候必须携带数据否则没效果
-          } catch (e) { }
+          } catch (e) {}
         },
         false
       );
     },
-    fromView (view) {
+    fromView(view) {
       return {
         name: view.name,
         duration: view.duration,
         thumbnail: view.thumbnail,
-        status: view.toReadable
+        status: view.toReadable,
       };
     },
 
-    getData (views) {
+    getData(views) {
       this.items = [];
-      views.map(view => {
+      views.map((view) => {
         this.items.push(this.fromView(view));
       });
 
       this.defaultIndex = this.cvm.defaultViewIndex;
     },
-    clickItem (index) {
+    clickItem(index) {
       try {
         let views = this.cvm.views;
         views[index].flyTo();
@@ -121,7 +121,7 @@ export default {
         console.log(ex);
       }
     },
-    onContexMenu (index, event) {
+    onContexMenu(index, event) {
       //弹出右键菜单
 
       const menus = [
@@ -130,14 +130,14 @@ export default {
           keys: "",
           func: () => {
             this.clickItem(index);
-          }
+          },
         },
         {
           text: this.lang.default,
           keys: "",
           func: () => {
             this.cvm.defaultViewIndex = index;
-          }
+          },
         },
         {
           text: this.lang.deltip,
@@ -148,42 +148,42 @@ export default {
               //删除确认
               views.splice(index, 1);
             });
-          }
+          },
         },
         {
           text: this.lang.attribute,
           keys: "",
           func: () => {
             this._edit(index);
-          }
-        }
+          },
+        },
       ];
 
       this.$root.$earthUI.contextMenu.pop(menus);
     },
-    multiSelect () {
+    multiSelect() {
       this.canMultiSelected = !this.canMultiSelected;
       this.selected = [];
     },
-    setDefault () {
+    setDefault() {
       if (this.selected.length == 1) {
         this.cvm.defaultViewIndex = this.selected[0];
       }
     },
-    _edit (index) {
+    _edit(index) {
       //弹出待修改的对象
       let view = this.cvm.views[index];
 
       this.$root.$earthUI.showPropertyWindow(view, {
-        component: "CameraViewPrp"
+        component: "CameraViewPrp",
       });
     },
-    edit () {
+    edit() {
       if (this.selected.length == 1) {
         this._edit(this.selected[0]);
       }
     },
-    del () {
+    del() {
       //弹出确认
       this.$root.$earthUI.confirm(this.lang.delcontent, () => {
         //按从大到小排序
@@ -200,21 +200,21 @@ export default {
         this.canMultiSelected = false;
       });
     },
-    add () {
+    add() {
       //直接增加
       this.cvm
         .newView()
-        .then(view => {
+        .then((view) => {
           view.name = this.lang.newview;
           this.cvm.views.push(view);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
-    }
+    },
   },
   watch: {},
-  beforeDestroy () {
+  beforeDestroy() {
     if (this.unbind) {
       this.unbind();
       this.unbind = undefined;
@@ -223,7 +223,7 @@ export default {
       this.autorunDisposer();
       this.autorunDisposer = undefined;
     }
-  }
+  },
 };
 </script>
 <style scoped>
@@ -302,7 +302,7 @@ export default {
   cursor: pointer;
 }
 .xbsj-custom-delete:disabled {
-  background: url(../../../images/delete.png) no-repeat;
+  background: url(../../../images/delete_disabled.png) no-repeat;
   background-size: contain;
   cursor: not-allowed;
 }

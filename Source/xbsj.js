@@ -153,6 +153,7 @@ function create(earthDom, options) {
                 xbsjUri + '../XbsjEarth-Plugins/plottingSymbol/plottingSymbol.js',
                 xbsjUri + '../XbsjEarth-Plugins/customPrimitive/customPrimitive.js',
                 xbsjUri + '../XbsjEarth-Plugins/customPrimitiveImage/customPrimitiveImage.js',
+                xbsjUri + '../XbsjEarth-Plugins/customPrimitiveCone/customPrimitiveCone.js',
                 xbsjUri + '../XbsjEarth-Plugins/plottingSymbol2/plottingSymbol2.js',
                 // xbsjUri + '../XbsjEarth-Plugins/webxr/xbsj-cesium-webxr.js',
             ];

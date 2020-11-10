@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="内部测试">
+    </meta>
+    <title>自定义图元-动态双面电子标牌</title>
+    <!-- 0 引入js文件 -->
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="earthContainer" style="width: 100%; height: 100%; background: grey">
+    </div>
+    <script>
+        var earth;
+        var bgImagery;
+
+        async function fetJson(filePath) {
+            const r = await fetch(filePath);
+            if (!r.ok) {
+                return undefined;
+            }
+            const json = await r.json();
+            return json;
+        }
+
+        async function startup() {
+            earth = new XE.Earth('earthContainer', {
+                orderIndependentTranslucency: false,
+            });
+
+            earth.sceneTree.root = {
+                "children": [
+                    {
+                        "czmObject": {
+                            "name": "谷歌影像",
+                            "xbsjType": "Imagery",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali",
+                                    "srcCoordType": "GCJ02",
+                                    "dstCoordType": "WGS84",
+                                    "maximumLevel": 21,
+                                },
+                            }
+                        }
+                    },
+                ]
+            };
+
+            function createPoi({
+                earth,
+                color,
+                position,
+            }) {
+                const bg = XE.Obj.CustomPrimitive.createDynamicPoi({
+                    earth,
+                    imageUrl: './assets/guangzhu/guangzhu_bai/guangzhu_bai.png',
+                    configUrl: './assets/guangzhu/guangzhu_bai/guangzhu_bai.png.json',
+                    position: [...position],
+                    scale: 1.0,
+                    color: [...color],
+                });
+                bg.setStartTime(Math.random());
+                bg.setFPS(120 * Math.random());
+
+                const bg2 = XE.Obj.CustomPrimitive.createDynamicPoi({
+                    earth,
+                    imageUrl: './assets/guangzhu/kuang_bai/kuang02.png',
+                    configUrl: './assets/guangzhu/kuang_bai/kuang02.png.json',
+                    position: [position[0], position[1], position[2] + 160*2],
+                    scale: 0.15,
+                    color: [...color],
+                });
+                bg2.setStartTime(Math.random());
+
+                const text = XE.Obj.CustomPrimitive.creatNumberPoi({
+                    earth,
+                    position: [position[0], position[1], position[2] + 160*2],
+                    scale: 32,
+                    color: [1, 1, 1, 1],
+                });
+
+                return {
+                    bg, bg2, 
+                    text
+                }
+            }
+
+            const pois = [];
+            for (let i=0; i<10; ++i) {
+                for (let j=0; j<10; ++j) {
+                    window.p1 = createPoi({
+                        earth,
+                        color: [0.8, 0.8, 0, 1],
+                        position: [2.174033927183021 + i * 0.0001, 0.10999357244211576 + j * 0.0001, 0],
+                    });
+                }
+            }
+
+            window.pois = pois;
+
+            earth.camera.flyAround([2.174033927183021, 0.10999357244211576, 0], 1650, [0, -0.6, 0]);
+        }
+
+        // 1 XE.ready()会加载Cesium.js等其他资源，注意ready()返回一个Promise对象。
+        XE.ready().then(startup);
+    </script>
+</body>
+
+</html>

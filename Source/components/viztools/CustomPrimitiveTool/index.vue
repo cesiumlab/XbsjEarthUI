@@ -223,7 +223,7 @@ import axios from "axios";
 
 export default {
   props: {
-    getBind: Function
+    getBind: Function,
   },
   data() {
     return {
@@ -256,7 +256,7 @@ export default {
         3: "LINE_STRIP",
         4: "TRIANGLES",
         5: "TRIANGLE_STRIP",
-        6: "TRIANGLE_FAN"
+        6: "TRIANGLE_FAN",
       },
       passObj: {
         0: "ENVIRONMENT",
@@ -269,7 +269,7 @@ export default {
         7: "OPAQUE",
         8: "TRANSLUCENT",
         9: "OVERLAY",
-        10: "NUMBER_OF_PASSES"
+        10: "NUMBER_OF_PASSES",
       },
       model: {
         name: "",
@@ -285,7 +285,7 @@ export default {
         pass: Number,
         scale: [0, 0, 0],
         imageUrl: "",
-        objUrl: ""
+        objUrl: "",
         // videoUrl: ""
       },
       pinstyletype: true,
@@ -295,13 +295,13 @@ export default {
           r: 0,
           g: 0,
           b: 255,
-          a: 1
-        }
+          a: 1,
+        },
       },
       bgbaseColor: [0, 0, 0.5, 1],
       primitiveData: [],
       primitiveName: "默认",
-      index: Number
+      index: Number,
     };
   },
   created() {},
@@ -313,7 +313,7 @@ export default {
         expand: true,
         checkStatus: "checked",
         children: [],
-        geometryShows: true
+        geometryShows: true,
       },
       {
         title: this.lang.canvastexture,
@@ -324,21 +324,21 @@ export default {
             title: this.lang.createcode,
             expand: false,
             checkStatus: "checked",
-            createcodeShows: true
+            createcodeShows: true,
           },
           {
             title: this.lang.framecode,
             expand: false,
             checkStatus: "checked",
-            framecodeShows: true
+            framecodeShows: true,
           },
           {
             title: this.lang.destorycode,
             expand: false,
             checkStatus: "checked",
-            destorycodeShows: true
-          }
-        ]
+            destorycodeShows: true,
+          },
+        ],
       },
       {
         title: this.lang.render,
@@ -349,22 +349,22 @@ export default {
             title: this.lang.vertexshader,
             expand: false,
             checkStatus: "checked",
-            vertexshaderShows: true
+            vertexshaderShows: true,
           },
           {
             title: this.lang.spritsshader,
             expand: false,
             checkStatus: "checked",
-            spritsshaderShows: true
+            spritsshaderShows: true,
           },
           {
             title: this.lang.renderstats,
             expand: false,
             checkStatus: "checked",
-            renderstatsShows: true
-          }
-        ]
-      }
+            renderstatsShows: true,
+          },
+        ],
+      },
     ];
     // 数据关联
     this._disposers = this._disposers || [];
@@ -373,6 +373,11 @@ export default {
 
     if (czmObj) {
       this._czmObj = czmObj;
+
+      if (typeof czmObj.creating === "undefined") {
+        czmObj.autoRegisterEditing = true;
+      }
+
       const bindData = {
         name: "model.name",
         creating: "model.creating",
@@ -387,7 +392,7 @@ export default {
         pass: "model.pass",
         scale: "model.scale",
         imageUrl: "model.imageUrl",
-        objUrl: "model.objUrl"
+        objUrl: "model.objUrl",
         // videoUrl: "model.videoUrl"
       };
 
@@ -419,7 +424,7 @@ export default {
       var files = [];
       [].forEach.call(
         e.dataTransfer.files,
-        function(file) {
+        function (file) {
           files.push(file);
         },
         false
@@ -429,7 +434,7 @@ export default {
         var reader = new FileReader();
         reader.readAsText(f);
         //读取文件的内容
-        reader.onload = function() {
+        reader.onload = function () {
           that.obj = this.result;
 
           // that.objToArr();
@@ -449,7 +454,7 @@ export default {
     },
     guid() {
       return this.getBind().guid;
-    }
+    },
   },
   watch: {
     bgbaseColorUI(color) {
@@ -466,10 +471,10 @@ export default {
           r: c[0] * 255,
           g: c[1] * 255,
           b: c[2] * 255,
-          a: c[3]
-        }
+          a: c[3],
+        },
       };
-    }
+    },
   },
   methods: {
     geDatainfo() {
@@ -477,12 +482,12 @@ export default {
       let url = primitiveServer.server + "primitive/list";
       axios
         .post(url)
-        .then(res => {
+        .then((res) => {
           if (res.data.status === "ok") {
             this.primitiveData = res.data.primitives.rows;
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -923,14 +928,14 @@ export default {
           this._czmObj.position = [...czmObj.positions[0]];
         }
       }
-    }
+    },
   },
   beforeDestroy() {
     // 解绑数据关联
     this._polygonDisposers = this._polygonDisposers && this._polygonDisposers();
-    this._disposers.forEach(e => e());
+    this._disposers.forEach((e) => e());
     this._disposers.length = 0;
-  }
+  },
 };
 </script>
 

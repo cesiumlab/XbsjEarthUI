@@ -80,7 +80,6 @@
             :step="0.01"
             :show-tip="showTip"
             v-model.number="multiplierScale"
-            @on-input="changeMultiplier(multiplierScale)"
           ></XbsjSlider>
         </div>
         <span
@@ -252,7 +251,7 @@ export default {
 
       shouldAnimate: true,
       multiplier: 1,
-      multiplierScale: 3,
+      multiplierScale: 1,
       showType: "local",
       clockRange: "",
       clockStep: "",
@@ -286,9 +285,17 @@ export default {
     };
   },
   created() {
+    this._lockMultiplier = true;
+    this._lockMultiplierScale = true;
     this._timezoom = new Date().getTimezoneOffset() / 60;
   },
   mounted() {
+    setTimeout( ()=>{
+      
+      this._lockMultiplier = false;
+      this._lockMultiplierScale = false;
+    },20);
+
     this._earth = this.$root.$earth;
     this._clock = this._earth.clock;
 
@@ -414,21 +421,6 @@ export default {
     });
   },
   methods: {
-    changeMultiplier(val) {
-      let value = Math.abs(val);
-
-      this.unchangeMultiplier = true;
-      this.multiplier = (
-        //(value % 1.0 == 0 ? 0.1 : value % 1.0) * Math.pow(10, Math.floor(value))
-        (value % 1.0 == 0 ? 0.1 : value % 1.0 + 0.11) * Math.pow(10, Math.floor(value))
-      ).toFixed(2);
-      if (val < 0) {
-        this.multiplier = -this.multiplier;
-      }
-      setTimeout( ()=>{
-        this.unchangeMultiplier = false;
-      },20)
-    },
     setStart() {
       //将当前时间设置为timeline的起始时间
       this.startTime = Cesium.JulianDate.clone(
@@ -1203,8 +1195,28 @@ export default {
     }
   },
   watch: {
+    multiplierScale( val, oldVal){
+      //val是一个介于-6.648到6.648之间的数字
+      //这里需要设置一个机制，避免在修改其中一个数字的时候，另一个数字回头把这个数字修改了
+      if (val == oldVal) return;
+      if( this._lockMultiplierScale == true) return;
+      this._lockMultiplier = true;
+      let value = Math.abs(val);
+      this.multiplier = (
+        //(value % 1.0 == 0 ? 0.1 : value % 1.0) * Math.pow(10, Math.floor(value))
+        (value % 1.0 == 0 ? 0.1 : value % 1.0 + 0.11) * Math.pow(10, Math.floor(value))
+      ).toFixed(2);
+      if (val < 0) {
+        this.multiplier = -this.multiplier;
+      }
+      setTimeout( ()=>{
+        this._lockMultiplier = false;
+      },20)
+    },
     multiplier(val, oldVal) {
       if (val == oldVal) return;
+      if( this._lockMultiplier == true) return;
+      this._lockMultiplierScale = true;
       //根据multiplier反算出multiplierScale
       //首先得到multiplier有多少个0
       if( this.unchangeMultiplier) return;
@@ -1223,6 +1235,9 @@ export default {
       let v = ((value - 0.11) / Math.pow(10, length)).toFixed(2);
       this.multiplierScale = Number(length) + Number(v);
       if (val < 0) this.multiplierScale = -this.multiplierScale;
+      setTimeout( ()=>{
+        this._lockMultiplierScale = false;
+      },20);
     },
     currentTime(val) {
       //执行回调，修改timeLine中的当前时间
