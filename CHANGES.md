@@ -1,10 +1,18 @@
 Change Log
 ==========
 
-##### Additions :tada:
-* 漫游菜单增加相机的fov角度
-##### Fixes :wrench:
-* 时间轴默认改为隐藏
+### 1.4.27 - 2020-11-10
+* 视频融合增加maskUrl属性，用来设置掩码图像路径;
+* 修复标绘按钮创建报错的问题;
+* 修复控制clock不起作用的bug(wcx);
+* 新增动态响应式属性相机的fov角度;
+* 恢复强制太阳光方向属性的设置，使用Cesium的DiectionalLight来实现;
+* 场景保存时支持对拾取颜色的存储和读取;
+* Pin中新增iframe相关属性，用来打开一个信息框，该信息框的内容一个网址;
+* 修复部分带动画的gltf模型加载后崩溃的问题;
+* Picking增加hoveredPickedObj，clickedPickedObj属性;
+* 漫游菜单增加相机的fov角度;
+* 时间轴默认改为隐藏;
 
 ### 1.4.21 - 2020-9-3
 ##### Additions :tada:
