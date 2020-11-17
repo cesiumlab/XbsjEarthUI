@@ -738,7 +738,7 @@ export default {
         return;
       }
 
-      var guid = czmObject.guid;
+      var guid = czmObject.guid || Cesium.createGuid();
       if (typeof component == "string") {
         guid += "_" + component;
       }
