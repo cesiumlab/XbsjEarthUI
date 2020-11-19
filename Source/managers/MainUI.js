@@ -54,6 +54,9 @@ import ImageryLab from "./tools/ImageryLab";
 import ImageryCloud from "./tools/ImageryCloud";
 import ImageryOnline from "./tools/ImageryOnline";
 import ImageryWMTS from "./tools/ImageryWMTS";
+import ImageryWMS from "./tools/ImageryWMS";
+import ImageryArcGis from "./tools/ImageryArcGis";
+
 import LabServer from "./LabServer";
 import ModelLab from "./tools/ModelLab";
 import ModelCloud from "./tools/ModelCloud";
@@ -236,6 +239,8 @@ class MainUI {
     this._imageryCloud = new ImageryCloud(this);
     this._imageryOnline = new ImageryOnline(this);
     this._imageryWMTS = new ImageryWMTS(this);
+    this._imageryWMS = new ImageryWMS(this);
+    this._imageryArcGis = new ImageryArcGis(this);
     //其他工具
     this._modelLab = new ModelLab(this);
     this._modelCloud = new ModelCloud(this);
@@ -340,6 +345,26 @@ class MainUI {
           */
           get imageryWMTS() {
             return mainUI._imageryWMTS;
+          },
+          /**
+          * WMTS影像数据源选择器
+          * @readonly
+          * @type {ImageryWMS} 
+          * @instance
+          * @memberof ToolsCollection
+          */
+          get imageryWMS() {
+            return mainUI._imageryWMS;
+          },
+          /**
+          * WMTS影像数据源选择器
+          * @readonly
+          * @type {ImageryArcGis} 
+          * @instance
+          * @memberof ToolsCollection
+          */
+          get imageryArcGis() {
+            return mainUI._imageryArcGis;
           },
           /**
           * 来自本地Lab服务器的瓦片数据源选择器

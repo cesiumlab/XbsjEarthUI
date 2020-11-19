@@ -40,12 +40,12 @@
             @click="imageryWMTS=!imageryWMTS"
             :class="{highlight:imageryWMTS}"
           ></div>
-          <span class="xbsj-item-name">{{lang.wms}}</span>
+          <span class="xbsj-item-name">{{lang.wmts}}</span>
         </div>
 
         <div class="xbsj-item-btnbox" v-show="false">
           <div class="xbsj-item-btn wmsbutton"></div>
-          <span class="xbsj-item-name">{{lang.wms}}</span>
+          <span class="xbsj-item-name">{{lang.wmts}}</span>
         </div>
         <div class="xbsj-item-btnbox" v-show="false">
           <div class="xbsj-item-btn arcgisbutton"></div>
@@ -55,6 +55,16 @@
           <div class="xbsj-item-btn arcgisbutton" @click="showHistory"></div>
           <span class="xbsj-item-name">{{lang.history}}</span>
         </div>
+
+        <div class="xbsj-item-btnbox">
+          <div class="xbsj-item-btn wmsbutton" @click="imageryWMS=!imageryWMS" :class="{highlight:imageryWMS}"></div>
+          <span class="xbsj-item-name">{{lang.wms}}</span>
+        </div>
+        <div class="xbsj-item-btnbox">
+          <div class="xbsj-item-btn wmsbutton" @click="imageryArcGis=!imageryArcGis" :class="{highlight:imageryArcGis}"></div>
+          <span class="xbsj-item-name">{{lang.Arcgis}}</span>
+        </div>
+
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{title}}</span>
@@ -182,7 +192,9 @@ export default {
       imageryLab: false,
       imageryCloud: false,      
       imageryOnline: false,
-      imageryWMTS:false,
+      imageryWMTS: false,
+      imageryArcGis: false,
+      imageryWMS: false,
       alpha: 1,
       brightness: 1,
       contrast: 1,
