@@ -33,7 +33,6 @@ export default {
     this.bind("creating");
     this.bind("editing");
     this.bind("positions");
-    console.log(this.positions);
   },
   methods: {
     bind(prp) {

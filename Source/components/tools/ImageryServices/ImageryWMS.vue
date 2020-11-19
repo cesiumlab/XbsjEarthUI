@@ -11,41 +11,55 @@
     :top="138"
     :title="lang.title"
   >
-    <!--
-    <button class="xbsj-button" @click="add">添加数据</button>-->
 
-    <label class="lableItem">url:</label>
+    <span class="field">{{lang.url}}:</span>
     <input class="inputItem" v-model="url"/><br/>
-    <label class="lableItem">format:</label>
+    <span class="field">{{lang.format}}:</span>
     <input class="inputItem" v-model="format"/><br/>
-    <label class="lableItem">layers:</label>
+    <span class="field">{{lang.layers}}:</span>
     <input class="inputItem" v-model="layers"/><br/>
-    <label class="lableItem">credit:</label>
+    <span class="field">{{lang.credit}}:</span>
     <input class="inputItem" v-model="credit"/><br/>
-    <label class="lableItem">style:</label>
+    <span class="field">{{lang.style}}:</span>
     <input class="inputItem" v-model="style"/><br/>
-    <!-- <label class="lableItem">tileMatrixSetID:</label>
-    <input class="inputItem" v-model="tileMatrixSetID"/><br/>
-    <label class="lableItem">tileMatrixLabels:</label>
-    <input class="inputItem" v-model="tileMatrixLabels"/><br/> -->
-    <label class="lableItem">tileWidth:</label>
+    <!-- <span class="field">tileWidth:</span>
     <input class="inputItem" v-model="tileWidth"/><br/>
-    <label class="lableItem">tileHeight:</label>
-    <input class="inputItem" v-model="tileHeight"/><br/>
-    <label class="lableItem">tilingScheme:</label>
-    <select v-model="tilingScheme">
+    <span class="field">tileHeight:</span>
+    <input class="inputItem" v-model="tileHeight"/><br/> -->
+    <span class="field">{{lang.tilingScheme}}:</span>
+    <!-- <select v-model="tilingScheme">
       <option :key="tilingType" :value="tilingType" v-for="tilingType in tilingSchemes">{{ tilingType}}</option>
-    </select>
+    </select> -->
+    <Select v-model="tilingScheme">
+        <Option v-for="item in tilingSchemes" :value="item" :key="item">{{ item }}</Option>
+    </Select>
     <br/>
-    <!-- <input class="inputItem" v-model="tilingScheme"/><br/> -->
-    <label class="lableItem">minimumLevel:</label>
-    <input class="inputItem" v-model="minimumLevel"/><br/>
-    <label class="lableItem">maximumLevel:</label>
-    <input class="inputItem" v-model="maximumLevel"/><br/>
-    <label class="lableItem">crs:</label>
+    
+    <span class="field">{{lang.crs}}:</span>
     <input class="inputItem" v-model="crs"/><br/>
-    <label class="lableItem">srs:</label>
+    <span class="field">{{lang.srs}}:</span>
     <input class="inputItem" v-model="srs"/><br/>
+    <div style="height: 15px">
+      <span class="field" style="float:left">{{lang.minimumLevel}}:</span>
+      <XbsjSlider
+        :min="0"
+        :max="22"
+        :step="1"
+        v-model="minimumLevel" class="xbsj-slide-div xbsj-slider" style="float:left; left:10px; top:13px"
+      ></XbsjSlider>
+    </div>
+    <br/>
+    <div style="height: 15px">
+      <span class="field" style="float:left">{{lang.maximumLevel}}:</span>
+      <XbsjSlider
+        :min="0"
+        :max="22"
+        :step="1"
+        v-model="maximumLevel" class="xbsj-slide-div xbsj-slider" style="float:left; left:10px; top:13px"
+      ></XbsjSlider>
+    </div>
+    <br/>
+    
   </Window>
 </template>
 
@@ -60,10 +74,8 @@ export default {
             layers: '', 
             credit: '',
             style: '', 
-            // tileMatrixSetID: '', 
-            // tileMatrixLabels: '', 
-            tileWidth: 256, 
-            tileHeight: 256, 
+            // tileWidth: 256, 
+            // tileHeight: 256, 
             tilingScheme: 'WebMercator', 
             rectangle: [], 
             minimumLevel: 0, 
@@ -76,26 +88,32 @@ export default {
                 zh: {
                     title: "添加WMS服务",
                     url: "服务地址",
-                    flyTo: "定位",
+                    format: "格式",
+                    layers: "图层",
+                    credit: "credit",
+                    style: "样式",
+                    tilingScheme: "瓦片略图",
+                    rectangle: "范围",
                     minimumLevel: "最小级别",
                     maximumLevel: "最大级别",
-                    Layers: "图层",
-                    Style: "样式",
-                    Format: "格式",
-                    TileMatrixSet: "切片规则",
-                    useProxy: "代理访问"
+                    crs: "crs",
+                    srs: "srs",
+                    flyTo: "定位",
                 },
                 en: {
                     title: "add WMS services",
                     url: "ServerAddr",
-                    flyTo: "Fly To",
+                    format: "Format",
+                    layers: "Layers",
+                    credit: "Credit",
+                    style: "Style",
+                    tilingScheme: "TilingScheme",
+                    rectangle: "Rectangle",
                     minimumLevel: "MinLevel",
                     maximumLevel: "MaxLevel",
-                    Layers: "Layer",
-                    Style: "Style",
-                    Format: "Format",
-                    TileMatrixSet: "TileMatrixSet",
-                    useProxy: "Proxy"
+                    crs: "Crs",
+                    srs: "Srs",
+                    flyTo: "Fly To",
                 }
             },
         };
@@ -166,7 +184,7 @@ export default {
 <style scoped>
 .field {
   display: inline-block;
-  width: 54px;
+  width: 70px;
 
   height: 30px;
   line-height: 30px;
@@ -295,7 +313,7 @@ export default {
 }
 .lableItem {
   display: inline-block;
-  width: 60px;
+  width: 100px;
   height: 16px;
   font-size: 12px;
   font-weight: 400;

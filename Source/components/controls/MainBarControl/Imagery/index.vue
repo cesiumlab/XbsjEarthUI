@@ -61,7 +61,7 @@
           <span class="xbsj-item-name">{{lang.wms}}</span>
         </div>
         <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn wmsbutton" @click="imageryArcGis=!imageryArcGis" :class="{highlight:imageryArcGis}"></div>
+          <div class="xbsj-item-btn arcgisbutton" @click="imageryArcGis=!imageryArcGis" :class="{highlight:imageryArcGis}"></div>
           <span class="xbsj-item-name">{{lang.Arcgis}}</span>
         </div>
 

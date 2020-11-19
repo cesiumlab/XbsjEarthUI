@@ -14,24 +14,32 @@
     <!--
     <button class="xbsj-button" @click="add">添加数据</button>-->
 
-    <label class="lableItem">url:</label>
+    <span class="field">{{lang.url}}:</span>
     <input class="inputItem" v-model="url"/><br/>
-    <label class="lableItem">token:</label>
+    <span class="field">{{lang.token}}:</span>
     <input class="inputItem" v-model="token"/><br/>
-    <label class="lableItem">credit:</label>
+    <span class="field">{{lang.credit}}:</span>
     <input class="inputItem" v-model="credit"/><br/>
 
-    <label class="lableItem">tileWidth:</label>
+    <!-- <span class="field">utileWidthrl:</span>
     <input class="inputItem" v-model="tileWidth"/><br/>
-    <label class="lableItem">tileHeight:</label>
-    <input class="inputItem" v-model="tileHeight"/><br/>
-    <label class="lableItem">tilingScheme:</label>
+    <span class="field">tileHeight:</span>
+    <input class="inputItem" v-model="tileHeight"/><br/> -->
+    <span class="field">{{lang.tilingScheme}}:</span>
     <select v-model="tilingScheme">
       <option :key="tilingType" :value="tilingType" v-for="tilingType in tilingSchemes">{{ tilingType}}</option>
     </select>
     <br/>
-    <label class="lableItem">maximumLevel:</label>
-    <input class="inputItem" v-model="maximumLevel"/><br/>
+    
+    <div>
+      <label class="field" style="float:left">{{lang.maximumLevel}}:</label>
+      <XbsjSlider
+        :min="0"
+        :max="22"
+        :step="1"
+        v-model="maximumLevel" class="xbsj-slide-div xbsj-slider" style="float:left; left:10px; top:13px"
+      ></XbsjSlider>
+    </div>
   </Window>
 </template>
 
@@ -45,13 +53,48 @@ export default {
             token: '', 
             layers: '', 
             credit: '',
-            tileWidth: 256, 
-            tileHeight: 256, 
+            // tileWidth: 256, 
+            // tileHeight: 256, 
             tilingScheme: 'WebMercator', 
             // rectangle: [], 
             maximumLevel: 18,
 
             tilingSchemes: ['WebMercator', 'Geographic'],
+
+            langs: {
+                zh: {
+                    title: "添加WMS服务",
+                    token: "token",
+                    url: "服务地址",
+                    format: "格式",
+                    layers: "图层",
+                    credit: "credit",
+                    style: "样式",
+                    tilingScheme: "瓦片略图",
+                    rectangle: "范围",
+                    minimumLevel: "最小级别",
+                    maximumLevel: "最大级别",
+                    crs: "crs",
+                    srs: "srs",
+                    flyTo: "定位",
+                },
+                en: {
+                    title: "add WMS services",
+                    token: "Token",
+                    url: "ServerAddr",
+                    format: "Format",
+                    layers: "Layers",
+                    credit: "Credit",
+                    style: "Style",
+                    tilingScheme: "TilingScheme",
+                    rectangle: "Rectangle",
+                    minimumLevel: "MinLevel",
+                    maximumLevel: "MaxLevel",
+                    crs: "Crs",
+                    srs: "Srs",
+                    flyTo: "Fly To",
+                }
+            },
         };
     },
     created () { },
@@ -118,7 +161,7 @@ export default {
 <style scoped>
 .field {
   display: inline-block;
-  width: 54px;
+  width: 70px;
 
   height: 30px;
   line-height: 30px;
