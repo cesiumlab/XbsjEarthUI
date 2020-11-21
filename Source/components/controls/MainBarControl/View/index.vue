@@ -116,6 +116,10 @@
           <div class="xbsj-item-btn dtilesbutton" :class="cesiumDebug ? 'dtilesbuttonActive' : ''"></div>
           <span class="xbsj-item-name">{{lang.dtilesdebug}}</span>
         </div>
+        <div class="xbsj-item-btnbox" @click="tokenUIShow=!tokenUIShow">
+          <div class="xbsj-item-btn dtilesbutton" :class="tokenUIShow ? 'dtilesbuttonActive' : ''"></div>
+          <span class="xbsj-item-name">{{lang.defaultAccessToken}}</span>
+        </div>
 
         <div class="xbsj-item-btnbox" @click="capture">
           <div class="xbsj-item-btn capturebutton"></div>
@@ -173,6 +177,7 @@ export default {
       lang: {},
       viewport: "0",
       popup: false,
+      tokenUIShow: false,
       options: {
         verticalshow: false,
         transverseshow: false,
