@@ -116,10 +116,6 @@
           <div class="xbsj-item-btn dtilesbutton" :class="cesiumDebug ? 'dtilesbuttonActive' : ''"></div>
           <span class="xbsj-item-name">{{lang.dtilesdebug}}</span>
         </div>
-        <div class="xbsj-item-btnbox" @click="tokenUIShow=!tokenUIShow">
-          <div class="xbsj-item-btn dtilesbutton" :class="tokenUIShow ? 'dtilesbuttonActive' : ''"></div>
-          <span class="xbsj-item-name">{{lang.defaultAccessToken}}</span>
-        </div>
 
         <div class="xbsj-item-btnbox" @click="capture">
           <div class="xbsj-item-btn capturebutton"></div>
@@ -131,6 +127,11 @@
             <XbsjColorButton v-model="baseColorUI" ref="baseColor"></XbsjColorButton>
           </div>
           <span class="xbsj-item-name">{{lang.earthColor}}</span>
+        </div>
+        
+        <div class="xbsj-item-btnbox" @click="tokenUIShow=!tokenUIShow">
+          <div class="xbsj-item-btn tokenbutton" :class="tokenUIShow ? 'tokenbuttonActive' : ''"></div>
+          <span class="xbsj-item-name">{{lang.defaultAccessToken}}</span>
         </div>
       </div>
     </div>
@@ -532,6 +533,21 @@ export default {
 }
 .dtilesbuttonActive {
   background: url(../../../../images/3Dtiles_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.tokenbutton {
+  background: url(../../../../images/token.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.tokenbutton:hover {
+  background: url(../../../../images/token_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.tokenbuttonActive {
+  background: url(../../../../images/token_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }

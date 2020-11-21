@@ -36,7 +36,7 @@
 
          <div class="xbsj-item-btnbox">
           <div
-            class="xbsj-item-btn wmsbutton"
+            class="xbsj-item-btn wmtsbutton"
             @click="imageryWMTS=!imageryWMTS"
             :class="{highlight:imageryWMTS}"
           ></div>
@@ -44,7 +44,7 @@
         </div>
 
         <div class="xbsj-item-btnbox" v-show="false">
-          <div class="xbsj-item-btn wmsbutton"></div>
+          <div class="xbsj-item-btn wmtsbutton"></div>
           <span class="xbsj-item-name">{{lang.wmts}}</span>
         </div>
         <div class="xbsj-item-btnbox" v-show="false">
@@ -360,6 +360,17 @@ export default {
 .localhostbutton.highlight,
 .localhostbutton:hover {
   background: url(../../../../images/localhost_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.wmtsbutton {
+  background: url(../../../../images/wmts.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.wmtsbutton.highlight,
+.wmtsbutton:hover {
+  background: url(../../../../images/wmts_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
