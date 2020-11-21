@@ -34,9 +34,7 @@ export default {
         }
     },
     mounted(){
-        // XE.MVVM.bind(this, 'token', Cesium.Ion, 'defaultAccessToken');
         this.token = Cesium.Ion.defaultAccessToken;
-        console.log( this.token);
     },
     methods:{
         cancel () {

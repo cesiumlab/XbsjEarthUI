@@ -66,7 +66,7 @@
         <button
           class="clockstepbutton"
           :class="{clockstepbuttonactive:clockStep == 'SYSTEM_CLOCK'}"
-          @click="multiplier=1; clockStep = 'SYSTEM_CLOCK'"
+          @click="multiplier=1;shouldAnimate = true; clockStep = 'SYSTEM_CLOCK'"
         ></button>
       </div>
       <div ref="animation" class="animationContainer">
@@ -254,7 +254,7 @@ export default {
       multiplierScale: 1,
       showType: "local",
       clockRange: "",
-      clockStep: "",
+      clockStep: "SYSTEM_CLOCK",
       startTime: { dayNumber: 2440587, secondsOfDay: 43210 },
       stopTime: { dayNumber: 2440587, secondsOfDay: 43210 },
       currentTime: { dayNumber: 2440587, secondsOfDay: 43210 },
@@ -294,7 +294,7 @@ export default {
       
       this._lockMultiplier = false;
       this._lockMultiplierScale = false;
-    },20);
+    },200);
 
     this._earth = this.$root.$earth;
     this._clock = this._earth.clock;
@@ -302,12 +302,17 @@ export default {
     this.startTime = Cesium.JulianDate.fromDate(new Date());
     this.stopTime = Cesium.JulianDate.addHours(
       this.startTime,
-      1,
+      12,
       new Cesium.JulianDate()
     );
     this.currentTime = Cesium.JulianDate.clone(
       this.startTime,
       new Cesium.JulianDate()
+    );
+    this.startTime = Cesium.JulianDate.addHours(
+      this.currentTime,
+      -12,
+      this.startTime
     );
 
     //下面是从timeLine.js挪过来的代码
@@ -1195,6 +1200,12 @@ export default {
     }
   },
   watch: {
+    clockStep( val){
+      if( val == 'SYSTEM_CLOCK'){
+        Cesium.JulianDate.addHours( this.currentTime, 12, this.stopTime);
+        Cesium.JulianDate.addHours( this.currentTime, -12, this.startTime);
+      }
+    },
     multiplierScale( val, oldVal){
       //val是一个介于-6.648到6.648之间的数字
       //这里需要设置一个机制，避免在修改其中一个数字的时候，另一个数字回头把这个数字修改了
@@ -1265,8 +1276,7 @@ export default {
     status() {
       if (
         this.shouldAnimate &&
-        this.multiplier > 0 &&
-        this.clockStep != "SYSTEM_CLOCK"
+        this.multiplier > 0
       ) {
         return "play";
       } else if (
