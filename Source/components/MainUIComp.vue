@@ -81,6 +81,7 @@ import ImageryOnline from "./tools/ImageryServices/ImageryOnline.vue";
 import ImageryWMTS from "./tools/ImageryServices/ImageryWMTS.vue";
 import ImageryWMS from "./tools/ImageryServices/ImageryWMS.vue";
 import ImageryArcGis from "./tools/ImageryServices/ImageryArcGis.vue";
+import DefaultAccessToken from "./tools/ImageryServices/DefaultAccessToken.vue";
 
 import ModelLab from "./tools/ModelServices/ModelLab.vue";
 import ModelCloud from "./tools/ModelServices/ModelCloud.vue";
@@ -233,6 +234,7 @@ export default {
     ImageryWMTS,
     ImageryWMS,
     ImageryArcGis,
+    DefaultAccessToken,
     ModelLab,
     ModelCloud,
     ModelOnline,
@@ -349,6 +351,10 @@ export default {
         {
           component: "ImageryArcGis",
           ref: "imageryArcGis",
+        },
+        {
+          component: "DefaultAccessToken",
+          ref: "defaultAccessToken",
         },
         {
           component: "ModelLab",

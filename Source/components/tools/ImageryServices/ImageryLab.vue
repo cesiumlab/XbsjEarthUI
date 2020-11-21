@@ -243,10 +243,6 @@ export default {
 </script>
 
 <style scoped>
-.xbsj-localImage .localImageSeaarch,
-.xbsj-localImage .localImageDiv {
-  /* width: 500px; */
-}
 .xbsj-localImage .localImageDiv > div {
   margin-top: 10px;
 }
