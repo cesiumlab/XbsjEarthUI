@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CesiumLab2.0</title>
+
+    <!-- <script src="http://localhost:8080/Build/CesiumUnminified/Cesium.js"></script>
+    <link rel="stylesheet" href="http://localhost:8080/Build/CesiumUnminified/Widgets/widgets.css"> -->
+
+    <!-- 若需要使用自定义的Cesium版本时，只需要引入以下资源即可 -->
+    <!-- <script src="http://earthsdk.com/c/1.60/Build/Cesium/Cesium.js"></script>
+    <link rel="stylesheet" href="http://earthsdk.com/c/1.60/Build/Cesium/Widgets/widgets.css"> -->
+
+    <!-- 临时引入three.js，因为自定义图元扩展中的tube需要使用Three.js中的定点计算方法 -->
+    <!-- <script src="https://cdn.bootcss.com/three.js/r83/three.min.js"></script> -->
+    <script src="./scripts/three.min.js"></script>
+    <script src="./scripts/turf.min.js"></script>
+    <script src="./scripts/sceneTreeCreationExample.js"></script>
+    <script src="../../../XbsjEarthUI/xbsj.js"></script>
+    <script src="./custom.js"></script>
+    <script src="../../Examples/scripts/axios.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .label{
+            display: inline-block;
+            text-align: right;
+            margin-right: 5px;
+            vertical-align: middle;
+            line-height: 29px;
+            margin: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <button onclick="create()">创建</button>
+    <button onclick="destroy()">销毁</button> -->
+    <div id="main">
+    </div>
+
+    <script>
+        var xbsjEarthUI = undefined;
+
+        function initEarthWithTilesetUrl(earth, tilesetUrl, tilesetTitle) {
+            var earthJsonObject = {
+                "sceneTree": {
+                    "root": {
+                        "expand": true,
+                        "title": "预览场景",
+                        "children": [{
+                            "expand": true,
+                            "title": "三维瓦片组",
+                            "children": [{
+                                "czmObject": {
+                                    "xbsjType": "XbsjTileset",
+                                    // "guid": "c681a2cc-7f08-45a4-a8d3-2a03859b2c35",
+                                    "url": tilesetUrl
+                                },
+                                "enabled": true,
+                                "title": tilesetTitle
+                            }],
+                        }]
+                    }
+                }
+            };
+            earth.fromJson(earthJsonObject);
+        }
+
+        XbsjEarthUI.create('main').then((earthUI) => {
+            window.uia = earthUI;
+
+            //如果有url参数，那么只添加url参数数据
+            var urlOptions = Cesium.queryToObject(window.location.search.substring(1));
+            const tilesetUrl = urlOptions.tilesetUrl;
+            const tilesetTitle = urlOptions.tilesetTitle || '未命名三维瓦片';
+
+            XE.MVVM.watch(() => ({
+                labserver: earthUI.labServer.server,
+                sceneID: earthUI.labScene.sceneID,
+            }), params => {
+                let searchObj = {};
+                if (params.sceneID) {
+                    searchObj.scene = params.sceneID;
+                }
+                if (params.labserver && params.labserver !== '//localhost:9000/') {
+                    searchObj.labserver = params.labserver;
+                }
+
+                const searchStr = Cesium.objectToQuery(searchObj);
+
+                (searchStr.length > 0) && window.history.replaceState(null, null, '?' + searchStr);
+            });
+
+            axios.get('./assets/scene.json').then( json=>{
+                earthUI.earth.xbsjFromJSON( json.data);
+                uia._comp.$refs.mainBarControl.$refs.view.modelTreeShow = true;
+                uia._comp.$refs.cameraViewManager[0].show = true;
+                // earthUI.earth.sceneTree.root = json.data.sceneTree.root;
+            }).catch( err=>{
+                console.log( err);
+                earthUI.earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "title": "新建场景",
+                            "children": [
+                                {
+                                    "czmObject": {
+                                        "name": "百度暗色地图",
+                                        "xbsjType": "Imagery",
+                                        "xbsjImageryProvider": {
+                                            "XbsjImageryProvider": {
+                                                "url": "http://api0.map.bdimg.com/customimage/tile?=&x={x}&y={y}&z={z}&scale=1&customid=midnight",
+                                                "srcCoordType": "BD09",
+                                                "dstCoordType": "WGS84",
+                                                "minimumLevel": 0,
+                                                "maximumLevel": 18,
+                                            },
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                    ]
+                }
+            })
+
+            //获取url参数，如果有场景地址，那么先获取场景信息 
+            if (urlOptions.scene) {
+                earthUI.labScene.loadScene(urlOptions.scene);
+            } else if (tilesetUrl) {
+                initEarthWithTilesetUrl(earthUI.earth, tilesetUrl, tilesetTitle);
+            }
+            //否则按照示例代码方法创建
+            else {
+                
+            }
+
+            if (urlOptions.lang) {
+                earthUI.language = (urlOptions.lang == 'en-US' ? 'en' : 'zh');
+            }
+
+            var myTool = {
+                props: {
+                    getBind: Function
+                },
+                template: `
+                <div>
+                    <Window
+                        :footervisible="true"
+                        @cancel="cancel"
+                        @ok="ok" 
+                        :width="463"
+                        :minWidth="202"
+                        :height="500"
+                        :left="306"
+                        :top="438"
+                        :title="title" 
+                        v-show="show"
+                    >
+                        <label class="label">杆塔线路参数化定义，基本不依赖于3ds max等建模工具</label><br/>
+                        <label class="label">编辑过程所见即所得（操作视频  链接到b站的）</label><br/>
+                        <label class="label">建模结果为3dtiles，全球分块，全级别LOD，加载流畅，几乎可以满帧运行</label><br/>
+                        <label class="label">建模结果包含 id 和 type 属性，未来也可以扩充其他属性</label><br/>
+                        <label class="label">建模结果 按照线路 - 杆塔 - 绝缘子 组织场景结构树，可以定位或者进行显隐控制</label><br/>
+                    </Window>
+                </div>`,
+                data() {
+                    return {
+                        show: true,
+                        langs: {
+                            zh: {
+                                title: '杆塔编辑器',
+                                btn: '切换语言'
+                            },
+                            en: {
+                                title: 'custum window',
+                                btn: 'Language'
+                            }
+                        }
+                    }
+                },
+                created() {},
+                mounted() {
+                    console.log('my tool mounted');
+                },
+                methods: {
+                    click() {
+                        this.$root.$earthUI.language = this.$root.$earthUI.language === 'zh' ? 'en' : 'zh';
+                    },
+                    ok() {
+                        this.$parent.destroyTool(this);
+                    },
+                    cancel() {
+                        this.$parent.destroyTool(this);
+                    }
+                },
+                computed: {
+                    title() {
+                        return this.lang.title + ' [' + this.getBind().name + ']';
+                    }
+                }
+            };
+
+            var obj1 = {
+                name: '说明'
+            };
+            earthUI.showPropertyWindow(obj1, {
+                component: myTool
+            });
+
+        });
+    </script>
+</body>
+
+</html>
