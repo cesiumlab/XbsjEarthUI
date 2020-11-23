@@ -133,20 +133,6 @@
                 }
             })
 
-            //获取url参数，如果有场景地址，那么先获取场景信息 
-            if (urlOptions.scene) {
-                earthUI.labScene.loadScene(urlOptions.scene);
-            } else if (tilesetUrl) {
-                initEarthWithTilesetUrl(earthUI.earth, tilesetUrl, tilesetTitle);
-            }
-            //否则按照示例代码方法创建
-            else {
-                
-            }
-
-            if (urlOptions.lang) {
-                earthUI.language = (urlOptions.lang == 'en-US' ? 'en' : 'zh');
-            }
 
             var myTool = {
                 props: {
@@ -171,6 +157,7 @@
                         <label class="label">建模结果为3dtiles，全球分块，全级别LOD，加载流畅，几乎可以满帧运行</label><br/>
                         <label class="label">建模结果包含 id 和 type 属性，未来也可以扩充其他属性</label><br/>
                         <label class="label">建模结果 按照线路 - 杆塔 - 绝缘子 组织场景结构树，可以定位或者进行显隐控制</label><br/>
+                        <label class="label">详细文档请参考网址：<a @click="open()">https://www.jianshu.com/p/14c6145adf24</a></label><br/>
                     </Window>
                 </div>`,
                 data() {
@@ -193,6 +180,9 @@
                     console.log('my tool mounted');
                 },
                 methods: {
+                    open(){
+                        window.open('https://www.jianshu.com/p/14c6145adf24')
+                    },
                     click() {
                         this.$root.$earthUI.language = this.$root.$earthUI.language === 'zh' ? 'en' : 'zh';
                     },
