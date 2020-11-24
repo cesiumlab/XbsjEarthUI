@@ -30,13 +30,18 @@
             margin: 0;
             padding: 0;
         }
-        .label{
+
+        .label {
             display: inline-block;
             text-align: right;
             margin-right: 5px;
             vertical-align: middle;
             line-height: 29px;
-            margin: 0px;
+            margin-left: 20px;
+        }
+
+        .label a {
+            color: #ec6f04;
         }
     </style>
 </head>
@@ -50,87 +55,41 @@
     <script>
         var xbsjEarthUI = undefined;
 
-        function initEarthWithTilesetUrl(earth, tilesetUrl, tilesetTitle) {
-            var earthJsonObject = {
-                "sceneTree": {
-                    "root": {
-                        "expand": true,
-                        "title": "预览场景",
-                        "children": [{
-                            "expand": true,
-                            "title": "三维瓦片组",
-                            "children": [{
-                                "czmObject": {
-                                    "xbsjType": "XbsjTileset",
-                                    // "guid": "c681a2cc-7f08-45a4-a8d3-2a03859b2c35",
-                                    "url": tilesetUrl
-                                },
-                                "enabled": true,
-                                "title": tilesetTitle
-                            }],
-                        }]
-                    }
-                }
-            };
-            earth.fromJson(earthJsonObject);
-        }
-
         XbsjEarthUI.create('main').then((earthUI) => {
             window.uia = earthUI;
 
-            //如果有url参数，那么只添加url参数数据
-            var urlOptions = Cesium.queryToObject(window.location.search.substring(1));
-            const tilesetUrl = urlOptions.tilesetUrl;
-            const tilesetTitle = urlOptions.tilesetTitle || '未命名三维瓦片';
 
-            XE.MVVM.watch(() => ({
-                labserver: earthUI.labServer.server,
-                sceneID: earthUI.labScene.sceneID,
-            }), params => {
-                let searchObj = {};
-                if (params.sceneID) {
-                    searchObj.scene = params.sceneID;
-                }
-                if (params.labserver && params.labserver !== '//localhost:9000/') {
-                    searchObj.labserver = params.labserver;
-                }
+            axios.get('towerscene.json').then(json => {
+                earthUI.earth.xbsjFromJSON(json.data);
+                //uia._comp.$refs.mainBarControl.$refs.view.modelTreeShow = true;
+                //uia._comp.$refs.cameraViewManager[0].show = true;
 
-                const searchStr = Cesium.objectToQuery(searchObj);
-
-                (searchStr.length > 0) && window.history.replaceState(null, null, '?' + searchStr);
-            });
-
-            axios.get('./assets/scene.json').then( json=>{
-                earthUI.earth.xbsjFromJSON( json.data);
-                uia._comp.$refs.mainBarControl.$refs.view.modelTreeShow = true;
-                uia._comp.$refs.cameraViewManager[0].show = true;
                 // earthUI.earth.sceneTree.root = json.data.sceneTree.root;
-            }).catch( err=>{
-                console.log( err);
-                earthUI.earth.sceneTree.root = {
-                    "children": [
-                        {
-                            "title": "新建场景",
-                            "children": [
-                                {
-                                    "czmObject": {
-                                        "name": "百度暗色地图",
-                                        "xbsjType": "Imagery",
-                                        "xbsjImageryProvider": {
-                                            "XbsjImageryProvider": {
-                                                "url": "http://api0.map.bdimg.com/customimage/tile?=&x={x}&y={y}&z={z}&scale=1&customid=midnight",
-                                                "srcCoordType": "BD09",
-                                                "dstCoordType": "WGS84",
-                                                "minimumLevel": 0,
-                                                "maximumLevel": 18,
-                                            },
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                    ]
-                }
+
+
+               
+
+                var width = earthUI.earth._viewer.canvas.width;
+                var height = earthUI.earth._viewer.canvas.height;
+                //视角管理器靠右显示
+                var cammanager = earthUI.tools.cameraViewManager;
+                cammanager.show = true;
+
+                cammanager._comp.$children[0].$data.windowstyle.left = (width - cammanager._comp.$children[0].width-10) + "px";
+
+                cammanager._comp.$children[0].$data.windowstyle.top="639px";
+
+                //模型结构树靠右显示
+                var modelTree = earthUI.tools.modelTree;
+                modelTree.show = true;
+
+                modelTree._comp.$children[0].$data.windowstyle.left = (width - modelTree._comp.$children[0].width-10) + "px";
+                modelTree._comp.$children[0].$data.windowstyle.top="138px";
+
+
+            }).catch(err => {
+                console.log(err);
+
             })
 
 
@@ -141,23 +100,21 @@
                 template: `
                 <div>
                     <Window
-                        :footervisible="true"
-                        @cancel="cancel"
-                        @ok="ok" 
-                        :width="463"
+                        :footervisible="false" 
+                        :width="450"
                         :minWidth="202"
-                        :height="500"
-                        :left="306"
-                        :top="438"
+                        :height="300"
+                        :left="3"
+                        :top="639"
                         :title="title" 
                         v-show="show"
                     >
                         <label class="label">杆塔线路参数化定义，基本不依赖于3ds max等建模工具</label><br/>
-                        <label class="label">编辑过程所见即所得（操作视频  链接到b站的）</label><br/>
+                        <label class="label">编辑过程所见即所得<a href="https://space.bilibili.com/346212872/channel/detail?cid=160438" target="_blank">操作视频</a></label><br/>
                         <label class="label">建模结果为3dtiles，全球分块，全级别LOD，加载流畅，几乎可以满帧运行</label><br/>
                         <label class="label">建模结果包含 id 和 type 属性，未来也可以扩充其他属性</label><br/>
                         <label class="label">建模结果 按照线路 - 杆塔 - 绝缘子 组织场景结构树，可以定位或者进行显隐控制</label><br/>
-                        <label class="label">详细文档请参考网址：<a @click="open()">https://www.jianshu.com/p/14c6145adf24</a></label><br/>
+                        <label class="label">详细文档请：<a href="https://www.jianshu.com/p/14c6145adf24" target="_blank">参考网址</a></label><br/>
                     </Window>
                 </div>`,
                 data() {
@@ -165,7 +122,7 @@
                         show: true,
                         langs: {
                             zh: {
-                                title: '杆塔编辑器',
+                                title: '电力塔线编辑器',
                                 btn: '切换语言'
                             },
                             en: {
@@ -175,27 +132,22 @@
                         }
                     }
                 },
-                created() {},
+                created() { },
                 mounted() {
                     console.log('my tool mounted');
                 },
                 methods: {
-                    open(){
-                        window.open('https://www.jianshu.com/p/14c6145adf24')
-                    },
-                    click() {
-                        this.$root.$earthUI.language = this.$root.$earthUI.language === 'zh' ? 'en' : 'zh';
-                    },
+
                     ok() {
-                        this.$parent.destroyTool(this);
+                       
                     },
                     cancel() {
-                        this.$parent.destroyTool(this);
+                       
                     }
                 },
                 computed: {
                     title() {
-                        return this.lang.title + ' [' + this.getBind().name + ']';
+                        return this.lang.title;
                     }
                 }
             };
