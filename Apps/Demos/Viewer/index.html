@@ -45,23 +45,24 @@
             var earthJsonObject = {
                 "sceneTree": {
                     "root": {
-                        "expand": true,
-                        "title": "预览场景",
-                        "children": [{
-                            "expand": true,
-                            "title": "三维瓦片组",
-                            "children": [{
-                                "czmObject": {
-                                    "xbsjType": "XbsjTileset",
-                                    // "guid": "c681a2cc-7f08-45a4-a8d3-2a03859b2c35",
-                                    "url": tilesetUrl
-                                },
-                                "enabled": true,
-                                "title": tilesetTitle
-                            }],
-                        }]
+                        "children": [
+                            {
+                                "title": "预览场景",
+                                "children": [
+                                    {
+                                        "czmObject": {
+                                            "xbsjType": "Tileset",
+                                            "name": "预览场景",
+                                            "url": tilesetUrl,
+                                            "xbsjClippingPlanes": {},
+                                            "xbsjCustomShader": {}
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
                     }
-                }
+                },
             };
             earth.xbsjFromJSON(earthJsonObject);
         }
