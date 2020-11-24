@@ -51,7 +51,7 @@
 
       <div class="xbsj-list-item" v-if="customBtns.length>0">
         <span class="xbsj-list-name">{{lang.custom}}</span>
-        <div class="xbsj-item-btnbox ml20" v-for="btn in customBtns">
+        <div class="xbsj-item-btnbox ml20" v-for="btn in customBtns" :key="btn+Math.random()">
           <div class="xbsj-item-btn">
             <button class="custombutton" :class="btn.cls()" @click="btn.click()"></button>
           </div>
@@ -200,7 +200,7 @@
           </div>
           <!-- 材质底色 -->
           <div class="xbsj-slide-bottom">
-            <label class="xbsj-slide-label">{{lang.material}}</label>
+            <label class="xbsj-slide-label" @click="luminanceAtZenith = 0.2">{{lang.material}}</label>
             <div class="xbsj-slide-div">
               <XbsjSlider
                 :min="0"
@@ -217,7 +217,7 @@
         <div class="xbsj-slide-group">
           <!-- 散射强度 -->
           <div class="xbsj-slide-top">
-            <label class="xbsj-slide-label">{{lang.scatter}}</label>
+            <label class="xbsj-slide-label" @click="imageBasedLightingFactor[0] = 1.0">{{lang.scatter}}</label>
             <div class="xbsj-slide-div">
               <XbsjSlider
                 :min="0"
@@ -247,7 +247,7 @@
           </div>-->
           <!-- 最大内存 -->
           <div class="xbsj-slide-bottom">
-            <label class="xbsj-slide-label">{{lang.maximumMemoryUsage}}</label>
+            <label class="xbsj-slide-label" @click="maximumMemoryUsage = 512">{{lang.maximumMemoryUsage}}</label>
             <div class="xbsj-slide-div">
               <XbsjSlider
                 :min="512"
