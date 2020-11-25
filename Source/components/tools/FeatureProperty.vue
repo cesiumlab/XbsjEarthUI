@@ -10,7 +10,7 @@
     :top="138"
     :title="lang.title"
   >
-    <div class="group" v-for="g in groups">
+    <div class="group" v-for="g in groups" :key="g+Math.random()">
       <div class="groupname" @click=" g.close = !g.close;">
         <label>{{g.name}}</label>
         <XbsjIcon
@@ -20,7 +20,7 @@
         />
       </div>
       <ul :class="{'group-list-close':g.close}" v-if="g.props.length>0">
-        <li v-for="p in g.props">
+        <li v-for="p in g.props" :key="p+Math.random()">
           <label class="liname">{{p.name}}</label>
           <label class="livalue">{{p.value}}</label>
         </li>

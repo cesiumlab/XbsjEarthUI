@@ -128,6 +128,11 @@
           </div>
           <span class="xbsj-item-name">{{lang.earthColor}}</span>
         </div>
+        
+        <div class="xbsj-item-btnbox" @click="tokenUIShow=!tokenUIShow">
+          <div class="xbsj-item-btn tokenbutton" :class="tokenUIShow ? 'tokenbuttonActive' : ''"></div>
+          <span class="xbsj-item-name">{{lang.defaultAccessToken}}</span>
+        </div>
       </div>
     </div>
     <div class="xbsj-mainbar-popup popup" v-show="popup">
@@ -173,6 +178,7 @@ export default {
       lang: {},
       viewport: "0",
       popup: false,
+      tokenUIShow: false,
       options: {
         verticalshow: false,
         transverseshow: false,
@@ -527,6 +533,21 @@ export default {
 }
 .dtilesbuttonActive {
   background: url(../../../../images/3Dtiles_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.tokenbutton {
+  background: url(../../../../images/token.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.tokenbutton:hover {
+  background: url(../../../../images/token_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.tokenbuttonActive {
+  background: url(../../../../images/token_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }

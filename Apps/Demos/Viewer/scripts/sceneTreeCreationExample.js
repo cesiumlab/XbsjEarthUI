@@ -65,7 +65,7 @@ function sceneTreeCreateExample1(xbsjEarth) {
                     "name": "谷歌影像",
                     "xbsjImageryProvider": {
                         "XbsjImageryProvider": {
-                            "url": "//mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali"
+                            "url": "http://mt1.google.cn/vt/lyrs=s,h&gl=cn&x={x}&y={y}&z={z}&s=Gali"
                         },
                         "UrlTemplateImageryProvider": {},
                         "WebMapTileServiceImageryProvider": {}

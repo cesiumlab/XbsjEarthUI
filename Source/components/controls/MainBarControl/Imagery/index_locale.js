@@ -12,8 +12,10 @@ const zh = {
   saturate: "饱和度",
   gamma: "gamma",
   viewport:'视口',
-  wms:"WMTS",
+  wmts:"WMTS",
   history:"历史影像",
+  wms: "WMS",
+  Arcgis: "ArcGis",
   selectWMTS:"请选中WMTS图层"
 };
 
@@ -31,7 +33,9 @@ const en = {
   saturate: "Saturate",
   gamma: "Gamma",
   viewport:'Viewport',
-  wms:"WMTS",
+  wmst:"WMTS",
+  wms: "WMS",
+  Arcgis: "ArcGis",
   history:"History",
   selectWMTS:"please select a wmts layer"
 };

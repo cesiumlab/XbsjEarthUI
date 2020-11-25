@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CesiumLab2.0</title>
+
+    <!-- <script src="http://localhost:8080/Build/CesiumUnminified/Cesium.js"></script>
+    <link rel="stylesheet" href="http://localhost:8080/Build/CesiumUnminified/Widgets/widgets.css"> -->
+
+    <!-- 若需要使用自定义的Cesium版本时，只需要引入以下资源即可 -->
+    <!-- <script src="http://earthsdk.com/c/1.60/Build/Cesium/Cesium.js"></script>
+    <link rel="stylesheet" href="http://earthsdk.com/c/1.60/Build/Cesium/Widgets/widgets.css"> -->
+
+    <!-- 临时引入three.js，因为自定义图元扩展中的tube需要使用Three.js中的定点计算方法 -->
+    <!-- <script src="https://cdn.bootcss.com/three.js/r83/three.min.js"></script> -->
+    <script src="./scripts/three.min.js"></script>
+    <script src="./scripts/turf.min.js"></script>
+    <script src="./scripts/sceneTreeCreationExample.js"></script>
+    <script src="../../../XbsjEarthUI/xbsj.js"></script>
+    <script src="./custom.js"></script>
+    <script src="../../Examples/scripts/axios.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .label {
+            display: inline-block;
+            text-align: right;
+            margin-right: 5px;
+            vertical-align: middle;
+            line-height: 29px;
+            margin-left: 10px;
+        }
+
+        .label a {
+            color: #ec6f04;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <button onclick="create()">创建</button>
+    <button onclick="destroy()">销毁</button> -->
+    <div id="main">
+    </div>
+
+    <script>
+        var xbsjEarthUI = undefined;
+
+        XbsjEarthUI.create('main').then((earthUI) => {
+            window.uia = earthUI;
+
+
+            axios.get('towerscene.json').then(json => {
+                earthUI.earth.xbsjFromJSON(json.data);
+                //uia._comp.$refs.mainBarControl.$refs.view.modelTreeShow = true;
+                //uia._comp.$refs.cameraViewManager[0].show = true;
+
+                // earthUI.earth.sceneTree.root = json.data.sceneTree.root;
+
+
+               
+
+                var width = earthUI.earth._viewer.canvas.width;
+                var height = earthUI.earth._viewer.canvas.height;
+                //视角管理器靠右显示
+                var cammanager = earthUI.tools.cameraViewManager;
+                cammanager.show = true;
+
+                cammanager._comp.$children[0].$data.windowstyle.left = (width - cammanager._comp.$children[0].width-10) + "px";
+
+                cammanager._comp.$children[0].$data.windowstyle.top="639px";
+
+                //模型结构树靠右显示
+                var modelTree = earthUI.tools.modelTree;
+                modelTree.show = true;
+
+                modelTree._comp.$children[0].$data.windowstyle.left = (width - modelTree._comp.$children[0].width-10) + "px";
+                modelTree._comp.$children[0].$data.windowstyle.top="138px";
+
+
+            }).catch(err => {
+                console.log(err);
+
+            })
+
+
+            var myTool = {
+                props: {
+                    getBind: Function
+                },
+                template: `
+                <div>
+                    <Window
+                        :footervisible="false" 
+                        :width="450"
+                        :minWidth="202"
+                        :height="300"
+                        :left="3"
+                        :top="639"
+                        :title="title" 
+                        v-show="show"
+                    >
+                        <label class="label">杆塔线路参数化定义，基本不依赖于3ds max等建模工具</label><br/>
+                        <label class="label">编辑过程所见即所得<a href="https://space.bilibili.com/346212872/channel/detail?cid=160438" target="_blank">操作视频</a></label><br/>
+                        <label class="label">建模结果为3dtiles，全球分块，全级别LOD，加载流畅，几乎可以满帧运行</label><br/>
+                        <label class="label">建模结果包含 id 和 type 属性，未来也可以扩充其他属性</label><br/>
+                        <label class="label">建模结果 按照线路 - 杆塔 - 绝缘子 组织场景结构树，可以定位或者进行显隐控制</label><br/>
+                        <label class="label">详细文档请：<a href="https://www.jianshu.com/p/14c6145adf24" target="_blank">参考网址</a></label><br/>
+                    </Window>
+                </div>`,
+                data() {
+                    return {
+                        show: true,
+                        langs: {
+                            zh: {
+                                title: '电力塔线编辑器',
+                                btn: '切换语言'
+                            },
+                            en: {
+                                title: 'custum window',
+                                btn: 'Language'
+                            }
+                        }
+                    }
+                },
+                created() { },
+                mounted() {
+                    console.log('my tool mounted');
+                },
+                methods: {
+
+                    ok() {
+                       
+                    },
+                    cancel() {
+                       
+                    }
+                },
+                computed: {
+                    title() {
+                        return this.lang.title;
+                    }
+                }
+            };
+
+            var obj1 = { 
+            };
+            earthUI.showPropertyWindow(obj1, {
+                component: myTool
+            });
+
+        });
+    </script>
+</body>
+
+</html>

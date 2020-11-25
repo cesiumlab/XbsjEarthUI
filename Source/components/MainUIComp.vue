@@ -79,6 +79,9 @@ import ImageryLab from "./tools/ImageryServices/ImageryLab.vue";
 import ImageryCloud from "./tools/ImageryServices/ImageryCloud.vue";
 import ImageryOnline from "./tools/ImageryServices/ImageryOnline.vue";
 import ImageryWMTS from "./tools/ImageryServices/ImageryWMTS.vue";
+import ImageryWMS from "./tools/ImageryServices/ImageryWMS.vue";
+import ImageryArcGis from "./tools/ImageryServices/ImageryArcGis.vue";
+import DefaultAccessToken from "./tools/ImageryServices/DefaultAccessToken.vue";
 
 import ModelLab from "./tools/ModelServices/ModelLab.vue";
 import ModelCloud from "./tools/ModelServices/ModelCloud.vue";
@@ -229,6 +232,9 @@ export default {
     ImageryCloud,
     ImageryOnline,
     ImageryWMTS,
+    ImageryWMS,
+    ImageryArcGis,
+    DefaultAccessToken,
     ModelLab,
     ModelCloud,
     ModelOnline,
@@ -337,6 +343,18 @@ export default {
         {
           component: "ImageryWMTS",
           ref: "imageryWMTS",
+        },
+        {
+          component: "ImageryWMS",
+          ref: "imageryWMS",
+        },
+        {
+          component: "ImageryArcGis",
+          ref: "imageryArcGis",
+        },
+        {
+          component: "DefaultAccessToken",
+          ref: "defaultAccessToken",
         },
         {
           component: "ModelLab",
@@ -738,7 +756,7 @@ export default {
         return;
       }
 
-      var guid = czmObject.guid;
+      var guid = czmObject.guid || Cesium.createGuid();
       if (typeof component == "string") {
         guid += "_" + component;
       }

@@ -45,25 +45,26 @@
             var earthJsonObject = {
                 "sceneTree": {
                     "root": {
-                        "expand": true,
-                        "title": "预览场景",
-                        "children": [{
-                            "expand": true,
-                            "title": "三维瓦片组",
-                            "children": [{
-                                "czmObject": {
-                                    "xbsjType": "XbsjTileset",
-                                    // "guid": "c681a2cc-7f08-45a4-a8d3-2a03859b2c35",
-                                    "url": tilesetUrl
-                                },
-                                "enabled": true,
-                                "title": tilesetTitle
-                            }],
-                        }]
+                        "children": [
+                            {
+                                "title": "预览场景",
+                                "children": [
+                                    {
+                                        "czmObject": {
+                                            "xbsjType": "Tileset",
+                                            "name": "预览场景",
+                                            "url": tilesetUrl,
+                                            "xbsjClippingPlanes": {},
+                                            "xbsjCustomShader": {}
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
                     }
-                }
+                },
             };
-            earth.fromJson(earthJsonObject);
+            earth.xbsjFromJSON(earthJsonObject);
         }
 
         XbsjEarthUI.create('main').then((earthUI) => {
@@ -129,7 +130,7 @@
                                         "xbsjType": "Imagery",
                                         "xbsjImageryProvider": {
                                             "XbsjImageryProvider": {
-                                                "url": "//www.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}",
+                                                "url": "//mt1.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}",
                                                 "srcCoordType": "GCJ02",
                                                 "dstCoordType": "WGS84",
                                             },

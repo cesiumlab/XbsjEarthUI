@@ -1,12 +1,12 @@
 <template>
   <div class="xbsj-mainbar-popup popup">
-    <div class="row">
+    <!-- <div class="row">
       <label class="label" @click="length=0.5">{{lang.long}}:</label>
 
       <div class="field">
         <XbsjSlider :min="0.1" :max="5" :step="0.1" showTip="always" v-model="length"></XbsjSlider>
       </div>
-    </div>
+    </div> -->
 
     <div class="row">
       <label class="label">{{lang.yanse}}:</label>
