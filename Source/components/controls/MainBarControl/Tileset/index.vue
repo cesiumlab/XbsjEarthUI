@@ -217,7 +217,7 @@
         <div class="xbsj-slide-group">
           <!-- 散射强度 -->
           <div class="xbsj-slide-top">
-            <label class="xbsj-slide-label" @click="imageBasedLightingFactor[0] = 1.0">{{lang.scatter}}</label>
+            <label class="xbsj-slide-label" @click="initImageBasedLightingFactor0()">{{lang.scatter}}</label>
             <div class="xbsj-slide-div">
               <XbsjSlider
                 :min="0"
@@ -457,6 +457,10 @@ export default {
     clearInterval(this.timer);
   },
   methods: {
+    initImageBasedLightingFactor0(){
+      this.imageBasedLightingFactor[0] = 1.0;
+      this.$forceUpdate();
+    },
     getDebugData(czmObject) {
       if (czmObject && czmObject._tileset) {
         this.totalMemoryUsageInBytes =
