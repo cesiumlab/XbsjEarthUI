@@ -6,7 +6,6 @@ class ModelTree {
     constructor(root) {
         this._root = root;
         this._comp = root._comp.$refs.modelTreeTool[0];
-        console.log( root);
 
         XE.MVVM.extend(this, {
 /**
