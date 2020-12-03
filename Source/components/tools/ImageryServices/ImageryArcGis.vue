@@ -70,7 +70,7 @@ export default {
                     layers: "图层",
                     credit: "credit",
                     style: "样式",
-                    tilingScheme: "瓦片略图",
+                    tilingScheme: "切片模式",
                     rectangle: "范围",
                     minimumLevel: "最小级别",
                     maximumLevel: "最大级别",
