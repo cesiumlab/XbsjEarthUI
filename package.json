@@ -1,6 +1,6 @@
 {
   "name": "xbsj-earthui",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "xbsj-earthui",
   "main": "index.js",
   "keywords": [
@@ -87,7 +87,6 @@
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.8.0",
-    "webpack-obfuscator": "^0.18.0"
+    "webpack-dev-server": "^3.8.0"
   }
 }
