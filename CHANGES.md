@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+###
+
+* 修复Pin的属性窗口类型设置错误
+
 ### 1.5.1 - 2020-12-7
 * 修复bug 因为创建arcgisMapService的url为空导致的 '<'报错(wcx)
 * MVVM框架适配Vue3.0
