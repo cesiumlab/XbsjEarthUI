@@ -155,12 +155,15 @@ export default {
           ')"]';
         editvalues.push(editvalue);
       });
-      var style = "var style = {  xbsjPositionOffset: {  conditions: [";
-      (style += editvalues + ","),
-        (style += ' ["true", "vec3(0,0,0)"] ]}    }');
-      //   console.log(style);
-
-      this.getBind().xbsjStyle = style;
+      // vtxf 20210113
+      // 添加这个判断条件，避免没有条件导致style设置成了 "var style = { xbsjPosition0ffset: { conditions: [, [ "true","vec3(0,0,0)"] ]}}" 从而导致崩溃！
+      if (editvalues.length > 0) { 
+        var style = "var style = {  xbsjPositionOffset: {  conditions: [";
+        (style += editvalues + ","),
+          (style += ' ["true", "vec3(0,0,0)"] ]}    }');
+        //   console.log(style);
+        this.getBind().xbsjStyle = style;
+      }
     },
     close() {
       this.$parent.destroyTool(this);
