@@ -222,14 +222,14 @@
           <input
             type="text"
             style="float: left; width: 25%; margin-right: 20px"
-            v-model="pin.origin[0]"
+            v-model.number="pin.origin[0]"
           />
           <input
             type="text"
             style="float: left; width: 25%"
-            v-model="pin.origin[1]"
+            v-model.number="pin.origin[1]"
           />
-          <XbsjCheckBox v-model="pin.isDivImage">{{
+          <XbsjCheckBox v-model.boolean="pin.isDivImage">{{
             lang.isDivImage
           }}</XbsjCheckBox>
         </div>
