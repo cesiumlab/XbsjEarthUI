@@ -1,6 +1,30 @@
 Change Log
 ==========
 
+### 1.6.0 - 2021-4-13
+##### Fixes :wrench:
+* 升级到Cesium1.80
+* 修复Polygon.ground属性的文档说明，默认值是false
+* 修复Gltf的纹理坐标偏移扩展会出现缝隙的问题
+* 修复ODLines.color设置不能生效的问题
+* OD线集群增加双向流动
+* OD线和OD线集群可以设置线条背景色
+* 距离测量和面积测量的回调函数改进
+* tileset增加colorBlendAmount和colorBlendMode属性
+* 修复扫描线附近不能拾取其他物体的问题
+* 修复Model的silhouetteColor属性设置不起作用的问题
+* 完善xbsjStyle的范例说明
+* 影像类型增加GoogleEarth
+* 点测量的回调改进，只在左键点击时才发出
+* 修复加载场景时，场景中KML的show属性为false时，依然可见的问题
+
+##### Additions :tada:
+* OD线增加双向控制属性bidirectional
+* OD线的材质增加bgColor属性(背景色)
+* 折线和多边形增加最大最小可视海拔高度
+* 多边形增加hole
+* 视角管理器增加播放功能
+
 ### 1.5.3 - 2021-1-13
 * 修复Pin的属性窗口类型设置错误
 * 修复importScript加载js文件报错的问题
