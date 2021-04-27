@@ -8,7 +8,7 @@ class DefaultAccessToken {
         this._comp = root._comp.$refs.defaultAccessToken[0];
 
         XE.MVVM.extend(this, {
- /**
+           /**
             * 是否可见
             * @type {boolean}
             * @default false 
