@@ -34,17 +34,22 @@ export default {
         }
     },
     mounted(){
-        this.token = Cesium.Ion.defaultAccessToken;
+        // this.token = Cesium.Ion.defaultAccessToken;
+        this.unbind = XE.MVVM.bind(
+            this,
+            "token",
+            this.$root.$earth,
+            "ionDefaultAccessToken"
+        );
     },
     methods:{
         cancel () {
             this.show = false;
         },
         ok () {
-
             this.show = false;
             // this._imagelayer = undefined;
-            Cesium.Ion.defaultAccessToken = this.token;
+            // Cesium.Ion.defaultAccessToken = this.token;
         },
     }
 }
