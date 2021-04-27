@@ -1,6 +1,18 @@
 Change Log
 ==========
 
+
+### 1.6.4 - 2021-4-27
+##### Fixes :wrench:
+修复bug：场景初始化时控制台会报错: GET http://xxx/dbRoot.v5?output=proto 404 (Not Found);
+修复defaultAccessToken不能存储的问题，另外defaultAccessToken为空字符串时，会默认使用Cesium的token。;
+修复地下模式开启后再关闭失效的问题;
+修复采用共享纹理模式加载3dtiles后出现的崩溃问题;
+新增图像缓存功能，减轻调度压力;
+Polyline的OD线材质可以设置图像，新增了image、useImageAndRepeat两个属性;
+让3dtiles数据的allowPicking属性生效;
+3dtiles加载采用共享纹理模式
+
 ### 1.6.0 - 2021-4-13
 ##### Fixes :wrench:
 * 升级到Cesium1.80
