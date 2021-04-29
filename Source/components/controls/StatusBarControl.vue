@@ -1,13 +1,24 @@
 <template>
   <div
     v-show="show"
-    style="width: 100%; height: 30px;background: rgba(71, 71, 71, 0.8); position: absolute; bottom: 0; font-size: 14px;line-height:30px;z-index:9999;"
-  >{{ statusString }} {{ velocityString }}</div>
+    style="
+      width: 100%;
+      height: 30px;
+      background: rgba(71, 71, 71, 0.8);
+      position: absolute;
+      bottom: 0;
+      font-size: 14px;
+      line-height: 30px;
+      z-index: 9999;
+    "
+  >
+    {{ statusString }} {{ velocityString }}{{mouseString}}
+  </div>
 </template>
 
 <script>
 export default {
-  data: function () {
+  data: function() {
     return {
       show: true,
       cameraString: "",
@@ -45,7 +56,7 @@ export default {
             "鼠标左键点击坐标轴x,y,z任意一个轴，轴变黄色，可沿着相应位置进行移动，再次点击，轴恢复原色，停止移动，点击右键坐标轴消失",
           rotatableObjectTip:
             "鼠标左键点击旋转坐标轴任意一个轴，轴变黄色，可沿着相应位置进行旋转，再次点击，轴恢复原色，停止旋转，点击右键旋转坐标轴消失",
-          positionPickingTip: "点击鼠标左键拾取位置",
+          positionPickingTip: "点击鼠标左键拾取位置"
         },
         en: {
           longitude: "LNG",
@@ -82,8 +93,8 @@ export default {
           rotatableObjectTip:
             "Click any axis of the rotation coordinate axis with the left mouse button, the axis turns yellow, and you can rotate along the corresponding position. Click again, the axis will return to its original color, stop rotating, and click the right button to rotate the coordinate axis and disappear",
           positionPickingTip:
-            "Click the left mouse button to pick up the position",
-        },
+            "Click the left mouse button to pick up the position"
+        }
       },
       lang: undefined,
       _uw1: undefined,
@@ -94,11 +105,35 @@ export default {
       _uw6: undefined,
       _uw7: undefined,
       _uw8: undefined,
+      mousePos: {
+        lng: 0,
+        lat: 0,
+        height: 0
+      },
+      mouseString:""
     };
   },
   created() {},
   mounted() {
     this._scene = this.$root.$earth.czm.scene;
+    const scratchCartograghic = [0, 0, 0];
+    this.$root.$earth.czm.viewer.canvas.addEventListener(
+      "mousemove",
+      mouseEvent => {
+        const carto = this.$root.$earth.pickPosition(
+          {
+            x: mouseEvent.offsetX,
+            y: mouseEvent.offsetY
+          },
+          scratchCartograghic
+        );
+        this.mousePos.lng = (carto[0] * 180) / Math.PI;
+        this.mousePos.lat = (carto[1] * 180) / Math.PI;
+        this.mousePos.height = carto[2];
+        this.mouseString = '鼠标位置:'+this.mousePos.lng.toFixed(6)+'° '+this.mousePos.lat.toFixed(6)+'° '+this.mousePos.height.toFixed(2)+'m';
+      }
+    );
+
     this._camera = this.$root.$earth.czm.camera;
 
     const td = Cesium.Math.toDegrees;
@@ -330,10 +365,10 @@ export default {
       )} km/h (${this.baseVelocity.toFixed(1)} × ${this.velocityRatio.toFixed(
         1
       )})`;
-    },
+    }
   },
   beforeDestroy() {
-    this._disposers.forEach((d) => d());
+    this._disposers.forEach(d => d());
     this._disposers.length = 0;
     this._uw1 = this._uw1 && this._uw1();
     this._uw2 = this._uw2 && this._uw2();
@@ -343,7 +378,7 @@ export default {
     this._uw6 = this._uw6 && this._uw6();
     this._uw7 = this._uw7 && this._uw7();
     this._uw8 = this._uw8 && this._uw8();
-  },
+  }
 };
 </script>
 
