@@ -113,33 +113,29 @@
                             "title": "新建场景",
                             "children": [
                                 {
+                                    // "czmObject": {
+                                    //     "xbsjType": "Imagery",
+                                    //     "name": "离线影像",
+                                    //     "show": true,
+                                    //     "xbsjImageryProvider": {
+                                    //         "createTileMapServiceImageryProvider": {
+                                    //             "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    //             "fileExtension": 'jpg',
+                                    //         },
+                                    //         "type": 'createTileMapServiceImageryProvider',
+                                    //     },
+                                    // }
                                     "czmObject": {
                                         "name": "全球影像",
                                         "xbsjType": "Imagery",
-                                        "name": "离线影像",
-                                        "show": true,
                                         "xbsjImageryProvider": {
                                             "XbsjImageryProvider": {
                                                 "url": "//server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
                                                 "srcCoordType": "GCJ02",
                                                 "dstCoordType": "WGS84",
                                             },
-                                            "type": 'createTileMapServiceImageryProvider',
-                                        },
+                                        }
                                     }
-                                    // "czmObject": {
-                                    //     "name": "谷歌影像",
-                                    //     "xbsjType": "Imagery",
-                                    //     "xbsjImageryProvider": {
-                                    //         "XbsjImageryProvider": {
-                                    //             "url": "//mt1.google.cn/maps/vt?lyrs=s,h&gl=CN&x={x}&y={y}&z={z}",
-                                    //             "srcCoordType": "GCJ02",
-                                    //             "dstCoordType": "WGS84",
-                                    //         },
-                                    //     }
-                                    // }
-
-                                    // https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}
                                 }
                             ]
                         },
