@@ -5,6 +5,17 @@ Change Log
 ##### Fixes :wrench:
 * Cesium升级到1.83
 * 修复PolygonHierarchy导致的报错
+* 修复TMS影像加载后不能保存的问题(TileMapServiceImageryProvider)
+* 修复模型、3dtiles数据增加轮廓效果时出现的渲染崩溃问题
+* 修复顶点纹理坐标偏移失效和纹理坐标偏移导致的漏缝问题
+* 修复中键旋转导致卡死的问题
+* OD线集群增加曲率控制(heightRatio)
+* 修复自定义图元尺寸非2的幂次会显示为一片黑色的问题
+* 挖坑体增加notUseSampleHeightMostDetailed属性，默认false，如果设置为true，则会加速获取高程信息，但是该属性不适 
+合存储用！
+* 修复太阳经纬度所指方向反了的问题
+* 自定义图元使用的纹理，如果是2的幂次，则自动生成mipmap
+* 修复地形挖坑三个点不能创建底面的问题
 
 ### 1.6.4 - 2021-4-27
 ##### Fixes :wrench:
