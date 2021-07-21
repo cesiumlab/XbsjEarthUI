@@ -1,17 +1,32 @@
 Change Log
 ==========
 
+### 1.7.0 - 2021-7-21
+##### Fixes :wrench:
+* Cesium升级到1.83
+* 修复PolygonHierarchy导致的报错
+* 修复TMS影像加载后不能保存的问题(TileMapServiceImageryProvider)
+* 修复模型、3dtiles数据增加轮廓效果时出现的渲染崩溃问题
+* 修复顶点纹理坐标偏移失效和纹理坐标偏移导致的漏缝问题
+* 修复中键旋转导致卡死的问题
+* OD线集群增加曲率控制(heightRatio)
+* 修复自定义图元尺寸非2的幂次会显示为一片黑色的问题
+* 挖坑体增加notUseSampleHeightMostDetailed属性，默认false，如果设置为true，则会加速获取高程信息，但是该属性不适 
+合存储用！
+* 修复太阳经纬度所指方向反了的问题
+* 自定义图元使用的纹理，如果是2的幂次，则自动生成mipmap
+* 修复地形挖坑三个点不能创建底面的问题
 
 ### 1.6.4 - 2021-4-27
 ##### Fixes :wrench:
-修复bug：场景初始化时控制台会报错: GET http://xxx/dbRoot.v5?output=proto 404 (Not Found);
-修复defaultAccessToken不能存储的问题，另外defaultAccessToken为空字符串时，会默认使用Cesium的token。;
-修复地下模式开启后再关闭失效的问题;
-修复采用共享纹理模式加载3dtiles后出现的崩溃问题;
-新增图像缓存功能，减轻调度压力;
-Polyline的OD线材质可以设置图像，新增了image、useImageAndRepeat两个属性;
-让3dtiles数据的allowPicking属性生效;
-3dtiles加载采用共享纹理模式
+* 修复bug：场景初始化时控制台会报错: GET http://xxx/dbRoot.v5?output=proto 404 (Not Found);
+* 修复defaultAccessToken不能存储的问题，另外defaultAccessToken为空字符串时，会默认使用Cesium的token。;
+* 修复地下模式开启后再关闭失效的问题;
+* 修复采用共享纹理模式加载3dtiles后出现的崩溃问题;
+* 新增图像缓存功能，减轻调度压力;
+* Polyline的OD线材质可以设置图像，新增了image、useImageAndRepeat两个属性;
+* 让3dtiles数据的allowPicking属性生效;
+* 3dtiles加载采用共享纹理模式
 
 ### 1.6.0 - 2021-4-13
 ##### Fixes :wrench:

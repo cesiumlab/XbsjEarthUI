@@ -72,9 +72,10 @@
                     routePaths.push({
                         startPos: airports[route[1]].coord.map(e => e * Math.PI / 180.0),
                         endPos: airports[route[2]].coord.map(e => e * Math.PI / 180.0),
+                        heightRatio: 10.0, // 曲率，默认为1.0， 越大抬高越多
                         width: 2.0,
                         color: [0.8*Math.random() + 0.2, 0.5*Math.random() + 0.5, 0.1, 1.0],
-                        bgColor: [1, 1, 1, 0.2],
+                        bgColor: [.8, .8, .2, .2],
                         bidirectional: 2,
                         startTime: timeDuration * Math.random(),
                         duration: moveBaseDuration + 1.0 * Math.random()
