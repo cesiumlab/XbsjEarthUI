@@ -127,10 +127,14 @@ export default {
           },
           scratchCartograghic
         );
-        this.mousePos.lng = (carto[0] * 180) / Math.PI;
-        this.mousePos.lat = (carto[1] * 180) / Math.PI;
-        this.mousePos.height = carto[2];
-        this.mouseString = '鼠标位置:'+this.mousePos.lng.toFixed(6)+'° '+this.mousePos.lat.toFixed(6)+'° '+this.mousePos.height.toFixed(2)+'m';
+        if (carto) {
+          this.mousePos.lng = (carto[0] * 180) / Math.PI;
+          this.mousePos.lat = (carto[1] * 180) / Math.PI;
+          this.mousePos.height = carto[2];
+          this.mouseString = '鼠标位置:'+this.mousePos.lng.toFixed(6)+'° '+this.mousePos.lat.toFixed(6)+'° '+this.mousePos.height.toFixed(2)+'m';
+        } else {
+          this.mouseString = '暂时无法获取鼠标位置...';
+        }
       }
     );
 
