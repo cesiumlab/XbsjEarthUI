@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+### 1.7.1 -2021-7-30
+##### Fixes :wrench:
+* 支持CesiumLab的跨平台压缩数据加载
+
 ### 1.7.0 - 2021-7-21
 ##### Fixes :wrench:
 * Cesium升级到1.83
