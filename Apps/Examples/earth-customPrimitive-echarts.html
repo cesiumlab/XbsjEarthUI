@@ -190,17 +190,28 @@
                 "children": [
                     {
                         "czmObject": {
-                            "name": "谷歌影像",
                             "xbsjType": "Imagery",
+                            "name": "离线影像",
+                            "show": true,
                             "xbsjImageryProvider": {
-                                "XbsjImageryProvider": {
-                                    "url": "http://mt1.google.cn/vt/lyrs=s,h&gl=cn&x={x}&y={y}&z={z}&s=Gali",
-                                    "srcCoordType": "GCJ02",
-                                    "dstCoordType": "WGS84",  
-                                    "maximumLevel": 21,
+                                "createTileMapServiceImageryProvider": {
+                                    "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                    "fileExtension": 'jpg',
                                 },
-                            }
+                                "type": 'createTileMapServiceImageryProvider',
+                            },
                         }
+                    },
+                    {
+                        "czmObject": {
+                            "name": 'Pin1',
+                            "xbsjType": "Pin",
+                            "position": [
+                                2.174033927183021,
+                                0.10999357244211576,
+                                0
+                            ],
+                        },
                     },
                     {
                         "ref": "billboard",
@@ -234,7 +245,7 @@
                                     "enabled": true
                                 },
                                 "colorMask": {},
-                                "depthMask": false,
+                                "depthMask": true,
                                 "blending": {
                                     "enabled": true,
                                     "color": {},
