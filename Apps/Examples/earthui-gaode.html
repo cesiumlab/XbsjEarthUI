@@ -33,15 +33,15 @@
             g0.title = '纠偏测试'
             earth.sceneTree.root.children.push(g0);
             {
-                var googleImageryLayer = new XE.Obj.Imagery(earth);
-                googleImageryLayer.xbsjImageryProvider.type = 'XbsjImageryProvider';
-                googleImageryLayer.xbsjImageryProvider['XbsjImageryProvider'] = {
+                var imageryLayer = new XE.Obj.Imagery(earth);
+                imageryLayer.xbsjImageryProvider.type = 'XbsjImageryProvider';
+                imageryLayer.xbsjImageryProvider['XbsjImageryProvider'] = {
                     url: '//webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',
                     rectangle: [-Math.PI, -Math.PI * 0.5, Math.PI, Math.PI * 0.5],
                     srcCoordType: 'GCJ02',  //实时纠偏
                     dstCoordType: 'WGS84'
                 };
-                const so = new XE.SceneTree.Leaf(googleImageryLayer);
+                const so = new XE.SceneTree.Leaf(imageryLayer);
                 so.title = '高德地图';
                 g0.children.push(so);
             }
