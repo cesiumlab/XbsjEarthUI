@@ -163,6 +163,18 @@
           <span class="xbsj-item-name">{{lang.wireFrame}}</span>
         </div>
         <div class="xbsj-item-btnbox xbsjtransparent">
+          <div class="XbsjSlider" title="地形夸张系数">
+            <XbsjSlider
+              :min="0.5"
+              :max="3.0"
+              :step="0.01"
+              showTip="hover"
+              v-model="terrainExaggeration"
+            ></XbsjSlider>
+          </div>
+          <span class="xbsj-item-name">{{lang.terrainExaggeration}}</span>
+        </div>
+        <div class="xbsj-item-btnbox xbsjtransparent">
           <div class="XbsjSlider" :title="depthTest && '需要关闭地形深度检测，此功能才可使用！' || ''">
             <XbsjSlider
               :min="0"
@@ -239,6 +251,7 @@ export default {
       logDepth: true,
       subSurfaceEnabled: false,
       surfaceOpacity: 0.0,
+      terrainExaggeration: 1.0,
       langs: languagejs,
       globeShow: true,
       tailoringShow: false,
@@ -321,6 +334,14 @@ export default {
           "surfaceOpacity",
           this.$root.$earth.terrainEffect,
           "surfaceOpacity"
+        )
+      );
+      this.unbind.push(
+        XE.MVVM.bind(
+          this,
+          "terrainExaggeration",
+          this.$root.$earth.terrainEffect,
+          "terrainExaggeration"
         )
       );
 
