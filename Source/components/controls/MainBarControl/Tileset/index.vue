@@ -155,6 +155,17 @@
           </div>
           <span class="xbsj-item-name">{{lang.techonlogy}}</span>
         </div>
+        <div class="xbsj-item-btnbox">
+          <div class="xbsj-item-btn">
+            <button
+              class="techonlogybutton"
+              :class="{highlight:doubleSideProp}"
+              :disabled="!enabled"
+              @click="toggleDoubleSide"
+            ></button>
+          </div>
+          <span class="xbsj-item-name">{{lang.doubleSide}}</span>
+        </div>
         <!-- skipLevelOfDetail -->
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn">
@@ -384,6 +395,7 @@ export default {
       langs: languagejs,
       customBtns: [],
       technologyShader: false,
+      doubleSideProp: false,
       skipLevelOfDetail: false,
       debugShowBoundingVolume: false,
       totalMemoryUsageInBytes: 0,
@@ -584,6 +596,12 @@ export default {
     rightbottomClick() {
       if (this._tileset) {
         this.rightbottomShow = !this.rightbottomShow;
+      }
+    },
+    toggleDoubleSide() {
+      if (this._tileset) {
+        this.doubleSideProp = !this._tileset.backFaceCulling;
+        this._tileset.backFaceCulling = this.doubleSideProp;
       }
     },
     toggleTechnology() {
