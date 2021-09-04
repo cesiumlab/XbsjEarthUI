@@ -158,7 +158,7 @@
         <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn">
             <button
-              class="techonlogybutton"
+              class="doubleSidebutton"
               :class="{highlight:doubleSideProp}"
               :disabled="!enabled"
               @click="toggleDoubleSide"
@@ -600,8 +600,8 @@ export default {
     },
     toggleDoubleSide() {
       if (this._tileset) {
-        this.doubleSideProp = !this._tileset.backFaceCulling;
-        this._tileset.backFaceCulling = this.doubleSideProp;
+        this.doubleSideProp = !this.doubleSideProp;
+        this._tileset.backFaceCulling = !this.doubleSideProp;
       }
     },
     toggleTechnology() {
@@ -888,6 +888,25 @@ export default {
   background-size: contain;
   cursor: not-allowed;
 }
+
+.doubleSidebutton {
+  background: url(../../../../images/profileanalysis.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.doubleSidebutton.highlight,
+.doubleSidebutton:hover {
+  background: url(../../../../images/profileanalysis_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.doubleSidebutton:disabled {
+  background: url(../../../../images/profileanalysis.png) no-repeat;
+  background-size: contain;
+  cursor: not-allowed;
+}
+
 .viewbutton {
   background: url(../../../../images/view-model.png) no-repeat;
   background-size: contain;
@@ -933,6 +952,7 @@ export default {
 .movebutton,
 .rotatebutton,
 .techonlogybutton,
+.doubleSidebutton,
 .custombutton,
 .debugShowBoundingVolumebutton,
 .skipLevelOfDetailbutton {
