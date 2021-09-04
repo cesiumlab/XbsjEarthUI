@@ -150,7 +150,7 @@
           <div class="XbsjSlider" title="地形夸张系数">
             <XbsjSlider
               :min="0.5"
-              :max="3.0"
+              :max="5.0"
               :step="0.01"
               showTip="hover"
               v-model="terrainExaggeration"
