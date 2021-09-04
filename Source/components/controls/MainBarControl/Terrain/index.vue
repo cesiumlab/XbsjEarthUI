@@ -138,13 +138,25 @@
           ></div>
           <span class="xbsj-item-name">{{lang.depth}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
+        <!-- <div class="xbsj-item-btnbox">
           <div
             class="xbsj-item-btn logarithmicbutton"
             @click="logDepth=!logDepth"
             :class="{highlight:logDepth}"
           ></div>
           <span class="xbsj-item-name">{{lang.logarithmic}}</span>
+        </div> -->
+        <div class="xbsj-item-btnbox xbsjtransparent">
+          <div class="XbsjSlider" title="地形夸张系数">
+            <XbsjSlider
+              :min="0.5"
+              :max="3.0"
+              :step="0.01"
+              showTip="hover"
+              v-model="terrainExaggeration"
+            ></XbsjSlider>
+          </div>
+          <span class="xbsj-item-name" @click="terrainExaggeration = 1.0">{{lang.terrainExaggeration}}</span>
         </div>
         <div class="xbsj-item-btnbox">
           <div
@@ -161,18 +173,6 @@
             :class="{highlight:wireFrame}"
           ></div>
           <span class="xbsj-item-name">{{lang.wireFrame}}</span>
-        </div>
-        <div class="xbsj-item-btnbox xbsjtransparent">
-          <div class="XbsjSlider" title="地形夸张系数">
-            <XbsjSlider
-              :min="0.5"
-              :max="3.0"
-              :step="0.01"
-              showTip="hover"
-              v-model="terrainExaggeration"
-            ></XbsjSlider>
-          </div>
-          <span class="xbsj-item-name">{{lang.terrainExaggeration}}</span>
         </div>
         <div class="xbsj-item-btnbox xbsjtransparent">
           <div class="XbsjSlider" :title="depthTest && '需要关闭地形深度检测，此功能才可使用！' || ''">
