@@ -63,6 +63,11 @@ module.exports = {
                 use: 'vue-html-loader'
             },
             {
+                test: /\.ts$/,
+                use: "ts-loader",
+                exclude: /node_modules/
+            },
+            {
                 test: /\.js$/,
                 use: 'babel-loader',
                 exclude: /node_modules/
@@ -99,16 +104,11 @@ module.exports = {
             //         }
             //     }
             // },
-            {
-                test: /\.ts$/,
-                use: "ts-loader",
-                exclude: /node_modules/
-            },
-            {
-                test: /\.js$/,
-                loader: 'babel-loader',
-                exclude: /node_modules/
-            },
+            // {
+            //     test: /\.js$/,
+            //     loader: 'babel-loader',
+            //     exclude: /node_modules/
+            // },
             // 使用url-loader来替换
             // {
             //     test: /\.(png|jpg|gif|svg)$/,
@@ -146,7 +146,10 @@ module.exports = {
         alias: {
             'vue$': 'vue/dist/vue.esm.js',
         },
-        extensions: ['*', '.js', '.vue', '.json']
+        extensions: ['*', '.ts', '.js', '.vue', '.json'],
+    },
+    externals: {
+        cesium: 'Cesium',
     },
     performance: {
         hints: false
@@ -170,7 +173,7 @@ module.exports = {
                 }
             }
         }
-    }
+    },
 }
 
 module.exports.plugins = (module.exports.plugins || []).concat([
