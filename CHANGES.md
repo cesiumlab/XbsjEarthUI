@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+### 1.7.5 - 2021-10-15
+##### Fixes :wrench:
+* 修复ktx2纹理加载走样的问题
+* 增加对cesium内部的鼠标事件控制属性(CameraEventAggregator.screenSpaceEventHandlerUseCanvasParentElement)
+
 ### 1.7.4 - 2021-9-4
 ##### Fixes :wrench:
 * 修复原先双面显示崩溃的问题，增加双面显示按钮
