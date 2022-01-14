@@ -50,34 +50,40 @@
               :class="model.creating?'btncoloron':''"
             >{{lang.creating}}</button>
             <button
-              style="margin-left:20px;"
+              style="margin-left:2px;"
               class="attitudeEditCameraButton"
               @click="model.editing =!model.editing"
               :class="model.editing?'btncoloron':''"
             >{{lang.editing}}</button>
             <button
-              style="margin-left:20px;"
+              style="margin-left:2px;"
               class="attitudeEditCameraButton"
               @click="model.bottomTextureRotationEditing =!model.bottomTextureRotationEditing"
               :class="model.bottomTextureRotationEditing?'btncoloron':''"
             >{{lang.bottomrotation}}</button>
             <!-- 挖坑地形 -->
             <button
-              style="margin-left:20px;"
+              style="margin-left:2px;"
               class="attitudeEditCameraButton"
               @click="terrainDiscardClick"
             >{{lang.terraindiscard}}</button>
+            <!-- 转成静态几何体 -->
+            <button
+              style="margin-left:2px;"
+              class="attitudeEditCameraButton"
+              @click="applyStatic"
+            >{{lang.applyStatic}}</button>
           </div>
           <!-- 拖拽 -->
           <div
             :title="lang.drag"
             class="dragBox"
-            style="display: inline-block;"
+            style="display: inline-block;margin-left:2px;"
             @dragover="dragOver"
             @drop="drop"
             @dragleave="dragLeave"
           >
-            <div class="dragButton" :class="{highlight:drag_over}">{{lang.dragcontent}}</div>
+            <div style="margin-left:2px;" class="dragButton" :class="{highlight:drag_over}">{{lang.dragcontent}}</div>
           </div>
         </div>
       </div>
@@ -281,6 +287,24 @@ export default {
     terrainDiscardClick() {
       this.$root.$earth.terrainEffect.depthTest = true;
       this._czmObj.applyTerrain();
+    },
+    applyStatic() {
+      // 生成静态几何体
+      var targetNodeChildren = this.$root.$earth.sceneTree.root.children;
+      var targetObj = this._czmObj;
+
+      if (targetObj.xbsjType === 'CutSurface') {
+        if (targetObj._bottomSurface && targetObj._bottomSurface._cp) {
+          var bottomCpJson = targetObj._bottomSurface._cp.toJSON();
+          bottomCpJson.name = '挖坑底面';
+          targetNodeChildren.push({ czmObject: bottomCpJson });
+        }
+        if (targetObj._cp) {
+          var wallCpJson = targetObj._cp.toJSON();
+          wallCpJson.name = '挖坑墙面';
+          targetNodeChildren.push({ czmObject: wallCpJson });
+        }
+      }
     },
     close() {
       this.$parent.destroyTool(this);
