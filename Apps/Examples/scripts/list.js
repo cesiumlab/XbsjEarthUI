@@ -606,6 +606,10 @@ vueApp.examples = [
                 "url": "./earth-customPrimitive-dynamicContour.html"
             },
             {
+                "title": "海量POI",
+                "url": "./earth-massivePois.html"
+            },
+            {
                 "title": "模型-环境贴图（勿用）",
                 "url": "./earth-model-envirement.html"
             },
