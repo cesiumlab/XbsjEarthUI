@@ -201,10 +201,15 @@ module.exports.plugins = (module.exports.plugins || []).concat([
             toType: 'dir'
         },
         {
-            // TODO(vtxf): 暂时不从node_modules读取
             from: process.env.XBSJ_IMPORT !== 'external' ? './node_modules/earthsdk-custom-primitive/dist/XbsjEarth-Plugins/customPrimitive' : 'Static/XbsjEarth-Plugins/customPrimitive',
             // from: 'Static/XbsjEarth-Plugins/customPrimitive',
             to: 'XbsjEarth-Plugins/customPrimitive',
+            toType: 'dir'
+        },
+        {
+            from: './node_modules/xbsj-renderer',
+            // from: 'Static/XbsjEarth-Plugins/customPrimitive',
+            to: 'XbsjEarth-Plugins/xbsj-renderer',
             toType: 'dir'
         },
         {

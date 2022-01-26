@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="../../XbsjCesium/Widgets/widgets.css">
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <script src="./scripts/vue.min.js"></script>
+    <script src="../../XbsjEarth-Plugins/xbsj-renderer/dist-web/xr-utils.js"></script>
     <style>
         html,
         body {
@@ -32,8 +33,8 @@
     <script>
 
         // 引入需要的类
-        const { CzmCanvasPoi, CzmDivPoi, CzmCanvasAndDivSwitchPoi, CzmPoisContext, CanvasPoi, CanvasPointPoi, CanvasImagePoi } = XE.mixins.massivePoi;
-        const { Event, Transition } = XE.mixins.utils;
+        const { CzmCanvasPoi, CzmDivPoi, CzmCanvasAndDivSwitchPoi, CzmPoisContext, CanvasPoi, CanvasPointPoi, CanvasImagePoi } = xbsj["xr-utils"];
+        const { Event, Transition } = xbsj["xr-utils"];
 
         // 创建自定义的POI
         class MyCanvasPointPoi extends CanvasPoi {
