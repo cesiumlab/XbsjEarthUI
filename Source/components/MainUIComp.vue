@@ -70,7 +70,7 @@ import ImageryOnline from './tools/ImageryServices/ImageryOnline.vue'
 import ImageryWMTS from './tools/ImageryServices/ImageryWMTS.vue'
 import ImageryWMS from './tools/ImageryServices/ImageryWMS.vue'
 import ImageryArcGis from './tools/ImageryServices/ImageryArcGis.vue'
-import DefaultAccessToken from './tools/ImageryServices/DefaultAccessToken.vue'
+import DefaultAccessToken from './tools/ImageryServices/defaultAccessToken.vue'
 
 import ModelLab from './tools/ModelServices/ModelLab.vue'
 import ModelCloud from './tools/ModelServices/ModelCloud.vue'
