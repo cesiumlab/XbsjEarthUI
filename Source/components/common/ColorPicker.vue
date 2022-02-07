@@ -751,7 +751,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .hu-color-picker {
   padding: 0px;
   background: #1d2024;

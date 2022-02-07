@@ -27,9 +27,9 @@ module.exports = {
                         options: {
                             // extractCSS: process.env.NODE_ENV === 'production',
                             loaders: {
-                                sass:
-                                    'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
-                                scss: 'vue-style-loader!css-loader!sass-loader',
+                                // sass:
+                                //     'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
+                                // scss: 'vue-style-loader!css-loader!sass-loader',
                                 less: 'vue-style-loader!css-loader!less-loader'
                             }
                         }
@@ -42,14 +42,14 @@ module.exports = {
                     }
                 ]
             },
-            {
-                test: /\.scss$/,
-                use: ['vue-style-loader', 'css-loader', 'sass-loader']
-            },
-            {
-                test: /\.sass$/,
-                use: ['vue-style-loader', 'css-loader', 'sass-loader?indentedSyntax']
-            },
+            // {
+            //     test: /\.scss$/,
+            //     use: ['vue-style-loader', 'css-loader', 'sass-loader']
+            // },
+            // {
+            //     test: /\.sass$/,
+            //     use: ['vue-style-loader', 'css-loader', 'sass-loader?indentedSyntax']
+            // },
             {
                 test: /\.less$/,
                 use: ['vue-style-loader', 'css-loader', 'less-loader']
