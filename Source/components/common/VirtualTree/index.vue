@@ -252,12 +252,14 @@ export default {
 			tileset._tileset.makeStyleDirty()
 		},
 		loadModelTree(tileset) {
-			if (Array.isArray(this.modelTree) && this.modelTree.length == 0) {
-				var url = tileset.url
-				if (!url || url == '') return
-
+			var url = tileset.url
+			if (!url || url == '') return
+			if (url !== this.url) {
+				this.modelTree = []
+				this.url = url
 				//加载
 				url = url.replace(/tileset.json/g, 'scenetree.json')
+
 				axios
 					.get(url)
 					.then(res => {
