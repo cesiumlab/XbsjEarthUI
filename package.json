@@ -47,7 +47,7 @@
     "dist"
   ],
   "devDependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.2",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.5",
     "babel-plugin-transform-runtime": "^6.23.0",
