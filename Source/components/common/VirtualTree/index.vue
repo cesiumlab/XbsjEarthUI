@@ -64,6 +64,7 @@ export default {
 				}
 			}
 		})
+
 		this._otherColor = new Cesium.Color(1, 200 / 255, 200 / 255, 0.2)
 	},
 	props: {
