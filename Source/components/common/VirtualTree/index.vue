@@ -48,7 +48,6 @@ export default {
 		this.updateData()
 		this._styles = []
 		this._testedUrl = []
-
 		this.$root._colorConfig = []
 		this.$root._visibleConfig = []
 
