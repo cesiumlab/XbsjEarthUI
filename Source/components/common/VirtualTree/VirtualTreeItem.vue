@@ -59,15 +59,15 @@
 
 <script>
 const scratchPath = []
-
+import axios from 'axios'
+let vueItemTotal = 0
 export default {
 	props: {
 		item: Object,
 		onToggleExpand: Function,
 		onToggleChecked: Function,
 		canmove: Boolean,
-		checkBoxShow: Boolean,
-		modelTree: Array
+		checkBoxShow: Boolean
 	},
 
 	mounted() {
@@ -77,14 +77,15 @@ export default {
 		return {
 			titleEditable: false, // 'static'
 			xbsjitemover: false,
-			tree: []
+			tree: [],
+			modelTree: []
 		}
 	},
 	methods: {
 		toggleExpand(item) {
 			this.onToggleExpand(item)
 			if (item.type == 'Tileset' && !item.expand) {
-				this.$emit('load-model-Tree', item._inner.sn.czmObject)
+				this.loadModelTree(item._inner.sn.czmObject)
 			}
 		},
 		toggleChecked(item, checked) {
@@ -187,13 +188,185 @@ export default {
 
 		// 模型结构树
 		modelDoubleClick(treeItem) {
-			this.$emit('model-double-click', treeItem)
+			this.modelDoubleClick(treeItem)
 		},
 		modelChecked(item, checked) {
-			this.$emit('model-item-checked', { item, checked })
+			this.modelItemChecked({ item, checked })
 		},
 		modelContextMenu(e) {
 			e.$event.stopPropagation()
+		},
+		modelItemChecked(opitons) {
+			var item = opitons.item
+			var checked = opitons.checked
+			item.checkStatus = checked ? 'checked' : 'unchecked'
+			var tileset = this.getItemBindTileset(item)
+			if (!tileset) return
+
+			//递归item把它之下的所有 构件修改为false 或者 true 根据check
+			var visible = checked
+			//需要去判定父的状态，如果有一个父节点是未选中的，那么visible还是false
+			if (visible) {
+				visible = this.getParentVisible(item.parent)
+			}
+			//寻找当前图层的配置
+			var config = this.$root._visibleConfig.find(f => f.tileset === tileset)
+			if (!config) {
+				config = {
+					tileset: tileset,
+					visibleCach: {}
+				}
+				this.$root._visibleConfig.push(config)
+			}
+			this.setElementVisible(item, config.visibleCach, visible)
+
+			tileset._tileset.makeStyleDirty()
+		},
+		setElementVisible(item, visibleCach, visible) {
+			if (!item) return
+			if (item.element) {
+				var ele = item.element().t
+				if (!ele.children) {
+					visibleCach[ele.id] = visible
+				}
+			}
+			//遍历item的所有子
+			if (item.children) {
+				item.children.forEach(si => {
+					si.checkStatus = visible ? 'checked' : 'unchecked'
+					this.setElementVisible(si, visibleCach, visible)
+				})
+			}
+		},
+		getItemBindTileset(item) {
+			if (!item) return undefined
+			if (typeof item.bind == 'function') return item.bind()
+			return this.getItemBindTileset(item.parent)
+		},
+		getParentVisible(item) {
+			if (!item) return true
+			if (item.checkStatus !== 'checked') return false
+
+			//继续判定父
+			return this.getParentVisible(item.parent)
+		},
+		modelDoubleClick(treeItem) {
+			var item = treeItem.item
+
+			var element
+			if (item.element) {
+				element = item.element()
+			}
+			if (!element || !element.t.sphere) {
+				item.expand = !item.expand
+			} else {
+				//取到构件去定位
+				this.locateElement(element.tileset, element.t)
+			}
+		},
+		locateElement(tileset, element) {
+			var sphere = element.sphere
+			if (!sphere) return
+			if (sphere[3] <= 0) return
+			var center = new Cesium.Cartesian3(sphere[0], sphere[1], sphere[2])
+
+			//定位飞行
+			try {
+				//取到原始的transform矩阵的逆
+				var srcMatInv = tileset._tileset._root.transform
+				srcMatInv = Cesium.Matrix4.inverse(srcMatInv, new Cesium.Matrix4())
+
+				//渠道当前的transform
+
+				var curMat = tileset._tileset.root.computedTransform
+
+				var mat = Cesium.Matrix4.multiply(curMat, srcMatInv, new Cesium.Matrix4())
+
+				center = Cesium.Matrix4.multiplyByPoint(mat, center, new Cesium.Cartesian3())
+
+				this.$root.$earth.czm.viewer.camera.flyToBoundingSphere(new Cesium.BoundingSphere(center, sphere[3]), {
+					duration: 0.5
+				})
+			} catch (ex) {}
+
+			//设置当前
+			var config = this.$root._colorConfig.find(t => t.tileset === tileset)
+			if (!config) {
+				this.$root._colorConfig.push({
+					tileset: tileset,
+					id: element.id
+				})
+			} else {
+				config.id = element.id
+			}
+			//刷新样式
+			tileset._tileset.makeStyleDirty()
+		},
+		loadModelTree(tileset) {
+			var url = tileset.url
+			if (!url || url == '') return
+			if (url !== this.url) {
+				this.modelTree = []
+				this.url = url
+				//加载
+				url = url.replace(/tileset.json/g, 'scenetree.json')
+
+				axios
+					.get(url)
+					.then(res => {
+						//添加tree的所有子
+						var children
+						if (res.data) {
+							//bim处理结果
+							if (res.data.children) {
+								children = res.data.children
+							}
+							//场景处理结果
+							else if (res.data.scenes) {
+								children = res.data.scenes
+							}
+						}
+						if (children[0].children) {
+							console.log(children[0])
+							var tree = {}
+							tree.id = vueItemTotal++
+							tree.bind = () => {
+								return tileset
+							}
+							tree.title = children[0].name // 是否有必要？
+							tree.checkStatus = 'checked'
+							tree.expand = true
+							tree.children = this.createTrees(tileset, children[0].children)
+							this.modelTree.push(tree)
+						}
+						this.$root.$earthUI.promptInfo('load ' + tileset.name + ' scenetree.json success')
+					})
+					.catch(err => {})
+			}
+		},
+		createTrees(tileset, srcArr) {
+			if (!srcArr) return undefined
+			var trees = []
+
+			srcArr.forEach(t => {
+				var tree = {
+					id: vueItemTotal++,
+					title: t.name,
+					expand: false,
+					checkStatus: 'checked',
+					element: () => {
+						return { tileset, t }
+					}
+				}
+
+				tree.children = this.createTrees(tileset, t.children)
+
+				trees.push(tree)
+			})
+
+			if (trees.length == 0) return undefined
+
+			return trees
 		}
 	},
 	watch: {},
