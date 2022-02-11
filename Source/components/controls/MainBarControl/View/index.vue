@@ -451,19 +451,19 @@ export default {
 	cursor: pointer;
 }
 .tokenbutton {
-	background: url(../../../../images/token.png) no-repeat;
-	background-size: contain;
-	cursor: pointer;
+  background: url(../../../../images/Token.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
 }
 .tokenbutton:hover {
-	background: url(../../../../images/token_on.png) no-repeat;
-	background-size: contain;
-	cursor: pointer;
+  background: url(../../../../images/Token_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
 }
 .tokenbuttonActive {
-	background: url(../../../../images/token_on.png) no-repeat;
-	background-size: contain;
-	cursor: pointer;
+  background: url(../../../../images/Token_on.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
 }
 .popup {
 	padding: 0 0 20px 0;
