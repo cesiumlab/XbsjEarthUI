@@ -329,19 +329,23 @@ export default {
 								children = res.data.scenes
 							}
 						}
-						if (children[0].children) {
-							console.log(children[0])
-							var tree = {}
-							tree.id = vueItemTotal++
-							tree.bind = () => {
-								return tileset
-							}
-							tree.title = children[0].name // 是否有必要？
-							tree.checkStatus = 'checked'
-							tree.expand = true
-							tree.children = this.createTrees(tileset, children[0].children)
-							this.modelTree.push(tree)
+						if (Array.isArray(children) && children.length) {
+							children.forEach(item => {
+								if (item.children) {
+									var tree = {}
+									tree.id = vueItemTotal++
+									tree.bind = () => {
+										return tileset
+									}
+									tree.title = item.name // 是否有必要？
+									tree.checkStatus = 'checked'
+									tree.expand = true
+									tree.children = this.createTrees(tileset, item.children)
+									this.modelTree.push(tree)
+								}
+							})
 						}
+
 						this.$root.$earthUI.promptInfo('load ' + tileset.name + ' scenetree.json success')
 					})
 					.catch(err => {})
