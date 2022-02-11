@@ -94,7 +94,7 @@ export default {
 			this.onToggleChecked(item, item.checkStatus !== 'checked')
 			// 模型结构树
 			if (item.type == 'Tileset') {
-				this.$emit('model-tree-checked', checked)
+				this.modelTreeChecked(checked)
 			}
 		},
 		onContexMenu(item, $event) {
@@ -195,6 +195,9 @@ export default {
 		},
 		modelContextMenu(e) {
 			e.$event.stopPropagation()
+		},
+		modelTreeChecked(checked) {
+			this.modelItemChecked({ item: this.modelTree[0], checked })
 		},
 		modelItemChecked(opitons) {
 			var item = opitons.item

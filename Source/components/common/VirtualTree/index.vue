@@ -136,10 +136,6 @@ export default {
 			//否则返回可见
 			return true
 		}
-
-		// modelTreeChecked(checked) {
-		// 	this.modelItemChecked({ item: this.modelTree[0], checked })
-		// },
 	},
 	watch: {
 		tree: {
