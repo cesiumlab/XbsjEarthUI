@@ -34,7 +34,7 @@
 
         // 引入需要的类
         const { CzmCanvasPoi, CzmDivPoi, CzmCanvasAndDivSwitchPoi, CzmPoisContext, CanvasPoi, CanvasPointPoi, CanvasImagePoi } = xbsj["xr-utils"];
-        const { Event, Transition } = xbsj["xr-utils"];
+        const { Event, Transition, DivBoxPicker, BoxPicker } = xbsj["xr-utils"];
 
         // 创建自定义的POI
         class MyCanvasPointPoi extends CanvasPoi {
@@ -346,6 +346,19 @@
                     }
 
                     window.pois = pois;
+                }
+
+                {
+                    const divBoxPicker = new DivBoxPicker(earth.czm.viewer.canvas.parentElement);
+                    divBoxPicker.pickRectEvent.disposableOn(pickRect => {
+                        const leftTopAndSize = { left: 0, top: 0, width: 0, height: 0, forward: true };
+                        if (BoxPicker.getLeftTopAndSize(pickRect, leftTopAndSize)) {
+                            pois.forEach(poi => {
+                                const [ left, top ] = poi.canvasPoi.winPos;
+                                poi.canvasPoi.actived = BoxPicker.contains(left, top, leftTopAndSize);
+                            });
+                        }
+                    });
                 }
             },
             // 1.2 资源销毁
