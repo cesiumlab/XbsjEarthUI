@@ -342,6 +342,10 @@
                         // 设置事件
                         p.canvasPoi.clickEvent.disposableOn(() => alert(`我被点击了！`));
 
+                        // 设置可视范围
+                        p.near = 10;
+                        p.far = 1000;
+
                         pois.push(p);
                     }
 
