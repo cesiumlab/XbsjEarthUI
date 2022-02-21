@@ -158,15 +158,11 @@ export default {
       } else if (idx1 > 0) {
         path = path.substr(idx1 + 1);
       }
-      if (path.indexOf(".clt") === path.length - 4) {
-        path = "tileset.json";
-      }
       var a = document.createElement('A');
       a.href = this.$root.$earthUI.labServer.server +
         "model/" +
         server._id +
-        "/" +
-        path;
+        "/tileset.json";
       return a.href;
     },
     ok () {
