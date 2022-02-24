@@ -14,6 +14,7 @@
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <script src="./scripts/vue.min.js"></script>
     <script src="../../XbsjEarth-Plugins/xbsj-renderer/dist-web/xr-utils.js"></script>
+    <script src="../../XbsjEarth-Plugins/xbsj-renderer/dist-web/xr-cesium.js"></script>
     <style>
         html,
         body {
@@ -33,8 +34,9 @@
     <script>
 
         // 引入需要的类
-        const { CzmCanvasPoi, CzmDivPoi, CzmCanvasAndDivSwitchPoi, CzmPoisContext, CanvasPoi, CanvasPointPoi, CanvasImagePoi } = xbsj["xr-utils"];
+        const { CanvasPoi, CanvasPointPoi, CanvasImagePoi } = xbsj["xr-utils"];
         const { Event, Transition, DivBoxPicker, BoxPicker } = xbsj["xr-utils"];
+        const { CzmCanvasPoi, CzmDivPoi, CzmCanvasAndDivSwitchPoi, CzmPoisContext } = xbsj["xr-cesium"];
 
         // 创建自定义的POI
         class MyCanvasPointPoi extends CanvasPoi {
@@ -343,8 +345,8 @@
                         p.canvasPoi.clickEvent.disposableOn(() => alert(`我被点击了！`));
 
                         // 设置可视范围
-                        p.near = 10;
-                        p.far = 1000;
+                        p.near = 0;
+                        p.far = 10000;
 
                         pois.push(p);
                     }
