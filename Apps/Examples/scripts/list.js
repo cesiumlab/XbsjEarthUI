@@ -598,6 +598,10 @@ vueApp.examples = [
         "title": "内部测试",
         "list": [
             {
+                "title": "自定义EarthSDK对象(GeoJSON/KML/CZML)",
+                "url": "./earth-customGeojson.html"
+            },
+            {
                 "title": "自定义图元-动态双面电子标牌",
                 "url": "./earth-customPrimitive-dynamicBillboard.html"
             },

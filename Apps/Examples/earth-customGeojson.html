@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="内部测试">
+    </meta>
+    <title>自定义EarthSDK对象(GeoJSON/KML/CZML)</title>
+    <!-- 0 引入js文件：XbsjEarth.js和vue.min.js -->
+    <script src="../../XbsjCesium/Cesium.js"></script>
+    <link rel="stylesheet" href="../../XbsjCesium/Widgets/widgets.css">
+    <script src="../../XbsjEarth/XbsjEarth.js"></script>
+    <script src="./scripts/vue.min.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vueApp" style="width: 100%; height: 100%; background: grey; position: relative;overflow:hidden;">
+        <earth-comp></earth-comp>
+    </div>
+
+    <script>
+        // 创建自定义的GeoJSON
+        /**
+         * 自定义EarthSDK对象：GeoJSON/CZML/KML
+         */
+
+        var { bind, watch } = XE.MVVM;
+        var { XbsjObject, XbsjCzmObj } = XE.Core;
+
+        function createGeoJson() {
+            const defaultOptions = {
+                name: 'geoJSON',
+                url: '',
+                show: true,
+                xbsjType: 'XbsjGeoJSON2'
+            };
+
+            class GeoJSON extends XbsjCzmObj {
+                constructor(earth, guid) {
+                    super(earth, guid);
+                    this._viewer = earth.czm.viewer;
+                    let self = this;
+                    this.disposers.push(bind(this, 'enabled', this, 'show'));
+
+                    this._dataSource = undefined;
+                    this.disposers.push(() => {
+                        if (this._dataSource) {
+                            this._viewer.dataSources.remove(self._dataSource);
+                            this._dataSource = undefined;
+                        }
+                    });
+
+                    this.disposers.push(watch(() => ({
+                        url: self.url
+                    }), () => {
+                        if (self._dataSource) {
+                            self._viewer.dataSources.remove(self._dataSource);
+                            self._dataSource = undefined;
+                        }
+
+                        if (self.url.length > 0) {
+                            Cesium.GeoJsonDataSource.load(self.url).then(function (dataSource) {
+                                self._dataSource = dataSource;
+                                self._viewer.dataSources.add(dataSource);
+                                self._dataSource.show = self.show;
+                            });
+                        }
+                    }));
+
+                    this.disposers.push(watch(() => ({
+                        show: self.show
+                    }), () => {
+                        self._dataSource && (self._dataSource.show = self.show);
+                    }));
+                }
+
+                flyTo() {
+                    if (this._dataSource) {
+                        this._viewer.flyTo(this._dataSource.entities.values, { duration: 1 });
+                    } else {
+                        console.warn('没有geojson数据');
+                    }
+                }
+            }
+
+            GeoJSON.defaultOptions = defaultOptions;
+            XbsjObject.registerType(GeoJSON, 'XbsjGeoJSON2');
+
+            return GeoJSON;
+        }
+
+        function createKml() {
+            const defaultOptions = {
+                name: 'KML',
+                url: '',
+                show: true,
+                xbsjType: 'XbsjKML2'
+            };
+
+            // 1 基于XE.Core.XbsjCzmObj创建一个自定义的类
+            class KML extends XbsjCzmObj {
+                constructor(earth, guid) {
+                    super(earth, guid);
+                    this._viewer = earth.czm.viewer;
+                    let self = this;
+                    this.disposers.push(bind(this, 'enabled', this, 'show'));
+
+                    this._dataSource = undefined;
+                    this.disposers.push(() => {
+                        if (this._dataSource) {
+                            this._viewer.dataSources.remove(self._dataSource);
+                            this._dataSource = undefined;
+                        }
+                    });
+
+                    this.disposers.push(watch(() => ({
+                        url: self.url
+                    }), () => {
+                        if (self._dataSource) {
+                            self._viewer.dataSources.remove(self._dataSource);
+                        }
+
+                        if (self.url.length > 0) {
+                            Cesium.KmlDataSource.load(self.url).then(function (dataSource) {
+                                self._dataSource = dataSource;
+                                self._viewer.dataSources.add(dataSource);
+                                self._dataSource.show = self.show;
+                            });
+                        }
+
+                    }));
+
+                    this.disposers.push(watch(() => ({
+                        show: self.show
+                    }), () => {
+                        self._dataSource && (self._dataSource.show = self.show);
+                    }));
+                }
+
+                flyTo() {
+                    if (this._dataSource) {
+                        this._viewer.flyTo(this._dataSource.entities.values, { duration: 1 });
+                    } else {
+                        console.warn('没有geojson数据');
+                    }
+                }
+            }
+
+            // 2 设置默认属性
+            KML.defaultOptions = defaultOptions;
+
+            XbsjObject.registerType(KML, 'XbsjKML2');
+
+            return KML;
+        }
+
+        function createCzml() {
+            const defaultOptions = {
+                name: 'Czml',
+                url: '',
+                show: true,
+                xbsjType: 'XbsjCzml2'
+            };
+
+            // 1 基于XE.Core.XbsjCzmObj创建一个自定义的类
+            class Czml extends XbsjCzmObj {
+                constructor(earth, guid) {
+                    super(earth, guid);
+                    this._viewer = earth.czm.viewer;
+                    let self = this;
+                    this.disposers.push(bind(this, 'enabled', this, 'show'));
+
+                    this._dataSource = undefined;
+                    this.disposers.push(() => {
+                        if (this._dataSource) {
+                            this._viewer.dataSources.remove(self._dataSource);
+                            this._dataSource = undefined;
+                        }
+                    });
+
+                    this.disposers.push(watch(() => ({
+                        url: self.url
+                    }), () => {
+                        if (self._dataSource) {
+                            self._viewer.dataSources.remove(self._dataSource);
+                            self._dataSource = undefined;
+                        }
+
+                        if (self.url.length > 0) {
+                            Cesium.CzmlDataSource.load(self.url).then(function (dataSource) {
+                                self._dataSource = dataSource;
+                                self._viewer.dataSources.add(dataSource);
+                                self._dataSource.show = self.show;
+                            });
+                        }
+                    }));
+
+                    this.disposers.push(XE.MVVM.watch(() => ({
+                        show: self.show
+                    }), () => {
+                        self._dataSource && (self._dataSource.show = self.show);
+                    }));
+                }
+
+                flyTo() {
+                    if (this._dataSource) {
+                        this._viewer.zoomTo(this._dataSource);
+                    } else {
+                        console.warn('没有geojson数据');
+                    }
+                }
+            }
+
+            // 2 设置默认属性
+            Czml.defaultOptions = defaultOptions;
+
+            XbsjObject.registerType(Czml, 'XbsjCzml2');
+
+            return Czml;
+        }
+
+
+        var GeoJson = createGeoJson();
+        var Kml = createKml();
+        var Czml = createCzml();
+
+        // test
+
+        /////////////////////////////////////////////////////////////////
+        // 不添加到场景树
+        // var geoJson = new GeoJson(uia.earth);
+        // geoJson.url = 'http://localhost:8091/test.geojson';
+
+        // var czml = new Czml(uia.earth);
+        // czml.url = 'http://localhost:8091/CZML/simple.czml';
+
+
+        // var kml = new Kml(uia.earth);
+        // kml.url = 'http://localhost:8091/KML/refresh.kml';
+        // kml.url = 'http://localhost:8091/KML/simple.kml';
+
+        /////////////////////////////////////////////////////////////////
+        // 添加到场景树
+        // uia.earth.sceneTree.root.children.push({
+        //     czmObject: {
+        //         xbsjType: 'XbsjKML2',
+        //         url: 'http://localhost:8091/KML/refresh.kml'
+        //     }
+        // });
+
+        // uia.earth.sceneTree.root.children.push({
+        //     czmObject: {
+        //         xbsjType: 'XbsjCzml2',
+        //         url: 'http://localhost:8091/CZML/simple.czml'
+        //     }
+        // });
+
+        // uia.earth.sceneTree.root.children.push({
+        //     czmObject: {
+        //         xbsjType: 'XbsjGeoJSON2',
+        //         url: 'http://localhost:8091/test.geojson'
+        //     }
+        // });
+
+
+        // 1 创建Earth的vue组件
+        var EarthComp = {
+            template: `
+                <div style="width: 100%; height: 100%">
+                    <div ref="earthContainer" style="width: 100%; height: 100%;">
+                    </div>
+                    <div v-show="dialogShow" ref="dialogModel" style="position:absolute;left:0;top:0;width:100px;height:40px;background:black;color:white;padding:5px;font-size:14px;">{{content}}</div>
+                </div>
+            `,
+            data() {
+                return {
+                    _earth: undefined, // 注意：Earth和Cesium的相关变量放在vue中，必须使用下划线作为前缀！
+                    content: "",
+                    dialogShow: false
+                };
+            },
+            // 1.1 资源创建
+            mounted() {
+                // 1.1.1 创建地球
+                var earth = new XE.Earth(this.$refs.earthContainer);
+
+                // 1.1.2 添加默认地球影像
+                earth.sceneTree.root = {
+                    "children": [
+                        {
+                            "czmObject": {
+                                "name": "默认离线影像",
+                                "xbsjType": "Imagery",
+                                "xbsjImageryProvider": {
+                                    "createTileMapServiceImageryProvider": {
+                                        "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
+                                        "fileExtension": 'jpg',
+                                    },
+                                    "type": "createTileMapServiceImageryProvider"
+                                }
+                            }
+                        },
+                        {
+                            "czmObject": {
+                                xbsjType: 'XbsjKML2',
+                                url: "../assets/geojson/simple.kml",
+                            },
+                        },
+                        {
+                            "czmObject": {
+                                xbsjType: 'XbsjGeoJSON2',
+                                url: "../assets/geojson/test.geojson",
+                            },
+                        },
+                        {
+                            "czmObject": {
+                                xbsjType: 'XbsjCzml2',
+                                url: "../assets/geojson/simple.czml",
+                            },
+                        },
+                    ]
+                };
+
+                earth.camera.position = [1.7407827876900743, 0.14322608206966236, 20771360.279152248];
+                earth.camera.rotation = [0.0462887291732379, -1.5701089804983712, 0];
+
+                this._earth = earth;
+
+                // only for Debug
+                window.earth = earth;
+            },
+            // 1.2 资源销毁
+            beforeDestroy() {
+                // vue程序销毁时，需要清理相关资源
+                this._earth = this._earth && this._earth.destroy();
+            },
+        }
+
+        // 2 创建vue程序
+        // XE.ready()用来加载Cesium.js等相关资源
+        XE.ready().then(() => {
+            var app = new Vue({
+                el: '#vueApp',
+                components: {
+                    EarthComp,
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>
