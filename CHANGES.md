@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+### 1.7.10 - 2022-3-8
+##### Fixes :wrench:
+* 将模型结构移植到图层管理中
+* 增加海量POI的示例
+* 增加EarthSDK自定义对象：GeoJSON/CZML/KML
+* 服务端口号修改成9003，适配cesiumlab3
+
+##### Additions :tada:
+* 增加挖坑转成静态几何体的功能
+
 ### 1.7.6 - 2021-10-27
 ##### Fixes :wrench:
 * 修复上一版某绒滥报问题
