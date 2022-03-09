@@ -247,7 +247,11 @@
 
             const textMetrics = ctx.measureText(text); // TextMetrics object
             const tw = textMetrics.actualBoundingBoxLeft + textMetrics.actualBoundingBoxRight;
-            const th = textMetrics.fontBoundingBoxAscent + textMetrics.fontBoundingBoxDescent; // 注意actualXXX并不能反映真实高度！
+            // firefox浏览器没有fontBoundingBoxAscent，会导致th变成NaN！
+            const ascent = Number.isFinite(textMetrics.fontBoundingBoxAscent) ? textMetrics.fontBoundingBoxAscent : textMetrics.actualBoundingBoxAscent;
+            const descent = Number.isFinite(textMetrics.fontBoundingBoxDescent) ? textMetrics.fontBoundingBoxDescent : textMetrics.actualBoundingBoxDescent;
+
+            let th = ascent + descent // 注意actualXXX并不能反映真实高度！
 
             // 这个对性能消耗太大
             // ctx.strokeStyle = '#FFFA';
@@ -255,7 +259,7 @@
             // ctx.strokeText(text, mbx - tw*.5, mby - w*.5 + th*.5 - textMetrics.fontBoundingBoxDescent);
 
             ctx.fillStyle = fillStyle;
-            ctx.fillText(text, cx - tw * .5, cy + th * .5 - textMetrics.fontBoundingBoxDescent);
+            ctx.fillText(text, cx - tw * .5, cy + th * .5 - descent);
         }
 
 
