@@ -4,6 +4,7 @@ const zh = {
   localhost: "Lab服务",
   cloudhost: "云服务",
   instance: "实例模型",
+  localUpload: "本地上传",
   edit: "编辑",
   fenleimmodel: "分类瓦片",
   fenleiterrain: "分类地形",
@@ -41,6 +42,7 @@ const en = {
   localhost: "Local",
   cloudhost: "Cloud",
   instance: "Instance",
+  localUpload: "Local",
   edit: "Edit",
   fenleimmodel: "3dtitles",
   fenleiterrain: "terrain",
@@ -73,4 +75,7 @@ const en = {
   batchTableByteLength: 'batchTableByteLength'
 };
 
-export default { zh, en };
+export default {
+  zh,
+  en
+};

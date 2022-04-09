@@ -18,11 +18,9 @@ module.exports = {
         libraryTarget: 'var'
     },
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /\.vue$/,
-                use: [
-                    {
+                use: [{
                         loader: 'vue-loader',
                         options: {
                             // extractCSS: process.env.NODE_ENV === 'production',
@@ -171,6 +169,22 @@ module.exports = {
                 pathRewrite: {
                     '^/api': ''
                 }
+            },
+            '/filedialog': {
+                target: 'http://localhost:9003/filedialog',
+                changeOrigin: true,
+                ws: true,
+                pathRewrite: {
+                    '^/filedialog': ''
+                }
+            },
+            '/model': {
+                target: 'http://localhost:9003/model',
+                changeOrigin: true,
+                ws: true,
+                pathRewrite: {
+                    '^/model': ''
+                }
             }
         }
     },
@@ -227,7 +241,7 @@ module.exports.plugins = (module.exports.plugins || []).concat([
             from: 'Apps',
             to: 'Apps',
             toType: 'dir',
-            transform (content, path) {
+            transform(content, path) {
                 if (!path.endsWith('.html')) {
                     return content;
                 }
