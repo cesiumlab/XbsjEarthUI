@@ -272,8 +272,13 @@ function create(earthDom, options) {
         if (typeof XbsjEarthUI.ready === 'undefined') {
             const xbsjUri = getScriptBaseUrl('xbsj');
             const xbsjEarthUIUri = getScriptBaseUrl('xbsj') + 'XbsjEarthUI.js';
-            const cesiumCssUri = getScriptBaseUrl('xbsj') + '../XbsjCesium/Widgets/widgets.css';
-            const cesiumJsUri = getScriptBaseUrl('xbsj') + '../XbsjCesium/Cesium.js';
+            
+            // const cesiumCssUri = getScriptBaseUrl('xbsj') + '../XbsjCesium/Widgets/widgets.css';
+            // const cesiumJsUri = getScriptBaseUrl('xbsj') + '../XbsjCesium/Cesium.js';
+            const czmDir = window.xbsjNativeCesiumDir || window.xbsjCesiumDir || getScriptBaseUrl('xbsj') + '../XbsjCesium/';
+            const cesiumCssUri = czmDir + 'Widgets/widgets.css';
+            const cesiumJsUri = czmDir + 'Cesium.js';
+
             const xbsjEarthUri = (window.xbsjEarthDir || getScriptBaseUrl('xbsj')) + '../XbsjEarth/XbsjEarth.js';
 
             const pluginUris = [

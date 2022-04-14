@@ -238,6 +238,8 @@ module.exports.plugins = (module.exports.plugins || []).concat([
                     cs = cs.replace(/\<head>/, `<head>
     <script>
         window.xbsjEarthDir = 'http://127.0.0.1:9529/XbsjEarth/';
+        window.xbsjCesiumDir = 'http://127.0.0.1:9529/XbsjCesium/';
+        window.xbsjNativeCesiumDir = 'http://127.0.0.1:9529/XbsjCesium/';
     </script>`)
                     cs = cs.replace(/['"].*\/XbsjEarth.js['"]/, `"http://127.0.0.1:9529/XbsjEarth/XbsjEarth.js"`);
                     return cs;
@@ -247,6 +249,7 @@ module.exports.plugins = (module.exports.plugins || []).concat([
     <script>
         window.xbsjEarthDir = 'http://127.0.0.1:9529/XbsjEarth/';
         window.xbsjCesiumDir = 'http://127.0.0.1:9527/XbsjCesium/';
+        window.xbsjNativeCesiumDir = 'http://127.0.0.1:9527/XbsjCesium/';
     </script>`)
                     cs = cs.replace(/['"].*\/XbsjEarth.js['"]/, `"http://127.0.0.1:9529/XbsjEarth/XbsjEarth.js"`);
                     return cs;
