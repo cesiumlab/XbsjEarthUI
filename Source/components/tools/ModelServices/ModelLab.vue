@@ -1,7 +1,7 @@
 <template>
   <Window
     :footervisible="true"
-    @cancel="show=false"
+    @cancel="show = false"
     @ok="ok"
     v-show="show"
     :width="463"
@@ -14,13 +14,15 @@
   >
     <div class="localModelSeaarch">
       <input v-model="key" @keyup.enter="query" />
-      <button @click="query" class="localModelSeaarchButton">{{lang.search}}</button>
+      <button @click="query" class="localModelSeaarchButton">
+        {{ lang.search }}
+      </button>
       <!-- <label v-show="error!=''" class="error">{{error}}</label> -->
     </div>
-    <div v-if="selected!=null" class="localModelDiv">
+    <div v-if="selected != null" class="localModelDiv">
       <!-- <label>服务地址:{{serverUrl(selected)}}</label> -->
       <div>
-        <label class="localLabel">{{lang.address}}:</label>
+        <label class="localLabel">{{ lang.address }}:</label>
         <input v-model="selectedUrl" readonly />
       </div>
     </div>
@@ -28,7 +30,7 @@
     <!-- 按照日期，按照item 双重遍历 -->
     <div class="contentDiv" :class="contentShow ? 'contentsDiv' : ''">
       <div v-for="days in dayItems" :key="days.day" class="dateDiv">
-        <label class="dateLabel">{{days.day}}</label>
+        <label class="dateLabel">{{ days.day }}</label>
         <ul class="flexul">
           <li
             v-for="s in days.services"
@@ -36,13 +38,13 @@
             @contextmenu.prevent="onContexMenu(s, $event)"
             :key="s.thumbnail"
           >
-            <div class="backimg" :class="{highlight:selected == s}">
+            <div class="backimg" :class="{ highlight: selected == s }">
               <img class="itemimg" :src="s.thumbnail" />
             </div>
             <!-- <span>{{s.name}}</span> -->
             <div class="localModelName">
-              {{s.name}}
-              <span class="localModelToolTip">{{s.name}}</span>
+              {{ s.name }}
+              <span class="localModelToolTip">{{ s.name }}</span>
             </div>
           </li>
         </ul>
@@ -55,7 +57,7 @@
 import languagejs from "./model_locale";
 export default {
   components: {},
-  data () {
+  data() {
     return {
       show: false,
       key: "",
@@ -65,27 +67,25 @@ export default {
       selectedUrl: "",
       contentShow: false,
       lang: {},
-      langs: languagejs
+      langs: languagejs,
     };
   },
-  created () {
-
-  },
-  mounted () { },
+  created() {},
+  mounted() {},
   methods: {
-    _updateServerThumbnail (server, thumbnail) {
+    _updateServerThumbnail(server, thumbnail) {
       var labServer = this.$root.$earthUI.labServer;
       labServer
         .updateLayerThumbnail("models", server._id, thumbnail)
-        .then(data => {
+        .then((data) => {
           this.query();
         })
-        .catch(err => {
+        .catch((err) => {
           this.error = err.message;
           this.$root.$earthUI.promptInfo(this.error, "error");
         });
     },
-    onContexMenu (server, event) {
+    onContexMenu(server, event) {
       //弹出菜单
       this.$root.$earthUI.contextMenu.pop([
         {
@@ -95,25 +95,25 @@ export default {
             //调用屏幕截图, 如果成功，那么调用更新
             this.$root.$earth
               .capture(64, 64)
-              .then(img => {
+              .then((img) => {
                 //更新，如果成功，那么刷新页面，否则提示错误
                 this._updateServerThumbnail(server, img);
               })
-              .catch(err => {
+              .catch((err) => {
                 this.error = err.message;
                 this.$root.$earthUI.promptInfo(this.error, "error");
               });
-          }
-        }
+          },
+        },
       ]);
     },
-    select (s) {
+    select(s) {
       this.selected = s;
       this.selectedUrl = this.serverUrl(s);
       this.contentShow = true;
       this.error = "";
     },
-    _addServices (s) {
+    _addServices(s) {
       //添加到列表中，并且按照天进行分组
       let day = s.date.substr(0, 10);
 
@@ -126,46 +126,50 @@ export default {
       }
       var newDays = {
         day,
-        services: [s]
+        services: [s],
       };
       this.dayItems.push(newDays);
     },
-    query () {
+    query() {
       this.error = "";
       var labServer = this.$root.$earthUI.labServer;
 
       this.dayItems = [];
       labServer
         .modelLayers(this.key)
-        .then(services => {
+        .then((services) => {
           this.error = "";
           for (let i = 0; i < services.length; i++) {
             let s = services[i];
             this._addServices(s);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.error = err.message;
           this.$root.$earthUI.promptInfo(this.error, "error");
         });
     },
-    serverUrl (server) {
-      let path = server.path;
-      let idx0 = path.lastIndexOf("\\");
-      let idx1 = path.lastIndexOf("/");
-      if (idx0 > 0) {
-        path = path.substr(idx0 + 1);
-      } else if (idx1 > 0) {
-        path = path.substr(idx1 + 1);
+    serverUrl(server) {
+      var a = document.createElement("A");
+      let path = "tileset.json";
+      if (server.type === "file") {
+        path = server.path;
+        let idx0 = path.lastIndexOf("\\");
+        let idx1 = path.lastIndexOf("/");
+        if (idx0 > 0) {
+          path = path.substr(idx0 + 1);
+        } else if (idx1 > 0) {
+          path = path.substr(idx1 + 1);
+        }
       }
-      var a = document.createElement('A');
-      a.href = this.$root.$earthUI.labServer.server +
+      a.href =
+        this.$root.$earthUI.labServer.server +
         "model/" +
         server._id +
-        "/tileset.json";
+        "/" + path;
       return a.href;
     },
-    ok () {
+    ok() {
       if (!this.selected) {
         this.error = this.lang.selectservice;
         this.$root.$earthUI.promptInfo(this.error, "error");
@@ -184,12 +188,12 @@ export default {
         this.show = false;
         this.error = "";
       }
-    }
+    },
   },
   computed: {},
   filters: {
-    f_day (day) { },
-    f_range (item) {
+    f_day(day) {},
+    f_range(item) {
       return (
         item.west.toFixed(5) +
         ", " +
@@ -199,21 +203,21 @@ export default {
         ", " +
         item.north.toFixed(5)
       );
-    }
+    },
   },
-  beforeDestroy () {
+  beforeDestroy() {
     if (this.unbind) {
       this.unbind();
       this.unbind = undefined;
     }
   },
   watch: {
-    show (v) {
+    show(v) {
       if (v) {
         this.query();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
