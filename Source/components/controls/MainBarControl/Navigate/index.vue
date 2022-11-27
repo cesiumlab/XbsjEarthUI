@@ -1,68 +1,53 @@
 <template>
   <!-- box -->
   <div class="xbsj-template">
-    <div
-      class="xbsj-list"
-      ref="container"
-      @mousedown="startMove($event)"
-      @mousemove="onMoving($event)"
-      @mouseup="endMove($event)"
-    >
+    <div class="xbsj-list" ref="container" @mousedown="startMove($event)" @mousemove="onMoving($event)"
+      @mouseup="endMove($event)">
       <div class="xbsj-list-item" v-show="labServiceUI">
         <span class="xbsj-list-name">{{ lang.scene }}</span>
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn savebutton" @click="saveScene"></div>
-          <span class="xbsj-item-name">{{ lang.save }}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div class="xbsj-item-btn savebutton" @click="saveScene"></div>
+            <span class="xbsj-item-name">{{ lang.save }}</span>
+          </div>
+          <span class="xbsj-select" :class="{ highlight: popup == 'sceneView' }"
+            @click.stop="togglePopup('sceneView', $event)"></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{ highlight: popup == 'sceneView' }"
-          @click.stop="togglePopup('sceneView', $event)"
-        ></span>
       </div>
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{ lang.view }}</span>
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn globalbutton" @click="flyToGlobe"></div>
-          <span class="xbsj-item-name">{{ lang.global }}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div class="xbsj-item-btn globalbutton" @click="flyToGlobe"></div>
+            <span class="xbsj-item-name">{{ lang.global }}</span>
+          </div>
+          <span class="xbsj-select" :class="{ highlight: popup == 'globeView' }"
+            @click.stop="togglePopup('globeView', $event)"></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{ highlight: popup == 'globeView' }"
-          @click.stop="togglePopup('globeView', $event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn chinabutton" @click="flyToChina"></div>
-          <span class="xbsj-item-name">{{ lang.china }}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div class="xbsj-item-btn chinabutton" @click="flyToChina"></div>
+            <span class="xbsj-item-name">{{ lang.china }}</span>
+          </div>
+          <span class="xbsj-select" :class="{ highlight: popup == 'chinaView' }"
+            @click.stop="togglePopup('chinaView', $event)"></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{ highlight: popup == 'chinaView' }"
-          @click.stop="togglePopup('chinaView', $event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn custombutton" @click="flyToCustom"></div>
-          <span class="xbsj-item-name">{{ lang.custom }}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div class="xbsj-item-btn custombutton" @click="flyToCustom"></div>
+            <span class="xbsj-item-name">{{ lang.custom }}</span>
+          </div>
+          <span class="xbsj-select" :class="{ highlight: cameraViewManagerShow }"
+            @click.stop="toggleCameraViewManager()"></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{ highlight: cameraViewManagerShow }"
-          @click.stop="toggleCameraViewManager()"
-        ></span>
       </div>
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{ lang.location }}</span>
-        <input
-          type="text"
-          class="xbsj-search-box"
-          @keyup.enter="search"
-          v-model="key"
-        />
-        <div class="xbsj-search"></div>
-        <div v-show="searchItem !== undefined">
-          <button type="button" class="xbsj-clear" @click="clear"></button>
+        <div class="xbsj-item-blocks">
+          <input type="text" class="xbsj-search-box" @keyup.enter="search" v-model="key" />
+          <div class="xbsj-clear" v-if="searchItem !== undefined"></div>
         </div>
       </div>
       <!-- <div class="xbsj-list-item">
@@ -83,45 +68,32 @@
       </div>-->
       <div class="xbsj-list-item">
         <span class="xbsj-list-name">{{ lang.autofly }}</span>
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn globalrotationbutton"
-            :class="{ highlight: cameraMode == 'rotateGlobe' }"
-            @click="toggleCameraFlight('rotateGlobe')"
-          ></div>
-          <span class="xbsj-item-name">{{ lang.globalrotation }}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div class="xbsj-item-btn globalrotationbutton" :class="{ highlight: cameraMode == 'rotateGlobe' }"
+              @click="toggleCameraFlight('rotateGlobe')"></div>
+            <span class="xbsj-item-name">{{ lang.globalrotation }}</span>
+          </div>
+          <span class="xbsj-select" :class="{ highlight: popup == 'rotateGlobe' }"
+            @click.stop="togglePopup('rotateGlobe', $event)"></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{ highlight: popup == 'rotateGlobe' }"
-          @click.stop="togglePopup('rotateGlobe', $event)"
-        ></span>
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn centerrotationbutton"
-            :class="{ highlight: cameraMode == 'rotateCenter' }"
-            @click="toggleCameraFlight('rotateCenter')"
-          ></div>
-          <span class="xbsj-item-name">{{ lang.centerrotation }}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div class="xbsj-item-btn centerrotationbutton" :class="{ highlight: cameraMode == 'rotateCenter' }"
+              @click="toggleCameraFlight('rotateCenter')"></div>
+            <span class="xbsj-item-name">{{ lang.centerrotation }}</span>
+          </div>
+          <span class="xbsj-select" :class="{ highlight: popup == 'rotateCenter' }"
+            @click.stop="togglePopup('rotateCenter', $event)"></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{ highlight: popup == 'rotateCenter' }"
-          @click.stop="togglePopup('rotateCenter', $event)"
-        ></span>
-        <!-- 绑定相机 -->
-        <div
-          class="xbsj-item-btnbox"
-          ref="cameraAttach"
-          @click="cameraattachbtn"
-        >
-          <div
-            class="xbsj-item-btn cameraattachbutton"
-            :class="{
+        <div class="xbsj-item-blocks">
+          <!-- 绑定相机 -->
+          <div class="xbsj-item-btnbox" ref="cameraAttach" @click="cameraattachbtn">
+            <div class="xbsj-item-btn cameraattachbutton" :class="{
               cameraattachbuttonActive: cameraAttached || cameraAttachOver,
-            }"
-          ></div>
-          <span class="xbsj-item-name">{{ lang.cameraattach }}</span>
+            }"></div>
+            <span class="xbsj-item-name">{{ lang.cameraattach }}</span>
+          </div>
         </div>
         <!--
         <div class="xbsj-item-btnbox">
@@ -155,95 +127,62 @@
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
         <span class="xbsj-list-name">{{ lang.interactivemode }}</span>
-        <div class="xbsj-item-btnbox" @click="useCesiumNavigator = true">
-          <div
-            class="xbsj-item-btn defaultbutton"
-            :class="{ defaultbuttonActive: useCesiumNavigator }"
-          ></div>
-          <span class="xbsj-item-name">{{ lang.default }}</span>
-        </div>
-        <div class="xbsj-item-btnbox" @click="useCesiumNavigator = false">
-          <div
-            class="xbsj-item-btn gooleearthbutton"
-            :class="{ gooleearthbuttonActive: !useCesiumNavigator }"
-          ></div>
-          <span class="xbsj-item-name">{{ lang.gooleearth }}</span>
-        </div>
-        <div class="xbsj-item-btnbox" @click="ghostMode = !ghostMode">
-          <div
-            class="xbsj-item-btn firstpersonbutton"
-            :class="{ firstpersonbuttonActive: ghostMode }"
-          ></div>
-          <span class="xbsj-item-name">{{ lang.firstperson }}</span>
-        </div>
-        <span
-          class="xbsj-select"
-          :class="{ highlight: popup == 'firstPerson' }"
-          @click.stop="togglePopup('firstPerson', $event)"
-        ></span>
-        <div class="xbsj-item-btnbox" @click="picking = !picking">
-          <div
-            class="xbsj-item-btn mousebutton"
-            :class="{ mousebuttonActive: picking }"
-          ></div>
-          <span class="xbsj-item-name">{{ lang.mouseshiqu }}</span>
-        </div>
-        <span
-          class="xbsj-select"
-          :class="{ highlight: popup == 'pickObject' }"
-          @click.stop="togglePopup('pickObject', $event)"
-        ></span>
-        <!-- vr -->
-        <div class="xbsj-item-btnbox" @click="vrClick">
-          <div class="xbsj-item-btn vrbutton"></div>
-          <span class="xbsj-item-name">VR</span>
-        </div>
-        <div class="xbsj-item-btnbox" style="width: 100px">
-          <div class="XbsjSlider">
-            <XbsjSlider
-              :min="10"
-              :max="170"
-              :step="1"
-              showTip="hover"
-              v-model="fovFormat"
-              style="margin-top: 34px"
-            ></XbsjSlider>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="useCesiumNavigator = true">
+            <div class="xbsj-item-btn defaultbutton" :class="{ defaultbuttonActive: useCesiumNavigator }"></div>
+            <span class="xbsj-item-name">{{ lang.default }}</span>
           </div>
-          <span class="xbsj-item-name">FOV</span>
+        </div>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="useCesiumNavigator = false">
+            <div class="xbsj-item-btn gooleearthbutton" :class="{ gooleearthbuttonActive: !useCesiumNavigator }"></div>
+            <span class="xbsj-item-name">{{ lang.gooleearth }}</span>
+          </div>
+        </div>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="ghostMode = !ghostMode">
+            <div class="xbsj-item-btn firstpersonbutton" :class="{ firstpersonbuttonActive: ghostMode }"></div>
+            <span class="xbsj-item-name">{{ lang.firstperson }}</span>
+          </div>
+          <span class="xbsj-select" :class="{ highlight: popup == 'firstPerson' }"
+            @click.stop="togglePopup('firstPerson', $event)"></span>
+        </div>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="picking = !picking">
+            <div class="xbsj-item-btn mousebutton" :class="{ mousebuttonActive: picking }"></div>
+            <span class="xbsj-item-name">{{ lang.mouseshiqu }}</span>
+          </div>
+          <span class="xbsj-select" :class="{ highlight: popup == 'pickObject' }"
+            @click.stop="togglePopup('pickObject', $event)"></span>
+        </div>
+
+        <!-- vr -->
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="vrClick">
+            <div class="xbsj-item-btn vrbutton"></div>
+            <span class="xbsj-item-name">VR</span>
+          </div>
+        </div>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" style="width: 70px">
+            <div class="XbsjSlider">
+              <XbsjSlider :min="10" :max="170" :step="1" showTip="hover" v-model="fovFormat" style="margin-top: 34px">
+              </XbsjSlider>
+            </div>
+            <span class="xbsj-item-name">FOV</span>
+          </div>
         </div>
       </div>
     </div>
-    <GlobeViewComp
-      ref="globeView"
-      v-show="popup == 'globeView'"
-    ></GlobeViewComp>
-    <ChinaViewComp
-      ref="chinaView"
-      v-show="popup == 'chinaView'"
-    ></ChinaViewComp>
-    <SearchComp
-      ref="search"
-      v-show="popup == 'search'"
-      @itemSelected="searchResult"
-    ></SearchComp>
-    <RotateGlobeComp
-      ref="rotateGlobe"
-      v-show="popup == 'rotateGlobe'"
-    ></RotateGlobeComp>
-    <RotateCenterComp
-      ref="rotateCenter"
-      v-show="popup == 'rotateCenter'"
-    ></RotateCenterComp>
+    <GlobeViewComp ref="globeView" v-show="popup == 'globeView'"></GlobeViewComp>
+    <ChinaViewComp ref="chinaView" v-show="popup == 'chinaView'"></ChinaViewComp>
+    <SearchComp ref="search" v-show="popup == 'search'" @itemSelected="searchResult"></SearchComp>
+    <RotateGlobeComp ref="rotateGlobe" v-show="popup == 'rotateGlobe'"></RotateGlobeComp>
+    <RotateCenterComp ref="rotateCenter" v-show="popup == 'rotateCenter'"></RotateCenterComp>
     <TrackComp ref="track" v-show="popup == 'track'"></TrackComp>
     <PathFlyComp ref="pathFly" v-show="popup == 'pathFly'"></PathFlyComp>
-    <FirstPersonComp
-      ref="firstPerson"
-      v-show="popup == 'firstPerson'"
-    ></FirstPersonComp>
-    <PickObjectComp
-      ref="pickObject"
-      v-show="popup == 'pickObject'"
-    ></PickObjectComp>
+    <FirstPersonComp ref="firstPerson" v-show="popup == 'firstPerson'"></FirstPersonComp>
+    <PickObjectComp ref="pickObject" v-show="popup == 'pickObject'"></PickObjectComp>
     <SceneComp ref="sceneView" v-show="popup == 'sceneView'"></SceneComp>
   </div>
 </template>
@@ -299,7 +238,7 @@ export default {
       fov: 0,
     };
   },
-  created() {},
+  created() { },
   mounted() {
     //给所有popup的el上添加外部事件
     Object.keys(this.$refs).forEach((key) => {
@@ -597,19 +536,19 @@ export default {
 .moving {
   cursor: move;
 }
+
 .xbsj-search-box {
-  width: 260px !important;
+  width: 210px;
   height: 30px;
   background: rgba(71, 71, 71, 1);
   border: 2px solid rgba(138, 138, 138, 1);
-  padding-left: 30px !important;
-  margin: 30px 10px;
-  margin-left: 18px;
   color: white;
 }
+
 .xbsj-search-box:focus {
   border: 2px solid rgba(31, 255, 255, 1);
 }
+
 .xbsj-search {
   display: block;
   width: 20px;
@@ -620,111 +559,133 @@ export default {
   top: 38px;
   left: 42px;
 }
+
 .globalbutton {
   background: url(../../../../images/global.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .globalbutton:hover {
   background: url(../../../../images/global_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .chinabutton {
   background: url(../../../../images/china.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .chinabutton:hover {
   background: url(../../../../images/china_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .custombutton {
   background: url(../../../../images/view.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .custombutton:hover {
   background: url(../../../../images/view_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .defaultbutton {
   background: url(../../../../images/default.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .defaultbutton:hover {
   background: url(../../../../images/default_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .defaultbuttonActive {
   background: url(../../../../images/default_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .vrbutton {
   background: url(../../../../images/vr.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .vrbutton:hover {
   background: url(../../../../images/vr_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .vrbuttonActive {
   background: url(../../../../images/vr_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .gooleearthbutton {
   background: url(../../../../images/gooleearth.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .gooleearthbutton:hover {
   background: url(../../../../images/gooleearth_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .gooleearthbuttonActive {
   background: url(../../../../images/gooleearth_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .firstpersonbutton {
   background: url(../../../../images/firstperson.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .firstpersonbutton:hover {
   background: url(../../../../images/firstperson_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .firstpersonbuttonActive {
   background: url(../../../../images/firstperson_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .mousebutton {
   background: url(../../../../images/mouse.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .mousebutton:hover {
   background: url(../../../../images/mouse_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .mousebuttonActive {
   background: url(../../../../images/mouse_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .xbsj-box {
   width: auto;
   height: 72px;
@@ -733,6 +694,7 @@ export default {
   border-right: 2px solid rgba(71, 71, 71, 1);
   padding-right: 66px;
 }
+
 .xbsj-label {
   display: inline-block;
   width: 32px;
@@ -742,6 +704,7 @@ export default {
   color: rgba(221, 221, 221, 1);
   text-align: center;
 }
+
 .xbsj-input {
   display: inline-block;
   background: rgba(71, 71, 71, 1);
@@ -753,14 +716,17 @@ export default {
   width: 80px;
   margin: 3px 0;
 }
+
 .xbsj-earth input:focus {
   border: 2px solid rgba(79, 179, 255, 1);
 }
+
 .xbsj-location,
 .xbsj-earth {
   display: inline-block;
   width: 116px;
 }
+
 .xbsj-location {
   width: 27px;
   height: 34px;
@@ -772,13 +738,16 @@ export default {
   left: 123px;
   top: 20px;
 }
+
 .locationbutton {
   background: url(../../../../images/location_earth.png) no-repeat;
 }
+
 .locationbutton:hover {
   background: url(../../../../images/location_earth_on.png) no-repeat;
   background-size: 100%;
 }
+
 .xbsj-locationspan {
   width: 50px;
   position: absolute;
@@ -786,55 +755,65 @@ export default {
   top: 54px;
   text-align: center;
 }
+
 .globalrotationbutton {
   background: url(../../../../images/globalrotation.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .globalrotationbutton.highlight,
 .globalrotationbutton:hover {
   background: url(../../../../images/globalrotation_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .centerrotationbutton {
   background: url(../../../../images/centerrotation.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .centerrotationbutton.highlight,
 .centerrotationbutton:hover {
   background: url(../../../../images/centerrotation_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .trackbutton {
   background: url(../../../../images/track.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .trackbutton.highlight,
 .trackbutton:hover {
   background: url(../../../../images/track_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .pathflightbutton {
   background: url(../../../../images/pathflight.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .pathflightbutton.highlight,
 .pathflightbutton:hover {
   background: url(../../../../images/pathflight_on.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .savebutton {
   background: url(../../../../images/savecj.png) no-repeat;
   background-size: contain;
   cursor: pointer;
 }
+
 .savebutton.highlight,
 .savebutton:hover {
   background: url(../../../../images/savecj_on.png) no-repeat;
@@ -843,16 +822,15 @@ export default {
 }
 
 .xbsj-clear {
-  border: 0;
   position: absolute;
-  top: 42px;
-  right: 36px;
+  right: 12px;
   background: url(../../../../images/clear.png) no-repeat;
-  width: 25px;
-  height: 25px;
+  width: 15px;
+  height: 15px;
   background-size: 13px 13px;
   cursor: pointer;
 }
+
 .xbsj-clear:focus,
 .xbsj-clear:active:focus,
 .xbsj-clear.active:focus,
@@ -861,6 +839,7 @@ export default {
   border-color: transparent;
   box-shadow: none;
 }
+
 .cameraattachbutton {
   background: url(../../../../images/cameraattach.png) no-repeat;
   background-size: contain;

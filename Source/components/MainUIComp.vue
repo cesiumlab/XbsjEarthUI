@@ -1,5 +1,5 @@
 <template>
-    <div style="width:100%;height:100%">
+    <div class="pagese">
         <!-- 导航栏部分 -->
         <MainBarControl ref="mainBarControl"></MainBarControl>
         <div class="xbsjcesium" ref="xbsjcesium">
@@ -843,9 +843,15 @@ export default {
 </script>
 
 <style>
+.pagese{
+	margin: 0 0 0 70px;
+	position: relative;
+	width: calc(100vw - 70px);
+	height: 100vh;
+}
 .xbsjcesium {
 	width: 100%;
-	height: calc(100% - 137px);
+	height: 100vh;
 	position: relative;
 }
 .active {

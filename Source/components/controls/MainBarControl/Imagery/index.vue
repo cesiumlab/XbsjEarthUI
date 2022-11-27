@@ -1,93 +1,124 @@
 <template>
   <!-- box -->
   <div class="xbsj-template">
-   <div class="xbsj-list"
-          ref="container" 
+    <div
+      class="xbsj-list"
+      ref="container"
       @mousedown="startMove($event)"
       @mousemove="onMoving($event)"
-      @mouseup="endMove($event)">
+      @mouseup="endMove($event)"
+    >
       <div class="xbsj-list-item">
-        <span class="xbsj-list-name">{{lang.source}}</span>
-        <div class="xbsj-item-btnbox ml20">
-          <div
-            class="xbsj-item-btn onlinebutton"
-            @click="imageryOnline=!imageryOnline"
-            :class="{highlight:imageryOnline}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.online}}</span>
+        <span class="xbsj-list-name">{{ lang.source }}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20">
+            <div
+              class="xbsj-item-btn onlinebutton"
+              @click="imageryOnline = !imageryOnline"
+              :class="{ highlight: imageryOnline }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.online }}</span>
+          </div>
         </div>
-        <div class="xbsj-item-btnbox" v-show="labServiceUI">
-          <div
-            class="xbsj-item-btn localhostbutton"
-            @click="imageryLab=!imageryLab"
-            :class="{highlight:imageryLab}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.localhost}}</span>
-        </div>
-
-        <div class="xbsj-item-btnbox" v-show="cloudServiceUI">
-          <div
-            class="xbsj-item-btn localhostbutton"
-            @click="imageryCloud=!imageryCloud"
-            :class="{highlight:imageryCloud}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.cloud}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" v-show="labServiceUI">
+            <div
+              class="xbsj-item-btn localhostbutton"
+              @click="imageryLab = !imageryLab"
+              :class="{ highlight: imageryLab }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.localhost }}</span>
+          </div>
         </div>
 
-         <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn wmtsbutton"
-            @click="imageryWMTS=!imageryWMTS"
-            :class="{highlight:imageryWMTS}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.wmts}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" v-show="cloudServiceUI">
+            <div
+              class="xbsj-item-btn localhostbutton"
+              @click="imageryCloud = !imageryCloud"
+              :class="{ highlight: imageryCloud }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.cloud }}</span>
+          </div>
         </div>
 
-        <div class="xbsj-item-btnbox" v-show="false">
-          <div class="xbsj-item-btn wmtsbutton"></div>
-          <span class="xbsj-item-name">{{lang.wmts}}</span>
-        </div>
-        <div class="xbsj-item-btnbox" v-show="false">
-          <div class="xbsj-item-btn arcgisbutton"></div>
-          <span class="xbsj-item-name">{{lang.arcgis}}</span>
-        </div>
-        <div class="xbsj-item-btnbox" v-show="true">
-          <div class="xbsj-item-btn arcgisbutton" @click="showHistory"></div>
-          <span class="xbsj-item-name">{{lang.history}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn wmtsbutton"
+              @click="imageryWMTS = !imageryWMTS"
+              :class="{ highlight: imageryWMTS }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.wmts }}</span>
+          </div>
         </div>
 
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn wmsbutton" @click="imageryWMS=!imageryWMS" :class="{highlight:imageryWMS}"></div>
-          <span class="xbsj-item-name">{{lang.wms}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" v-show="false">
+            <div class="xbsj-item-btn wmtsbutton"></div>
+            <span class="xbsj-item-name">{{ lang.wmts }}</span>
+          </div>
         </div>
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn arcgisbutton" @click="imageryArcGis=!imageryArcGis" :class="{highlight:imageryArcGis}"></div>
-          <span class="xbsj-item-name">{{lang.Arcgis}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" v-show="false">
+            <div class="xbsj-item-btn arcgisbutton"></div>
+            <span class="xbsj-item-name">{{ lang.arcgis }}</span>
+          </div>
+        </div>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" v-show="true">
+            <div class="xbsj-item-btn arcgisbutton" @click="showHistory"></div>
+            <span class="xbsj-item-name">{{ lang.history }}</span>
+          </div>
         </div>
 
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn wmsbutton"
+              @click="imageryWMS = !imageryWMS"
+              :class="{ highlight: imageryWMS }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.wms }}</span>
+          </div>
+        </div>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn arcgisbutton"
+              @click="imageryArcGis = !imageryArcGis"
+              :class="{ highlight: imageryArcGis }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.Arcgis }}</span>
+          </div>
+        </div>
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
-        <span class="xbsj-list-name">{{title}}</span>
-        <div class="xbsj-item-btnbox ml20">
-          <div class="btns">
-            <div
-              class="xbsj-btn leftbutton"
-              :class="{active:splitDirection != 'ImagerySplitDirection.RIGHT'}"
-              @click="clickLeft"
-            ></div>
-            <div
-              class="xbsj-btn rightbutton"
-              :class="{active:splitDirection != 'ImagerySplitDirection.LEFT'}"
-              @click="clickRight"
-            ></div>
+        <span class="xbsj-list-name">{{ title }}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20">
+            <div class="xbsj-btn-flex">
+              <div
+                class="xbsj-btn leftbutton"
+                :class="{
+                  active: splitDirection != 'ImagerySplitDirection.RIGHT',
+                }"
+                @click="clickLeft"
+              ></div>
+              <div
+                class="xbsj-btn rightbutton"
+                :class="{
+                  active: splitDirection != 'ImagerySplitDirection.LEFT',
+                }"
+                @click="clickRight"
+              ></div>
+            </div>
+
+            <span class="xbsj-item-name">{{ lang.viewport }}</span>
           </div>
-
-          <span class="xbsj-item-name">{{lang.viewport}}</span>
         </div>
-
-        <div class="xbsj-slide-group">
-          <div class="xbsj-slide-top">
-            <label class="xbsj-slide-label" @click="alpha=1">{{lang.transpare}}</label>
+        <div class="xbsj-item-blocks xbsj-item-Xbsj">
+          <div class="xbsj-item-btnbox XbsjSlider" style="width: 100px">
             <div class="xbsj-slide-div">
               <XbsjSlider
                 :min="0"
@@ -98,10 +129,16 @@
                 :disabled="!layerID"
               ></XbsjSlider>
             </div>
-            <span class="xbsj-slide-span">{{alpha}}</span>
+            <div class="xbsj-slide-flexs">
+              <label class="xbsj-slide-label" @click="alpha = 1">{{
+                lang.transpare
+              }}</label>
+              <span class="xbsj-slide-span">{{ alpha }}</span>
+            </div>
           </div>
-          <div class="xbsj-slide-bottom">
-            <label class="xbsj-slide-label" @click="contrast=1">{{lang.contrast}}</label>
+          </div>
+        <div class="xbsj-item-blocks xbsj-item-Xbsj">
+          <div class="xbsj-item-btnbox XbsjSlider" style="width: 100px">
             <div class="xbsj-slide-div">
               <XbsjSlider
                 :min="0"
@@ -112,12 +149,16 @@
                 :disabled="!layerID"
               ></XbsjSlider>
             </div>
-            <span class="xbsj-slide-span">{{contrast}}</span>
+            <div class="xbsj-slide-flexs">
+              <label class="xbsj-slide-label" @click="contrast = 1">{{
+                lang.contrast
+              }}</label>
+              <span class="xbsj-slide-span">{{ contrast }}</span>
+            </div>
           </div>
-        </div>
-        <div class="xbsj-slide-group">
-          <div class="xbsj-slide-top">
-            <label class="xbsj-slide-label" @click="brightness=1">{{lang.light}}</label>
+          </div>
+        <div class="xbsj-item-blocks xbsj-item-Xbsj">
+          <div class="xbsj-item-btnbox XbsjSlider" style="width: 100px">
             <div class="xbsj-slide-div">
               <XbsjSlider
                 :min="0"
@@ -128,10 +169,16 @@
                 :disabled="!layerID"
               ></XbsjSlider>
             </div>
-            <span class="xbsj-slide-span">{{brightness}}</span>
+            <div class="xbsj-slide-flexs">
+              <label class="xbsj-slide-label" @click="brightness = 1">{{
+                lang.light
+              }}</label>
+              <span class="xbsj-slide-span">{{ brightness }}</span>
+            </div>
           </div>
-          <div class="xbsj-slide-bottom">
-            <label class="xbsj-slide-label" @click="hue=0">{{lang.hue}}</label>
+          </div>
+        <div class="xbsj-item-blocks xbsj-item-Xbsj">
+          <div class="xbsj-item-btnbox XbsjSlider" style="width: 100px">
             <div class="xbsj-slide-div">
               <XbsjSlider
                 :min="0"
@@ -142,12 +189,16 @@
                 :disabled="!layerID"
               ></XbsjSlider>
             </div>
-            <span class="xbsj-slide-span">{{hue}}</span>
+            <div class="xbsj-slide-flexs">
+              <label class="xbsj-slide-label" @click="hue = 0">{{
+                lang.hue
+              }}</label>
+              <span class="xbsj-slide-span">{{ hue }}</span>
+            </div>
           </div>
-        </div>
-        <div class="xbsj-slide-group">
-          <div class="xbsj-slide-top">
-            <label class="xbsj-slide-label" @click="saturation=1">{{lang.saturate}}</label>
+          </div>
+        <div class="xbsj-item-blocks xbsj-item-Xbsj">
+          <div class="xbsj-item-btnbox XbsjSlider" style="width: 100px">
             <div class="xbsj-slide-div">
               <XbsjSlider
                 :min="0"
@@ -158,10 +209,16 @@
                 :disabled="!layerID"
               ></XbsjSlider>
             </div>
-            <span class="xbsj-slide-span">{{saturation}}</span>
+            <div class="xbsj-slide-flexs">
+              <label class="xbsj-slide-label" @click="saturation = 1">{{
+                lang.saturate
+              }}</label>
+              <span class="xbsj-slide-span">{{ saturation }}</span>
+            </div>
           </div>
-          <div class="xbsj-slide-bottom">
-            <label class="xbsj-slide-label" @click="gamma=1">{{lang.gamma}}</label>
+          </div>
+        <div class="xbsj-item-blocks xbsj-item-Xbsj">
+          <div class="xbsj-item-btnbox XbsjSlider" style="width: 100px">
             <div class="xbsj-slide-div">
               <XbsjSlider
                 :min="0"
@@ -172,25 +229,30 @@
                 :disabled="!layerID"
               ></XbsjSlider>
             </div>
-            <span class="xbsj-slide-span">{{gamma}}</span>
+            <div class="xbsj-slide-flexs">
+              <label class="xbsj-slide-label" @click="gamma = 1">{{
+                lang.gamma
+              }}</label>
+              <span class="xbsj-slide-span">{{ gamma }}</span>
+            </div>
           </div>
-        </div>
+          </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import languagejs from "./index_locale"; 
+import languagejs from "./index_locale";
 export default {
-  props:["labServiceUI","cloudServiceUI"],
+  props: ["labServiceUI", "cloudServiceUI"],
   data() {
     return {
       showTip: "never",
       selectlist: false,
       lang: {},
       imageryLab: false,
-      imageryCloud: false,      
+      imageryCloud: false,
       imageryOnline: false,
       imageryWMTS: false,
       imageryArcGis: false,
@@ -204,26 +266,17 @@ export default {
       layerTitle: "",
       layerID: undefined,
       splitDirection: "ImagerySplitDirection.NONE",
-      langs:languagejs
+      langs: languagejs,
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
-  
     //绑定
     this.$nextTick(() => {
-
-
-//监控树状控件的当前选择节点
+      //监控树状控件的当前选择节点
       this.unAutorun = XE.MVVM.watch(() => {
         const csn = this.$root.$earth.sceneTree.currentSelectedNode;
-        if (
-          csn &&
-          csn.czmObject &&
-          csn.czmObject instanceof XE.Obj.Imagery
-        ) {
+        if (csn && csn.czmObject && csn.czmObject instanceof XE.Obj.Imagery) {
           this.layerTitle = csn.title;
           this.setImageLayer(csn.czmObject);
         } else {
@@ -237,20 +290,26 @@ export default {
     title() {
       if (this.layerTitle == "") return this.lang.visible;
       else return this.lang.visible + "-" + this.layerTitle;
-    }
+    },
   },
   methods: {
-    showHistory(){
-        //判定当前选中的是否是wmts影像图层
-         const csn = this.$root.$earth.sceneTree.currentSelectedNode;
-         if(!csn || !csn.czmObject ||  csn.czmObject.xbsjType!="Imagery" ||  csn.czmObject.xbsjImageryProvider.type!="WebMapTileServiceImageryProvider"){
-            this.$root.$earthUI.promptInfo(this.lang.selectWMTS);
-            return;
-         } 
+    showHistory() {
+      //判定当前选中的是否是wmts影像图层
+      const csn = this.$root.$earth.sceneTree.currentSelectedNode;
+      if (
+        !csn ||
+        !csn.czmObject ||
+        csn.czmObject.xbsjType != "Imagery" ||
+        csn.czmObject.xbsjImageryProvider.type !=
+          "WebMapTileServiceImageryProvider"
+      ) {
+        this.$root.$earthUI.promptInfo(this.lang.selectWMTS);
+        return;
+      }
 
-         this.$root.$earthUI.showPropertyWindow(csn.czmObject, {
-          component: "WMTSHistory"
-          });
+      this.$root.$earthUI.showPropertyWindow(csn.czmObject, {
+        component: "WMTSHistory",
+      });
     },
     clickLeft() {
       //如果不是左分割，修改为左分割
@@ -309,8 +368,10 @@ export default {
     },
     startMove(event) {
       //如果事件的目标不是本el 返回
-      if (event.target.parentElement !== this.$refs.container &&
-         event.target.parentElement.parentElement !== this.$refs.container) {
+      if (
+        event.target.parentElement !== this.$refs.container &&
+        event.target.parentElement.parentElement !== this.$refs.container
+      ) {
         this.moving = false;
         return;
       }
@@ -328,11 +389,11 @@ export default {
     },
     endMove(envent) {
       this.moving = false;
-    }
+    },
   },
   beforeDestroy() {
     this.unbindLayer();
-  }
+  },
 };
 </script>
 
@@ -399,10 +460,13 @@ export default {
   width: 17px;
   height: 34px;
   margin: 5px auto;
-  margin-top: 20px;
   background-position: center !important;
   cursor: pointer;
-  float: left;
+}
+.xbsj-btn-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .leftbutton {
   background: rgba(71, 71, 71, 1);
@@ -415,4 +479,3 @@ export default {
   background-color: rgba(31, 255, 255, 1);
 }
 </style>
-

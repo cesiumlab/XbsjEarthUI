@@ -9,7 +9,7 @@
     >
       <div class="xbsj-list-item">
         <!-- 视域分析 -->
-        <span class="xbsj-list-name">{{lang.visualization}}</span>
+        <span class="xbsj-list-name">{{ lang.visualization }}</span>
 
         <!-- 通视分析 -->
         <!-- <div class="xbsj-item-btnbox">
@@ -17,9 +17,15 @@
           <span class="xbsj-item-name">{{lang.visibility}}</span>
         </div>-->
         <!-- 模型压平 -->
-        <div class="xbsj-item-btnbox" @click="startFlattenning" title="创建压平面">
-          <div class="xbsj-item-btn flattenbutton"></div>
-          <span class="xbsj-item-name">{{lang.flatten}}</span>
+        <div class="xbsj-item-blocks">
+          <div
+            class="xbsj-item-btnbox"
+            @click="startFlattenning"
+            title="创建压平面"
+          >
+            <div class="xbsj-item-btn flattenbutton"></div>
+            <span class="xbsj-item-name">{{ lang.flatten }}</span>
+          </div>
         </div>
         <!-- 水淹分析 -->
         <!-- <div class="xbsj-item-btnbox">
@@ -27,14 +33,26 @@
           <span class="xbsj-item-name">{{lang.flooding}}</span>
         </div>-->
         <!-- 视频融合 -->
-        <div class="xbsj-item-btnbox" @click="startCameraVideo" title="以当前相机姿态创建新的视频融合">
-          <div class="xbsj-item-btn videofusionbutton"></div>
-          <span class="xbsj-item-name">{{lang.videofusion}}</span>
+        <div class="xbsj-item-blocks">
+          <div
+            class="xbsj-item-btnbox"
+            @click="startCameraVideo"
+            title="以当前相机姿态创建新的视频融合"
+          >
+            <div class="xbsj-item-btn videofusionbutton"></div>
+            <span class="xbsj-item-name">{{ lang.videofusion }}</span>
+          </div>
         </div>
         <!-- 剖切 -->
-        <div class="xbsj-item-btnbox" @click="startClipping" title="创建剖切面">
-          <div class="xbsj-item-btn sectioningbutton"></div>
-          <span class="xbsj-item-name">{{lang.sectioning}}</span>
+        <div class="xbsj-item-blocks">
+          <div
+            class="xbsj-item-btnbox"
+            @click="startClipping"
+            title="创建剖切面"
+          >
+            <div class="xbsj-item-btn sectioningbutton"></div>
+            <span class="xbsj-item-name">{{ lang.sectioning }}</span>
+          </div>
         </div>
         <!-- 挖坑 -->
         <!-- <div class="xbsj-item-btnbox">
@@ -42,141 +60,217 @@
           <span class="xbsj-item-name">{{lang.potholing}}</span>
         </div>-->
         <!-- 可视域 -->
-        <div class="xbsj-item-btnbox ml20" @click="startViewshed" title="以当前相机姿态创建新的视域分析">
-          <div class="xbsj-item-btn visualbutton"></div>
-          <span class="xbsj-item-name">{{lang.visual}}</span>
+        <div class="xbsj-item-blocks">
+          <div
+            class="xbsj-item-btnbox ml20"
+            @click="startViewshed"
+            title="以当前相机姿态创建新的视域分析"
+          >
+            <div class="xbsj-item-btn visualbutton"></div>
+            <span class="xbsj-item-name">{{ lang.visual }}</span>
+          </div>
         </div>
         <!-- 水面 -->
-        <div class="xbsj-item-btnbox" @click="startWater" title="创建水面">
-          <div class="xbsj-item-btn waterbutton"></div>
-          <span class="xbsj-item-name">{{lang.water}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="startWater" title="创建水面">
+            <div class="xbsj-item-btn waterbutton"></div>
+            <span class="xbsj-item-name">{{ lang.water }}</span>
+          </div>
         </div>
         <!-- 模型展开 -->
-        <div
-          class="xbsj-item-btnbox"
-          title="模型展开"
-          @drop="modelexpansion_drop($event)"
-          @dragover="modelexpansion_dragover($event)"
-          @dragleave="modelexpansion_dragleave($event)"
-        >
-          <div class="xbsj-item-btn">
-            <button
-              class="modelexpansionbutton"
-              :disabled="!enabled"
-              :class="{highlight:modelexpansion_over}"
-              @click="expansionEditor()"
-            ></button>
+        <div class="xbsj-item-blocks">
+          <div
+            class="xbsj-item-btnbox"
+            title="模型展开"
+            @drop="modelexpansion_drop($event)"
+            @dragover="modelexpansion_dragover($event)"
+            @dragleave="modelexpansion_dragleave($event)"
+          >
+            <div class="xbsj-item-btn">
+              <button
+                class="modelexpansionbutton"
+                :disabled="!enabled"
+                :class="{ highlight: modelexpansion_over }"
+                @click="expansionEditor()"
+              ></button>
+            </div>
+            <span class="xbsj-item-name">{{ lang.expansion }}</span>
           </div>
-          <span class="xbsj-item-name">{{lang.expansion}}</span>
         </div>
         <!-- 挖坑 -->
-        <div class="xbsj-item-btnbox ml20" @click="cutSurfaceBtn">
-          <div class="xbsj-item-btn cutsurfacebutton"></div>
-          <span class="xbsj-item-name">{{lang.cutsurface}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20" @click="cutSurfaceBtn">
+            <div class="xbsj-item-btn cutsurfacebutton"></div>
+            <span class="xbsj-item-name">{{ lang.cutsurface }}</span>
+          </div>
         </div>
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
-        <span class="xbsj-list-name">{{lang.measure}}</span>
+        <span class="xbsj-list-name">{{ lang.measure }}</span>
 
-        <div class="xbsj-item-btnbox ml20" @click="measurementType='POINT'">
-          <div
-            class="xbsj-item-btn pointbutton"
-            :class="measurementType === 'POINT' ? 'pointbuttonActive' : ''"
-          ></div>
-          <span class="xbsj-item-name">{{lang.point}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20" @click="measurementType = 'POINT'">
+            <div
+              class="xbsj-item-btn pointbutton"
+              :class="measurementType === 'POINT' ? 'pointbuttonActive' : ''"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.point }}</span>
+          </div>
         </div>
-        <div class="xbsj-item-btnbox" @click="measurementType='SPACE_DISTANCE'">
+        <div class="xbsj-item-blocks">
           <div
-            class="xbsj-item-btn distancebutton"
-            :class="measurementType === 'SPACE_DISTANCE' ? 'distancebuttonActive' : ''"
-          ></div>
-          <span class="xbsj-item-name">{{lang.distance}}</span>
+            class="xbsj-item-btnbox"
+            @click="measurementType = 'SPACE_DISTANCE'"
+          >
+            <div
+              class="xbsj-item-btn distancebutton"
+              :class="
+                measurementType === 'SPACE_DISTANCE'
+                  ? 'distancebuttonActive'
+                  : ''
+              "
+            ></div>
+            <span class="xbsj-item-name">{{ lang.distance }}</span>
+          </div>
         </div>
 
         <!-- 贴地距离 -->
-        <div class="xbsj-item-btnbox" @click="disGroudMeasure()">
-          <div
-            class="xbsj-item-btn disGroudbutton"
-            :class="measurementType === 'SPACE_DIS_GROUD' ? 'disGroudbuttonActive' : ''"
-          ></div>
-          <span class="xbsj-item-name">{{lang.disGroud}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="disGroudMeasure()">
+            <div
+              class="xbsj-item-btn disGroudbutton"
+              :class="
+                measurementType === 'SPACE_DIS_GROUD'
+                  ? 'disGroudbuttonActive'
+                  : ''
+              "
+            ></div>
+            <span class="xbsj-item-name">{{ lang.disGroud }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'dis_interpolation' }"
+            @click.stop="togglePopup('dis_interpolation', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'dis_interpolation'}"
-          @click.stop="togglePopup('dis_interpolation',$event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox" @click="measurementType='TRIANGLE_DISTANCE'">
+        <div class="xbsj-item-blocks">
           <div
-            class="xbsj-item-btn heightbutton"
-            :class="measurementType === 'TRIANGLE_DISTANCE' ? 'heightbuttonActive' : ''"
-          ></div>
-          <span class="xbsj-item-name">{{lang.height}}</span>
+            class="xbsj-item-btnbox"
+            @click="measurementType = 'TRIANGLE_DISTANCE'"
+          >
+            <div
+              class="xbsj-item-btn heightbutton"
+              :class="
+                measurementType === 'TRIANGLE_DISTANCE'
+                  ? 'heightbuttonActive'
+                  : ''
+              "
+            ></div>
+            <span class="xbsj-item-name">{{ lang.height }}</span>
+          </div>
         </div>
-        <div class="xbsj-item-btnbox" @click="measurementType='SPACE_AREA'">
-          <div
-            class="xbsj-item-btn areabutton"
-            :class="measurementType === 'SPACE_AREA' ? 'areabuttonActive' : ''"
-          ></div>
-          <span class="xbsj-item-name">{{lang.area}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="measurementType = 'SPACE_AREA'">
+            <div
+              class="xbsj-item-btn areabutton"
+              :class="
+                measurementType === 'SPACE_AREA' ? 'areabuttonActive' : ''
+              "
+            ></div>
+            <span class="xbsj-item-name">{{ lang.area }}</span>
+          </div>
         </div>
 
         <!-- 剖面 -->
-        <div class="xbsj-item-btnbox" @click="sectionPlane()">
-          <div class="xbsj-item-btn sectionGroudbutton"></div>
-          <span class="xbsj-item-name">{{lang.sectionPlane}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="sectionPlane()">
+            <div class="xbsj-item-btn sectionGroudbutton"></div>
+            <span class="xbsj-item-name">{{ lang.sectionPlane }}</span>
+          </div>
         </div>
 
         <!-- 贴地面积 -->
-        <div class="xbsj-item-btnbox" @click="areaGroudMeasure()">
-          <div
-            class="xbsj-item-btn areaGroudbutton"
-            :class="measurementType === 'SPACE_AREA_GROUD' ? 'areaGroudbuttonActive' : ''"
-          ></div>
-          <span class="xbsj-item-name">{{lang.areaGroud}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="areaGroudMeasure()">
+            <div
+              class="xbsj-item-btn areaGroudbutton"
+              :class="
+                measurementType === 'SPACE_AREA_GROUD'
+                  ? 'areaGroudbuttonActive'
+                  : ''
+              "
+            ></div>
+            <span class="xbsj-item-name">{{ lang.areaGroud }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'interpolation' }"
+            @click.stop="togglePopup('interpolation', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'interpolation'}"
-          @click.stop="togglePopup('interpolation',$event)"
-        ></span>
 
         <!-- 方位角 -->
-        <div class="xbsj-item-btnbox" @click="angleMeasure()">
-          <div
-            class="xbsj-item-btn anglebutton"
-            :class="measurementType === 'SPACE_ANGLE' ? 'anglebuttonActive' : ''"
-          ></div>
-          <span class="xbsj-item-name">{{lang.angle}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="angleMeasure()">
+            <div
+              class="xbsj-item-btn anglebutton"
+              :class="
+                measurementType === 'SPACE_ANGLE' ? 'anglebuttonActive' : ''
+              "
+            ></div>
+            <span class="xbsj-item-name">{{ lang.angle }}</span>
+          </div>
         </div>
 
         <!-- 通视 -->
-        <div class="xbsj-item-btnbox" @click="startIntervisible()">
-          <div
-            class="xbsj-item-btn intervisiblebutton"
-            :class="measurementType === 'SPACE_Intervisible' ? 'intervisiblebuttonActive' : ''"
-          ></div>
-          <span class="xbsj-item-name">{{lang.intervisible}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="startIntervisible()">
+            <div
+              class="xbsj-item-btn intervisiblebutton"
+              :class="
+                measurementType === 'SPACE_Intervisible'
+                  ? 'intervisiblebuttonActive'
+                  : ''
+              "
+            ></div>
+            <span class="xbsj-item-name">{{ lang.intervisible }}</span>
+          </div>
         </div>
 
         <!-- 圆形通视 -->
-        <div class="xbsj-item-btnbox" @click="circleIntervisible()">
-          <div
-            class="xbsj-item-btn circleIntervisiblebutton"
-            :class="measurementType === 'SPACE_Circle_Intervisible' ? 'circleIntervisiblebuttonActive' : ''"
-          ></div>
-          <span class="xbsj-item-name">{{lang.circleIntervisible}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="circleIntervisible()">
+            <div
+              class="xbsj-item-btn circleIntervisiblebutton"
+              :class="
+                measurementType === 'SPACE_Circle_Intervisible'
+                  ? 'circleIntervisiblebuttonActive'
+                  : ''
+              "
+            ></div>
+            <span class="xbsj-item-name">{{ lang.circleIntervisible }}</span>
+          </div>
         </div>
 
         <!-- <div class="xbsj-item-btnbox" @click="cutFillEnabled=!cutFillEnabled"> -->
-        <div class="xbsj-item-btnbox" @click="cutFillComputingShow=!cutFillComputingShow">
-          <div class="xbsj-item-btn volumebutton" :class="{highlight:cutFillComputingShow}"></div>
-          <span class="xbsj-item-name">{{lang.volume}}</span>
+        <div class="xbsj-item-blocks">
+          <div
+            class="xbsj-item-btnbox"
+            @click="cutFillComputingShow = !cutFillComputingShow"
+          >
+            <div
+              class="xbsj-item-btn volumebutton"
+              :class="{ highlight: cutFillComputingShow }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.volume }}</span>
+          </div>
         </div>
-        <div class="xbsj-item-btnbox" @click="clearResults">
-          <div class="xbsj-item-btn resetbutton"></div>
-          <span class="xbsj-item-name">{{lang.reset}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="clearResults">
+            <div class="xbsj-item-btn resetbutton"></div>
+            <span class="xbsj-item-name">{{ lang.reset }}</span>
+          </div>
         </div>
         <!-- <div class="xbsj-item-btnbox" @click="showgeology">
           <div class="xbsj-item-btn resetbutton"></div>
@@ -186,14 +280,14 @@
     </div>
     <Interpolation
       ref="interpolation"
-      v-show="popup =='interpolation'"
+      v-show="popup == 'interpolation'"
       @changeInterval="changeInterval"
       :interval="areaGroudinterval"
     ></Interpolation>
 
     <Interpolation
       ref="dis_interpolation"
-      v-show="popup =='dis_interpolation'"
+      v-show="popup == 'dis_interpolation'"
       @changeInterval="changeDisInterval"
       :interval="disGroudinterval"
     ></Interpolation>
@@ -209,9 +303,9 @@ import { getDisAndLabelPos } from "../../../utils/measure";
 
 export default {
   components: {
-    Interpolation
+    Interpolation,
   },
-  data () {
+  data() {
     return {
       lang: {},
       measurementType: "NONE",
@@ -225,11 +319,11 @@ export default {
       areaGroudinterval: 0,
       disGroudinterval: 0,
       popup: "",
-      disGroudMeasureing: false
+      disGroudMeasureing: false,
     };
   },
-  created () { },
-  mounted () {
+  created() {},
+  mounted() {
     this.$nextTick(() => {
       this._disposers = this._disposers || [];
       this._disposers.push(
@@ -258,11 +352,11 @@ export default {
       this._creating = [];
     });
   },
-  beforeDestroy () {
-    this._disposers.forEach(d => d());
+  beforeDestroy() {
+    this._disposers.forEach((d) => d());
   },
   watch: {
-    measuring (v) {
+    measuring(v) {
       if (v == false) {
         if (this.measurementType === "SPACE_Circle_Intervisible") {
           this._circle.positions[0][2] += 0.5;
@@ -313,11 +407,11 @@ export default {
             temPrimitve.indices = indices;
             this._temGeometry.push(temPrimitve);
 
-            this._labels.forEach(l => l.destroy());
+            this._labels.forEach((l) => l.destroy());
             this._labels = [];
             var lb = this.createLabel({
               pos: this._areaGroud._customPrimitive.position,
-              dis: Math.round(this._areaGroud.totalArea * 100) / 100 + "平方米"
+              dis: Math.round(this._areaGroud.totalArea * 100) / 100 + "平方米",
             });
             this._labels.push(lb);
           }
@@ -325,48 +419,48 @@ export default {
         this.updateCreatingBind();
       }
     },
-    measurementType (v) {
+    measurementType(v) {
       if (this._areaGroud && this.measurementType !== "SPACE_AREA_GROUD") {
         this._areaGroud.creating = false;
       }
     },
-    disGroudMeasureing (v) {
+    disGroudMeasureing(v) {
       if (v === false) {
-        this._creating.forEach(d => d());
+        this._creating.forEach((d) => d());
         this._creating = [];
         let self = this;
         if (this._disGroudLabels.length > 0) {
-          this._disGroudLabels.forEach(l => {
+          this._disGroudLabels.forEach((l) => {
             self._temGeometry.push(l);
           });
           this._disGroudLabels = [];
           this.measurementType = "NONE";
         }
       }
-    }
+    },
   },
   methods: {
-    changeInterval (v) {
+    changeInterval(v) {
       this.areaGroudinterval = v;
     },
-    changeDisInterval (v) {
+    changeDisInterval(v) {
       this.disGroudinterval = v;
     },
-    getPopupComp () {
+    getPopupComp() {
       if (this.$refs.hasOwnProperty(this.popup)) {
         return this.$refs[this.popup];
       } else {
         return undefined;
       }
     },
-    showPopup (v) {
+    showPopup(v) {
       let comp = this.getPopupComp();
       if (comp && typeof comp.show == "function") {
         comp.show(v);
       }
       return comp;
     },
-    togglePopup (p, event) {
+    togglePopup(p, event) {
       //调用上一个组件的隐藏
       this.showPopup(false);
 
@@ -393,7 +487,7 @@ export default {
         console.log(ex);
       }
     },
-    drawIntervisibleLine (p1, p2, obj) {
+    drawIntervisibleLine(p1, p2, obj) {
       var p = getPickRay(p1, p2, this.$root.$earth);
       if (p) {
         var mid = [p.longitude, p.latitude, p.height];
@@ -414,7 +508,7 @@ export default {
       obj = null;
       this.measurementType = "NONE";
     },
-    circleIntervisible () {
+    circleIntervisible() {
       if (this.measurementType !== "SPACE_Circle_Intervisible") {
         this._circle = new XE.Obj.Plots.GeoCircle(this.$root.$earth);
         this._circle.isCreating = true;
@@ -429,7 +523,7 @@ export default {
         this.measurementType = "SPACE_Circle_Intervisible";
       }
     },
-    startIntervisible () {
+    startIntervisible() {
       if (this.measurementType !== "SPACE_Intervisible") {
         this.updateCreatingBind();
         this._intervisible = new XE.Obj.Polyline(this.$root.$earth);
@@ -441,7 +535,7 @@ export default {
         this._creating.push(
           XE.MVVM.watch(
             () => ({
-              positions: [...this._intervisible.positions]
+              positions: [...this._intervisible.positions],
             }),
             () => {
               if (self._intervisible.positions.length > 2) {
@@ -460,7 +554,7 @@ export default {
         this.measurementType = "SPACE_Intervisible";
       }
     },
-    angleMeasure () {
+    angleMeasure() {
       if (this.measurementType !== "SPACE_ANGLE") {
         this.updateCreatingBind();
         this._angle = new XE.Obj.Plots.GeoPolylineArrow(this.$root.$earth);
@@ -476,10 +570,10 @@ export default {
         this._creating.push(
           XE.MVVM.watch(
             () => ({
-              positions: [...this._angle.positions]
+              positions: [...this._angle.positions],
             }),
             () => {
-              self._labels.forEach(l => l.destroy());
+              self._labels.forEach((l) => l.destroy());
               self._labels = [];
               if (self._angle.positions.length == 2) {
                 var result = XE.Tool.Math.hpr(
@@ -493,8 +587,8 @@ export default {
                       Math.round(
                         (((result[0] * 180) / Math.PI + 90) % 360) * 100
                       ) /
-                      100 +
-                      "度"
+                        100 +
+                      "度",
                   });
                   self._labels.push(lb);
                 }
@@ -509,7 +603,7 @@ export default {
         this.measurementType = "SPACE_ANGLE";
       }
     },
-    areaGroudMeasure () {
+    areaGroudMeasure() {
       // this.areaGroudinterval = 0;
       if (!this.$root.$earth.terrainEffect.depthTest) {
         this.$root.$earthUI.promptInfo(
@@ -541,8 +635,8 @@ export default {
         }
       }
     },
-    updateMeasure (p) {
-      this._disGroudLabels.forEach(l => l.destroy());
+    updateMeasure(p) {
+      this._disGroudLabels.forEach((l) => l.destroy());
       this._disGroudLabels = [];
       if (p.length > 1) {
         var it = this.disGroudinterval;
@@ -553,13 +647,13 @@ export default {
         this._result = result;
         var labels = result.label;
 
-        labels.forEach(l => {
+        labels.forEach((l) => {
           var lb = this.createLabel(l);
           this._disGroudLabels.push(lb);
         });
       }
     },
-    disGroudMeasure () {
+    disGroudMeasure() {
       // this.disGroudinterval = 0;
       if (this.measurementType !== "SPACE_DIS_GROUD") {
         this._disGroud = new XE.Obj.Plots.GeoPolyline(this.$root.$earth);
@@ -571,7 +665,7 @@ export default {
         this._creating.push(
           XE.MVVM.watch(
             () => ({
-              positions: [...this._disGroud.positions]
+              positions: [...this._disGroud.positions],
             }),
             () => {
               this.updateMeasure(this._disGroud.positions);
@@ -582,28 +676,28 @@ export default {
         this.measurementType = "SPACE_DIS_GROUD";
       }
     },
-    sectionPlane () {
+    sectionPlane() {
       this.measurementType = "SPACE_SECTION_GROUD";
       this.$root.$earthUI.showPropertyWindow(
         {},
         {
-          component: "ProfileAnalysis"
+          component: "ProfileAnalysis",
         }
       );
     },
-    updateCreatingBind () {
-      this._creating.forEach(d => d());
+    updateCreatingBind() {
+      this._creating.forEach((d) => d());
       this._creating = [];
       let self = this;
       if (this._labels.length > 0) {
-        this._labels.forEach(l => {
+        this._labels.forEach((l) => {
           self._temGeometry.push(l);
         });
         this._labels = [];
         this.measurementType = "NONE";
       }
     },
-    createLabel (option) {
+    createLabel(option) {
       let p = new XE.Obj.Plots.GeoPin(this.$root.$earth);
       p.innerHTML =
         '<div style="cursor:pointer;position: absolute;width:300px;left:6px; line-height:15px;color: white;">' +
@@ -614,14 +708,14 @@ export default {
       p._pin.show = false;
       return p;
     },
-    setTileset (tileset) {
+    setTileset(tileset) {
       if (this._tileset !== tileset) {
         this._tileset = tileset;
       }
 
       this.enabled = !!this._tileset;
     },
-    startCameraVideo () {
+    startCameraVideo() {
       var demoVideo =
         XE.HTML.getScriptBaseUrl("XbsjEarthUI") + "/assets/demo.mp4";
       // 视频融合
@@ -634,7 +728,7 @@ export default {
 
       this.$root.$earthUI.showPropertyWindow(cameraVideo);
     },
-    startViewshed () {
+    startViewshed() {
       var viewshed = new XE.Obj.Viewshed(this.$root.$earth);
       viewshed.setPositionWithCurrentCamera();
       viewshed.far = 50;
@@ -643,7 +737,7 @@ export default {
 
       this.$root.$earthUI.showPropertyWindow(viewshed);
     },
-    startFlattenning () {
+    startFlattenning() {
       var flattenedPolygons = new XE.Obj.FlattenedPolygonCollection(
         this.$root.$earth
       );
@@ -651,14 +745,14 @@ export default {
       flattenedPolygons.isCreating = true;
       this.$root.$earthUI.showPropertyWindow(flattenedPolygons);
     },
-    startClipping () {
+    startClipping() {
       var clippingPlane = new XE.Obj.ClippingPlane(this.$root.$earth);
       clippingPlane.name = "未命名剖切面";
       clippingPlane.positionPicking = true;
       clippingPlane.isCreating = true;
       this.$root.$earthUI.showPropertyWindow(clippingPlane);
     },
-    startWater () {
+    startWater() {
       var water = new XE.Obj.Water(this.$root.$earth);
       water.name = "未命名水面";
       water.isCreating = true;
@@ -666,13 +760,13 @@ export default {
       water.creating = true;
       this.$root.$earthUI.showPropertyWindow(water);
     },
-    expansionEditor () {
+    expansionEditor() {
       //显示模型编辑器
       this.$root.$earthUI.showPropertyWindow(this._tileset, {
-        component: "TilesetExpansionEditor"
+        component: "TilesetExpansionEditor",
       });
     },
-    modelexpansion_dragover (e) {
+    modelexpansion_dragover(e) {
       e.preventDefault();
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj instanceof XE.Obj.Tileset) {
@@ -683,7 +777,7 @@ export default {
         e.dataTransfer.dropEffect = "none";
       }
     },
-    modelexpansion_dragleave () {
+    modelexpansion_dragleave() {
       this.modelexpansion_over = false;
       const csn3 = this.$root.$earth.sceneTree.currentSelectedNode;
       if (csn3 && csn3.czmObject && csn3.czmObject instanceof XE.Obj.Tileset) {
@@ -692,14 +786,14 @@ export default {
         this.enabled = false;
       }
     },
-    modelexpansion_drop (e) {
+    modelexpansion_drop(e) {
       this.modelexpansion_over = false;
       e.preventDefault();
       let czmObj = this.$root.$earthUI.getCzmObjectFromDrag(e.dataTransfer);
       if (czmObj && czmObj instanceof XE.Obj.Tileset) {
         //显示面板
         this.$root.$earthUI.showPropertyWindow(czmObj, {
-          component: "TilesetExpansionEditor"
+          component: "TilesetExpansionEditor",
         });
         this._czmObj = czmObj;
         const csn2 = this.$root.$earth.sceneTree.currentSelectedNode;
@@ -714,26 +808,26 @@ export default {
         }
       }
     },
-    clearResults () {
+    clearResults() {
       this.$root.$earth.analyzation.measurement.clearResults();
       this.$root.$earth.analyzation.cutFillComputing.clearResults();
       this.$root.$earth.analyzation.cutFillComputing.positions = [];
       this.cutFillComputingShow = false;
       if (this._temGeometry) {
-        this._temGeometry.forEach(e => {
+        this._temGeometry.forEach((e) => {
           e.destroy();
         });
         this._temGeometry = [];
       }
       if (this._temPrimitive) {
-        this._temPrimitive.forEach(e => {
+        this._temPrimitive.forEach((e) => {
           this.$root.$earth.czm.scene.primitives.remove(e);
         });
       }
       this.measurementType = "NONE";
       this.$root.$earth.analyzation.cutFillComputingOld.clearResults();
     },
-    startMove (event) {
+    startMove(event) {
       //如果事件的目标不是本el 返回
       if (
         event.target.parentElement !== this.$refs.container &&
@@ -744,7 +838,7 @@ export default {
       }
       this.moving = true;
     },
-    onMoving (event) {
+    onMoving(event) {
       //获取鼠标和为开始位置的插值，滚动滚动条
       if (!this.moving) return;
 
@@ -754,11 +848,11 @@ export default {
         dom.scrollLeft = wleft;
       }
     },
-    endMove (envent) {
+    endMove(envent) {
       this.moving = false;
     },
     // 挖坑
-    cutSurfaceBtn () {
+    cutSurfaceBtn() {
       var cutsurface = new XE.Obj.CutSurface(this.$root.$earth);
       cutsurface.name = "挖坑";
       cutsurface.autoRegisterEditing = true;
@@ -767,8 +861,8 @@ export default {
       cutsurface.creating = true;
       console.log(cutsurface);
       this.$root.$earthUI.showPropertyWindow(cutsurface);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -1090,4 +1184,3 @@ export default {
   cursor: pointer;
 }
 </style>
-

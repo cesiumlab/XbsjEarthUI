@@ -9,37 +9,48 @@
       @mouseup="endMove($event)"
     >
       <div class="xbsj-list-item">
-        <span class="xbsj-list-name">{{lang.plotlibrary}}</span>
+        <span class="xbsj-list-name">{{ lang.plotlibrary }}</span>
         <!-- 在线 -->
-        <div class="xbsj-item-btnbox ml20">
-          <div
-            class="xbsj-item-btn onlinebutton"
-            @click="OnlineSymbolShow=!OnlineSymbolShow"
-            :class="{highlight:OnlineSymbolShow}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.online}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20">
+            <div
+              class="xbsj-item-btn onlinebutton"
+              @click="OnlineSymbolShow = !OnlineSymbolShow"
+              :class="{ highlight: OnlineSymbolShow }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.online }}</span>
+          </div>
         </div>
         <!-- Lab内置 -->
-        <div class="xbsj-item-btnbox" @click="LabSymbolShow=!LabSymbolShow">
-          <div class="xbsj-item-btn localhostbutton" :class="{highlight:LabSymbolShow}"></div>
-          <span class="xbsj-item-name">{{lang.localhost}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="LabSymbolShow = !LabSymbolShow">
+            <div
+              class="xbsj-item-btn localhostbutton"
+              :class="{ highlight: LabSymbolShow }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.localhost }}</span>
+          </div>
         </div>
         <!-- 自定义 -->
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn symbolbutton"
-            @click="CustomSymbolShow=!CustomSymbolShow"
-            :class="{highlight:CustomSymbolShow}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.custom}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn symbolbutton"
+              @click="CustomSymbolShow = !CustomSymbolShow"
+              :class="{ highlight: CustomSymbolShow }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.custom }}</span>
+          </div>
         </div>
       </div>
       <div class="xbsj-list-item">
-        <span class="xbsj-list-name">{{lang.routine}}</span>
+        <span class="xbsj-list-name">{{ lang.routine }}</span>
         <!-- 图标点 -->
-        <div class="xbsj-item-btnbox ml20" @click="pinbtn" title="图标点">
-          <div class="xbsj-item-btn pinbutton"></div>
-          <span class="xbsj-item-name">{{lang.pin}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20" @click="pinbtn" title="图标点">
+            <div class="xbsj-item-btn pinbutton"></div>
+            <span class="xbsj-item-name">{{ lang.pin }}</span>
+          </div>
         </div>
         <!-- 图片 -->
         <!-- <div class="xbsj-item-btnbox ml20" @click="pinpicturebtn" title="图片">
@@ -56,21 +67,27 @@
           <div class="xbsj-item-btn linebutton"></div>
           <span class="xbsj-item-name">{{lang.line}}</span>
         </div>-->
-        <div class="xbsj-item-btnbox" @click="Polyline">
-          <div class="xbsj-item-btn linebutton"></div>
-          <span class="xbsj-item-name">{{lang.line}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="Polyline">
+            <div class="xbsj-item-btn linebutton"></div>
+            <span class="xbsj-item-name">{{ lang.line }}</span>
+          </div>
         </div>
 
         <!-- 矩形 -->
-        <div class="xbsj-item-btnbox" @click="rectangle">
-          <div class="xbsj-item-btn rectanglebutton"></div>
-          <span class="xbsj-item-name">{{lang.rectangle}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="rectangle">
+            <div class="xbsj-item-btn rectanglebutton"></div>
+            <span class="xbsj-item-name">{{ lang.rectangle }}</span>
+          </div>
         </div>
 
         <!-- 圆 -->
-        <div class="xbsj-item-btnbox" @click="circle">
-          <div class="xbsj-item-btn circlebutton"></div>
-          <span class="xbsj-item-name">{{lang.circle}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="circle">
+            <div class="xbsj-item-btn circlebutton"></div>
+            <span class="xbsj-item-name">{{ lang.circle }}</span>
+          </div>
         </div>
 
         <!-- 曲线 -->
@@ -101,9 +118,11 @@
           <span class="xbsj-item-name">{{lang.TriFlag}}</span>
         </div>-->
         <!-- 双箭头 -->
-        <div class="xbsj-item-btnbox" @click="DoubleArrow">
-          <div class="xbsj-item-btn DoubleArrow"></div>
-          <span class="xbsj-item-name">{{lang.DoubleArrow}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="DoubleArrow">
+            <div class="xbsj-item-btn DoubleArrow"></div>
+            <span class="xbsj-item-name">{{ lang.DoubleArrow }}</span>
+          </div>
         </div>
         <!-- 多边形 -->
         <!-- <div class="xbsj-item-btnbox" @click="Polygon">
@@ -111,39 +130,55 @@
           <span class="xbsj-item-name">{{lang.face}}</span>
         </div>-->
         <!-- 多边形 -->
-        <div class="xbsj-item-btnbox" @click="PolygonStretch">
-          <div class="xbsj-item-btn facebutton"></div>
-          <span class="xbsj-item-name">{{lang.polygonStretch}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="PolygonStretch">
+            <div class="xbsj-item-btn facebutton"></div>
+            <span class="xbsj-item-name">{{ lang.polygonStretch }}</span>
+          </div>
         </div>
         <!-- 单体化 -->
-        <div class="xbsj-item-btnbox" @click="ClassificationPolygon">
-          <div class="xbsj-item-btn classificationpolygonbutton"></div>
-          <span class="xbsj-item-name">{{lang.classificationpolygon}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="ClassificationPolygon">
+            <div class="xbsj-item-btn classificationpolygonbutton"></div>
+            <span class="xbsj-item-name">{{ lang.classificationpolygon }}</span>
+          </div>
         </div>
         <!-- 平尾箭头 -->
-        <div class="xbsj-item-btnbox" @click="FlatArrow">
-          <div class="xbsj-item-btn flatArrowbutton"></div>
-          <span class="xbsj-item-name">{{lang.flatarrow}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="FlatArrow">
+            <div class="xbsj-item-btn flatArrowbutton"></div>
+            <span class="xbsj-item-name">{{ lang.flatarrow }}</span>
+          </div>
         </div>
         <!-- 粒子 -->
-        <div class="xbsj-item-btnbox" @click="ParticleSystem">
-          <div class="xbsj-item-btn particleSystembutton"></div>
-          <span class="xbsj-item-name">{{lang.particlesystem}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="ParticleSystem">
+            <div class="xbsj-item-btn particleSystembutton"></div>
+            <span class="xbsj-item-name">{{ lang.particlesystem }}</span>
+          </div>
         </div>
         <!-- 粒子烟火 -->
-        <div class="xbsj-item-btnbox" @click="ParticleSystemFireWork">
-          <div class="xbsj-item-btn particleSystemFireWorkbutton"></div>
-          <span class="xbsj-item-name">{{lang.ParticleSystemFireWork}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="ParticleSystemFireWork">
+            <div class="xbsj-item-btn particleSystemFireWorkbutton"></div>
+            <span class="xbsj-item-name">{{
+              lang.ParticleSystemFireWork
+            }}</span>
+          </div>
         </div>
         <!-- 粒子喷射 -->
-        <div class="xbsj-item-btnbox" @click="ParticleSystemTails">
-          <div class="xbsj-item-btn particleSystemTailsbutton"></div>
-          <span class="xbsj-item-name">{{lang.ParticleSystemTails}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="ParticleSystemTails">
+            <div class="xbsj-item-btn particleSystemTailsbutton"></div>
+            <span class="xbsj-item-name">{{ lang.ParticleSystemTails }}</span>
+          </div>
         </div>
         <!-- 平滑多边形 -->
-        <div class="xbsj-item-btnbox" @click="GeoSmoothPolygon">
-          <div class="xbsj-item-btn smoothPolygonbutton"></div>
-          <span class="xbsj-item-name">{{lang.GeoSmoothPolygon}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="GeoSmoothPolygon">
+            <div class="xbsj-item-btn smoothPolygonbutton"></div>
+            <span class="xbsj-item-name">{{ lang.GeoSmoothPolygon }}</span>
+          </div>
         </div>
         <!-- 标绘更多 -->
         <!-- <div class="xbsj-item-btnbox" @click="EntityMoreShow=!EntityMoreShow">
@@ -178,7 +213,7 @@
         </div>-->
       </div>
       <div class="xbsj-list-item">
-        <span class="xbsj-list-name">{{lang.solid}}</span>
+        <span class="xbsj-list-name">{{ lang.solid }}</span>
         <!-- 立方体 -->
         <!-- <div class="xbsj-item-btnbox">
           <div class="xbsj-item-btn cubebutton"></div>
@@ -190,14 +225,18 @@
           <span class="xbsj-item-name">{{lang.sphere}}</span>
         </div>-->
         <!-- 模型 -->
-        <div class="xbsj-item-btnbox" @click="createPlane">
-          <div class="xbsj-item-btn modelbutton"></div>
-          <span class="xbsj-item-name">{{lang.model}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="createPlane">
+            <div class="xbsj-item-btn modelbutton"></div>
+            <span class="xbsj-item-name">{{ lang.model }}</span>
+          </div>
         </div>
         <!-- 多边形贴图 -->
-        <div class="xbsj-item-btnbox" @click="PolygonImageShow">
-          <div class="xbsj-item-btn polygonimagebutton"></div>
-          <span class="xbsj-item-name">{{lang.polygonImage}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="PolygonImageShow">
+            <div class="xbsj-item-btn polygonimagebutton"></div>
+            <span class="xbsj-item-name">{{ lang.polygonImage }}</span>
+          </div>
         </div>
       </div>
       <!-- <div class="xbsj-list-item">
@@ -230,11 +269,13 @@
         </div>
       </div>-->
       <div class="xbsj-list-item">
-        <span class="xbsj-list-name">{{lang.senior}}</span>
+        <span class="xbsj-list-name">{{ lang.senior }}</span>
         <!-- 路径 -->
-        <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
-          <div class="xbsj-item-btn pathbutton"></div>
-          <span class="xbsj-item-name">{{lang.path}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="pathbtn" title="路径">
+            <div class="xbsj-item-btn pathbutton"></div>
+            <span class="xbsj-item-name">{{ lang.path }}</span>
+          </div>
         </div>
         <!-- 带杆文字 -->
         <!-- <div class="xbsj-item-btnbox" title="带杆文字">
@@ -267,29 +308,39 @@
           <span class="xbsj-item-name">{{lang.CustomPrimitive}}</span>
         </div>-->
         <!-- 自定义贴地图元 -->
-        <div class="xbsj-item-btnbox ml20" @click="customGroundRectangleBtn">
-          <div class="xbsj-item-btn customprimitivebutton"></div>
-          <span class="xbsj-item-name">{{lang.CustomGroundRectangle}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20" @click="customGroundRectangleBtn">
+            <div class="xbsj-item-btn customprimitivebutton"></div>
+            <span class="xbsj-item-name">{{ lang.CustomGroundRectangle }}</span>
+          </div>
         </div>
         <!-- 道路 -->
-        <div class="xbsj-item-btnbox ml20" @click="roadBtn">
-          <div class="xbsj-item-btn roadbutton"></div>
-          <span class="xbsj-item-name">{{lang.road}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20" @click="roadBtn">
+            <div class="xbsj-item-btn roadbutton"></div>
+            <span class="xbsj-item-name">{{ lang.road }}</span>
+          </div>
         </div>
         <!-- 挡土墙 -->
-        <div class="xbsj-item-btnbox ml20" @click="wallBtn">
-          <div class="xbsj-item-btn wallbutton"></div>
-          <span class="xbsj-item-name">{{lang.wall}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20" @click="wallBtn">
+            <div class="xbsj-item-btn wallbutton"></div>
+            <span class="xbsj-item-name">{{ lang.wall }}</span>
+          </div>
         </div>
         <!-- 填充面 -->
-        <div class="xbsj-item-btnbox ml20" @click="surfaceBtn">
-          <div class="xbsj-item-btn surfacebutton"></div>
-          <span class="xbsj-item-name">{{lang.surface}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20" @click="surfaceBtn">
+            <div class="xbsj-item-btn surfacebutton"></div>
+            <span class="xbsj-item-name">{{ lang.surface }}</span>
+          </div>
         </div>
         <!-- 立面贴图 -->
-        <div class="xbsj-item-btnbox ml20" @click="groundImageBtn">
-          <div class="xbsj-item-btn groundimagebutton"></div>
-          <span class="xbsj-item-name">{{lang.groundimage}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20" @click="groundImageBtn">
+            <div class="xbsj-item-btn groundimagebutton"></div>
+            <span class="xbsj-item-name">{{ lang.groundimage }}</span>
+          </div>
         </div>
         <!-- <div class="xbsj-item-btnbox ml20">
           <div class="xbsj-item-btn odbutton"></div>
@@ -329,27 +380,34 @@
         </div>-->
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
-        <span class="xbsj-list-name">{{lang.algorithm}}</span>
+        <span class="xbsj-list-name">{{ lang.algorithm }}</span>
         <!-- 抛物插值 -->
-        <div
-          class="xbsj-item-btnbox ml20"
-          ref="parabolicBtn"
-          @click="parabolicBtn"
-          @drop="parabolic_drop($event)"
-          @dragover="parabolic_dragover($event)"
-          @dragleave="parabolic_dragleave($event)"
-        >
+        <div class="xbsj-item-blocks">
           <div
-            class="xbsj-item-btn parabolicbtn"
-            :class="{highlight:parabolic_over||parabolicShow}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.parabolic}}</span>
+            class="xbsj-item-btnbox ml20"
+            ref="parabolicBtn"
+            @click="parabolicBtn"
+            @drop="parabolic_drop($event)"
+            @dragover="parabolic_dragover($event)"
+            @dragleave="parabolic_dragleave($event)"
+          >
+            <div
+              class="xbsj-item-btn parabolicbtn"
+              :class="{ highlight: parabolic_over || parabolicShow }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.parabolic }}</span>
+          </div>
         </div>
-
         <!-- ODLines -->
-        <div class="xbsj-item-btnbox ml20" ref="odlinesbtn" @click="createODlines">
-          <div class="xbsj-item-btn odlinesbtn"></div>
-          <span class="xbsj-item-name">ODLines</span>
+        <div class="xbsj-item-blocks">
+          <div
+            class="xbsj-item-btnbox ml20"
+            ref="odlinesbtn"
+            @click="createODlines"
+          >
+            <div class="xbsj-item-btn odlinesbtn"></div>
+            <span class="xbsj-item-name">ODLines</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1575,4 +1633,3 @@ export default {
   cursor: pointer;
 }
 </style>
-

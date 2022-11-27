@@ -4,9 +4,9 @@
         :footervisible="false"
         @cancel="show=false"
         v-show="show"
-        :height="500"
+        :height="400"
         :left="5"
-        :top="138"
+        :top="0"
         :title="lang.title"
         @contextMenu="onContexMenu"
         class="xbsjSceneTreeBox"
@@ -185,7 +185,7 @@ export default {
 					style: '样式',
 					moving: '拖拽移动',
 					newFolder: '新建文件夹',
-					title: '图层管理',
+					title: '地球图层管理',
 					viewSource: '查看加载代码',
 					viewCzmSource: '查看Cesium加载代码',
 					config: '打印配置',

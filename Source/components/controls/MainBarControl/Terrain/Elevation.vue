@@ -92,10 +92,6 @@ export default {
   margin-bottom: 10px;
   margin-top: 10px;
 }
-.XbsjSlider {
-  padding-left: 4px;
-  display: inline-block;
-  width: 284px;
-}
+
 </style>
 

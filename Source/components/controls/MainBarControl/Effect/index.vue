@@ -8,28 +8,32 @@
       @mouseup="endMove($event)"
     >
       <div class="xbsj-list-item">
-        <span class="xbsj-list-name">{{lang.weather}}</span>
-        <div class="xbsj-item-btnbox ml20">
-          <div
-            class="xbsj-item-btn sunbutton"
-            :class="{'sunbutton-on':weather.sun}"
-            @click="toggleSun"
-          ></div>
-          <span class="xbsj-item-name">{{lang.sun}}</span>
+        <span class="xbsj-list-name">{{ lang.weather }}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20">
+            <div
+              class="xbsj-item-btn sunbutton"
+              :class="{ 'sunbutton-on': weather.sun }"
+              @click="toggleSun"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.sun }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'sun' }"
+            @click.stop="togglePopup('sun', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'sun'}"
-          @click.stop="togglePopup('sun',$event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn moonbutton"
-            :class="{'moonbutton-on':weather.moon}"
-            @click="toggleMoon"
-          ></div>
-          <span class="xbsj-item-name">{{lang.moon}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn moonbutton"
+              :class="{ 'moonbutton-on': weather.moon }"
+              @click="toggleMoon"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.moon }}</span>
+          </div>
         </div>
         <!-- 
         <span
@@ -39,41 +43,47 @@
         ></span>
         -->
 
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn atmospherebutton"
-            :class="{'atmospherebutton-on':weather.atmosphere}"
-            @click="toggleAtmosphere"
-          ></div>
-          <span class="xbsj-item-name">{{lang.atmosphere}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn atmospherebutton"
+              :class="{ 'atmospherebutton-on': weather.atmosphere }"
+              @click="toggleAtmosphere"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.atmosphere }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'atmosphere' }"
+            @click.stop="togglePopup('atmosphere', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'atmosphere'}"
-          @click.stop="togglePopup('atmosphere',$event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn cloudbutton"
-            :class="{'cloudbutton-on':weather.cloud}"
-            @click="toggleCloud"
-          ></div>
-          <span class="xbsj-item-name">{{lang.cloud}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn cloudbutton"
+              :class="{ 'cloudbutton-on': weather.cloud }"
+              @click="toggleCloud"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.cloud }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'cloud' }"
+            @click.stop="togglePopup('cloud', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'cloud'}"
-          @click.stop="togglePopup('cloud',$event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn rainPostProcessbutton"
-            :class="{'rainPostProcessbutton-on':weather.rainPostProcess}"
-            @click="weather.rainPostProcess=!weather.rainPostProcess"
-          ></div>
-          <span class="xbsj-item-name">{{lang.rain}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn rainPostProcessbutton"
+              :class="{ 'rainPostProcessbutton-on': weather.rainPostProcess }"
+              @click="weather.rainPostProcess = !weather.rainPostProcess"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.rain }}</span>
+          </div>
         </div>
         <!-- <span
           class="xbsj-select"
@@ -81,179 +91,209 @@
           @click.stop="togglePopup('rainPostProcess',$event)"
         ></span>-->
 
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn snowPostProcessbutton"
-            :class="{'snowPostProcessbutton-on':weather.snowPostProcess}"
-            @click="weather.snowPostProcess=!weather.snowPostProcess"
-          ></div>
-          <span class="xbsj-item-name">{{lang.snow}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn snowPostProcessbutton"
+              :class="{ 'snowPostProcessbutton-on': weather.snowPostProcess }"
+              @click="weather.snowPostProcess = !weather.snowPostProcess"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.snow }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'snowPostProcess' }"
+            @click.stop="togglePopup('snowPostProcess', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'snowPostProcess'}"
-          @click.stop="togglePopup('snowPostProcess',$event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn fogbutton"
-            :class="{'fogbutton-on':weather.fog}"
-            @click="weather.fog=!weather.fog"
-          ></div>
-          <span class="xbsj-item-name">{{lang.fog}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn fogbutton"
+              :class="{ 'fogbutton-on': weather.fog }"
+              @click="weather.fog = !weather.fog"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.fog }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'fog' }"
+            @click.stop="togglePopup('fog', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'fog'}"
-          @click.stop="togglePopup('fog',$event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn fogpostprocessbutton"
-            :class="{'fogpostprocessbutton-on':weather.fogPostProcess}"
-            @click="weather.fogPostProcess=!weather.fogPostProcess"
-          ></div>
-          <span class="xbsj-item-name">{{lang.fogpostprocess}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn fogpostprocessbutton"
+              :class="{ 'fogpostprocessbutton-on': weather.fogPostProcess }"
+              @click="weather.fogPostProcess = !weather.fogPostProcess"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.fogpostprocess }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'fogPostProcess' }"
+            @click.stop="togglePopup('fogPostProcess', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'fogPostProcess'}"
-          @click.stop="togglePopup('fogPostProcess',$event)"
-        ></span>
 
         <!-- 星空显隐 -->
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn starryskybutton"
-            :class="{'starryskybutton-on':weather.skyBox}"
-            @click="weather.skyBox = !weather.skyBox"
-          ></div>
-          <span class="xbsj-item-name">{{lang.starrysky}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn starryskybutton"
+              :class="{ 'starryskybutton-on': weather.skyBox }"
+              @click="weather.skyBox = !weather.skyBox"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.starrysky }}</span>
+          </div>
         </div>
         <!-- 天空盒 -->
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn skyboxbutton"
-            :class="{'skyboxbutton-on':skyBoxOnGround}"
-            @click="skyBoxOnGround = !skyBoxOnGround"
-          ></div>
-          <span class="xbsj-item-name">{{lang.skyBoxOnGround}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn skyboxbutton"
+              :class="{ 'skyboxbutton-on': skyBoxOnGround }"
+              @click="skyBoxOnGround = !skyBoxOnGround"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.skyBoxOnGround }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'skyBox' }"
+            @click.stop="togglePopup('skyBox', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'skyBox'}"
-          @click.stop="togglePopup('skyBox',$event)"
-        ></span>
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem">
-        <span class="xbsj-list-name">{{lang.effect}}</span>
-        <div class="xbsj-item-btnbox ml20">
-          <div
-            class="xbsj-item-btn shadowbutton"
-            :class="{'shadowbutton-on':effect.shadow}"
-            @click="effect.shadow=!effect.shadow"
-          ></div>
-          <span class="xbsj-item-name">{{lang.shadow}}</span>
+        <span class="xbsj-list-name">{{ lang.effect }}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20">
+            <div
+              class="xbsj-item-btn shadowbutton"
+              :class="{ 'shadowbutton-on': effect.shadow }"
+              @click="effect.shadow = !effect.shadow"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.shadow }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'shadow' }"
+            @click.stop="togglePopup('shadow', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'shadow'}"
-          @click.stop="togglePopup('shadow',$event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn bloombutton"
-            :class="{'bloombutton-on':postProcess.bloom}"
-            @click="postProcess.bloom=!postProcess.bloom"
-          ></div>
-          <span class="xbsj-item-name">{{lang.bloom}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn bloombutton"
+              :class="{ 'bloombutton-on': postProcess.bloom }"
+              @click="postProcess.bloom = !postProcess.bloom"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.bloom }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'bloom' }"
+            @click.stop="togglePopup('bloom', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'bloom'}"
-          @click.stop="togglePopup('bloom',$event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn ambientocclusionbutton"
-            :class="{'ambientocclusionbutton-on':postProcess.ambientOcclusion}"
-            @click="postProcess.ambientOcclusion=!postProcess.ambientOcclusion"
-          ></div>
-          <span class="xbsj-item-name">{{lang.ambientOcclusion}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn ambientocclusionbutton"
+              :class="{
+                'ambientocclusionbutton-on': postProcess.ambientOcclusion,
+              }"
+              @click="
+                postProcess.ambientOcclusion = !postProcess.ambientOcclusion
+              "
+            ></div>
+            <span class="xbsj-item-name">{{ lang.ambientOcclusion }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'ambientOcclusion' }"
+            @click.stop="togglePopup('ambientOcclusion', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'ambientOcclusion'}"
-          @click.stop="togglePopup('ambientOcclusion',$event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn depthoffieldbutton"
-            :class="{'depthoffieldbutton-on':postProcess.depthOfField}"
-            @click="postProcess.depthOfField=!postProcess.depthOfField"
-          ></div>
-          <span class="xbsj-item-name">{{lang.depthOfField}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn depthoffieldbutton"
+              :class="{ 'depthoffieldbutton-on': postProcess.depthOfField }"
+              @click="postProcess.depthOfField = !postProcess.depthOfField"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.depthOfField }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'depthOfField' }"
+            @click.stop="togglePopup('depthOfField', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'depthOfField'}"
-          @click.stop="togglePopup('depthOfField',$event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn silhouettebutton"
-            :class="{'silhouettebutton-on':postProcess.silhouette}"
-            @click="postProcess.silhouette=!postProcess.silhouette"
-          ></div>
-          <span class="xbsj-item-name">{{lang.silhouette}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn silhouettebutton"
+              :class="{ 'silhouettebutton-on': postProcess.silhouette }"
+              @click="postProcess.silhouette = !postProcess.silhouette"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.silhouette }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'silhouette' }"
+            @click.stop="togglePopup('silhouette', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'silhouette'}"
-          @click.stop="togglePopup('silhouette',$event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn brightnessbutton"
-            :class="{'brightnessbutton-on':postProcess.brightness}"
-            @click="postProcess.brightness=!postProcess.brightness"
-          ></div>
-          <span class="xbsj-item-name">{{lang.brightness}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn brightnessbutton"
+              :class="{ 'brightnessbutton-on': postProcess.brightness }"
+              @click="postProcess.brightness = !postProcess.brightness"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.brightness }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'brightness' }"
+            @click.stop="togglePopup('brightness', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'brightness'}"
-          @click.stop="togglePopup('brightness',$event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn blackandwhitebutton"
-            :class="{'blackandwhitebutton-on':postProcess.blackAndWhite}"
-            @click="postProcess.blackAndWhite=!postProcess.blackAndWhite"
-          ></div>
-          <span class="xbsj-item-name">{{lang.blackAndWhite}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn blackandwhitebutton"
+              :class="{ 'blackandwhitebutton-on': postProcess.blackAndWhite }"
+              @click="postProcess.blackAndWhite = !postProcess.blackAndWhite"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.blackAndWhite }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'blackAndWhite' }"
+            @click.stop="togglePopup('blackAndWhite', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'blackAndWhite'}"
-          @click.stop="togglePopup('blackAndWhite',$event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn nightvisionbutton"
-            :class="{'nightvisionbutton-on':postProcess.nightVision}"
-            @click="postProcess.nightVision=!postProcess.nightVision"
-          ></div>
-          <span class="xbsj-item-name">{{lang.nightVision}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn nightvisionbutton"
+              :class="{ 'nightvisionbutton-on': postProcess.nightVision }"
+              @click="postProcess.nightVision = !postProcess.nightVision"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.nightVision }}</span>
+          </div>
         </div>
 
         <!--
@@ -263,42 +303,48 @@
           @click.stop="togglePopup('nightVision',$event)"
         ></span>
         -->
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn lensflarebutton"
-            :class="{'lensflarebutton-on':postProcess.lensFlare}"
-            @click="toggleFlare"
-          ></div>
-          <span class="xbsj-item-name">{{lang.lensFlare}}</span>
-        </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'lensFlare'}"
-          @click.stop="togglePopup('lensFlare',$event)"
-        ></span>
-
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn mosaicbutton"
-            :class="{'mosaicbutton-on':postProcess.mosaic}"
-            @click="postProcess.mosaic=!postProcess.mosaic"
-          ></div>
-          <span class="xbsj-item-name">{{lang.mosaic}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn lensflarebutton"
+              :class="{ 'lensflarebutton-on': postProcess.lensFlare }"
+              @click="toggleFlare"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.lensFlare }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'lensFlare' }"
+            @click.stop="togglePopup('lensFlare', $event)"
+          ></span>
         </div>
 
-        <div class="xbsj-item-btnbox ml20">
-          <div
-            class="xbsj-item-btn forcesunbutton"
-            :class="{'forcesunbutton-on':effect.forceSunPos}"
-            @click="effect.forceSunPos=!effect.forceSunPos"
-          ></div>
-          <span class="xbsj-item-name">{{lang.forceSunPos}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn mosaicbutton"
+              :class="{ 'mosaicbutton-on': postProcess.mosaic }"
+              @click="postProcess.mosaic = !postProcess.mosaic"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.mosaic }}</span>
+          </div>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'forceSunPos'}"
-          @click.stop="togglePopup('forceSunPos',$event)"
-        ></span>
+
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20">
+            <div
+              class="xbsj-item-btn forcesunbutton"
+              :class="{ 'forcesunbutton-on': effect.forceSunPos }"
+              @click="effect.forceSunPos = !effect.forceSunPos"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.forceSunPos }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'forceSunPos' }"
+            @click.stop="togglePopup('forceSunPos', $event)"
+          ></span>
+        </div>
 
         <!--
         <span
@@ -309,26 +355,44 @@
         -->
       </div>
     </div>
-    <Sun ref="sun" v-show="popup =='sun'"></Sun>
-    <Atmosphere ref="atmosphere" v-show="popup =='atmosphere'"></Atmosphere>
-    <Cloud ref="cloud" v-show="popup =='cloud'"></Cloud>
-    <Moon ref="moon" v-show="popup =='moon'"></Moon>
-    <Rain ref="rainPostProcess" v-show="popup =='rainPostProcess'"></Rain>
-    <Snow ref="snowPostProcess" v-show="popup =='snowPostProcess'"></Snow>
-    <Fog ref="fog" v-show="popup =='fog'"></Fog>
-    <FogPostProcess ref="fogPostProcess" v-show="popup =='fogPostProcess'"></FogPostProcess>
-    <SkyBox ref="skyBox" v-show="popup =='skyBox'"></SkyBox>
-    <LensFlare ref="lensFlare" v-show="popup =='lensFlare'"></LensFlare>
-    <Bloom ref="bloom" v-show="popup =='bloom'"></Bloom>
-    <Brightness ref="brightness" v-show="popup =='brightness'"></Brightness>
-    <BlackAndWhite ref="blackAndWhite" v-show="popup =='blackAndWhite'"></BlackAndWhite>
-    <AmbientOcclusion ref="ambientOcclusion" v-show="popup =='ambientOcclusion'"></AmbientOcclusion>
-    <Shadow ref="shadow" v-show="popup =='shadow'"></Shadow>
-    <Silhouette ref="silhouette" v-show="popup =='silhouette'"></Silhouette>
-    <Mosaic ref="mosaic" v-show="popup =='mosaic'"></Mosaic>
-    <NightVision ref="nightVision" v-show="popup =='nightVision'"></NightVision>
-    <DepthOfField ref="depthOfField" v-show="popup =='depthOfField'"></DepthOfField>
-    <ForceSunPos ref="forceSunPos" v-show="popup =='forceSunPos'"></ForceSunPos>
+    <Sun ref="sun" v-show="popup == 'sun'"></Sun>
+    <Atmosphere ref="atmosphere" v-show="popup == 'atmosphere'"></Atmosphere>
+    <Cloud ref="cloud" v-show="popup == 'cloud'"></Cloud>
+    <Moon ref="moon" v-show="popup == 'moon'"></Moon>
+    <Rain ref="rainPostProcess" v-show="popup == 'rainPostProcess'"></Rain>
+    <Snow ref="snowPostProcess" v-show="popup == 'snowPostProcess'"></Snow>
+    <Fog ref="fog" v-show="popup == 'fog'"></Fog>
+    <FogPostProcess
+      ref="fogPostProcess"
+      v-show="popup == 'fogPostProcess'"
+    ></FogPostProcess>
+    <SkyBox ref="skyBox" v-show="popup == 'skyBox'"></SkyBox>
+    <LensFlare ref="lensFlare" v-show="popup == 'lensFlare'"></LensFlare>
+    <Bloom ref="bloom" v-show="popup == 'bloom'"></Bloom>
+    <Brightness ref="brightness" v-show="popup == 'brightness'"></Brightness>
+    <BlackAndWhite
+      ref="blackAndWhite"
+      v-show="popup == 'blackAndWhite'"
+    ></BlackAndWhite>
+    <AmbientOcclusion
+      ref="ambientOcclusion"
+      v-show="popup == 'ambientOcclusion'"
+    ></AmbientOcclusion>
+    <Shadow ref="shadow" v-show="popup == 'shadow'"></Shadow>
+    <Silhouette ref="silhouette" v-show="popup == 'silhouette'"></Silhouette>
+    <Mosaic ref="mosaic" v-show="popup == 'mosaic'"></Mosaic>
+    <NightVision
+      ref="nightVision"
+      v-show="popup == 'nightVision'"
+    ></NightVision>
+    <DepthOfField
+      ref="depthOfField"
+      v-show="popup == 'depthOfField'"
+    ></DepthOfField>
+    <ForceSunPos
+      ref="forceSunPos"
+      v-show="popup == 'forceSunPos'"
+    ></ForceSunPos>
   </div>
 </template>
 
@@ -837,4 +901,3 @@ export default {
   background-size: contain;
 }
 </style>
-

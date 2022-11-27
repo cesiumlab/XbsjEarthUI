@@ -466,3 +466,8 @@ export default {
   }
 };
 </script>
+<style>
+.xbsj-slider{
+  margin: 0 !important;
+}
+</style>

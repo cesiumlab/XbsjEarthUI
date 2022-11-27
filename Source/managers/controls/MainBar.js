@@ -26,7 +26,7 @@ class MainBar {
             * @instance
             * @memberof MainBar
             */
-            page: "navigate",
+            page: "",
 
             /**
             * 是否显示加载云服务数据的按钮
@@ -78,18 +78,18 @@ class MainBar {
         //监控show的改变
         this.unbind3 = XE.MVVM.watch(() => {
 
-            var czmDom = root._comp.$refs.xbsjcesium;
+            // var czmDom = root._comp.$refs.xbsjcesium;
 
-            //如果不可见
-            if (!this.show) {
-                czmDom.style.height = '100%';
-            }
-            else if (this.page == '') {
-                czmDom.style.height = 'calc(100% - 41px)';
-            }
-            else {
-                czmDom.style.height = 'calc(100% - 137px)';
-            }
+            // //如果不可见
+            // if (!this.show) {
+            //     czmDom.style.height = '100%';
+            // }
+            // else if (this.page == '') {
+            //     czmDom.style.height = 'calc(100% - 41px)';
+            // }
+            // else {
+            //     czmDom.style.height = 'calc(100% - 137px)';
+            // }
         });
 
         this._tileset = new TilesetPage(root);

@@ -3,19 +3,25 @@
   <div class="xbsj-template">
     <div class="xbsj-list" ref="container">
       <div class="xbsj-list-item">
-        <span class="xbsj-list-name">{{lang.dataSource}}</span>
+        <span class="xbsj-list-name">{{ lang.dataSource }}</span>
         <!-- 数据源-->
-        <div class="xbsj-item-btnbox" @click="geoJSON">
-          <div class="xbsj-item-btn geojson"></div>
-          <span class="xbsj-item-name">GeoJSON</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="geoJSON">
+            <div class="xbsj-item-btn geojson"></div>
+            <span class="xbsj-item-name">GeoJSON</span>
+          </div>
         </div>
-        <div class="xbsj-item-btnbox" @click="KML">
-          <div class="xbsj-item-btn kml"></div>
-          <span class="xbsj-item-name">KML</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="KML">
+            <div class="xbsj-item-btn kml"></div>
+            <span class="xbsj-item-name">KML</span>
+          </div>
         </div>
-        <div class="xbsj-item-btnbox" @click="Czml">
-          <div class="xbsj-item-btn czml"></div>
-          <span class="xbsj-item-name">Czml</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="Czml">
+            <div class="xbsj-item-btn czml"></div>
+            <span class="xbsj-item-name">Czml</span>
+          </div>
         </div>
       </div>
       <!-- <div class="xbsj-list-item">
@@ -45,7 +51,7 @@ export default {
   data() {
     return {
       lang: {},
-      langs: languagejs
+      langs: languagejs,
     };
   },
   created() {},
@@ -206,8 +212,8 @@ export default {
         </body>
         </html>`;
       this.$root.$earthUI.showPropertyWindow(PinDiv);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -275,4 +281,3 @@ export default {
   cursor: pointer;
 }
 </style>
-

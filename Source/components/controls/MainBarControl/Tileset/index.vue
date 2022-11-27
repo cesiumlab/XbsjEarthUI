@@ -9,30 +9,36 @@
       @mouseup="endMove($event)"
     >
       <div class="xbsj-list-item">
-        <span class="xbsj-list-name">{{lang.source}}</span>
-        <div class="xbsj-item-btnbox ml20">
-          <div
-            class="xbsj-item-btn onlinebutton"
-            @click="modelOnline=!modelOnline"
-            :class="{highlight:modelOnline}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.online}}</span>
+        <span class="xbsj-list-name">{{ lang.source }}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20">
+            <div
+              class="xbsj-item-btn onlinebutton"
+              @click="modelOnline = !modelOnline"
+              :class="{ highlight: modelOnline }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.online }}</span>
+          </div>
         </div>
-        <div class="xbsj-item-btnbox" v-show="labServiceUI">
-          <div
-            class="xbsj-item-btn localhostbutton"
-            @click="modelLab=!modelLab"
-            :class="{highlight:modelLab}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.localhost}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" v-show="labServiceUI">
+            <div
+              class="xbsj-item-btn localhostbutton"
+              @click="modelLab = !modelLab"
+              :class="{ highlight: modelLab }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.localhost }}</span>
+          </div>
         </div>
-        <div class="xbsj-item-btnbox" v-show="cloudServiceUI">
-          <div
-            class="xbsj-item-btn localhostbutton"
-            @click="modelCloud=!modelCloud"
-            :class="{highlight:modelCloud}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.cloudhost}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" v-show="cloudServiceUI">
+            <div
+              class="xbsj-item-btn localhostbutton"
+              @click="modelCloud = !modelCloud"
+              :class="{ highlight: modelCloud }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.cloudhost }}</span>
+          </div>
         </div>
         <!-- <div class="xbsj-item-btnbox ml20">
           <div
@@ -43,161 +49,211 @@
           <span class="xbsj-item-name">{{lang.instance}}</span>
         </div>-->
         <!-- 实例模型 -->
-        <div class="xbsj-item-btnbox" @click="forestbtn">
-          <div class="xbsj-item-btn localhostbutton"></div>
-          <span class="xbsj-item-name">{{lang.instance}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" @click="forestbtn">
+            <div class="xbsj-item-btn localhostbutton"></div>
+            <span class="xbsj-item-name">{{ lang.instance }}</span>
+          </div>
         </div>
       </div>
 
-      <div class="xbsj-list-item" v-if="customBtns.length>0">
-        <span class="xbsj-list-name">{{lang.custom}}</span>
-        <div class="xbsj-item-btnbox ml20" v-for="btn in customBtns" :key="btn+Math.random()">
-          <div class="xbsj-item-btn">
-            <button class="custombutton" :class="btn.cls()" @click="btn.click()"></button>
+      <div class="xbsj-list-item" v-if="customBtns.length > 0">
+        <span class="xbsj-list-name">{{ lang.custom }}</span>
+        <div class="xbsj-item-blocks">
+          <div
+            class="xbsj-item-btnbox ml20"
+            v-for="btn in customBtns"
+            :key="btn + Math.random()"
+          >
+            <div class="xbsj-item-btn">
+              <button
+                class="custombutton"
+                :class="btn.cls()"
+                @click="btn.click()"
+              ></button>
+            </div>
+            <span class="xbsj-item-name">{{ btn.title() }}</span>
           </div>
-          <span class="xbsj-item-name">{{btn.title()}}</span>
         </div>
       </div>
 
       <div class="xbsj-list-item">
-        <span class="xbsj-list-name">{{lang.edit}}</span>
-        <div class="xbsj-item-btnbox ml20">
-          <div class="xbsj-item-btn">
-            <button
-              class="fenleititlesbutton"
-              :class=" { highlight:classificationType === 'ClassificationType.CESIUM_3D_TILE' || classificationType === 'ClassificationType.BOTH'}"
-              @click="titlesClick"
-              :disabled="!enabled"
-            ></button>
+        <span class="xbsj-list-name">{{ lang.edit }}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20">
+            <div class="xbsj-item-btn">
+              <button
+                class="fenleititlesbutton"
+                :class="{
+                  highlight:
+                    classificationType ===
+                      'ClassificationType.CESIUM_3D_TILE' ||
+                    classificationType === 'ClassificationType.BOTH',
+                }"
+                @click="titlesClick"
+                :disabled="!enabled"
+              ></button>
+            </div>
+            <span class="xbsj-item-name">{{ lang.fenleimmodel }}</span>
           </div>
-          <span class="xbsj-item-name">{{lang.fenleimmodel}}</span>
         </div>
 
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn">
-            <button
-              class="fenleiterrainbutton"
-              :class="{ highlight: classificationType === 'ClassificationType.TERRAIN' || classificationType === 'ClassificationType.BOTH' }"
-              @click="terrainClick"
-              :disabled="!enabled"
-            ></button>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div class="xbsj-item-btn">
+              <button
+                class="fenleiterrainbutton"
+                :class="{
+                  highlight:
+                    classificationType === 'ClassificationType.TERRAIN' ||
+                    classificationType === 'ClassificationType.BOTH',
+                }"
+                @click="terrainClick"
+                :disabled="!enabled"
+              ></button>
+            </div>
+            <span class="xbsj-item-name">{{ lang.fenleiterrain }}</span>
           </div>
-          <span class="xbsj-item-name">{{lang.fenleiterrain}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn">
-            <button class="stylebutton" :disabled="!enabled" @click="styleEditor()"></button>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div class="xbsj-item-btn">
+              <button
+                class="stylebutton"
+                :disabled="!enabled"
+                @click="styleEditor()"
+              ></button>
+            </div>
+            <span class="xbsj-item-name">{{ lang.style }}</span>
           </div>
-          <span class="xbsj-item-name">{{lang.style}}</span>
-        </div>
-
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn">
-            <button
-              class="movebutton"
-              :class="{highlight:positionEditing}"
-              :disabled="!enabled"
-              @click="toggleMove"
-            ></button>
-          </div>
-          <span class="xbsj-item-name">{{lang.move}}</span>
-        </div>
-
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn">
-            <button
-              class="rotatebutton"
-              :class="{highlight:rotationEditing}"
-              :disabled="!enabled"
-              @click="toggleRotate"
-            ></button>
-          </div>
-          <span class="xbsj-item-name">{{lang.rotate}}</span>
         </div>
 
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn">
-            <button
-              class="lefttopButton"
-              :class="xbsjLeftTopView ? 'lefttopButtonActive' : ''"
-              @click="xbsjLeftTopView = !xbsjLeftTopView;"
-              :disabled="!enabled"
-            ></button>
-            <button
-              class="righttopButton"
-              :class="xbsjRightTopView ? 'righttopButtonActive' : ''"
-              @click="xbsjRightTopView = !xbsjRightTopView"
-              :disabled="!enabled"
-            ></button>
-            <button
-              class="leftbottomButton"
-              :class="xbsjLeftBottomView ? 'leftbottomButtonActive' : ''"
-              @click="xbsjLeftBottomView=!xbsjLeftBottomView"
-              :disabled="!enabled"
-            ></button>
-            <button
-              class="rightbottomButton"
-              :class="xbsjRightBottomView ? 'rightbottomButtonActive' : ''"
-              @click="xbsjRightBottomView=!xbsjRightBottomView"
-              :disabled="!enabled"
-            ></button>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div class="xbsj-item-btn">
+              <button
+                class="movebutton"
+                :class="{ highlight: positionEditing }"
+                :disabled="!enabled"
+                @click="toggleMove"
+              ></button>
+            </div>
+            <span class="xbsj-item-name">{{ lang.move }}</span>
           </div>
-          <span class="xbsj-item-name">{{lang.view}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn">
-            <button
-              class="techonlogybutton"
-              :class="{highlight:technologyShader}"
-              :disabled="!enabled"
-              @click="toggleTechnology"
-            ></button>
+
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div class="xbsj-item-btn">
+              <button
+                class="rotatebutton"
+                :class="{ highlight: rotationEditing }"
+                :disabled="!enabled"
+                @click="toggleRotate"
+              ></button>
+            </div>
+            <span class="xbsj-item-name">{{ lang.rotate }}</span>
           </div>
-          <span class="xbsj-item-name">{{lang.techonlogy}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn">
-            <button
-              class="doubleSidebutton"
-              :class="{highlight:doubleSideProp}"
-              :disabled="!enabled"
-              @click="toggleDoubleSide"
-            ></button>
+
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div class="xbsj-item-btn">
+              <button
+                class="lefttopButton"
+                :class="xbsjLeftTopView ? 'lefttopButtonActive' : ''"
+                @click="xbsjLeftTopView = !xbsjLeftTopView"
+                :disabled="!enabled"
+              ></button>
+              <button
+                class="righttopButton"
+                :class="xbsjRightTopView ? 'righttopButtonActive' : ''"
+                @click="xbsjRightTopView = !xbsjRightTopView"
+                :disabled="!enabled"
+              ></button>
+              <button
+                class="leftbottomButton"
+                :class="xbsjLeftBottomView ? 'leftbottomButtonActive' : ''"
+                @click="xbsjLeftBottomView = !xbsjLeftBottomView"
+                :disabled="!enabled"
+              ></button>
+              <button
+                class="rightbottomButton"
+                :class="xbsjRightBottomView ? 'rightbottomButtonActive' : ''"
+                @click="xbsjRightBottomView = !xbsjRightBottomView"
+                :disabled="!enabled"
+              ></button>
+            </div>
+            <span class="xbsj-item-name">{{ lang.view }}</span>
           </div>
-          <span class="xbsj-item-name">{{lang.doubleSide}}</span>
+        </div>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div class="xbsj-item-btn">
+              <button
+                class="techonlogybutton"
+                :class="{ highlight: technologyShader }"
+                :disabled="!enabled"
+                @click="toggleTechnology"
+              ></button>
+            </div>
+            <span class="xbsj-item-name">{{ lang.techonlogy }}</span>
+          </div>
+        </div>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div class="xbsj-item-btn">
+              <button
+                class="doubleSidebutton"
+                :class="{ highlight: doubleSideProp }"
+                :disabled="!enabled"
+                @click="toggleDoubleSide"
+              ></button>
+            </div>
+            <span class="xbsj-item-name">{{ lang.doubleSide }}</span>
+          </div>
         </div>
         <!-- skipLevelOfDetail -->
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn">
-            <button
-              class="skipLevelOfDetailbutton"
-              :class="skipLevelOfDetail ? 'skipLevelOfDetailActive' : ''"
-              @click="skipLevelOfDetail =! skipLevelOfDetail"
-              :disabled="!enabled"
-            ></button>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div class="xbsj-item-btn">
+              <button
+                class="skipLevelOfDetailbutton"
+                :class="skipLevelOfDetail ? 'skipLevelOfDetailActive' : ''"
+                @click="skipLevelOfDetail = !skipLevelOfDetail"
+                :disabled="!enabled"
+              ></button>
+            </div>
+            <span class="xbsj-item-name">SkipLOD</span>
           </div>
-          <span class="xbsj-item-name">SkipLOD</span>
         </div>
         <!-- 调试包围盒-->
-        <div class="xbsj-item-btnbox">
-          <div class="xbsj-item-btn">
-            <button
-              class="debugShowBoundingVolumebutton"
-              :class="debugShowBoundingVolume ? 'debugShowBoundingActive' :''"
-              @click="debugShowBoundingVolume = !debugShowBoundingVolume"
-              :disabled="!enabled"
-            ></button>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div class="xbsj-item-btn">
+              <button
+                class="debugShowBoundingVolumebutton"
+                :class="
+                  debugShowBoundingVolume ? 'debugShowBoundingActive' : ''
+                "
+                @click="debugShowBoundingVolume = !debugShowBoundingVolume"
+                :disabled="!enabled"
+              ></button>
+            </div>
+            <span class="xbsj-item-name">{{
+              lang.debugShowBoundingVolume
+            }}</span>
           </div>
-          <span class="xbsj-item-name">{{lang.debugShowBoundingVolume}}</span>
         </div>
       </div>
       <div class="xbsj-list-item">
-        <span class="xbsj-list-name">{{lang.visible}}</span>
-        <div class="xbsj-slide-group">
+        <span class="xbsj-list-name">{{ lang.visible }}</span>
+        
           <!-- 显示精度 -->
-          <div class="xbsj-slide-top">
-            <label class="xbsj-slide-label" @click="maximumScreenSpaceError=16">{{lang.accuracy}}</label>
-            <div class="xbsj-slide-div">
+        <div class="xbsj-item-blocks xbsj-item-Xbsj">
+          <div class="xbsj-item-btnbox " style="width: 100px">
+            
+            <div class="XbsjSlider">
               <XbsjSlider
                 :min="-4"
                 :max="8"
@@ -207,12 +263,23 @@
                 :show-tip="showTip"
               ></XbsjSlider>
             </div>
-            <span class="xbsj-slide-span">{{maximumScreenSpaceError|f_one}}</span>
+            <div class="xbsj-slide-flexs">
+            <label
+              class="xbsj-slide-label"
+              @click="maximumScreenSpaceError = 16"
+              >{{ lang.accuracy }}</label
+            >
+            <span class="xbsj-slide-span">{{
+              maximumScreenSpaceError | f_one
+            }}</span>
+            </div>
+          </div>
           </div>
           <!-- 材质底色 -->
-          <div class="xbsj-slide-bottom">
-            <label class="xbsj-slide-label" @click="luminanceAtZenith = 0.2">{{lang.material}}</label>
-            <div class="xbsj-slide-div">
+        <div class="xbsj-item-blocks xbsj-item-Xbsj">
+          <div class="xbsj-item-btnbox " style="width: 100px">
+            
+            <div class="XbsjSlider">
               <XbsjSlider
                 :min="0"
                 :max="5.0"
@@ -222,14 +289,19 @@
                 :show-tip="showTip"
               ></XbsjSlider>
             </div>
-            <span class="xbsj-slide-span">{{luminanceAtZenith}}</span>
+            <div class="xbsj-slide-flexs">
+            <label class="xbsj-slide-label" @click="luminanceAtZenith = 0.2">{{
+              lang.material
+            }}</label>
+            <span class="xbsj-slide-span">{{ luminanceAtZenith }}</span>
+            </div>
           </div>
-        </div>
-        <div class="xbsj-slide-group">
+          </div>
           <!-- 散射强度 -->
-          <div class="xbsj-slide-top">
-            <label class="xbsj-slide-label" @click="initImageBasedLightingFactor0()">{{lang.scatter}}</label>
-            <div class="xbsj-slide-div">
+        <div class="xbsj-item-blocks xbsj-item-Xbsj">
+          <div class="xbsj-item-btnbox " style="width: 100px">
+            
+            <div class="XbsjSlider">
               <XbsjSlider
                 :min="0"
                 :max="1.0"
@@ -239,7 +311,15 @@
                 :show-tip="showTip"
               ></XbsjSlider>
             </div>
-            <span class="xbsj-slide-span">{{imageBasedLightingFactor[0]}}</span>
+            <div class="xbsj-slide-flexs">
+              <label
+                class="xbsj-slide-label"
+                @click="initImageBasedLightingFactor0()"
+                >{{ lang.scatter }}</label
+              >
+              <span class="xbsj-slide-span">{{ imageBasedLightingFactor[0] }}</span>
+            </div>
+          </div>
           </div>
           <!-- 镜面强度 -->
           <!-- <div class="xbsj-slide-bottom">
@@ -257,9 +337,10 @@
             <span class="xbsj-slide-span">{{imageBasedLightingFactor[1]}}</span>
           </div>-->
           <!-- 最大内存 -->
-          <div class="xbsj-slide-bottom">
-            <label class="xbsj-slide-label" @click="maximumMemoryUsage = 512">{{lang.maximumMemoryUsage}}</label>
-            <div class="xbsj-slide-div">
+        <div class="xbsj-item-blocks xbsj-item-Xbsj">
+          <div class="xbsj-item-btnbox " style="width: 100px">
+            
+            <div class="XbsjSlider">
               <XbsjSlider
                 :min="512"
                 :max="5120"
@@ -269,9 +350,14 @@
                 :show-tip="showTip"
               ></XbsjSlider>
             </div>
-            <span class="xbsj-slide-span">{{maximumMemoryUsage}}</span>
+            <div class="xbsj-slide-flexs">
+            <label class="xbsj-slide-label" @click="maximumMemoryUsage = 512">{{
+              lang.maximumMemoryUsage
+            }}</label>
+              <span class="xbsj-slide-span">{{ maximumMemoryUsage }}</span>
+            </div>
           </div>
-        </div>
+          </div>
         <!--  先注释这两块的调整
         <div class="xbsj-slide-group">
           <div class="xbsj-slide-top">
@@ -305,53 +391,53 @@
         -->
       </div>
       <div class="xbsj-list-item xbsj-list-lastitem" v-show="debugShow">
-        <span class="xbsj-list-name">{{lang.debuginform}}</span>
+        <span class="xbsj-list-name">{{ lang.debuginform }}</span>
         <div class="debuglist">
           <!-- 遍历个数 -->
           <div style="margin-top:26px;">
-            <label>{{lang.visited}}</label>
-            <span>{{visited}}</span>
+            <label>{{ lang.visited }}</label>
+            <span>{{ visited }}</span>
           </div>
           <!-- 总显存 -->
           <div style="margin-top:10px;">
-            <label>{{lang.totalMemoryUsageInBytes}}</label>
-            <span>{{(totalMemoryUsageInBytes/1000000).toFixed()}}MB</span>
+            <label>{{ lang.totalMemoryUsageInBytes }}</label>
+            <span>{{ (totalMemoryUsageInBytes / 1000000).toFixed() }}MB</span>
           </div>
         </div>
         <div class="debuglist">
           <!-- 三角面个数 -->
           <div style="margin-top:26px;">
-            <label>{{lang.numberOfTrianglesSelected}}</label>
-            <span>{{numberOfTrianglesSelected}}</span>
+            <label>{{ lang.numberOfTrianglesSelected }}</label>
+            <span>{{ numberOfTrianglesSelected }}</span>
           </div>
           <!-- 纹理显存 -->
           <div style="margin-top:10px;">
-            <label>{{lang.texturesByteLength}}</label>
-            <span>{{(texturesByteLength/1000000).toFixed()}}MB</span>
+            <label>{{ lang.texturesByteLength }}</label>
+            <span>{{ (texturesByteLength / 1000000).toFixed() }}MB</span>
           </div>
         </div>
         <div class="debuglist">
           <!-- 显示个数 -->
           <div style="margin-top:26px;">
-            <label>{{lang.selected}}</label>
-            <span>{{selected}}</span>
+            <label>{{ lang.selected }}</label>
+            <span>{{ selected }}</span>
           </div>
           <!-- 几何体显存 -->
           <div style="margin-top:10px;">
-            <label>{{lang.geometryByteLength}}</label>
-            <span>{{(geometryByteLength/1000000).toFixed()}}MB</span>
+            <label>{{ lang.geometryByteLength }}</label>
+            <span>{{ (geometryByteLength / 1000000).toFixed() }}MB</span>
           </div>
         </div>
         <div class="debuglist">
           <!-- 渲染批次 -->
           <div style="margin-top:26px;">
-            <label>{{lang.numberOfCommands}}</label>
-            <span>{{numberOfCommands}}</span>
+            <label>{{ lang.numberOfCommands }}</label>
+            <span>{{ numberOfCommands }}</span>
           </div>
           <!-- 属性数据长度 -->
           <div style="margin-top:10px;">
-            <label>{{lang.batchTableByteLength}}</label>
-            <span>{{(batchTableByteLength/1000).toFixed()}}KB</span>
+            <label>{{ lang.batchTableByteLength }}</label>
+            <span>{{ (batchTableByteLength / 1000).toFixed() }}KB</span>
           </div>
         </div>
       </div>
@@ -407,7 +493,7 @@ export default {
       numberOfTrianglesSelected: 0,
       batchTableByteLength: 0,
       timer: "",
-      debugShow: false
+      debugShow: false,
     };
   },
   created() {},
@@ -440,14 +526,14 @@ export default {
           this.flattings = [
             {
               name: "",
-              guid: ""
-            }
+              guid: "",
+            },
           ];
 
-          this.$root.$earth.flattenedPolygonCollection.forEach(f => {
+          this.$root.$earth.flattenedPolygonCollection.forEach((f) => {
             this.flattings.push({
               name: f.name,
-              guid: f.guid
+              guid: f.guid,
             });
           });
         })
@@ -457,19 +543,19 @@ export default {
   beforeDestroy() {
     // _viewUnbinds需要清理 vtxf
     if (this._viewUnbinds) {
-      this._viewUnbinds.forEach(u => u());
+      this._viewUnbinds.forEach((u) => u());
       this._viewUnbinds.length = 0;
     }
 
     if (this._unBinds) {
-      this._unBinds.forEach(u => u());
+      this._unBinds.forEach((u) => u());
       this._unBinds.length = 0;
     }
 
     clearInterval(this.timer);
   },
   methods: {
-    initImageBasedLightingFactor0(){
+    initImageBasedLightingFactor0() {
       this.imageBasedLightingFactor[0] = 1.0;
       this.$forceUpdate();
     },
@@ -523,7 +609,7 @@ export default {
       this.customBtns.push(item);
     },
     removeCustomButton(item) {
-      let idx = this.customBtns.findIndex(it => it === item);
+      let idx = this.customBtns.findIndex((it) => it === item);
       if (idx >= 0) {
         this.customBtns.splice(idx, 1);
       }
@@ -542,7 +628,7 @@ export default {
       }
     },
     getFlatingName(guid) {
-      var flat = this.flattings.find(e => e.guid == guid);
+      var flat = this.flattings.find((e) => e.guid == guid);
       if (flat) return flat.name;
       else return "";
     },
@@ -556,7 +642,7 @@ export default {
     styleEditor() {
       //显示样式编辑器
       this.$root.$earthUI.showPropertyWindow(this._tileset, {
-        component: "TilesetStyleEditor"
+        component: "TilesetStyleEditor",
       });
     },
     titlesClick() {
@@ -628,7 +714,7 @@ export default {
         // vtxf add 视口绑定
         this._viewUnbinds = this._viewUnbinds || [];
         // 先清理之前的绑定
-        this._viewUnbinds.forEach(u => u());
+        this._viewUnbinds.forEach((u) => u());
         this._viewUnbinds.length = 0;
         // 再增加新的绑定
         if (this._tileset) {
@@ -722,7 +808,7 @@ export default {
     },
     endMove(envent) {
       this.moving = false;
-    }
+    },
   },
   computed: {},
   watch: {
@@ -731,7 +817,7 @@ export default {
     },
     maximumScreenSpaceError(v) {
       this.ssePower = Math.log2(v);
-    }
+    },
     // lightColorOne(v) {
     //   this.lightColor = [v, v, v];
     // },
@@ -742,8 +828,8 @@ export default {
   filters: {
     f_one(v) {
       return v.toFixed(1);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -1155,4 +1241,3 @@ select::-ms-expand {
   margin-left: 10px;
 }
 </style>
-

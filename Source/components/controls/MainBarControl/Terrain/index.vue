@@ -9,134 +9,156 @@
       @mouseup="endMove($event)"
     >
       <div class="xbsj-list-item">
-        <span class="xbsj-list-name">{{lang.source}}</span>
-        <div class="xbsj-item-btnbox ml20">
-          <div
-            class="xbsj-item-btn onlinebutton"
-            @click="terrainOnline=!terrainOnline"
-            :class="{highlight:terrainOnline}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.online}}</span>
+        <span class="xbsj-list-name">{{ lang.source }}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20">
+            <div
+              class="xbsj-item-btn onlinebutton"
+              @click="terrainOnline = !terrainOnline"
+              :class="{ highlight: terrainOnline }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.online }}</span>
+          </div>
         </div>
-        <div class="xbsj-item-btnbox" v-show="labServiceUI">
-          <div
-            class="xbsj-item-btn localhostbutton"
-            @click="terrainLab=!terrainLab"
-            :class="{highlight:terrainLab}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.localhost}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" v-show="labServiceUI">
+            <div
+              class="xbsj-item-btn localhostbutton"
+              @click="terrainLab = !terrainLab"
+              :class="{ highlight: terrainLab }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.localhost }}</span>
+          </div>
         </div>
-        <div class="xbsj-item-btnbox" v-show="cloudServiceUI">
-          <div
-            class="xbsj-item-btn localhostbutton"
-            @click="terrainCloud=!terrainCloud"
-            :class="{highlight:terrainCloud}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.cloudhost}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox" v-show="cloudServiceUI">
+            <div
+              class="xbsj-item-btn localhostbutton"
+              @click="terrainCloud = !terrainCloud"
+              :class="{ highlight: terrainCloud }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.cloudhost }}</span>
+          </div>
         </div>
       </div>
       <div class="xbsj-list-item">
-        <span class="xbsj-list-name">{{lang.tocolor}}</span>
-        <div class="xbsj-item-btnbox ml20">
-          <div
-            class="xbsj-item-btn elevationcolorbutton"
-            :class="{highlight:shadeType=='ElevationRamp'}"
-            @click="elevationRamp"
-          ></div>
-          <span class="xbsj-item-name">{{lang.elevationcolor}}</span>
+        <span class="xbsj-list-name">{{ lang.tocolor }}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20">
+            <div
+              class="xbsj-item-btn elevationcolorbutton"
+              :class="{ highlight: shadeType == 'ElevationRamp' }"
+              @click="elevationRamp"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.elevationcolor }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'elevation' }"
+            @click.stop="togglePopup('elevation', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'elevation'}"
-          @click.stop="togglePopup('elevation',$event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn slopebutton"
-            :class="{highlight:shadeType=='SlopeRamp'}"
-            @click="slopeRamp"
-          ></div>
-          <span class="xbsj-item-name">{{lang.slope}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn slopebutton"
+              :class="{ highlight: shadeType == 'SlopeRamp' }"
+              @click="slopeRamp"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.slope }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'slope' }"
+            @click.stop="togglePopup('slope', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'slope'}"
-          @click.stop="togglePopup('slope',$event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn slopeaspectbutton"
-            :class="{highlight:shadeType=='AspectRamp'}"
-            @click="aspectRamp"
-          ></div>
-          <span class="xbsj-item-name">{{lang.slopeaspect}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn slopeaspectbutton"
+              :class="{ highlight: shadeType == 'AspectRamp' }"
+              @click="aspectRamp"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.slopeaspect }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'aspect' }"
+            @click.stop="togglePopup('aspect', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'aspect'}"
-          @click.stop="togglePopup('aspect',$event)"
-        ></span>
 
-        <div class="xbsj-item-btnbox ml20">
-          <div
-            class="xbsj-item-btn contourbutton"
-            :class="{highlight:contourEnable}"
-            @click="contoure"
-          ></div>
-          <span class="xbsj-item-name">{{lang.contour}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20">
+            <div
+              class="xbsj-item-btn contourbutton"
+              :class="{ highlight: contourEnable }"
+              @click="contoure"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.contour }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'contour' }"
+            @click.stop="togglePopup('contour', $event)"
+          ></span>
         </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'contour'}"
-          @click.stop="togglePopup('contour',$event)"
-        ></span>
       </div>
 
       <div class="xbsj-list-item xbsj-list-lastitem">
-        <span class="xbsj-list-name">{{lang.effect}}</span>
+        <span class="xbsj-list-name">{{ lang.effect }}</span>
 
-        <div class="xbsj-item-btnbox ml20">
-          <div
-            ref="tailoringbutton"
-            class="xbsj-item-btn tailoringbutton"
-            @click="tailoringShow=!tailoringShow"
-            :class="{highlight:tailoringShow}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.tailoring}}</span>
-        </div>
-        <span
-          class="xbsj-select"
-          :class="{highlight:popup == 'tailoring'}"
-          @click.stop="togglePopup('tailoring',$event)"
-        ></span>
-
-        <div class="xbsj-item-btnbox ml20">
-          <div
-            class="xbsj-item-btn globalbutton"
-            @click="globeShow=!globeShow"
-            :class="{highlight:globeShow}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.show}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20">
+            <div
+              ref="tailoringbutton"
+              class="xbsj-item-btn tailoringbutton"
+              @click="tailoringShow = !tailoringShow"
+              :class="{ highlight: tailoringShow }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.tailoring }}</span>
+          </div>
+          <span
+            class="xbsj-select"
+            :class="{ highlight: popup == 'tailoring' }"
+            @click.stop="togglePopup('tailoring', $event)"
+          ></span>
         </div>
 
-        <div class="xbsj-item-btnbox ml20">
-          <div
-            class="xbsj-item-btn globelightingbutton"
-            @click="enableLighting=!enableLighting"
-            :class="{highlight:enableLighting}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.enableLighting}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20">
+            <div
+              class="xbsj-item-btn globalbutton"
+              @click="globeShow = !globeShow"
+              :class="{ highlight: globeShow }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.show }}</span>
+          </div>
         </div>
 
-        <div class="xbsj-item-btnbox ml20">
-          <div
-            class="xbsj-item-btn depthdetectionbutton"
-            @click="depthTest=!depthTest"
-            :class="{highlight:depthTest}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.depth}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20">
+            <div
+              class="xbsj-item-btn globelightingbutton"
+              @click="enableLighting = !enableLighting"
+              :class="{ highlight: enableLighting }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.enableLighting }}</span>
+          </div>
+        </div>
+
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20">
+            <div
+              class="xbsj-item-btn depthdetectionbutton"
+              @click="depthTest = !depthTest"
+              :class="{ highlight: depthTest }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.depth }}</span>
+          </div>
         </div>
         <!-- <div class="xbsj-item-btnbox">
           <div
@@ -146,71 +168,91 @@
           ></div>
           <span class="xbsj-item-name">{{lang.logarithmic}}</span>
         </div> -->
-        <div class="xbsj-item-btnbox xbsjtransparent">
-          <div class="XbsjSlider" title="地形夸张系数">
-            <XbsjSlider
-              :min="0.5"
-              :max="5.0"
-              :step="0.01"
-              showTip="hover"
-              v-model="terrainExaggeration"
-            ></XbsjSlider>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div class="XbsjSlider" title="地形夸张系数">
+              <XbsjSlider
+                :min="0.5"
+                :max="5.0"
+                :step="0.01"
+                showTip="hover"
+                v-model="terrainExaggeration"
+              ></XbsjSlider>
+            </div>
+            <span class="xbsj-item-name" @click="terrainExaggeration = 1.0">{{
+              lang.terrainExaggeration
+            }}</span>
           </div>
-          <span class="xbsj-item-name" @click="terrainExaggeration = 1.0">{{lang.terrainExaggeration}}</span>
         </div>
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn undergroundbutton"
-            @click="subSurfaceEnabled=!subSurfaceEnabled"
-            :class="{highlight:subSurfaceEnabled}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.subSurface}}</span>
-        </div>
-        <div class="xbsj-item-btnbox">
-          <div
-            class="xbsj-item-btn wireframebutton"
-            @click="wireFrame=!wireFrame"
-            :class="{highlight:wireFrame}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.wireFrame}}</span>
-        </div>
-        <div class="xbsj-item-btnbox xbsjtransparent">
-          <div class="XbsjSlider" :title="depthTest && '需要关闭地形深度检测，此功能才可使用！' || ''">
-            <XbsjSlider
-              :min="0"
-              :max="1"
-              :step="0.01"
-              showTip="hover"
-              v-model="surfaceOpacity"
-              :disabled="depthTest"
-            ></XbsjSlider>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn undergroundbutton"
+              @click="subSurfaceEnabled = !subSurfaceEnabled"
+              :class="{ highlight: subSurfaceEnabled }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.subSurface }}</span>
           </div>
-          <span class="xbsj-item-name">{{lang.transparent}}</span>
         </div>
-        <div class="xbsj-item-btnbox ml20">
-          <div
-            class="xbsj-item-btn globeTranslucencybutton"
-            @click="globeTranslucencyShow=!globeTranslucencyShow"
-            @dragover="dragOver"
-            @drop="drop"
-            @dragleave="dragLeave"
-            :class="{highlight:globeTranslucencyShow || drag_over}"
-          ></div>
-          <span class="xbsj-item-name">{{lang.globeTranslucency}}</span>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="xbsj-item-btn wireframebutton"
+              @click="wireFrame = !wireFrame"
+              :class="{ highlight: wireFrame }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.wireFrame }}</span>
+          </div>
         </div>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox">
+            <div
+              class="XbsjSlider"
+              :title="
+                (depthTest && '需要关闭地形深度检测，此功能才可使用！') || ''
+              "
+            >
+              <XbsjSlider
+                :min="0"
+                :max="1"
+                :step="0.01"
+                showTip="hover"
+                v-model="surfaceOpacity"
+                :disabled="depthTest"
+              ></XbsjSlider>
+            </div>
+            <span class="xbsj-item-name">{{ lang.transparent }}</span>
+          </div>
+        </div>
+        <div class="xbsj-item-blocks">
+          <div class="xbsj-item-btnbox ml20">
+            <div
+              class="xbsj-item-btn globeTranslucencybutton"
+              @click="globeTranslucencyShow = !globeTranslucencyShow"
+              @dragover="dragOver"
+              @drop="drop"
+              @dragleave="dragLeave"
+              :class="{ highlight: globeTranslucencyShow || drag_over }"
+            ></div>
+            <span class="xbsj-item-name">{{ lang.globeTranslucency }}</span>
+          </div>
         <span
           class="xbsj-select"
-          :class="{highlight:popup == 'globeTranslucency'}"
-          @click.stop="togglePopup('globeTranslucency',$event)"
+          :class="{ highlight: popup == 'globeTranslucency' }"
+          @click.stop="togglePopup('globeTranslucency', $event)"
         ></span>
+        </div>
       </div>
     </div>
-    <Elevation ref="elevation" v-show="popup =='elevation'"></Elevation>
-    <Aspect ref="aspect" v-show="popup =='aspect'"></Aspect>
-    <Slope ref="slope" v-show="popup =='slope'"></Slope>
-    <Contour ref="contour" v-show="popup =='contour'"></Contour>
-    <Tailoring ref="tailoring" v-show="popup =='tailoring'"></Tailoring>
-    <GlobeTranslucency ref="globeTranslucency" v-show="popup =='globeTranslucency'"></GlobeTranslucency>
+    <Elevation ref="elevation" v-show="popup == 'elevation'"></Elevation>
+    <Aspect ref="aspect" v-show="popup == 'aspect'"></Aspect>
+    <Slope ref="slope" v-show="popup == 'slope'"></Slope>
+    <Contour ref="contour" v-show="popup == 'contour'"></Contour>
+    <Tailoring ref="tailoring" v-show="popup == 'tailoring'"></Tailoring>
+    <GlobeTranslucency
+      ref="globeTranslucency"
+      v-show="popup == 'globeTranslucency'"
+    ></GlobeTranslucency>
   </div>
 </template>
 
@@ -396,7 +438,7 @@ export default {
         arr[j].pop();
       }
       arr = arr.toString().split(",");
-      arr = arr.map(function (el) {
+      arr = arr.map(function(el) {
         return +el;
       });
 
@@ -564,7 +606,6 @@ export default {
 
 <style scoped>
 .XbsjSlider {
-  margin-top: 40px;
 }
 .xbsjtransparent {
   width: 100px !important;
@@ -852,4 +893,3 @@ input[type="text"]:focus {
   border: 2px solid rgba(79, 179, 255, 1);
 }
 </style>
-

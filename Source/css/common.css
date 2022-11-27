@@ -21,31 +21,33 @@
  }
 
  .xbsj-template {
-   width: 100%;
-   height: 96px;
-   background: rgba(107, 107, 107, 1);
+  position: absolute;
+  left: 70px;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  background: rgba(107, 107, 107, 1);
+
  }
 
  .xbsj-list {
-   width: 100%;
-   height: 96px;
-   display: flex;
-   overflow-x: visible;
-   overflow-y: hidden;
+  height: calc(100% - 30px);
+   overflow-y: visible;
+   overflow-x: hidden;
    -moz-user-select: none;
    -webkit-user-select: none;
    user-select: none;
  }
 
  .xbsj-list-item {
-   width: auto;
-   height: 72px;
+  width: 220px;
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+
    position: relative;
-   margin: 12px 5px;
-   border-right: 2px solid rgba(71, 71, 71, 1);
-   padding-right: 25px;
-   padding-left: 12px;
-   display: flex;
+   /* border-bottom: 2px solid rgba(71, 71, 71, 1); */
+   padding: 32px 5px 5px;
  }
 
  .xbsj-list-lastitem {
@@ -53,95 +55,85 @@
  }
 
  .xbsj-list-name {
-   display: inline-block;
+  display: block;
    min-width: 57px;
-   /* padding:0 5px; */
-   height: 18px;
+   height:  18px;
+   margin: 0 auto;
+   line-height: 18px;
    background: rgba(71, 71, 71, 1);
    border-radius: 3px;
    font-size: 12px;
-   /* font-weight: bold; */
    color: rgba(221, 221, 221, 1);
    text-align: center;
    position: absolute;
-   left: 16px;
-   top: -2px;
+   top: 8px;
+   left: 15px;
+   
  }
-
+.xbsj-item-blocks{
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
+  justify-content: center;
+  position: relative;
+}
+.xbsj-item-Xbsj{
+  padding: 0 5px 0;
+}
  .xbsj-item-btnbox {
-   height: 72px;
-   width: 60px;
-   /* border: 1px solid red; */
-   float: left;
-   margin-top: 5px;
-   margin-left: 5px;
+   width: 70px;
    position: relative;
  }
 
  .xbsj-item-name {
-   position: absolute;
-   bottom: 0;
-   display: inline-block;
+  display: block;
    width: 100%;
    font-size: 12px;
-   /* font-weight: bold; */
-   /* color: rgba(221, 221, 221, 1); */
    text-align: center;
+   margin: -3px auto 0;
  }
 
  .xbsj-item-btn {
    width: 34px;
    height: 34px;
    margin: 5px auto;
-   margin-top: 20px;
    background-position: center !important;
    cursor: pointer;
  }
 
- .xbsj-slide-group {
-   margin-right: 4px;
+ .xbsj-slide-group{
+  margin: 0 auto;
  }
 
- .xbsj-slide-top {
-   width: 224px;
-   height: 30px;
-   border-right: 0px;
-   margin-top: 28px;
-   margin-left: 0px;
+ .xbsj-slide-top, .xbsj-slide-bottom {
+  padding: 8px 0;
  }
 
- .xbsj-slide-bottom {
-   width: 224px;
-   height: 30px;
-   border-right: 0px;
-   margin-left: 0px;
-   margin-top: 0px;
- }
+ .XbsjSlider{
+  padding: 20px 0 15px;
+}
+ 
 
  .xbsj-slide-label {
-   display: inline-block;
-   width: 48px;
    font-size: 12px;
-   /* font-weight: bold; */
    color: rgba(221, 221, 221, 1);
    text-align: right;
-   float: left;
    line-height: 21px;
    height: 21px;
    cursor: pointer;
  }
 
  .xbsj-slide-div {
-   width: 120px;
+   width: 100px;
    position: relative;
-   left: 60px;
-   top: 8px;
  }
-
+.xbsj-slide-flexs{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
  .xbsj-slide-span {
    position: relative;
-   left: 142px;
-   bottom: 3px;
  }
 
  .xbsj-icon-ios-arrow-forward {
@@ -722,13 +714,13 @@
  }
 
  .xbsj-select {
-   display: inline-block;
+  position: absolute;
+  right: 0;
    width: 9px;
    height: 8px;
    background: url(../images/xiatankuang.png) no-repeat;
    background-size: 100%;
    cursor: pointer;
-   margin-top: 40px;
  }
 
  .xbsj-select.highlight,
@@ -823,4 +815,50 @@
 }
 .timelineBox .xbsj-slider-button {
   border-radius: 0;
+}
+/* nav图标 */
+.navs-images-roam {
+  background: url("../images/roam.png") no-repeat;
+  padding: 5px 5px;
+  background-size: 100%;
+}
+.navs-images-view_nav {
+  background: url("../images/view_nav.png") no-repeat;
+  padding: 5px 5px;
+  background-size: 100%;
+}
+.navs-images-imagery {
+  background: url("../images/imagery.png") no-repeat;
+  padding: 5px 5px;
+  background-size: 100%;
+}
+.navs-images-model {
+  background: url("../images/model.png") no-repeat;
+  padding: 5px 5px;
+  background-size: 100%;
+}
+.navs-images-terrain_nav {
+  background: url("../images/terrain_nav.png") no-repeat;
+  padding: 5px 5px;
+  background-size: 100%;
+}
+.navs-images-analysis {
+  background: url("../images/analysis.png") no-repeat;
+  padding: 5px 5px;
+  background-size: 100%;
+}
+.navs-images-effect {
+  background: url("../images/effect.png") no-repeat;
+  padding: 5px 5px;
+  background-size: 100%;
+}
+.navs-images-plotting {
+  background: url("../images/plotting.png") no-repeat;
+  padding: 5px 5px;
+  background-size: 100%;
+}
+.navs-images-other {
+  background: url("../images/other.png") no-repeat;
+  padding: 5px 5px;
+  background-size: 100%;
 }

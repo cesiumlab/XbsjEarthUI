@@ -1,14 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>XbsjEarthUI by 西部世界</title>
-  </head>
-  <body>
-    <a href="./Apps/">Apps</a><br />
-    <a href="./XbsjEarth/Documentation/">XbsjEarth API文档</a><br/>
-    <a href="./XbsjEarthUI/Documentation/">XbsjEarthUI API文档</a><br/>    
-  </body>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="xbsj-labels" content="地球夜景-EarthSDK示例-一款基于Cesium的开源免费三维地球二次开发包"></meta>
+    <title>地球夜景-EarthSDK示例</title>
+    <script src="../../XbsjEarthUI/xbsj.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+    </div>
+
+    <script>
+        XbsjEarthUI.create('main').then(earthUI => {
+
+            earthUI.earth.sceneTree.root = {
+                "expand": true,
+                "title": "影像",
+                "children": [{
+                    "expand": true,
+                    "title": "地图·根据需要隐藏和打开图层",
+                    "children": [{
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": "高德地图",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//webrd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}"
+                                }
+                            }
+                        },
+                        "enabled": true
+                    },{
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": "高德影像",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}"
+                                }
+                            }
+                        },
+                        "enabled": true
+                    },{
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": "天地图影像标注",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//t6.tianditu.com/DataServer?T=cia_w&x={x}&y={y}&l={z}&tk=835402675b4eef1d10ff69553d33801f"
+                                }
+                            }
+                        },
+                        "enabled": true
+                    },{
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": "天地图影像",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//t6.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=835402675b4eef1d10ff69553d33801f"
+                                }
+                            }
+                        },
+                        "enabled": true
+                    },{
+                        "czmObject": {
+                            "xbsjType": "Imagery",
+                            "name": "夜景",
+                            "xbsjImageryProvider": {
+                                "XbsjImageryProvider": {
+                                    "url": "//storage.googleapis.com/earthfeed/maptiles/nasa/blackmarble_color_2016/{z}/{x}/{y}"
+                                }
+                            }
+                        },
+                        "enabled": true
+                    }]
+                }]
+            };
+                
+            var earth = earthUI.earth;
+            
+            //隐藏图层管理
+            earthUI.tools.sceneTree.show = true;
+            //云层 
+            earth.weather.cloud.enabled = true;
+            //泛光
+            earth.postProcess.bloom.enabled = true;
+            //地球旋转
+            const cf = earth.cameraFlight;
+            cf.rotateGlobe.start();
+            window.uia = earthUI;
+        });
+    </script>
+</body>
+
 </html>
