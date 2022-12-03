@@ -44,6 +44,9 @@ XbsjEarthUI是基于Cesium和EarthSDK的三维GIS/BIM的UI模板，可以基于�
 
 ## 使用步骤
 
+### 注意
+git下载时，请下载1.7.x分支使用，不要下载master分支。
+
 ### 开发模式
 
 1. npm install
